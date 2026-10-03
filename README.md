@@ -7,7 +7,8 @@ remain lightweight on a 16 GB home server and grow to larger commercial storage
 systems. The HP MicroServer Gen8 is a reference configuration, not a hardware
 requirement or a limit on disks, memory, pools, or datasets.
 
-**Status:** M0 repository foundation. No NAS daemon, GUI, installable port,
+**Status:** M0 foundation accepted; M1 research and draft design ready for review.
+No NAS daemon, GUI, installable port,
 appliance image, or production support claim exists yet.
 
 ## Agreed direction
@@ -30,6 +31,9 @@ appliance image, or production support claim exists yet.
 3. [Roadmap](docs/roadmap/milestones.md): foundation through the first release.
 4. [Bootstrap status](docs/engineering/bootstrap-status.md): evidence and open gates.
 5. [Contributing](CONTRIBUTING.md) and [agent instructions](AGENTS.md).
+6. [M1 requirements](docs/milestones/M1/PRD.md),
+   [engineering design](docs/milestones/M1/EDD.md), and
+   [Test Design](docs/milestones/M1/TDD.md): draft implementation contracts.
 
 ## Foundation checks
 

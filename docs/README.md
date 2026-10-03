@@ -9,6 +9,8 @@
 - [UI baseline](ui/baseline.md)
 - [Compatibility matrix](compatibility/matrix.md)
 - [Ports distribution plan](../packaging/ports/README.md)
+- M1 draft: [PRD](milestones/M1/PRD.md), [EDD](milestones/M1/EDD.md),
+  [Test Design](milestones/M1/TDD.md)
 
 ## Engineering and evidence
 
@@ -25,4 +27,7 @@
 - [Design templates](templates/README.md)
 - [M0 foundation acceptance](milestones/M0/acceptance.md)
 - [M1 research manifest](research/M1/manifest.md)
+- M1 evidence: [findings](research/M1/findings.md),
+  [native QEMU spike](research/M1/native-spike.md),
+  [immutable source/version manifest](research/M1/source-manifest.json)
 - [Operational runbook plan](operations/README.md)

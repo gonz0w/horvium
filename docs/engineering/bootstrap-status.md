@@ -1,6 +1,6 @@
 # Bootstrap status
 
-Date: 2026-10-03. Phase: M0 foundation configured; awaiting maintainer review.
+Date: 2026-10-03. Phase: M0 accepted; M1 research/draft design ready for review.
 No production implementation is approved by this status file.
 
 ## Confirmed direction
@@ -14,6 +14,10 @@ Cam (`@gonz0w`) is the initial maintainer and CODEOWNERS owner.
 
 ## Implemented and observed
 
+- Maintainer merged [foundation review PR 2](https://github.com/gonz0w/horvium/pull/2)
+  on 2026-10-03. Squash revision `02f7dcb43afdeedd101e94e41ea06e24335422fe`
+  has a GitHub-verified signature and a successful
+  [main foundation run](https://github.com/gonz0w/horvium/actions/runs/37161247071).
 - Charter, architecture/UI baselines, scope ADRs, roadmap, compatibility/lab models,
   operational topics, engineering/security policies, and design templates.
 - BSD Cloud foundation tooling/pins adapted with upstream attribution.
@@ -37,9 +41,10 @@ Cam (`@gonz0w`) is the initial maintainer and CODEOWNERS owner.
 
 ## Remaining gates and limits
 
-- Maintainer reviews/merges the foundation evidence PR and adopts the process.
 - M1 research is tracked in [issue 1](https://github.com/gonz0w/horvium/issues/1).
-  Approve its PRD/EDD/Test Design before product implementation.
+  Review its [PRD](../milestones/M1/PRD.md), [EDD](../milestones/M1/EDD.md), and
+  [Test Design](../milestones/M1/TDD.md) before product implementation. The
+  maintainer chose macOS and Linux/BSD client priorities and QEMU native fixtures.
 - Confirm confidential security/conduct reporting before public community access
   or a deployable release. BSD Cloud's reporting address is not assumed.
 - GitHub security-and-analysis capability metadata was unavailable for this

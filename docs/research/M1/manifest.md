@@ -1,6 +1,9 @@
 # M1 research manifest
 
-Status: prepared, not executed. Prepared 2026-10-03. Pin versions at M1 entry.
+Status: research in progress; M1 design drafted. Updated 2026-10-03.
+Evidence: [findings](findings.md), [source/version pins](source-manifest.json),
+[QEMU spike](native-spike.md). Design: [PRD](../../milestones/M1/PRD.md),
+[EDD](../../milestones/M1/EDD.md), [Test Design](../../milestones/M1/TDD.md).
 
 ## Questions
 
@@ -23,7 +26,18 @@ Status: prepared, not executed. Prepared 2026-10-03. Pin versions at M1 entry.
 
 FreeBSD release/patch/architecture, bundled OpenZFS/features, Go, Samba, SSH,
 HTMX asset/source checksum, clients/browsers, ports-tree commit, package repository,
-and fixture/hardware details. None is pinned by this prepared manifest.
+and fixture/hardware details. FreeBSD/Go/HTMX/x/sys/Ports source candidates are now
+recorded in the linked source manifest. No Samba, browser or file-client package
+baseline is selected yet; select those at the applicable native/client milestone.
+
+## Scope of this pass
+
+Questions 1-3/8 have source inspection and a narrowly scoped QEMU experiment.
+Question 4 has a proposed M1-only access/cache design; durable jobs remain open.
+Questions 5-6 need later active sharing/protection designs before implementation.
+Question 7 has proposed application budgets and test fixtures, not measured
+hardware/throughput claims. Client priorities are macOS and Linux/BSD. The
+maintainer authorized QEMU for native tests; no physical test host is assumed.
 
 ## Primary starting references
 
@@ -37,5 +51,5 @@ and fixture/hardware details. None is pinned by this prepared manifest.
 
 Foundation reference inspection on 2026-10-03 checked the FreeBSD Ports, rc.d,
 and security pages for research entry points. This is not a completed M1 research
-pass. Store dated observations, reproducible fixtures, limitations, and resulting
-ADR recommendations beside this manifest as the work proceeds.
+pass. The linked findings/spike now supply dated evidence and limitations for the
+current pass. Neither research nor an initial VM pass closes M1 acceptance.

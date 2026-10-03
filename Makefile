@@ -7,7 +7,7 @@ check:
 	sh tools/check-repo.sh
 
 lint:
-	.tools/bin/shellcheck tools/check-repo.sh tools/bsd-foundation-smoke.sh .githooks/commit-msg .githooks/pre-commit
+	.tools/bin/shellcheck tools/check-repo.sh tools/bsd-foundation-smoke.sh tools/research/m1-native.sh .githooks/commit-msg .githooks/pre-commit
 	.tools/bin/actionlint
 
 test:

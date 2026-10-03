@@ -1,6 +1,7 @@
 # M0 foundation acceptance
 
-Status: foundation configured, awaiting maintainer review. See
+Status: Accepted by maintainer merge of
+[PR 2](https://github.com/gonz0w/horvium/pull/2) on 2026-10-03. See
 [bootstrap evidence](../../engineering/bootstrap-status.md). Product
 implementation is outside M0. Repository policies are reviewable artifacts.
 
@@ -14,6 +15,6 @@ implementation is outside M0. Repository policies are reviewable artifacts.
 | M0-REQ-006 Honest evidence | Bootstrap status distinguishes local pass, remote pass, pending, and native evidence |
 | M0-REQ-007 Next milestone | M1 questions/research manifest ready without invented product APIs |
 
-Local completion does not close remote gates. A confidential security/conduct
+A confidential security/conduct
 channel is required before public community access or a deployable release.
 Maintainer reviews the foundation and milestone designs before product work.

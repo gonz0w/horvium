@@ -1,0 +1,200 @@
+{
+  "date": "2026-10-03",
+  "sources": [
+    {
+      "repository": "freebsd/freebsd-src",
+      "path": "sys/contrib/openzfs/META",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "781a9a4c750eb627da3cb47034639416516c50379d05b93363250c776924a16a",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/META"
+    },
+    {
+      "repository": "freebsd/freebsd-src",
+      "path": "share/man/man4/unix.4",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "f70dfca639282042b33c462ebcfe2e66ebe3278b9d7c15cd72698a1908d88e5a",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/share/man/man4/unix.4"
+    },
+    {
+      "repository": "freebsd/freebsd-src",
+      "path": "lib/libgeom/libgeom.3",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "b7e44a4aa6f86a3e761b2d19e477db2f2a83793597a8d7e68b221d465d3c2376",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/lib/libgeom/libgeom.3"
+    },
+    {
+      "repository": "freebsd/freebsd-src",
+      "path": "lib/libgeom/geom_getxml.c",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "7a1fa9f3d46b56a58550ad7d715003cd930aa70b236f3b45e04726a8e57525e0",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/lib/libgeom/geom_getxml.c"
+    },
+    {
+      "repository": "freebsd/freebsd-src",
+      "path": "lib/libgeom/geom_xml2tree.c",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "eb46f53cc587e6483e2002cc0273fe430da20422606d4dd58afd8c7e026916d1",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/lib/libgeom/geom_xml2tree.c"
+    },
+    {
+      "repository": "freebsd/freebsd-src",
+      "path": "sys/contrib/openzfs/man/man8/zpool-list.8",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "80bce7d6bf42dc6af39114cf9c380b50c2f36e32f878dcc3cf007fc8aafc8541",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/man/man8/zpool-list.8"
+    },
+    {
+      "repository": "freebsd/freebsd-src",
+      "path": "sys/contrib/openzfs/man/man8/zfs-list.8",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "3860a48b450092779aa03b19b147993ec763f62d2b66223efe2b2f5c61e5b13f",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/man/man8/zfs-list.8"
+    },
+    {
+      "repository": "freebsd/freebsd-src",
+      "path": "sys/contrib/openzfs/META",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "99627b7a08f8a98f1b7cbf8bf1a4cc416d5474a3db38cf07c910c9e37a93fed8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/META"
+    },
+    {
+      "repository": "freebsd/freebsd-ports",
+      "path": "Mk/Uses/go.mk",
+      "revision": "2e67f384802ff04abd34e706fb098e4cd999e7e6",
+      "sha256": "4d58460cfbd21aad9f31da0021dc4dd97cb14b7763a8463c7f3eaf786a6fc36c",
+      "url": "https://github.com/freebsd/freebsd-ports/blob/2e67f384802ff04abd34e706fb098e4cd999e7e6/Mk/Uses/go.mk"
+    },
+    {
+      "repository": "freebsd/freebsd-ports",
+      "path": "lang/go/Makefile",
+      "revision": "2e67f384802ff04abd34e706fb098e4cd999e7e6",
+      "sha256": "966eba998a774a82acd6fd7b3ac4e7af4a4bf84275bccf9639503f51caae30ed",
+      "url": "https://github.com/freebsd/freebsd-ports/blob/2e67f384802ff04abd34e706fb098e4cd999e7e6/lang/go/Makefile"
+    },
+    {
+      "repository": "bigskysoftware/htmx",
+      "path": "dist/htmx.min.js",
+      "revision": "fa978b24e75fb03c137bf2cdae4fef0e711cf8a1",
+      "sha256": "d6fdc75f204e6bdefa99b69bf1e6d4ac69b8a364f77929f45c13476b4000f717",
+      "url": "https://github.com/bigskysoftware/htmx/blob/fa978b24e75fb03c137bf2cdae4fef0e711cf8a1/dist/htmx.min.js"
+    },
+    {
+      "repository": "golang/sys",
+      "path": "unix/syscall_freebsd.go",
+      "revision": "613e2570718ecde85c04e69ebd5585c3881c442c",
+      "sha256": "4008e3ba2768c6e74c2543ab438a5f8cf30fd06a86cd13dc8d7142740b432246",
+      "url": "https://github.com/golang/sys/blob/613e2570718ecde85c04e69ebd5585c3881c442c/unix/syscall_freebsd.go"
+    },
+    {
+      "repository": "golang/sys",
+      "path": "go.mod",
+      "revision": "613e2570718ecde85c04e69ebd5585c3881c442c",
+      "sha256": "9522f4c9806d1c26586ea80fa56292929bd295865e71981927f52996c6b1c831",
+      "url": "https://github.com/golang/sys/blob/613e2570718ecde85c04e69ebd5585c3881c442c/go.mod"
+    },
+    {
+      "repository": "golang/sys",
+      "path": "LICENSE",
+      "revision": "613e2570718ecde85c04e69ebd5585c3881c442c",
+      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad",
+      "url": "https://github.com/golang/sys/blob/613e2570718ecde85c04e69ebd5585c3881c442c/LICENSE"
+    },
+    {
+      "repository": "freebsd/freebsd-src",
+      "path": "sbin/mdconfig/mdconfig.c",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "8ff68288653c8db3e7e2b8a5146ad780bc63ab005fc1a2cd17cc2b4ccc9ca646",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sbin/mdconfig/mdconfig.c"
+    }
+  ],
+  "freebsd_15.1": {
+    "release": "15.1",
+    "source_revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+    "native_patch_level": "15.1-RELEASE-p3",
+    "native_observation": {
+      "installed_kernel": "15.1-RELEASE-p3",
+      "running_kernel": "15.1-RELEASE-p3",
+      "userland": "15.1-RELEASE-p3",
+      "architecture": "amd64",
+      "zfs_userland": "2.4.2-1-FreeBSD_g6330a45b0",
+      "zfs_kernel_module": "2.4.2-1-FreeBSD_g6330a45b0",
+      "go": "go1.27.1 freebsd/amd64",
+      "experiment_source": "411ca08d99544173a685422957f7a41e3eeaa4aa",
+      "run_url": "https://github.com/gonz0w/horvium/actions/runs/37162318433",
+      "status": "passed narrow research assertions; product tests pending"
+    }
+  },
+  "freebsd_14.5": {
+    "release": "14.5",
+    "source_revision": "231eee334c098a8398bc959202415c48058f67f0",
+    "native_patch_level": "14.5-RELEASE",
+    "native_observation": {
+      "installed_kernel": "14.5-RELEASE",
+      "running_kernel": "14.5-RELEASE",
+      "userland": "14.5-RELEASE",
+      "architecture": "amd64",
+      "zfs_userland": "2.2.9-FreeBSD_g079ba86d7",
+      "zfs_kernel_module": "2.2.9-FreeBSD_g079ba86d7",
+      "go": "go1.27.1 freebsd/amd64",
+      "experiment_source": "411ca08d99544173a685422957f7a41e3eeaa4aa",
+      "run_url": "https://github.com/gonz0w/horvium/actions/runs/37162318433",
+      "status": "passed narrow research assertions; product tests pending"
+    }
+  },
+  "ports_tree_revision": "2e67f384802ff04abd34e706fb098e4cd999e7e6",
+  "htmx": {
+    "version": "2.0.11",
+    "revision": "fa978b24e75fb03c137bf2cdae4fef0e711cf8a1"
+  },
+  "go": {
+    "version": "go1.27.1",
+    "stable": true,
+    "artifacts": [
+      {
+        "filename": "go1.27.1.freebsd-amd64.tar.gz",
+        "os": "freebsd",
+        "arch": "amd64",
+        "version": "go1.27.1",
+        "sha256": "9761194512938a640948ae5ba273df73a441f4229ea21a1503937e55c69bf107",
+        "size": 70221912,
+        "kind": "archive"
+      },
+      {
+        "filename": "go1.27.1.freebsd-arm64.tar.gz",
+        "os": "freebsd",
+        "arch": "arm64",
+        "version": "go1.27.1",
+        "sha256": "8b155a723a584fb29125c6b36fc9cb0d5489a3f7fb76670508a2c51af718074d",
+        "size": 66695818,
+        "kind": "archive"
+      }
+    ]
+  },
+  "x_sys": {
+    "module": "golang.org/x/sys",
+    "version": "v0.48.0",
+    "revision": "613e2570718ecde85c04e69ebd5585c3881c442c",
+    "status": "proposed, not installed"
+  },
+  "experiment": {
+    "source_revision": "411ca08d99544173a685422957f7a41e3eeaa4aa",
+    "run_id": 37162318433,
+    "runner": "ubuntu-24.04",
+    "vm_action_revision": "a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff",
+    "image_digest": "not captured; not an immutable image baseline",
+    "files": [
+      {
+        "path": "tools/research/m1-native.sh",
+        "sha256": "a77729758cdca32fcaa010d572c109e0c376b63c9f2bffb3507f1faf600aa3b4"
+      },
+      {
+        "path": "tools/research/m1-geom.go",
+        "sha256": "ea94851e44517779b9971bed3977c2a517757b1ae63bda574460c289c022240e"
+      },
+      {
+        "path": "tools/research/m1-peer.c",
+        "sha256": "12ba7f7f0dd8c57d1c00044c597083a3f476d91403009801b2dce86282180794"
+      }
+    ]
+  }
+}
