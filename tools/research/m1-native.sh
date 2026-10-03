@@ -57,8 +57,12 @@ esac
 case "${device#md}" in
     ''|*[!0-9]*) echo 'Invalid fixture unit' >&2; exit 1 ;;
 esac
-mdconfig -l -v -u "${device#md}" > "$work/backing"
-awk -v file="$work/disk.img" '$NF == file { found=1 } END { exit !found }' "$work/backing"
+mdconfig -l -n -f "$work/disk.img" > "$work/backing-unit"
+awk -v unit="${device#md}" '
+    NF != 1 || $1 != unit { exit 1 }
+    END { if (NR != 1) exit 1 }
+' "$work/backing-unit"
+echo 'PASS: generated md unit verified by exact backing-file query'
 zpool create -m none "$pool" "/dev/$device"
 created=1
 zfs create -o mountpoint=none "$pool/data"
