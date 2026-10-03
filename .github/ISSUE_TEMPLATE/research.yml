@@ -1,0 +1,29 @@
+name: Research / spike
+description: Time-box a technical question before design
+title: "research(<scope>): "
+labels: ["kind/research"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What decision or unknown are we trying to resolve?
+    validations:
+      required: true
+  - type: textarea
+    id: artifacts
+    attributes:
+      label: Reference artifacts / versions
+      description: FreeBSD, ZFS, client, tool, and dependency versions to investigate.
+  - type: input
+    id: timebox
+    attributes:
+      label: Time box
+      placeholder: e.g. 1 day
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Expected output
+      description: Research note, ADR recommendation, benchmark, or prototype evidence.

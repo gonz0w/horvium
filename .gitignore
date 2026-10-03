@@ -1,0 +1,16 @@
+.DS_Store
+*.swp
+*.swo
+*~
+.env
+.env.*
+!.env.example
+coverage.out
+coverage.html
+bin/
+dist/
+.tmp/
+
+.tools/
+__pycache__/
+*.pyc

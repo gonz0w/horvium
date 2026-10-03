@@ -1,0 +1,30 @@
+name: Bug report
+description: Report a reproducible defect
+title: "fix(<scope>): "
+labels: ["kind/bug"]
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Observed behavior
+      description: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Minimal steps, versions, and environment.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs / request IDs / evidence
+      description: Remove secrets and customer-sensitive data.

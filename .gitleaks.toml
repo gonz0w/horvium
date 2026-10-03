@@ -1,0 +1,12 @@
+title = "Horvium secret scanning"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Git internals and isolated development-tool installation"
+paths = [
+  '(^|/)\.git/',
+  '(^|/)\.tools/',
+  '(^|/)__pycache__/',
+]

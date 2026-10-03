@@ -1,0 +1,26 @@
+name: BSD foundation smoke
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freebsd:
+    name: freebsd-foundation-smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Native FreeBSD shell checks
+        uses: vmactions/freebsd-vm@a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff # v1.5.8
+        with:
+          release: '15.1'
+          arch: amd64
+          copyback: false
+          prepare: pkg install -y git
+          run: sh tools/bsd-foundation-smoke.sh FreeBSD
