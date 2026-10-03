@@ -1,6 +1,7 @@
 # M0 foundation acceptance
 
-Status: active foundation work, authorized by the project discussion. Product
+Status: foundation configured, awaiting maintainer review. See
+[bootstrap evidence](../../engineering/bootstrap-status.md). Product
 implementation is outside M0. Repository policies are reviewable artifacts.
 
 | Requirement | Acceptance |

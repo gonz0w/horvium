@@ -14,6 +14,7 @@ validation are separate. Refresh exact versions in each active research manifest
 | Distribution | FreeBSD port/package, then image | Packaging plan only; not in official Ports |
 | Small hardware | 16 GB MicroServer Gen8 / four 3 TB SATA disks | Reference profile supplied by maintainer, unmeasured |
 | Larger hardware | Representative commercial FreeBSD deployments | Scale budgets and lab evidence pending |
+| Foundation smoke | FreeBSD 15.1 amd64 | Shell/hooks passed; not native NAS evidence |
 | Tooling | Python 3.14.7 + checksum-pinned tools on Linux/macOS | See bootstrap status for checks actually run |
 
 Evidence levels: D0 designed; D1 unit/component verified; D2 native/client verified;
