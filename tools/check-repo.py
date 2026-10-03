@@ -25,7 +25,7 @@ REQUIRED = (
     "docs/compatibility/matrix.md", "packaging/ports/README.md",
 )
 EXCLUDED = {".git", ".tools", "__pycache__"}
-TEXT_SUFFIXES = {".md", ".py", ".sh", ".yml", ".yaml", ".json", ".txt", ".toml"}
+TEXT_SUFFIXES = {".md", ".py", ".sh", ".go", ".c", ".yml", ".yaml", ".json", ".txt", ".toml"}
 errors = []
 
 

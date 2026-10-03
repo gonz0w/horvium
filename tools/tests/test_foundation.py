@@ -44,12 +44,14 @@ class FoundationTests(unittest.TestCase):
         return self.git("rev-parse", "HEAD")
 
     def test_committed_whitespace_is_rejected_without_staged_changes(self):
-        (self.repo / "probe.py").write_text("value = 1   \n")
+        for suffix in ("py", "go", "c"):
+            (self.repo / f"probe.{suffix}").write_text("value = 1   \n")
         self.commit("test: add whitespace probe")
         self.assertEqual(self.git("diff", "--cached", "--name-only"), "")
         result = self.check()
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("probe.py: line 1: trailing whitespace", result.stderr)
+        for suffix in ("py", "go", "c"):
+            self.assertIn(f"probe.{suffix}: line 1: trailing whitespace", result.stderr)
 
     def test_license_is_required(self):
         (self.repo / "LICENSE").unlink()

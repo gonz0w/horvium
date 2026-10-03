@@ -9,9 +9,16 @@ immutable commit SHAs. Default workflow permissions are read-only and checkout
 does not retain credentials. Untrusted fork code never runs in a privileged
 `pull_request_target` job. Put untrusted metadata in environment variables.
 
-A manually dispatched FreeBSD smoke workflow validates native shell and hooks
-only. It is not ZFS, SMB, performance, or production qualification. M1 pins native
-OS/toolchain/packages separately; do not assume cross-compilation proves execution.
+The manually dispatched [BSD workflow](../../.github/workflows/bsd-smoke.yml)
+keeps foundation shell/hook smoke separate from the M1 QEMU research jobs. The
+research jobs use fresh file-backed storage and explicit disposable-VM opt-in on
+FreeBSD 15.1/14.5 amd64. They validate narrow GEOM/ZFS/credential contracts, not
+product integration, SMB, performance or production support. See the
+[spike evidence](../research/M1/native-spike.md). The probes compile with the
+checksum-verified native Go toolchain/base C compiler. Repository checks now
+scan Go/C research source as UTF-8 text as well; its regression fails before that
+coverage change. M1 pins native versions separately; cross-compilation alone is
+not execution evidence.
 
 ## Product gates as components arrive
 
