@@ -1,12 +1,19 @@
 # FreeBSD port/package plan
 
-Status: planned distribution contract. No installable port exists at M0.
+Status: planned distribution contract. No installable port exists at M1 design.
 
 The maintainer selected a FreeBSD port first, then a complete appliance image.
 Develop a local port against real tagged source before requesting upstream Ports
 inclusion. Category, maintainer address, source URL, distinfo, Go version, exact
 package dependencies, and installed filenames are finalized with release design.
 Do not publish speculative Makefiles or claim upstream acceptance.
+
+M1 inspected the [pinned Go framework source](../../docs/research/M1/source-manifest.json).
+It supports Go 1.26/1.27 and module-aware fetching. Product evidence will pin an
+exact tested toolchain while port metadata uses a reviewed compatible range from
+the real go.mod. A private GitHub repository cannot serve as the public fetch
+source for an official port: decide the public source-release artifact and actual
+maintainer address before submission. No publication/privacy change is implied.
 
 ## Required behavior
 
