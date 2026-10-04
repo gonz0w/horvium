@@ -55,3 +55,5 @@
 - [M1 independent SMB/NFS continuity qualification](testing/M1/file-continuity.md)
 
 - [M1 browser qualification and manual accessibility checklist](testing/M1/browser-checklist.md)
+
+- [Consolidated M1 qualification review and open acceptance gates](testing/M1/qualification-status.md)

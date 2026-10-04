@@ -2,7 +2,10 @@
 
 Date: 2026-10-04. Design approved in [PR 3](https://github.com/gonz0w/horvium/pull/3).
 M1 remains Implementing, not accepted or released. Work proceeds through focused,
-maintainer-reviewed slices following the [EDD](EDD.md).
+maintainer-reviewed slices following the [EDD](EDD.md). Historical slice tables
+describe the remaining work at each original boundary; the
+[current qualification review](../../testing/M1/qualification-status.md) consolidates
+today's evidence and open acceptance gates.
 
 ## Slice 1: native discovery models, parsers and reader
 
@@ -179,37 +182,56 @@ See [probe cleanup procedure/evidence](../../testing/M1/probe-cleanup.md).
 Both FreeBSD targets passed all eight synchronized cases and the existing native
 suite in run 37225094799. Abrupt helper death cannot execute this Go cleanup.
 
-## Remaining slices and acceptance
+## Slice 10: abrupt-helper-death probe containment
 
-The maintainer authorized work on all remaining areas on 2026-10-04. Work remains
-in reviewed PRs; this authorization does not merge future PRs or accept M1.
-
-Crash containment is under review in [PR 13](https://github.com/gonz0w/horvium/pull/13):
-base timeout's reaper and Go's FreeBSD parent-death signal contain the fixed probe
+Accepted by maintainer merge of [PR 13](https://github.com/gonz0w/horvium/pull/13),
+source `dbf8e33a5120a6132494873b12cfca650be86298`, on 2026-10-04.
+Base timeout's reaper and Go's FreeBSD parent-death signal contain the fixed probe
 subtree after helper death. The pre-fix leak reproduced on both native targets;
 actual owner-death and guarded bounds cases passed in run 37227688891. See
 [crash-containment evidence](../../testing/M1/crash-containment.md). Integrated
 built-helper death during a captured native command also passed in PR 14 below.
 
+## Slice 11: native resources and assembled HTTP abuse
+
+Accepted by maintainer merge of [PR 14](https://github.com/gonz0w/horvium/pull/14),
+source `33bac3064bef418e2b41b0a3aa7c1a854dd18a01`, on 2026-10-04.
+
 Native resources and integrated built-helper crash/stale/recovery/boot state
-passed both pinned guests in run 37233391796; under review in PR 14. See [procedure](../../testing/M1/native-resources.md).
+passed both pinned guests in run 37233391796. See [procedure](../../testing/M1/native-resources.md).
 
 The assembled HTTP abuse suite and pre-handler connection cap passed on both
-native targets in run 37230688573 and are under review in [PR 15](https://github.com/gonz0w/horvium/pull/15).
+native targets in run 37230688573. The maintainer merged [PR 15](https://github.com/gonz0w/horvium/pull/15)
+into PR 14's branch on 2026-10-04; PR 14's merge brought it into `main`.
 See [HTTP abuse evidence](../../testing/M1/http-abuse.md).
 
+## Slice 12: independent file continuity and automated browser qualification
+
+Accepted by maintainer merge of [PR 16](https://github.com/gonz0w/horvium/pull/16),
+source `1fd85870c4c86079010d6325290fb6aa27249da9`, on 2026-10-04.
+
 Independent SMB/NFS continuity passed both native targets, including seven reads
-per protocol and teardown in run 37233530125; under review in PR 16. See [continuity procedure](../../testing/M1/file-continuity.md).
-
-1. Complete console/CLI native and required-browser evidence, accessibility acceptance.
-2. Qualify native-reader allocation alongside the measured synthetic management budgets.
-3. Extend independent SFTP continuity evidence to SMB/NFS; complete native-probe
-   abrupt-helper-death descendant policy and full helper/HTTP abuse review.
-
-All PRD requirements remain subject to the full [Test Design](TDD.md). Native
-reader success is not NAS readiness, commercial qualification or a working UI.
+per protocol and teardown in run 37233530125. See [continuity procedure](../../testing/M1/file-continuity.md).
 
 Actual Firefox passed all four selected synthetic flows in run 37233700130;
-under review in PR 17. Safari and manual assistive-technology/native-zoom evidence
+the maintainer merged PR 17 into PR 16's branch on 2026-10-04, and PR 16's merge
+brought it into `main`. Safari and manual assistive-technology/native-zoom evidence
 remain pending by maintainer choice.
 See [browser qualification](../../testing/M1/browser-checklist.md).
+
+## Remaining acceptance
+
+The consolidated qualification record is under review in
+[PR 18](https://github.com/gonz0w/horvium/pull/18). Safari/manual accessibility
+observations and explicit maintainer acceptance remain required. The authorization
+to implement the remaining slices does not accept M1 or authorize future PR merges.
+All PRD requirements remain subject to the full [Test Design](TDD.md).
+Native reader success does not establish NAS readiness or commercial qualification.
+
+
+Final combined run 37234167265 passed all eight automated jobs against one assembled
+functional revision, including pinned resource/crash recovery, native HTTP abuse,
+SMB/NFS continuity and actual Firefox. Exact input hashes/results are consolidated
+in [qualification review](../../testing/M1/qualification-status.md). M1 still needs
+Safari/manual accessibility observations and explicit maintainer review/acceptance;
+these passing automated gates do not authorize merging or M2 implementation.

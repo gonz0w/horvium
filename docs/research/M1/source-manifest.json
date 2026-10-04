@@ -1915,5 +1915,537 @@
       "computed contrast covers selected samples, not whole UI or WCAG certification",
       "Safari, screen readers and human native zoom/usability remain pending"
     ]
+  },
+  "product_m1_assembled_qualification": {
+    "date": "2026-10-04",
+    "status": "all automated assembled gates pass; M1 unaccepted pending manual UI and maintainer review",
+    "source_revision": "4d32eb598f1b66c45838bbad60dfd44ed93218c3",
+    "workflow_run": "https://github.com/gonz0w/horvium/actions/runs/37234167265",
+    "jobs": [
+      {
+        "name": "freebsd-foundation-smoke",
+        "status": "success"
+      },
+      {
+        "name": "product-freebsd-15.1-amd64",
+        "status": "success"
+      },
+      {
+        "name": "research-freebsd-14.5-amd64",
+        "status": "success"
+      },
+      {
+        "name": "performance / performance-freebsd-14.5-amd64",
+        "status": "success"
+      },
+      {
+        "name": "product-freebsd-14.5-amd64",
+        "status": "success"
+      },
+      {
+        "name": "research-freebsd-15.1-amd64",
+        "status": "success"
+      },
+      {
+        "name": "performance / performance-freebsd-15.1-amd64",
+        "status": "success"
+      },
+      {
+        "name": "browser / firefox-linux-qualification",
+        "status": "success"
+      }
+    ],
+    "guests": [
+      {
+        "release": "15.1",
+        "image": {
+          "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+          "builder": "2.2.8",
+          "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+          "cpu_count": 2,
+          "cpu_model": "qemu64",
+          "memory_mib": 6144,
+          "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+          "release": "15.1"
+        },
+        "native_measurements": [
+          {
+            "budget_peak_rss_bytes": 35287040,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 35028992,
+            "datasets": 115,
+            "idle_cpu_percent_one_core": 0.08333233742940203,
+            "idle_seconds": 300,
+            "max_sample_gap_ms": 179.454,
+            "mode": "native-small",
+            "owned_datasets": 100,
+            "p50_ms": 11.708,
+            "p95_ms": 37.911,
+            "p99_ms": 68.156,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 3636,
+            "sampled_combined_peak_rss_bytes": 35287040,
+            "warmup_seconds": 60
+          },
+          {
+            "budget_peak_rss_bytes": 42770432,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 42475520,
+            "datasets": 10000,
+            "idle_cpu_percent_one_core": 0,
+            "idle_seconds": 0,
+            "max_sample_gap_ms": 795.274,
+            "mode": "projection-10000",
+            "owned_datasets": 0,
+            "p50_ms": 19.16,
+            "p95_ms": 58.634,
+            "p99_ms": 76.105,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 677,
+            "sampled_combined_peak_rss_bytes": 42770432,
+            "warmup_seconds": 60
+          }
+        ],
+        "synthetic_measurements": [
+          {
+            "budget_peak_rss_bytes": 34336768,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 34050048,
+            "datasets": 100,
+            "idle_cpu_percent_one_core": 0.023333131705520097,
+            "idle_seconds": 300,
+            "max_sample_gap_ms": 185.867,
+            "p50_ms": 16.821,
+            "p95_ms": 57.284,
+            "p99_ms": 74.21,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 3644,
+            "sampled_combined_peak_rss_bytes": 34336768,
+            "session_count": 1,
+            "warmup_seconds": 60
+          },
+          {
+            "budget_peak_rss_bytes": 46006272,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 45727744,
+            "datasets": 10000,
+            "idle_cpu_percent_one_core": 0,
+            "idle_seconds": 0,
+            "max_sample_gap_ms": 184.733,
+            "p50_ms": 20.844,
+            "p95_ms": 56.164,
+            "p99_ms": 74.093,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 672,
+            "sampled_combined_peak_rss_bytes": 46006272,
+            "session_count": 1,
+            "warmup_seconds": 60
+          }
+        ],
+        "evidence_validator": "pass",
+        "captured_command_death_stale_recovery_boot_state": "pass",
+        "native_suite": "pass",
+        "assembled_http_abuse": "pass",
+        "independent_SMB_NFS_reads_and_teardown": "pass",
+        "samba_package": "4.23.11_3",
+        "continuity_binary_sha256": {
+          "/usr/bin/timeout": "099b29836a7efe1270842ffe093c971c7883e646293b8906b38652901ef1673d",
+          "/usr/local/sbin/smbd": "b2ef2e55ac3c122c7acc5a1e6b7012c2952f85edfa4e9673b672eecc19f69257",
+          "/usr/local/bin/smbclient": "54d298f2ee4871bb17dd1d703fb5177d3196833196f7260f03497c89f31bc553",
+          "/usr/sbin/nfsd": "e4db394594a237954fca8ce251af51253369f34bf37fe6baf77c9c8dfcbbc313",
+          "/usr/sbin/mountd": "f6576b30835a4cd8800b44c8f797cbc8ee9595c874f06cafd1ad9e3d63f9ccca",
+          "/usr/sbin/rpcbind": "1c5e362b50c9d51d3147a757d550484847c7961fe566386d8e60bd79e1ee9f94",
+          "/sbin/mount_nfs": "048e6cb2bf16e2408443b0d70bd5ae473bd1fa06faa10835ca4e5b7452ae7943"
+        }
+      },
+      {
+        "release": "14.5",
+        "image": {
+          "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+          "builder": "2.2.8",
+          "compressed_sha256": "cd90489bb7d94585016e177b9e3f0084f3410454dc0af19481f44ddd5aa45257",
+          "cpu_count": 2,
+          "cpu_model": "qemu64",
+          "memory_mib": 6144,
+          "qcow2_sha256": "6593466e8d6341eaad95755973ab594222516dd75bcd99b18239b5047e5396f4",
+          "release": "14.5"
+        },
+        "native_measurements": [
+          {
+            "budget_peak_rss_bytes": 37171200,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 36909056,
+            "datasets": 100,
+            "idle_cpu_percent_one_core": 0.07999899103005875,
+            "idle_seconds": 300,
+            "max_sample_gap_ms": 148.288,
+            "mode": "native-small",
+            "owned_datasets": 100,
+            "p50_ms": 18.337,
+            "p95_ms": 55.649,
+            "p99_ms": 85.222,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 3652,
+            "sampled_combined_peak_rss_bytes": 37171200,
+            "warmup_seconds": 60
+          },
+          {
+            "budget_peak_rss_bytes": 42151936,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 41861120,
+            "datasets": 10000,
+            "idle_cpu_percent_one_core": 0,
+            "idle_seconds": 0,
+            "max_sample_gap_ms": 176.059,
+            "mode": "projection-10000",
+            "owned_datasets": 0,
+            "p50_ms": 19.79,
+            "p95_ms": 57.877,
+            "p99_ms": 80.099,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 669,
+            "sampled_combined_peak_rss_bytes": 42151936,
+            "warmup_seconds": 60
+          }
+        ],
+        "synthetic_measurements": [
+          {
+            "budget_peak_rss_bytes": 37425152,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 37134336,
+            "datasets": 100,
+            "idle_cpu_percent_one_core": 0.026666435742177523,
+            "idle_seconds": 300,
+            "max_sample_gap_ms": 150.15,
+            "p50_ms": 17.994,
+            "p95_ms": 51.422,
+            "p99_ms": 72.549,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 3645,
+            "sampled_combined_peak_rss_bytes": 37425152,
+            "session_count": 1,
+            "warmup_seconds": 60
+          },
+          {
+            "budget_peak_rss_bytes": 46522368,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 46243840,
+            "datasets": 10000,
+            "idle_cpu_percent_one_core": 0,
+            "idle_seconds": 0,
+            "max_sample_gap_ms": 415.952,
+            "p50_ms": 21.061,
+            "p95_ms": 74.011,
+            "p99_ms": 206.088,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 681,
+            "sampled_combined_peak_rss_bytes": 46522368,
+            "session_count": 1,
+            "warmup_seconds": 60
+          }
+        ],
+        "evidence_validator": "pass",
+        "captured_command_death_stale_recovery_boot_state": "pass",
+        "native_suite": "pass",
+        "assembled_http_abuse": "pass",
+        "independent_SMB_NFS_reads_and_teardown": "pass",
+        "samba_package": "4.23.11_2",
+        "continuity_binary_sha256": {
+          "/usr/bin/timeout": "1dadc6aaf707f8e4f7a08ea28bfa0d53bf6890ca9ea7873a72e4a051e5f9aa10",
+          "/usr/local/sbin/smbd": "8f576a455c3bcdee66800ef71b5939cb4094f5e8dfe672b546f12a105102d8ab",
+          "/usr/local/bin/smbclient": "e3619a31f0a6101b6091bbb7b7de256e184e3b13c9225874d29a556559cf65f1",
+          "/usr/sbin/nfsd": "672f847b1634c8610a50d245acf5b83d229a09133275822c54c1a90daba08efe",
+          "/usr/sbin/mountd": "c9a61acd368738840c82fa9e5d5b78893a2e74f156656108db3d110a6059f4f9",
+          "/usr/sbin/rpcbind": "e1a46b46261f4201502881a108336db35baedfd2b0b1098263340148c7983b49",
+          "/sbin/mount_nfs": "1e3afbabe3af29138f49e921aad8b2b9f8dd116333c051240284d65cd272bc39"
+        }
+      }
+    ],
+    "firefox_results": [
+      {
+        "browser": "firefox",
+        "browser_version": "157.0",
+        "platform": "linux",
+        "host_platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "javascript": true,
+        "theme": "light",
+        "requested_width": 1280,
+        "status": "pass",
+        "measurements": {
+          "minimum_sampled_text_contrast": 5.045892109312574,
+          "minimum_control_boundary_contrast": 3.1405817281884527,
+          "viewport_css_width": 1280,
+          "observed_media": {
+            "dark": false,
+            "reduce": true
+          },
+          "viewport_method": "browser window"
+        },
+        "manual_screen_reader_and_native_zoom": "pending"
+      },
+      {
+        "browser": "firefox",
+        "browser_version": "157.0",
+        "platform": "linux",
+        "host_platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "javascript": true,
+        "theme": "dark",
+        "requested_width": 390,
+        "status": "pass",
+        "measurements": {
+          "minimum_sampled_text_contrast": 5.52894265248301,
+          "minimum_control_boundary_contrast": 3.9994804227890834,
+          "viewport_css_width": 390,
+          "observed_media": {
+            "dark": true,
+            "reduce": true
+          },
+          "viewport_method": "owned browser chrome minimum override"
+        },
+        "manual_screen_reader_and_native_zoom": "pending"
+      },
+      {
+        "browser": "firefox",
+        "browser_version": "157.0",
+        "platform": "linux",
+        "host_platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "javascript": false,
+        "theme": "light",
+        "requested_width": 1280,
+        "status": "pass",
+        "measurements": {
+          "minimum_sampled_text_contrast": 5.045892109312574,
+          "minimum_control_boundary_contrast": 3.1405817281884527,
+          "viewport_css_width": 1280,
+          "observed_media": {
+            "dark": false,
+            "reduce": true
+          },
+          "viewport_method": "browser window"
+        },
+        "manual_screen_reader_and_native_zoom": "pending"
+      },
+      {
+        "browser": "firefox",
+        "browser_version": "157.0",
+        "platform": "linux",
+        "host_platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "javascript": false,
+        "theme": "dark",
+        "requested_width": 320,
+        "status": "pass",
+        "measurements": {
+          "minimum_sampled_text_contrast": 5.52894265248301,
+          "minimum_control_boundary_contrast": 3.9994804227890834,
+          "viewport_css_width": 320,
+          "observed_media": {
+            "dark": true,
+            "reduce": true
+          },
+          "viewport_method": "owned browser chrome minimum override"
+        },
+        "manual_screen_reader_and_native_zoom": "pending"
+      }
+    ],
+    "product_input_files": [
+      {
+        "path": "cmd/horvium/input_other.go",
+        "sha256": "99ff4284cad980bc32ae0f1247acfc32af030d7a421f51e25084e08f4ece34eb"
+      },
+      {
+        "path": "cmd/horvium/input_unix.go",
+        "sha256": "6d21b9b72a9935863d312a4f374e7157c2566ab76500c90d8bd16aa44a8815a4"
+      },
+      {
+        "path": "cmd/horvium/main.go",
+        "sha256": "0145bcea3b01a48b7eb88d72c12fac8239641d235ae9634cd9283a3080dcdb46"
+      },
+      {
+        "path": "go.mod",
+        "sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+      },
+      {
+        "path": "internal/admin/auth.go",
+        "sha256": "4bf4e75a42199e450ef443e1ba694a8d84881b99fb8d8bc70e906584a9d46e27"
+      },
+      {
+        "path": "internal/admin/config.go",
+        "sha256": "ac23410b7b4b576d7a63bb691a05ad3af7e7b7a2ed85a0e60346b2060cbac26b"
+      },
+      {
+        "path": "internal/admin/files_freebsd.go",
+        "sha256": "efffa6725bb2995deb5fccdfcbd8b7d934f1835d349c52a12e678fe4812533cd"
+      },
+      {
+        "path": "internal/admin/files_other.go",
+        "sha256": "d1ba82f2b61cd0a28b0819140a2d9f85bf3f0028572ab004f81ddccc2eaa3eeb"
+      },
+      {
+        "path": "internal/admin/http.go",
+        "sha256": "ffd2713e52e3e46775d35a75cb15b1ae53395e449e43057e9678ea43a3dcc86e"
+      },
+      {
+        "path": "internal/client/client.go",
+        "sha256": "7c04854e03b43d1e488ef58bf699676229e4734d2e4dd3cee3c06a2b2b98c101"
+      },
+      {
+        "path": "internal/console/assets/console.css",
+        "sha256": "fdc2d1361d4ce22f58ad46a96ed87e1450b3368188027c55c6aaf97284d20daa"
+      },
+      {
+        "path": "internal/console/assets/console.html",
+        "sha256": "376d2b444b45c0fa0e946720d5da7fda01e3dddd093c11d2b738af9116720b35"
+      },
+      {
+        "path": "internal/console/assets/console.js",
+        "sha256": "0b298c2ddec740961801927f4de6f861004c5166dd369f35c6f9836773ba11d2"
+      },
+      {
+        "path": "internal/console/assets/horvium.svg",
+        "sha256": "0f15155805b73c61fcffdf5c53fd27d59b19522ec7f3972af35aa8be77c67f79"
+      },
+      {
+        "path": "internal/console/assets/htmx.min.js",
+        "sha256": "7f14135fe8ee3ed5f1a85fea21ba4dfba8236d697c4f95ab575d1c9091bb06ca"
+      },
+      {
+        "path": "internal/console/console.go",
+        "sha256": "d0099cf9d772f63b00d0dd83fe7beb7221dff817989c5af7e489faf02bbbbfd5"
+      },
+      {
+        "path": "internal/eventlog/log.go",
+        "sha256": "b48dafe7fb5aa6d65739fdb94f35afcb6aa1be39515810ff3bae1f87e0a7ef6a"
+      },
+      {
+        "path": "internal/helper/events.go",
+        "sha256": "ff87a9bb45d72f183b76e4390e5dde91cc5553a0a76c80f4bcecfe1c6095871a"
+      },
+      {
+        "path": "internal/helper/native_freebsd.go",
+        "sha256": "61e96c831baed88c125f2c45b652773ff74d848a6846707db3eb0e30e7023e63"
+      },
+      {
+        "path": "internal/helper/native_other.go",
+        "sha256": "1f0705bd44c23e19e0e73af27cefdee80e98905c2a380f2bbc8cd3c17db35a32"
+      },
+      {
+        "path": "internal/helper/peer.go",
+        "sha256": "87fc55611f6f9320141404a90b8f47b8a642673a4d938b84ffd37266a4a4b06c"
+      },
+      {
+        "path": "internal/helper/server.go",
+        "sha256": "ae6af0cc454947b29d8e2cb10d39814d60814afad00919006f0facbc8bf0fcda"
+      },
+      {
+        "path": "internal/helper/validate.go",
+        "sha256": "6d9d75bab558c985f8d47ae4cfdda87d25e3856894f0cbef6cbbef20ad869904"
+      },
+      {
+        "path": "internal/helper/wire.go",
+        "sha256": "5f8a5ac1a5d619435a2240a699afe3d4337bdd98ec9507bccb7e53f8ef0cbea6"
+      },
+      {
+        "path": "internal/host/freebsd/execute.go",
+        "sha256": "6b1aa25996f23adec5d9af6bb58708ae475a5a2291f9e994cab83e1408d0c1d8"
+      },
+      {
+        "path": "internal/host/freebsd/guard_freebsd.go",
+        "sha256": "f8e02d9293593a05de2920d0c4b50cca4f2edf536bc5ec35f42353b880bcdb47"
+      },
+      {
+        "path": "internal/host/freebsd/native_freebsd.go",
+        "sha256": "684dacc50679d16ce0f0c99edb999ccb960ceee896db27a4618e835e02f82166"
+      },
+      {
+        "path": "internal/host/freebsd/native_other.go",
+        "sha256": "d7dd08b0f750bc87466823943c7863b60008c21184cb48e2f7ec757d4fb98260"
+      },
+      {
+        "path": "internal/host/freebsd/process_other.go",
+        "sha256": "9303e91b0cf4a551c952af0a147e3644fd09d05307ef45d96d2408e3601af774"
+      },
+      {
+        "path": "internal/host/freebsd/process_unix.go",
+        "sha256": "f07d3fd36304f9c20812a83bc58210293a8c1b0e8c49655972f37896136bb1a7"
+      },
+      {
+        "path": "internal/host/freebsd/source.go",
+        "sha256": "fecbf11d062d711210c84c7e1df286656be5ce7a6c4d9b3a26025290e2581939"
+      },
+      {
+        "path": "internal/inventory/clone.go",
+        "sha256": "3573cdbcd96b52d611c36ce84527331580dae121a21aed014a3f4b2382689b3e"
+      },
+      {
+        "path": "internal/inventory/model.go",
+        "sha256": "dd531a8bb6b95e0e9fcc15a6da030fcacc86ca839420db829bcc9f8c7b600617"
+      },
+      {
+        "path": "internal/inventory/parse.go",
+        "sha256": "039e50c19003a3093dbaff98f26cdc7ac5fc0d3c46a012775bc29697b9faacc1"
+      },
+      {
+        "path": "internal/inventory/parse_geom.go",
+        "sha256": "aed24efa5d12228c1eb47a3e0552eb16a5222993e65db8581804fa23ed6de9bf"
+      },
+      {
+        "path": "internal/inventory/parse_zfs.go",
+        "sha256": "d998da649605c8c37bffcd43b2f270e54123b8d4526aaf1ddf9b96f9c6d59577"
+      },
+      {
+        "path": "internal/inventory/validate.go",
+        "sha256": "1ade407b0dc235a36fe286d98a0841dafae274030a890efd5d3b0318d0132eb4"
+      },
+      {
+        "path": "internal/observation/manager.go",
+        "sha256": "00b4001b727182f941a09400a0caf9e6bb05f8232616fc11324935d4544e92b2"
+      },
+      {
+        "path": "internal/observation/query.go",
+        "sha256": "148d8f01b9a0bb53bc0cd952234fc6dfaab4ef72b7ddabe336f14c5021e245be"
+      },
+      {
+        "path": "internal/service/events.go",
+        "sha256": "b0f488de9f535e5b7772ed0d9ccc423614250b7ba901a0b18841860355866e44"
+      },
+      {
+        "path": "internal/service/listener.go",
+        "sha256": "c3c3fff52f75d40812497b0b73999b8f691f4a69ed01a5543cb9d63f208c5c10"
+      },
+      {
+        "path": "internal/service/service.go",
+        "sha256": "4097069f401f39ac5a8803f61c66a7669ee7f46fbe1d31ed5891b16c5d7855ed"
+      }
+    ],
+    "current_product_files_match_tested_inputs": true,
+    "subsequent_changes": "evidence docs and regression-tested browser-driver error cleanup only; no Go/product asset changes",
+    "manual_acceptance": "Safari/screen readers/native zoom pending by explicit maintainer choice",
+    "limits": [
+      "QEMU fixture qualification, not physical MicroServer/commercial or whole-NAS throughput",
+      "two Go process resource budgets exclude native child CPU/RSS, ZFS ARC, controller and file daemons",
+      "10,000 projected TSV rows; real large ZFS topology unmeasured",
+      "loopback file-service continuity, not external client/ACL/locking/restore or release configuration",
+      "Firefox computed samples and synthetic flows, not Safari/manual accessibility or WCAG certification"
+    ]
   }
 }
