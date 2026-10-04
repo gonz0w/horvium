@@ -27,6 +27,7 @@ validation are separate. Refresh exact versions in each active research manifest
 | Native probe cleanup | FreeBSD 15.1-RELEASE-p3 / 14.5-RELEASE amd64, Go 1.27.1 | Local synchronized regressions and all eight actual executor/collection cases passed on both native targets (run 37225094799); unrelated fixture group survived; abrupt helper SIGKILL and escaped groups remain outside this result |
 | Helper crash containment | FreeBSD 15.1-RELEASE-p3 / 14.5-RELEASE, Go 1.27.1, base timeout reaper | Actual executor owner-death and guarded bounds cases passed on both targets (37227688891), including separate-session descendant; utility hashes recorded; built-helper captured-command death/recovery and native resources additionally passed in 37233391796; under review |
 | Native reader resource procedure | Pinned FreeBSD 15.1/14.5 QEMU guests; actual small native collection and test-only 10,000-row TSV projection | Both targets passed native-small/10,000-row projection budgets and integrated captured-command death/recovery (37233391796); small RSS 32.8–36.5 MiB, idle CPU 0.057–0.087%; projection p95 44–82 ms; no hardware/commercial qualification |
+| Assembled HTTP abuse | Built FreeBSD root helper/unprivileged runtime over real loopback TCP | Procedure implemented; native execution pending; portable slow-connection bound/recovery/shutdown race checks pass |
 | Tooling | Python 3.14.7 + checksum-pinned tools on Linux/macOS | See bootstrap status for checks actually run |
 
 Evidence levels: D0 designed; D1 unit/component verified; D2 native/client verified;

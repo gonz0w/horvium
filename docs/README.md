@@ -49,3 +49,5 @@
 - [M1 helper crash-containment procedure/evidence](testing/M1/crash-containment.md).
 
 - [M1 native reader resources and integrated crash procedure](testing/M1/native-resources.md)
+
+- [M1 assembled HTTP abuse qualification](testing/M1/http-abuse.md)

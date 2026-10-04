@@ -165,6 +165,12 @@ Use semantic links/forms for full-page equivalents; fragment requests do not
 change authorization. Preserve focus and prevent automatic refresh of active
 resource details; background updates announce freshness without disruptive focus.
 
+HTTP connection refinement under review: the foreground listener admits at most
+`max_readers + 8` connections including incomplete headers and idle keep-alives.
+Capacity waits precede handler allocation, and transport deadlines release slots;
+listener close cancels waiting admission. This bounds pre-handler work alongside
+existing response admission. See [HTTP abuse procedure](../../testing/M1/http-abuse.md).
+
 Root-owned static config owns listener/allowed Hosts, helper UID/socket, and safety
 budgets. Parse a strict versioned format; reject unknown fields and invalid limits
 before serving. Final config field names are finalized with implementation tests.
