@@ -25,16 +25,17 @@ not execution evidence.
 `make tools` now also installs the checksum-pinned Go SDK from
 [artifact pins](../../tools/go-pins.json); automatic toolchain download is disabled.
 The repository job runs Go formatting/vet, unit/component tests, race detection,
-and bounded pool/GEOM parser fuzzing through `make go-check`. Go/C research programs
-stay outside the product package build; product code uses the standard library
-only. Module checksums appear when an external module is actually introduced.
+and bounded pool/GEOM/parser and helper framing fuzzing through `make go-check`. Go/C research programs
+stay outside the product package build; product code uses the standard library plus the approved focused FreeBSD x/sys
+adapter. Module checksums are recorded in go.sum and verified natively.
 
-The BSD workflow has separate actual-product discovery jobs on 15.1/14.5 amd64.
+The BSD workflow has separate actual-product discovery/helper jobs on 15.1/14.5 amd64.
 They install Python 3.14 in the disposable guest solely to verify/install the Go
 SDK and run [the native script](../../tools/bsd-native-discovery.sh). Python is not
 a NAS runtime dependency. Native fixture tests require explicit opt-in/root and
 otherwise report skipped; workflow opt-in ensures these cases actually execute.
-No product service or network listener is enabled by these jobs.
+No installed product service is enabled by these jobs. Helper tests explicitly
+create only disposable fixture Unix sockets.
 
 Continue adding dependency vulnerability
 checks; FreeBSD builds for validated architectures; native FreeBSD OS integration;

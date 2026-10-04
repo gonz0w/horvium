@@ -7,8 +7,8 @@ remain lightweight on a 16 GB home server and grow to larger commercial storage
 systems. The HP MicroServer Gen8 is a reference configuration, not a hardware
 requirement or a limit on disks, memory, pools, or datasets.
 
-**Status:** M0 foundation and M1 design accepted; native discovery implementation
-is under review. No NAS daemon, GUI, installable port,
+**Status:** M0 foundation, M1 design and native discovery accepted; helper
+transport is under review. No NAS daemon, GUI, installable port,
 appliance image, or production support claim exists yet.
 
 ## Agreed direction
