@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   discovery:
-    name: discovery-freebsd-${{ matrix.release }}-amd64
+    name: product-freebsd-${{ matrix.release }}-amd64
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Actual product discovery in disposable QEMU
+      - name: Actual product discovery and helper in disposable QEMU
         uses: vmactions/freebsd-vm@a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff # v1.5.8
         with:
           release: ${{ matrix.release }}

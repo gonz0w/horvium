@@ -6,6 +6,9 @@ maintainer-reviewed slices following the [EDD](EDD.md).
 
 ## Slice 1: native discovery models, parsers and reader
 
+Accepted by maintainer merge of [PR 4](https://github.com/gonz0w/horvium/pull/4),
+source `4a21aa72b4a2bb516018bb06f21dbcc287a4ab0f`, on 2026-10-03.
+
 Product library, no service/HTTP/CLI installation or data mutations:
 
 - Typed host/GEOM/pool/dataset observations with per-section timestamps and safe
@@ -26,9 +29,9 @@ Product library, no service/HTTP/CLI installation or data mutations:
   sanitized environment, bounded combined stdout/stderr and process-group
   cancellation. Aggregate collection bytes/graph and ZFS records are bounded.
   Discarded stderr and failed-command output consume the byte budget too.
-  Default native command/collection deadlines are ten/45 seconds. No runtime
-  dependencies beyond Go standard library; no syscall module is added until the
-  helper slice uses it. Non-FreeBSD constructors fail explicitly.
+  Default native command/collection deadlines are ten/45 seconds. The reader uses
+  only the Go standard library; the separate helper uses the approved syscall
+  module below. Non-FreeBSD constructors fail explicitly.
 
 Native fixture tests require root and explicit disposable-QEMU opt-in. They create
 only their own file-backed md/pool, compare captured GUID/size/geometry to
@@ -38,16 +41,16 @@ dump is printed. Actual product reader tests passed on both selected releases;
 see [native discovery evidence](../../testing/M1/discovery.md) for exact source,
 versions, procedure, failures/repairs and limits.
 
-## Requirement evidence in this slice
+## Slice 1 requirement evidence
 
 | Test ID | Implemented portion | Remaining before full M1 gate |
 |---|---|---|
 | M1-PARSE-001 | Unit hostile/empty/overflow/truncated/limit cases; bounded pool/GEOM fuzz targets | More real hardware fixtures and full integration |
 | M1-IDENTITY-001 | Duplicate/missing/conflicting serial/lunid; provider classes/relations; native fixture rename test | Physical controller persistence and future adoption safety |
-| M1-FAIL-001 | Source permission/exit/missing/timeout/cancel/byte/record/malformed handling; partial host metadata | Helper transport interruption and stale cache/UI behavior |
-| M1-NATIVE-001 | Actual native reader and independent fixture assertions | Helper, CLI and UI paths |
-| M1-NOCHANGE-001 | Native reader fixture properties preserved; no mutation commands in reader | Authenticated helper policy and independent file-service tests |
-| M1-BUILD-001 | Native-constrained Go module, pinned dev/native SDK, no product cgo/Python/Node | Executables/assets/helper dependency/build provenance |
+| M1-FAIL-001 | Source permission/exit/missing/timeout/cancel/byte/record/malformed handling; partial host metadata | Stale cache/UI behavior; helper evidence below |
+| M1-NATIVE-001 | Actual native reader and independent fixture assertions | CLI/UI paths; helper evidence below |
+| M1-NOCHANGE-001 | Native reader fixture properties preserved; no mutation commands in reader | Independent file-service tests; helper policy below |
+| M1-BUILD-001 | Native-constrained Go module, pinned dev/native SDK, no product cgo/Python/Node | Executables/assets/release build provenance |
 | M1-SCALE-001 | Reader/parser byte/record bounds and aggregate collection limits | One collector, deduplicated refresh and generation cache |
 
 Local development gates are `make check lint test secrets go-check`. Go checks
@@ -56,13 +59,37 @@ as development instrumentation; product builds use CGO_ENABLED=0. Python install
 the reviewed SDK in test/development only. Native test logs record actual versions;
 a skipped disposable fixture is never native acceptance.
 
+## Slice 2: kernel-authorized helper transport
+
+Under review in [PR 5](https://github.com/gonz0w/horvium/pull/5).
+`internal/helper` supplies a FreeBSD-only inventory server/client library:
+
+- Actual `LOCAL_PEERCRED` wrapper verifies credential ABI and exact configured
+  management UID before request reads; client verifies root listener UID before
+  sending. Shared groups/payload authority and a root-client exemption are denied.
+- Root-owned restricted directory/ancestors, new 0660 socket, strict ownership,
+  refusal of preexisting files/sockets/symlinks and cleanup of only its owned inode.
+- Versioned length-prefixed typed records with frame/aggregate/field/depth/count
+  bounds, strict duplicate/unknown/missing-field denial and explicit end/EOF.
+  Interrupted/malformed exchanges yield no publishable snapshot. Successful
+  partial source observations retain errors and timestamps.
+- Bounded admitted clients/deadlines, one in-flight collection and no queue;
+  cancellation closes I/O and reaches the native reader. No general RPC operation,
+  native command/path argument, HTTP listener or file-service management.
+- Checksum-pinned x/sys v0.48.0, full BSD notice, no transitive modules/product cgo.
+  Local denial/race/bounded framing fuzz tests; native dropped-UID/ownership/
+  actual-reader tests use disposable Unix-socket fixtures only.
+
+See [helper evidence](../../testing/M1/helper.md) for native execution status,
+exact versions/source and M1-PRIV/FAIL/NOCHANGE/SCALE/BUILD traceability.
+Installed service/process-restart qualification remains pending.
+
 ## Remaining slices and acceptance
 
-1. Kernel-authorized helper transport, safe socket lifecycle and framed records.
-2. Single collector, two bounded generations, stale/error publication and paging.
-3. Token setup, strict config/session/CSRF/Host/Origin protections and tests.
-4. Authenticated CLI and accessible HTML5/CSS/HTMX console, browser evidence.
-5. Independent service/restart tests and measured application budgets.
+1. Single collector, two bounded generations, stale/error publication and paging.
+2. Token setup, strict config/session/CSRF/Host/Origin protections and tests.
+3. Authenticated CLI and accessible HTML5/CSS/HTMX console, browser evidence.
+4. Independent service/restart tests and measured application budgets.
 
 All PRD requirements remain subject to the full [Test Design](TDD.md). Native
 reader success is not NAS readiness, commercial qualification or a working UI.

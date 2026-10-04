@@ -13,9 +13,11 @@ export GOMODCACHE="$root/.tools/go-modules"
 python3.14 --version
 python3.14 tools/bootstrap-go.py
 .tools/go/bin/go version
+.tools/go/bin/go mod download
+.tools/go/bin/go mod verify
 freebsd-version -kru
 zfs version
 test -z "$(.tools/go/bin/gofmt -l internal tools/research/m1-geom.go)"
 .tools/go/bin/go vet ./...
 .tools/go/bin/go test -v -count=1 ./...
-echo 'PASS: product discovery unit/component and native fixture tests'
+echo 'PASS: product discovery/helper unit/component and native fixture tests'

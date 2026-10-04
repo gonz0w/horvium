@@ -18,3 +18,16 @@ artifact hashes. Refresh and review pins at milestone entry; do not describe the
 as latest. Dependabot proposes updates for Actions and pip, with Go modules added
 when they exist. Automated updates do not bypass normal review. Security features
 that require host/subscription support are enabled only after capability verification.
+
+## Current product module
+
+The approved M1 helper uses `golang.org/x/sys/unix` v0.48.0 solely for FreeBSD
+`GetsockoptXucred`; source `613e2570718ecde85c04e69ebd5585c3881c442c`,
+Go minimum 1.26.0, BSD-3-Clause. Go checksum-database verification and go.sum
+protect module downloads; native CI also runs `go mod verify`. There are no
+transitive modules or cgo requirements. Dependabot proposes gomod updates weekly;
+each requires ordinary review and native denial tests. The Go project maintains
+the syscall adapter. Remove it if an equivalent base Go wrapper replaces the
+FreeBSD credential adapter. See [notice](../../NOTICE.md) and
+[helper evidence](../testing/M1/helper.md); no dependency vulnerability scan is
+claimed by checksum verification alone.
