@@ -37,11 +37,13 @@ jobs:
           PERF_RELEASE: ${{ matrix.release }}
           PERF_DIRECTORY: ${{ runner.temp }}/horvium-performance-vm
         run: |
+          set -o pipefail
           python3 "$PERF_DIRECTORY/anyvm.py" --os freebsd --release "$PERF_RELEASE" --builder 2.2.8 \
             --cpu 2 --cpu-type qemu64 --mem 6144 --snapshot --vnc off --remote-vnc no \
             --data-dir "$PERF_DIRECTORY" --sync tar --sync-exclude .git --sync-exclude .tools \
-            -v "$GITHUB_WORKSPACE:/root/work" -d -- \
-            'cd /root/work && pkg install -y python314 && env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh && env HORVIUM_NATIVE_VM=1 HORVIUM_PERF_VM=1 sh tools/bsd-performance.sh'
+            -v "$GITHUB_WORKSPACE:/root/work" -- \
+            'cd /root/work && pkg install -y python314 && env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh && env HORVIUM_NATIVE_VM=1 HORVIUM_PERF_VM=1 sh tools/bsd-performance.sh' 2>&1 | tee "$PERF_DIRECTORY/qualification.log"
+          python3 tools/check-performance-evidence.py "$PERF_DIRECTORY/qualification.log"
       - name: Verify unchanged base image and runtime
         if: always()
         env:
