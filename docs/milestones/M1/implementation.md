@@ -192,18 +192,23 @@ actual owner-death and guarded bounds cases passed in run 37227688891. See
 [crash-containment evidence](../../testing/M1/crash-containment.md). Integrated
 built-helper death during a captured native command also passed in PR 14 below.
 
+## Slice 11: native resources and assembled HTTP abuse
+
+Accepted by maintainer merge of [PR 14](https://github.com/gonz0w/horvium/pull/14),
+source `33bac3064bef418e2b41b0a3aa7c1a854dd18a01`, on 2026-10-04.
+
+Native resources and integrated built-helper crash/stale/recovery/boot state
+passed both pinned guests in run 37233391796. See [procedure](../../testing/M1/native-resources.md).
+
+The assembled HTTP abuse suite and pre-handler connection cap passed on both
+native targets in run 37230688573. The maintainer merged [PR 15](https://github.com/gonz0w/horvium/pull/15)
+into PR 14's branch on 2026-10-04; PR 14's merge brought it into `main`.
+See [HTTP abuse evidence](../../testing/M1/http-abuse.md).
+
 ## Remaining slices and acceptance
 
 The maintainer authorized work on all remaining areas on 2026-10-04. Work remains
 in reviewed PRs; this authorization does not merge future PRs or accept M1.
-
-Native resources and integrated built-helper crash/stale/recovery/boot state
-passed both pinned guests in run 37233391796; under review in PR 14. See [procedure](../../testing/M1/native-resources.md).
-
-The assembled HTTP abuse suite and pre-handler connection cap passed on both
-native targets in run 37230688573. The maintainer merged [PR 15](https://github.com/gonz0w/horvium/pull/15)
-into PR 14's branch on 2026-10-04; it reaches `main` with PR 14.
-See [HTTP abuse evidence](../../testing/M1/http-abuse.md).
 
 Independent SMB/NFS continuity passed both native targets, including seven reads
 per protocol and teardown in run 37233530125; under review in PR 16. See [continuity procedure](../../testing/M1/file-continuity.md).

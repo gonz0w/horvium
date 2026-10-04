@@ -37,15 +37,15 @@ protocol interoperability, ACLs, locking, restoration and release configuration.
 
 On 2026-10-04 the maintainer merged [PR 13](https://github.com/gonz0w/horvium/pull/13)
 into `main`, [PR 15](https://github.com/gonz0w/horvium/pull/15) into PR 14's branch,
-and [PR 17](https://github.com/gonz0w/horvium/pull/17) into PR 16's branch. The latter
-two changes reach `main` through their remaining parent PRs. The stack was rebased
+and [PR 17](https://github.com/gonz0w/horvium/pull/17) into PR 16's branch. The maintainer
+then merged [PR 14](https://github.com/gonz0w/horvium/pull/14) into `main`, including
+PR 15. PR 17 reaches `main` through the remaining PR 16. The stack was rebased
 onto these squash merges without changing its qualified product inputs or
 historical evidence. The remaining PRs are ordered as follows; each stays open
 for the maintainer and requires its own explicit merge authorization:
 
-1. [PR 14](https://github.com/gonz0w/horvium/pull/14), based on `main`: native resources and integrated built-helper crash/recovery, including PR 15's pre-handler HTTP bound and assembled denial/recovery.
-2. [PR 16](https://github.com/gonz0w/horvium/pull/16), based on PR 14: independent SMB/NFS continuity and teardown, including PR 17's Firefox qualification, contrast repair and manual UI checklist.
-3. [PR 18](https://github.com/gonz0w/horvium/pull/18), based on PR 16: this consolidated qualification and acceptance record.
+1. [PR 16](https://github.com/gonz0w/horvium/pull/16), based on `main`: independent SMB/NFS continuity and teardown, including PR 17's Firefox qualification, contrast repair and manual UI checklist.
+2. [PR 18](https://github.com/gonz0w/horvium/pull/18), based on PR 16: this consolidated qualification and acceptance record.
 
 The combined assembled-source workflow passed all eight jobs in
 [run 37234167265](https://github.com/gonz0w/horvium/actions/runs/37234167265), source
