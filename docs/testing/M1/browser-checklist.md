@@ -106,3 +106,9 @@ The [source manifest](../../research/M1/source-manifest.json) retains exact pins
 source file hashes and whitelisted per-scenario results. Local `make check lint
 test secrets build go-check` passed; tests include checksum-tampering protection
 and known contrast/alpha-rejection assertions. Full M1 acceptance remains open.
+
+A final harness cleanup regression reproduces skipped owned-driver shutdown when
+WebDriver session deletion fails. A finally block now always stops the owned
+driver before propagating the error; failed cleanup cannot emit a complete passing
+report. This changes the development harness only, with the passing UI flows
+unchanged.

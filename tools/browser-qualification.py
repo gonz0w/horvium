@@ -186,6 +186,14 @@ def stop_process(process):
             process.wait(timeout=5)
 
 
+def close_driver(driver, process):
+    try:
+        if driver.session:
+            driver.command('DELETE', '')
+    finally:
+        stop_process(process)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--browser', choices=('firefox', 'safari'), required=True)
@@ -251,9 +259,7 @@ def main():
                             records.append(record)
                             print('BROWSER_RESULT ' + json.dumps(record), flush=True)
                         finally:
-                            if driver.session:
-                                driver.command('DELETE', '')
-                            stop_process(process)
+                            close_driver(driver, process)
             finally:
                 stop_process(fixture)
     args.output.parent.mkdir(parents=True, exist_ok=True)

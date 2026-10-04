@@ -3,6 +3,7 @@ import hashlib
 import importlib.util
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -38,6 +39,19 @@ class BrowserMeasurementTests(unittest.TestCase):
         self.assertEqual(tool.contrast((25, 25, 25), (25, 25, 25)), 1)
         with self.assertRaises(AssertionError):
             tool.rgb('rgba(0, 0, 0, 0.5)')
+
+class BrowserCleanupTests(unittest.TestCase):
+    def test_failed_session_delete_still_stops_owned_driver(self):
+        spec = importlib.util.spec_from_file_location('browser_cleanup', ROOT / 'tools/browser-qualification.py')
+        tool = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(tool)
+        driver = mock.Mock(session='synthetic')
+        driver.command.side_effect = RuntimeError('fixture transport failed')
+        process = object()
+        with mock.patch.object(tool, 'stop_process') as stop:
+            with self.assertRaises(RuntimeError):
+                tool.close_driver(driver, process)
+            stop.assert_called_once_with(process)
 
 if __name__ == '__main__':
     unittest.main()
