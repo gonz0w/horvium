@@ -301,5 +301,141 @@
     "license": "0BSD",
     "license_path": "third_party/htmx-LICENSE.txt",
     "license_sha256": "d3d2456f76414f2456104660ebd65aff1c04cd7966b942bdabd63f3cdb316a38"
+  },
+  "product_console": {
+    "date": "2026-10-04",
+    "status": "slice under maintainer review in PR 8; full M1 unaccepted",
+    "source_revision": "78ec3c2e829bd24fdbec12fa100a3780a545191d",
+    "run_id": 37212702081,
+    "result": "all five jobs passed; both product jobs include nonempty owned storage fixture/real helper/exact-UID management/CLI/full HTML/fragments/selection and teardown",
+    "go": "1.27.1",
+    "runtime_cgo_enabled": false,
+    "x_sys": "v0.48.0",
+    "htmx": "2.0.11",
+    "runner": "ubuntu-24.04",
+    "vm_action_revision": "a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff",
+    "vm_builder": "2.2.8",
+    "guest_memory_mib": 6144,
+    "image_digest": "not captured; not an immutable image baseline",
+    "guest_cpu": "default, not captured",
+    "guests": [
+      {
+        "os": "FreeBSD 15.1-RELEASE-p3",
+        "architecture": "amd64",
+        "zfs_userland": "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+        "zfs_kernel": "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0"
+      },
+      {
+        "os": "FreeBSD 14.5-RELEASE",
+        "architecture": "amd64",
+        "zfs_userland": "zfs-2.2.9-FreeBSD_g079ba86d7",
+        "zfs_kernel": "zfs-kmod-2.2.9-FreeBSD_g079ba86d7"
+      }
+    ],
+    "browser": {
+      "surface": "Codex in-app browser",
+      "engine_version": "not captured; not the required Safari/Firefox matrix",
+      "source_revision": "78ec3c2e829bd24fdbec12fa100a3780a545191d",
+      "fixture": "explicit generated observations with synthetic banner; no native browser claim",
+      "checks": [
+        "real form login/logout",
+        "HTMX filtering with keyboard focus retained on Apply",
+        "keyboard selection with stable row focus",
+        "refresh leaves resource generation and selection unchanged",
+        "escaped hostile name",
+        "1280x720 and 390x844 light layout; narrow scroll/client width 390/390",
+        "no warning/error console entries on tested path"
+      ],
+      "screenshot": "docs/testing/M1/console-synthetic.jpg",
+      "pending": [
+        "Safari/macOS",
+        "Firefox/Linux",
+        "JavaScript-disabled browser",
+        "dark appearance",
+        "assistive technology/WCAG assessment"
+      ]
+    },
+    "files": [
+      {
+        "path": "cmd/horvium/input_other.go",
+        "sha256": "99ff4284cad980bc32ae0f1247acfc32af030d7a421f51e25084e08f4ece34eb"
+      },
+      {
+        "path": "cmd/horvium/input_unix.go",
+        "sha256": "6d21b9b72a9935863d312a4f374e7157c2566ab76500c90d8bd16aa44a8815a4"
+      },
+      {
+        "path": "cmd/horvium/input_unix_test.go",
+        "sha256": "ac711e16ed16516eb1636582772237aed58a71c625381ec19e7c1736e8772911"
+      },
+      {
+        "path": "cmd/horvium/main.go",
+        "sha256": "0145bcea3b01a48b7eb88d72c12fac8239641d235ae9634cd9283a3080dcdb46"
+      },
+      {
+        "path": "cmd/horvium/main_test.go",
+        "sha256": "dc1ed7c45079b879bacbe5746e456514c1ca39a30a5bd89b8e8dd8a6025e6eea"
+      },
+      {
+        "path": "cmd/horvium/native_freebsd_test.go",
+        "sha256": "be0354261b9d86a1fdf11ba89a6b06075653070148bff6aa42c12db437424173"
+      },
+      {
+        "path": "internal/client/client.go",
+        "sha256": "7c04854e03b43d1e488ef58bf699676229e4734d2e4dd3cee3c06a2b2b98c101"
+      },
+      {
+        "path": "internal/client/client_test.go",
+        "sha256": "a679c39ed7429c8029212c32fa60dd6d3f84154f984df2188cc9b8088c293f0e"
+      },
+      {
+        "path": "internal/console/assets/console.css",
+        "sha256": "83b42ccf07cb6181a34cfaeb772e69961d5b9bd3491d16324245fbdb2148f888"
+      },
+      {
+        "path": "internal/console/assets/console.html",
+        "sha256": "376d2b444b45c0fa0e946720d5da7fda01e3dddd093c11d2b738af9116720b35"
+      },
+      {
+        "path": "internal/console/assets/console.js",
+        "sha256": "0b298c2ddec740961801927f4de6f861004c5166dd369f35c6f9836773ba11d2"
+      },
+      {
+        "path": "internal/console/assets/horvium.svg",
+        "sha256": "0f15155805b73c61fcffdf5c53fd27d59b19522ec7f3972af35aa8be77c67f79"
+      },
+      {
+        "path": "internal/console/assets/htmx.min.js",
+        "sha256": "7f14135fe8ee3ed5f1a85fea21ba4dfba8236d697c4f95ab575d1c9091bb06ca"
+      },
+      {
+        "path": "internal/console/console.go",
+        "sha256": "c0098e8cb080b9d0fdb22643e5acf99b73225b75070c0a2981110d0f22a4ba73"
+      },
+      {
+        "path": "internal/console/console_test.go",
+        "sha256": "f7a479ea1ef1425130fc4c4e10e6d30536c5cf6f384bfb781063718a71cc54f6"
+      },
+      {
+        "path": "internal/service/service.go",
+        "sha256": "d28416f79af9c1bede8aa90062b978818a701eab048912586931a61d2b823bd1"
+      },
+      {
+        "path": "internal/admin/http.go",
+        "sha256": "ffd2713e52e3e46775d35a75cb15b1ae53395e449e43057e9678ea43a3dcc86e"
+      },
+      {
+        "path": "tools/bsd-native-discovery.sh",
+        "sha256": "7d253061c09dcae7a2b184ec462e801a400871a57c1f4dfeebaea631678b8815"
+      },
+      {
+        "path": "third_party/htmx-LICENSE.txt",
+        "sha256": "d3d2456f76414f2456104660ebd65aff1c04cd7966b942bdabd63f3cdb316a38"
+      },
+      {
+        "path": "docs/testing/M1/console-synthetic.jpg",
+        "sha256": "4d5e04d8216efe121efd20ee4928ca8caf4d75a1ddfe8fc0a306dcb7a971992e"
+      }
+    ]
   }
 }

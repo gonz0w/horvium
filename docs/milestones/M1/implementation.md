@@ -118,12 +118,16 @@ acceptance remain pending.
 
 ## Slice 5: authenticated console, CLI and foreground assembly
 
-Prepared for review: semantic HTML5/CSS/local HTMX views and a protected-input
+Under review in [PR 8](https://github.com/gonz0w/horvium/pull/8):
+semantic HTML5/CSS/local HTMX views and a protected-input
 CLI share the existing authenticated cache queries. Foreground commands compose
 the root helper and exact-UID management runtime without service installation.
 Filtering, sorting, pagination and selection preserve an exact generation;
 unavailable/partial/stale/expired outcomes remain explicit. No storage mutation,
-file-service configuration or backup capability is introduced. See
+file-service configuration or backup capability is introduced. Both selected
+FreeBSD QEMU releases passed actual helper/unprivileged runtime/CLI/HTML with
+independently verified owned GUIDs and teardown. Limited in-app browser flows
+also passed; full required browser/accessibility acceptance remains open. See
 [console evidence](../../testing/M1/console.md) and the
 [development runbook](../../operations/M1-development.md).
 

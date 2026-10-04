@@ -1,6 +1,7 @@
 # M1 console and CLI evidence
 
-Status: implementing slice 5 for maintainer review. M1 remains unaccepted.
+Status: slice 5 under review in [PR 8](https://github.com/gonz0w/horvium/pull/8).
+M1 remains unaccepted.
 Date: 2026-10-04. Authority: approved [EDD](../../milestones/M1/EDD.md) and
 [Test Design](../../milestones/M1/TDD.md). Refs [issue 1](https://github.com/gonz0w/horvium/issues/1).
 
@@ -86,7 +87,10 @@ explicit synthetic banner. Backend browser/engine version was not captured;
 this is limited additional evidence, not the required Safari/Firefox matrix.
 Dark appearance and JavaScript-disabled execution were not browser-qualified.
 
-Exact native run/source records will be added after validation. The explicit `TestBrowserPreview` fixture serves generated observations
+The final source `78ec3c2e829bd24fdbec12fa100a3780a545191d` also passed
+this browser flow, including focus retained on Apply after keyboard filtering.
+The screenshot was refreshed from that source. Fixtures were stopped and browser
+tabs closed after verification. The explicit `TestBrowserPreview` fixture serves generated observations
 and marks every page synthetic; it is never a product mode or native evidence.
 Safari/macOS, Firefox/Linux, JavaScript-disabled browser execution, assistive
 technology and complete WCAG assessment remain separate acceptance gates.
@@ -119,7 +123,7 @@ also independently check isolated geometry and properties. A skipped test is not
 |---|---|---|
 | M1-HTTP-001 | Shared authenticated full/fragment/JSON routes, local assets, CSRF and strict queries | Required browser matrix and comprehensive abuse review |
 | M1-AUTH-001 | Protected operator input and foreground setup/rotation wiring | Process restart and integrated bounded audit logging |
-| M1-NATIVE-001 | Native helper/cache/HTTP/CLI/HTML fixture added | Native execution evidence and hardware diversity |
+| M1-NATIVE-001 | Native helper/cache/HTTP/CLI/HTML fixture added | Hardware diversity and complete runtime acceptance |
 | M1-UI-001 | Semantic views, stable exact-generation selection and placeholders | Assistive technology, full browser/accessibility acceptance |
 | M1-BUILD-001 | cgo-free executable with embedded local assets | Release provenance and package lifecycle qualification |
 | M1-SCALE-001 | Existing cache limits plus bounded pages/HTTP responses | Measured whole-application RSS, latency and admission budgets |
@@ -127,3 +131,42 @@ also independently check isolated geometry and properties. A skipped test is not
 
 No NAS release, physical hardware performance, installation, file-client access,
 backup operation or commercial deployment qualification follows from this slice.
+
+## Final execution record
+
+Functional source: `78ec3c2e829bd24fdbec12fa100a3780a545191d`.
+[Native run 37212702081](https://github.com/gonz0w/horvium/actions/runs/37212702081)
+completed successfully in all five jobs. Both product jobs ran the root-owned
+storage fixture and reexecuted its child under the configured non-root UID;
+`TestNativeForegroundCLIConsole` passed. Named-FIFO permission and failed-section
+count regressions passed too. The child test's separate top-level invocation is
+intentionally skipped; the parent requires its actual execution and assertions.
+
+| Actual guest | Architecture / SDK | ZFS userland and kernel suffix | Result |
+|---|---|---|---|
+| FreeBSD 15.1-RELEASE-p3 | amd64 / Go 1.27.1 | 2.4.2-1-FreeBSD_g6330a45b0 | cgo-free build, full unit/component/native fixture suite passed |
+| FreeBSD 14.5-RELEASE | amd64 / Go 1.27.1 | 2.2.9-FreeBSD_g079ba86d7 | cgo-free build, full unit/component/native fixture suite passed |
+
+The framework's root fixture verifies real kernel UID separation, independent
+pool/dataset GUID and size, native CLI/HTML/fragment selection, unchanged owned
+dataset properties, helper shutdown and pool/md teardown. No existing storage
+was changed or host inventory exported. QEMU action revision is
+`a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff`, builder 2.2.8, runner ubuntu-24.04,
+6144 MiB guest RAM. Image digest/default CPU were not captured; this is neither an
+immutable image baseline nor a performance result.
+
+Earlier successful runs qualified initial source
+`20c1f75db0f9a27708fe0790f8f84998f9415068` (37211048165), reply/input cancellation
+fixes `4302527c7d1e44cc6e79ee53446aea2a8322b8f6` (37211352291), strengthened owned
+storage fixtures `9a039c8a804421dd31fcee14e9db57b60e7bd17e` (37211717269), and named-FIFO
+permissions `20b35c362fa232a3ecef6efeb94f449834882e89` (37211956691). Final source,
+file hashes, exact SDK/ZFS versions and asset provenance are recorded in the
+[source manifest](../../research/M1/source-manifest.json).
+
+Local macOS arm64 checks passed: `make check lint test secrets build go-check`,
+including race instrumentation and short existing fuzz targets. Product builds
+remain CGO_ENABLED=0; race instrumentation uses cgo in development only. The
+last evidence/screenshot commit changes documentation only; it is not substituted
+for the functional revision named above. Complete M1 browser, accessibility,
+logging, restart/file-daemon continuity and measured application budgets remain
+open. No production NAS, ports-package or commercial qualification is claimed.
