@@ -73,3 +73,8 @@ NAS runtime dependency. See [procedure and limits](../testing/M1/performance.md)
 Before its own workflow is on main, dispatch the existing BSD workflow with
 `performance=true`; it calls the same performance workflow from the selected
 branch. Default native runs leave this long measurement disabled.
+
+The manual [independent file-service workflow](../../.github/workflows/bsd-continuity.yml)
+provisions fixture-only Samba and base NFS in disposable guests. Its explicit
+native/protocol opt-ins and [procedure](../testing/M1/file-continuity.md) are required;
+it installs/enables no operator host service and makes no client compatibility claim.

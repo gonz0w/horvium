@@ -51,3 +51,5 @@
 - [M1 native reader resources and integrated crash procedure](testing/M1/native-resources.md)
 
 - [M1 assembled HTTP abuse qualification](testing/M1/http-abuse.md)
+
+- [M1 independent SMB/NFS continuity qualification](testing/M1/file-continuity.md)

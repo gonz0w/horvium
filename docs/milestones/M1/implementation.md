@@ -198,6 +198,9 @@ The assembled HTTP abuse suite and pre-handler connection cap passed on both
 native targets in run 37230688573 and are under review in [PR 15](https://github.com/gonz0w/horvium/pull/15).
 See [HTTP abuse evidence](../../testing/M1/http-abuse.md).
 
+Independent SMB/NFS fixture procedures are implemented for qualification; native
+execution is pending. See [continuity procedure](../../testing/M1/file-continuity.md).
+
 1. Complete console/CLI native and required-browser evidence, accessibility acceptance.
 2. Qualify native-reader allocation alongside the measured synthetic management budgets.
 3. Extend independent SFTP continuity evidence to SMB/NFS; complete native-probe
