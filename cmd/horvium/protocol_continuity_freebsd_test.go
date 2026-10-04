@@ -81,6 +81,19 @@ func startContinuityDaemon(t *testing.T, binary string, args []string) *nativePr
 	return p
 }
 
+func stopContinuityDaemon(t *testing.T, p *nativeProcess, signal syscall.Signal) {
+	t.Helper()
+	p.stop(t, signal, false)
+	status, ok := p.cmd.ProcessState.Sys().(syscall.WaitStatus)
+	if !ok || !(status.Exited() && status.ExitStatus() == 0 || status.Signaled() && status.Signal() == signal) {
+		t.Fatal("fixture daemon did not exit with the requested signal or success")
+	}
+	// Daemon shutdown can also signal workers. Any remaining member is still
+	// inside the separate, verified test-owned process group.
+	_ = syscall.Kill(-p.cmd.Process.Pid, syscall.SIGKILL)
+	nativeWait(t, func() bool { return syscall.Kill(-p.cmd.Process.Pid, 0) == syscall.ESRCH })
+}
+
 func independentSMB(t *testing.T, dir, root string, content []byte) func() {
 	t.Helper()
 	for _, leaf := range []string{"lock", "state", "cache", "private", "pid", "log"} {
@@ -99,7 +112,7 @@ func independentSMB(t *testing.T, dir, root string, content []byte) func() {
 	continuityReady(t, port)
 	t.Cleanup(func() {
 		if !daemon.waited {
-			daemon.stop(t, syscall.SIGTERM, true)
+			stopContinuityDaemon(t, daemon, syscall.SIGTERM)
 		}
 	})
 	return func() {
@@ -144,7 +157,7 @@ func independentNFS(t *testing.T, dir, root string, content []byte) func() {
 	if os.WriteFile(path, exports, 0600) != nil {
 		t.Fatal("NFS fixture exports")
 	}
-	rpc := startContinuityDaemon(t, "/usr/sbin/rpcbind", []string{"-f", "-h", "127.0.0.1"})
+	rpc := startContinuityDaemon(t, "/usr/sbin/rpcbind", []string{"-d", "-h", "127.0.0.1"})
 	continuityReady(t, "111")
 	port := continuityPort(t)
 	mountd := startContinuityDaemon(t, "/usr/sbin/mountd", []string{"-N", "-h", "127.0.0.1", "-p", port, path})
@@ -161,13 +174,13 @@ func independentNFS(t *testing.T, dir, root string, content []byte) func() {
 			continuityCommand(t, "/sbin/umount", mount)
 		}
 		if !nfsd.waited {
-			nfsd.stop(t, syscall.SIGUSR1, true)
+			stopContinuityDaemon(t, nfsd, syscall.SIGUSR1)
 		}
 		if !mountd.waited {
-			mountd.stop(t, syscall.SIGTERM, true)
+			stopContinuityDaemon(t, mountd, syscall.SIGTERM)
 		}
 		if !rpc.waited {
-			rpc.stop(t, syscall.SIGTERM, true)
+			stopContinuityDaemon(t, rpc, syscall.SIGTERM)
 		}
 	})
 	checkpoint := 0
