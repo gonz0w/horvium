@@ -3,6 +3,10 @@ name: BSD native validation
 on:
   workflow_dispatch:
     inputs:
+      continuity:
+        description: Run fixture-only independent SMB/NFS continuity
+        type: boolean
+        default: false
       performance:
         description: Run the measured application budgets in separate pinned VMs
         type: boolean
@@ -31,8 +35,12 @@ jobs:
           release: ${{ matrix.release }}
           arch: amd64
           copyback: false
-          prepare: pkg install -y python314
-          run: env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh
+          prepare: pkg install -y python314 ${{ inputs.continuity && 'samba423' || '' }}
+          run: |
+            env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh
+            if [ "${{ inputs.continuity }}" = true ]; then
+              env HORVIUM_NATIVE_VM=1 HORVIUM_CONTINUITY_VM=1 sh tools/bsd-continuity.sh
+            fi
 
   freebsd:
     name: freebsd-foundation-smoke
