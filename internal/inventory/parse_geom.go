@@ -4,6 +4,7 @@ package inventory
 import (
 	"bytes"
 	"encoding/xml"
+	"fmt"
 	"io"
 	"strings"
 )
@@ -188,7 +189,13 @@ func identifiers(n *node, source string, limits Limits) ([]Identifier, error) {
 	return result, nil
 }
 
-func ParseGEOM(data []byte, limits Limits) (GEOM, error) {
+func ParseGEOM(data []byte, limits Limits) (result GEOM, parseError error) {
+	stage := "xml"
+	defer func() {
+		if parseError != nil {
+			parseError = fmt.Errorf("%w: GEOM %s", parseError, stage)
+		}
+	}()
 	root, err := xmlTree(data, limits)
 	if err != nil {
 		return GEOM{}, err
@@ -209,33 +216,41 @@ func ParseGEOM(data []byte, limits Limits) (GEOM, error) {
 		return nil
 	}
 	for _, c := range root.childrenNamed("class") {
+		stage = "class-id"
 		if err := register(c.id); err != nil {
 			return GEOM{}, err
 		}
+		stage = "class-name"
 		class, err := c.scalar("name", limits)
 		if err != nil {
 			return GEOM{}, err
 		}
 		graph.Classes = append(graph.Classes, Class{ID: c.id, Name: class})
 		for _, g := range c.childrenNamed("geom") {
+			stage = "geom-id"
 			if err := register(g.id); err != nil {
 				return GEOM{}, err
 			}
+			stage = "geom-class"
 			if err := parentRef(g, "class", c.id); err != nil {
 				return GEOM{}, err
 			}
+			stage = "geom-name"
 			name, err := g.scalar("name", limits)
 			if err != nil {
 				return GEOM{}, err
 			}
 			geom := Geom{ID: g.id, ClassID: c.id, Name: name, Consumers: []Consumer{}}
 			for _, consumer := range g.childrenNamed("consumer") {
+				stage = "consumer-id"
 				if err := register(consumer.id); err != nil {
 					return GEOM{}, err
 				}
+				stage = "consumer-geom"
 				if err := parentRef(consumer, "geom", g.id); err != nil {
 					return GEOM{}, err
 				}
+				stage = "consumer-provider"
 				parent, err := consumer.one("provider", false)
 				if err != nil {
 					return GEOM{}, err
@@ -247,37 +262,46 @@ func ParseGEOM(data []byte, limits Limits) (GEOM, error) {
 				geom.Consumers = append(geom.Consumers, Consumer{ID: consumer.id, ProviderID: ref})
 			}
 			graph.Geoms = append(graph.Geoms, geom)
+			stage = "geom-identifiers"
 			geomIDs, err := identifiers(g, "geom", limits)
 			if err != nil {
 				return GEOM{}, err
 			}
 			for _, p := range g.childrenNamed("provider") {
+				stage = "provider-id"
 				if err := register(p.id); err != nil {
 					return GEOM{}, err
 				}
+				stage = "provider-geom"
 				if err := parentRef(p, "geom", g.id); err != nil {
 					return GEOM{}, err
 				}
+				stage = "provider-name"
 				name, err := p.scalar("name", limits)
 				if err != nil {
 					return GEOM{}, err
 				}
+				stage = "provider-mediasize"
 				media, err := p.scalar("mediasize", limits)
 				if err != nil {
 					return GEOM{}, err
 				}
+				stage = "provider-sectorsize"
 				sector, err := p.scalar("sectorsize", limits)
 				if err != nil {
 					return GEOM{}, err
 				}
+				stage = "provider-mediasize-value"
 				mediaSize, err := number(media)
 				if err != nil {
 					return GEOM{}, err
 				}
+				stage = "provider-sectorsize-value"
 				sectorSize, err := number(sector)
 				if err != nil || sectorSize == 0 {
 					return GEOM{}, ErrMalformed
 				}
+				stage = "provider-identifiers"
 				providerIDs, err := identifiers(p, "provider", limits)
 				if err != nil {
 					return GEOM{}, err
@@ -302,6 +326,7 @@ func ParseGEOM(data []byte, limits Limits) (GEOM, error) {
 	}
 	for _, g := range graph.Geoms {
 		for _, c := range g.Consumers {
+			stage = "consumer-target"
 			if c.ProviderID != "" && !providers[c.ProviderID] {
 				return GEOM{}, ErrMalformed
 			}

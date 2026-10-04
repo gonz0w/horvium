@@ -3,6 +3,8 @@ package inventory
 
 import (
 	"errors"
+	"fmt"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -171,4 +173,42 @@ func FuzzGEOM(f *testing.F) {
 			t.Fatal("partial graph on failure")
 		}
 	})
+}
+
+func datasetFixture(count int) []byte {
+	var data strings.Builder
+	for i := 0; i < count; i++ {
+		fmt.Fprintf(&data, "tank/data%d\t%d\t1\t10240\t512\n", i, uint64(9007199254740993)+uint64(i))
+	}
+	return []byte(data.String())
+}
+
+func TestLargeDatasetProjection(t *testing.T) {
+	// M1-SCALE-001 parser portion: no small-host dataset-count assumption.
+	input := datasetFixture(10000)
+	items, err := ParseDatasets(input, DefaultLimits())
+	if err != nil || len(items) != 10000 || items[9999].GUID != strconv.FormatUint(9007199254740993+9999, 10) {
+		t.Fatalf("large inventory lost rows/precision: %v", err)
+	}
+	limits := DefaultLimits()
+	limits.MaxRecords = 9999
+	if rows, err := ParseDatasets(input, limits); !errors.Is(err, ErrLimit) || len(rows) != 0 {
+		t.Fatal("large inventory silently truncated at record budget")
+	}
+}
+
+func BenchmarkDatasetProjection(b *testing.B) {
+	for _, count := range []int{100, 10000} {
+		b.Run(strconv.Itoa(count), func(b *testing.B) {
+			input := datasetFixture(count)
+			b.ReportAllocs()
+			b.SetBytes(int64(len(input)))
+			b.ResetTimer()
+			for b.Loop() {
+				if _, err := ParseDatasets(input, DefaultLimits()); err != nil {
+					b.Fatal(err)
+				}
+			}
+		})
+	}
 }

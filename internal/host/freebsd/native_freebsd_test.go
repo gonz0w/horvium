@@ -107,6 +107,13 @@ func TestNativeDiscovery(t *testing.T) {
 	}
 	observed := source.Collect(ctx)
 	if !observed.Complete() {
+		if observed.GEOM.Status != inventory.OK {
+			out, err := readNative(ctx, geom, inventory.DefaultLimits().MaxBytes)
+			if err == nil {
+				_, err = inventory.ParseGEOM(out.data, inventory.DefaultLimits())
+			}
+			t.Logf("GEOM shape diagnostic (values withheld): %v", err)
+		}
 		t.Fatalf("native collection incomplete (inventory withheld): host=%s/%v geom=%s/%v pools=%s/%v datasets=%s/%v", observed.Host.Status, observed.Host.Problems, observed.GEOM.Status, observed.GEOM.Problems, observed.Pools.Status, observed.Pools.Problems, observed.Datasets.Status, observed.Datasets.Problems)
 	}
 	if observed.Host.Data.PhysicalMemory == nil || *observed.Host.Data.PhysicalMemory == 0 {
