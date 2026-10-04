@@ -55,7 +55,7 @@ func headers(w http.ResponseWriter) {
 	w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'")
 	w.Header().Set("X-Content-Type-Options", "nosniff")
 	w.Header().Set("X-Frame-Options", "DENY")
-	w.Header().Set("Referrer-Policy", "no-referrer")
+	w.Header().Set("Referrer-Policy", "same-origin")
 }
 func deny(w http.ResponseWriter, status int) { http.Error(w, http.StatusText(status), status) }
 func (g *Gate) policy(w http.ResponseWriter, r *http.Request) bool {
@@ -200,68 +200,79 @@ func jsonReply(w http.ResponseWriter, v any) {
 
 // Challenge is the bounded pre-authentication exchange; its ID is carried only
 // in an HttpOnly cookie and the independent CSRF value in the response body.
-func (g *Gate) Challenge(w http.ResponseWriter, r *http.Request) {
+func (g *Gate) BeginLogin(w http.ResponseWriter, r *http.Request) (Challenge, bool) {
 	if !g.policy(w, r) {
-		return
+		return Challenge{}, false
 	}
 	if r.Method != "GET" || r.URL.RawQuery != "" {
 		deny(w, 405)
-		return
+		return Challenge{}, false
 	}
 	source, e := remoteSource(r)
 	if e != nil {
 		authError(w, e)
-		return
+		return Challenge{}, false
 	}
 	c, e := g.auth.Challenge(source)
 	if e != nil {
 		authError(w, e)
-		return
+		return Challenge{}, false
 	}
 	cookie(w, ChallengeCookie, c.ID, false)
-	jsonReply(w, c)
+	return c, true
 }
-func (g *Gate) Login(w http.ResponseWriter, r *http.Request) {
+func (g *Gate) ExchangeLogin(w http.ResponseWriter, r *http.Request) (Session, bool) {
 	if !g.policy(w, r) {
-		return
+		return Session{}, false
 	}
 	if r.URL.RawQuery != "" {
 		deny(w, 400)
-		return
+		return Session{}, false
 	}
 	if !form(w, r) {
-		return
+		return Session{}, false
 	}
 	token, tok := formValue(r, "token")
 	csrf, csok := formValue(r, "csrf")
 	id, e := cookieValue(r, ChallengeCookie)
 	if !tok || !csok || len(r.PostForm) != 2 || e != nil {
 		deny(w, 403)
-		return
+		return Session{}, false
 	}
 	source, e := remoteSource(r)
 	if e != nil {
 		authError(w, e)
-		return
+		return Session{}, false
 	}
 	s, e := g.auth.Login(source, id, csrf, token)
 	cookie(w, ChallengeCookie, "", true)
 	if e != nil {
 		authError(w, e)
-		return
+		return Session{}, false
 	}
 	cookie(w, SessionCookie, s.ID, false)
-	jsonReply(w, s)
+	return s, true
 }
-func (g *Gate) authorize(w http.ResponseWriter, r *http.Request) (Session, bool) {
+func (g *Gate) Challenge(w http.ResponseWriter, r *http.Request) {
+	if c, ok := g.BeginLogin(w, r); ok {
+		jsonReply(w, c)
+	}
+}
+func (g *Gate) Login(w http.ResponseWriter, r *http.Request) {
+	if s, ok := g.ExchangeLogin(w, r); ok {
+		jsonReply(w, s)
+	}
+}
+
+func (g *Gate) authorize(w http.ResponseWriter, r *http.Request, browser bool) (Session, bool) {
 	id, e := cookieValue(r, SessionCookie)
 	if e != nil {
-		authError(w, e)
+		g.sessionError(w, r, e, browser)
 		return Session{}, false
 	}
 	s, e := g.auth.Session(id, false)
 	if e != nil {
-		authError(w, e)
+		g.sessionError(w, r, e, browser)
 		return Session{}, false
 	}
 	if r.Method == "POST" {
@@ -276,36 +287,69 @@ func (g *Gate) authorize(w http.ResponseWriter, r *http.Request) (Session, bool)
 	}
 	s, e = g.auth.Session(id, true)
 	if e != nil {
-		authError(w, e)
+		g.sessionError(w, r, e, browser)
 		return Session{}, false
 	}
 	return s, true
 }
-func (g *Gate) Logout(w http.ResponseWriter, r *http.Request) {
+func (g *Gate) EndSession(w http.ResponseWriter, r *http.Request) bool {
 	if !g.policy(w, r) {
-		return
+		return false
 	}
 	if r.Method != "POST" {
 		deny(w, 405)
-		return
+		return false
 	}
 	if r.URL.RawQuery != "" {
 		deny(w, 400)
-		return
+		return false
 	}
-	s, ok := g.authorize(w, r)
+	s, ok := g.authorize(w, r, false)
 	if !ok {
-		return
+		return false
 	}
 	if len(r.PostForm) != 1 {
 		deny(w, 400)
-		return
+		return false
 	}
 	g.auth.Logout(s.ID)
 	cookie(w, SessionCookie, "", true)
-	w.WriteHeader(204)
+	return true
 }
-func (g *Gate) Protect(next http.Handler) http.Handler {
+func (g *Gate) Logout(w http.ResponseWriter, r *http.Request) {
+	if g.EndSession(w, r) {
+		w.WriteHeader(204)
+	}
+}
+func (g *Gate) sessionError(w http.ResponseWriter, r *http.Request, e error, browser bool) {
+	if browser && errors.Is(e, ErrUnauthorized) {
+		if r.Header.Get("HX-Request") == "true" {
+			w.Header().Set("HX-Redirect", "/login")
+			deny(w, 401)
+		} else {
+			http.Redirect(w, r, "/login", 303)
+		}
+		return
+	}
+	authError(w, e)
+}
+
+// Public allows only explicitly registered login/assets, never inventory.
+func (g *Gate) Public(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if !g.policy(w, r) {
+			return
+		}
+		if r.Method != "GET" && r.Method != "HEAD" {
+			deny(w, 405)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+func (g *Gate) ProtectPage(next http.Handler) http.Handler { return g.protect(next, true) }
+func (g *Gate) Protect(next http.Handler) http.Handler     { return g.protect(next, false) }
+func (g *Gate) protect(next http.Handler, browser bool) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if !g.policy(w, r) {
 			return
@@ -314,7 +358,7 @@ func (g *Gate) Protect(next http.Handler) http.Handler {
 			deny(w, 405)
 			return
 		}
-		s, ok := g.authorize(w, r)
+		s, ok := g.authorize(w, r, browser)
 		if !ok {
 			return
 		}

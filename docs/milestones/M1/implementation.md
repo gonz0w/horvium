@@ -105,7 +105,8 @@ HTTP listener, operator CLI or installable service.
 
 ## Slice 4: administration security primitives
 
-Under review in [PR 7](https://github.com/gonz0w/horvium/pull/7): strict internal
+Accepted by maintainer merge of [PR 7](https://github.com/gonz0w/horvium/pull/7),
+source `b71b9915653f9b75785ca350991d0730d5ddb4a0`, on 2026-10-04: strict internal
 version-1 configuration, FreeBSD root-owned config and
 service-owned digest files, explicit local token setup/rotation, bounded volatile
 challenges/sessions/throttles, and shared HTTP authentication/CSRF/Host/Origin
@@ -115,9 +116,20 @@ releases and are tracked in
 [security evidence](../../testing/M1/security.md); browser and full runtime
 acceptance remain pending.
 
+## Slice 5: authenticated console, CLI and foreground assembly
+
+Prepared for review: semantic HTML5/CSS/local HTMX views and a protected-input
+CLI share the existing authenticated cache queries. Foreground commands compose
+the root helper and exact-UID management runtime without service installation.
+Filtering, sorting, pagination and selection preserve an exact generation;
+unavailable/partial/stale/expired outcomes remain explicit. No storage mutation,
+file-service configuration or backup capability is introduced. See
+[console evidence](../../testing/M1/console.md) and the
+[development runbook](../../operations/M1-development.md).
+
 ## Remaining slices and acceptance
 
-1. Authenticated CLI and accessible HTML5/CSS/HTMX console, browser evidence.
+1. Complete console/CLI native and required-browser evidence, accessibility acceptance.
 2. Independent service/restart tests and measured application budgets.
 
 All PRD requirements remain subject to the full [Test Design](TDD.md). Native

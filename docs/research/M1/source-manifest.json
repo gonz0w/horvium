@@ -288,5 +288,18 @@
     "evidence": "docs/testing/M1/security.md",
     "initial_run_id": 37206566944,
     "initial_source_revision": "ed2ac8aa6e8bb688f480c20558cc47c1b3ae238e"
+  },
+  "htmx_console": {
+    "version": "2.0.11",
+    "repository": "bigskysoftware/htmx",
+    "revision": "fa978b24e75fb03c137bf2cdae4fef0e711cf8a1",
+    "upstream_path": "dist/htmx.min.js",
+    "upstream_sha256": "d6fdc75f204e6bdefa99b69bf1e6d4ac69b8a364f77929f45c13476b4000f717",
+    "vendored_path": "internal/console/assets/htmx.min.js",
+    "vendored_sha256": "7f14135fe8ee3ed5f1a85fea21ba4dfba8236d697c4f95ab575d1c9091bb06ca",
+    "modification": "one terminal newline",
+    "license": "0BSD",
+    "license_path": "third_party/htmx-LICENSE.txt",
+    "license_sha256": "d3d2456f76414f2456104660ebd65aff1c04cd7966b942bdabd63f3cdb316a38"
   }
 }

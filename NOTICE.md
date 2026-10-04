@@ -20,3 +20,17 @@ Horvium runtime components.
 the full upstream license is retained in [third_party/xsys-LICENSE.txt](third_party/xsys-LICENSE.txt).
 Module/archive hashes are verified through Go's checksum database and recorded
 in [go.sum](go.sum). It introduces no transitive modules or product cgo requirement.
+
+## Local HTMX asset
+
+HTMX 2.0.11, upstream `bigskysoftware/htmx` revision
+`fa978b24e75fb03c137bf2cdae4fef0e711cf8a1`, is embedded in the console.
+License: Zero-Clause BSD, retained in
+[third_party/htmx-LICENSE.txt](third_party/htmx-LICENSE.txt).
+The upstream `dist/htmx.min.js` SHA-256 is
+`d6fdc75f204e6bdefa99b69bf1e6d4ac69b8a364f77929f45c13476b4000f717`.
+The vendored file adds one terminal newline; its SHA-256 is
+`7f14135fe8ee3ed5f1a85fea21ba4dfba8236d697c4f95ab575d1c9091bb06ca`.
+License SHA-256: `d3d2456f76414f2456104660ebd65aff1c04cd7966b942bdabd63f3cdb316a38`.
+See the [source manifest](docs/research/M1/source-manifest.json). No runtime CDN,
+Node dependency, UI framework or transitive JavaScript modules are introduced.
