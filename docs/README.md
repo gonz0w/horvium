@@ -47,3 +47,5 @@
 - [M1 native probe process cleanup evidence](testing/M1/probe-cleanup.md).
 
 - [M1 helper crash-containment procedure/evidence](testing/M1/crash-containment.md).
+
+- [M1 native reader resources and integrated crash procedure](testing/M1/native-resources.md)

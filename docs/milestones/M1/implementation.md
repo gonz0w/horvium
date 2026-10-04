@@ -191,6 +191,9 @@ actual owner-death and guarded bounds cases passed in run 37227688891. See
 [crash-containment evidence](../../testing/M1/crash-containment.md). Integrated
 built-helper death during a captured native command remains to be qualified.
 
+Native resource and integrated built-helper crash procedures are implemented for
+qualification; execution remains pending. See [procedure](../../testing/M1/native-resources.md).
+
 1. Complete console/CLI native and required-browser evidence, accessibility acceptance.
 2. Qualify native-reader allocation alongside the measured synthetic management budgets.
 3. Extend independent SFTP continuity evidence to SMB/NFS; complete native-probe

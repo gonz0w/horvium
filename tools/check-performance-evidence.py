@@ -19,7 +19,26 @@ def validate(log):
         rows[count] = row
     if set(rows) != {100, 10000}:
         raise ValueError('both measured fixtures must execute')
-    for count, row in rows.items():
+    native = {}
+    for line in log.splitlines():
+        marker = 'NATIVE_READER_RESULT '
+        if marker not in line:
+            continue
+        row = json.loads(line.split(marker, 1)[1])
+        mode = row.get('mode')
+        if mode not in ('native-small', 'projection-10000') or mode in native:
+            raise ValueError('missing or duplicate native measurements')
+        native[mode] = row
+    if set(native) != {'native-small', 'projection-10000'}:
+        raise ValueError('both native reader procedures must execute')
+    small = native['native-small']
+    large = native['projection-10000']
+    if small.get('owned_datasets') != 100 or small.get('datasets', 0) < 100:
+        raise ValueError('native owned fixture was not independently counted')
+    if large.get('datasets') != 10000 or large.get('owned_datasets') != 0:
+        raise ValueError('projection fixture is misrepresented')
+    measured = list(rows.items()) + [(100, small), (10000, large)]
+    for count, row in measured:
         expected = {'clients': 10, 'requests': 1000, 'replacement_requests': 1000,
                     'replacements': 3, 'warmup_seconds': 60,
                     'idle_seconds': 300 if count == 100 else 0}
@@ -40,6 +59,9 @@ def validate(log):
     limits = 'PERFORMANCE_LIMITS accepted_model_records=100000 record_exhaustion=pass byte_exhaustion=pass recovery=pass'
     if limits not in log or '--- PASS: TestNativePerformanceBudgets ' not in log:
         raise ValueError('limit recovery or native suite did not pass')
+    crash = 'NATIVE_READER_CRASH captured_native_command=pass subtree_exit=pass stale_retention=pass recovery=pass boot_state=unchanged'
+    if crash not in log or '--- PASS: TestNativeReaderResourceBudgets ' not in log:
+        raise ValueError('built-helper native crash or reader suite did not pass')
     return rows
 
 
@@ -48,7 +70,7 @@ def main():
     parser.add_argument('log', type=Path)
     args = parser.parse_args()
     validate(args.log.read_text())
-    print('PASS: both measured fixtures and limit recovery executed within budgets')
+    print('PASS: synthetic and native reader measurements, crash and limit recovery passed')
 
 
 if __name__ == '__main__':
