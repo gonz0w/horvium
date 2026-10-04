@@ -58,8 +58,11 @@ func execute(ctx context.Context, path string, args []string, limit int) (readOu
 	cmd.Stdout = sink{capture: output, keep: true}
 	cmd.Stderr = sink{capture: output}
 	cmd.WaitDelay = 250 * time.Millisecond
-	configureProcess(cmd)
+	finish := configureProcess(cmd)
 	err := cmd.Run()
+	if cleanupErr := finish(); err == nil {
+		err = cleanupErr
+	}
 	result := readOutput{consumed: output.used}
 	if output.exceeded {
 		return result, ErrLimit

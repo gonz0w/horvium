@@ -981,5 +981,122 @@
         ]
       }
     ]
+  },
+  "product_probe_cleanup": {
+    "date": "2026-10-04",
+    "source_revision": "80f6aa348d00f2b3de14cbeddfe6c0d0d8007bf0",
+    "workflow_run": "https://github.com/gonz0w/horvium/actions/runs/37225094799",
+    "test_ids": [
+      "M1-FAIL-001",
+      "M1-SCALE-001",
+      "M1-RESTART-001"
+    ],
+    "vm": {
+      "action_source": "a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff",
+      "builder": "2.2.8",
+      "memory_mib": 6144,
+      "runner": "ubuntu-24.04 hosted amd64",
+      "cpu_image_pin": "default native fixtures; not performance qualification"
+    },
+    "procedure": "actual executor with synchronized test-owned process trees and a separate unaffected group; Source.Collect cancellation; all existing built/helper/native/SFTP fixtures",
+    "cases": [
+      "deadline",
+      "cancel",
+      "collection-cancel",
+      "stdout-limit",
+      "stderr-limit",
+      "parent-exit",
+      "parent-failure",
+      "closed-pipes"
+    ],
+    "limits": [
+      "requires helper alive; abrupt helper SIGKILL cannot execute Go cleanup",
+      "only descendants remaining in the isolated group; no deliberately escaped-group qualification",
+      "terminated orphan zombies awaiting init are distinct from live processes; no host reaper timing claim",
+      "deterministic test binary stalls rather than stalled ZFS commands",
+      "optional performance workflow skipped; no new native-reader resource/hardware qualification",
+      "full HTTP/helper abuse, SMB/NFS continuity and browser/manual accessibility gates remain open"
+    ],
+    "files": [
+      {
+        "path": "internal/host/freebsd/execute.go",
+        "sha256": "2b78484a8dfc2e37416388cf603f4113382d2d340bf91f4c40beadbc51e45735"
+      },
+      {
+        "path": "internal/host/freebsd/process_unix.go",
+        "sha256": "f07d3fd36304f9c20812a83bc58210293a8c1b0e8c49655972f37896136bb1a7"
+      },
+      {
+        "path": "internal/host/freebsd/process_other.go",
+        "sha256": "9303e91b0cf4a551c952af0a147e3644fd09d05307ef45d96d2408e3601af774"
+      },
+      {
+        "path": "internal/host/freebsd/process_unix_test.go",
+        "sha256": "6c688c12a0881974555623071c1c8e5f92fbf2977413bec2f2abd001965c7b28"
+      },
+      {
+        "path": "internal/host/freebsd/execute_test.go",
+        "sha256": "3762eea9fd0ed7beccd748596e480c885d6a17ec4279bb71a887a4183c6aab4e"
+      },
+      {
+        "path": "internal/host/freebsd/source.go",
+        "sha256": "fecbf11d062d711210c84c7e1df286656be5ce7a6c4d9b3a26025290e2581939"
+      },
+      {
+        "path": "internal/host/freebsd/source_test.go",
+        "sha256": "594b097ecc8e8e6c90e750f0112a56bde74b2604105fd2ac3430b38f757315bf"
+      },
+      {
+        "path": "internal/host/freebsd/native_freebsd.go",
+        "sha256": "7544c6f271d2975e47d65cbc5c9ccf0dce0af471b992a6458e611afdb8636efc"
+      },
+      {
+        "path": "internal/host/freebsd/native_freebsd_test.go",
+        "sha256": "6902e2ed90e148606e171633135f34c11932fdb74a05405774faca6e64a1fb62"
+      },
+      {
+        "path": "tools/bsd-native-discovery.sh",
+        "sha256": "928e17fa2b1be9f272c9b09d6ead00710811fa956bd3d2c25f0277dbd3ff72ff"
+      },
+      {
+        "path": ".github/workflows/bsd-smoke.yml",
+        "sha256": "919c8498cf4959376a4ce3f19b4ed53e6f87cbd8595e7ba16dd0f6089256f991"
+      },
+      {
+        "path": "go.mod",
+        "sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+      }
+    ],
+    "status": "native tests pass; slice under review; M1 unaccepted",
+    "guests": [
+      {
+        "architecture": "amd64",
+        "installed_kernel": "15.1-RELEASE-p3",
+        "running_kernel": "15.1-RELEASE-p3",
+        "userland": "15.1-RELEASE-p3",
+        "go": "1.27.1",
+        "zfs_userland": "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+        "zfs_kernel": "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0",
+        "status": "pass",
+        "test": "TestProbeProcessGroupCleanup",
+        "all_eight_subcases": "pass"
+      },
+      {
+        "architecture": "amd64",
+        "installed_kernel": "14.5-RELEASE",
+        "running_kernel": "14.5-RELEASE",
+        "userland": "14.5-RELEASE",
+        "go": "1.27.1",
+        "zfs_userland": "zfs-2.2.9-FreeBSD_g079ba86d7",
+        "zfs_kernel": "zfs-kmod-2.2.9-FreeBSD_g079ba86d7",
+        "status": "pass",
+        "test": "TestProbeProcessGroupCleanup",
+        "all_eight_subcases": "pass"
+      }
+    ]
   }
 }

@@ -43,3 +43,5 @@
 - [M1 combined-process performance qualification](testing/M1/performance.md).
 
 - [M1 helper denial events and transport abuse evidence](testing/M1/helper-events.md).
+
+- [M1 native probe process cleanup evidence](testing/M1/probe-cleanup.md).
