@@ -158,12 +158,18 @@ func independentNFS(t *testing.T, dir, root string, content []byte) func() {
 		t.Fatal("NFS fixture exports")
 	}
 	rpc := startContinuityDaemon(t, "/usr/sbin/rpcbind", []string{"-d", "-h", "127.0.0.1"})
+	t.Log("NFS_PHASE rpcbind_start")
 	continuityReady(t, "111")
+	t.Log("NFS_PHASE rpcbind_ready")
 	port := continuityPort(t)
 	mountd := startContinuityDaemon(t, "/usr/sbin/mountd", []string{"-N", "-h", "127.0.0.1", "-p", port, path})
+	t.Log("NFS_PHASE mountd_start")
 	continuityReady(t, port)
+	t.Log("NFS_PHASE mountd_ready")
 	nfsd := startContinuityDaemon(t, "/usr/sbin/nfsd", []string{"-N", "-t", "-h", "127.0.0.1", "-P", filepath.Join(dir, "nfsd.pid"), "--minthreads", "2", "--maxthreads", "2"})
+	t.Log("NFS_PHASE nfsd_start")
 	continuityReady(t, "2049")
+	t.Log("NFS_PHASE nfsd_ready")
 	mount := filepath.Join(dir, "client")
 	if os.Mkdir(mount, 0700) != nil {
 		t.Fatal("NFS client mountpoint")
