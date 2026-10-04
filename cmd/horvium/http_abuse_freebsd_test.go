@@ -71,7 +71,8 @@ func TestNativeBuiltHTTPAbuseAndRecovery(t *testing.T) {
 	nativeWait(t, func() bool { i, e := os.Stat(c.HelperSocket); return e == nil && i.Mode().Perm() == 0660 })
 	management := startNativeProcessWithStderr(t, binary, []string{"serve", "-config", path}, c.ManagementUID, c.SocketGID, httpLogs)
 	session := newPerformanceSession(t, c, token)
-	nativeWait(t, func() bool { o := session.overview(t); return o.Complete && o.Generation != "" })
+	count := len(strings.Fields(string(readerFixtureCommand(t, "/sbin/zfs", "list", "-H", "-t", "filesystem", "-o", "name"))))
+	session.ready(t, count, "")
 	u, _ := url.Parse(session.base)
 	credential := ""
 	for _, cookie := range session.http.Jar.Cookies(u) {
