@@ -50,6 +50,37 @@ func continuityReady(t *testing.T, port string) {
 		return true
 	})
 }
+
+// Samba may signal its process group during shutdown. Isolate each owned
+// fixture daemon from the SSH runner/test controller before it executes.
+func startContinuityDaemon(t *testing.T, binary string, args []string) *nativeProcess {
+	t.Helper()
+	cmd := exec.Command(binary, args...)
+	cmd.Env = []string{"LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin"}
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+	p := &nativeProcess{cmd: cmd, done: make(chan error, 1)}
+	if cmd.Start() != nil {
+		t.Fatal("isolated fixture daemon start")
+	}
+	go func() { p.done <- cmd.Wait() }()
+	t.Cleanup(func() {
+		if !p.waited {
+			_ = syscall.Kill(-cmd.Process.Pid, syscall.SIGKILL)
+			select {
+			case <-p.done:
+			case <-time.After(5 * time.Second):
+				t.Error("isolated fixture daemon cleanup timed out")
+			}
+			p.waited = true
+		}
+	})
+	group, err := syscall.Getpgid(cmd.Process.Pid)
+	if err != nil || group != cmd.Process.Pid {
+		t.Fatal("fixture daemon is not in its own process group")
+	}
+	return p
+}
+
 func independentSMB(t *testing.T, dir, root string, content []byte) func() {
 	t.Helper()
 	for _, leaf := range []string{"lock", "state", "cache", "private", "pid", "log"} {
@@ -64,7 +95,7 @@ func independentSMB(t *testing.T, dir, root string, content []byte) func() {
 		t.Fatal("SMB fixture config")
 	}
 	continuityCommand(t, "/usr/local/bin/testparm", "-s", path)
-	daemon := startNativeProcess(t, "/usr/local/sbin/smbd", []string{"--foreground", "--no-process-group", "--configfile=" + path}, 0, 0)
+	daemon := startContinuityDaemon(t, "/usr/local/sbin/smbd", []string{"--foreground", "--no-process-group", "--configfile=" + path})
 	continuityReady(t, port)
 	t.Cleanup(func() {
 		if !daemon.waited {
@@ -113,12 +144,12 @@ func independentNFS(t *testing.T, dir, root string, content []byte) func() {
 	if os.WriteFile(path, exports, 0600) != nil {
 		t.Fatal("NFS fixture exports")
 	}
-	rpc := startNativeProcess(t, "/usr/sbin/rpcbind", []string{"-f", "-h", "127.0.0.1"}, 0, 0)
+	rpc := startContinuityDaemon(t, "/usr/sbin/rpcbind", []string{"-f", "-h", "127.0.0.1"})
 	continuityReady(t, "111")
 	port := continuityPort(t)
-	mountd := startNativeProcess(t, "/usr/sbin/mountd", []string{"-N", "-h", "127.0.0.1", "-p", port, path}, 0, 0)
+	mountd := startContinuityDaemon(t, "/usr/sbin/mountd", []string{"-N", "-h", "127.0.0.1", "-p", port, path})
 	continuityReady(t, port)
-	nfsd := startNativeProcess(t, "/usr/sbin/nfsd", []string{"-N", "-t", "-h", "127.0.0.1", "-P", filepath.Join(dir, "nfsd.pid"), "--minthreads", "2", "--maxthreads", "2"}, 0, 0)
+	nfsd := startContinuityDaemon(t, "/usr/sbin/nfsd", []string{"-N", "-t", "-h", "127.0.0.1", "-P", filepath.Join(dir, "nfsd.pid"), "--minthreads", "2", "--maxthreads", "2"})
 	continuityReady(t, "2049")
 	mount := filepath.Join(dir, "client")
 	if os.Mkdir(mount, 0700) != nil {
