@@ -16,7 +16,8 @@ Cam (`@gonz0w`) is the initial maintainer and CODEOWNERS owner.
 
 - Maintainer merged [helper-denial PR 11](https://github.com/gonz0w/horvium/pull/11),
   source `55d09ad285b41da099ac83c4003d088c2f929daa`, on 2026-10-04.
-  Native probe process cleanup is the next focused slice; see
+  Native probe process cleanup passed both native targets and is under review in
+  [PR 12](https://github.com/gonz0w/horvium/pull/12); see
   [procedure/evidence](../testing/M1/probe-cleanup.md).
 
 - Maintainer merged [runtime lifecycle PR 9](https://github.com/gonz0w/horvium/pull/9),

@@ -169,12 +169,15 @@ assertions in run 37221158595.
 
 ## Slice 9: native probe process cleanup
 
-Implementation and native qualification in progress. The actual executor now
+Under review in [PR 12](https://github.com/gonz0w/horvium/pull/12), functional source
+`80f6aa348d00f2b3de14cbeddfe6c0d0d8007bf0`. The actual executor now
 terminates remaining members of its isolated probe group after parent completion;
 pipe-wait expiry alone previously left descendants active. Synchronized real
 subprocess regressions cover cancellation/deadline/output caps and parent exit,
 with honest failed observations, unaffected unrelated work and healthy recovery.
 See [probe cleanup procedure/evidence](../../testing/M1/probe-cleanup.md).
+Both FreeBSD targets passed all eight synchronized cases and the existing native
+suite in run 37225094799. Abrupt helper death cannot execute this Go cleanup.
 
 ## Remaining slices and acceptance
 

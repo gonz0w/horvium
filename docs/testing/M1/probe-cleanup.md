@@ -59,9 +59,36 @@ env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh
 
 ## Execution status
 
-Native qualification on both selected FreeBSD releases is pending. Record exact
-functional source, run, guest/Go/OpenZFS versions and file hashes after execution;
-cross-compilation and macOS fixture execution do not substitute for it.
+Functional source: `80f6aa348d00f2b3de14cbeddfe6c0d0d8007bf0`, under review in
+[PR 12](https://github.com/gonz0w/horvium/pull/12).
+[Native run 37225094799](https://github.com/gonz0w/horvium/actions/runs/37225094799)
+passed all five executed jobs: product on both releases, foundation smoke and
+historical research on both releases. The optional performance job was
+intentionally skipped; no new performance qualification is claimed.
+
+| Actual guest (kernel/userland) | Architecture / SDK | OpenZFS userland / kernel suffix | Eight-case cleanup result |
+|---|---|---|---|
+| 15.1-RELEASE-p3 | amd64 / Go 1.27.1 | 2.4.2-1-FreeBSD_g6330a45b0 for both | Pass (2.64 s) |
+| 14.5-RELEASE | amd64 / Go 1.27.1 | 2.2.9-FreeBSD_g079ba86d7 for both | Pass (2.67 s) |
+
+`TestProbeProcessGroupCleanup` and every named subcase actually executed and
+passed on each guest. The full suite also passed actual native discovery,
+kernel-authorized helper, dropped-UID administration, CLI/console, foreground
+restart, helper denial events and independent SFTP fixtures. Existing owned
+pool/property/teardown assertions remain unchanged; no storage fixture was added.
+
+Environment: ubuntu-24.04 hosted runner, VM Action
+`a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff`, builder 2.2.8, 6144 MiB guests,
+default native-job CPU/image selection. Image hashes and CPU model were not
+captured in this suite; this is not the separate pinned performance baseline.
+The [source manifest](../../research/M1/source-manifest.json) records the tested
+revision, 13 functional/suite/module hashes and exact observed guest versions.
+The final evidence commit changes documentation only.
+
+Local Go 1.27.1 darwin/arm64 `make check lint test secrets build go-check`,
+full race suite, five bounded fuzz targets, final targeted race and FreeBSD amd64
+test-binary cross-compilation passed. macOS remains an unsupported NAS runtime;
+its subprocess fixtures are component evidence only.
 
 Traceability: M1-FAIL-001, M1-SCALE-001 and the probe portion of M1-RESTART-001.
 Full helper/HTTP abuse review, abrupt-helper-death process policy, independent
