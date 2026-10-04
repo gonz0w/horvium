@@ -61,7 +61,8 @@ a skipped disposable fixture is never native acceptance.
 
 ## Slice 2: kernel-authorized helper transport
 
-Under review in [PR 5](https://github.com/gonz0w/horvium/pull/5).
+Accepted by maintainer merge of [PR 5](https://github.com/gonz0w/horvium/pull/5),
+source `60d73215279fd33a1a2facbb66dd198319d19bc2`, on 2026-10-03.
 `internal/helper` supplies a FreeBSD-only inventory server/client library:
 
 - Actual `LOCAL_PEERCRED` wrapper verifies credential ABI and exact configured
@@ -84,12 +85,27 @@ See [helper evidence](../../testing/M1/helper.md) for native execution status,
 exact versions/source and M1-PRIV/FAIL/NOCHANGE/SCALE/BUILD traceability.
 Installed service/process-restart qualification remains pending.
 
+## Slice 3: collector, bounded cache and shared queries
+
+Implementation under review. One worker collects on startup/interval, deduplicates
+refreshes and publishes owned immutable observations atomically. At most two
+bounded generations preserve latest and last complete context; failures retain
+data and safe error state, including while retrying. Per-section success timestamps,
+90-second freshness, exact generation cursors and reload-required expiry prevent
+mixed or falsely fresh rows. Typed bounded pool/dataset/provider pages and host
+overview use cached data only. Shutdown clears volatile inventory.
+
+Shared validation and bounded deep copying protect ownership/record/string/model
+storage budgets. Local cancellation/race/concurrency/100,000-item cases and native
+unprivileged helper outage/recovery integration are tracked in
+[collector evidence](../../testing/M1/collector.md). These libraries expose no
+HTTP listener, operator CLI or installable service.
+
 ## Remaining slices and acceptance
 
-1. Single collector, two bounded generations, stale/error publication and paging.
-2. Token setup, strict config/session/CSRF/Host/Origin protections and tests.
-3. Authenticated CLI and accessible HTML5/CSS/HTMX console, browser evidence.
-4. Independent service/restart tests and measured application budgets.
+1. Token setup, strict config/session/CSRF/Host/Origin protections and tests.
+2. Authenticated CLI and accessible HTML5/CSS/HTMX console, browser evidence.
+3. Independent service/restart tests and measured application budgets.
 
 All PRD requirements remain subject to the full [Test Design](TDD.md). Native
 reader success is not NAS readiness, commercial qualification or a working UI.
