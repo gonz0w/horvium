@@ -7,7 +7,10 @@ SOURCE = Path(__file__).resolve().parents[2]
 SPEC = importlib.util.spec_from_file_location('property_evidence', SOURCE / 'tools/check-property-evidence.py')
 RESULT = ('PROPERTY_OBSERVATION_RESULT default=pass local=pass inherited=pass '
           'received=pass shadowed=pass no_limit=pass rename=pass name_reuse=pass '
-          'foreign_preservation=pass eligibility_denied=pass teardown=pass')
+          'foreign_preservation=pass eligibility_denied=pass teardown=pass '
+          'identity_binding=pass complete_filesystems=pass snapshot_owner=pass '
+          'bookmark_owner=pass replicated_guid=pass snapshot_rename=pass '
+          'snapshot_reuse=pass volume_denial=pass stable_enumeration=pass')
 PASS = '--- PASS: TestNativePropertyObservations (1.0s)\n'
 
 class PropertyEvidenceTests(unittest.TestCase):
@@ -29,6 +32,7 @@ class PropertyEvidenceTests(unittest.TestCase):
     def test_duplicate_missing_unknown_or_failed_cases_denied(self):
         for record in [RESULT + '\n' + RESULT,
                        RESULT.replace('teardown=pass', ''),
+                       RESULT.replace('identity_binding=pass', ''),
                        RESULT.replace('teardown=pass', 'teardown=fail'),
                        RESULT + ' override=pass', RESULT + ' teardown=pass']:
             with self.subTest(record=record), self.assertRaises(ValueError):

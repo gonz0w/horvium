@@ -1,7 +1,8 @@
 # M2 native property projection
 
 Date: 2026-10-04. Status: native property projection passed on both pinned release fixtures;
-implementation offered for maintainer review.
+implementation accepted in [PR 22](https://github.com/gonz0w/horvium/pull/22),
+merged source `3e40d7d278bc95809907d4813a42b142a3cf8c53`.
 [Approved design](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [planning model](planning.md), [slice sequence](../../milestones/M2/implementation.md).
 The model subset was accepted by maintainer merge of
@@ -27,7 +28,9 @@ property read. Dropping all four rows of one filesystem can be syntactically
 valid; a parser is not a complete-inventory detector. The filesystem filter also
 omits volumes/snapshots. The future impact collector must account for every
 descendant type and deny unsupported or unrepresented impact; these rows cannot
-prove absence of a foreign volume or qualify a parent quota change.
+prove absence of a foreign volume or qualify a parent quota change. The next
+[identity binding subset](identities.md) independently checks full type coverage
+and exact filesystem agreement; it still cannot prove native eligibility.
 
 Each filesystem must have exactly one row for each selected property. Resolve
 parent and inherited source names to GUIDs within the same projection, regardless
@@ -130,3 +133,8 @@ pinned M2 fixture, before qualification. No failed native assertion was hidden;
 the complete recorded property suites passed without native behavior repairs.
 Local repository/vet/unit/race/seven-fuzz gates and FreeBSD amd64 cross-build
 passed. Neither their success nor these native parser results enables writes.
+
+The current native evidence gate additionally requires the nine identity assertions
+listed in [identity qualification](identities.md). The 11-case property manifest
+above preserves the original tested source and results; it is not retroactively
+qualified by the later checker or suite.

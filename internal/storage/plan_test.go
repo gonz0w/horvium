@@ -17,6 +17,7 @@ func fixture() (Policy, Observation, Intent) {
 	root := Filesystem{GUID: "101", Name: "tank", Properties: props}
 	child := Filesystem{GUID: "102", Name: "tank/data", ParentGUID: "101", Properties: Properties{Quota: Value{"none", Default, "", ""}, RefQuota: Value{"none", Default, "", ""}, Compression: Value{"lz4", Inherited, "101", ""}}}
 	obs := Observation{Complete: true, PoolGUID: "100", PoolName: "tank", Eligible: true, Filesystems: []Filesystem{root, child}}
+	obs.Identities = []DatasetIdentity{{GUID: "101", Name: "tank", Type: FilesystemType}, {GUID: "102", Name: "tank/data", Type: FilesystemType}}
 	policy := Policy{Revision: 1, PoolGUID: "100", PoolName: "tank", Scopes: []Scope{{GUID: "101", Name: "tank", Properties: []Property{Quota, RefQuota, Compression}}, {GUID: "102", Name: "tank/data", ParentGUID: "101", Properties: []Property{Quota, Compression}}}}
 	return policy, obs, Intent{FilesystemGUID: "101", Property: Quota, Value: "1099511627776"}
 }
@@ -79,6 +80,7 @@ func TestCompressionImpactRespectsOverrides(t *testing.T) {
 	grandchild.ParentGUID = "102"
 	grandchild.Properties.Compression = Value{"off", Inherited, "102", ""}
 	o.Filesystems = append(o.Filesystems, grandchild)
+	o.Identities = append(o.Identities, DatasetIdentity{GUID: grandchild.GUID, Name: grandchild.Name, Type: FilesystemType})
 	plan, err := Build(instant, "session-a", p, o, i)
 	if err != nil {
 		t.Fatal(err)
@@ -148,7 +150,12 @@ func TestPlansRequireFreshReviewOnDrift(t *testing.T) {
 	}{
 		{"policy revision", func(p *Policy, _ *Observation) { p.Revision++ }},
 		{"scope revocation", func(p *Policy, _ *Observation) { p.Scopes = p.Scopes[:1] }},
-		{"renamed pool", func(_ *Policy, o *Observation) { o.PoolName = "renamed" }},
+		{"renamed pool", func(_ *Policy, o *Observation) {
+			for n := range o.Identities {
+				o.Identities[n].Name = strings.Replace(o.Identities[n].Name, "tank", "renamed", 1)
+			}
+			o.PoolName = "renamed"
+		}},
 		{"reused name", func(_ *Policy, o *Observation) { o.Filesystems[0].GUID = "999" }},
 		{"renamed dataset", func(_ *Policy, o *Observation) { o.Filesystems[1].Name = "tank/new" }},
 		{"changed value", func(_ *Policy, o *Observation) { o.Filesystems[0].Properties.Quota = Value{"9", Local, "101", ""} }},
@@ -285,6 +292,7 @@ func TestObservationAndPlanBudgets(t *testing.T) {
 		f.GUID = strconv.FormatUint(uint64(1000+n), 10)
 		f.Name = "tank/child" + f.GUID
 		o.Filesystems = append(o.Filesystems, f)
+		o.Identities = append(o.Identities, DatasetIdentity{GUID: f.GUID, Name: f.Name, Type: FilesystemType})
 	}
 	if _, err := Build(instant, "session-a", p, o, i); !errors.Is(err, ErrLimit) {
 		t.Fatal(err)
@@ -299,6 +307,9 @@ func TestNewBaselinePreservesGUIDAfterRename(t *testing.T) {
 	}
 	for n := range o.Filesystems {
 		o.Filesystems[n].Name = strings.Replace(o.Filesystems[n].Name, "tank", "renamed", 1)
+	}
+	for n := range o.Identities {
+		o.Identities[n].Name = strings.Replace(o.Identities[n].Name, "tank", "renamed", 1)
 	}
 	o.PoolName = "renamed"
 	if _, err := Build(instant, "session-a", p, o, i); !errors.Is(err, ErrDenied) {
@@ -331,6 +342,7 @@ func TestAncestorConstraintsAndUnrelatedSibling(t *testing.T) {
 	sibling.GUID = "103"
 	sibling.Name = "tank/sibling"
 	o.Filesystems = append(o.Filesystems, sibling)
+	o.Identities = append(o.Identities, DatasetIdentity{GUID: sibling.GUID, Name: sibling.Name, Type: FilesystemType})
 	plan, err := Build(instant, "session-a", p, o, i)
 	if err != nil {
 		t.Fatal(err)
