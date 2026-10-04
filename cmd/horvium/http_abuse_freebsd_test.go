@@ -72,7 +72,7 @@ func TestNativeBuiltHTTPAbuseAndRecovery(t *testing.T) {
 	management := startNativeProcessWithStderr(t, binary, []string{"serve", "-config", path}, c.ManagementUID, c.SocketGID, httpLogs)
 	session := newPerformanceSession(t, c, token)
 	count := len(strings.Fields(string(readerFixtureCommand(t, "/sbin/zfs", "list", "-H", "-t", "filesystem", "-o", "name"))))
-	session.ready(t, count, "")
+	initial := session.ready(t, count, "")
 	u, _ := url.Parse(session.base)
 	credential := ""
 	for _, cookie := range session.http.Jar.Cookies(u) {
@@ -96,7 +96,7 @@ func TestNativeBuiltHTTPAbuseAndRecovery(t *testing.T) {
 		{"cross-origin", "GET /api/overview HTTP/1.1\r\n" + auth + "Origin: http://hostile-abuse-marker.invalid\r\n\r\n", 403},
 		{"cross-site", "GET /api/overview HTTP/1.1\r\n" + auth + "Sec-Fetch-Site: cross-site\r\n\r\n", 403},
 		{"duplicate-cookie", "GET /api/overview HTTP/1.1\r\n" + auth + "Cookie: " + admin.SessionCookie + "=hostile-abuse-marker\r\n\r\n", 401},
-		{"get-mutation", "GET /api/refresh HTTP/1.1\r\n" + auth + "\r\n", 405},
+		{"get-mutation", "GET /api/refresh HTTP/1.1\r\n" + auth + "\r\n", 404},
 		{"get-body", "GET /api/overview HTTP/1.1\r\n" + auth + "Content-Length: 1\r\n\r\nx", 400},
 		{"unknown-command", "POST /api/command HTTP/1.1\r\n" + auth + "Content-Length: 0\r\n\r\n", 405},
 		{"missing-csrf", "POST /api/refresh HTTP/1.1\r\n" + auth + "Content-Type: application/x-www-form-urlencoded\r\nContent-Length: 0\r\n\r\n", 403},
@@ -113,6 +113,9 @@ func TestNativeBuiltHTTPAbuseAndRecovery(t *testing.T) {
 				t.Fatalf("denial status %d, want %d", got, tc.status)
 			}
 		})
+	}
+	if session.overview(t).Generation != initial {
+		t.Fatal("denied requests triggered a collection")
 	}
 	// Challenge throttling bounds source admission while the already admitted
 	// session stays usable. Forwarded identities remain covered by gate tests.
