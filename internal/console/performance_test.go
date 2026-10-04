@@ -25,7 +25,7 @@ func (s generatedSource) Collect(context.Context, string) (inventory.Snapshot, e
 	snap := fixtureSnapshot()
 	snap.Datasets.Data = make([]inventory.Dataset, s.n)
 	for i := range snap.Datasets.Data {
-		snap.Datasets.Data[i] = inventory.Dataset{Name: fmt.Sprintf("fixture/dataset-%06d", i), GUID: strconv.Itoa(i + 100), Used: uint64(i), Available: 1 << 40, Referenced: uint64(i)}
+		snap.Datasets.Data[i] = inventory.Dataset{Name: fmt.Sprintf("vault/dataset-%06d", i), GUID: strconv.Itoa(i + 100), Used: uint64(i), Available: 1 << 40, Referenced: uint64(i)}
 	}
 	snap.GEOM.Data.Classes = []inventory.Class{{ID: "1", Name: "DISK"}}
 	for i := 0; i < 4; i++ {

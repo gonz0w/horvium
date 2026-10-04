@@ -17,6 +17,7 @@ python3.14 tools/bootstrap-go.py
 .tools/go/bin/go mod verify
 freebsd-version -kru
 zfs version
+/usr/bin/ssh -V
 test -z "$(.tools/go/bin/gofmt -l cmd internal tools/research/m1-geom.go)"
 .tools/go/bin/go vet ./...
 .tools/go/bin/go build -trimpath -o .tools/horvium ./cmd/horvium

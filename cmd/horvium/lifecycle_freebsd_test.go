@@ -171,7 +171,10 @@ func TestNativeBuiltProcessRestart(t *testing.T) {
 		t.Fatal("digest fixture")
 	}
 	helper := startNativeProcess(t, binary, []string{"helper", "-config", path}, 0, 0)
-	nativeWait(t, func() bool { info, e := os.Stat(c.HelperSocket); return e == nil && info.Mode()&os.ModeSocket != 0 })
+	nativeWait(t, func() bool {
+		info, e := os.Stat(c.HelperSocket)
+		return e == nil && info.Mode()&os.ModeSocket != 0 && info.Mode().Perm() == 0660
+	})
 	socket, e := os.Lstat(c.HelperSocket)
 	if e != nil {
 		t.Fatal(e)
@@ -282,7 +285,7 @@ func TestNativeBuiltProcessRestart(t *testing.T) {
 		t.Fatal("fixture stale socket cleanup")
 	}
 	helper = startNativeProcess(t, binary, []string{"helper", "-config", path}, 0, 0)
-	nativeWait(t, func() bool { _, e := os.Stat(c.HelperSocket); return e == nil })
+	nativeWait(t, func() bool { info, e := os.Stat(c.HelperSocket); return e == nil && info.Mode().Perm() == 0660 })
 	socket, e = os.Lstat(c.HelperSocket)
 	if e != nil {
 		t.Fatal("replacement socket")
@@ -347,7 +350,7 @@ func TestNativeBuiltProcessRestart(t *testing.T) {
 		t.Fatal("owned stale socket cleanup")
 	}
 	helper = startNativeProcess(t, binary, []string{"helper", "-config", path}, 0, 0)
-	nativeWait(t, func() bool { _, e := os.Stat(c.HelperSocket); return e == nil })
+	nativeWait(t, func() bool { info, e := os.Stat(c.HelperSocket); return e == nil && info.Mode().Perm() == 0660 })
 	r, e = httpClient.PostForm(base+"/api/refresh", url.Values{"csrf": {session.CSRF}})
 	if e != nil {
 		t.Fatal("recovery refresh")
