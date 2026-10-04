@@ -92,3 +92,6 @@ jobs:
   browser:
     if: inputs.browser
     uses: ./.github/workflows/browser-qualification.yml
+
+  properties:
+    uses: ./.github/workflows/bsd-properties.yml

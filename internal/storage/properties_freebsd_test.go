@@ -29,7 +29,7 @@ func (b *fixtureCapture) Write(p []byte) (int, error) {
 // fixtures in a fresh opt-in QEMU guest. No product mutation or eligibility gate
 // is implemented by these privileged TEST setup commands.
 func TestNativePropertyObservations(t *testing.T) {
-	if os.Getenv("HORVIUM_NATIVE_VM") != "1" {
+	if os.Getenv("HORVIUM_NATIVE_VM") != "1" || os.Getenv("HORVIUM_PROPERTY_VM") != "1" {
 		t.Skip("requires explicit disposable QEMU opt-in")
 	}
 	if os.Geteuid() != 0 {

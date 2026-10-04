@@ -18,7 +18,7 @@ check:
 	sh tools/check-repo.sh
 
 lint:
-	.tools/bin/shellcheck tools/check-repo.sh tools/bsd-foundation-smoke.sh tools/bsd-native-discovery.sh tools/bsd-performance.sh tools/bsd-continuity.sh tools/research/m1-native.sh .githooks/commit-msg .githooks/pre-commit
+	.tools/bin/shellcheck tools/check-repo.sh tools/bsd-foundation-smoke.sh tools/bsd-native-discovery.sh tools/bsd-performance.sh tools/bsd-continuity.sh tools/bsd-properties.sh tools/research/m1-native.sh .githooks/commit-msg .githooks/pre-commit
 	.tools/bin/actionlint
 	@test -z "$$($(CURDIR)/.tools/go/bin/gofmt -l cmd internal tools/research/m1-geom.go)" || { echo 'Run gofmt on Go sources'; exit 1; }
 	$(GO) vet ./...

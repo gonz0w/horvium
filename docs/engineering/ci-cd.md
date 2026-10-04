@@ -97,3 +97,16 @@ Safari uses the installed macOS driver when remote automation is enabled by the
 operator. Manual screen-reader/native-zoom checks remain separate; see the
 [checklist](../testing/M1/browser-checklist.md). Browser test tooling is not a NAS
 runtime dependency and passing headless checks is not accessibility certification.
+
+
+## M2 property observation gate
+
+The [property workflow](../../.github/workflows/bsd-properties.yml) uses the
+existing checksum-verified VM image/AnyVM tooling with explicit qemu64, two vCPUs,
+6,144 MiB and snapshot mode. Both FreeBSD release candidates run the isolated
+[storage property script](../../tools/bsd-properties.sh), with both disposable
+native/property opt-ins. Its evidence validator refuses skipped, failed,
+duplicate or incomplete native assertions, including missing teardown. The
+existing BSD workflow calls it from the selected branch until standalone manual
+dispatch is registered on main. This qualifies property parsing only, not native
+write eligibility, management transport, M2 storage changes or replication.

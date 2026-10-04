@@ -22,14 +22,6 @@ zfs version
 test -z "$(.tools/go/bin/gofmt -l cmd internal tools/research/m1-geom.go)"
 .tools/go/bin/go vet ./...
 .tools/go/bin/go build -trimpath -o .tools/horvium ./cmd/horvium
-.tools/go/bin/go test -v -count=1 -skip '^TestNativePropertyObservations$' ./...
-# A dedicated bounded evidence log prevents an opt-in skip/unit pass from being
-# mistaken for executed M2 native property observations.
-if ! .tools/go/bin/go test -v -count=1 ./internal/storage -run '^TestNativePropertyObservations$' > .tools/property-native.log 2>&1; then
-    cat .tools/property-native.log
-    exit 1
-fi
-cat .tools/property-native.log
-python3.14 tools/check-property-evidence.py .tools/property-native.log
+.tools/go/bin/go test -v -count=1 ./...
 .tools/go/bin/go test ./internal/console -run '^$' -bench '^BenchmarkAuthenticatedDatasetPages$' -benchtime=1x
 echo 'PASS: product discovery/helper/cache/admin/console/runtime unit/component and native fixture tests'

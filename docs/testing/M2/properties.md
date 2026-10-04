@@ -61,8 +61,8 @@ Source inspection is not native output qualification. Unit tests were observed
 failing before implementation. `FuzzProperties` joins the standard bounded fuzz
 gate. Regression tests ensure a shadowed received-value change invalidates a plan.
 
-`TestNativePropertyObservations` requires root plus the existing explicit QEMU
-opt-in. It declares its own random pool namespace, new 512 MiB file-backed md,
+`TestNativePropertyObservations` requires root plus both `HORVIUM_NATIVE_VM=1` and
+`HORVIUM_PROPERTY_VM=1` in a disposable QEMU guest. It declares its own random pool namespace, new 512 MiB file-backed md,
 filesystems and snapshot/stream before use; no operator device argument exists.
 Fixture setup creates a source/received pair with test-only send/receive, checks
 actual default/local/inherited/received/shadowed values and exact limits, and
@@ -77,14 +77,24 @@ The parser's output explicitly fails the unqualified-eligibility planning gate.
 Teardown must remove the declared pool/md; temporary fixture files belong to Go's
 owned temporary directory. Failure or leak prevents the native result record.
 
-The native script executes this test once in a separate evidence log and runs
+The [property script](../../../tools/bsd-properties.sh) executes the storage
+suite once in a separate evidence log and runs
 `tools/check-property-evidence.py`. Its failing-first regressions refuse skip,
 empty/unit-only logs, missing/duplicate/unknown assertions, failure and missing
 teardown. Each release must emit the complete native record and test pass.
 
+The [dedicated workflow](../../../.github/workflows/bsd-properties.yml) reuses the
+existing [verified VM preparation](../../../tools/prepare-performance-vm.py) and
+[image/runtime pins](../../../tools/performance-vm-pins.json): builder 2.2.8,
+AnyVM 0.7.2, snapshot mode, qemu64, two vCPUs and 6,144 MiB. Image and AnyVM
+SHA-256 checks run before/after execution; QEMU version/binary hash and actual
+FreeBSD/OpenZFS/toolchain versions are recorded. A nested call in the existing
+BSD workflow permits branch qualification before the new workflow is on main.
+These CPU/memory settings describe the disposable lab, not hardware requirements.
+
 | Environment | Property projection | Remaining evidence |
 |---|---|---|
-| Local macOS arm64 | Unit/race/fuzz gates pending final run; native unavailable | Native behavior cannot be inferred from these tests |
+| Local macOS arm64 | Unit/race/fuzz and repository gates passed; native unavailable | Native behavior cannot be inferred from these tests |
 | FreeBSD 15.1 amd64 disposable QEMU | Pending execution | Exact tested source/run/version/fixture pins recorded after execution |
 | FreeBSD 14.5 amd64 disposable QEMU | Pending execution | Same requirement |
 
