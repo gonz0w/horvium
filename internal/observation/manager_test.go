@@ -562,3 +562,44 @@ func BenchmarkCachedDatasetPage(b *testing.B) {
 		})
 	}
 }
+
+func TestCancellationWhilePublicationWaitsForReaders(t *testing.T) {
+	entered := make(chan struct{})
+	release := make(chan struct{})
+	m, _ := New(quietConfig(), sourceFunc(func(context.Context, string) (inventory.Snapshot, error) {
+		close(entered)
+		<-release
+		return sample(time.Now(), 1), nil
+	}))
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	done := make(chan error, 1)
+	go func() { done <- m.Run(ctx) }()
+	<-entered
+	m.mu.RLock()
+	close(release)
+	// Wait until publication is waiting for this reader; the source/clone and
+	// earlier cancellation check have completed. TryRLock observes writer intent.
+	deadline := time.Now().Add(time.Second)
+	for m.mu.TryRLock() {
+		m.mu.RUnlock()
+		if time.Now().After(deadline) {
+			m.mu.RUnlock()
+			t.Fatal("publication did not wait for reader")
+		}
+		time.Sleep(time.Millisecond)
+	}
+	cancel()
+	m.mu.RUnlock()
+	select {
+	case err := <-done:
+		if !errors.Is(err, context.Canceled) {
+			t.Fatal(err)
+		}
+	case <-time.After(time.Second):
+		t.Fatal("cancelled publication did not stop")
+	}
+	if m.State().LastCompleted.ErrorCode != "cancelled" {
+		t.Fatal("operation became successful after cancellation while waiting to publish")
+	}
+}

@@ -208,6 +208,11 @@ func (m *Manager) collect(parent context.Context) {
 	}
 	m.mu.Lock()
 	defer m.mu.Unlock()
+	// Queries can delay this lock after collection/clone has finished. Recheck
+	// cancellation at the publication boundary, not only before waiting.
+	if ctx.Err() != nil {
+		err = ctx.Err()
+	}
 	m.last.FinishedAt = m.now().UTC()
 	m.last.ErrorCode = errorCode(err)
 	m.completed = m.last
