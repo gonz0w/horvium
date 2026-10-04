@@ -40,3 +40,13 @@ the syscall adapter. Remove it if an equivalent base Go wrapper replaces the
 FreeBSD credential adapter. See [notice](../../NOTICE.md) and
 [helper evidence](../testing/M1/helper.md); no dependency vulnerability scan is
 claimed by checksum verification alone.
+
+## Fixture-only native file daemons
+
+M1 continuity tests install FreeBSD net/samba423 only in disposable guests,
+recording actual version/origin and daemon/client hashes. It is a separate GPL
+file service, not linked or copied into the BSD-licensed Go program. Native base
+NFS supplies the companion test. Private fixture configurations are removed and
+the guest discarded; no package/production distribution is implied. Review Samba
+license/redistribution, transitive packages, security maintenance and selected
+version before M3/M5 adoption. See [continuity procedure](../testing/M1/file-continuity.md).
