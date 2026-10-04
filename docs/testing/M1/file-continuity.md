@@ -1,6 +1,6 @@
 # M1 independent SMB/NFS continuity qualification
 
-Status: implemented; native execution pending. Owner: Cam (`@gonz0w`).
+Status: native qualification passed; under maintainer review. Owner: Cam (`@gonz0w`).
 Date: 2026-10-04. Requirements M1-REQ-007,003; tests M1-RESTART-001 and
 M1-NOCHANGE-001. This supplements [SFTP continuity](runtime.md). File-service
 configuration, client interoperability, ACLs, locking and restoration remain
@@ -73,7 +73,37 @@ credentials are fixture input.
 
 ## Execution record
 
-FreeBSD test cross-compilation passes; this is build evidence only. Actual native
-execution, source hashes, package/base versions, linked run IDs and results will
-be recorded before qualification. Nothing here claims macOS/Linux file-client
-compatibility, sustained throughput, production shares or full M1 acceptance.
+Source `95d94754f634bd8c1eee840d5dc8662472790493` passed all five executed jobs in
+[run 37233530125](https://github.com/gonz0w/horvium/actions/runs/37233530125).
+Both protocol subtests and their parent passed, including daemon/client/export,
+owned loopback alias and pool/md teardown. Seven fresh exact-byte reads per
+protocol survived the helper/management outages, stale recovery and authenticated
+management restart. Old sessions were invalidated; configs/digest and original
+owned dataset properties remained unchanged.
+
+| Actual guest / Go | Samba package / daemon | Suite duration | Result |
+|---|---|---|---|
+| FreeBSD 15.1-RELEASE-p3 amd64 / 1.27.1 | net/samba423 4.23.11_3 / 4.23.11 | 3.50s | SMB + NFSv3 TCP and teardown pass |
+| FreeBSD 14.5-RELEASE amd64 / 1.27.1 | net/samba423 4.23.11_2 / 4.23.11 | 6.34s | SMB + NFSv3 TCP and teardown pass |
+
+ZFS is 2.4.2-1-FreeBSD_g6330a45b0 / 2.2.9-FreeBSD_g079ba86d7 with matching
+kernel strings. VM Action a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff, builder 2.2.8,
+6144 MiB and default CPU; no immutable image/performance claim. Exact six
+server/client/base hashes, source file hashes and versions are retained in the
+[source manifest](../../research/M1/source-manifest.json).
+
+Early runs failed because Samba shutdown signaled the runner's shared process
+group (37230301602), fixture exit handling rejected a requested signal
+(37230695969), incorrect foreground flags/duplicate mountd loopback fixed-port
+binding blocked startup (37231466130,37231992233,37232452266,37232922830), and
+rpcbind's intentional termination status was rejected after successful reads
+(37233214442). Each was repaired in the fixture; those failed runs do not qualify
+the suite. Daemons now use verified separate owned groups; FreeBSD foreground
+flags, an owned loopback alias and exact rpcbind shutdown status follow base
+source behavior. No arbitrary nonzero exit is accepted.
+
+Local `make check lint test secrets build go-check` passed, including race and
+bounded fuzz checks; subsequent native fixture repairs passed repository checks
+and actual native execution. Product protocol management, external clients,
+ACL/locking/restore, sustained throughput, hardware and full M1 acceptance remain
+separate gates. These results establish management/file-daemon separation only.
