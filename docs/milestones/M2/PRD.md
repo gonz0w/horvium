@@ -1,9 +1,12 @@
 # PRD: safe storage lifecycle
 
-Status: Draft; not approved for implementation. Owner: Cam (`@gonz0w`).
+Status: Implementing; design approved. Owner: Cam (`@gonz0w`).
 Date: 2026-10-04. Work: [issue 19](https://github.com/gonz0w/horvium/issues/19).
 [EDD](EDD.md), [Test Design](TDD.md), [research](../../research/M2/findings.md).
-Approval record: pending maintainer review of this linked design and proposed ADRs.
+Approved by Cam (`@gonz0w`) on 2026-10-04 through maintainer merge of
+[PR 20](https://github.com/gonz0w/horvium/pull/20), source
+`753f601960529cd17596d0ffc628afe38d041c82`. Design approval authorizes the
+reviewed slices; it is not M2 acceptance or native qualification.
 
 ## Problem, users and outcomes
 
@@ -21,13 +24,13 @@ job status and a recovery outcome. Existing file daemons remain independent.
 
 M1's automated implementation and qualification records are merged. Its
 [Safari/manual accessibility gate](../../testing/M1/browser-checklist.md) and
-explicit milestone acceptance remain pending. Drafting M2 does not waive them.
-Approval of M2 would authorize its test-first slices, not accept M1 or release a
-NAS. Packaging/service installation and release qualification remain M5/M6.
+explicit milestone acceptance remain pending. Implementing M2 does not waive them.
+M2 approval authorizes its test-first slices; M1 acceptance and a NAS release
+remain separate. Packaging/service installation and release qualification remain M5/M6.
 
-## Proposed operation scope
+## Approved operation scope
 
-| Operation | Proposed boundary |
+| Operation | Approved boundary |
 |---|---|
 | Adoption | Register an already imported eligible pool by GUID and individually selected filesystems; preserve data, properties, mount/import policy and unrelated descendants |
 | Pool creation | Explicitly cleared-for-use direct devices with unique verified identity; homogeneous mirror groups or homogeneous RAIDZ2 groups; operator chooses layout and sector policy |
@@ -41,7 +44,7 @@ NAS. Packaging/service installation and release qualification remain M5/M6.
 Unsupported existing layouts remain observable. Encryption/key loading, automatic
 feature upgrades, vdev expansion/add/remove/attach/detach, log/cache/special/spare
 management, dRAID, shared block devices, arbitrary properties, disk partitioning,
-wiping, force/rewind import and pool/dataset destruction are outside this proposal.
+wiping, force/rewind import and pool/dataset destruction are outside this scope.
 Deletion needs a separate reviewed extension covering protection dependencies and
 irreversible outcomes. M4 remains responsible for snapshots/replication/restore;
 M3 for users, ACLs and shares. M2 must not change their host configuration.
@@ -68,7 +71,7 @@ HTMX 2.0.11. [Source inspection](../../research/M2/source-manifest.json) records
 bundled OpenZFS differences. Refresh actual kernel/userland/module versions and
 capabilities when tests execute. No additional product dependency is proposed.
 
-For new pools, propose the common `openzfs-2.2` feature profile after installed
+For new pools, qualify the common `openzfs-2.2` feature profile after installed
 file/hash and cross-release native qualification. This limits new feature
 activation; it is not proof of backup-peer compatibility or universal portability.
 No upgrade of adopted pools is allowed. Sector alignment is reviewed, derived
@@ -95,11 +98,12 @@ M1's pending manual observations cannot be counted as M2 passes.
 
 ## Review and dependencies
 
-Review the linked EDD/Test Design together with proposed
+The linked EDD/Test Design were approved together with the
 [ownership/authorization ADR](../../adr/0006-storage-ownership-and-plans.md) and
 [durable job ADR](../../adr/0007-durable-storage-jobs.md). The conservative operation
 scope, common creation feature profile, local write enrollment and bounded JSON
-ledger are proposed choices requiring approval. None is current product behavior.
+ledger are approved choices. Native operations and the ledger remain unimplemented;
+see the [slice record](implementation.md) for current product behavior.
 
 Native gates must settle actual status parsing, device-use checks, directory sync,
 mount collision handling, feature profile installation and interruption recovery

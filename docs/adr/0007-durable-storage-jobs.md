@@ -1,13 +1,15 @@
 # ADR 0007: root-owned bounded storage job records
 
-Status: Proposed; not adopted. Date: 2026-10-04. Owner: Cam (`@gonz0w`).
-Authority: pending [M2 design](../milestones/M2/EDD.md) approval.
+Status: Accepted. Date: 2026-10-04. Owner: Cam (`@gonz0w`).
+Authority: maintainer merge of [PR 20](https://github.com/gonz0w/horvium/pull/20),
+source `753f601960529cd17596d0ffc628afe38d041c82`, on 2026-10-04.
+See the approved [M2 design](../milestones/M2/EDD.md); native gates remain required.
 [Test Design](../milestones/M2/TDD.md), [primary evidence](../research/M2/findings.md).
 
-## Context and proposed decision
+## Context and decision
 
 A native change can complete after the client disconnects or the helper dies.
-M1's volatile cache and sessions cannot represent that outcome. Propose strict
+M1's volatile cache and sessions cannot represent that outcome. Use strict
 versioned JSON ownership/job records on system storage, owned/written only by
 the root helper. The unprivileged service reads bounded typed projections. Use
 Go's standard library and the existing approved FreeBSD syscall adapter; introduce
@@ -32,7 +34,7 @@ actual GUIDs and attributable state. Backed-up metadata is reconciled before use
 ## Alternatives and consequences
 
 Memory-only jobs lose destructive intent on restart. A plain unsynced log or
-rename alone does not establish the proposed durability contract. SQLite could
+rename alone does not establish the durability contract. SQLite could
 simplify indexing/cross-record transactions, but introduces a new dependency and
 does not make native ZFS changes atomic with database writes. Adopt it only if
 measured scale or recovery complexity justifies an amended design/ADR. A network

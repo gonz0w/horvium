@@ -4,7 +4,10 @@ Date: 2026-10-04. Status: source/documentation evidence only; no M2 native tests
 Work: [issue 19](https://github.com/gonz0w/horvium/issues/19).
 [Source manifest](source-manifest.json), [PRD](../../milestones/M2/PRD.md),
 [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md).
-The linked designs/ADRs are proposals; these findings do not adopt them.
+The designs/ADRs were subsequently adopted by maintainer merge of
+[PR 20](https://github.com/gonz0w/horvium/pull/20). These findings remain source
+evidence only. The immutable manifest preserves its pre-approval capture status;
+current approval and implementation evidence live in the linked milestone records.
 
 ## Sources and observed baseline
 

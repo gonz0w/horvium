@@ -11,7 +11,7 @@
 - [Ports distribution plan](../packaging/ports/README.md)
 - M1 approved: [PRD](milestones/M1/PRD.md), [EDD](milestones/M1/EDD.md),
   [Test Design](milestones/M1/TDD.md), [implementation status](milestones/M1/implementation.md)
-- M2 draft: [PRD](milestones/M2/PRD.md), [EDD](milestones/M2/EDD.md),
+- M2 approved design / implementing: [PRD](milestones/M2/PRD.md), [EDD](milestones/M2/EDD.md),
   [Test Design](milestones/M2/TDD.md), [review/implementation sequence](milestones/M2/implementation.md)
 
 ## Engineering and evidence
@@ -40,6 +40,7 @@
 - M1 evidence: [findings](research/M1/findings.md),
   [native QEMU spike](research/M1/native-spike.md),
   [immutable source/version manifest](research/M1/source-manifest.json)
+- [M2 planning model contracts and partial test evidence](testing/M2/planning.md)
 - [Operational runbook plan](operations/README.md)
 
 - [M1 runtime lifecycle and observability evidence](testing/M1/runtime.md).

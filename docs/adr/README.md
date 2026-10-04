@@ -15,7 +15,8 @@ M1 implementation decisions accepted by maintainer merge of
 
 New durable implementation choices use the [ADR template](../templates/ADR_TEMPLATE.md).
 
-Proposed M2 decisions; not adopted until the linked design is approved:
+M2 decisions accepted by maintainer merge of
+[PR 20](https://github.com/gonz0w/horvium/pull/20) on 2026-10-04:
 
 - [0006 Storage ownership and reviewed plans](0006-storage-ownership-and-plans.md)
 - [0007 Durable storage job records](0007-durable-storage-jobs.md)

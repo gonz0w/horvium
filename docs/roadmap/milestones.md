@@ -8,10 +8,11 @@ M1 design was approved in [PR 3](https://github.com/gonz0w/horvium/pull/3):
 for reviewed slices and remaining acceptance gates.
 M1's automated slices and [qualification record](../testing/M1/qualification-status.md)
 are merged; M1 is Validating with Safari/manual accessibility and explicit milestone
-acceptance pending. M2 now has draft [PRD](../milestones/M2/PRD.md),
+acceptance pending. M2 design was approved by maintainer merge of
+[PR 20](https://github.com/gonz0w/horvium/pull/20) on 2026-10-04: [PRD](../milestones/M2/PRD.md),
 [EDD](../milestones/M2/EDD.md), [Test Design](../milestones/M2/TDD.md) and
-[implementation sequence](../milestones/M2/implementation.md). Design approval
-precedes its product work; planning does not waive M1's pending gates.
+[implementation sequence](../milestones/M2/implementation.md). M2 is Implementing;
+its first scope/planning model does not waive M1's pending gates.
 The first deployable release spans M1-M6; intermediate evidence is not a production
 claim. Each milestone links requirements, tests, and compatibility evidence.
 

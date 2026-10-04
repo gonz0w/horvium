@@ -7,7 +7,7 @@ validation are separate. Refresh exact versions in each active research manifest
 |---|---|---|
 | Runtime | Approved M1 FreeBSD 15.1 primary / 14.5 compatibility | Native reader/helper/cache/admin fixture tests passed; foreground runtime/console/CLI owned-fixture tests passed on both releases; full NAS runtime pending |
 | Architecture | amd64 first candidate; other FreeBSD architectures as validated | Hardware-neutral design, no universal support claim |
-| Storage | ZFS pools/datasets on supported direct-access devices | Observed by M1; M2 ownership/creation/property/maintenance contracts are draft; no M2 native mutation evidence |
+| Storage | ZFS pools/datasets on supported direct-access devices | Observed by M1; M2 ownership/creation/property/maintenance contracts approved in PR 20; no M2 native mutation evidence |
 | File clients | macOS and Linux/BSD first; SMB/NFS/SFTP as designed in M3 | Priorities confirmed; version/permission matrix and actual tests pending |
 | Backup peer | Compatible ZFS receiver over authenticated SSH | Planned; feature negotiation and restoration pending |
 | Management | Go 1.27.1 / HTMX 2.0.11; Safari/macOS and Firefox/Linux first | Read-only semantic console and authenticated CLI implemented in accepted slice 5; Firefox fixture evidence below; Safari/manual acceptance pending |
@@ -30,7 +30,7 @@ validation are separate. Refresh exact versions in each active research manifest
 | Assembled HTTP abuse | Built FreeBSD root helper/unprivileged runtime over real loopback TCP | Actual denial/flood/slow deadline/admission/recovery/redaction/unchanged-state tests passed on both targets (37230688573); portable connection overflow/recovery/shutdown race checks pass; accepted with PR 14 |
 | Independent SMB/NFS continuity | Fresh FreeBSD 15.1/14.5 disposable guests; fixture-only Samba and base NFSv3 TCP | Both protocols passed seven fresh reads through helper/management outages, session restart and full teardown on both targets (37233530125); accepted with PR 16; no external client/ACL/throughput claim |
 | Tooling | Python 3.14.7 + checksum-pinned tools on Linux/macOS | See bootstrap status for checks actually run |
-| M2 ownership/jobs | Proposed root-owned GUID scopes, reviewed plans and bounded durable JSON records on system storage | Source/manual inspection only; proposed ADRs 0006/0007 and linked designs require approval; native state/mutation/recovery/browser gates unexecuted |
+| M2 ownership/planning model | Internal Go GUID scopes and immutable property reviews; runtime stays read-only | D1 model tests for scope/impact/expiry/drift/bounds; no native adapter, persisted enrollment or submitted jobs. ADRs 0006/0007 and designs approved in PR 20; complete slice 1 and native/state/mutation gates pending; see [planning evidence](../testing/M2/planning.md) |
 
 Evidence levels: D0 designed; D1 unit/component verified; D2 native/client verified;
 D3 workflow/restore verified; D4 release-qualified with failure, upgrade, security,
@@ -67,4 +67,4 @@ and actual Firefox. Native-small combined Go RSS 33.65–35.45 MiB and idle CPU
 0.080–0.083%; projection RSS 40.20–40.79 MiB, p95 57.877–58.634ms. All exclusion,
 manual-browser and hardware/client/release limits above still apply; M1 remains
 unaccepted and Validating. See [consolidated qualification](../testing/M1/qualification-status.md)
-and the separate draft [M2 Test Design](../milestones/M2/TDD.md).
+and the separate approved [M2 Test Design](../milestones/M2/TDD.md).
