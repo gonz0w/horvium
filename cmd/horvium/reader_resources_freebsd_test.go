@@ -41,9 +41,19 @@ type readerProbe struct{ guard, command int }
 
 // Read process rows only in the disposable guest. Never print process names,
 // arguments, IDs or host inventory; signal only a verified helper child subtree.
-func freezeReaderProbe(t *testing.T, p *performancePair) readerProbe {
+func freezeReaderProbe(t *testing.T, p *performancePair, pool string) readerProbe {
+	// Only the post-measurement crash fixture grows: long owned names make the
+	// actual native dataset projection exceed the pipe capacity while its Go
+	// reader is briefly paused. No product command/source is substituted.
+	for i := 0; i < 400; i++ {
+		readerFixtureCommand(t, "/sbin/zfs", "create", "-o", "mountpoint=none", pool+fmt.Sprintf("/crash-%03d-", i)+strings.Repeat("x", 200))
+	}
+	count := len(strings.Fields(string(readerFixtureCommand(t, "/sbin/zfs", "list", "-H", "-t", "filesystem", "-o", "name"))))
+	p.session.refresh(t)
+	p.session.ready(t, count, "")
 	t.Helper()
 	owner := p.helper.cmd.Process.Pid
+	defer func() { _ = syscall.Kill(owner, syscall.SIGCONT) }()
 	kq, err := syscall.Kqueue()
 	if err != nil {
 		t.Fatal("owned probe event queue")
@@ -111,6 +121,7 @@ func freezeReaderProbe(t *testing.T, p *performancePair) readerProbe {
 			pid := int(event.Ident)
 			if event.Fflags&syscall.NOTE_EXIT != 0 {
 				delete(parents, pid)
+				_ = syscall.Kill(owner, syscall.SIGCONT)
 				continue
 			}
 			if event.Fflags&syscall.NOTE_CHILD != 0 {
@@ -121,6 +132,10 @@ func freezeReaderProbe(t *testing.T, p *performancePair) readerProbe {
 				continue
 			}
 			executions++
+			if parents[pid] == owner {
+				_ = syscall.Kill(owner, syscall.SIGSTOP)
+				continue
+			}
 			guard := parents[pid]
 			if pid <= 1 || guard <= 1 || parents[guard] != owner {
 				continue
@@ -147,6 +162,7 @@ func freezeReaderProbe(t *testing.T, p *performancePair) readerProbe {
 				return readerProbe{guard, pid}
 			}
 			_ = syscall.Kill(pid, syscall.SIGCONT)
+			_ = syscall.Kill(owner, syscall.SIGCONT)
 		}
 	}
 	t.Fatalf("could not capture actual native command: child_events=%d exec_events=%d guarded_exec_events=%d; no crash qualification", children, executions, candidates)
@@ -285,7 +301,7 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 				if e != nil {
 					t.Fatal("owned socket")
 				}
-				probe := freezeReaderProbe(t, p)
+				probe := freezeReaderProbe(t, p, expected.Pool)
 				before := p.session.overview(t).Generation
 				helper.stop(t, syscall.SIGKILL, false)
 				readerProcessStopped(t, probe.command)
@@ -299,7 +315,8 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 				helper = startNativeProcess(t, binary, []string{"helper", "-config", path}, 0, 0)
 				performanceWait(t, func() bool { info, e := os.Stat(c.HelperSocket); return e == nil && info.Mode().Perm() == 0660 })
 				p.session.refresh(t)
-				p.session.ready(t, count, before)
+				recoveryCount := len(strings.Fields(string(readerFixtureCommand(t, "/sbin/zfs", "list", "-H", "-t", "filesystem", "-o", "name"))))
+				p.session.ready(t, recoveryCount, before)
 				helper.stop(t, syscall.SIGTERM, true)
 				management.stop(t, syscall.SIGTERM, true)
 				peak := max(originalPeak, peakProcessRSS(t, helper)) + peakProcessRSS(t, management)
@@ -362,7 +379,7 @@ func TestNativeBuiltProbeCaptureAndOwnerDeath(t *testing.T) {
 	p := &performancePair{config: c, path: path, helper: helper, management: management}
 	p.session = newPerformanceSession(t, c, token)
 	p.session.ready(t, count, "")
-	probe := freezeReaderProbe(t, p)
+	probe := freezeReaderProbe(t, p, owned.Pool)
 	helper.stop(t, syscall.SIGKILL, false)
 	readerProcessStopped(t, probe.command)
 	readerProcessStopped(t, probe.guard)
