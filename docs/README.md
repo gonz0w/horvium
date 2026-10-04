@@ -41,6 +41,7 @@
   [native QEMU spike](research/M1/native-spike.md),
   [immutable source/version manifest](research/M1/source-manifest.json)
 - [M2 planning model contracts and partial test evidence](testing/M2/planning.md)
+- [M2 native property projection and qualification](testing/M2/properties.md)
 - [Operational runbook plan](operations/README.md)
 
 - [M1 runtime lifecycle and observability evidence](testing/M1/runtime.md).

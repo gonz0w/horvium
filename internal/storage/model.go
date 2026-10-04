@@ -32,11 +32,13 @@ type Source string
 
 // Value describes an effective property and its native source. SourceGUID is the
 // supplying filesystem for local/received/inherited values; empty for default.
-// This is a prospective adapter contract, not a native parser or wire format.
+// ReceivedValue retains a shadowed received property as well as an active one.
+// This is an internal model, not a wire or persisted format.
 type Value struct {
-	Effective  string
-	Source     Source
-	SourceGUID string
+	Effective     string
+	Source        Source
+	SourceGUID    string
+	ReceivedValue string // Empty when native received column is "-".
 }
 type Properties struct{ Quota, RefQuota, Compression Value }
 type Filesystem struct {

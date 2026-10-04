@@ -19,7 +19,7 @@ support claim.
 M2 storage lifecycle design is approved in [PR 20](https://github.com/gonz0w/horvium/pull/20): [PRD](docs/milestones/M2/PRD.md),
 [EDD](docs/milestones/M2/EDD.md), [Test Design](docs/milestones/M2/TDD.md) and
 [implementation sequence](docs/milestones/M2/implementation.md). The first
-implementation PR adds an internal scope/property planning model. Native gates,
+model subset was accepted in PR 21; bounded property-source parsing is next. Native gates,
 durable jobs and storage writes remain pending; the runtime is still read-only.
 
 ## Agreed direction
