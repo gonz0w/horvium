@@ -43,63 +43,108 @@ type readerProbe struct{ guard, command int }
 // arguments, IDs or host inventory; signal only a verified helper child subtree.
 func freezeReaderProbe(t *testing.T, p *performancePair) readerProbe {
 	t.Helper()
+	owner := p.helper.cmd.Process.Pid
+	kq, err := syscall.Kqueue()
+	if err != nil {
+		t.Fatal("owned probe event queue")
+	}
+	defer syscall.Close(kq)
+	syscall.CloseOnExec(kq)
+	change := syscall.Kevent_t{Ident: uint64(owner), Filter: syscall.EVFILT_PROC, Flags: syscall.EV_ADD | syscall.EV_CLEAR, Fflags: syscall.NOTE_FORK | syscall.NOTE_TRACK | syscall.NOTE_EXEC | syscall.NOTE_EXIT}
+	if _, err := syscall.Kevent(kq, []syscall.Kevent_t{change}, nil, nil); err != nil {
+		t.Fatal("owned helper process tracking")
+	}
+	// Observe kernel fork/exec events concurrently with the refresh request.
+	// Sampling after a response can miss an entire fast native collection.
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+	done := make(chan struct{})
+	failed := make(chan struct{}, 1)
+	go func() {
+		defer close(done)
+		for ctx.Err() == nil {
+			request, _ := http.NewRequestWithContext(ctx, "POST", p.session.base+"/api/refresh", strings.NewReader(url.Values{"csrf": {p.session.csrf}}.Encode()))
+			request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+			response, err := p.session.http.Do(request)
+			if err != nil {
+				if ctx.Err() == nil {
+					failed <- struct{}{}
+				}
+				return
+			}
+			response.Body.Close()
+			if response.StatusCode != 202 && response.StatusCode != 409 {
+				failed <- struct{}{}
+				return
+			}
+			select {
+			case <-ctx.Done():
+				return
+			case <-time.After(20 * time.Millisecond):
+			}
+		}
+	}()
+	defer func() { cancel(); <-done }()
+	parents := map[int]int{}
 	known := map[string]bool{"zfs": true, "zpool": true, "sysctl": true, "uname": true, "freebsd-version": true, "sh": true}
-	deadline := time.Now().Add(15 * time.Second)
-	guards, commands, stopped := 0, 0, 0
-	for time.Now().Before(deadline) {
-		r, err := p.session.http.PostForm(p.session.base+"/api/refresh", url.Values{"csrf": {p.session.csrf}})
+	var events [32]syscall.Kevent_t
+	children, executions, candidates := 0, 0, 0
+	for ctx.Err() == nil {
+		select {
+		case <-failed:
+			t.Fatal("owned crash refresh failed")
+		default:
+		}
+		timeout := syscall.Timespec{Nsec: 50_000_000}
+		n, err := syscall.Kevent(kq, nil, events[:], &timeout)
+		if err == syscall.EINTR {
+			continue
+		}
 		if err != nil {
-			t.Fatal("native crash refresh")
+			t.Fatal("owned probe event read")
 		}
-		r.Body.Close()
-		if r.StatusCode != 202 && r.StatusCode != 409 {
-			t.Fatal("native crash refresh denied")
-		}
-		for attempt := 0; attempt < 12; attempt++ {
-			rows := readerFixtureCommand(t, "/bin/ps", "-axo", "pid=,ppid=,ucomm=")
-			parents, names := map[int]int{}, map[int]string{}
-			for _, line := range strings.Split(string(rows), "\n") {
-				fields := strings.Fields(line)
-				if len(fields) != 3 {
-					continue // kernel thread names can contain spaces
-				}
-				pid, e1 := strconv.Atoi(fields[0])
-				parent, e2 := strconv.Atoi(fields[1])
-				if e1 == nil && e2 == nil && pid > 1 {
-					parents[pid], names[pid] = parent, fields[2]
-				}
+		for _, event := range events[:n] {
+			if event.Flags&syscall.EV_ERROR != 0 || event.Fflags&syscall.NOTE_TRACKERR != 0 {
+				t.Fatal("owned probe tracking incomplete")
 			}
-			for command, guard := range parents {
-				if parents[guard] != p.helper.cmd.Process.Pid || names[guard] != "timeout" {
-					continue
-				}
-				guards++
-				if !known[names[command]] {
-					continue
-				}
-				commands++
-				if syscall.Kill(command, syscall.SIGSTOP) != nil {
-					continue // a fast probe can exit before the signal
-				}
-				stopped++
-				state, _ := exec.Command("/bin/ps", "-p", strconv.Itoa(command), "-o", "ppid=,stat=").Output()
-				f := strings.Fields(string(state))
-				if len(f) == 2 && f[0] == strconv.Itoa(guard) && strings.HasPrefix(f[1], "T") {
-					t.Cleanup(func() {
-						// An exited PID may be reused before cleanup. Only resume
-						// the captured command while it still belongs to its guard.
-						b, err := exec.Command("/bin/ps", "-p", strconv.Itoa(command), "-o", "ppid=").Output()
-						if err == nil && strings.TrimSpace(string(b)) == strconv.Itoa(guard) {
-							_ = syscall.Kill(command, syscall.SIGCONT)
-						}
-					})
-					return readerProbe{guard, command}
-				}
-				_ = syscall.Kill(command, syscall.SIGCONT)
+			pid := int(event.Ident)
+			if event.Fflags&syscall.NOTE_EXIT != 0 {
+				delete(parents, pid)
+				continue
 			}
+			if event.Fflags&syscall.NOTE_CHILD != 0 {
+				parents[pid] = int(event.Data)
+				children++
+			}
+			if event.Fflags&syscall.NOTE_EXEC == 0 {
+				continue
+			}
+			executions++
+			guard := parents[pid]
+			if pid <= 1 || guard <= 1 || parents[guard] != owner {
+				continue
+			}
+			candidates++
+			if syscall.Kill(pid, syscall.SIGSTOP) != nil {
+				continue
+			}
+			state, _ := exec.Command("/bin/ps", "-p", strconv.Itoa(pid), "-o", "ppid=,stat=,ucomm=").Output()
+			fields := strings.Fields(string(state))
+			guardState, _ := exec.Command("/bin/ps", "-p", strconv.Itoa(guard), "-o", "ppid=,ucomm=").Output()
+			guardFields := strings.Fields(string(guardState))
+			if len(fields) == 3 && fields[0] == strconv.Itoa(guard) && strings.HasPrefix(fields[1], "T") && known[fields[2]] && len(guardFields) == 2 && guardFields[0] == strconv.Itoa(owner) && guardFields[1] == "timeout" {
+				t.Cleanup(func() {
+					b, err := exec.Command("/bin/ps", "-p", strconv.Itoa(pid), "-o", "ppid=").Output()
+					if err == nil && strings.TrimSpace(string(b)) == strconv.Itoa(guard) {
+						_ = syscall.Kill(pid, syscall.SIGCONT)
+					}
+				})
+				return readerProbe{guard, pid}
+			}
+			_ = syscall.Kill(pid, syscall.SIGCONT)
 		}
 	}
-	t.Fatalf("could not capture actual native command: guard_observations=%d command_observations=%d stop_signals=%d; no crash qualification", guards, commands, stopped)
+	t.Fatalf("could not capture actual native command: child_events=%d exec_events=%d guarded_exec_events=%d; no crash qualification", children, executions, candidates)
 	return readerProbe{}
 }
 
