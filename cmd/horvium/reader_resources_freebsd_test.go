@@ -89,6 +89,7 @@ func freezeReaderProbe(t *testing.T, p *performancePair) readerProbe {
 	known := map[string]bool{"zfs": true, "zpool": true, "sysctl": true, "uname": true, "freebsd-version": true, "sh": true}
 	var events [32]syscall.Kevent_t
 	children, executions, candidates := 0, 0, 0
+	diagnosed := false
 	for ctx.Err() == nil {
 		select {
 		case <-failed:
@@ -132,6 +133,10 @@ func freezeReaderProbe(t *testing.T, p *performancePair) readerProbe {
 			fields := strings.Fields(string(state))
 			guardState, _ := exec.Command("/bin/ps", "-p", strconv.Itoa(guard), "-o", "ppid=,ucomm=").Output()
 			guardFields := strings.Fields(string(guardState))
+			if !diagnosed && len(fields) >= 3 && len(guardFields) >= 2 {
+				t.Logf("CAPTURE_SHAPE command_fields=%d parent_matches=%t stopped_state=%t fixed_native_name=%t guard_fields=%d helper_parent_matches=%t fixed_guard_name=%t", len(fields), fields[0] == strconv.Itoa(guard), strings.HasPrefix(fields[1], "T"), known[fields[2]], len(guardFields), guardFields[0] == strconv.Itoa(owner), guardFields[1] == "timeout")
+				diagnosed = true
+			}
 			if len(fields) == 3 && fields[0] == strconv.Itoa(guard) && strings.HasPrefix(fields[1], "T") && known[fields[2]] && len(guardFields) == 2 && guardFields[0] == strconv.Itoa(owner) && guardFields[1] == "timeout" {
 				t.Cleanup(func() {
 					b, err := exec.Command("/bin/ps", "-p", strconv.Itoa(pid), "-o", "ppid=").Output()
