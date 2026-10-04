@@ -194,8 +194,9 @@ built-helper death during a captured native command also passed in PR 14 below.
 Native resources and integrated built-helper crash/stale/recovery/boot state
 passed both pinned guests in run 37233391796; under review in PR 14. See [procedure](../../testing/M1/native-resources.md).
 
-The assembled HTTP abuse procedure and pre-handler connection cap are implemented;
-native execution is pending. See [HTTP abuse procedure](../../testing/M1/http-abuse.md).
+The assembled HTTP abuse suite and pre-handler connection cap passed on both
+native targets in run 37230688573 and are under review in [PR 15](https://github.com/gonz0w/horvium/pull/15).
+See [HTTP abuse evidence](../../testing/M1/http-abuse.md).
 
 1. Complete console/CLI native and required-browser evidence, accessibility acceptance.
 2. Qualify native-reader allocation alongside the measured synthetic management budgets.

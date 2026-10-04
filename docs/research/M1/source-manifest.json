@@ -1506,5 +1506,108 @@
       "subsequent assembled HTTP/browser changes have a separate combined qualification run",
       "no physical throughput, 16GiB MicroServer, commercial, port or full M1 acceptance"
     ]
+  },
+  "product_http_abuse": {
+    "date": "2026-10-04",
+    "status": "native pass; under review; selected adversarial coverage, not full security certification",
+    "source_revision": "20edb928cdb0eaef9474ded38103782c4d090441",
+    "workflow_run": "https://github.com/gonz0w/horvium/actions/runs/37230688573",
+    "test_ids": [
+      "M1-HTTP-001",
+      "M1-AUTH-001",
+      "M1-SCALE-001",
+      "M1-NOCHANGE-001",
+      "M1-RESTART-001"
+    ],
+    "connection_capacity": "validated max_readers + 8; fixture 10, default 24; no identity reservation",
+    "vm": {
+      "action_source": "a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff",
+      "builder": "2.2.8",
+      "memory_mib": 6144,
+      "cpu_image": "job defaults; no immutable performance pin"
+    },
+    "guests": [
+      {
+        "architecture": "amd64",
+        "installed_kernel": "15.1-RELEASE-p3",
+        "running_kernel": "15.1-RELEASE-p3",
+        "userland": "15.1-RELEASE-p3",
+        "zfs_userland": "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+        "zfs_kernel": "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0",
+        "go": "1.27.1",
+        "suite_seconds": 16.32,
+        "denial_cases": 17,
+        "floods": "pass",
+        "connection_bound": "pass",
+        "slow_deadlines": "pass",
+        "recovery": "pass",
+        "redaction": "pass",
+        "boot_state": "unchanged"
+      },
+      {
+        "architecture": "amd64",
+        "installed_kernel": "14.5-RELEASE",
+        "running_kernel": "14.5-RELEASE",
+        "userland": "14.5-RELEASE",
+        "zfs_userland": "zfs-2.2.9-FreeBSD_g079ba86d7",
+        "zfs_kernel": "zfs-kmod-2.2.9-FreeBSD_g079ba86d7",
+        "go": "1.27.1",
+        "suite_seconds": 16.27,
+        "denial_cases": 17,
+        "floods": "pass",
+        "connection_bound": "pass",
+        "slow_deadlines": "pass",
+        "recovery": "pass",
+        "redaction": "pass",
+        "boot_state": "unchanged"
+      }
+    ],
+    "limits": [
+      "loopback lab access only; overload may delay legitimate administration",
+      "native performance, required browsers/manual accessibility and independent SMB/NFS are separate gates",
+      "no hardware, package or production support claim"
+    ],
+    "files": [
+      {
+        "path": "internal/service/listener.go",
+        "sha256": "c3c3fff52f75d40812497b0b73999b8f691f4a69ed01a5543cb9d63f208c5c10"
+      },
+      {
+        "path": "internal/service/service.go",
+        "sha256": "4097069f401f39ac5a8803f61c66a7669ee7f46fbe1d31ed5891b16c5d7855ed"
+      },
+      {
+        "path": "internal/service/listener_bounds_test.go",
+        "sha256": "b228c14452260370d316b125fe847029474c4d2b96c7b252db4ecac00bf79265"
+      },
+      {
+        "path": "cmd/horvium/http_abuse_freebsd_test.go",
+        "sha256": "1960fe72298820377904b9ba84824d4bb8a54ac1e7e722e5d6d0414a93957344"
+      },
+      {
+        "path": "internal/admin/http.go",
+        "sha256": "ffd2713e52e3e46775d35a75cb15b1ae53395e449e43057e9678ea43a3dcc86e"
+      },
+      {
+        "path": "internal/console/console.go",
+        "sha256": "d0099cf9d772f63b00d0dd83fe7beb7221dff817989c5af7e489faf02bbbbfd5"
+      },
+      {
+        "path": "internal/service/events.go",
+        "sha256": "b0f488de9f535e5b7772ed0d9ccc423614250b7ba901a0b18841860355866e44"
+      },
+      {
+        "path": "tools/bsd-native-discovery.sh",
+        "sha256": "877f51f7da908937a60b1fe70dddffe5fed825c9ed29ecc6d0ebdea377c74ae2"
+      },
+      {
+        "path": "go.mod",
+        "sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+      }
+    ]
   }
 }

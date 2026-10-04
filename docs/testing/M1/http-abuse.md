@@ -1,6 +1,6 @@
 # M1 assembled HTTP abuse and recovery qualification
 
-Status: implemented; native execution pending. Owner: Cam (`@gonz0w`).
+Status: native qualification passed; under maintainer review. Owner: Cam (`@gonz0w`).
 Date: 2026-10-04. Requirements M1-REQ-003,004,006,007; tests M1-HTTP-001,
 M1-AUTH-001, M1-SCALE-001, M1-NOCHANGE-001 and M1-RESTART-001.
 Complements [administration](security.md), [helper denial](helper-events.md)
@@ -58,3 +58,30 @@ checks pass; FreeBSD cross-compilation is build verification only. Actual native
 run IDs, exact source/versions and results will be recorded before this additional
 gate is qualified. Required browsers and independent SMB/NFS continuity remain
 separate gates. No operator host service or live data is used.
+
+## Native execution
+
+Functional source `20edb928cdb0eaef9474ded38103782c4d090441` passed all five
+executed jobs in [run 37230688573](https://github.com/gonz0w/horvium/actions/runs/37230688573).
+The optional performance job was intentionally skipped; this run is functional
+security/recovery evidence, not resource qualification. Both actual built-runtime
+suites passed all seventeen denial cases, challenge/refresh floods, descriptor
+bound, independent slow-header/body expiry, recovery, eight-field redacted events
+and unchanged boot config/digest. Duration: 16.32 seconds on 15.1 and 16.27 on 14.5.
+Existing native reader/helper/cache/admin/CLI/runtime/SFTP suites also passed.
+
+Observed guests: 15.1-RELEASE-p3 and 14.5-RELEASE, installed/running kernel and
+userland amd64; bundled ZFS 2.4.2-1-FreeBSD_g6330a45b0 and
+2.2.9-FreeBSD_g079ba86d7 respectively. Both used Go 1.27.1, x/sys v0.48.0 and
+local HTMX 2.0.11. Ubuntu 24.04 hosted the pinned VM Action
+`a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff`, builder 2.2.8, 6144 MiB with default
+CPU/image settings. No immutable performance or physical-hardware claim follows.
+
+Two earlier native runs failed test assumptions: immediate overview before the
+first collection, and expecting 405 instead of the existing router's 404 for GET
+/api/refresh. The final suite checks that all denial cases preserve generation.
+No allowance was added to authentication or resource budgets. Source file hashes
+and traceability are in the [manifest](../../research/M1/source-manifest.json).
+Local `make check lint test secrets build go-check` and subsequent focused
+cross-compilation/checks passed, including race and five bounded fuzz targets.
+Required browser/manual accessibility and SMB/NFS gates remain separate.
