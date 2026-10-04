@@ -144,14 +144,17 @@ func freezeReaderProbe(t *testing.T, p *performancePair, pool string) readerProb
 			if syscall.Kill(pid, syscall.SIGSTOP) != nil {
 				continue
 			}
-			state, _ := exec.Command("/bin/ps", "-p", strconv.Itoa(pid), "-o", "ppid=,stat=,ucomm=").Output()
+			state, commandPS := exec.Command("/bin/ps", "-p", strconv.Itoa(pid), "-o", "ppid=,stat=,ucomm=").Output()
 			fields := strings.Fields(string(state))
-			guardState, _ := exec.Command("/bin/ps", "-p", strconv.Itoa(guard), "-o", "ppid=,ucomm=").Output()
+			guardState, guardPS := exec.Command("/bin/ps", "-p", strconv.Itoa(guard), "-o", "ppid=,ucomm=").Output()
 			guardFields := strings.Fields(string(guardState))
+			if !diagnosed {
+				t.Logf("CAPTURE_PS command_ok=%t command_fields=%d guard_ok=%t guard_fields=%d", commandPS == nil, len(fields), guardPS == nil, len(guardFields))
+			}
 			if !diagnosed && len(fields) >= 3 && len(guardFields) >= 2 {
 				t.Logf("CAPTURE_SHAPE command_fields=%d parent_matches=%t stopped_state=%t fixed_native_name=%t guard_fields=%d helper_parent_matches=%t fixed_guard_name=%t", len(fields), fields[0] == strconv.Itoa(guard), strings.HasPrefix(fields[1], "T"), known[fields[2]], len(guardFields), guardFields[0] == strconv.Itoa(owner), guardFields[1] == "timeout")
-				diagnosed = true
 			}
+			diagnosed = true
 			if len(fields) == 3 && fields[0] == strconv.Itoa(guard) && strings.HasPrefix(fields[1], "T") && known[fields[2]] && len(guardFields) == 2 && guardFields[0] == strconv.Itoa(owner) && guardFields[1] == "timeout" {
 				t.Cleanup(func() {
 					b, err := exec.Command("/bin/ps", "-p", strconv.Itoa(pid), "-o", "ppid=").Output()
