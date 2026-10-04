@@ -7,14 +7,13 @@ remain lightweight on a 16 GB home server and grow to larger commercial storage
 systems. The HP MicroServer Gen8 is a reference configuration, not a hardware
 requirement or a limit on disks, memory, pools, or datasets.
 
-**Status:** M0 foundation, M1 design, native discovery, helper transport and
-collector/cache, administration security, authenticated read-only console, CLI
-and foreground development commands, runtime lifecycle, logging and response
-admission accepted. Synthetic combined-process performance and helper-denial
-logging and native probe process cleanup are accepted. Native executor crash containment
-passed qualification and is under review. Assembled HTTP abuse and bounded connection recovery also passed native
-qualification and are under review. Remaining M1 gates are in progress. There is
-no installable port, appliance image or production support claim.
+**Status:** M0 foundation and the main M1 read-only discovery/management slices
+are accepted. Crash containment, native resources, HTTP abuse recovery, independent
+SMB/NFS continuity and Firefox qualification are under review. Safari/manual
+accessibility acceptance remains pending. See the
+[M1 qualification review](docs/testing/M1/qualification-status.md) for evidence and
+remaining gates. There is no installable port, appliance image or production
+support claim.
 
 ## Agreed direction
 

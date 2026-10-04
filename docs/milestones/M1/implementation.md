@@ -2,7 +2,10 @@
 
 Date: 2026-10-04. Design approved in [PR 3](https://github.com/gonz0w/horvium/pull/3).
 M1 remains Implementing, not accepted or released. Work proceeds through focused,
-maintainer-reviewed slices following the [EDD](EDD.md).
+maintainer-reviewed slices following the [EDD](EDD.md). Historical slice tables
+describe the remaining work at each original boundary; the
+[current qualification review](../../testing/M1/qualification-status.md) consolidates
+today's evidence and open acceptance gates.
 
 ## Slice 1: native discovery models, parsers and reader
 
