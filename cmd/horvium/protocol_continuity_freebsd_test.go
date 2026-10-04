@@ -162,7 +162,7 @@ func independentNFS(t *testing.T, dir, root string, content []byte) func() {
 	continuityReady(t, "111")
 	t.Log("NFS_PHASE rpcbind_ready")
 	port := continuityPort(t)
-	mountd := startContinuityDaemon(t, "/usr/sbin/mountd", []string{"-N", "-h", "127.0.0.1", "-p", port, path})
+	mountd := startContinuityDaemon(t, "/usr/sbin/mountd", []string{"-d", "-h", "127.0.0.1", "-p", port, path})
 	t.Log("NFS_PHASE mountd_start")
 	continuityReady(t, port)
 	t.Log("NFS_PHASE mountd_ready")
