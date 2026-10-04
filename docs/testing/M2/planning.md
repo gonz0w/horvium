@@ -1,6 +1,7 @@
 # M2 property planning model: contracts and partial evidence
 
-Date: 2026-10-04. Status: D1 model implementation, offered for maintainer review.
+Date: 2026-10-04. Status: D1 model accepted in [PR 21](https://github.com/gonz0w/horvium/pull/21),
+source `f334094eae3d3b6d8ca740465ac09cb5be08ba20`.
 Design: [PR 20](https://github.com/gonz0w/horvium/pull/20), approved source
 `753f601960529cd17596d0ffc628afe38d041c82`.
 [PRD](../../milestones/M2/PRD.md), [EDD](../../milestones/M2/EDD.md),
@@ -45,7 +46,8 @@ review sizing, not an adopted wire or persistent schema.
 - Review context contains target, ancestors and the entire target subtree,
   including protected branches. It shows baseline GUIDs/names/parents, effective
   values and sources so ancestor constraints and overrides remain reviewable.
-  It does not yet show usage, shadowed received values, mount policy, topology,
+  The [property projection](properties.md) adds retained received values to
+  context and drift checks. It does not yet show usage, mount policy, topology,
   devices, feature evidence or operation recovery details.
 - Malformed or duplicate GUIDs/names/scopes, missing/false parents, inconsistent
   sources, unknown properties, incomplete observation or failed eligibility deny
@@ -91,7 +93,8 @@ no operator inventory or disk is used.
 
 Local gates passed: `make check lint test secrets` and `make go-check` (vet, complete unit
 suite, race detector and bounded fuzzing, including the new property planner).
-The FreeBSD amd64 test-binary cross-build also passed; it checks compilation only. There are no M2 native,
-mutation, state-failure, browser or performance execution results. Every complete
+The FreeBSD amd64 test-binary cross-build also passed; it checks compilation only. Native property-source results are tracked separately in
+[the projection record](properties.md). There are no M2 mutation, state-failure,
+browser or performance execution results. Every complete
 Test Design row remains pending. The retained M1 native results qualify M1 only;
 Safari/manual accessibility remains pending by maintainer choice.

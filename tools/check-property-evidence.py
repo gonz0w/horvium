@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: BSD-3-Clause
+from pathlib import Path
+import re
+import sys
+
+CASES = {'default', 'local', 'inherited', 'received', 'shadowed', 'no_limit',
+         'rename', 'name_reuse', 'foreign_preservation', 'eligibility_denied', 'teardown'}
+
+def validate(text):
+    if len(text) > 1 << 20 or re.search(r'(?m)^(?:FAIL|--- (?:FAIL|SKIP):)', text):
+        raise ValueError('property native evidence failed, skipped or oversized')
+    passed = re.findall(r'(?m)^--- PASS: TestNativePropertyObservations \([0-9.]+s\)$', text)
+    records = re.findall(r'PROPERTY_OBSERVATION_RESULT ([^\n]+)', text)
+    if len(passed) != 1 or len(records) != 1:
+        raise ValueError('one executed native property result and test pass required')
+    fields = records[0].split()
+    expected = {case + '=pass' for case in CASES}
+    if len(fields) != len(expected) or set(fields) != expected:
+        raise ValueError('missing, duplicate, unknown or failed native property case')
+
+if __name__ == '__main__':
+    validate(Path(sys.argv[1]).read_text())

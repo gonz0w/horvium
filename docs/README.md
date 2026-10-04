@@ -36,11 +36,14 @@
 - [M0 foundation acceptance](milestones/M0/acceptance.md)
 - [M1 research manifest](research/M1/manifest.md)
 - M2 source evidence: [findings](research/M2/findings.md),
-  [immutable source manifest](research/M2/source-manifest.json); no M2 native results yet
+  [immutable source manifest](research/M2/source-manifest.json); its pre-approval
+  status is historical. Current [native property evidence](testing/M2/properties.md)
+  covers a narrow subset only
 - M1 evidence: [findings](research/M1/findings.md),
   [native QEMU spike](research/M1/native-spike.md),
   [immutable source/version manifest](research/M1/source-manifest.json)
 - [M2 planning model contracts and partial test evidence](testing/M2/planning.md)
+- [M2 native property projection and qualification](testing/M2/properties.md)
 - [Operational runbook plan](operations/README.md)
 
 - [M1 runtime lifecycle and observability evidence](testing/M1/runtime.md).

@@ -89,6 +89,12 @@ func valueFor(p Properties, property Property) Value {
 	}
 }
 func validValue(v Value, property Property, guid string) bool {
+	if v.ReceivedValue != "" && ((property == Compression && !token(v.ReceivedValue)) || (property != Compression && !validLimit(v.ReceivedValue))) {
+		return false
+	}
+	if v.Source == Received && v.ReceivedValue != v.Effective {
+		return false
+	}
 	if property == Compression {
 		if !token(v.Effective) {
 			return false
@@ -135,7 +141,7 @@ func preflight(p Policy, o Observation) error {
 			return err
 		}
 		for _, v := range []Value{f.Properties.Quota, f.Properties.RefQuota, f.Properties.Compression} {
-			if err := debit(v.Effective, string(v.Source), v.SourceGUID); err != nil {
+			if err := debit(v.Effective, string(v.Source), v.SourceGUID, v.ReceivedValue); err != nil {
 				return err
 			}
 		}
@@ -160,19 +166,27 @@ func indexObservation(o Observation) (map[string]Filesystem, error) {
 	if !o.Complete || !o.Eligible {
 		return nil, ErrUnavailable
 	}
-	if !validGUID(o.PoolGUID) || !validName(o.PoolName) || strings.Contains(o.PoolName, "/") || len(o.Filesystems) == 0 {
+	if !validGUID(o.PoolGUID) {
 		return nil, ErrInvalid
 	}
-	files := make(map[string]Filesystem, len(o.Filesystems))
-	names := make(map[string]bool, len(o.Filesystems))
-	for _, f := range o.Filesystems {
+	return indexFilesystems(o.PoolName, o.Filesystems)
+}
+
+// Property graph validation proves internal consistency only, not native pool eligibility.
+func indexFilesystems(poolName string, observed []Filesystem) (map[string]Filesystem, error) {
+	if !validName(poolName) || strings.Contains(poolName, "/") || len(observed) == 0 {
+		return nil, ErrInvalid
+	}
+	files := make(map[string]Filesystem, len(observed))
+	names := make(map[string]bool, len(observed))
+	for _, f := range observed {
 		if !validGUID(f.GUID) || !validName(f.Name) || names[f.Name] {
 			return nil, ErrInvalid
 		}
 		if _, ok := files[f.GUID]; ok {
 			return nil, ErrInvalid
 		}
-		if f.Name != o.PoolName && !strings.HasPrefix(f.Name, o.PoolName+"/") {
+		if f.Name != poolName && !strings.HasPrefix(f.Name, poolName+"/") {
 			return nil, ErrInvalid
 		}
 		for _, property := range []Property{Quota, RefQuota, Compression} {
@@ -183,11 +197,11 @@ func indexObservation(o Observation) (map[string]Filesystem, error) {
 		files[f.GUID] = f
 		names[f.Name] = true
 	}
-	if !names[o.PoolName] {
+	if !names[poolName] {
 		return nil, ErrInvalid
 	}
-	for _, f := range o.Filesystems {
-		if f.Name == o.PoolName {
+	for _, f := range observed {
+		if f.Name == poolName {
 			if f.ParentGUID != "" || f.Properties.Compression.Source == Inherited {
 				return nil, ErrInvalid
 			}

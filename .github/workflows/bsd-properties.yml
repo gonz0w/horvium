@@ -1,0 +1,54 @@
+name: BSD property observation qualification
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  properties:
+    name: properties-freebsd-${{ matrix.release }}-amd64
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        release: ['15.1', '14.5']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Prepare verified disposable VM
+        env:
+          PROPERTY_RELEASE: ${{ matrix.release }}
+          PROPERTY_DIRECTORY: ${{ runner.temp }}/horvium-property-vm
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-system-x86 qemu-utils ovmf zstd
+          sudo chmod 666 /dev/kvm
+          python3 --version
+          qemu-system-x86_64 --version
+          sha256sum /usr/bin/qemu-system-x86_64
+          python3 tools/prepare-performance-vm.py "$PROPERTY_RELEASE" "$PROPERTY_DIRECTORY"
+      - name: Native property observations and denial evidence
+        env:
+          PROPERTY_RELEASE: ${{ matrix.release }}
+          PROPERTY_DIRECTORY: ${{ runner.temp }}/horvium-property-vm
+        run: |
+          set -o pipefail
+          python3 "$PROPERTY_DIRECTORY/anyvm.py" --os freebsd --release "$PROPERTY_RELEASE" --builder 2.2.8 \
+            --cpu 2 --cpu-type qemu64 --mem 6144 --snapshot --vnc off --remote-vnc no \
+            --data-dir "$PROPERTY_DIRECTORY" --sync tar --sync-exclude .git --sync-exclude .tools \
+            -v "$GITHUB_WORKSPACE:/root/work" -d
+          ssh -T "freebsd-$PROPERTY_RELEASE" \
+            'cd /root/work && pkg install -y python314 && env HORVIUM_NATIVE_VM=1 HORVIUM_PROPERTY_VM=1 sh tools/bsd-properties.sh' 2>&1 | tee "$PROPERTY_DIRECTORY/qualification.log"
+          python3 tools/check-property-evidence.py "$PROPERTY_DIRECTORY/qualification.log"
+      - name: Verify unchanged base image and runtime
+        if: always()
+        env:
+          PROPERTY_RELEASE: ${{ matrix.release }}
+          PROPERTY_DIRECTORY: ${{ runner.temp }}/horvium-property-vm
+        run: python3 tools/prepare-performance-vm.py "$PROPERTY_RELEASE" "$PROPERTY_DIRECTORY" --verify

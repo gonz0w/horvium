@@ -13,9 +13,9 @@ import (
 var instant = time.Date(2026, 10, 4, 23, 0, 0, 0, time.UTC)
 
 func fixture() (Policy, Observation, Intent) {
-	props := Properties{Quota: Value{"none", Default, ""}, RefQuota: Value{"none", Default, ""}, Compression: Value{"lz4", Local, "101"}}
+	props := Properties{Quota: Value{"none", Default, "", ""}, RefQuota: Value{"none", Default, "", ""}, Compression: Value{"lz4", Local, "101", ""}}
 	root := Filesystem{GUID: "101", Name: "tank", Properties: props}
-	child := Filesystem{GUID: "102", Name: "tank/data", ParentGUID: "101", Properties: Properties{Quota: Value{"none", Default, ""}, RefQuota: Value{"none", Default, ""}, Compression: Value{"lz4", Inherited, "101"}}}
+	child := Filesystem{GUID: "102", Name: "tank/data", ParentGUID: "101", Properties: Properties{Quota: Value{"none", Default, "", ""}, RefQuota: Value{"none", Default, "", ""}, Compression: Value{"lz4", Inherited, "101", ""}}}
 	obs := Observation{Complete: true, PoolGUID: "100", PoolName: "tank", Eligible: true, Filesystems: []Filesystem{root, child}}
 	policy := Policy{Revision: 1, PoolGUID: "100", PoolName: "tank", Scopes: []Scope{{GUID: "101", Name: "tank", Properties: []Property{Quota, RefQuota, Compression}}, {GUID: "102", Name: "tank/data", ParentGUID: "101", Properties: []Property{Quota, Compression}}}}
 	return policy, obs, Intent{FilesystemGUID: "101", Property: Quota, Value: "1099511627776"}
@@ -72,12 +72,12 @@ func TestCompressionImpactRespectsOverrides(t *testing.T) {
 	if _, err := Build(instant, "session-a", p, o, i); !errors.Is(err, ErrDenied) {
 		t.Fatalf("foreign inheritor: %v", err)
 	}
-	o.Filesystems[1].Properties.Compression = Value{"off", Local, "102"}
+	o.Filesystems[1].Properties.Compression = Value{"off", Local, "102", ""}
 	grandchild := o.Filesystems[1]
 	grandchild.GUID = "103"
 	grandchild.Name = "tank/data/archive"
 	grandchild.ParentGUID = "102"
-	grandchild.Properties.Compression = Value{"off", Inherited, "102"}
+	grandchild.Properties.Compression = Value{"off", Inherited, "102", ""}
 	o.Filesystems = append(o.Filesystems, grandchild)
 	plan, err := Build(instant, "session-a", p, o, i)
 	if err != nil {
@@ -86,7 +86,7 @@ func TestCompressionImpactRespectsOverrides(t *testing.T) {
 	if len(plan.Review().Affected) != 1 {
 		t.Fatal("local override must protect its branch")
 	}
-	o.Filesystems[1].Properties.Compression = Value{"off", Received, "102"}
+	o.Filesystems[1].Properties.Compression = Value{"off", Received, "102", "off"}
 	if _, err := Build(instant, "session-a", p, o, i); err != nil {
 		t.Fatal(err)
 	}
@@ -151,7 +151,7 @@ func TestPlansRequireFreshReviewOnDrift(t *testing.T) {
 		{"renamed pool", func(_ *Policy, o *Observation) { o.PoolName = "renamed" }},
 		{"reused name", func(_ *Policy, o *Observation) { o.Filesystems[0].GUID = "999" }},
 		{"renamed dataset", func(_ *Policy, o *Observation) { o.Filesystems[1].Name = "tank/new" }},
-		{"changed value", func(_ *Policy, o *Observation) { o.Filesystems[0].Properties.Quota = Value{"9", Local, "101"} }},
+		{"changed value", func(_ *Policy, o *Observation) { o.Filesystems[0].Properties.Quota = Value{"9", Local, "101", ""} }},
 		{"changed source", func(_ *Policy, o *Observation) { o.Filesystems[0].Properties.Compression.Source = Received }},
 		{"foreign descendant", func(_ *Policy, o *Observation) {
 			f := o.Filesystems[1]
@@ -235,7 +235,9 @@ func TestMalformedObservationsAndPolicyFailClosed(t *testing.T) {
 		{"source outside ancestors", func(_ *Policy, o *Observation) { o.Filesystems[1].Properties.Compression.SourceGUID = "102" }},
 		{"inconsistent inheritance", func(_ *Policy, o *Observation) { o.Filesystems[1].Properties.Compression.Effective = "off" }},
 		{"unknown source", func(_ *Policy, o *Observation) { o.Filesystems[1].Properties.Compression.Source = "unknown" }},
-		{"inherited quota", func(_ *Policy, o *Observation) { o.Filesystems[1].Properties.Quota = Value{"none", Inherited, "101"} }},
+		{"inherited quota", func(_ *Policy, o *Observation) {
+			o.Filesystems[1].Properties.Quota = Value{"none", Inherited, "101", ""}
+		}},
 		{"duplicate scope", func(p *Policy, _ *Observation) { p.Scopes = append(p.Scopes, p.Scopes[0]) }},
 		{"duplicate property", func(p *Policy, _ *Observation) { p.Scopes[0].Properties = append(p.Scopes[0].Properties, Quota) }},
 		{"arbitrary property scope", func(p *Policy, _ *Observation) { p.Scopes[0].Properties = append(p.Scopes[0].Properties, "mountpoint") }},
@@ -324,7 +326,7 @@ func TestAncestorConstraintsAndUnrelatedSibling(t *testing.T) {
 	i.FilesystemGUID = "102"
 	i.Property = RefQuota
 	p.Scopes[1].Properties = append(p.Scopes[1].Properties, RefQuota)
-	o.Filesystems[0].Properties.Quota = Value{"4096", Local, "101"}
+	o.Filesystems[0].Properties.Quota = Value{"4096", Local, "101", ""}
 	sibling := o.Filesystems[1]
 	sibling.GUID = "103"
 	sibling.Name = "tank/sibling"
@@ -339,11 +341,11 @@ func TestAncestorConstraintsAndUnrelatedSibling(t *testing.T) {
 	}
 	// An unrelated, unenrolled sibling remains observational. No ancestor or target
 	// identity/property changes; its quota does not alter this reviewed subtree.
-	o.Filesystems[2].Properties.Quota = Value{"8192", Local, "103"}
+	o.Filesystems[2].Properties.Quota = Value{"8192", Local, "103", ""}
 	if err := plan.Validate(instant, "session-a", p, o); err != nil {
 		t.Fatal(err)
 	}
-	o.Filesystems[0].Properties.Quota = Value{"8192", Local, "101"}
+	o.Filesystems[0].Properties.Quota = Value{"8192", Local, "101", ""}
 	if err := plan.Validate(instant, "session-a", p, o); !errors.Is(err, ErrDrift) {
 		t.Fatal(err)
 	}
@@ -354,7 +356,7 @@ func TestDefaultCompressionStillHasInheritanceImpact(t *testing.T) {
 	i.Property = Compression
 	i.Value = "lz4"
 	for n := range o.Filesystems {
-		o.Filesystems[n].Properties.Compression = Value{"on", Default, ""}
+		o.Filesystems[n].Properties.Compression = Value{"on", Default, "", ""}
 	}
 	plan, err := Build(instant, "session-a", p, o, i)
 	if err != nil {
