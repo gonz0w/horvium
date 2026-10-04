@@ -42,8 +42,11 @@ func fixtureConfig(host string) admin.Config {
 	return admin.Config{Version: 1, Listen: host, AllowedHosts: []string{host}, ManagementUID: 65534, SocketGID: 65534, HelperSocket: "/var/run/horvium/inventory.sock", StateDirectory: "/var/db/horvium", MaxBytes: 64 << 20, MaxRecords: 100000, MaxFieldBytes: 4096, MaxXMLDepth: 32, MaxXMLElements: 250000, MaxFrameBytes: 64 << 10, MaxJSONBytes: 64 << 20, MaxTransportRecords: 100000, MaxJSONDepth: 32, IntervalSeconds: 30, TimeoutSeconds: 45, StaleSeconds: 90, MaxReaders: 16, MaxHelperClients: 8}
 }
 func fixture(t *testing.T) (http.Handler, *observation.Manager, *admin.Auth) {
+	return fixtureWithSource(t, fixtureSource{})
+}
+func fixtureWithSource(t *testing.T, source observation.Source) (http.Handler, *observation.Manager, *admin.Auth) {
 	t.Helper()
-	m, e := observation.New(observation.DefaultConfig(), fixtureSource{})
+	m, e := observation.New(observation.DefaultConfig(), source)
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -380,5 +383,25 @@ func TestOversizedViewsReturnNoPartialInventory(t *testing.T) {
 	application.render(htmlResponse, "fixture", view{Error: long}, 200)
 	if htmlResponse.Code != 503 || strings.Contains(htmlResponse.Body.String(), "sensitive prefix") {
 		t.Fatal("oversized HTML published partial inventory")
+	}
+}
+
+type failedPoolSource struct{}
+
+func (failedPoolSource) Collect(context.Context, string) (inventory.Snapshot, error) {
+	s := fixtureSnapshot()
+	s.Pools.Status = inventory.Unavailable
+	s.Pools.Data = nil
+	s.Pools.Problems = []inventory.Problem{{Source: "pools", Code: "permission"}}
+	return s, nil
+}
+func TestFailedSectionDoesNotReportSuccessfulZero(t *testing.T) {
+	h, _, _ := fixtureWithSource(t, failedPoolSource{})
+	cookie, _ := login(t, h)
+	r := req("GET", "/storage/pools", "")
+	r.AddCookie(cookie)
+	w := serve(h, r)
+	if w.Code != 200 || strings.Contains(w.Body.String(), "0 matching items") || !strings.Contains(w.Body.String(), "Resource count unavailable") {
+		t.Fatal("failed section presented a successful zero count")
 	}
 }

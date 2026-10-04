@@ -10,7 +10,10 @@ The console and CLI query the same authenticated cached observations. HTML full
 pages and HTMX fragments preserve the exact generation, literal filter, numeric
 sort, pagination and selected GUID/provider ID. Expired generations return 409
 with an explicit reload; failed initial collection returns 503. Failed sections
-remain unavailable, rather than reporting zero successful resources. Host facts,
+remain unavailable, rather than reporting zero successful resources. The storage heading also suppresses
+a numeric total when its source failed or is partial; regression coverage checks
+this independently from initial unavailable overview. JSON consumers must check
+Freshness.Status before interpreting numeric row/count fields as complete results. Host facts,
 collection status and section freshness are visible; shares, users, SMART and
 protection are explicitly not collected. Pool state is not a disk-health guarantee.
 

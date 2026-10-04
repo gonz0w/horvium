@@ -159,7 +159,7 @@
 </section>{{end}}
 
 {{define "storage"}}<div class="section-heading">
-<p>{{.Total}} matching items · {{status .Freshness}}</p>
+<p>{{if same (printf "%s" .Freshness.Status) "ok"}}{{.Total}} matching items{{else}}Resource count unavailable{{end}} · {{status .Freshness}}</p>
 <p class="muted">Section read {{time .Freshness.FinishedAt}}</p>
 </div>{{range .Freshness.Problems}}<p class="notice">{{.Source}}: {{.Code}}</p>{{end}}<form class="filters" action="{{.Path}}" method="get" hx-get="{{.Path}}" hx-target="#workspace" hx-swap="outerHTML" hx-push-url="true">
 <input type="hidden" name="generation" value="{{.Generation}}">
@@ -182,7 +182,7 @@
 <label for="limit">Page size</label>
 <input type="number" id="limit" name="limit" min="1" max="500" value="{{.Limit}}">
 </div>
-<button type="submit">Apply</button>
+<button id="apply-filters" type="submit">Apply</button>
 <a class="reload" href="{{.Path}}">Current generation</a>
 </form>
 <div class="resource-layout">
