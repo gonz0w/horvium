@@ -8,6 +8,7 @@ Authority: approved [PRD budgets](../../milestones/M1/PRD.md) and
 ## Fixture and measurement
 
 The separate manual [workflow](../../../.github/workflows/bsd-performance.yml)
+is also callable from the existing BSD workflow with `performance=true`. It
 verifies compressed builder 2.2.8 FreeBSD 15.1/14.5 images and AnyVM 0.7.2 against
 [SHA-256 pins](../../../tools/performance-vm-pins.json). It captures the decompressed
 base-image hash and rechecks base/runtime hashes after the snapshot-mode run.

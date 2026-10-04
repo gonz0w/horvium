@@ -2,6 +2,11 @@ name: BSD native validation
 
 on:
   workflow_dispatch:
+    inputs:
+      performance:
+        description: Run the measured application budgets in separate pinned VMs
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -67,3 +72,7 @@ jobs:
           arch: amd64
           copyback: false
           run: env HORVIUM_RESEARCH_VM=1 sh tools/research/m1-native.sh
+
+  performance:
+    if: inputs.performance
+    uses: ./.github/workflows/bsd-performance.yml

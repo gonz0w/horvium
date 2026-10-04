@@ -68,3 +68,7 @@ five-minute small-fixture idle CPU, two 1,000-page ten-reader workloads per size
 generation replacement and separate record/byte exhaustion run only inside these
 explicit disposable root fixtures. No VM, Python, QEMU or fake source becomes a
 NAS runtime dependency. See [procedure and limits](../testing/M1/performance.md).
+
+Before its own workflow is on main, dispatch the existing BSD workflow with
+`performance=true`; it calls the same performance workflow from the selected
+branch. Default native runs leave this long measurement disabled.
