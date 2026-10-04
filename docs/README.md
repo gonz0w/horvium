@@ -26,6 +26,7 @@
 - [M1 native discovery execution evidence](testing/M1/discovery.md)
 - [M1 helper transport execution evidence](testing/M1/helper.md)
 - [M1 collector/cache execution evidence](testing/M1/collector.md)
+- [M1 administration security contracts/evidence](testing/M1/security.md)
 - [Security and supply chain](security/supply-chain.md)
 - [Design templates](templates/README.md)
 - [M0 foundation acceptance](milestones/M0/acceptance.md)

@@ -19,6 +19,7 @@ validation are separate. Refresh exact versions in each active research manifest
 | Product discovery reader | Same two observed release/patch levels, Go 1.27.1 amd64 | Actual Go reader/parser and isolated pool fixture passed; see product evidence |
 | Product helper | Same two observed release/patch levels, Go 1.27.1 + x/sys v0.48.0 amd64 | Actual kernel UID, socket ownership/lifecycle, admission/timeout and reader-over-transport tests passed |
 | Collector/cache | Hardware-neutral Go library; FreeBSD helper integration | Local generation/ownership/concurrency/boundary tests and actual unprivileged native helper outage/recovery passed |
+| Administration security | Hardware-neutral auth/config parser; FreeBSD descriptor ownership and loopback HTTP | Local denial/expiry/capacity tests passed; native fixture execution pending; no operator UI/CLI or deployable auth claim |
 | Tooling | Python 3.14.7 + checksum-pinned tools on Linux/macOS | See bootstrap status for checks actually run |
 
 Evidence levels: D0 designed; D1 unit/component verified; D2 native/client verified;
@@ -31,6 +32,8 @@ ZFS version strings and fixture limits, and [M1 Test Design](../milestones/M1/TD
 for product tests still required and [product reader evidence](../testing/M1/discovery.md)
 for the completed reader slice and [helper evidence](../testing/M1/helper.md)
 for actual Go transport tests; [collector evidence](../testing/M1/collector.md)
-records the unprivileged cache/outage/recovery path. The earlier C spike is ABI
+records the unprivileged cache/outage/recovery path;
+[security evidence](../testing/M1/security.md) tracks configuration, credentials
+and the administration boundary. The earlier C spike is ABI
 evidence only. No
 physical identity, file-client, scale or throughput claim follows.

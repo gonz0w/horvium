@@ -1,6 +1,7 @@
 # M1 collector, cache and query evidence
 
-Status: implementation under review; native integration passed on both releases.
+Status: accepted by maintainer merge of [PR 6](https://github.com/gonz0w/horvium/pull/6)
+on 2026-10-04; native integration passed on both releases.
 Approved [EDD](../../milestones/M1/EDD.md) and
 [Test Design](../../milestones/M1/TDD.md). No executable, HTTP interface or
 installed service is introduced by this library slice.
