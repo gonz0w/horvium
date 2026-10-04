@@ -78,6 +78,9 @@ func Serve(ctx context.Context, c admin.Config) error {
 	if e != nil {
 		return ErrRuntime
 	}
+	// Eight extra connection slots accompany the existing eight-session bound.
+	// This caps pre-handler and idle connections as well as admitted responses.
+	listener = boundedListener(listener, c.MaxReaders+8)
 	defer listener.Close()
 	events.Record(eventlog.Event{Operation: "management", ID: events.NextID(), Section: "inventory", Outcome: "started"})
 	e = run(ctx, server, listener, manager)

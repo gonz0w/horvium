@@ -12,7 +12,8 @@ collector/cache, administration security, authenticated read-only console, CLI
 and foreground development commands, runtime lifecycle, logging and response
 admission accepted. Synthetic combined-process performance and helper-denial
 logging and native probe process cleanup are accepted. Native executor crash containment
-passed qualification and is under review. Remaining M1 gates are in progress. There is
+passed qualification and is under review. Assembled HTTP abuse and bounded connection recovery also passed native
+qualification and are under review. Remaining M1 gates are in progress. There is
 no installable port, appliance image or production support claim.
 
 ## Agreed direction

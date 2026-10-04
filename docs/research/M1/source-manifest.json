@@ -1192,5 +1192,422 @@
         "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
       }
     ]
+  },
+  "product_native_resources": {
+    "date": "2026-10-04",
+    "status": "native pass for declared fixtures; under maintainer review",
+    "source_revision": "cebc8973f5e37d3ca0bbd5da87dd21dff39703d8",
+    "workflow_run": "https://github.com/gonz0w/horvium/actions/runs/37233391796",
+    "built_capture_run": "https://github.com/gonz0w/horvium/actions/runs/37233158523",
+    "test_ids": [
+      "M1-NATIVE-001",
+      "M1-PERF-001",
+      "M1-FAIL-001",
+      "M1-RESTART-001",
+      "M1-NOCHANGE-001"
+    ],
+    "runner": "Ubuntu 24.04 hosted amd64; QEMU 8.2.2; snapshot guests",
+    "pins": {
+      "schema_version": 1,
+      "builder": "2.2.8",
+      "cpu_model": "qemu64",
+      "cpu_count": 2,
+      "memory_mib": 6144,
+      "anyvm": {
+        "url": "https://github.com/anyvm-org/anyvm/releases/download/v0.7.2/anyvm.py",
+        "sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d"
+      },
+      "images": {
+        "15.1": {
+          "url": "https://github.com/anyvm-org/freebsd-builder/releases/download/v2.2.8/freebsd-15.1.qcow2.zst",
+          "sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+          "bytes": 1023058365
+        },
+        "14.5": {
+          "url": "https://github.com/anyvm-org/freebsd-builder/releases/download/v2.2.8/freebsd-14.5.qcow2.zst",
+          "sha256": "cd90489bb7d94585016e177b9e3f0084f3410454dc0af19481f44ddd5aa45257",
+          "bytes": 1012531750
+        }
+      }
+    },
+    "guests": [
+      {
+        "release": "15.1",
+        "architecture": "amd64",
+        "installed_kernel": "15.1-RELEASE-p3",
+        "running_kernel": "15.1-RELEASE-p3",
+        "userland": "15.1-RELEASE-p3",
+        "zfs_userland": "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+        "zfs_kernel": "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0",
+        "go": "1.27.1",
+        "image": {
+          "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+          "builder": "2.2.8",
+          "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+          "cpu_count": 2,
+          "cpu_model": "qemu64",
+          "memory_mib": 6144,
+          "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+          "release": "15.1"
+        },
+        "synthetic_measurements": [
+          {
+            "budget_peak_rss_bytes": 35639296,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 35164160,
+            "datasets": 100,
+            "idle_cpu_percent_one_core": 0.019999798497163525,
+            "idle_seconds": 300,
+            "max_sample_gap_ms": 270.022,
+            "p50_ms": 12.035,
+            "p95_ms": 39.793,
+            "p99_ms": 103.115,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 3633,
+            "sampled_combined_peak_rss_bytes": 35639296,
+            "session_count": 1,
+            "warmup_seconds": 60
+          },
+          {
+            "budget_peak_rss_bytes": 44859392,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 44593152,
+            "datasets": 10000,
+            "idle_cpu_percent_one_core": 0,
+            "idle_seconds": 0,
+            "max_sample_gap_ms": 129.159,
+            "p50_ms": 15.827,
+            "p95_ms": 66.801,
+            "p99_ms": 92.863,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 652,
+            "sampled_combined_peak_rss_bytes": 44859392,
+            "session_count": 1,
+            "warmup_seconds": 60
+          }
+        ],
+        "native_measurements": [
+          {
+            "budget_peak_rss_bytes": 34406400,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 34123776,
+            "datasets": 115,
+            "idle_cpu_percent_one_core": 0.056666294366846025,
+            "idle_seconds": 300,
+            "max_sample_gap_ms": 257.312,
+            "mode": "native-small",
+            "owned_datasets": 100,
+            "p50_ms": 8.611,
+            "p95_ms": 30.198,
+            "p99_ms": 59.37,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 3631,
+            "sampled_combined_peak_rss_bytes": 34406400,
+            "warmup_seconds": 60
+          },
+          {
+            "budget_peak_rss_bytes": 46927872,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 46649344,
+            "datasets": 10000,
+            "idle_cpu_percent_one_core": 0,
+            "idle_seconds": 0,
+            "max_sample_gap_ms": 751.503,
+            "mode": "projection-10000",
+            "owned_datasets": 0,
+            "p50_ms": 15.418,
+            "p95_ms": 43.939,
+            "p99_ms": 112.824,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 664,
+            "sampled_combined_peak_rss_bytes": 46927872,
+            "warmup_seconds": 60
+          }
+        ],
+        "integrated_crash_stale_recovery_boot_state": "pass",
+        "evidence_validator": "pass"
+      },
+      {
+        "release": "14.5",
+        "architecture": "amd64",
+        "installed_kernel": "14.5-RELEASE",
+        "running_kernel": "14.5-RELEASE",
+        "userland": "14.5-RELEASE",
+        "zfs_userland": "zfs-2.2.9-FreeBSD_g079ba86d7",
+        "zfs_kernel": "zfs-kmod-2.2.9-FreeBSD_g079ba86d7",
+        "go": "1.27.1",
+        "image": {
+          "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+          "builder": "2.2.8",
+          "compressed_sha256": "cd90489bb7d94585016e177b9e3f0084f3410454dc0af19481f44ddd5aa45257",
+          "cpu_count": 2,
+          "cpu_model": "qemu64",
+          "memory_mib": 6144,
+          "qcow2_sha256": "6593466e8d6341eaad95755973ab594222516dd75bcd99b18239b5047e5396f4",
+          "release": "14.5"
+        },
+        "synthetic_measurements": [
+          {
+            "budget_peak_rss_bytes": 38273024,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 38010880,
+            "datasets": 100,
+            "idle_cpu_percent_one_core": 0.029999755764488382,
+            "idle_seconds": 300,
+            "max_sample_gap_ms": 178.13,
+            "p50_ms": 15.956,
+            "p95_ms": 51.899,
+            "p99_ms": 89.804,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 3645,
+            "sampled_combined_peak_rss_bytes": 38273024,
+            "session_count": 1,
+            "warmup_seconds": 60
+          },
+          {
+            "budget_peak_rss_bytes": 44855296,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 44576768,
+            "datasets": 10000,
+            "idle_cpu_percent_one_core": 0,
+            "idle_seconds": 0,
+            "max_sample_gap_ms": 155.091,
+            "p50_ms": 19.701,
+            "p95_ms": 58.987,
+            "p99_ms": 88.912,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 668,
+            "sampled_combined_peak_rss_bytes": 44855296,
+            "session_count": 1,
+            "warmup_seconds": 60
+          }
+        ],
+        "native_measurements": [
+          {
+            "budget_peak_rss_bytes": 38305792,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 38027264,
+            "datasets": 100,
+            "idle_cpu_percent_one_core": 0.08666569465225736,
+            "idle_seconds": 300,
+            "max_sample_gap_ms": 844.353,
+            "mode": "native-small",
+            "owned_datasets": 100,
+            "p50_ms": 19.403,
+            "p95_ms": 67.597,
+            "p99_ms": 128.056,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 3667,
+            "sampled_combined_peak_rss_bytes": 38305792,
+            "warmup_seconds": 60
+          },
+          {
+            "budget_peak_rss_bytes": 42643456,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 42364928,
+            "datasets": 10000,
+            "idle_cpu_percent_one_core": 0,
+            "idle_seconds": 0,
+            "max_sample_gap_ms": 1210.175,
+            "mode": "projection-10000",
+            "owned_datasets": 0,
+            "p50_ms": 22.057,
+            "p95_ms": 82.115,
+            "p99_ms": 397.301,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 689,
+            "sampled_combined_peak_rss_bytes": 42643456,
+            "warmup_seconds": 60
+          }
+        ],
+        "integrated_crash_stale_recovery_boot_state": "pass",
+        "evidence_validator": "pass"
+      }
+    ],
+    "files": [
+      {
+        "path": "cmd/horvium/reader_resources_freebsd_test.go",
+        "sha256": "b4a477d8eb264d5b9ce21e70665545450ddc97d6206a52ab3fa4543c115e9bd4"
+      },
+      {
+        "path": "cmd/horvium/performance_freebsd_test.go",
+        "sha256": "e6407e06e4f0cfd00cdce1cf8968ccc79ade9c22232bdea70e11b040f9ce6597"
+      },
+      {
+        "path": "internal/host/freebsd/projection_freebsd_test.go",
+        "sha256": "ba6480b4b81d96f5af97cc313ae0ba62410687a65221e26757e559dbe5717ed9"
+      },
+      {
+        "path": "internal/host/freebsd/execute.go",
+        "sha256": "6b1aa25996f23adec5d9af6bb58708ae475a5a2291f9e994cab83e1408d0c1d8"
+      },
+      {
+        "path": "internal/host/freebsd/guard_freebsd.go",
+        "sha256": "f8e02d9293593a05de2920d0c4b50cca4f2edf536bc5ec35f42353b880bcdb47"
+      },
+      {
+        "path": "internal/host/freebsd/native_freebsd.go",
+        "sha256": "684dacc50679d16ce0f0c99edb999ccb960ceee896db27a4618e835e02f82166"
+      },
+      {
+        "path": "internal/service/service.go",
+        "sha256": "24ef727150f7718de375e9a1bb7e1bebded3f2d0c585903448ae61ff70980fd7"
+      },
+      {
+        "path": "tools/bsd-performance.sh",
+        "sha256": "837266a97cb4c81ca75257a1430ebc7e1f2ef3ce88bb0620b8f25ce66191274f"
+      },
+      {
+        "path": "tools/check-performance-evidence.py",
+        "sha256": "f756cef185f9f378e201a0629c33afa1fb6c87d747ce9577cb04d045652b1d1c"
+      },
+      {
+        "path": "tools/tests/test_performance_evidence.py",
+        "sha256": "4ec08f7d380ab322245b1e1e0dbfa4879253da7b82fbf924187d5f7926972af7"
+      },
+      {
+        "path": ".github/workflows/bsd-performance.yml",
+        "sha256": "c1a32080640bb8c9469a12e2dde4bef8614771aacdacde9c7ac709c31e5cb1a6"
+      },
+      {
+        "path": "tools/performance-vm-pins.json",
+        "sha256": "81f0f30e4171fed38e281c644044521a0cdc9f6693cd9b988b229ef4f85d002b"
+      },
+      {
+        "path": "go.mod",
+        "sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+      }
+    ],
+    "limits": [
+      "two Go process resource budgets; native child RSS/CPU and OS/ZFS ARC excluded",
+      "100 owned real filesystems; boot filesystems observed, no forced hardware/provider count",
+      "10,000 projected TSV dataset rows, not 10,000 real ZFS datasets; worst-case native topology unmeasured",
+      "sample gaps/high-water statistics do not prove an exact instantaneous memory ceiling",
+      "subsequent assembled HTTP/browser changes have a separate combined qualification run",
+      "no physical throughput, 16GiB MicroServer, commercial, port or full M1 acceptance"
+    ]
+  },
+  "product_http_abuse": {
+    "date": "2026-10-04",
+    "status": "native pass; under review; selected adversarial coverage, not full security certification",
+    "source_revision": "20edb928cdb0eaef9474ded38103782c4d090441",
+    "workflow_run": "https://github.com/gonz0w/horvium/actions/runs/37230688573",
+    "test_ids": [
+      "M1-HTTP-001",
+      "M1-AUTH-001",
+      "M1-SCALE-001",
+      "M1-NOCHANGE-001",
+      "M1-RESTART-001"
+    ],
+    "connection_capacity": "validated max_readers + 8; fixture 10, default 24; no identity reservation",
+    "vm": {
+      "action_source": "a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff",
+      "builder": "2.2.8",
+      "memory_mib": 6144,
+      "cpu_image": "job defaults; no immutable performance pin"
+    },
+    "guests": [
+      {
+        "architecture": "amd64",
+        "installed_kernel": "15.1-RELEASE-p3",
+        "running_kernel": "15.1-RELEASE-p3",
+        "userland": "15.1-RELEASE-p3",
+        "zfs_userland": "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+        "zfs_kernel": "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0",
+        "go": "1.27.1",
+        "suite_seconds": 16.32,
+        "denial_cases": 17,
+        "floods": "pass",
+        "connection_bound": "pass",
+        "slow_deadlines": "pass",
+        "recovery": "pass",
+        "redaction": "pass",
+        "boot_state": "unchanged"
+      },
+      {
+        "architecture": "amd64",
+        "installed_kernel": "14.5-RELEASE",
+        "running_kernel": "14.5-RELEASE",
+        "userland": "14.5-RELEASE",
+        "zfs_userland": "zfs-2.2.9-FreeBSD_g079ba86d7",
+        "zfs_kernel": "zfs-kmod-2.2.9-FreeBSD_g079ba86d7",
+        "go": "1.27.1",
+        "suite_seconds": 16.27,
+        "denial_cases": 17,
+        "floods": "pass",
+        "connection_bound": "pass",
+        "slow_deadlines": "pass",
+        "recovery": "pass",
+        "redaction": "pass",
+        "boot_state": "unchanged"
+      }
+    ],
+    "limits": [
+      "loopback lab access only; overload may delay legitimate administration",
+      "native performance, required browsers/manual accessibility and independent SMB/NFS are separate gates",
+      "no hardware, package or production support claim"
+    ],
+    "files": [
+      {
+        "path": "internal/service/listener.go",
+        "sha256": "c3c3fff52f75d40812497b0b73999b8f691f4a69ed01a5543cb9d63f208c5c10"
+      },
+      {
+        "path": "internal/service/service.go",
+        "sha256": "4097069f401f39ac5a8803f61c66a7669ee7f46fbe1d31ed5891b16c5d7855ed"
+      },
+      {
+        "path": "internal/service/listener_bounds_test.go",
+        "sha256": "b228c14452260370d316b125fe847029474c4d2b96c7b252db4ecac00bf79265"
+      },
+      {
+        "path": "cmd/horvium/http_abuse_freebsd_test.go",
+        "sha256": "1960fe72298820377904b9ba84824d4bb8a54ac1e7e722e5d6d0414a93957344"
+      },
+      {
+        "path": "internal/admin/http.go",
+        "sha256": "ffd2713e52e3e46775d35a75cb15b1ae53395e449e43057e9678ea43a3dcc86e"
+      },
+      {
+        "path": "internal/console/console.go",
+        "sha256": "d0099cf9d772f63b00d0dd83fe7beb7221dff817989c5af7e489faf02bbbbfd5"
+      },
+      {
+        "path": "internal/service/events.go",
+        "sha256": "b0f488de9f535e5b7772ed0d9ccc423614250b7ba901a0b18841860355866e44"
+      },
+      {
+        "path": "tools/bsd-native-discovery.sh",
+        "sha256": "877f51f7da908937a60b1fe70dddffe5fed825c9ed29ecc6d0ebdea377c74ae2"
+      },
+      {
+        "path": "go.mod",
+        "sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+      }
+    ]
   }
 }

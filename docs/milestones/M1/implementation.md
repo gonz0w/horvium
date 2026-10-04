@@ -189,7 +189,14 @@ base timeout's reaper and Go's FreeBSD parent-death signal contain the fixed pro
 subtree after helper death. The pre-fix leak reproduced on both native targets;
 actual owner-death and guarded bounds cases passed in run 37227688891. See
 [crash-containment evidence](../../testing/M1/crash-containment.md). Integrated
-built-helper death during a captured native command remains to be qualified.
+built-helper death during a captured native command also passed in PR 14 below.
+
+Native resources and integrated built-helper crash/stale/recovery/boot state
+passed both pinned guests in run 37233391796; under review in PR 14. See [procedure](../../testing/M1/native-resources.md).
+
+The assembled HTTP abuse suite and pre-handler connection cap passed on both
+native targets in run 37230688573 and are under review in [PR 15](https://github.com/gonz0w/horvium/pull/15).
+See [HTTP abuse evidence](../../testing/M1/http-abuse.md).
 
 1. Complete console/CLI native and required-browser evidence, accessibility acceptance.
 2. Qualify native-reader allocation alongside the measured synthetic management budgets.

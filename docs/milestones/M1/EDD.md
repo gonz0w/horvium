@@ -88,8 +88,9 @@ command deadline, with SIGKILL as its expiry signal. Its reaper owns the command
 subtree. Go's FreeBSD parent-death signal sends SIGALRM to that guard when the
 helper dies; normal cancellation does the same. Guard stderr consumes the same
 output budget; failed/timeout output is never published. The guard has no network
-listener, receives no client-selected arguments, and is included in native
-resource measurements. See [procedure and evidence](../../testing/M1/crash-containment.md).
+listener, receives no client-selected arguments, and is exercised by native
+resource qualification. The Go process budgets exclude separate native child
+process RSS/CPU; this is not a whole-host memory bound. See [procedure and evidence](../../testing/M1/crash-containment.md).
 
 Helper wire contract (version 1, internal): one typed `inventory` request with
 request ID and no device/path parameters. Length-prefixed JSON records carry
@@ -163,6 +164,12 @@ self, frame-ancestors none, base-uri none. Test these exact interactions in brow
 Use semantic links/forms for full-page equivalents; fragment requests do not
 change authorization. Preserve focus and prevent automatic refresh of active
 resource details; background updates announce freshness without disruptive focus.
+
+HTTP connection refinement under review: the foreground listener admits at most
+`max_readers + 8` connections including incomplete headers and idle keep-alives.
+Capacity waits precede handler allocation, and transport deadlines release slots;
+listener close cancels waiting admission. This bounds pre-handler work alongside
+existing response admission. See [HTTP abuse procedure](../../testing/M1/http-abuse.md).
 
 Root-owned static config owns listener/allowed Hosts, helper UID/socket, and safety
 budgets. Parse a strict versioned format; reject unknown fields and invalid limits
