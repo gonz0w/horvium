@@ -39,7 +39,9 @@ This fixture does not adopt guest access as Horvium's future authentication desi
 NFS refuses a guest with existing rpcbind/mountd/nfsd or occupied loopback 2049.
 It runs foreground base rpcbind (`-d`), debug/foreground mountd (`-d`) with a
 private exports file, and debug/foreground nfsd (`--debug`) with
-two kernel threads. Daemon PID/export kernel state is guest-global. Bindings/exports admit loopback only;
+two kernel threads. Daemon PID/export kernel state is guest-global. mountd automatically appends loopback addresses to explicit bind hosts. The
+fixture creates/removes an owned 127.0.0.2 loopback alias to avoid binding the same
+fixed port twice; preexisting alias state is refused. Bindings/exports admit loopback only;
 NFSv3 TCP mounts are read-only, with bounded soft retries. Each checkpoint creates
 a fresh fixture filename and a fresh client mount, compares transferred bytes,
 requires local mount writes to fail, then unmounts. Fresh names prevent a client
