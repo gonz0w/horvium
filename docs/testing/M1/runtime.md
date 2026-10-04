@@ -1,6 +1,7 @@
 # M1 runtime lifecycle and observability evidence
 
-Status: slice 6 under review in [PR 9](https://github.com/gonz0w/horvium/pull/9).
+Status: slice 6 accepted by maintainer merge of [PR 9](https://github.com/gonz0w/horvium/pull/9),
+source `35c928a75945caaae5c5682eed539ae247caff19`.
 M1 remains unaccepted.
 Date: 2026-10-04. Work: [issue 1](https://github.com/gonz0w/horvium/issues/1).
 Authority: approved [EDD](../../milestones/M1/EDD.md) and
@@ -135,5 +136,6 @@ The final evidence commit changes documentation only, preserving the functional
 revision named above.
 
 Required browser/accessibility, complete process-abuse review, native-probe kill,
-SMB/NFS continuity, integrated helper-denial logging and the full performance
-procedure remain open. No installable port or production support is claimed.
+SMB/NFS continuity and integrated helper-denial logging remain open. The full
+performance procedure is tracked separately in [performance qualification](performance.md).
+No installable port or production support is claimed.

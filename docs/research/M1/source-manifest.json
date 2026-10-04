@@ -606,5 +606,258 @@
         }
       ]
     }
+  },
+  "product_performance": {
+    "date": "2026-10-04",
+    "status": "pass for declared synthetic fixtures; M1 unaccepted",
+    "test_ids": [
+      "M1-PERF-001",
+      "M1-SCALE-001"
+    ],
+    "source_revision": "d85d5d1b4e9a7b1656085eef21ff21def0f50dc9",
+    "workflow_run": "https://github.com/gonz0w/horvium/actions/runs/37218753397",
+    "runner": "ubuntu-24.04 hosted amd64",
+    "go": "1.27.1 freebsd/amd64; CGO_ENABLED=0",
+    "x_sys": "v0.48.0",
+    "htmx": "2.0.11 locally embedded",
+    "host_python": "3.12.3",
+    "guest_python": "3.14.7 development-only",
+    "synthetic_seed": "deterministic integer sequence 0..n-1; fixed names/GUIDs/numbers",
+    "procedure": "fresh process pair per size; real unprivileged management executable; root test-only synthetic helper using actual transport; 60-second warmup; 300-second small idle window; ten readers sharing one session; 1000 full HTTP pages plus 1000 concurrent replacement pages; three manual replacements; nominal 100ms RSS sampling; budget uses larger of sampled combined peak and sum of kernel process high-water figures",
+    "limits": [
+      "Synthetic typed source omits native command/XML allocation and helper operational logging.",
+      "No physical throughput, 16GB MicroServer, commercial hardware or full M1 acceptance.",
+      "Hosted scheduling/firmware and QEMU package version are observed, not immutable.",
+      "Samples and kernel high-water figures do not prove an exact instantaneous upper bound.",
+      "Boundary fixture has 200000 transport records and 128MiB transport bytes, isolating default 100000-record/64MiB model caps; boundary RSS is separate from normal budgets."
+    ],
+    "prior_runs": [
+      {
+        "run": 37217655025,
+        "status": "green jobs but no performance execution; excluded"
+      },
+      {
+        "run": 37217893498,
+        "status": "native tests pass; runner validator fails on RSS-accounting ordering; superseded"
+      }
+    ],
+    "files": [
+      {
+        "path": ".github/workflows/bsd-performance.yml",
+        "sha256": "c1a32080640bb8c9469a12e2dde4bef8614771aacdacde9c7ac709c31e5cb1a6"
+      },
+      {
+        "path": ".github/workflows/bsd-smoke.yml",
+        "sha256": "919c8498cf4959376a4ce3f19b4ed53e6f87cbd8595e7ba16dd0f6089256f991"
+      },
+      {
+        "path": "cmd/horvium/performance_freebsd_test.go",
+        "sha256": "a061a4f08d4121de94adb85ffc324a3a95d231f08aa2b07037224ec27cca06f5"
+      },
+      {
+        "path": "cmd/horvium/performance_metrics_test.go",
+        "sha256": "995f928a5b980f48466f983225970c9a52c6a4c62b47842bb017afb3dc072549"
+      },
+      {
+        "path": "cmd/horvium/performance_test.go",
+        "sha256": "476c4700f7ec498b2cefaab943de990b6afc82e2835f9e9da70677b9ffad2195"
+      },
+      {
+        "path": "tools/bsd-performance.sh",
+        "sha256": "a17cd573727b0d7f6295570057d0c6d71c396aa2e68c9b704496d4293092d5c5"
+      },
+      {
+        "path": "tools/performance-vm-pins.json",
+        "sha256": "81f0f30e4171fed38e281c644044521a0cdc9f6693cd9b988b229ef4f85d002b"
+      },
+      {
+        "path": "tools/prepare-performance-vm.py",
+        "sha256": "9f52f5f47c8a0f79a3adfa27b7d24ae480f4174d6c6aa91a3ec696cc3a7deb9e"
+      },
+      {
+        "path": "tools/check-performance-evidence.py",
+        "sha256": "58445ab4bec8234d1c33292793af014f493627e31cfede2194ca643fc660ef78"
+      },
+      {
+        "path": "tools/tests/test_performance_vm.py",
+        "sha256": "050cd5df3b89816c07d00be913ffd53ff2fb310c7d56ae3c6c3a7b7829da7a9d"
+      },
+      {
+        "path": "tools/tests/test_performance_evidence.py",
+        "sha256": "cafc6d5ec047f53ed16938cc841c99c6c98c4d155f961c293d53df9cc4d01275"
+      },
+      {
+        "path": "internal/helper/server.go",
+        "sha256": "ed8abe7a68e66f0530d9708b1209d34918aa710e4243c26f832c5f13e37c749b"
+      },
+      {
+        "path": "internal/helper/wire.go",
+        "sha256": "5f8a5ac1a5d619435a2240a699afe3d4337bdd98ec9507bccb7e53f8ef0cbea6"
+      },
+      {
+        "path": "internal/observation/manager.go",
+        "sha256": "00b4001b727182f941a09400a0caf9e6bb05f8232616fc11324935d4544e92b2"
+      },
+      {
+        "path": "internal/console/console.go",
+        "sha256": "d0099cf9d772f63b00d0dd83fe7beb7221dff817989c5af7e489faf02bbbbfd5"
+      },
+      {
+        "path": "internal/console/assets/console.html",
+        "sha256": "376d2b444b45c0fa0e946720d5da7fda01e3dddd093c11d2b738af9116720b35"
+      },
+      {
+        "path": "go.mod",
+        "sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+      }
+    ],
+    "guests": [
+      {
+        "release": "15.1",
+        "status": "pass",
+        "image": {
+          "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+          "builder": "2.2.8",
+          "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+          "cpu_count": 2,
+          "cpu_model": "qemu64",
+          "memory_mib": 6144,
+          "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+          "release": "15.1"
+        },
+        "measurements": [
+          {
+            "budget_peak_rss_bytes": 34844672,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 33378304,
+            "datasets": 100,
+            "idle_cpu_percent_one_core": 0.019999709250626822,
+            "idle_seconds": 300,
+            "max_sample_gap_ms": 670.021,
+            "p50_ms": 12.985,
+            "p95_ms": 44.829,
+            "p99_ms": 117.023,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 3639,
+            "sampled_combined_peak_rss_bytes": 34844672,
+            "session_count": 1,
+            "warmup_seconds": 60
+          },
+          {
+            "budget_peak_rss_bytes": 45346816,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 45068288,
+            "datasets": 10000,
+            "idle_cpu_percent_one_core": 0,
+            "idle_seconds": 0,
+            "max_sample_gap_ms": 1044.28,
+            "p50_ms": 15.615,
+            "p95_ms": 65.891,
+            "p99_ms": 152.251,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 665,
+            "sampled_combined_peak_rss_bytes": 45346816,
+            "session_count": 1,
+            "warmup_seconds": 60
+          }
+        ],
+        "limits": {
+          "accepted_model_records": "100000",
+          "record_exhaustion": "pass",
+          "byte_exhaustion": "pass",
+          "recovery": "pass",
+          "sampled_rss_bytes": "379621376",
+          "high_water_sum_bytes": "379326464",
+          "samples": "79",
+          "max_gap_ms": "725.1"
+        },
+        "guest_cpu_reported": "QEMU Virtual CPU version 2.5+",
+        "guest_cpu_count": 2,
+        "guest_physical_memory_bytes": 6387654656,
+        "qemu_version": "8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+        "os": "15.1-RELEASE-p3",
+        "zfs_userland": "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+        "zfs_kernel": "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0"
+      },
+      {
+        "release": "14.5",
+        "status": "pass",
+        "image": {
+          "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+          "builder": "2.2.8",
+          "compressed_sha256": "cd90489bb7d94585016e177b9e3f0084f3410454dc0af19481f44ddd5aa45257",
+          "cpu_count": 2,
+          "cpu_model": "qemu64",
+          "memory_mib": 6144,
+          "qcow2_sha256": "6593466e8d6341eaad95755973ab594222516dd75bcd99b18239b5047e5396f4",
+          "release": "14.5"
+        },
+        "measurements": [
+          {
+            "budget_peak_rss_bytes": 37044224,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 36798464,
+            "datasets": 100,
+            "idle_cpu_percent_one_core": 0.023332997009881125,
+            "idle_seconds": 300,
+            "max_sample_gap_ms": 476.131,
+            "p50_ms": 17.336,
+            "p95_ms": 60.665,
+            "p99_ms": 107.42,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 3652,
+            "sampled_combined_peak_rss_bytes": 37044224,
+            "session_count": 1,
+            "warmup_seconds": 60
+          },
+          {
+            "budget_peak_rss_bytes": 46546944,
+            "clients": 10,
+            "conservative_combined_high_water_rss_bytes": 46288896,
+            "datasets": 10000,
+            "idle_cpu_percent_one_core": 0,
+            "idle_seconds": 0,
+            "max_sample_gap_ms": 674.973,
+            "p50_ms": 21.402,
+            "p95_ms": 90.322,
+            "p99_ms": 273.227,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "requests": 1000,
+            "rss_samples": 684,
+            "sampled_combined_peak_rss_bytes": 46546944,
+            "session_count": 1,
+            "warmup_seconds": 60
+          }
+        ],
+        "limits": {
+          "accepted_model_records": "100000",
+          "record_exhaustion": "pass",
+          "byte_exhaustion": "pass",
+          "recovery": "pass",
+          "sampled_rss_bytes": "374185984",
+          "high_water_sum_bytes": "373923840",
+          "samples": "114",
+          "max_gap_ms": "111.1"
+        },
+        "guest_cpu_reported": "QEMU Virtual CPU version 2.5+",
+        "guest_cpu_count": 2,
+        "guest_physical_memory_bytes": 6393864192,
+        "qemu_version": "8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+        "os": "14.5-RELEASE",
+        "zfs_userland": "zfs-2.2.9-FreeBSD_g079ba86d7",
+        "zfs_kernel": "zfs-kmod-2.2.9-FreeBSD_g079ba86d7"
+      }
+    ]
   }
 }

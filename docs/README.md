@@ -39,3 +39,5 @@
 - [Operational runbook plan](operations/README.md)
 
 - [M1 runtime lifecycle and observability evidence](testing/M1/runtime.md).
+
+- [M1 combined-process performance qualification](testing/M1/performance.md).

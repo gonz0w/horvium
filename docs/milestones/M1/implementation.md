@@ -134,17 +134,32 @@ also passed; full required browser/accessibility acceptance remains open. See
 
 ## Slice 6: foreground lifecycle, operational logging and response admission
 
-Under review in [PR 9](https://github.com/gonz0w/horvium/pull/9):
+Accepted by maintainer merge of [PR 9](https://github.com/gonz0w/horvium/pull/9),
+source `35c928a75945caaae5c5682eed539ae247caff19`, on 2026-10-04:
 full-response inventory reader admission, bounded fixed-schema
 operational events, coupled HTTP/collector shutdown and native built-process
 restart with independent SFTP continuity passed on both native targets. See [runtime evidence](../../testing/M1/runtime.md)
 for the procedure and limitations. Diagnostic authenticated-handler benchmarks
 are separate from the full measured application budget gate.
 
+## Slice 7: combined-process performance qualification
+
+Under review in [PR 10](https://github.com/gonz0w/horvium/pull/10):
+guarded native HTTP workloads measure the real management executable
+and a separate test-only helper using actual authenticated transport. The manually
+dispatched, checksum-verified QEMU suite fixes CPU model, core count, memory and
+base images. See [performance procedure/evidence](../../testing/M1/performance.md).
+Both checksum-pinned FreeBSD QEMU targets passed the prescribed synthetic
+RSS/idle CPU/HTTP latency thresholds, concurrent replacement and cap/recovery
+tests in run 37218753397. This is synthetic management qualification, not physical
+NAS throughput or worst-case native-reader allocation.
+
 ## Remaining slices and acceptance
 
 1. Complete console/CLI native and required-browser evidence, accessibility acceptance.
-2. Independent service/restart tests and measured application budgets.
+2. Qualify native-reader allocation alongside the measured synthetic management budgets.
+3. Extend independent SFTP continuity evidence to SMB/NFS; complete native-probe
+   process-kill and helper-denial logging/abuse review.
 
 All PRD requirements remain subject to the full [Test Design](TDD.md). Native
 reader success is not NAS readiness, commercial qualification or a working UI.
