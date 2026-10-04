@@ -42,13 +42,8 @@ OS/ZFS ARC, fixture controller and independent file daemons. Native execution ti
 still affects collection and HTTP concurrency. These bounds are not whole-NAS
 memory or physical throughput claims.
 
-After the small workload, 400 additional unmounted filesystems with long generated
-names are created in the owned pool, making the actual dataset projection exceed
-a pipe buffer. These are outside the measured 100-filesystem workload; process
-high-water marks conservatively include the later crash/recovery work. Kernel
-fork/exec tracking briefly pauses the built helper reader, then resumes it before
-owner death; short commands are allowed to finish until a live candidate is found.
-The fixture identifies an actual fixed native command
+After the small workload, kernel fork/exec tracking identifies an actual fixed
+native command
 under the built helper's timeout child, stops that command and confirms parentage
 and stopped state before killing the helper. It requires both captured guard and
 command to terminate, the previous generation to remain stale, and a restarted
@@ -68,3 +63,9 @@ before the new gate and passes after it. FreeBSD cross-compilation is build
 verification only. Exact native source/run IDs, measurements and versions will
 be recorded after actual execution. Until then these additional gates are pending.
 Hardware, commercial scale, full M1 acceptance and package readiness remain open.
+
+Early capture fixtures failed verification: FreeBSD ps treats `=` as the start
+of the final column header, so comma-joined empty-header fields did not return
+the intended columns. Separate `-o` arguments correct this fixture parsing.
+The attempted larger crash fixture and helper pause were removed; the measured
+and crash fixtures again use the same 100 owned filesystems. No budget is relaxed.
