@@ -173,12 +173,21 @@ func independentNFS(t *testing.T, dir, root string, content []byte) func() {
 	if os.WriteFile(path, exports, 0600) != nil {
 		t.Fatal("NFS fixture exports")
 	}
+	// mountd automatically adds 127.0.0.1 and ::1 to explicit bind hosts.
+	// Avoid duplicate fixed-port binds by providing a separate owned loopback
+	// alias. Never bind a fixture export daemon to the guest network interface.
+	interfaces := readerFixtureCommand(t, "/sbin/ifconfig", "lo0")
+	if bytes.Contains(interfaces, []byte("inet 127.0.0.2 ")) {
+		t.Fatal("owned loopback alias already exists")
+	}
+	continuityCommand(t, "/sbin/ifconfig", "lo0", "inet", "127.0.0.2/32", "alias")
+	t.Cleanup(func() { continuityCommand(t, "/sbin/ifconfig", "lo0", "inet", "127.0.0.2", "-alias") })
 	rpc := startContinuityDaemon(t, "/usr/sbin/rpcbind", []string{"-d", "-h", "127.0.0.1"})
 	t.Log("NFS_PHASE rpcbind_start")
 	continuityReady(t, "111", rpc)
 	t.Log("NFS_PHASE rpcbind_ready")
 	port := continuityPort(t)
-	mountd := startContinuityDaemon(t, "/usr/sbin/mountd", []string{"-d", "-h", "127.0.0.1", "-p", port, path})
+	mountd := startContinuityDaemon(t, "/usr/sbin/mountd", []string{"-d", "-h", "127.0.0.2", "-p", port, path})
 	t.Log("NFS_PHASE mountd_start")
 	continuityReady(t, port, mountd)
 	t.Log("NFS_PHASE mountd_ready")
