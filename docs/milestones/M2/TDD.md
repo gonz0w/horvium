@@ -9,7 +9,9 @@ Approved by Cam (`@gonz0w`) on 2026-10-04 through maintainer merge of
 reviewed slices; it is not M2 acceptance or native qualification.
 
 The first [planning model record](../../testing/M2/planning.md) covers a T1
-subset only; none of the complete acceptance rows below is satisfied yet.
+subset; [property projection](../../testing/M2/properties.md) adds a narrow native
+parser/source/GUID fixture on both releases. None of the complete acceptance rows
+below is satisfied yet.
 TDD means Test Design Document; implementation uses failing behavioral tests first.
 
 ## Traceability and required gates
@@ -161,4 +163,5 @@ Maintain a per-release/per-operation pass/fail/skip/unavailable matrix and link 
 approved revision. Keep initial failures/repairs in the record. Update behavior
 docs and compatibility alongside each slice, run repository gates, and keep PRs
 open for review. M2 acceptance requires the approved design, these actual gates
-and an explicit maintainer acceptance record. No M2 native test has run yet.
+and an explicit maintainer acceptance record. The native property projection
+subset passed as linked above; all other M2 native gates remain unexecuted.

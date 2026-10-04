@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; property observation subset in progress.
+Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; native property subset in review.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -48,9 +48,11 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   [contracts and partial evidence](../../testing/M2/planning.md). Runtime remains
   read-only; no policy schema, native adapter, transport or submitted job exists.
 - Slice 1 next subset adds bounded native property parsing and retained received
-  values; [native projection evidence](../../testing/M2/properties.md) is pending.
-- Slice 1 remains incomplete: native eligibility/property/provider/topology/status
-  observations and device-use drift gates have not run. No later slice may treat
+  values; [native projection evidence](../../testing/M2/properties.md) passed on
+  both pinned FreeBSD guests (run 37242881791, source
+  `2c7724d503584aa053acaf409ef28e50f3180c40`). No write eligibility follows.
+- Slice 1 remains incomplete: native eligibility/provider/topology/status
+  observations, complete-impact collection and device-use drift gates have not run. No later slice may treat
   model input booleans or old M1 inventory as qualified native write authority.
 
 The approval adopts scope and gates, not passing native behavior or a NAS release.

@@ -1,6 +1,7 @@
 # M2 native property projection
 
-Date: 2026-10-04. Status: implementation; native qualification pending.
+Date: 2026-10-04. Status: native property projection passed on both pinned release fixtures;
+implementation offered for maintainer review.
 [Approved design](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [planning model](planning.md), [slice sequence](../../milestones/M2/implementation.md).
 The model subset was accepted by maintainer merge of
@@ -23,7 +24,10 @@ bounded bytes and returns filesystem models; it cannot prove command success,
 native completeness/freshness, pool eligibility or root enrollment. The future
 reader must qualify those separately, including enumeration before/after the
 property read. Dropping all four rows of one filesystem can be syntactically
-valid; a parser is not a complete-inventory detector.
+valid; a parser is not a complete-inventory detector. The filesystem filter also
+omits volumes/snapshots. The future impact collector must account for every
+descendant type and deny unsupported or unrepresented impact; these rows cannot
+prove absence of a foreign volume or qualify a parent quota change.
 
 Each filesystem must have exactly one row for each selected property. Resolve
 parent and inherited source names to GUIDs within the same projection, regardless
@@ -95,10 +99,34 @@ These CPU/memory settings describe the disposable lab, not hardware requirements
 | Environment | Property projection | Remaining evidence |
 |---|---|---|
 | Local macOS arm64 | Unit/race/fuzz and repository gates passed; native unavailable | Native behavior cannot be inferred from these tests |
-| FreeBSD 15.1 amd64 disposable QEMU | Pending execution | Exact tested source/run/version/fixture pins recorded after execution |
-| FreeBSD 14.5 amd64 disposable QEMU | Pending execution | Same requirement |
+| FreeBSD 15.1-RELEASE-p3 amd64 disposable QEMU | Passed all 11 property assertions and teardown | ZFS userland/module 2.4.2-1-FreeBSD_g6330a45b0; Go 1.27.1 |
+| FreeBSD 14.5-RELEASE amd64 disposable QEMU | Passed all 11 property assertions and teardown | ZFS userland/module 2.2.9-FreeBSD_g079ba86d7; Go 1.27.1 |
 
 This is partial M2-PROPERTY-001 / M2-DRIFT-001 evidence. Real provider/topology/use
 checks, root enrollment, helper transport, mutation, durable recovery, assembled
 UI/CLI/browser/resource and all remaining Test Design gates are pending. M1 manual
 accessibility remains pending by maintainer choice.
+
+## Executed result and provenance
+
+[Run 37242881791](https://github.com/gonz0w/horvium/actions/runs/37242881791)
+passed both dedicated property jobs plus both existing product/research guests
+and foundation smoke. Browser and performance were intentionally not requested;
+their skipped optional jobs are not evidence for this slice. Exact functional
+and suite source: `2c7724d503584aa053acaf409ef28e50f3180c40`.
+Only evidence/documentation changes follow that source; the hashed product,
+tests, fixture scripts/workflow and pinned inputs remain byte-identical.
+
+The [sanitized manifest](properties-manifest.json) records tested input hashes,
+both native utility/guest/QEMU strings and hashes, primary-source digests, all
+assertions and matching image/AnyVM pre/post digests. QEMU was 8.2.2
+(1:8.2.2+ds-0ubuntu1.18) on Ubuntu 24.04.5. Compressed image hashes and AnyVM
+match the existing pins; decompressed base images were unchanged. Raw job logs,
+URLs with download credentials, fixture GUIDs/names and host inventory are not
+committed. No hardware/commercial/client/throughput claim follows.
+
+The preliminary run 37242678556 was cancelled and superseded to use the approved
+pinned M2 fixture, before qualification. No failed native assertion was hidden;
+the complete recorded property suites passed without native behavior repairs.
+Local repository/vet/unit/race/seven-fuzz gates and FreeBSD amd64 cross-build
+passed. Neither their success nor these native parser results enables writes.

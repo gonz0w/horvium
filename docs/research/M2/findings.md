@@ -1,6 +1,8 @@
 # Research: M2 storage contracts and durable-state risks
 
-Date: 2026-10-04. Status: source/documentation evidence only; no M2 native tests.
+Date: 2026-10-04. Status: this research remains source/documentation evidence.
+Subsequent [native property projection](../../testing/M2/properties.md) results
+are recorded separately; all other M2 native gates remain pending.
 Work: [issue 19](https://github.com/gonz0w/horvium/issues/19).
 [Source manifest](source-manifest.json), [PRD](../../milestones/M2/PRD.md),
 [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md).
