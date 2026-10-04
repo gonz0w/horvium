@@ -144,16 +144,20 @@ are separate from the full measured application budget gate.
 
 ## Slice 7: combined-process performance qualification
 
-In progress: guarded native HTTP workloads measure the real management executable
+Under review in [PR 10](https://github.com/gonz0w/horvium/pull/10):
+guarded native HTTP workloads measure the real management executable
 and a separate test-only helper using actual authenticated transport. The manually
 dispatched, checksum-verified QEMU suite fixes CPU model, core count, memory and
 base images. See [performance procedure/evidence](../../testing/M1/performance.md).
-This is synthetic management qualification, not physical NAS throughput.
+Both checksum-pinned FreeBSD QEMU targets passed the prescribed synthetic
+RSS/idle CPU/HTTP latency thresholds, concurrent replacement and cap/recovery
+tests in run 37218753397. This is synthetic management qualification, not physical
+NAS throughput or worst-case native-reader allocation.
 
 ## Remaining slices and acceptance
 
 1. Complete console/CLI native and required-browser evidence, accessibility acceptance.
-2. Complete the measured application budget evidence and native-reader allocation limits.
+2. Qualify native-reader allocation alongside the measured synthetic management budgets.
 3. Extend independent SFTP continuity evidence to SMB/NFS; complete native-probe
    process-kill and helper-denial logging/abuse review.
 

@@ -1,6 +1,7 @@
 # M1 combined-process performance qualification
 
-Date: 2026-10-04. Status: procedure implemented; native execution pending.
+Date: 2026-10-04. Status: synthetic qualification passed; slice 7 under review in
+[PR 10](https://github.com/gonz0w/horvium/pull/10). M1 remains unaccepted.
 Work: [issue 1](https://github.com/gonz0w/horvium/issues/1).
 Authority: approved [PRD budgets](../../milestones/M1/PRD.md) and
 [Test Design M1-PERF-001](../../milestones/M1/TDD.md).
@@ -65,11 +66,18 @@ calculation and aggregate-record fixture were implemented. Tool regressions reje
 checksum mismatch and preserve an existing fixture. FreeBSD cross-compilation is
 build evidence only. A runner-side [evidence validator](../../../tools/check-performance-evidence.py)
 requires both full measurement records, passing budgets using the larger RSS
-observation, and the explicit cap/recovery
-record; a green VM boot or skipped test is rejected.
+observation, and the explicit cap/recovery record; a green VM boot or skipped test is rejected.
 
-Native source/run IDs and measured results will be added
-only after actual execution; pending is not pass.
+The first [run 37217655025](https://github.com/gonz0w/horvium/actions/runs/37217655025)
+passed existing native tests but its performance jobs only booted VMs: detach mode
+skips AnyVM's final guest command. It is not performance evidence. The corrected
+[run 37217893498](https://github.com/gonz0w/horvium/actions/runs/37217893498) executed
+all native performance tests successfully, including cap rejection/recovery, but
+the runner validator failed because sampled RSS was slightly larger than the
+getrusage sum. A regression now accepts either accounting observation as larger
+and rejects any budget violation in either. Qualification now runs a separate
+SSH command after detached boot, with no guest copyback, and compares the greater
+RSS value. These repairs keep the approved budgets unchanged.
 
 The helper fixture includes the test binary and generated typed models, but omits
 native command/XML allocations. This qualifies the management executable, cache,
@@ -77,3 +85,44 @@ authentication, rendering, HTTP and real helper framing with synthetic observati
 it does not prove worst-case native collector RSS or physical throughput. The
 16 GB MicroServer and larger commercial environments remain unmeasured. No
 installable port/image, full M1 acceptance or production support follows.
+
+## Final measured execution
+
+Functional source: `d85d5d1b4e9a7b1656085eef21ff21def0f50dc9`.
+[Run 37218753397](https://github.com/gonz0w/horvium/actions/runs/37218753397)
+passed all seven jobs, including both measured workloads, explicit cap/recovery
+records, runner evidence validation and unchanged base/runtime hashes. All prior
+native reader/helper/cache/auth/CLI/runtime/SFTP fixtures passed too.
+
+| Guest | Datasets | p50 ms | p95 ms | p99 ms | Budget RSS MiB | Small idle CPU, one core |
+|---|---:|---:|---:|---:|---:|---:|
+| 15.1 | 100 | 12.985 | 44.829 | 117.023 | 33.23 | 0.0200% |
+| 15.1 | 10,000 | 15.615 | 65.891 | 152.251 | 43.25 | not measured |
+| 14.5 | 100 | 17.336 | 60.665 | 107.420 | 35.33 | 0.0233% |
+| 14.5 | 10,000 | 21.402 | 90.322 | 273.227 | 44.39 | not measured |
+
+All approved small/large measured thresholds pass. The p95 bound is not a p99
+bound: 14.5's large-fixture p99 reached 273.227 ms. Sampling gaps reached 1,044.28 ms
+on the hosted runner despite the nominal 100 ms interval; kernel process peaks
+supplement those samples. Both separate boundary tests passed rejection, stale
+retention and recovery, with approximately 357 MiB (14.5) / 362 MiB (15.1) combined
+sampled RSS. Those raised-transport-cap fixtures are outside the normal-size
+budgets and do not imply every cap-bound workload stays below 256 MiB.
+
+| Observed guest | ZFS userland/module suffix | CPU / actual physical bytes |
+|---|---|---|
+| 15.1-RELEASE-p3 amd64 | 2.4.2-1-FreeBSD_g6330a45b0 | two qemu64 vCPUs / 6,387,654,656 |
+| 14.5-RELEASE amd64 | 2.2.9-FreeBSD_g079ba86d7 | two qemu64 vCPUs / 6,393,864,192 |
+
+Both used Go 1.27.1, x/sys v0.48.0, locally embedded HTMX 2.0.11, guest development
+Python 3.14.7, host Python 3.12.3 and QEMU 8.2.2
+(`1:8.2.2+ds-0ubuntu1.18`). The configured guest memory was 6144 MiB; the
+reported physical total was lower. The image/runtime
+SHA-256 values, complete RSS/sample/latency records, synthetic seed and source
+file hashes are in the [source manifest](../../research/M1/source-manifest.json).
+
+Local macOS 27.0 arm64 `make check lint test secrets build go-check` passed,
+including behavioral tooling tests, race detection and all five bounded fuzz
+targets. The final evidence revision changes documentation only. No operator-host
+service was enabled. Full native-reader resource, browser/accessibility, abuse,
+SMB/NFS continuity and release/package gates remain open.
