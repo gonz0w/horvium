@@ -37,7 +37,8 @@ See the official [smbd](https://www.samba.org/samba/docs/current/man-html/smbd.8
 This fixture does not adopt guest access as Horvium's future authentication design.
 
 NFS refuses a guest with existing rpcbind/mountd/nfsd or occupied loopback 2049.
-It runs base rpcbind, mountd with a private exports file, and foreground nfsd with
+It runs foreground base rpcbind (`-d`), debug/foreground mountd (`-d`) with a
+private exports file, and foreground nfsd (`-N`) with
 a private PID file and two kernel threads. Bindings/exports admit loopback only;
 NFSv3 TCP mounts are read-only, with bounded soft retries. Each checkpoint creates
 a fresh fixture filename and a fresh client mount, compares transferred bytes,
