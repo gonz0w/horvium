@@ -75,6 +75,10 @@ func run(ctx context.Context, args []string, input io.Reader, out, errout io.Wri
 		if f, ok := input.(*os.File); ok && !protectedInput(f) {
 			return fail(errInput)
 		}
+		if f, ok := input.(*os.File); ok {
+			stop := context.AfterFunc(ctx, func() { _ = f.Close() })
+			defer stop()
+		}
 		token, e := readToken(input)
 		if e != nil {
 			return fail(e)

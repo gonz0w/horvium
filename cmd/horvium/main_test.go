@@ -4,8 +4,12 @@ package main
 import (
 	"bytes"
 	"context"
+	"io"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestNoArgumentCredentialDisclosure(t *testing.T) {
@@ -29,5 +33,55 @@ func TestTokenInputBoundaries(t *testing.T) {
 		if _, e := readToken(strings.NewReader(s)); e != nil {
 			t.Fatal("protected token rejected")
 		}
+	}
+}
+
+func TestProtectedInputPermissions(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "input")
+	if os.WriteFile(path, []byte("fixture"), 0600) != nil {
+		t.Fatal("fixture")
+	}
+	f, e := os.Open(path)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer f.Close()
+	if !protectedInput(f) {
+		t.Fatal("owned protected regular input rejected")
+	}
+	if os.Chmod(path, 0644) != nil {
+		t.Fatal("fixture chmod")
+	}
+	if protectedInput(f) {
+		t.Fatal("public credential input accepted")
+	}
+	r, w, e := os.Pipe()
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer r.Close()
+	defer w.Close()
+	if !protectedInput(r) {
+		t.Fatal("protected pipe rejected")
+	}
+}
+func TestCancelledCLIClosesBlockedInput(t *testing.T) {
+	r, w, e := os.Pipe()
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer r.Close()
+	defer w.Close()
+	ctx, cancel := context.WithCancel(context.Background())
+	done := make(chan int, 1)
+	go func() { done <- run(ctx, []string{"inventory"}, r, io.Discard, io.Discard) }()
+	cancel()
+	select {
+	case code := <-done:
+		if code == 0 {
+			t.Fatal("cancelled input succeeded")
+		}
+	case <-time.After(time.Second):
+		t.Fatal("cancelled CLI blocked on token input")
 	}
 }

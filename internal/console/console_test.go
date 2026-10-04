@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gonz0w/horvium/internal/client"
+	"html/template"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -361,5 +362,23 @@ func TestLocalFormsRetainOriginAndNullOriginIsDenied(t *testing.T) {
 	r.Header.Set("Sec-Fetch-Site", "same-origin")
 	if serve(h, r).Code != 403 {
 		t.Fatal("opaque Origin must remain denied")
+	}
+}
+func TestOversizedViewsReturnNoPartialInventory(t *testing.T) {
+	h, m, a := fixture(t)
+	_ = h
+	long := strings.Repeat("x", 32<<20)
+	jsonResponse := httptest.NewRecorder()
+	writeJSON(jsonResponse, map[string]string{"observed": long}, 200)
+	if jsonResponse.Code != 503 || strings.Contains(jsonResponse.Body.String(), "xxxxx") {
+		t.Fatal("oversized JSON published partial inventory")
+	}
+	application := &app{manager: m}
+	application.gate, _ = admin.NewGate(fixtureConfig("127.0.0.1:8088"), a)
+	application.templates = template.Must(template.New("fixture").Parse(`{{define "fixture"}}sensitive prefix {{.Error}}{{end}}`))
+	htmlResponse := httptest.NewRecorder()
+	application.render(htmlResponse, "fixture", view{Error: long}, 200)
+	if htmlResponse.Code != 503 || strings.Contains(htmlResponse.Body.String(), "sensitive prefix") {
+		t.Fatal("oversized HTML published partial inventory")
 	}
 }

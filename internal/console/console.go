@@ -225,21 +225,39 @@ func (a *app) fail(w http.ResponseWriter, r *http.Request, e error, jsonMode boo
 		a.render(w, "page", v, status)
 	}
 }
+
+// Reply bytes are a logical output budget, not a whole-process RSS guarantee.
+const maxReplyBytes = 32 << 20
+
+type replyBuffer struct{ data bytes.Buffer }
+
+func (b *replyBuffer) Write(p []byte) (int, error) {
+	if len(p) > maxReplyBytes-b.data.Len() {
+		return 0, inventory.ErrLimit
+	}
+	return b.data.Write(p)
+}
 func (a *app) render(w http.ResponseWriter, name string, v view, status int) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Vary", "HX-Request")
-	var output bytes.Buffer
+	var output replyBuffer
 	if a.templates.ExecuteTemplate(&output, name, v) != nil {
 		http.Error(w, "Rendering unavailable", 503)
 		return
 	}
 	w.WriteHeader(status)
-	_, _ = w.Write(output.Bytes())
+	_, _ = w.Write(output.data.Bytes())
 }
 func writeJSON(w http.ResponseWriter, v any, status int) {
 	w.Header().Set("Content-Type", "application/json")
+	var output replyBuffer
+	if json.NewEncoder(&output).Encode(v) != nil {
+		w.WriteHeader(503)
+		_, _ = w.Write([]byte(`{"code":"unavailable","message":"View exceeds output budget"}` + "\n"))
+		return
+	}
 	w.WriteHeader(status)
-	_ = json.NewEncoder(w).Encode(v)
+	_, _ = w.Write(output.data.Bytes())
 }
 func (a *app) api(w http.ResponseWriter, r *http.Request) {
 	q, _, e := parseQuery(r, false)

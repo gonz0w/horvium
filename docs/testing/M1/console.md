@@ -17,7 +17,9 @@ protection are explicitly not collected. Pool state is not a disk-health guarant
 The M1 internal JSON routes are GET `/api/overview`, `/api/pools`,
 `/api/datasets`, `/api/providers`; POST `/api/refresh` requests one collection.
 Queries accept generation, filter, sort, descending, offset and limit; overview
-accepts generation only. Unknown, duplicate and malformed fields fail. HTML adds
+accepts generation only. Unknown, duplicate and malformed fields fail. Full and JSON replies have a 32 MiB encoded output budget; an oversized view
+returns 503 before any inventory is written. This logical budget is not an RSS
+guarantee; serialization allocation needs the scale gate. HTML adds
 selected, which must identify a row in the displayed page. Provider graph IDs
 remain collection-local. These interfaces are development contracts, not a public
 release API. Capacities decode into Go uint64; GUIDs remain decimal strings.
@@ -35,6 +37,8 @@ hex token from an owned mode-0600 regular input or a pipe. No credential flag,
 URL, environment setting or persistent cookie store exists. A command exchanges
 credentials, returns typed JSON, and attempts logout before dropping local cookies.
 Malformed/denied responses produce fixed errors without raw bodies or arguments.
+Cancellation closes an operator input file/pipe so a missing token cannot leave
+the CLI blocked after Ctrl-C.
 
 Foreground `serve`, `helper`, `token-setup` and `token-rotate` commands assemble
 existing libraries. Management requires the configured non-root UID, safe digest
