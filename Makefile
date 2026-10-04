@@ -38,6 +38,7 @@ go-check:
 	$(GO) test ./internal/helper -run '^$$' -fuzz '^FuzzSnapshot$$' -fuzztime=3s -parallel=2
 
 	$(GO) test ./internal/admin -run '^$$' -fuzz '^FuzzConfiguration$$' -fuzztime=3s -parallel=2
+	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzPropertyPlan$$' -fuzztime=3s -parallel=2
 
 secrets:
 	.tools/bin/gitleaks dir --redact --no-banner --config .gitleaks.toml .

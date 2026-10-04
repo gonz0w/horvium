@@ -1,16 +1,18 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-04. Status: Draft design; implementation not authorized by this record.
+Date: 2026-10-04. Status: Implementing; approved design, first model subset in review.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
 M1 automated work and the qualification record are merged. M1 is Validating;
 Safari/manual accessibility and explicit milestone acceptance remain pending.
-M2 design can be reviewed while those observations are pending. M2 product work
-requires approval of the linked documents and proposed ADRs under
-[the repository instructions](../../../AGENTS.md).
+Cam (`@gonz0w`) approved M2 PRD/EDD/Test Design and ADRs 0006/0007 through
+maintainer merge of [PR 20](https://github.com/gonz0w/horvium/pull/20) on 2026-10-04,
+source `753f601960529cd17596d0ffc628afe38d041c82`. This authorizes the test-first
+slices under [the repository instructions](../../../AGENTS.md), without accepting
+M1, M2 or a deployable release.
 
-## Proposed slices and acceptance boundaries
+## Approved slices and acceptance boundaries
 
 | Order | Reviewable outcome | Meaningful proof before acceptance |
 |---|---|---|
@@ -33,14 +35,20 @@ merged `main` so squash merges do not recreate the previous stacked-PR conflicts
 Research/acceptance artifacts retain their actual tested revisions and file hashes
 if commit history is rebased. Agents leave PRs open for the maintainer.
 
-## Current evidence and required approval
+## Current evidence and slice progress
 
 - Primary source inspection and SHA-256 capture: complete for the documented M2 questions.
 - M2 native mutation/state/failure/browser/resource execution: not started.
 - Physical MicroServer/commercial/controller/client qualification: not supplied.
-- M2 PRD/EDD/Test Design and ADRs 0006/0007: proposed, approval pending.
+- M2 PRD/EDD/Test Design and ADRs 0006/0007: approved in PR 20 as recorded above.
+- Slice 1 first subset: `internal/storage` scope/property review model with
+  failing-first denial/impact/immutability/expiry/drift/bound tests. See
+  [contracts and partial evidence](../../testing/M2/planning.md). Runtime remains
+  read-only; no policy schema, native adapter, transport or submitted job exists.
+- Slice 1 remains incomplete: native eligibility/property/provider/topology/status
+  observations and device-use drift gates have not run. No later slice may treat
+  model input booleans or old M1 inventory as qualified native write authority.
 
-Approval must identify the maintainer/date/merged design source. It adopts the
-documented scope and gates, not passing native behavior or a NAS release. Record
-actual slice results here and in the compatibility matrix; skipped fixtures are
-never acceptance evidence. Full M1 acceptance remains a separate pending decision.
+The approval adopts scope and gates, not passing native behavior or a NAS release.
+Record actual slice results here and in the compatibility matrix; skipped fixtures
+are never acceptance evidence. Full M1 acceptance remains a separate pending decision.

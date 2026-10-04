@@ -1,9 +1,15 @@
 # Test Design: safe storage lifecycle
 
-Status: Draft; no M2 product acceptance evidence. Owner: Cam (`@gonz0w`).
+Status: Approved design; M2 implementation/acceptance evidence is partial. Owner: Cam (`@gonz0w`).
 Date: 2026-10-04. [PRD](PRD.md), [EDD](EDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
-Approval record: pending linked design/ADR review.
+Approved by Cam (`@gonz0w`) on 2026-10-04 through maintainer merge of
+[PR 20](https://github.com/gonz0w/horvium/pull/20), source
+`753f601960529cd17596d0ffc628afe38d041c82`. Design approval authorizes the
+reviewed slices; it is not M2 acceptance or native qualification.
+
+The first [planning model record](../../testing/M2/planning.md) covers a T1
+subset only; none of the complete acceptance rows below is satisfied yet.
 TDD means Test Design Document; implementation uses failing behavioral tests first.
 
 ## Traceability and required gates

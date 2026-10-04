@@ -1,8 +1,13 @@
 # EDD: owned ZFS operations and durable recovery
 
-Status: Draft; not approved. Owner: Cam (`@gonz0w`). Date: 2026-10-04.
+Status: Implementing; design approved. Owner: Cam (`@gonz0w`). Date: 2026-10-04.
 [PRD](PRD.md), [Test Design](TDD.md), [issue 19](https://github.com/gonz0w/horvium/issues/19),
-[primary evidence](../../research/M2/findings.md). Approval record: pending.
+[primary evidence](../../research/M2/findings.md).
+
+Approved by Cam (`@gonz0w`) on 2026-10-04 through maintainer merge of
+[PR 20](https://github.com/gonz0w/horvium/pull/20), source
+`753f601960529cd17596d0ffc628afe38d041c82`. Design approval authorizes the
+reviewed slices; it is not M2 acceptance or native qualification.
 
 ## Boundaries and authority
 
@@ -26,7 +31,7 @@ policy. Mutation authority is a new, explicitly negotiated transport contract;
 old/unknown operations fail closed. HTTP handlers, templates and CLI adapters
 never construct native commands or access the root ledger. No general command,
 path, environment or property map crosses the boundary. Exact serialization and
-routes are implementation details reviewed after this design is approved.
+routes are implementation details reviewed in their implementation slices.
 
 Writes are disabled unless OS root explicitly enrolls eligible stable device
 identities and pool/dataset scopes in local root-owned policy. The helper checks
@@ -152,7 +157,7 @@ reimport for created pools; adopted pools remain the OS/operator's responsibilit
 
 ## Durable state and scheduling
 
-Propose standard-library strict versioned JSON records rather than adding a
+Use standard-library strict versioned JSON records rather than adding a
 database dependency: [ADR 0007](../../adr/0007-durable-storage-jobs.md). Ownership,
 job intent/current outcome and limited audit events live on system storage in
 root-owned 0700 directories/0600 regular files. The service UID sees only bounded
@@ -260,5 +265,5 @@ All [Test Design](TDD.md) gates are required for claimed M2 behavior. First buil
 ownership/planning and durable state with denial/restart tests, then qualify each
 native operation before exposing it to UI/CLI. Native failures block that operation;
 do not widen commands, force flags or unknown output handling to make a test green.
-Review the proposed ADRs and scope before code. Native implementation findings
+The ADRs and scope were approved in PR 20. Native implementation findings
 that change a contract require a reviewed amendment to all affected documents.
