@@ -87,7 +87,7 @@ Installed service/process-restart qualification remains pending.
 
 ## Slice 3: collector, bounded cache and shared queries
 
-Implementation under review. One worker collects on startup/interval, deduplicates
+Under review in [PR 6](https://github.com/gonz0w/horvium/pull/6). One worker collects on startup/interval, deduplicates
 refreshes and publishes owned immutable observations atomically. At most two
 bounded generations preserve latest and last complete context; failures retain
 data and safe error state, including while retrying. Per-section success timestamps,
@@ -97,7 +97,7 @@ overview use cached data only. Shutdown clears volatile inventory.
 
 Shared validation and bounded deep copying protect ownership/record/string/model
 storage budgets. Local cancellation/race/concurrency/100,000-item cases and native
-unprivileged helper outage/recovery integration are tracked in
+unprivileged helper outage/recovery integration passed on both releases; tracked in
 [collector evidence](../../testing/M1/collector.md). These libraries expose no
 HTTP listener, operator CLI or installable service.
 

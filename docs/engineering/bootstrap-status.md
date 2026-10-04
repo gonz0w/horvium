@@ -14,6 +14,11 @@ Cam (`@gonz0w`) is the initial maintainer and CODEOWNERS owner.
 
 ## Implemented and observed
 
+- Maintainer merged [helper transport PR 5](https://github.com/gonz0w/horvium/pull/5),
+  source `60d73215279fd33a1a2facbb66dd198319d19bc2`, on 2026-10-03.
+  Collector/cache libraries and native outage/recovery are the next review slice;
+  see [collector evidence](../testing/M1/collector.md).
+
 - Maintainer merged [native discovery PR 4](https://github.com/gonz0w/horvium/pull/4),
   source `4a21aa72b4a2bb516018bb06f21dbcc287a4ab0f`, on 2026-10-03.
   The kernel-authorized helper library is the next reviewed M1 slice; see

@@ -1,6 +1,6 @@
 # M1 collector, cache and query evidence
 
-Status: implementation under review; native integration pending.
+Status: implementation under review; native integration passed on both releases.
 Approved [EDD](../../milestones/M1/EDD.md) and
 [Test Design](../../milestones/M1/TDD.md). No executable, HTTP interface or
 installed service is introduced by this library slice.
@@ -114,8 +114,35 @@ still creates/tears down its owned md/pool in the same disposable guest.
 
 ## Execution record
 
-Native run/source and exact versions will follow execution. No native collector
-pass is claimed yet. Initial local microbenchmark on Apple M5 Max, Go 1.27.1
+[Native run 37168464257](https://github.com/gonz0w/horvium/actions/runs/37168464257)
+passed all five jobs on implementation and suite source
+`10c2555c60b0c839ecd46d07fe58479d9158017e`. Both product jobs executed
+`TestNativeCollectorHelperRecovery` successfully, along with the existing actual
+helper credential/lifecycle tests, native md/pool fixture tests and all cache
+unit/boundary tests. The direct `TestNativeCollectorChild` invocation skips by
+design; its parent reexecutes it after dropping UID/GID and requires success.
+
+| Guest | Installed/running kernel and userland | ZFS userland/module | Collector/helper recovery |
+|---|---|---|---|
+| FreeBSD 15.1 amd64 | 15.1-RELEASE-p3 | 2.4.2-1-FreeBSD_g6330a45b0 | Passed |
+| FreeBSD 14.5 amd64 | 14.5-RELEASE | 2.2.9-FreeBSD_g079ba86d7 | Passed |
+
+Go 1.27.1 freebsd/amd64, x/sys v0.48.0, verified module cache; Python 3.14.7
+installs the SDK for testing only. Runner ubuntu-24.04; VM Action
+`a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff`, builder 2.2.8, snapshot QEMU,
+6,144 MiB and default CPU. Image digest was not captured; no immutable image or
+performance qualification is implied. Exact pins/run metadata are in the
+[source manifest](../../research/M1/source-manifest.json).
+
+Local full repository gates, eleven tooling regressions, Go vet/unit/component/
+race tests, four bounded parser/framing fuzz targets and Gitleaks passed. The
+implementation PR's initial required checks also passed in
+[run 37168572776](https://github.com/gonz0w/horvium/actions/runs/37168572776).
+The native recovery test stops a helper with an idle collector, refreshes through
+the outage and recovers. Killing an installed process mid-collection, sessions,
+file daemons and full application resource measurements remain separate gates.
+
+Initial local microbenchmark on Apple M5 Max, Go 1.27.1
 Darwin arm64, `go test ./internal/observation -run '^$' -bench BenchmarkCachedDatasetPage -benchtime=200ms -benchmem`:
 
 | Synthetic datasets | 100-row page | Allocations |

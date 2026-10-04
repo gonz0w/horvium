@@ -246,5 +246,22 @@
     "guest_cpu": "Action default; not performance qualification",
     "image_digest": "not captured; not immutable image qualification",
     "evidence": "docs/testing/M1/helper.md"
+  },
+  "product_collector": {
+    "date": "2026-10-03",
+    "timezone": "America/Denver",
+    "source_revision": "10c2555c60b0c839ecd46d07fe58479d9158017e",
+    "suite_revision": "same as source_revision",
+    "run_id": 37168464257,
+    "run_url": "https://github.com/gonz0w/horvium/actions/runs/37168464257",
+    "status": "passed actual unprivileged collector/helper outage-recovery and cache/reader tests on both releases; full M1 acceptance pending",
+    "go": "go1.27.1 freebsd/amd64",
+    "module": "golang.org/x/sys v0.48.0",
+    "runner": "ubuntu-24.04",
+    "vm_action_revision": "a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff",
+    "guest_memory_mib": 6144,
+    "guest_cpu": "Action default; not performance qualification",
+    "image_digest": "not captured; not immutable image qualification",
+    "evidence": "docs/testing/M1/collector.md"
   }
 }
