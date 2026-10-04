@@ -1098,5 +1098,99 @@
         "all_eight_subcases": "pass"
       }
     ]
+  },
+  "product_crash_containment": {
+    "date": "2026-10-04",
+    "status": "executor native pass; under review; integrated native-command kill and resource gate open",
+    "source_revision": "0bda60d844ec6e496775f4390134a0274e0df07f",
+    "workflow_run": "https://github.com/gonz0w/horvium/actions/runs/37227688891",
+    "failing_source": "eab6a0237d0940cbf273cfdb5063fc63f3e8572f",
+    "failing_run": "https://github.com/gonz0w/horvium/actions/runs/37227304136",
+    "test_ids": [
+      "M1-RESTART-001",
+      "M1-FAIL-001",
+      "M1-SCALE-001",
+      "M1-NOCHANGE-001"
+    ],
+    "upstream_timeout_source": "514bd4465001c5d57a9dda605d00f934f8ca4e91",
+    "vm": {
+      "action_source": "a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff",
+      "builder": "2.2.8",
+      "memory_mib": 6144,
+      "cpu_image": "native job defaults, no immutable performance pin"
+    },
+    "guests": [
+      {
+        "architecture": "amd64",
+        "installed_kernel": "15.1-RELEASE-p3",
+        "running_kernel": "15.1-RELEASE-p3",
+        "userland": "15.1-RELEASE-p3",
+        "zfs_userland": "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+        "zfs_kernel": "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0",
+        "go": "1.27.1",
+        "timeout_sha256": "099b29836a7efe1270842ffe093c971c7883e646293b8906b38652901ef1673d",
+        "owner_death_cases": "pass",
+        "guarded_bounds_cases": "pass"
+      },
+      {
+        "architecture": "amd64",
+        "installed_kernel": "14.5-RELEASE",
+        "running_kernel": "14.5-RELEASE",
+        "userland": "14.5-RELEASE",
+        "zfs_userland": "zfs-2.2.9-FreeBSD_g079ba86d7",
+        "zfs_kernel": "zfs-kmod-2.2.9-FreeBSD_g079ba86d7",
+        "go": "1.27.1",
+        "timeout_sha256": "1dadc6aaf707f8e4f7a08ea28bfa0d53bf6890ca9ea7873a72e4a051e5f9aa10",
+        "owner_death_cases": "pass",
+        "guarded_bounds_cases": "pass"
+      }
+    ],
+    "limits": [
+      "actual executor/test-binary stall; built helper kill during captured native command remains open",
+      "guard must remain schedulable; privileged guard destruction/freezing and uninterruptible kernel work unqualified",
+      "performance intentionally skipped; native resource/SMB/NFS/browser/full abuse gates open"
+    ],
+    "files": [
+      {
+        "path": "internal/host/freebsd/execute.go",
+        "sha256": "6b1aa25996f23adec5d9af6bb58708ae475a5a2291f9e994cab83e1408d0c1d8"
+      },
+      {
+        "path": "internal/host/freebsd/guard_freebsd.go",
+        "sha256": "f8e02d9293593a05de2920d0c4b50cca4f2edf536bc5ec35f42353b880bcdb47"
+      },
+      {
+        "path": "internal/host/freebsd/guard_freebsd_test.go",
+        "sha256": "4c1bb4614d5ca063328be90f02584c428d27b4b5555393b19048b4faefd700e3"
+      },
+      {
+        "path": "internal/host/freebsd/native_freebsd.go",
+        "sha256": "684dacc50679d16ce0f0c99edb999ccb960ceee896db27a4618e835e02f82166"
+      },
+      {
+        "path": "internal/host/freebsd/process_unix.go",
+        "sha256": "f07d3fd36304f9c20812a83bc58210293a8c1b0e8c49655972f37896136bb1a7"
+      },
+      {
+        "path": "internal/host/freebsd/process_unix_test.go",
+        "sha256": "43a48c718ff946937c6750ea36f931dd378dda3ab5e8ba698c9af6587d3e6e91"
+      },
+      {
+        "path": "internal/host/freebsd/source.go",
+        "sha256": "fecbf11d062d711210c84c7e1df286656be5ce7a6c4d9b3a26025290e2581939"
+      },
+      {
+        "path": "tools/bsd-native-discovery.sh",
+        "sha256": "877f51f7da908937a60b1fe70dddffe5fed825c9ed29ecc6d0ebdea377c74ae2"
+      },
+      {
+        "path": "go.mod",
+        "sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+      }
+    ]
   }
 }

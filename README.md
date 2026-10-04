@@ -11,8 +11,8 @@ requirement or a limit on disks, memory, pools, or datasets.
 collector/cache, administration security, authenticated read-only console, CLI
 and foreground development commands, runtime lifecycle, logging and response
 admission accepted. Synthetic combined-process performance and helper-denial
-logging qualification are accepted. Native probe process cleanup passed qualification
-and is under review. There is
+logging and native probe process cleanup are accepted. Native executor crash containment
+passed qualification and is under review. Remaining M1 gates are in progress. There is
 no installable port, appliance image or production support claim.
 
 ## Agreed direction
