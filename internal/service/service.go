@@ -33,7 +33,7 @@ func Helper(ctx context.Context, c admin.Config) error {
 	logCtx, stopLog := context.WithCancel(ctx)
 	defer stopLog()
 	events := eventlog.New(logCtx, os.Stderr)
-	server, e := helper.NewServer(c.HelperConfig(), nativeEvents{source, events})
+	server, e := helper.NewLoggedServer(c.HelperConfig(), nativeEvents{source, events}, events)
 	if e != nil {
 		return ErrRuntime
 	}

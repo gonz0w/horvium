@@ -17,8 +17,9 @@ Cam (`@gonz0w`) is the initial maintainer and CODEOWNERS owner.
 - Maintainer merged [runtime lifecycle PR 9](https://github.com/gonz0w/horvium/pull/9),
   source `35c928a75945caaae5c5682eed539ae247caff19`, on 2026-10-04.
   Synthetic combined-process performance qualification passed on both pinned
-  QEMU targets in run 37218753397 and is under review in
-  [PR 10](https://github.com/gonz0w/horvium/pull/10); see
+  QEMU targets in run 37218753397 and was accepted by maintainer merge of
+  [PR 10](https://github.com/gonz0w/horvium/pull/10), source
+  `65750aa81aeca0054a371690fbef5a7e7d9fffcc`; see
   [procedure/evidence](../testing/M1/performance.md).
 
 - Maintainer merged [console/CLI PR 8](https://github.com/gonz0w/horvium/pull/8),

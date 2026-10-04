@@ -41,3 +41,5 @@
 - [M1 runtime lifecycle and observability evidence](testing/M1/runtime.md).
 
 - [M1 combined-process performance qualification](testing/M1/performance.md).
+
+- [M1 helper denial events and transport abuse evidence](testing/M1/helper-events.md).

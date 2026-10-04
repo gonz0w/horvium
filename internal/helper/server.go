@@ -10,10 +10,11 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gonz0w/horvium/internal/eventlog"
 	"github.com/gonz0w/horvium/internal/inventory"
 )
 
-// Config comes from the future root-owned service configuration, not a request.
+// Config comes from root-owned validated service configuration, not a request.
 // Creating a Server does not install, enable, or start a host service.
 type Config struct {
 	Socket        string
@@ -39,9 +40,16 @@ type Server struct {
 	collect    Collector
 	peer       func(*net.UnixConn) (uint32, error)
 	collection sync.Mutex
+	events     *eventlog.Log
 }
 
 func NewServer(c Config, source Collector) (*Server, error) {
+	return NewLoggedServer(c, source, nil)
+}
+
+// NewLoggedServer shares the existing bounded process logger. Failure records
+// contain generated local IDs and fixed classes, never caller IDs or raw errors.
+func NewLoggedServer(c Config, source Collector, events *eventlog.Log) (*Server, error) {
 	if err := c.validate(); err != nil {
 		return nil, err
 	}
@@ -54,7 +62,7 @@ func NewServer(c Config, source Collector) (*Server, error) {
 	if err := safeDirectory(c); err != nil {
 		return nil, err
 	}
-	return &Server{config: c, collect: source, peer: peerUID}, nil
+	return &Server{config: c, collect: source, peer: peerUID, events: events}, nil
 }
 
 // Serve owns only a newly created socket. An existing entry is never unlinked or
@@ -119,45 +127,76 @@ func (s *Server) Serve(ctx context.Context) error {
 			go func() { defer workers.Done(); defer func() { <-slots }(); s.handle(serveCtx, conn) }()
 		default:
 			_ = conn.Close()
+			s.failure("inventory", "rejected", "capacity", time.Now())
 		}
 	}
 }
 func (s *Server) handle(parent context.Context, c *net.UnixConn) {
-	defer c.Close()
+	started := time.Now()
+	section, outcome, class := "inventory", "failed", "protocol"
+	defer func() {
+		_ = c.Close()
+		if class != "" {
+			s.failure(section, outcome, class, started)
+		}
+	}()
 	ctx, cancel := context.WithTimeout(parent, s.config.Timeout)
 	defer cancel()
 	deadline, _ := ctx.Deadline()
-	if c.SetDeadline(deadline) != nil {
+	fail := func(err error, rejected bool) {
+		class = boundaryClass(ctx, err, deadline)
+		outcome = "failed"
+		if class == "cancelled" {
+			outcome = "cancelled"
+		} else if rejected && (class == "protocol" || class == "limit") {
+			outcome = "rejected"
+		}
+	}
+	if err := c.SetDeadline(deadline); err != nil {
+		fail(err, false)
 		return
 	}
 	stop := context.AfterFunc(ctx, func() { _ = c.Close() })
 	defer stop()
 	uid, err := s.peer(c)
 	if err != nil || uid != s.config.ManagementUID {
+		section, outcome, class = "authentication", "rejected", "permission"
 		return
 	}
 	id, err := readRequest(c, s.config.Limits)
 	if err != nil {
+		fail(err, true)
 		return
 	}
-	// One request per connection; client closes its write half. No implicit
-	// queue or second operation can accompany an authorized inventory request.
+	// One request per connection, with the client's write half closed.
 	var extra [1]byte
 	if n, err := c.Read(extra[:]); n != 0 || err != io.EOF {
+		if err == nil {
+			err = ErrProtocol
+		}
+		fail(err, true)
 		return
 	}
 	if !s.collection.TryLock() {
+		outcome, class = "rejected", "capacity"
 		return
 	}
 	defer s.collection.Unlock()
 	if ctx.Err() != nil {
+		fail(ctx.Err(), false)
 		return
 	}
 	observed := s.collect.Collect(ctx)
 	if ctx.Err() != nil {
+		fail(ctx.Err(), false)
 		return
 	}
-	_ = writeSnapshot(c, id, observed, s.config.Limits)
+	if err := writeSnapshot(c, id, observed, s.config.Limits); err != nil {
+		fail(err, false)
+		return
+	}
+	// Native collection events already describe successful/partial source reads.
+	class = ""
 }
 
 type Client struct{ config Config }
