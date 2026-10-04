@@ -208,3 +208,8 @@ per protocol and teardown in run 37233530125; under review in PR 16. See [contin
 
 All PRD requirements remain subject to the full [Test Design](TDD.md). Native
 reader success is not NAS readiness, commercial qualification or a working UI.
+
+Actual Firefox passed all four selected synthetic flows in run 37233700130;
+under review in PR 17. Safari and manual assistive-technology/native-zoom evidence
+remain pending by maintainer choice.
+See [browser qualification](../../testing/M1/browser-checklist.md).

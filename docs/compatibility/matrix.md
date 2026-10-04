@@ -50,3 +50,10 @@ independent SFTP continuity and bounded response/logging behavior; [performance 
 tracks the combined-process synthetic workload separately. The earlier C spike is ABI
 evidence only. No
 physical identity, file-client, scale or throughput claim follows.
+
+Actual Firefox 157.0/geckodriver 0.37.1 passed the synthetic console's four
+JavaScript enabled/disabled, light/dark and verified 1280/390/320 CSS-pixel flows
+on Ubuntu 24.04.5 (37233700130). Safari 27.0 automation was unavailable; manual
+accessibility/native zoom remains pending by maintainer choice. See
+[browser evidence](../testing/M1/browser-checklist.md). These fixtures do not
+establish FreeBSD runtime or SMB/NFS client compatibility.

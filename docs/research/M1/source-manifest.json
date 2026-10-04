@@ -1739,5 +1739,181 @@
       "repository Samba package version captured, not package artifact pin",
       "not macOS/Linux SMB/NFS interoperability, authentication, ACL, locking, throughput or release configuration"
     ]
+  },
+  "product_browser_qualification": {
+    "date": "2026-10-04",
+    "status": "Firefox automated pass under review; Safari/manual accessibility pending by maintainer choice",
+    "source_revision": "062233c0158e7e6472be5d72f891cae1f4a3acf0",
+    "workflow_run": "https://github.com/gonz0w/horvium/actions/runs/37233700130",
+    "test_ids": [
+      "M1-UI-001",
+      "M1-HTTP-001",
+      "M1-AUTH-001"
+    ],
+    "runner": {
+      "os": "Ubuntu 24.04.5 LTS",
+      "image": "ubuntu24/20260927.320.1",
+      "python": "3.14.7",
+      "go": "1.27.1"
+    },
+    "browser_pins": {
+      "firefox": {
+        "version": "157.0",
+        "url": "https://archive.mozilla.org/pub/firefox/releases/157.0/linux-x86_64/en-US/firefox-157.0.tar.xz",
+        "sha256": "42f2c62a562316982ef5a796738c57602bf84a984f5c616e80bcff4627f78fff",
+        "checksum_source": "https://archive.mozilla.org/pub/firefox/releases/157.0/SHA256SUMS"
+      },
+      "geckodriver": {
+        "version": "0.37.1",
+        "url": "https://github.com/mozilla/geckodriver/releases/download/v0.37.1/geckodriver-v0.37.1-linux64.tar.gz",
+        "sha256": "e815130ea95983e162ae91843b48d3a3ce991735635fce83a647afde21e09f7e",
+        "checksum_source": "https://api.github.com/repos/mozilla/geckodriver/releases/tags/v0.37.1"
+      }
+    },
+    "results": [
+      {
+        "browser": "firefox",
+        "browser_version": "157.0",
+        "platform": "linux",
+        "host_platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "javascript": true,
+        "theme": "light",
+        "requested_width": 1280,
+        "status": "pass",
+        "measurements": {
+          "minimum_sampled_text_contrast": 5.045892109312574,
+          "minimum_control_boundary_contrast": 3.1405817281884527,
+          "viewport_css_width": 1280,
+          "observed_media": {
+            "dark": false,
+            "reduce": true
+          },
+          "viewport_method": "browser window"
+        },
+        "manual_screen_reader_and_native_zoom": "pending"
+      },
+      {
+        "browser": "firefox",
+        "browser_version": "157.0",
+        "platform": "linux",
+        "host_platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "javascript": true,
+        "theme": "dark",
+        "requested_width": 390,
+        "status": "pass",
+        "measurements": {
+          "minimum_sampled_text_contrast": 5.52894265248301,
+          "minimum_control_boundary_contrast": 3.9994804227890834,
+          "viewport_css_width": 390,
+          "observed_media": {
+            "dark": true,
+            "reduce": true
+          },
+          "viewport_method": "owned browser chrome minimum override"
+        },
+        "manual_screen_reader_and_native_zoom": "pending"
+      },
+      {
+        "browser": "firefox",
+        "browser_version": "157.0",
+        "platform": "linux",
+        "host_platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "javascript": false,
+        "theme": "light",
+        "requested_width": 1280,
+        "status": "pass",
+        "measurements": {
+          "minimum_sampled_text_contrast": 5.045892109312574,
+          "minimum_control_boundary_contrast": 3.1405817281884527,
+          "viewport_css_width": 1280,
+          "observed_media": {
+            "dark": false,
+            "reduce": true
+          },
+          "viewport_method": "browser window"
+        },
+        "manual_screen_reader_and_native_zoom": "pending"
+      },
+      {
+        "browser": "firefox",
+        "browser_version": "157.0",
+        "platform": "linux",
+        "host_platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "javascript": false,
+        "theme": "dark",
+        "requested_width": 320,
+        "status": "pass",
+        "measurements": {
+          "minimum_sampled_text_contrast": 5.52894265248301,
+          "minimum_control_boundary_contrast": 3.9994804227890834,
+          "viewport_css_width": 320,
+          "observed_media": {
+            "dark": true,
+            "reduce": true
+          },
+          "viewport_method": "owned browser chrome minimum override"
+        },
+        "manual_screen_reader_and_native_zoom": "pending"
+      }
+    ],
+    "safari_attempt": {
+      "browser": "Safari 27.0 (22625.1.29.11.25)",
+      "os": "macOS 27.0 arm64",
+      "status": "unavailable before session creation: remote automation disabled",
+      "operator_settings_changed": false
+    },
+    "manual_acceptance": "maintainer explicitly kept pending on 2026-10-04",
+    "files": [
+      {
+        "path": "tools/browser-qualification.py",
+        "sha256": "23c8b4f321b2431acd077ef41c20d753e9ae29c5308e9954c2fba806b9772a9c"
+      },
+      {
+        "path": "tools/bootstrap-browser.py",
+        "sha256": "ff3918348d612b1393ee2451f6915983076ade84071efe774353bf8c66f50efa"
+      },
+      {
+        "path": "tools/browser-pins.json",
+        "sha256": "b928b58695981c6e347ff100a55a9a9575751727922ee13a2cf7ef9f967de482"
+      },
+      {
+        "path": ".github/workflows/browser-qualification.yml",
+        "sha256": "8405288e8f588265b7251284dc2a8e5d9495c4bc5024e8590e22787f8b0c0df5"
+      },
+      {
+        "path": "internal/console/assets/console.css",
+        "sha256": "fdc2d1361d4ce22f58ad46a96ed87e1450b3368188027c55c6aaf97284d20daa"
+      },
+      {
+        "path": "internal/console/assets/console.js",
+        "sha256": "0b298c2ddec740961801927f4de6f861004c5166dd369f35c6f9836773ba11d2"
+      },
+      {
+        "path": "internal/console/assets/console.html",
+        "sha256": "376d2b444b45c0fa0e946720d5da7fda01e3dddd093c11d2b738af9116720b35"
+      },
+      {
+        "path": "internal/console/console.go",
+        "sha256": "d0099cf9d772f63b00d0dd83fe7beb7221dff817989c5af7e489faf02bbbbfd5"
+      },
+      {
+        "path": "internal/console/console_test.go",
+        "sha256": "f7a479ea1ef1425130fc4c4e10e6d30536c5cf6f384bfb781063718a71cc54f6"
+      },
+      {
+        "path": "go.mod",
+        "sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+      }
+    ],
+    "limits": [
+      "explicitly synthetic loopback fixture; no native storage or external file-client evidence",
+      "owned disposable Firefox chrome minimum overridden to reach actual CSS widths",
+      "computed contrast covers selected samples, not whole UI or WCAG certification",
+      "Safari, screen readers and human native zoom/usability remain pending"
+    ]
   }
 }

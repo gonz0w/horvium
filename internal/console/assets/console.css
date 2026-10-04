@@ -6,6 +6,7 @@
   --ink:#222629;
   --muted:#636a6e;
   --rule:#d9dcda;
+  --control-rule:#858c8d;
   --accent:#9c352f;
   --soft:#f5e9e6;
   --hover:#eceeeb;
@@ -41,12 +42,12 @@ button {
 button.secondary {
   background:var(--surface);
   color:var(--ink);
-  border-color:var(--rule)
+  border-color:var(--control-rule)
 }
 button.quiet {
   color:var(--muted);
   background:transparent;
-  border-color:var(--rule)
+  border-color:var(--control-rule)
 }
 button:hover {
   filter:brightness(.94)
@@ -59,7 +60,7 @@ a:hover {
   outline-offset:3px
 }
 input,select {
-  border:1px solid var(--rule);
+  border:1px solid var(--control-rule);
   border-radius:3px;
   background:var(--surface);
   color:var(--ink);
@@ -439,6 +440,7 @@ footer {
     --ink:#e2e6e5;
     --muted:#a0aaa9;
     --rule:#364043;
+    --control-rule:#738187;
     --accent:#e18d80;
     --soft:#332a2a;
     --hover:#293134;
