@@ -18,4 +18,7 @@
 - Add a single collector, two bounded inventory generations and cached typed
   queries with explicit stale/error state and generation cursor expiry.
 
+- Add strict configuration, explicit FreeBSD digest-only token setup/rotation,
+  bounded volatile authentication and shared HTTP CSRF/Host/Origin protections.
+
 No product release has been published.

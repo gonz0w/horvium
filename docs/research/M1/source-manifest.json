@@ -265,5 +265,28 @@
     "evidence": "docs/testing/M1/collector.md",
     "initial_run_id": 37168464257,
     "initial_source_revision": "10c2555c60b0c839ecd46d07fe58479d9158017e"
+  },
+  "product_admin": {
+    "date": "2026-10-04",
+    "timezone": "America/Denver",
+    "source_revision": "bb611e3845c9e9a1a9654b7771b209da5ca65caf",
+    "suite_revision": "same as source_revision",
+    "run_id": 37207056630,
+    "run_url": "https://github.com/gonz0w/horvium/actions/runs/37207056630",
+    "status": "passed actual FreeBSD credential descriptor/ownership/atomicity and dropped-UID loopback HTTP denial fixtures on both releases; full M1 acceptance pending",
+    "go": "go1.27.1 freebsd/amd64",
+    "module": "golang.org/x/sys v0.48.0",
+    "reviewed_sdk_source": {
+      "path": "src/net/http/csrf.go",
+      "sha256": "9376ac5c11e3205c51eb596691c18743269deb7e0bf5036023f874bb1bf4f3e6"
+    },
+    "runner": "ubuntu-24.04",
+    "vm_action_revision": "a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff",
+    "guest_memory_mib": 6144,
+    "guest_cpu": "Action default; not performance qualification",
+    "image_digest": "not captured; not immutable image qualification",
+    "evidence": "docs/testing/M1/security.md",
+    "initial_run_id": 37206566944,
+    "initial_source_revision": "ed2ac8aa6e8bb688f480c20558cc47c1b3ae238e"
   }
 }

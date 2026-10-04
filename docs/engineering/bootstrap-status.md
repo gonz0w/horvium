@@ -1,6 +1,6 @@
 # Bootstrap status
 
-Date: 2026-10-03. Phase: M0 accepted; M1 design approved and implementing.
+Date: 2026-10-04. Phase: M0 accepted; M1 design approved and implementing.
 No production implementation is approved by this status file.
 
 ## Confirmed direction
@@ -14,14 +14,19 @@ Cam (`@gonz0w`) is the initial maintainer and CODEOWNERS owner.
 
 ## Implemented and observed
 
+- Maintainer merged [collector/cache PR 6](https://github.com/gonz0w/horvium/pull/6),
+  source `65c8457980127f9a04909a550af3f160a613cef0`, on 2026-10-04.
+  Administration security is the next focused review slice; see
+  [security contracts/evidence](../testing/M1/security.md).
+
 - Maintainer merged [helper transport PR 5](https://github.com/gonz0w/horvium/pull/5),
   source `60d73215279fd33a1a2facbb66dd198319d19bc2`, on 2026-10-03.
-  Collector/cache libraries and native outage/recovery are the next review slice;
+  Collector/cache libraries and native outage/recovery are now accepted;
   see [collector evidence](../testing/M1/collector.md).
 
 - Maintainer merged [native discovery PR 4](https://github.com/gonz0w/horvium/pull/4),
   source `4a21aa72b4a2bb516018bb06f21dbcc287a4ab0f`, on 2026-10-03.
-  The kernel-authorized helper library is the next reviewed M1 slice; see
+  The kernel-authorized helper library is now accepted; see
   [implementation/evidence](../milestones/M1/implementation.md).
 
 - Maintainer merged [M1 design PR 3](https://github.com/gonz0w/horvium/pull/3),

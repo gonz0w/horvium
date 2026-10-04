@@ -1,6 +1,6 @@
 # M1 implementation and acceptance status
 
-Date: 2026-10-03. Design approved in [PR 3](https://github.com/gonz0w/horvium/pull/3).
+Date: 2026-10-04. Design approved in [PR 3](https://github.com/gonz0w/horvium/pull/3).
 M1 remains Implementing, not accepted or released. Work proceeds through focused,
 maintainer-reviewed slices following the [EDD](EDD.md).
 
@@ -87,7 +87,9 @@ Installed service/process-restart qualification remains pending.
 
 ## Slice 3: collector, bounded cache and shared queries
 
-Under review in [PR 6](https://github.com/gonz0w/horvium/pull/6). One worker collects on startup/interval, deduplicates
+Accepted by maintainer merge of [PR 6](https://github.com/gonz0w/horvium/pull/6),
+source `65c8457980127f9a04909a550af3f160a613cef0`, on 2026-10-04.
+One worker collects on startup/interval, deduplicates
 refreshes and publishes owned immutable observations atomically. At most two
 bounded generations preserve latest and last complete context; failures retain
 data and safe error state, including while retrying. Per-section success timestamps,
@@ -101,11 +103,22 @@ unprivileged helper outage/recovery integration passed on both releases; tracked
 [collector evidence](../../testing/M1/collector.md). These libraries expose no
 HTTP listener, operator CLI or installable service.
 
+## Slice 4: administration security primitives
+
+Under review in [PR 7](https://github.com/gonz0w/horvium/pull/7): strict internal
+version-1 configuration, FreeBSD root-owned config and
+service-owned digest files, explicit local token setup/rotation, bounded volatile
+challenges/sessions/throttles, and shared HTTP authentication/CSRF/Host/Origin
+policy. No application route wiring, operator command or console is introduced.
+Native descriptor/ownership and dropped-UID real HTTP fixtures passed on both
+releases and are tracked in
+[security evidence](../../testing/M1/security.md); browser and full runtime
+acceptance remain pending.
+
 ## Remaining slices and acceptance
 
-1. Token setup, strict config/session/CSRF/Host/Origin protections and tests.
-2. Authenticated CLI and accessible HTML5/CSS/HTMX console, browser evidence.
-3. Independent service/restart tests and measured application budgets.
+1. Authenticated CLI and accessible HTML5/CSS/HTMX console, browser evidence.
+2. Independent service/restart tests and measured application budgets.
 
 All PRD requirements remain subject to the full [Test Design](TDD.md). Native
 reader success is not NAS readiness, commercial qualification or a working UI.

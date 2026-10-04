@@ -7,9 +7,10 @@ remain lightweight on a 16 GB home server and grow to larger commercial storage
 systems. The HP MicroServer Gen8 is a reference configuration, not a hardware
 requirement or a limit on disks, memory, pools, or datasets.
 
-**Status:** M0 foundation, M1 design, native discovery and helper transport
-accepted; collector/cache implementation is under review. No NAS daemon, GUI, installable port,
-appliance image, or production support claim exists yet.
+**Status:** M0 foundation, M1 design, native discovery, helper transport and
+collector/cache accepted; administration security libraries are under review.
+No NAS daemon, GUI, installable port, appliance image or production support claim
+exists yet.
 
 ## Agreed direction
 
@@ -53,7 +54,7 @@ make go-check
 Native FreeBSD checks and physical hardware tests have separate gates. Passing
 these foundation checks does not demonstrate functioning storage or file shares.
 
-The Go module currently provides internal read-only discovery libraries and tests;
+The Go module currently provides internal discovery, cache and administration libraries and tests;
 there is no operator command or management listener to launch. `make tools` also
 installs checksum-verified Go 1.27.1 under `.tools/`; it leaves the system toolchain
 alone. See [CI/CD](docs/engineering/ci-cd.md) for opt-in disposable native tests.
