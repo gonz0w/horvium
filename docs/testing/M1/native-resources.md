@@ -1,6 +1,6 @@
 # M1 native reader resource and integrated crash qualification
 
-Status: procedure implemented; native execution pending. Owner: Cam (`@gonz0w`).
+Status: native qualification passed; under maintainer review. Owner: Cam (`@gonz0w`).
 Date: 2026-10-04. Requirements: M1-REQ-001,002,006,007. Tests:
 M1-NATIVE-001, M1-PERF-001, M1-FAIL-001, M1-RESTART-001, M1-NOCHANGE-001.
 This supplements [synthetic performance](performance.md) and
@@ -43,8 +43,7 @@ still affects collection and HTTP concurrency. These bounds are not whole-NAS
 memory or physical throughput claims.
 
 After the small workload, kernel fork/exec tracking identifies an actual fixed
-native command
-under the built helper's timeout child, stops that command and confirms parentage
+native command under the built helper's timeout child, stops that command and confirms parentage
 and stopped state before killing the helper. It requires both captured guard and
 command to terminate, the previous generation to remain stale, and a restarted
 helper to publish fresh state. Only the captured test-owned socket inode is removed
@@ -60,8 +59,33 @@ Passing synthetic results alone cannot satisfy this workflow.
 
 Portable validator regression reproduced acceptance of synthetic-only results
 before the new gate and passes after it. FreeBSD cross-compilation is build
-verification only. Exact native source/run IDs, measurements and versions will
-be recorded after actual execution. Until then these additional gates are pending.
+verification only. The full pinned native resource workflow passed all seven
+executed jobs in [run 37233391796](https://github.com/gonz0w/horvium/actions/runs/37233391796),
+source `cebc8973f5e37d3ca0bbd5da87dd21dff39703d8`. Both measured suite parents,
+the integrated crash/stale/recovery/boot-state assertions and runner validators
+passed. Kernel/userland are 15.1-RELEASE-p3 and 14.5-RELEASE amd64, Go 1.27.1,
+ZFS 2.4.2-1-FreeBSD_g6330a45b0 / 2.2.9-FreeBSD_g079ba86d7 with matching modules.
+QEMU 8.2.2, qemu64/two vCPUs/6144 MiB snapshot guests, builder 2.2.8 and AnyVM
+0.7.2; compressed/runtime image hashes were reverified after execution. Exact
+pins, counts, sampling/high-water records and file hashes are in the
+[source manifest](../../research/M1/source-manifest.json).
+
+| Guest | Native procedure / actual count | Budget RSS MiB | Small idle CPU, one core | HTTP p50 / p95 / p99 ms |
+|---|---|---|---|---|
+| 15.1 | native-small (115 rows) | 32.81 | 0.0567% | 8.611 / 30.198 / 59.370 |
+| 15.1 | projection-10000 (10000 rows) | 44.75 | not an idle case | 15.418 / 43.939 / 112.824 |
+| 14.5 | native-small (100 rows) | 36.53 | 0.0867% | 19.403 / 67.597 / 128.056 |
+| 14.5 | projection-10000 (10000 rows) | 40.67 | not an idle case | 22.057 / 82.115 / 397.301 |
+
+Both small cases contain 100 owned filesystems; 15.1 additionally observes 15
+boot filesystems. RSS uses the greater sampled pair/individual high-water sum.
+Large projection p95 is below 250 ms and all memory/idle budgets pass. The 14.5
+projection p99 is 397.301 ms; the declared budget targets p95, not all requests.
+Nominal 100ms sampling had maximum gaps up to 1210.175ms; conservative kernel
+high-water accounting accompanies it, rather than claiming every transient was
+sampled. Original synthetic 100/10,000 workloads and record/byte-cap/recovery
+cases passed in the same run. Local full check/lint/test/secrets/build/race/fuzz
+passed; native fixture-only repairs passed required checks and actual execution.
 Hardware, commercial scale, full M1 acceptance and package readiness remain open.
 
 Early capture fixtures failed verification: FreeBSD ps treats `=` as the start
@@ -75,5 +99,6 @@ The short actual-built-helper capture gate passed on both selected releases in
 [run 37233158523](https://github.com/gonz0w/horvium/actions/runs/37233158523), source
 `cebc897` (5.51s on 15.1; 4.91s on 14.5). It confirms live stopped native-command
 parentage and both command/guard termination after helper SIGKILL. All five jobs
-passed. The full pinned resource/crash/stale/recovery workflow is running separately
-in 37233391796; the short test alone does not qualify its measured budgets.
+passed. The full workflow above separately qualifies measured crash/stale/recovery;
+the short test alone does not qualify budgets. A later combined assembled-source
+run (37234167265) verifies subsequent HTTP/browser changes alongside these gates.
