@@ -8,8 +8,9 @@ systems. The HP MicroServer Gen8 is a reference configuration, not a hardware
 requirement or a limit on disks, memory, pools, or datasets.
 
 **Status:** M0 foundation and the main M1 read-only discovery/management slices
-are accepted. Crash containment, native resources, HTTP abuse recovery, independent
-SMB/NFS continuity and Firefox qualification are under review. Safari/manual
+and crash containment are accepted. Native resources, HTTP abuse recovery,
+independent SMB/NFS continuity and Firefox qualification await the remaining
+stacked PRs reaching `main`. Safari/manual
 accessibility acceptance remains pending. See the
 [M1 qualification review](docs/testing/M1/qualification-status.md) for evidence and
 remaining gates. There is no installable port, appliance image or production

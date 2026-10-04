@@ -182,23 +182,27 @@ See [probe cleanup procedure/evidence](../../testing/M1/probe-cleanup.md).
 Both FreeBSD targets passed all eight synchronized cases and the existing native
 suite in run 37225094799. Abrupt helper death cannot execute this Go cleanup.
 
-## Remaining slices and acceptance
+## Slice 10: abrupt-helper-death probe containment
 
-The maintainer authorized work on all remaining areas on 2026-10-04. Work remains
-in reviewed PRs; this authorization does not merge future PRs or accept M1.
-
-Crash containment is under review in [PR 13](https://github.com/gonz0w/horvium/pull/13):
-base timeout's reaper and Go's FreeBSD parent-death signal contain the fixed probe
+Accepted by maintainer merge of [PR 13](https://github.com/gonz0w/horvium/pull/13),
+source `dbf8e33a5120a6132494873b12cfca650be86298`, on 2026-10-04.
+Base timeout's reaper and Go's FreeBSD parent-death signal contain the fixed probe
 subtree after helper death. The pre-fix leak reproduced on both native targets;
 actual owner-death and guarded bounds cases passed in run 37227688891. See
 [crash-containment evidence](../../testing/M1/crash-containment.md). Integrated
 built-helper death during a captured native command also passed in PR 14 below.
 
+## Remaining slices and acceptance
+
+The maintainer authorized work on all remaining areas on 2026-10-04. Work remains
+in reviewed PRs; this authorization does not merge future PRs or accept M1.
+
 Native resources and integrated built-helper crash/stale/recovery/boot state
 passed both pinned guests in run 37233391796; under review in PR 14. See [procedure](../../testing/M1/native-resources.md).
 
 The assembled HTTP abuse suite and pre-handler connection cap passed on both
-native targets in run 37230688573 and are under review in [PR 15](https://github.com/gonz0w/horvium/pull/15).
+native targets in run 37230688573. The maintainer merged [PR 15](https://github.com/gonz0w/horvium/pull/15)
+into PR 14's branch on 2026-10-04; it reaches `main` with PR 14.
 See [HTTP abuse evidence](../../testing/M1/http-abuse.md).
 
 Independent SMB/NFS continuity passed both native targets, including seven reads
@@ -213,7 +217,8 @@ All PRD requirements remain subject to the full [Test Design](TDD.md). Native
 reader success is not NAS readiness, commercial qualification or a working UI.
 
 Actual Firefox passed all four selected synthetic flows in run 37233700130;
-under review in PR 17. Safari and manual assistive-technology/native-zoom evidence
+the maintainer merged PR 17 into PR 16's branch on 2026-10-04, and it reaches
+`main` with PR 16. Safari and manual assistive-technology/native-zoom evidence
 remain pending by maintainer choice.
 See [browser qualification](../../testing/M1/browser-checklist.md).
 

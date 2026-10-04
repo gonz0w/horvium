@@ -35,15 +35,17 @@ protocol interoperability, ACLs, locking, restoration and release configuration.
 
 ## Open review and acceptance actions
 
-The remaining focused PRs are stacked in this order; each stays open for the
-maintainer and requires its own explicit merge authorization:
+On 2026-10-04 the maintainer merged [PR 13](https://github.com/gonz0w/horvium/pull/13)
+into `main`, [PR 15](https://github.com/gonz0w/horvium/pull/15) into PR 14's branch,
+and [PR 17](https://github.com/gonz0w/horvium/pull/17) into PR 16's branch. The latter
+two changes reach `main` through their remaining parent PRs. The stack was rebased
+onto these squash merges without changing its qualified product inputs or
+historical evidence. The remaining PRs are ordered as follows; each stays open
+for the maintainer and requires its own explicit merge authorization:
 
-1. [PR 13](https://github.com/gonz0w/horvium/pull/13): abrupt-owner-death native probe containment.
-2. [PR 14](https://github.com/gonz0w/horvium/pull/14): native resources and integrated built-helper crash/recovery.
-3. [PR 15](https://github.com/gonz0w/horvium/pull/15): pre-handler HTTP bound and assembled denial/recovery.
-4. [PR 16](https://github.com/gonz0w/horvium/pull/16): independent SMB/NFS continuity and teardown.
-5. [PR 17](https://github.com/gonz0w/horvium/pull/17): Firefox qualification, contrast repair and manual UI checklist.
-6. [PR 18](https://github.com/gonz0w/horvium/pull/18): this consolidated qualification and acceptance record.
+1. [PR 14](https://github.com/gonz0w/horvium/pull/14), based on `main`: native resources and integrated built-helper crash/recovery, including PR 15's pre-handler HTTP bound and assembled denial/recovery.
+2. [PR 16](https://github.com/gonz0w/horvium/pull/16), based on PR 14: independent SMB/NFS continuity and teardown, including PR 17's Firefox qualification, contrast repair and manual UI checklist.
+3. [PR 18](https://github.com/gonz0w/horvium/pull/18), based on PR 16: this consolidated qualification and acceptance record.
 
 The combined assembled-source workflow passed all eight jobs in
 [run 37234167265](https://github.com/gonz0w/horvium/actions/runs/37234167265), source
