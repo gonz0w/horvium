@@ -31,6 +31,8 @@ jobs:
         run: make tools
       - name: Repository checks
         run: make check lint test secrets
+      - name: Product race and bounded parser fuzz checks
+        run: make go-check
 
   pr-title:
     name: pr-title

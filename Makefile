@@ -1,17 +1,39 @@
-.PHONY: tools check lint test secrets hooks
+.PHONY: tools go-tools check lint test secrets hooks go-check
+
+GO := $(CURDIR)/.tools/go/bin/go
+export GOTOOLCHAIN := local
+export GOENV := off
+export GOCACHE := $(CURDIR)/.tools/go-cache
+export GOMODCACHE := $(CURDIR)/.tools/go-modules
+export CGO_ENABLED := 0
 
 tools:
 	python3 tools/bootstrap-tools.py
+	python3 tools/bootstrap-go.py
+
+go-tools:
+	python3 tools/bootstrap-go.py
 
 check:
 	sh tools/check-repo.sh
 
 lint:
-	.tools/bin/shellcheck tools/check-repo.sh tools/bsd-foundation-smoke.sh tools/research/m1-native.sh .githooks/commit-msg .githooks/pre-commit
+	.tools/bin/shellcheck tools/check-repo.sh tools/bsd-foundation-smoke.sh tools/bsd-native-discovery.sh tools/research/m1-native.sh .githooks/commit-msg .githooks/pre-commit
 	.tools/bin/actionlint
+	@test -z "$$($(CURDIR)/.tools/go/bin/gofmt -l internal tools/research/m1-geom.go)" || { echo 'Run gofmt on Go sources'; exit 1; }
+	$(GO) vet ./...
 
 test:
 	.tools/venv/bin/python3 -m unittest discover -s tools/tests -v
+	$(GO) test ./...
+
+go-check:
+	@test -z "$$($(CURDIR)/.tools/go/bin/gofmt -l internal tools/research/m1-geom.go)" || { echo 'Run gofmt on Go sources'; exit 1; }
+	$(GO) vet ./...
+	$(GO) test ./...
+	CGO_ENABLED=1 $(GO) test -race ./...
+	$(GO) test ./internal/inventory -run '^$$' -fuzz '^FuzzPools$$' -fuzztime=3s -parallel=2
+	$(GO) test ./internal/inventory -run '^$$' -fuzz '^FuzzGEOM$$' -fuzztime=3s -parallel=2
 
 secrets:
 	.tools/bin/gitleaks dir --redact --no-banner --config .gitleaks.toml .
