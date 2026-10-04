@@ -3,6 +3,7 @@ package freebsd
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"os"
 	"os/exec"
@@ -75,6 +76,44 @@ func TestNativeProbeOwnerDeath(t *testing.T) {
 			}
 			assertProbeStopped(t, probe)
 			assertProbeStopped(t, child)
+			if group != probe {
+				assertProbeStopped(t, group)
+			}
 		})
+	}
+}
+
+func TestNativeGuardedProbeBounds(t *testing.T) {
+	if os.Getenv("HORVIUM_NATIVE_VM") != "1" {
+		t.Skip("requires disposable FreeBSD QEMU opt-in")
+	}
+	for _, tc := range []struct {
+		mode string
+		want error
+	}{
+		{"ok", nil}, {"overflow", ErrLimit}, {"stderr", ErrLimit}, {"exit", ErrExit}, {"hang", context.DeadlineExceeded},
+	} {
+		t.Run(tc.mode, func(t *testing.T) {
+			duration := 5 * time.Second
+			if tc.mode == "hang" {
+				duration = 300 * time.Millisecond
+			}
+			ctx, stop := context.WithTimeout(context.Background(), duration)
+			defer stop()
+			out, err := executeNative(ctx, os.Args[0], []string{"-test.run=^TestCommandProcess$", "--", tc.mode}, 128)
+			if !errors.Is(err, tc.want) || out.consumed > 128 {
+				t.Fatalf("guarded probe class/bound: want %v, got %v", tc.want, err)
+			}
+			if tc.want != nil && len(out.data) != 0 {
+				t.Fatal("guarded failure published output")
+			}
+			if tc.want == nil && string(out.data) != "safe\n" {
+				t.Fatal("guard lost successful native output")
+			}
+		})
+	}
+	out, err := executeNative(context.Background(), "/nonexistent/horvium-probe", nil, 512)
+	if !errors.Is(err, ErrUnavailable) || len(out.data) != 0 || out.consumed > 512 {
+		t.Fatal("guarded missing executable class/output")
 	}
 }

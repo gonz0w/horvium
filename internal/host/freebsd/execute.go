@@ -44,6 +44,10 @@ func (s sink) Write(p []byte) (int, error) {
 // execute is private: the native reader supplies only fixed commands/arguments.
 // Combined stdout/stderr is bounded, and errors never return either stream.
 func execute(ctx context.Context, path string, args []string, limit int) (readOutput, error) {
+	return executePrepared(ctx, path, args, limit, nil)
+}
+
+func executePrepared(ctx context.Context, path string, args []string, limit int, prepare func(*exec.Cmd) func(error) error) (readOutput, error) {
 	if err := ctx.Err(); err != nil {
 		return readOutput{}, err
 	}
@@ -59,6 +63,10 @@ func execute(ctx context.Context, path string, args []string, limit int) (readOu
 	cmd.Stderr = sink{capture: output}
 	cmd.WaitDelay = 250 * time.Millisecond
 	finish := configureProcess(cmd)
+	classify := commandError
+	if prepare != nil {
+		classify = prepare(cmd)
+	}
 	err := cmd.Run()
 	if cleanupErr := finish(); err == nil {
 		err = cleanupErr
@@ -71,14 +79,18 @@ func execute(ctx context.Context, path string, args []string, limit int) (readOu
 		return result, ctx.Err()
 	}
 	if err != nil {
-		if errors.Is(err, os.ErrNotExist) {
-			return result, ErrUnavailable
-		}
-		if errors.Is(err, os.ErrPermission) {
-			return result, ErrPermission
-		}
-		return result, ErrExit
+		return result, classify(err)
 	}
 	result.data = output.out.Bytes()
 	return result, nil
+}
+
+func commandError(err error) error {
+	if errors.Is(err, os.ErrNotExist) {
+		return ErrUnavailable
+	}
+	if errors.Is(err, os.ErrPermission) {
+		return ErrPermission
+	}
+	return ErrExit
 }

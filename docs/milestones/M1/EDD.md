@@ -82,6 +82,15 @@ the reported pool enum, not SMART, full vdev topology, or a health guarantee.
 Unimplemented service/share/SMART/protection sections display “not collected”.
 No native source output is rendered as trusted HTML.
 
+Crash-containment refinement under review: wrap each fixed native projection in
+FreeBSD base `/usr/bin/timeout`, at most ten seconds or the shorter remaining
+command deadline, with SIGKILL as its expiry signal. Its reaper owns the command
+subtree. Go's FreeBSD parent-death signal sends SIGALRM to that guard when the
+helper dies; normal cancellation does the same. Guard stderr consumes the same
+output budget; failed/timeout output is never published. The guard has no network
+listener, receives no client-selected arguments, and is included in native
+resource measurements. See [procedure and evidence](../../testing/M1/crash-containment.md).
+
 Helper wire contract (version 1, internal): one typed `inventory` request with
 request ID and no device/path parameters. Length-prefixed JSON records carry
 source metadata, typed items, section errors and an explicit end marker. Each

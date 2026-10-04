@@ -21,6 +21,15 @@ that require host/subscription support are enabled only after capability verific
 
 ## Current product module
 
+The M1 crash-containment candidate uses FreeBSD base `/usr/bin/timeout` around
+fixed native probes. It is supplied/maintained with the selected OS, adds no Go
+module or separately packaged service, and uses the standard library's FreeBSD
+parent-death signal. Record the actual utility's hash and native behavior per
+qualified guest. Its source/procedure are linked in
+[crash-containment evidence](../testing/M1/crash-containment.md); native resource
+qualification must account for the added transient process. Removal requires
+equivalent owner-death/subtree containment, not reverting to an orphaned probe.
+
 The approved M1 helper uses `golang.org/x/sys/unix` v0.48.0 solely for FreeBSD
 `GetsockoptXucred`; source `613e2570718ecde85c04e69ebd5585c3881c442c`,
 Go minimum 1.26.0, BSD-3-Clause. Go checksum-database verification and go.sum

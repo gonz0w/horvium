@@ -45,3 +45,5 @@
 - [M1 helper denial events and transport abuse evidence](testing/M1/helper-events.md).
 
 - [M1 native probe process cleanup evidence](testing/M1/probe-cleanup.md).
+
+- [M1 helper crash-containment procedure/evidence](testing/M1/crash-containment.md).
