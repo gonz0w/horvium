@@ -205,27 +205,28 @@ native targets in run 37230688573. The maintainer merged [PR 15](https://github.
 into PR 14's branch on 2026-10-04; PR 14's merge brought it into `main`.
 See [HTTP abuse evidence](../../testing/M1/http-abuse.md).
 
-## Remaining slices and acceptance
+## Slice 12: independent file continuity and automated browser qualification
 
-The maintainer authorized work on all remaining areas on 2026-10-04. Work remains
-in reviewed PRs; this authorization does not merge future PRs or accept M1.
+Accepted by maintainer merge of [PR 16](https://github.com/gonz0w/horvium/pull/16),
+source `1fd85870c4c86079010d6325290fb6aa27249da9`, on 2026-10-04.
 
 Independent SMB/NFS continuity passed both native targets, including seven reads
-per protocol and teardown in run 37233530125; under review in PR 16. See [continuity procedure](../../testing/M1/file-continuity.md).
-
-1. Complete console/CLI native and required-browser evidence, accessibility acceptance.
-2. Qualify native-reader allocation alongside the measured synthetic management budgets.
-3. Extend independent SFTP continuity evidence to SMB/NFS; complete native-probe
-   abrupt-helper-death descendant policy and full helper/HTTP abuse review.
-
-All PRD requirements remain subject to the full [Test Design](TDD.md). Native
-reader success is not NAS readiness, commercial qualification or a working UI.
+per protocol and teardown in run 37233530125. See [continuity procedure](../../testing/M1/file-continuity.md).
 
 Actual Firefox passed all four selected synthetic flows in run 37233700130;
-the maintainer merged PR 17 into PR 16's branch on 2026-10-04, and it reaches
-`main` with PR 16. Safari and manual assistive-technology/native-zoom evidence
+the maintainer merged PR 17 into PR 16's branch on 2026-10-04, and PR 16's merge
+brought it into `main`. Safari and manual assistive-technology/native-zoom evidence
 remain pending by maintainer choice.
 See [browser qualification](../../testing/M1/browser-checklist.md).
+
+## Remaining acceptance
+
+The consolidated qualification record is under review in
+[PR 18](https://github.com/gonz0w/horvium/pull/18). Safari/manual accessibility
+observations and explicit maintainer acceptance remain required. The authorization
+to implement the remaining slices does not accept M1 or authorize future PR merges.
+All PRD requirements remain subject to the full [Test Design](TDD.md).
+Native reader success does not establish NAS readiness or commercial qualification.
 
 
 Final combined run 37234167265 passed all eight automated jobs against one assembled
