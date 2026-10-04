@@ -13,4 +13,5 @@ export GOCACHE="$root/.tools/go-cache" GOMODCACHE="$root/.tools/go-modules"
 freebsd-version -kru
 zfs version
 sysctl hw.ncpu hw.model hw.physmem
-.tools/go/bin/go test -v -count=1 -timeout=20m ./cmd/horvium -run '^TestNativePerformanceBudgets$'
+.tools/go/bin/go test -c -o .tools/reader-fixture.test ./internal/host/freebsd
+.tools/go/bin/go test -v -count=1 -timeout=30m ./cmd/horvium -run '^TestNative(PerformanceBudgets|ReaderResourceBudgets)$'

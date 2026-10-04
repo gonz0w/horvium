@@ -243,6 +243,10 @@ func (s *performanceSession) ready(t *testing.T, count int, previous string) str
 }
 func (s *performanceSession) load(t *testing.T, count int) ([]time.Duration, error) {
 	t.Helper()
+	return s.loadExpected(t, count, func(offset int) string { return fmt.Sprintf("vault/dataset-%06d", offset) })
+}
+func (s *performanceSession) loadExpected(t *testing.T, count int, expectedRow func(int) string) ([]time.Duration, error) {
+	t.Helper()
 	latencies := make([]time.Duration, 1000)
 	failures := make(chan error, 10)
 	var wg sync.WaitGroup
@@ -263,7 +267,7 @@ func (s *performanceSession) load(t *testing.T, count int) ([]time.Duration, err
 				b, e := io.ReadAll(io.LimitReader(r.Body, 1<<20))
 				r.Body.Close()
 				latencies[i] = time.Since(started)
-				expected := fmt.Sprintf("vault/dataset-%06d", offset)
+				expected := expectedRow(offset)
 				if e != nil || r.StatusCode != 200 || !bytes.Contains(b, []byte(expected)) {
 					failures <- fmt.Errorf("fixture page contract failure")
 					return
