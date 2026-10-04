@@ -15,5 +15,7 @@
   uncertainty and collection errors, plus native fixture/race/fuzz test gates.
 - Add an inventory-only FreeBSD helper/client library with kernel peer credentials,
   protected socket lifecycle, bounded framed records and native denial tests.
+- Add a single collector, two bounded inventory generations and cached typed
+  queries with explicit stale/error state and generation cursor expiry.
 
 No product release has been published.
