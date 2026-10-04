@@ -78,3 +78,7 @@ The manual [independent file-service workflow](../../.github/workflows/bsd-conti
 provisions fixture-only Samba and base NFS in disposable guests. Its explicit
 native/protocol opt-ins and [procedure](../testing/M1/file-continuity.md) are required;
 it installs/enables no operator host service and makes no client compatibility claim.
+
+Until its standalone workflow is merged/registered on main, continuity is also
+callable with `continuity=true` in the existing BSD native workflow against the
+qualification branch. The optional flag provisions Samba only in those guests.
