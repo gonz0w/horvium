@@ -102,9 +102,14 @@ QEMU. It creates its own directories, credential state and socket, launches the
 actual root helper and drops UID before management/client requests. It checks the
 foreground management runtime, protected-input CLI, typed host/pool observations,
 HTML/fragment generation and GUID parity, anonymous denial and expired cursors.
-It reads existing guest inventory but never changes disks/pools, enables daemons
-or exports host observations. Existing native source fixtures independently check
-isolated pool geometry and unchanged properties. A skipped test is not evidence.
+To avoid a vacuous GUID assertion on a guest with no pools, the fixture also
+creates a new sparse file-backed md device, one unique pool and one unmounted
+dataset. It independently captures pool GUID/size and dataset GUID, then requires
+nonempty CLI/JSON/full-page/fragment/selected-detail agreement. Dataset properties
+must remain unchanged and pool/md teardown is verified. No force option or
+operator disk/pool argument exists. It never changes existing guest resources,
+enables daemons or exports host observations. Existing native source fixtures
+also independently check isolated geometry and properties. A skipped test is not evidence.
 
 | Test ID | This slice | Remaining full M1 gate |
 |---|---|---|
