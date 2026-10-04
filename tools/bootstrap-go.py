@@ -35,7 +35,8 @@ with tempfile.TemporaryDirectory(prefix="go-install-", dir=directory) as tempora
     staged = Path(temporary)
     with tarfile.open(fileobj=io.BytesIO(data), mode="r:gz") as archive:
         # Authenticate first, stage a clean tree, and reject escaping paths/links.
-        if any(not member.name.startswith("go/") for member in archive.getmembers()):
+        if any(not (member.name.startswith("go/") or
+                    member.name == "go" and member.isdir()) for member in archive.getmembers()):
             raise SystemExit("Unexpected Go archive layout")
         archive.extractall(staged, filter="data")
     current, previous = directory / "go", staged / "previous"

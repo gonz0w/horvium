@@ -29,6 +29,8 @@ func (s sink) Write(p []byte) (int, error) {
 	defer c.Unlock()
 	if len(p) > c.limit-c.used {
 		c.exceeded = true
+		// An over-budget chunk exhausts this collection's remaining allowance.
+		c.used = c.limit
 		c.cancel()
 		return 0, ErrLimit
 	}
@@ -41,12 +43,12 @@ func (s sink) Write(p []byte) (int, error) {
 
 // execute is private: the native reader supplies only fixed commands/arguments.
 // Combined stdout/stderr is bounded, and errors never return either stream.
-func execute(ctx context.Context, path string, args []string, limit int) ([]byte, error) {
+func execute(ctx context.Context, path string, args []string, limit int) (readOutput, error) {
 	if err := ctx.Err(); err != nil {
-		return nil, err
+		return readOutput{}, err
 	}
 	if limit <= 0 {
-		return nil, ErrLimit
+		return readOutput{}, ErrLimit
 	}
 	child, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -58,20 +60,22 @@ func execute(ctx context.Context, path string, args []string, limit int) ([]byte
 	cmd.WaitDelay = 250 * time.Millisecond
 	configureProcess(cmd)
 	err := cmd.Run()
+	result := readOutput{consumed: output.used}
 	if output.exceeded {
-		return nil, ErrLimit
+		return result, ErrLimit
 	}
 	if ctx.Err() != nil {
-		return nil, ctx.Err()
+		return result, ctx.Err()
 	}
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			return nil, ErrUnavailable
+			return result, ErrUnavailable
 		}
 		if errors.Is(err, os.ErrPermission) {
-			return nil, ErrPermission
+			return result, ErrPermission
 		}
-		return nil, ErrExit
+		return result, ErrExit
 	}
-	return output.out.Bytes(), nil
+	result.data = output.out.Bytes()
+	return result, nil
 }

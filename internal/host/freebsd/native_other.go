@@ -7,4 +7,4 @@ import "context"
 
 const nativeSupported = false
 
-func readNative(context.Context, probe, int) ([]byte, error) { return nil, ErrUnsupported }
+func readNative(context.Context, probe, int) (readOutput, error) { return readOutput{}, ErrUnsupported }

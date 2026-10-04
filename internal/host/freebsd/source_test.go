@@ -10,24 +10,28 @@ import (
 	"github.com/gonz0w/horvium/internal/inventory"
 )
 
-func fixtureRead(_ context.Context, probe probe, _ int) ([]byte, error) {
+func testOutput(value string) readOutput {
+	return readOutput{data: []byte(value), consumed: len(value)}
+}
+
+func fixtureRead(_ context.Context, probe probe, _ int) (readOutput, error) {
 	switch probe {
 	case versions:
-		return []byte("15.1-RELEASE-p3\n15.1-RELEASE-p2\n15.1-RELEASE-p3\n"), nil
+		return testOutput("15.1-RELEASE-p3\n15.1-RELEASE-p2\n15.1-RELEASE-p3\n"), nil
 	case architecture:
-		return []byte("amd64\n"), nil
+		return testOutput("amd64\n"), nil
 	case memory:
-		return []byte("17179869184\n"), nil
+		return testOutput("17179869184\n"), nil
 	case zfsVersion:
-		return []byte("zfs-2.4.2-1-FreeBSD_g6330a45b0\nzfs-kmod-2.4.2-1-FreeBSD_g6330a45b0\n"), nil
+		return testOutput("zfs-2.4.2-1-FreeBSD_g6330a45b0\nzfs-kmod-2.4.2-1-FreeBSD_g6330a45b0\n"), nil
 	case geom:
-		return []byte("<mesh/>\n"), nil
+		return testOutput("<mesh/>\n"), nil
 	case pools:
-		return []byte("tank\t1\t1000\t400\t600\tONLINE\n"), nil
+		return testOutput("tank\t1\t1000\t400\t600\tONLINE\n"), nil
 	case datasets:
-		return []byte("tank/data\t2\t0\t600\t0\n"), nil
+		return testOutput("tank/data\t2\t0\t600\t0\n"), nil
 	default:
-		return nil, ErrUnavailable
+		return readOutput{}, ErrUnavailable
 	}
 }
 
@@ -53,9 +57,9 @@ func TestPartialObservationIsHonest(t *testing.T) {
 	// M1-FAIL-001: failure is not healthy/empty/zero, and stderr is not an error UI.
 	for _, failure := range []error{ErrUnavailable, ErrPermission, ErrExit, ErrLimit, context.DeadlineExceeded} {
 		t.Run(failure.Error(), func(t *testing.T) {
-			source := testSource(func(ctx context.Context, p probe, max int) ([]byte, error) {
+			source := testSource(func(ctx context.Context, p probe, max int) (readOutput, error) {
 				if p == pools || p == memory {
-					return []byte("sensitive native output"), failure
+					return testOutput("sensitive native output"), failure
 				}
 				return fixtureRead(ctx, p, max)
 			})
@@ -76,9 +80,9 @@ func TestPartialObservationIsHonest(t *testing.T) {
 func TestSourceValidatesHostOutput(t *testing.T) {
 	for _, p := range []probe{versions, architecture, memory, zfsVersion} {
 		t.Run(string(p), func(t *testing.T) {
-			result := testSource(func(ctx context.Context, item probe, max int) ([]byte, error) {
+			result := testSource(func(ctx context.Context, item probe, max int) (readOutput, error) {
 				if p == item {
-					return []byte("bogus\x00\n"), nil
+					return testOutput("bogus\x00\n"), nil
 				}
 				return fixtureRead(ctx, item, max)
 			}).Collect(context.Background())
@@ -99,12 +103,24 @@ func TestCollectionBudgetAndCancellation(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
 	calls := 0
-	source = testSource(func(context.Context, probe, int) ([]byte, error) { calls++; return nil, nil })
+	source = testSource(func(context.Context, probe, int) (readOutput, error) { calls++; return readOutput{}, nil })
 	result = source.Collect(ctx)
 	if calls != 0 || result.Complete() || result.Host.Status != inventory.Unavailable {
 		t.Fatal("cancelled collection ran work or became fresh")
 	}
 	if _, err := New(inventory.Limits{}); !errors.Is(err, inventory.ErrInvalidLimits) {
 		t.Fatalf("invalid limits accepted: %v", err)
+	}
+}
+
+func TestBudgetCountsDiscardedErrorOutput(t *testing.T) {
+	calls := 0
+	source := testSource(func(_ context.Context, _ probe, max int) (readOutput, error) {
+		calls++
+		return readOutput{consumed: max}, ErrExit
+	})
+	result := source.Collect(context.Background())
+	if calls != 1 || result.GEOM.Problems[0].Code != "limit" {
+		t.Fatal("discarding error output reset the aggregate safety budget")
 	}
 }

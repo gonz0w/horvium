@@ -5,7 +5,7 @@ import "context"
 
 const nativeSupported = true
 
-func readNative(ctx context.Context, p probe, limit int) ([]byte, error) {
+func readNative(ctx context.Context, p probe, limit int) (readOutput, error) {
 	// No program, argument, path or environment comes from an inventory request.
 	switch p {
 	case versions:
@@ -23,6 +23,6 @@ func readNative(ctx context.Context, p probe, limit int) ([]byte, error) {
 	case datasets:
 		return execute(ctx, "/sbin/zfs", []string{"list", "-H", "-p", "-t", "filesystem", "-o", "name,guid,used,available,referenced"}, limit)
 	default:
-		return nil, ErrUnavailable
+		return readOutput{}, ErrUnavailable
 	}
 }

@@ -56,10 +56,10 @@ func TestCommandBoundsAndErrors(t *testing.T) {
 			if !errors.Is(err, item.want) {
 				t.Fatalf("wanted %v, got %v", item.want, err)
 			}
-			if item.want == nil && string(out) != "safe\n" {
-				t.Fatalf("output: %q", out)
+			if item.want == nil && string(out.data) != "safe\n" {
+				t.Fatalf("output: %q", out.data)
 			}
-			if item.want != nil && len(out) != 0 {
+			if item.want != nil && len(out.data) != 0 {
 				t.Fatal("failed command published output")
 			}
 		})

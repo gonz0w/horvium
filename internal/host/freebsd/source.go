@@ -33,7 +33,12 @@ const (
 	datasets     probe = "datasets"
 )
 
-type reader func(context.Context, probe, int) ([]byte, error)
+type readOutput struct {
+	data     []byte
+	consumed int
+}
+
+type reader func(context.Context, probe, int) (readOutput, error)
 
 type Source struct {
 	limits         inventory.Limits
@@ -66,16 +71,16 @@ func (c *cycle) read(ctx context.Context, p probe) ([]byte, error) {
 	}
 	commandCtx, cancel := context.WithTimeout(ctx, c.source.commandTimeout)
 	defer cancel()
-	data, err := c.source.read(commandCtx, p, c.bytes)
-	if err != nil {
-		return nil, err
-	}
-	if len(data) > c.bytes {
+	output, err := c.source.read(commandCtx, p, c.bytes)
+	if output.consumed < len(output.data) || output.consumed > c.bytes {
 		c.bytes = 0
 		return nil, ErrLimit
 	}
-	c.bytes -= len(data)
-	return data, nil
+	c.bytes -= output.consumed
+	if err != nil {
+		return nil, err
+	}
+	return output.data, nil
 }
 
 func (s *Source) Collect(ctx context.Context) inventory.Snapshot {
