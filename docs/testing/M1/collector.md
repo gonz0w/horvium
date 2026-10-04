@@ -86,11 +86,15 @@ partial/failure publication, retry visibility, freshness boundary, two-generatio
 retention/expiry, restart namespaces, paging/filter/sort, query admission, and
 cached reads that never collect. Test-first snapshot-copy/collector cases failed
 before implementation. A failing regression caught retry clearing stale failure
-state and now protects last-completed-attempt semantics.
+state and now protects last-completed-attempt semantics. Another failing regression
+held a reader during publication, cancelled collection while the writer waited,
+and caught a late result being marked successful; cancellation is now rechecked
+under the publication lock.
 
 A deterministic 100,000-item boundary fixture includes 99,999 datasets and one
 pool; the next dataset fails without replacing prior data. Ten concurrent workers
-perform 1,000 cached reads with only the startup source call. Provider identifier
+perform 1,000 cached reads on a three-dataset functional fixture with only the
+startup source call. Provider identifier
 slices, host memory pointers and metadata arrays cannot be mutated through queries.
 This is functional scale evidence, not full application performance acceptance.
 
@@ -115,8 +119,12 @@ still creates/tears down its owned md/pool in the same disposable guest.
 ## Execution record
 
 [Native run 37168464257](https://github.com/gonz0w/horvium/actions/runs/37168464257)
+passed all five jobs on the initial implementation and suite source
+`10c2555c60b0c839ecd46d07fe58479d9158017e`. Final
+[run 37168941746](https://github.com/gonz0w/horvium/actions/runs/37168941746)
 passed all five jobs on implementation and suite source
-`10c2555c60b0c839ecd46d07fe58479d9158017e`. Both product jobs executed
+`4a2163e2fd16a533c65f74c9a42fb44cd51e138c`, including the publication-cancellation
+regression and actual collector/helper recovery. Both runs executed
 `TestNativeCollectorHelperRecovery` successfully, along with the existing actual
 helper credential/lifecycle tests, native md/pool fixture tests and all cache
 unit/boundary tests. The direct `TestNativeCollectorChild` invocation skips by
