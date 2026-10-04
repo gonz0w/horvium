@@ -12,7 +12,7 @@ It does not approve M1, waive a test, or authorize merging any PR.
 |---|---|---|
 | M1-NATIVE-001 | [Discovery](discovery.md), [helper](helper.md), [console/CLI](console.md) | Actual adapters, independent owned GUID/size, unprivileged transport and CLI/HTML passed on both selected FreeBSD guests; hardware/controller support remains unqualified |
 | M1-PARSE-001 | Discovery unit/native cases and pinned parser fuzz checks | Typed empty/hostile/malformed/truncated/overflow/control-byte/enum/XML and allocation bounds passed; no customer inventory fixtures |
-| M1-FAIL-001 | [Collector](collector.md), [cleanup](probe-cleanup.md), [crash containment](crash-containment.md), [native resources](native-resources.md) | Native/process/transport failure classes and stale/recovery pass; integrated resource/crash workflow pending final evidence |
+| M1-FAIL-001 | [Collector](collector.md), [cleanup](probe-cleanup.md), [crash containment](crash-containment.md), [native resources](native-resources.md) | Native/process/transport failure classes and stale/recovery pass; integrated native resource/crash workflow passed on both pinned guests (37233391796); combined assembled-source confirmation running |
 | M1-IDENTITY-001 | Discovery serial/lunid conflicts, provider classification and native rename assertions | Passed fixture/model identity contracts; controller persistence and later storage adoption safety require new evidence |
 | M1-PRIV-001 | Helper kernel credentials and [denial events](helper-events.md) | Actual configured UID allowed; wrong/root/forged caller, unsafe socket/client peer cases denied; no HTTP shell/privilege path |
 | M1-NOCHANGE-001 | Owned properties, immutable config/digest, mutation denials and [file continuity](file-continuity.md) | Passed native reader/helper/runtime and independent SFTP/SMB/NFS fixtures; only disposable storage used |
@@ -21,8 +21,8 @@ It does not approve M1, waive a test, or authorize merging any PR.
 | M1-CONTRACT-001 | Console full/fragment/JSON/CLI parity and cursor expiry | Exact-generation pagination/selection and honest unavailable/partial/stale states passed; no mixed-generation rows |
 | M1-UI-001 | Actual Firefox and prepared manual browser checklist | Four JS on/off, light/dark, keyboard/focus, polling and verified narrow flows pass; Safari, screen readers, human zoom/usability pending by maintainer choice |
 | M1-SCALE-001 | One-worker/deduplicated refresh, bounded transport/cache/response tests and HTTP connection cap | Portable/race/native admission/cancellation/bounds/recovery pass; finite pre-handler admission supplements response admission |
-| M1-PERF-001 | [Synthetic budgets](performance.md), native resource workflow | Accepted synthetic measurements; actual native-small/10,000-row projection full qualification pending final evidence; not whole-NAS ARC/disk throughput |
-| M1-RESTART-001 | [Runtime](runtime.md), crash containment and file continuity | Actual process restart/session invalidation/config preservation, built-helper owner death and seven independent SMB/NFS reads with teardown pass; integrated measured recovery pending final evidence |
+| M1-PERF-001 | [Synthetic budgets](performance.md), native resource workflow | Accepted synthetic measurements; native-small/10,000-row projection budgets passed on both pinned guests (37233391796); final combined confirmation running; not whole-NAS ARC/disk throughput |
+| M1-RESTART-001 | [Runtime](runtime.md), crash containment and file continuity | Actual process restart/session invalidation/config preservation, built-helper owner death and seven independent SMB/NFS reads with teardown pass; integrated measured crash/stale/recovery/boot-state assertions passed (37233391796) |
 | M1-BUILD-001 | SDK/module/local asset pins, native cgo-free builds, provenance manifest | Both guest builds and Linux/macOS development checks pass; no runtime Python/Node/browser/cgo/framework/container dependency; release/package lifecycle remains M5 |
 
 Evidence includes exact functional revision/file hashes and actual versions in
@@ -43,6 +43,7 @@ maintainer and requires its own explicit merge authorization:
 3. [PR 15](https://github.com/gonz0w/horvium/pull/15): pre-handler HTTP bound and assembled denial/recovery.
 4. [PR 16](https://github.com/gonz0w/horvium/pull/16): independent SMB/NFS continuity and teardown.
 5. [PR 17](https://github.com/gonz0w/horvium/pull/17): Firefox qualification, contrast repair and manual UI checklist.
+6. [PR 18](https://github.com/gonz0w/horvium/pull/18): this consolidated qualification and acceptance record.
 
 The combined assembled-source workflow must finish and its results/hashes must be
 recorded before the remaining automated qualification is complete. Required
