@@ -7,6 +7,7 @@ import (
 	"errors"
 	"github.com/gonz0w/horvium/internal/admin"
 	"github.com/gonz0w/horvium/internal/console"
+	"github.com/gonz0w/horvium/internal/eventlog"
 	"github.com/gonz0w/horvium/internal/helper"
 	native "github.com/gonz0w/horvium/internal/host/freebsd"
 	"github.com/gonz0w/horvium/internal/observation"
@@ -29,10 +30,14 @@ func Helper(ctx context.Context, c admin.Config) error {
 	if e != nil {
 		return ErrRuntime
 	}
-	server, e := helper.NewServer(c.HelperConfig(), source)
+	logCtx, stopLog := context.WithCancel(ctx)
+	defer stopLog()
+	events := eventlog.New(logCtx, os.Stderr)
+	server, e := helper.NewServer(c.HelperConfig(), nativeEvents{source, events})
 	if e != nil {
 		return ErrRuntime
 	}
+	events.Record(eventlog.Event{Operation: "helper", ID: events.NextID(), Section: "inventory", Outcome: "started"})
 	if e = server.Serve(ctx); e != nil && !errors.Is(e, context.Canceled) {
 		return ErrRuntime
 	}
@@ -50,7 +55,10 @@ func Serve(ctx context.Context, c admin.Config) error {
 	if e != nil {
 		return ErrRuntime
 	}
-	manager, e := observation.New(c.ObservationConfig(), source)
+	logCtx, stopLog := context.WithCancel(context.Background())
+	defer stopLog()
+	events := eventlog.New(logCtx, os.Stderr)
+	manager, e := observation.NewObserved(c.ObservationConfig(), source, observed(events))
 	if e != nil {
 		return ErrRuntime
 	}
@@ -60,7 +68,7 @@ func Serve(ctx context.Context, c admin.Config) error {
 	if e != nil {
 		return ErrRuntime
 	}
-	server, e := c.HTTPServer(handler)
+	server, e := c.HTTPServer(requests(events, handler))
 	if e != nil {
 		return ErrRuntime
 	}
@@ -71,11 +79,23 @@ func Serve(ctx context.Context, c admin.Config) error {
 		return ErrRuntime
 	}
 	defer listener.Close()
+	events.Record(eventlog.Event{Operation: "management", ID: events.NextID(), Section: "inventory", Outcome: "started"})
+	e = run(ctx, server, listener, manager)
+	outcome, class := "stopped", ""
+	if e != nil {
+		outcome, class = "failed", "failed"
+	}
+	events.Record(eventlog.Event{Operation: "management", ID: events.NextID(), Section: "inventory", Outcome: outcome, ErrorClass: class})
+	return e
+}
+
+// run owns the collector, listener and admitted HTTP work together. Unexpected
+// collector termination must stop serving rather than leave a stranded runtime.
+func run(ctx context.Context, server *http.Server, listener net.Listener, manager *observation.Manager) error {
 	child, cancel := context.WithCancel(ctx)
 	defer cancel()
 	done := make(chan error, 1)
-	go func() { done <- manager.Run(child) }()
-	defer func() { cancel(); <-done }()
+	go func() { e := manager.Run(child); done <- e; cancel() }()
 	stopped := make(chan struct{})
 	go func() {
 		defer close(stopped)
@@ -86,9 +106,13 @@ func Serve(ctx context.Context, c admin.Config) error {
 			_ = server.Close()
 		}
 	}()
-	e = server.Serve(listener)
+	e := server.Serve(listener)
 	cancel()
 	<-stopped
+	collectorErr := <-done
+	if collectorErr != nil && !errors.Is(collectorErr, context.Canceled) {
+		return ErrRuntime
+	}
 	if e != nil && !errors.Is(e, net.ErrClosed) && !errors.Is(e, http.ErrServerClosed) {
 		return ErrRuntime
 	}

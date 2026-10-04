@@ -8,8 +8,9 @@ systems. The HP MicroServer Gen8 is a reference configuration, not a hardware
 requirement or a limit on disks, memory, pools, or datasets.
 
 **Status:** M0 foundation, M1 design, native discovery, helper transport and
-collector/cache and administration security accepted. Authenticated read-only
-console, CLI and foreground development commands are being reviewed. There is
+collector/cache, administration security, authenticated read-only console, CLI
+and foreground development commands accepted. Runtime lifecycle, logging and
+response admission are being extended. There is
 no installable port, appliance image or production support claim.
 
 ## Agreed direction

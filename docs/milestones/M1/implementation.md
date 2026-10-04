@@ -118,7 +118,8 @@ acceptance remain pending.
 
 ## Slice 5: authenticated console, CLI and foreground assembly
 
-Under review in [PR 8](https://github.com/gonz0w/horvium/pull/8):
+Accepted by maintainer merge of [PR 8](https://github.com/gonz0w/horvium/pull/8),
+source `be23d5491680d578171441b66bbe0eb583b17643`, on 2026-10-04:
 semantic HTML5/CSS/local HTMX views and a protected-input
 CLI share the existing authenticated cache queries. Foreground commands compose
 the root helper and exact-UID management runtime without service installation.
@@ -130,6 +131,14 @@ independently verified owned GUIDs and teardown. Limited in-app browser flows
 also passed; full required browser/accessibility acceptance remains open. See
 [console evidence](../../testing/M1/console.md) and the
 [development runbook](../../operations/M1-development.md).
+
+## Slice 6: foreground lifecycle, operational logging and response admission
+
+In development: full-response inventory reader admission, bounded fixed-schema
+operational events, coupled HTTP/collector shutdown and native built-process
+restart/file-service continuity tests. See [runtime evidence](../../testing/M1/runtime.md)
+for the procedure and limitations. Diagnostic authenticated-handler benchmarks
+are separate from the full measured application budget gate.
 
 ## Remaining slices and acceptance
 

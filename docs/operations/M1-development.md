@@ -108,3 +108,24 @@ No raw HTTP request/body/cookie/native output is logged. Fixed errors avoid
 argument/credential disclosure. Integrated bounded structured audit logging,
 whole-application performance and process lifecycle qualification remain the next
 M1 acceptance slice; do not treat foreground development commands as a release.
+
+## Runtime shutdown, capacity and logging
+
+Use SIGTERM or Ctrl-C for orderly foreground shutdown. Management cancels its
+collector and gives HTTP up to five seconds to stop before closing remaining
+connections. A hard kill discards volatile sessions/cache. Config and the digest
+remain on boot storage. A helper killed abruptly can leave its socket; startup
+refuses to adopt or unlink an existing entry. The local administrator must verify
+the old process is gone and the stale socket's ownership before removing that
+specific entry and restarting. Never remove an unknown socket or widen permissions.
+
+`max_readers` covers the entire authenticated inventory response, including
+serialization and writing. At capacity, requests return 503 immediately with
+Retry-After. Login, refresh and small collector status remain responsive.
+
+Operational JSON records go to stderr with bounded rate/queue, fixed safe fields
+and suppression counts. They contain no request bodies, credentials or inventory
+identifiers. Route stderr to system logging as appropriate for the development
+host. A blocked sink does not block management; shutdown may discard queued
+records. These logs are sampled operational evidence, not a durable audit trail.
+See [runtime evidence](../testing/M1/runtime.md) for test procedures and open gates.

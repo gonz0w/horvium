@@ -37,3 +37,5 @@
   [native QEMU spike](research/M1/native-spike.md),
   [immutable source/version manifest](research/M1/source-manifest.json)
 - [Operational runbook plan](operations/README.md)
+
+- [M1 runtime lifecycle and observability evidence](testing/M1/runtime.md).

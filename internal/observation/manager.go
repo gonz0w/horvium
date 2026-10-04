@@ -51,6 +51,13 @@ type Attempt struct {
 	StartedAt, FinishedAt time.Time
 	ErrorCode             string
 }
+
+// Result exposes only completed attempt metadata and section status to an
+// operational observer. No raw source error, identifier or inventory is passed.
+type Result struct {
+	Attempt Attempt
+	Status  [4]inventory.Status
+}
 type Freshness struct {
 	Status                                  inventory.Status
 	StartedAt, FinishedAt, LastSuccessfulAt time.Time
@@ -95,9 +102,16 @@ type Manager struct {
 	successes                    [4]time.Time
 	requests                     chan struct{}
 	readers                      chan struct{}
+	observer                     func(Result)
 }
 
 func New(c Config, s Source) (*Manager, error) {
+	return NewObserved(c, s, nil)
+}
+
+// NewObserved requires a nonblocking observer; it runs after publication,
+// outside the state lock. Runtime event logging supplies a bounded queue.
+func NewObserved(c Config, s Source, observer func(Result)) (*Manager, error) {
 	if c.validate() != nil || s == nil {
 		return nil, ErrConfig
 	}
@@ -105,7 +119,7 @@ func New(c Config, s Source) (*Manager, error) {
 	if _, err := rand.Read(seed[:]); err != nil {
 		return nil, ErrConfig
 	}
-	return &Manager{source: s, config: c, now: time.Now, nonce: hex.EncodeToString(seed[:]), requests: make(chan struct{}, 1), readers: make(chan struct{}, c.MaxReaders)}, nil
+	return &Manager{source: s, config: c, now: time.Now, nonce: hex.EncodeToString(seed[:]), requests: make(chan struct{}, 1), readers: make(chan struct{}, c.MaxReaders), observer: observer}, nil
 }
 
 // Run is the only collector worker. Restart means a new Manager with a new ID
@@ -207,7 +221,16 @@ func (m *Manager) collect(parent context.Context) {
 		err = ctx.Err()
 	}
 	m.mu.Lock()
-	defer m.mu.Unlock()
+	defer func() {
+		r := Result{Attempt: m.completed}
+		if err == nil {
+			r.Status = [4]inventory.Status{s.Host.Status, s.GEOM.Status, s.Pools.Status, s.Datasets.Status}
+		}
+		m.mu.Unlock()
+		if m.observer != nil {
+			m.observer(r)
+		}
+	}()
 	// Queries can delay this lock after collection/clone has finished. Recheck
 	// cancellation at the publication boundary, not only before waiting.
 	if ctx.Err() != nil {
