@@ -1,6 +1,7 @@
 # M1 browser and accessibility qualification
 
-Status: procedure implemented; execution pending. Owner: Cam (`@gonz0w`).
+Status: Firefox automated qualification passed; under review. Safari/manual
+accessibility acceptance pending by maintainer choice. Owner: Cam (`@gonz0w`).
 Date: 2026-10-04. Requirements M1-REQ-004,005,006; tests M1-UI-001,
 M1-HTTP-001 and M1-AUTH-001. The approved TDD requires actual selected browsers
 and assistive-technology evidence before UI acceptance.
@@ -74,3 +75,34 @@ then returns to content context. This changes no product CSS/CSP, OS setting or
 operator browser profile. Actual `innerWidth` must match the requested CSS width.
 See [Mozilla driver flags](https://firefox-source-docs.mozilla.org/testing/geckodriver/Flags.html).
 Human zoom/usability and Safari remain pending by maintainer choice.
+
+
+## Actual Firefox execution record
+
+[Run 37233700130](https://github.com/gonz0w/horvium/actions/runs/37233700130), source
+`062233c0158e7e6472be5d72f891cae1f4a3acf0`, passed all six executed jobs, including
+actual Firefox and both FreeBSD native suites. The browser used Firefox 157.0,
+geckodriver 0.37.1 (300705c65d1b), Python 3.14.7 and Go 1.27.1 on Ubuntu 24.04.5
+LTS, kernel 6.17.0-1022-azure amd64/glibc 2.39. Runner image ubuntu24/20260927.320.1.
+
+| JavaScript / appearance | Requested and actual CSS width | Text / control minimum contrast | Result |
+|---|---|---|---|
+| Enabled / light | 1280 | 5.046 / 3.141 | Pass, including real status polling |
+| Enabled / dark | 390 | 5.529 / 3.999 | Pass |
+| Disabled / light | 1280 | 5.046 / 3.141 | Pass |
+| Disabled / dark | 320 | 5.529 / 3.999 | Pass |
+
+All four flows verified keyboard order/visible focus, filter/detail behavior,
+escaping, labels, reflow, collection feedback and logout. HTMX-enabled cases
+retained apply/selection focus; actual status polling retained workspace/details
+and typing focus. Disabled cases had no page HTMX execution and used full-page
+forms. Observed theme and reduced-motion media matched their requested values.
+Only narrow owned Firefox browser chrome minima were adjusted, using Mozilla's
+explicit driver capability; the product document and CSS were unchanged by the
+harness. This does not emulate a phone, certify all visual contrast, or replace
+manual screen-reader/native-zoom usability evidence.
+
+The [source manifest](../../research/M1/source-manifest.json) retains exact pins,
+source file hashes and whitelisted per-scenario results. Local `make check lint
+test secrets build go-check` passed; tests include checksum-tampering protection
+and known contrast/alpha-rejection assertions. Full M1 acceptance remains open.
