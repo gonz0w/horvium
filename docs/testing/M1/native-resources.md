@@ -69,3 +69,11 @@ of the final column header, so comma-joined empty-header fields did not return
 the intended columns. Separate `-o` arguments correct this fixture parsing.
 The attempted larger crash fixture and helper pause were removed; the measured
 and crash fixtures again use the same 100 owned filesystems. No budget is relaxed.
+
+
+The short actual-built-helper capture gate passed on both selected releases in
+[run 37233158523](https://github.com/gonz0w/horvium/actions/runs/37233158523), source
+`cebc897` (5.51s on 15.1; 4.91s on 14.5). It confirms live stopped native-command
+parentage and both command/guard termination after helper SIGKILL. All five jobs
+passed. The full pinned resource/crash/stale/recovery workflow is running separately
+in 37233391796; the short test alone does not qualify its measured budgets.
