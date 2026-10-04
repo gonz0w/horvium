@@ -118,7 +118,7 @@ func TestGEOMRelationshipsAndIdentity(t *testing.T) {
 }
 
 func TestGEOMSysctlTerminator(t *testing.T) {
-	// kern.geom.confxml's SYSCTL_OUT copies sbuf_len + 1, including its NUL.
+	// kern.geom.confxml's sbuf uses SBUF_INCLUDENUL, including its terminal NUL.
 	if graph, err := ParseGEOM([]byte(geomFixture+"\x00"), DefaultLimits()); err != nil || len(graph.Providers) != 3 {
 		t.Fatalf("native sysctl terminator rejected: %v", err)
 	}

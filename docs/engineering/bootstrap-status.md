@@ -1,6 +1,6 @@
 # Bootstrap status
 
-Date: 2026-10-03. Phase: M0 accepted; M1 research/draft design ready for review.
+Date: 2026-10-03. Phase: M0 accepted; M1 design approved and implementing.
 No production implementation is approved by this status file.
 
 ## Confirmed direction
@@ -14,6 +14,11 @@ Cam (`@gonz0w`) is the initial maintainer and CODEOWNERS owner.
 
 ## Implemented and observed
 
+- Maintainer merged [M1 design PR 3](https://github.com/gonz0w/horvium/pull/3),
+  source `527a330f4b1069fa0b7a1414f4d3c6dbab54f5a5`, on 2026-10-03. Its PRD,
+  EDD, Test Design and ADRs 0004/0005 authorize the scoped M1 implementation.
+  Component completion and evidence are tracked in
+  [M1 implementation status](../milestones/M1/implementation.md).
 - Maintainer merged [foundation review PR 2](https://github.com/gonz0w/horvium/pull/2)
   on 2026-10-03. Squash revision `02f7dcb43afdeedd101e94e41ea06e24335422fe`
   has a GitHub-verified signature and a successful
@@ -42,8 +47,8 @@ Cam (`@gonz0w`) is the initial maintainer and CODEOWNERS owner.
 ## Remaining gates and limits
 
 - M1 research is tracked in [issue 1](https://github.com/gonz0w/horvium/issues/1).
-  Review its [PRD](../milestones/M1/PRD.md), [EDD](../milestones/M1/EDD.md), and
-  [Test Design](../milestones/M1/TDD.md) before product implementation. The
+  Complete the approved [PRD](../milestones/M1/PRD.md), [EDD](../milestones/M1/EDD.md),
+  and [Test Design](../milestones/M1/TDD.md) acceptance gates. The
   maintainer chose macOS and Linux/BSD client priorities and QEMU native fixtures.
 - Confirm confidential security/conduct reporting before public community access
   or a deployable release. BSD Cloud's reporting address is not assumed.

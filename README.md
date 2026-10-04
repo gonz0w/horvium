@@ -7,8 +7,8 @@ remain lightweight on a 16 GB home server and grow to larger commercial storage
 systems. The HP MicroServer Gen8 is a reference configuration, not a hardware
 requirement or a limit on disks, memory, pools, or datasets.
 
-**Status:** M0 foundation accepted; M1 research and draft design ready for review.
-No NAS daemon, GUI, installable port,
+**Status:** M0 foundation and M1 design accepted; native discovery implementation
+is under review. No NAS daemon, GUI, installable port,
 appliance image, or production support claim exists yet.
 
 ## Agreed direction
@@ -33,7 +33,9 @@ appliance image, or production support claim exists yet.
 5. [Contributing](CONTRIBUTING.md) and [agent instructions](AGENTS.md).
 6. [M1 requirements](docs/milestones/M1/PRD.md),
    [engineering design](docs/milestones/M1/EDD.md), and
-   [Test Design](docs/milestones/M1/TDD.md): draft implementation contracts.
+   [Test Design](docs/milestones/M1/TDD.md): approved implementation contracts.
+7. [M1 implementation status](docs/milestones/M1/implementation.md): completed
+   portions, evidence and remaining acceptance gates.
 
 ## Foundation checks
 
@@ -45,10 +47,16 @@ Python is not a planned runtime dependency of the NAS.
 make tools
 make hooks
 make check lint test secrets
+make go-check
 ```
 
 Native FreeBSD checks and physical hardware tests have separate gates. Passing
 these foundation checks does not demonstrate functioning storage or file shares.
+
+The Go module currently provides internal read-only discovery libraries and tests;
+there is no operator command or management listener to launch. `make tools` also
+installs checksum-verified Go 1.27.1 under `.tools/`; it leaves the system toolchain
+alone. See [CI/CD](docs/engineering/ci-cd.md) for opt-in disposable native tests.
 
 See [documentation index](docs/README.md), [testing strategy](docs/testing/strategy.md),
 and [ports plan](packaging/ports/README.md). The selected remote is the private

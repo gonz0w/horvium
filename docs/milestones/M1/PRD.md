@@ -40,7 +40,7 @@ remain required later milestones. The console must state this boundary plainly.
 
 ## Compatibility and budgets
 
-Proposed runtime matrix: supported FreeBSD 15.1 primary and 14.5 compatibility,
+Approved runtime targets: supported FreeBSD 15.1 primary and 14.5 compatibility,
 amd64 first. These are dated targets; refresh at approval and implementation.
 Go 1.27.1, HTMX 2.0.11 and the proposed syscall library are pinned in the
 [research manifest](../../research/M1/source-manifest.json). Other architectures
@@ -79,4 +79,4 @@ completed components and remaining acceptance gates.
 Approval adopts the M1 scope and design only. Release-wide password/identity/ACL
 rules, durable jobs, adoption/drift resolution, encryption/key recovery, backup
 trust/retention and performance qualification remain separate designs before
-their implementation. Approval record must identify reviewer/date/source revision.
+their implementation. The approval record above identifies maintainer/date/source revision.

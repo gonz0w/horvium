@@ -18,9 +18,14 @@ Product library, no service/HTTP/CLI installation or data mutations:
 - XML has byte, field, depth, element and graph-record budgets; DTD directives,
   contradictory references and malformed structures fail. Unknown bounded inner
   metadata is ignored; no opaque property is interpreted as authority.
+- The native string sysctl includes a terminal NUL. Remove exactly one terminal
+  byte after accounting for its size; embedded/repeated NULs and trailing junk
+  remain errors. Full XML consumption is tested, rather than relying on a decoder
+  that returns immediately after the first root element.
 - Actual FreeBSD reader uses seven fixed absolute command/argument projections,
   sanitized environment, bounded combined stdout/stderr and process-group
   cancellation. Aggregate collection bytes/graph and ZFS records are bounded.
+  Discarded stderr and failed-command output consume the byte budget too.
   Default native command/collection deadlines are ten/45 seconds. No runtime
   dependencies beyond Go standard library; no syscall module is added until the
   helper slice uses it. Non-FreeBSD constructors fail explicitly.
@@ -29,7 +34,9 @@ Native fixture tests require root and explicit disposable-QEMU opt-in. They crea
 only their own file-backed md/pool, compare captured GUID/size/geometry to
 independent native queries, check observed external rename, verify unchanged
 mountpoint/readonly/compression, and verify pool/md teardown. No host inventory
-dump is printed. Actual run evidence is pending.
+dump is printed. Actual product reader tests passed on both selected releases;
+see [native discovery evidence](../../testing/M1/discovery.md) for exact source,
+versions, procedure, failures/repairs and limits.
 
 ## Requirement evidence in this slice
 

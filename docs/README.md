@@ -9,8 +9,8 @@
 - [UI baseline](ui/baseline.md)
 - [Compatibility matrix](compatibility/matrix.md)
 - [Ports distribution plan](../packaging/ports/README.md)
-- M1 draft: [PRD](milestones/M1/PRD.md), [EDD](milestones/M1/EDD.md),
-  [Test Design](milestones/M1/TDD.md)
+- M1 approved: [PRD](milestones/M1/PRD.md), [EDD](milestones/M1/EDD.md),
+  [Test Design](milestones/M1/TDD.md), [implementation status](milestones/M1/implementation.md)
 
 ## Engineering and evidence
 
@@ -23,6 +23,7 @@
 - [Research process](process/research-process.md)
 - [Testing strategy](testing/strategy.md)
 - [Lab gates](testing/lab-gate.md)
+- [M1 native discovery execution evidence](testing/M1/discovery.md)
 - [Security and supply chain](security/supply-chain.md)
 - [Design templates](templates/README.md)
 - [M0 foundation acceptance](milestones/M0/acceptance.md)
