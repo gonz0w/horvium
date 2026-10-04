@@ -157,18 +157,21 @@ NAS throughput or worst-case native-reader allocation.
 
 ## Slice 8: helper denial events and transport abuse
 
-In progress: the foreground root helper shares its existing bounded logger with
+Under review in [PR 11](https://github.com/gonz0w/horvium/pull/11):
+the foreground root helper shares its existing bounded logger with
 the request boundary. UID/protocol/limit/capacity/deadline/cancellation and failed
 exchange outcomes produce generated local IDs and fixed error classes. No caller
 identity, request ID, payload or raw error is exported. See
-[helper denial evidence](../../testing/M1/helper-events.md).
+[helper denial evidence](../../testing/M1/helper-events.md). Both FreeBSD targets
+passed actual dropped-UID denial/classification/recovery and built-helper logging
+assertions in run 37221158595.
 
 ## Remaining slices and acceptance
 
 1. Complete console/CLI native and required-browser evidence, accessibility acceptance.
 2. Qualify native-reader allocation alongside the measured synthetic management budgets.
 3. Extend independent SFTP continuity evidence to SMB/NFS; complete native-probe
-   process-kill and helper-denial logging/abuse review.
+   process-kill and full helper/HTTP abuse review.
 
 All PRD requirements remain subject to the full [Test Design](TDD.md). Native
 reader success is not NAS readiness, commercial qualification or a working UI.

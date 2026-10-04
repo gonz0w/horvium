@@ -1,6 +1,7 @@
 # M1 helper denial events and transport abuse
 
-Date: 2026-10-04. Status: implementation and local regressions; native execution pending.
+Date: 2026-10-04. Status: native tests passed; slice 8 under review in
+[PR 11](https://github.com/gonz0w/horvium/pull/11).
 Work: [issue 1](https://github.com/gonz0w/horvium/issues/1).
 Authority: approved [EDD](../../milestones/M1/EDD.md) observability boundary and
 [Test Design](../../milestones/M1/TDD.md) M1-PRIV/FAIL/SCALE/NOCHANGE tests.
@@ -29,7 +30,8 @@ rather than exposing a framing error as the cause of an expired read.
 The same single writer, 64-record queue and 60-record-per-minute process budget
 cover startup, native collection and denials together. Logger calls do not wait
 for sink I/O. Floods can suppress any category and queued events can be lost on
-exit: sampled operational events are not a durable security audit ledger or proof
+exit. Parent shutdown can also cancel logging before a cancellation event is
+admitted: sampled operational events are not a durable security audit ledger or proof
 that no denial occurred. No new config, network listener, telemetry destination,
 file-service command, storage mutation or persistence mechanism is introduced.
 
@@ -59,6 +61,35 @@ credentials are exported. Existing native reader/runtime/SFTP tests run alongsid
 
 Native tests require FreeBSD/root and `HORVIUM_NATIVE_VM=1`; otherwise they explicitly
 skip. Cross-compilation alone is not native evidence. Exact source/run/version
-records will be added after native execution. Required browser/accessibility,
+records follow below. Required browser/accessibility,
 native-probe process-kill, SMB/NFS continuity, full abuse review, native-reader
 resource limits and package/release gates remain separate.
+
+## Execution record
+
+Functional source: `0096709e0a155701425c17ab6a2cac037a7cdaec`.
+[Native run 37221158595](https://github.com/gonz0w/horvium/actions/runs/37221158595)
+passed all five executed jobs. Both product targets actually passed
+`TestNativeHelperDenialEvents`, the logged `TestNativeAdmittedClientsBounded`,
+and `TestNativeBuiltHelperDenialLogging`, together with all portable denial,
+blocked-sink recovery, cancellation and failed-exchange regressions. All existing
+reader/helper/cache/auth/console/CLI/runtime and independent SFTP fixtures passed.
+The optional long performance job was intentionally skipped; existing synthetic
+budget evidence belongs to its accepted revision, not this native denial run.
+
+| Guest / architecture | ZFS userland/module suffix | Go / syscall module |
+|---|---|---|
+| 15.1-RELEASE-p3 / amd64 | 2.4.2-1-FreeBSD_g6330a45b0 | 1.27.1 / x/sys v0.48.0 |
+| 14.5-RELEASE / amd64 | 2.2.9-FreeBSD_g079ba86d7 | 1.27.1 / x/sys v0.48.0 |
+
+The native action source was `a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff`,
+builder 2.2.8, Ubuntu 24.04 hosted runner, 6144 MiB guest memory, default CPU/image
+selection. This is native functional evidence; it does not extend the pinned
+performance qualification. Test procedure, statuses and functional-source hashes
+are recorded in the [source manifest](../../research/M1/source-manifest.json).
+
+Local macOS 27.0 arm64 `make check lint test secrets build go-check` passed,
+including race detection and five bounded fuzz targets. Additional protocol
+cases passed the required checks and native suite. FreeBSD amd64 helper and
+command test binaries cross-compiled. The final evidence commit changes docs only;
+no operator-host service was enabled. M1 remains unaccepted.

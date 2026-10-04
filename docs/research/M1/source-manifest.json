@@ -859,5 +859,127 @@
         "zfs_kernel": "zfs-kmod-2.2.9-FreeBSD_g079ba86d7"
       }
     ]
+  },
+  "product_helper_events": {
+    "date": "2026-10-04",
+    "status": "native tests pass; slice under review; M1 unaccepted",
+    "source_revision": "0096709e0a155701425c17ab6a2cac037a7cdaec",
+    "workflow_run": "https://github.com/gonz0w/horvium/actions/runs/37221158595",
+    "test_ids": [
+      "M1-PRIV-001",
+      "M1-FAIL-001",
+      "M1-SCALE-001",
+      "M1-NOCHANGE-001",
+      "M1-AUTH-001"
+    ],
+    "vm": {
+      "action_source": "a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff",
+      "builder": "2.2.8",
+      "memory_mib": 6144,
+      "runner": "ubuntu-24.04 hosted amd64",
+      "cpu_image_pin": "default native fixtures; not performance qualification"
+    },
+    "procedure": "portable real Unix sockets; actual kernel-authorized root library server with dropped UID children; foreground built product helper permission-event stderr assertion; owned socket cleanup; existing native/SFTP fixtures",
+    "logger_budget": {
+      "records_per_minute": 60,
+      "queued_records": 64,
+      "writers": 1,
+      "scope": "shared process budget covering startup/native collection/request failures"
+    },
+    "limits": [
+      "sampled events; any category may be suppressed; queued records may be lost at exit",
+      "helper shutdown may cancel logging before a cancellation event can be admitted",
+      "full HTTP/helper abuse review and native-probe process-kill remain open",
+      "performance workflow intentionally skipped; prior accepted synthetic budget evidence unchanged; no new resource or hardware claim",
+      "no SMB/NFS/client/WCAG/package/production-support qualification"
+    ],
+    "files": [
+      {
+        "path": "internal/helper/events.go",
+        "sha256": "ff87a9bb45d72f183b76e4390e5dde91cc5553a0a76c80f4bcecfe1c6095871a"
+      },
+      {
+        "path": "internal/helper/events_test.go",
+        "sha256": "121db5d7f05fa418d9d406ad5ca46aa3725c7aea5c721e32487aa2531dccea19"
+      },
+      {
+        "path": "internal/helper/server.go",
+        "sha256": "ae6af0cc454947b29d8e2cb10d39814d60814afad00919006f0facbc8bf0fcda"
+      },
+      {
+        "path": "internal/helper/native_freebsd_test.go",
+        "sha256": "d689a8f35a9391969d1097436eebf98506cc57bf607ac54f8fdc59f3f33f483d"
+      },
+      {
+        "path": "internal/service/service.go",
+        "sha256": "24ef727150f7718de375e9a1bb7e1bebded3f2d0c585903448ae61ff70980fd7"
+      },
+      {
+        "path": "internal/eventlog/log.go",
+        "sha256": "b48dafe7fb5aa6d65739fdb94f35afcb6aa1be39515810ff3bae1f87e0a7ef6a"
+      },
+      {
+        "path": "internal/eventlog/log_test.go",
+        "sha256": "0871bf35fde44b2bbdb265f993544c02b22167afb9702776784bf14ecdb37c19"
+      },
+      {
+        "path": "cmd/horvium/helper_events_freebsd_test.go",
+        "sha256": "c39c0d7fd265addbd4a1293e862d5646c4dba518a25ed21d4722651253099ec6"
+      },
+      {
+        "path": "cmd/horvium/lifecycle_freebsd_test.go",
+        "sha256": "9b1048b3fbac9944da9ac898c3840f7a206bd5ba5e99763b878b1fbae220f681"
+      },
+      {
+        "path": "tools/bsd-native-discovery.sh",
+        "sha256": "928e17fa2b1be9f272c9b09d6ead00710811fa956bd3d2c25f0277dbd3ff72ff"
+      },
+      {
+        "path": "go.mod",
+        "sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+      }
+    ],
+    "guests": [
+      {
+        "os": "15.1-RELEASE-p3",
+        "architecture": "amd64",
+        "go": "1.27.1",
+        "zfs_userland": "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+        "zfs_kernel": "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0",
+        "openssh_client": "10.0p2",
+        "status": "pass",
+        "tests": [
+          "TestNativeHelperDenialEvents",
+          "TestNativeAdmittedClientsBounded",
+          "TestNativeBuiltHelperDenialLogging",
+          "TestHelperDenialsAreClassifiedWithoutCallerData",
+          "TestHelperDenialFloodCannotBlockHealthyCollection",
+          "TestHelperFailedExchangeReleasesCollection",
+          "TestHelperBusyAndCancellationEventsDoNotRetainWork"
+        ]
+      },
+      {
+        "os": "14.5-RELEASE",
+        "architecture": "amd64",
+        "go": "1.27.1",
+        "zfs_userland": "zfs-2.2.9-FreeBSD_g079ba86d7",
+        "zfs_kernel": "zfs-kmod-2.2.9-FreeBSD_g079ba86d7",
+        "openssh_client": "10.0p2",
+        "status": "pass",
+        "tests": [
+          "TestNativeHelperDenialEvents",
+          "TestNativeAdmittedClientsBounded",
+          "TestNativeBuiltHelperDenialLogging",
+          "TestHelperDenialsAreClassifiedWithoutCallerData",
+          "TestHelperDenialFloodCannotBlockHealthyCollection",
+          "TestHelperFailedExchangeReleasesCollection",
+          "TestHelperBusyAndCancellationEventsDoNotRetainWork"
+        ]
+      }
+    ]
   }
 }
