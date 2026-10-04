@@ -22,5 +22,25 @@ class PerformanceEvidenceTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.checker()(line + '\n' + line)
 
+    def test_complete_measurements_and_recovery_are_accepted(self):
+        rows = []
+        for count in (100, 10000):
+            row = {'datasets': count, 'clients': 10, 'requests': 1000,
+                   'replacement_requests': 1000, 'replacements': 3,
+                   'warmup_seconds': 60, 'idle_seconds': 300 if count == 100 else 0,
+                   'sampled_combined_peak_rss_bytes': 42 << 20,
+                   'budget_peak_rss_bytes': 42 << 20,
+                   'conservative_combined_high_water_rss_bytes': 40 << 20,
+                   'rss_samples': 600, 'p95_ms': 100,
+                   'idle_cpu_percent_one_core': 0.1}
+            rows.append('PERFORMANCE_RESULT ' + json.dumps(row))
+        rows.append('PERFORMANCE_LIMITS accepted_model_records=100000 record_exhaustion=pass byte_exhaustion=pass recovery=pass')
+        rows.append('--- PASS: TestNativePerformanceBudgets (430s)')
+        self.assertEqual(set(self.checker()('\n'.join(rows))), {100, 10000})
+        # A below-budget high-water sum cannot hide an above-budget sample.
+        oversized = '\n'.join(rows).replace(str(42 << 20), str(129 << 20))
+        with self.assertRaises(ValueError):
+            self.checker()(oversized)
+
 if __name__ == '__main__':
     unittest.main()

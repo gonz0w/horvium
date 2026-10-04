@@ -153,7 +153,9 @@ This is synthetic management qualification, not physical NAS throughput.
 ## Remaining slices and acceptance
 
 1. Complete console/CLI native and required-browser evidence, accessibility acceptance.
-2. Independent service/restart tests and measured application budgets.
+2. Complete the measured application budget evidence and native-reader allocation limits.
+3. Extend independent SFTP continuity evidence to SMB/NFS; complete native-probe
+   process-kill and helper-denial logging/abuse review.
 
 All PRD requirements remain subject to the full [Test Design](TDD.md). Native
 reader success is not NAS readiness, commercial qualification or a working UI.

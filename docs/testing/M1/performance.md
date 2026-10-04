@@ -41,9 +41,11 @@ expected synthetic row. Report nearest-rank p50/p95/p99. A second 1,000-request
 workload runs while three explicit generation replacements complete. RSS sampling
 covers startup, warm-up, idle, reads and replacement at a nominal 100 ms interval;
 report sample count and actual maximum gap. After orderly process exit, sum each
-process's getrusage peak RSS, converting FreeBSD KiB to bytes. This conservative
-sum can exceed the simultaneous combined peak, and covers peaks between samples.
-Budgets compare against that sum: small <=128 MiB and idle <1% of one core;
+process's getrusage peak RSS, converting FreeBSD KiB to bytes. Summing separate peaks can overestimate simultaneous
+usage. Native runs also showed ps samples slightly above the kernel high-water
+sum; the two accounting observations are retained and the larger value is used
+for the budget. Kernel high-water accounting supplements sampling, but neither
+proves an exact instantaneous upper bound. Budgets compare against that maximum: small <=128 MiB and idle <1% of one core;
 large <=256 MiB and p95 <250 ms. Shutdown verifies owned socket removal.
 
 A third separate process pair tests 100,000 aggregate model records (99,990 dataset
@@ -61,7 +63,12 @@ is outside the small/large fixture budgets.
 Portable behavioral tests first failed before the usage parser, one-core CPU
 calculation and aggregate-record fixture were implemented. Tool regressions reject
 checksum mismatch and preserve an existing fixture. FreeBSD cross-compilation is
-build evidence only. Native source/run IDs and measured results will be added
+build evidence only. A runner-side [evidence validator](../../../tools/check-performance-evidence.py)
+requires both full measurement records, passing budgets using the larger RSS
+observation, and the explicit cap/recovery
+record; a green VM boot or skipped test is rejected.
+
+Native source/run IDs and measured results will be added
 only after actual execution; pending is not pass.
 
 The helper fixture includes the test binary and generated typed models, but omits

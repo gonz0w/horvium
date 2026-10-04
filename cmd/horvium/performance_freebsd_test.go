@@ -442,9 +442,10 @@ func TestNativePerformanceBudgets(t *testing.T) {
 				t.Fatal(e)
 			}
 			sampled, peak, samples, gap := p.stop(t)
+			budgetPeak := max(sampled, peak)
 			slices.Sort(latencies)
 			p50, p95, p99 := latencies[499], latencies[949], latencies[989]
-			record := map[string]any{"datasets": count, "clients": 10, "session_count": 1, "requests": 1000, "replacement_requests": 1000, "replacements": 3, "warmup_seconds": 60, "idle_seconds": 0, "idle_cpu_percent_one_core": idle, "sampled_combined_peak_rss_bytes": sampled, "conservative_combined_high_water_rss_bytes": peak, "rss_samples": samples, "max_sample_gap_ms": float64(gap.Microseconds()) / 1000, "p50_ms": float64(p50.Microseconds()) / 1000, "p95_ms": float64(p95.Microseconds()) / 1000, "p99_ms": float64(p99.Microseconds()) / 1000}
+			record := map[string]any{"datasets": count, "clients": 10, "session_count": 1, "requests": 1000, "replacement_requests": 1000, "replacements": 3, "warmup_seconds": 60, "idle_seconds": 0, "idle_cpu_percent_one_core": idle, "sampled_combined_peak_rss_bytes": sampled, "conservative_combined_high_water_rss_bytes": peak, "budget_peak_rss_bytes": budgetPeak, "rss_samples": samples, "max_sample_gap_ms": float64(gap.Microseconds()) / 1000, "p50_ms": float64(p50.Microseconds()) / 1000, "p95_ms": float64(p95.Microseconds()) / 1000, "p99_ms": float64(p99.Microseconds()) / 1000}
 			if count == 100 {
 				record["idle_seconds"] = 300
 			}
@@ -457,8 +458,8 @@ func TestNativePerformanceBudgets(t *testing.T) {
 					t.Errorf("small idle CPU exceeds 1%%: %.4f", idle)
 				}
 			}
-			if peak > budget {
-				t.Errorf("combined process high-water sum exceeds budget: %d > %d", peak, budget)
+			if budgetPeak > budget {
+				t.Errorf("combined measured RSS exceeds budget: %d > %d", budgetPeak, budget)
 			}
 			if count == 10000 && p95 >= 250*time.Millisecond {
 				t.Errorf("large p95 exceeds 250 ms: %v", p95)

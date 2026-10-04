@@ -25,9 +25,11 @@ def validate(log):
                     'idle_seconds': 300 if count == 100 else 0}
         if any(row.get(key) != value for key, value in expected.items()):
             raise ValueError('fixture procedure is incomplete')
-        if not 0 < row.get('sampled_combined_peak_rss_bytes', 0) <= row.get('conservative_combined_high_water_rss_bytes', 0):
+        sampled = row.get('sampled_combined_peak_rss_bytes', 0)
+        high_water = row.get('conservative_combined_high_water_rss_bytes', 0)
+        if min(sampled, high_water) <= 0 or row.get('budget_peak_rss_bytes') != max(sampled, high_water):
             raise ValueError('RSS evidence missing or inconsistent')
-        if row['conservative_combined_high_water_rss_bytes'] > (128 if count == 100 else 256) * 1024 * 1024:
+        if row['budget_peak_rss_bytes'] > (128 if count == 100 else 256) * 1024 * 1024:
             raise ValueError('RSS budget failed')
         if row.get('rss_samples', 0) < 1 or row.get('p95_ms', 0) <= 0:
             raise ValueError('measurement missing')

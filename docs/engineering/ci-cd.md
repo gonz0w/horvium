@@ -57,7 +57,8 @@ The opt-in [performance workflow](../../.github/workflows/bsd-performance.yml)
 stages two checksum-pinned builder 2.2.8 images and AnyVM 0.7.2 through
 [the fixture tool](../../tools/prepare-performance-vm.py) and
 [artifact pins](../../tools/performance-vm-pins.json). It explicitly selects the
-QEMU qemu64 CPU model, two cores, 6144 MiB and snapshot mode. Base-image and runtime
+QEMU qemu64 CPU model, two cores, 6144 MiB and snapshot mode. After detached VM boot, a separate SSH command executes the guest suite without
+copying guest SDK/cache files back to checkout. Base-image and runtime
 hashes are rechecked after execution. The Ubuntu 24.04 hosted runner and actual
 QEMU version are recorded; hosted scheduling and firmware are not an immutable
 physical benchmark. This replaces host-CPU defaults for the measured workload.
