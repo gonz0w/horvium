@@ -25,6 +25,14 @@ JavaScript-disabled Safari and assistive technology require manual observations.
 Headless computed checks do not establish visual quality, screen-reader usability,
 all element contrast, native zoom or WCAG conformance.
 
+The first Firefox run (37232695284), source 6f1f229, failed the control-boundary
+contrast assertion after keyboard/fragment/status-polling checks. Controls now
+use distinct stronger light/dark borders; fine decorative rules retain their
+existing colors. A complete rerun is required before recording browser pass.
+
+The maintainer chose to keep manual accessibility acceptance pending on
+2026-10-04. Automated results do not waive the cases below.
+
 ## Manual fixture and observations
 
 Run `make browser-preview` in the checkout. It prints a loopback URL, displays a

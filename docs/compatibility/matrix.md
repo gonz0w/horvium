@@ -52,6 +52,7 @@ evidence only. No
 physical identity, file-client, scale or throughput claim follows.
 
 Browser fixture tooling now targets actual Firefox 157.0 on Linux amd64 and
-installed Safari on macOS. Execution and the manual accessibility gate are pending;
+installed Safari on macOS. The initial Firefox control-contrast failure is fixed for rerun; execution and
+the manual accessibility gate are pending;
 see [browser checklist](../testing/M1/browser-checklist.md). Synthetic UI fixtures
 do not establish FreeBSD runtime or SMB/NFS client compatibility.
