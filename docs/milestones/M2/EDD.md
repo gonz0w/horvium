@@ -1,0 +1,264 @@
+# EDD: owned ZFS operations and durable recovery
+
+Status: Draft; not approved. Owner: Cam (`@gonz0w`). Date: 2026-10-04.
+[PRD](PRD.md), [Test Design](TDD.md), [issue 19](https://github.com/gonz0w/horvium/issues/19),
+[primary evidence](../../research/M2/findings.md). Approval record: pending.
+
+## Boundaries and authority
+
+```mermaid
+flowchart TD
+    Browser[HTML5 forms / CSS / local HTMX] --> App[Authenticated unprivileged application]
+    CLI[Authenticated CLI] --> App
+    App --> Views[Cached inventory and bounded job projections]
+    App --> Socket[Versioned typed Unix socket requests]
+    Socket --> Helper[Root helper: exact kernel-authorized management UID]
+    Helper --> Policy[Root-owned local write policy]
+    Helper --> Ledger[Root-owned ownership and job records on system storage]
+    Helper --> Executor[Validated fixed native operations]
+    Executor --> ZFS[FreeBSD GEOM / ZFS]
+    Clients[File clients] --> Daemons[Independent file daemons]
+    Daemons --> ZFS
+```
+
+Retain the M1 UID/peer/socket safeguards and authentication/session/CSRF/Host/Origin
+policy. Mutation authority is a new, explicitly negotiated transport contract;
+old/unknown operations fail closed. HTTP handlers, templates and CLI adapters
+never construct native commands or access the root ledger. No general command,
+path, environment or property map crosses the boundary. Exact serialization and
+routes are implementation details reviewed after this design is approved.
+
+Writes are disabled unless OS root explicitly enrolls eligible stable device
+identities and pool/dataset scopes in local root-owned policy. The helper checks
+that policy independently of management-supplied claims. Adoption needs an enrolled
+pool GUID; an observed pool, root client, shared group, forged actor or ZFS marker
+cannot grant authority. Created resources acquire only the scope derived from the
+enrolled devices/parent and verified operation. Changing policy invalidates pending
+plans and queued work that no longer qualifies.
+
+M1's random-token administrator remains the lab application actor. Audit records
+bind the kernel-authenticated service UID and authenticated application context;
+an asserted human name is not independently verified identity. A compromised
+authorized management process can exercise enrolled operations, so enrollment
+must be narrow. OS root compromise and competing root mutations cannot be fenced
+by this boundary. No claim of per-human RBAC, remote HTTPS or production identity
+management is added; those still precede deployment.
+
+## Ownership and device identity
+
+The root registry maps pool GUID, filesystem GUID, selected parent/namespace,
+origin (created/adopted), approved property scope and policy revision. Names are
+current addresses. GEOM graph IDs and device paths remain transient observations.
+GUIDs stay validated decimal strings; literal capacity values never pass through
+browser floating-point arithmetic. New names follow a reviewed subset of native
+rules and reject controls, option-leading values, reserved layout keywords and
+unsafe path components. Existing unsupported names remain observable only.
+Adoption records a baseline without changing ZFS properties, mounting, importing,
+modifying cache files or taking ownership of every descendant. Missing/adverse
+capabilities preserve observation but block the affected mutation.
+
+Pool creation and replacement-device selection target direct local devices with
+unambiguous stable serial/lunid provenance
+and verified GEOM backing relationships. Resolve every selected identity freshly
+to its provider and actual geometry, collapse aliases, and reject overlapping
+parents/children, duplicate/absent identifiers and uncertain multipath mappings.
+Check partitions/signatures, GEOM consumers, imported/exported pool membership,
+mounts, swap, boot/root backing and pending job reservations. An empty consumer
+list alone is not proof of an unused device. A failed, truncated or unsupported
+check denies creation/replacement. No wipe, partition, label-clear or force escape
+exists. Record the exact identity/use-check native projections with their tests
+before enabling device operations; enumeration is not a destructive allowlist.
+
+No shared SAN/multi-host block ownership is supported. Local inspection cannot
+prove a remote host is inactive. Native last-moment use checks supplement the
+plan but do not reserve a device or defeat another root actor. Managed mutation
+assumes an exclusive local writer; operators pause Horvium writes before external
+changes. Observe drift before/after each operation and suspend affected scopes.
+Never describe an advisory file lock as ZFS/GEOM fencing.
+
+## Plans and application contract
+
+1. Authenticated UI/CLI submits a typed operation and resource selection. The
+   helper independently creates a bounded plan from fresh native observations
+   and local policy; browser names/paths cannot identify a device for execution.
+2. The immutable review shows exact identities, layout, sector alignment, property
+   sources/values, mount targets, descendants affected, conflicts, irreversible
+   effects, unsupported capabilities and recovery/cancellation limits. Pool
+   creation/replacement require explicit confirmation of the displayed targets.
+3. A root-generated random plan identifier binds normalized intent, expected
+   identities/properties, policy revision, operator session context and expiry.
+   Default expiry is five minutes. Editing, policy change, restart or drift requires
+   fresh review. Confirmation text conveys intent; it is not extra authentication.
+4. Submission claims the plan once, obtains resource reservations, repeats live
+   checks and durably admits the job before any write. A duplicate submission
+   returns that job. Reusing a submission identifier for different intent is denied.
+   A dropped HTTP response never authorizes retrying the native change.
+5. The helper persists applying intent before launch, executes only an allowlisted
+   operation, then independently observes GUID/topology/property/scan state.
+   Success requires both the native postcondition and a durable outcome record.
+
+Cached generation cursors still protect UI consistency; they do not replace
+live execution checks. Persistent jobs survive logout/restart, while sessions and
+unsubmitted plans do not. Accepted work continues independently of an HTTP request
+or management disconnect. Cancel is a separate authenticated typed request.
+
+## Operation contracts
+
+| Operation | Preconditions and verified outcome |
+|---|---|
+| Adopt | Eligible imported non-system, unencrypted pool; recognized supported layout/features; enrolled GUID and individually selected filesystem scopes; record baseline without changing storage |
+| Create pool | Unused enrolled devices; homogeneous mirrors (at least two leaves/group) or RAIDZ2 (at least four/group); no mixed replication/special classes; reviewed geometry and installed common feature profile; root dataset unmounted and `cachefile=none`; verify new GUID, leaf identities, topology and exact properties |
+| Create filesystem | Owned eligible parent, absent valid direct child name, no implicit ancestors; create initially unmounted with reviewed properties and a root-generated operation nonce; independently record GUID; mount only the new filesystem at a separately validated target |
+| Change properties | Same filesystem GUID, expected local/effective/inherited values, allowed quota/refquota/compression only; explicitly show descendant inheritance impact; one reviewed property step at a time and observe each result; no recursive/native arbitrary-property input |
+| Start/stop scrub | Same owned pool GUID, supported status adapter and attributable scan episode; reject conflicting resilver/scan; observe scan acceptance/termination and checksum errors, not just utility exit |
+| Replace | Same pool and leaf vdev GUID, supported redundant topology, adequate remaining replicas, distinct unused enrolled replacement and native size/alignment checks; verify new member then observe completion/health/errors; no force, detach or sequential rebuild mode |
+| Reimport created pool | Registered created-pool GUID and original verified devices/features, no conflicting import or old executor; limited native search and no force/rewind/key loading; import without mounts and preserve `cachefile=none`; verify identity before recovery |
+
+Use fixed absolute base executables, sanitized environment and typed arguments.
+The existing read-only timeout/reaper is not a transaction or a recovery design.
+Native mutation control calls have bounded capture and a proposed 60-second
+launch deadline; reads retain M1 bounds. A launch timeout/cancel/abrupt death is
+an uncertain write outcome, not proof of no effect. Scrub/resilver themselves run
+in ZFS and can outlive the launching utility/helper; no userspace deadline is a
+promise to roll back or finish them. Do not keep a long-lived utility per job.
+
+New pool creation uses the source-pinned common `openzfs-2.2` profile only after
+the installed root-owned file/hash and native cross-release behavior qualify.
+If absent, altered or unsupported, creation is unavailable. Do not fall back to
+`compatibility=off`, silently enable features or upgrade an adopted pool. The
+profile constrains features; M4 still negotiates receiver/send compatibility.
+
+Quota includes descendants/snapshots; reference quota limits the filesystem's
+referenced space. Neither reserves space or supplies a backup policy. Show literal
+bytes, ancestor constraints and unknown usage. Do not assume compression savings
+or a guaranteed usable capacity from the sum of disk labels. Property changes
+retain original source/inheritance and untouched values for reviewable recovery.
+Quota changes accept a positive literal byte limit or an explicit no-limit choice;
+empty/zero/overflow/ambiguous inputs are denied. This scope sets local values only;
+it does not add arbitrary inheritance or received-property restoration commands.
+If a parent quota or inherited compression change would affect an unadopted
+descendant outside the enrolled property scope, deny it. Require a complete bounded
+impact observation and explicit scope enrollment; a paged UI or partial inventory
+cannot silently omit affected descendants or adopt them on the operator's behalf.
+
+Mount paths come from locally approved namespaces and validated names, never
+arbitrary request paths. Check anchored directory descriptors, ownership, symlinks,
+existing mount points, nonempty targets and shadowing before mount. Adopted
+mount/import/cache policy is preserved. System/boot pools, volumes, encrypted
+resources and unqualified topology/provider classes stay outside mutation scope.
+M2 does not install services, change boot configuration or enable auto-import;
+M5 must qualify that lifecycle. Reboot recovery may require an explicit reviewed
+reimport for created pools; adopted pools remain the OS/operator's responsibility.
+
+## Durable state and scheduling
+
+Propose standard-library strict versioned JSON records rather than adding a
+database dependency: [ADR 0007](../../adr/0007-durable-storage-jobs.md). Ownership,
+job intent/current outcome and limited audit events live on system storage in
+root-owned 0700 directories/0600 regular files. The service UID sees only bounded
+authenticated projections. Reject symlinks, unsafe ancestors, unexpected ownership,
+unknown versions/fields, duplicate keys, oversized records and checksum mismatch.
+Checksums detect damage, not malicious root modification.
+
+One helper holds a lifetime nonblocking advisory lock on a stable root-owned lock
+file. A second writer fails; do not unlink/recreate the lock inode. Strictly parse
+each bounded record before using it. Write a unique same-directory temporary
+file, sync it, rename to publish, then sync the parent directory. Admission/applying
+acks require durable intent. Registry and job changes are not a fictitious
+cross-file transaction: durable job intent leads; registry updates are reconstructed
+from verified postconditions and each transition is recoverable. Directory-sync
+support and failures must be tested on actual FreeBSD system-storage fixtures.
+
+Default bounds: 64 KiB per plan/record, 64 nonterminal jobs, four outstanding
+kernel-maintenance jobs, one native mutation launch, 1,000 terminal records and
+64 MiB total metadata. Each job retains a bounded transition history; cap
+repetitive progress observations in memory rather than syncing every poll. Prune
+only eligible terminal records, preserving a durable submission tombstone through
+its replay window (at least 24 hours); expired submissions cannot be re-admitted
+from old plans. Ownership and nonterminal/uncertain jobs are never evicted to fit.
+Exhaustion rejects new work before launch and keeps existing recovery visible.
+
+One reservation covers an entire pool plus relevant device identities and target
+namespace. Pool creation reserves all devices and its name; replacement reserves
+the pool and new device. Conservatively serialize changes within a pool, including
+active maintenance, while cached reads and work on other pools continue. Waiting
+jobs are bounded and revalidate before execution. Local policy may raise tested
+limits to eight launches/64 maintenance jobs; byte/history/ownership limits also
+need validated ceilings and workload evidence. Bounds are explicit capability
+limits, not promises that every commercial deployment fits the initial defaults.
+
+## Job states and recovery
+
+Conceptual states: queued, applying, observing, succeeded, failed, cancelled,
+and reconcile-required. Include a durable reason and last verified observation;
+missing/unavailable storage is a reconcile-required reason, never success. Native
+scan completion with checksum errors produces a failed maintenance result while
+preserving the actual completed scan state. Cancellation before launch is durable
+and has no storage effect. A stop-scrub request is a separate verified operation;
+replacement and an in-flight control call have no general safe cancel button.
+
+On helper restart, acquire the singleton lock, validate policy/store and enumerate
+nonterminal jobs in bounded pages. Before writes, establish whether an old executor
+can still exist using recorded boot/process identity and containment evidence;
+a PID alone is insufficient. Failure to establish quiescence holds reservations
+and requires reconciliation. Parent-death signals and a killed userspace command
+do not prove that a kernel-side mutation ended.
+
+Never replay applying/observing work automatically. Reconcile by GUID, fresh
+membership, expected properties and attributable scan state. Creation carries a
+root-generated nonce in a narrowly defined internal ZFS property at creation;
+combine it with the durable intent, device set and observed GUID to correlate a
+created resource after an acknowledgement gap. A copied marker or matching name
+alone grants no ownership. If attribution is ambiguous, keep the job unresolved
+and preserve the resource; never destroy it as compensation.
+If a reboot leaves a possibly created pool unimported before its GUID was durably
+recorded, the registered-pool recovery operation cannot import it on a name/device
+guess. Keep it unresolved for explicit OS-root-assisted inspection and a new
+baseline review. A nonce is corroboration after safe observation, not authority
+to import an otherwise unregistered pool.
+
+Queued pre-launch jobs become reconcile-required with a review-expired reason after
+restart; they do not execute under an expired session/plan. The operator cancels
+that known-unlaunched job before submitting a newly reviewed plan. A scan that
+completed while its acknowledgement was
+lost may remain indeterminate if completion cannot be attributed. Recovered native
+activity is observed rather than restarted. Recovery import for a created pool
+uses its held reservation and verified identity; ordinary jobs cannot bypass an
+unresolved reservation. A renamed GUID is shown with its new address and drift;
+changes wait for an explicit new baseline review.
+
+Store-full/sync/I/O failure after a native effect leaves the last durable applying
+intent for reconciliation; never return success or rerun the mutation. A missing
+data pool does not prevent administration starting from system storage. A damaged,
+missing or incompatible ledger disables writes; observations remain available
+with a clear error. Do not silently reset the registry and adopt whatever exists.
+
+Job success is not data restoration. Preserve a root-controlled consistent metadata
+backup/export with schema revision and no authentication secrets; restoration must
+reconcile every GUID/identity/job before enabling writes. Fresh root confirmation
+is required after restoring older metadata. Refuse unsupported newer state versions
+without rewriting them. M5 defines package/state migrations; M4 defines file/key
+backup. There is no automatic destructive rollback of created pools, filesystems,
+replacement or inherited property changes.
+
+## UI, observability and acceptance
+
+Use the [BSD Classic baseline](../../ui/baseline.md). Full HTML forms and CLI share
+the reviewed plan and durable job semantics. HTMX adds dependent selections and
+bounded job polling; JS-disabled operation remains complete. Preserve focus and
+selected identity during refresh, announce status changes and show unavailable
+capabilities, capacity/inheritance consequences and cancellation limits in text.
+Keep confirmation visible across pages; never silently substitute a newer plan.
+
+Audit typed operation, generated job/plan identifiers, verified caller context,
+policy revision, affected identities, transitions, timestamps and fixed outcomes.
+Local root records may need identifiers; exported test artifacts remain sanitized.
+No token/cookie/raw command output in HTTP or operational logs. Bounded logging
+failure is reported; durable apply intent must still precede storage mutation.
+
+All [Test Design](TDD.md) gates are required for claimed M2 behavior. First build
+ownership/planning and durable state with denial/restart tests, then qualify each
+native operation before exposing it to UI/CLI. Native failures block that operation;
+do not widen commands, force flags or unknown output handling to make a test green.
+Review the proposed ADRs and scope before code. Native implementation findings
+that change a contract require a reviewed amendment to all affected documents.

@@ -1,0 +1,333 @@
+{
+  "date": "2026-10-04",
+  "status": "documentation/source inspection only; M2 proposals are unapproved; no native M2 mutation or recovery tests executed",
+  "work_issue": "https://github.com/gonz0w/horvium/issues/19",
+  "inherited_product_baseline": {
+    "source": "087b502886d9987a7f9cc93f2e4cdd1ab1006f16",
+    "qualification_run": "https://github.com/gonz0w/horvium/actions/runs/37234167265",
+    "manifest": "../M1/source-manifest.json",
+    "go": "1.27.1",
+    "htmx": "2.0.11",
+    "x_sys": "v0.48.0",
+    "architectures_observed": [
+      "amd64"
+    ],
+    "m1_manual_accessibility": "pending by maintainer choice; M1 not accepted"
+  },
+  "runtime_candidates": [
+    {
+      "release": "15.1",
+      "prior_observed_kernel_userland": "15.1-RELEASE-p3",
+      "prior_observed_zfs": "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+      "upstream_expected_eol": "2027-03-31"
+    },
+    {
+      "release": "14.5",
+      "prior_observed_kernel_userland": "14.5-RELEASE",
+      "prior_observed_zfs": "zfs-2.2.9-FreeBSD_g079ba86d7",
+      "upstream_expected_eol": "2027-06-30"
+    }
+  ],
+  "dynamic_references_checked": [
+    {
+      "url": "https://www.freebsd.org/security/",
+      "purpose": "supported releases; these EOL dates are upstream dates, not product support commitments"
+    },
+    {
+      "url": "https://docs.freebsd.org/en/books/handbook/zfs/",
+      "purpose": "native storage lifecycle context"
+    },
+    {
+      "url": "https://go.dev/dl/",
+      "purpose": "existing pinned SDK still available; no SDK update proposed"
+    },
+    {
+      "url": "https://htmx.org/docs/",
+      "purpose": "existing progressive enhancement contract; no asset update proposed"
+    }
+  ],
+  "profile_source_observation": {
+    "name": "openzfs-2.2",
+    "sha256": "8b5a635bf7609a0f521b08fe0e389c651dd6a266d33bd53a2e253b99089c3bf7",
+    "bytes": 584,
+    "both_release_source_files_identical": true,
+    "installed_guest_file_verified": false,
+    "cross_release_import_verified": false,
+    "replication_or_backup_compatibility_verified": false
+  },
+  "sources": [
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "sys/contrib/openzfs/META",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/META",
+      "sha256": "781a9a4c750eb627da3cb47034639416516c50379d05b93363250c776924a16a"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "sys/contrib/openzfs/man/man8/zpool-create.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/man/man8/zpool-create.8",
+      "sha256": "0ae4c530e1dca2d0803c1a8b8482de429f285f487a37bd5eaffc3ff58d99e39c"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "sys/contrib/openzfs/man/man8/zpool-import.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/man/man8/zpool-import.8",
+      "sha256": "6a62165d82cbcaa12660eac5041df59f27a3b272a2da7c0feb6312f1830ab085"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "sys/contrib/openzfs/man/man8/zpool-replace.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/man/man8/zpool-replace.8",
+      "sha256": "450c84f176318e1ab877fcd11a123c607710c9cf7d6d0673ca460ce45d59065b"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "sys/contrib/openzfs/man/man8/zpool-scrub.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/man/man8/zpool-scrub.8",
+      "sha256": "619e6f33995286d0f9a1dec7b5d1f2c749201865afb17fc2d2c9529e0dec7f72"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "sys/contrib/openzfs/man/man8/zpool-status.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/man/man8/zpool-status.8",
+      "sha256": "1ef7e3239610f26fe99c8c45b2c2da2407c04ce99beb86e12b8f6138dd97f372"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "sys/contrib/openzfs/man/man8/zfs-create.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/man/man8/zfs-create.8",
+      "sha256": "83a9d7cc806877c12feb5440622a5e930c81bf01ced2ec0ac5715163c736aec7"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "sys/contrib/openzfs/man/man8/zfs-set.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/man/man8/zfs-set.8",
+      "sha256": "e5580c7f2aca2adf618eaf3363fb6f6494550e7dfb7114e7597d6dc98adf8013"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "sys/contrib/openzfs/man/man8/zfs-get.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/man/man8/zfs-get.8",
+      "sha256": "35c8e1fdab0c524c6f04cbeb2eceffff2d69c266c5dc9d656486a55d4f9fa455"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "sys/contrib/openzfs/man/man8/zfs-destroy.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/man/man8/zfs-destroy.8",
+      "sha256": "a77abc6d27605e6e17ef5d3a05292080a4d08cc34ed489f542117c263a45471b"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "sys/contrib/openzfs/man/man7/zfsprops.7",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/man/man7/zfsprops.7",
+      "sha256": "863679522b05dd89c9c4e1010fe50deca4a2155fdfcb0fe20cbb2b5203d190d7"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "sys/contrib/openzfs/man/man7/zpoolprops.7",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/man/man7/zpoolprops.7",
+      "sha256": "69117a1630682a0d42be94b9a4885815d874ef2d1adf771bc9e0591f0012c4d8"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "sys/contrib/openzfs/man/man7/zpool-features.7",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/man/man7/zpool-features.7",
+      "sha256": "35392f1ec8d0cf67e3b6a1b3b28fee5658ace543d61794d846db7afef0ade632"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "lib/libsys/fsync.2",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/lib/libsys/fsync.2",
+      "sha256": "c9b0a4f6cefc6ad546d10ab8ba6161a5735668bf2958c0db1f255e9c072b1f3e"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "lib/libsys/rename.2",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/lib/libsys/rename.2",
+      "sha256": "e9af18fe2a79068e504300386a66353a11d03fd8e318a9da2b1790eaca180c33"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "lib/libsys/flock.2",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/lib/libsys/flock.2",
+      "sha256": "8d4535c5a4da21c953ca77247e3a24a659ff5dc19075b9f9c86a7f4e80ba70ea"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "sys/contrib/openzfs/META",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/META",
+      "sha256": "99627b7a08f8a98f1b7cbf8bf1a4cc416d5474a3db38cf07c910c9e37a93fed8"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "sys/contrib/openzfs/man/man8/zpool-create.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/man/man8/zpool-create.8",
+      "sha256": "484fe21e658eb478cad4a5536d84b748e91d5333d59721b0f096fb39c126a26c"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "sys/contrib/openzfs/man/man8/zpool-import.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/man/man8/zpool-import.8",
+      "sha256": "4330ad139656546d2253b33a12ca5c65eba9e2bf3ea47e3e11e27a91ea84ff44"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "sys/contrib/openzfs/man/man8/zpool-replace.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/man/man8/zpool-replace.8",
+      "sha256": "287d9c63aa79c9d629e33c5ca9ffb303e690abba54e19d1af41cfa15370e833a"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "sys/contrib/openzfs/man/man8/zpool-scrub.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/man/man8/zpool-scrub.8",
+      "sha256": "b141a13bb804def631b18bcce2cd84d99337003e43dab1df635c0cc0d3a15716"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "sys/contrib/openzfs/man/man8/zpool-status.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/man/man8/zpool-status.8",
+      "sha256": "1aed70b1f2bc2880dbc2315e0968f6b189ce151f8c981e5394b585f7e1d5686b"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "sys/contrib/openzfs/man/man8/zfs-create.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/man/man8/zfs-create.8",
+      "sha256": "d319b158ac92e10d7860b3f12fb146cec4cf64bf7c8bd41050d864933c2d2b9b"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "sys/contrib/openzfs/man/man8/zfs-set.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/man/man8/zfs-set.8",
+      "sha256": "181f8c55b2f1b8bfffee5d6ab2779bc6e9899510abfd849a3faf609e7185f09e"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "sys/contrib/openzfs/man/man8/zfs-get.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/man/man8/zfs-get.8",
+      "sha256": "35c8e1fdab0c524c6f04cbeb2eceffff2d69c266c5dc9d656486a55d4f9fa455"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "sys/contrib/openzfs/man/man8/zfs-destroy.8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/man/man8/zfs-destroy.8",
+      "sha256": "c227c5f9f445c380cec9ec70206a88301df3d7e91bbd76e04dc945c176bfe6fb"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "sys/contrib/openzfs/man/man7/zfsprops.7",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/man/man7/zfsprops.7",
+      "sha256": "3f3f694b95a70bb830dc6d8fae55713eaec964251df9439240e0a0b15f64be3a"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "sys/contrib/openzfs/man/man7/zpoolprops.7",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/man/man7/zpoolprops.7",
+      "sha256": "62e6808dabeb15696748e0b9b0b3ec67b7ba42a7ff8761f1f93ac042ec88d4da"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "sys/contrib/openzfs/man/man7/zpool-features.7",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/man/man7/zpool-features.7",
+      "sha256": "accdb273d54ced64c987b19f3e811310243663cbb9f3e8066d8e1dae6d424c7c"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "lib/libc/sys/fsync.2",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/lib/libc/sys/fsync.2",
+      "sha256": "7f10b63d78fe2b2d7ad2d456246637d859cb043220809898617c6d7832762928"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "lib/libc/sys/rename.2",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/lib/libc/sys/rename.2",
+      "sha256": "fa65742d2c15eb5b450926d86602cd2037ff90d8581ba8fd55d8494fd00ab59e"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "lib/libc/sys/flock.2",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/lib/libc/sys/flock.2",
+      "sha256": "535bf90d10d3293a96327f089a7ed4ef5656a138fa928a4b4a92c478bdf19158"
+    },
+    {
+      "release": "15.1",
+      "repository": "freebsd/freebsd-src",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "path": "sys/contrib/openzfs/cmd/zpool/compatibility.d/openzfs-2.2",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/cmd/zpool/compatibility.d/openzfs-2.2",
+      "sha256": "8b5a635bf7609a0f521b08fe0e389c651dd6a266d33bd53a2e253b99089c3bf7"
+    },
+    {
+      "release": "14.5",
+      "repository": "freebsd/freebsd-src",
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "path": "sys/contrib/openzfs/cmd/zpool/compatibility.d/openzfs-2.2",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/cmd/zpool/compatibility.d/openzfs-2.2",
+      "sha256": "8b5a635bf7609a0f521b08fe0e389c651dd6a266d33bd53a2e253b99089c3bf7"
+    }
+  ],
+  "native_m2_evidence": []
+}

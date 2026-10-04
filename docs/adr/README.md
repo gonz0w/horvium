@@ -14,3 +14,8 @@ M1 implementation decisions accepted by maintainer merge of
 - [0005 M1 access and state](0005-m1-access-and-state.md)
 
 New durable implementation choices use the [ADR template](../templates/ADR_TEMPLATE.md).
+
+Proposed M2 decisions; not adopted until the linked design is approved:
+
+- [0006 Storage ownership and reviewed plans](0006-storage-ownership-and-plans.md)
+- [0007 Durable storage job records](0007-durable-storage-jobs.md)

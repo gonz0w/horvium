@@ -1,6 +1,7 @@
 # EDD: native discovery and read-only console
 
-Status: Approved; implementing in reviewed slices. Owner: Cam (`@gonz0w`). Date: 2026-10-03.
+Status: Approved. Milestone: Validating; manual acceptance pending.
+Owner: Cam (`@gonz0w`). Date: 2026-10-03.
 Approval: maintainer merge of [PR 3](https://github.com/gonz0w/horvium/pull/3),
 source `527a330f4b1069fa0b7a1414f4d3c6dbab54f5a5`, on 2026-10-03.
 [PRD](PRD.md), [Test Design](TDD.md),
@@ -165,7 +166,8 @@ Use semantic links/forms for full-page equivalents; fragment requests do not
 change authorization. Preserve focus and prevent automatic refresh of active
 resource details; background updates announce freshness without disruptive focus.
 
-HTTP connection refinement under review: the foreground listener admits at most
+HTTP connection refinement accepted with [PR 14](https://github.com/gonz0w/horvium/pull/14):
+the foreground listener admits at most
 `max_readers + 8` connections including incomplete headers and idle keep-alives.
 Capacity waits precede handler allocation, and transport deadlines release slots;
 listener close cancels waiting admission. This bounds pre-handler work alongside

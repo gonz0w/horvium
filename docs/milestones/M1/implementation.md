@@ -1,8 +1,9 @@
 # M1 implementation and acceptance status
 
 Date: 2026-10-04. Design approved in [PR 3](https://github.com/gonz0w/horvium/pull/3).
-M1 remains Implementing, not accepted or released. Work proceeds through focused,
-maintainer-reviewed slices following the [EDD](EDD.md). Historical slice tables
+M1 is Validating, not accepted or released. Automated slices and the consolidated
+record were merged by the maintainer; manual observations remain pending.
+Work followed focused, maintainer-reviewed slices and the [EDD](EDD.md). Historical slice tables
 describe the remaining work at each original boundary; the
 [current qualification review](../../testing/M1/qualification-status.md) consolidates
 today's evidence and open acceptance gates.
@@ -221,8 +222,9 @@ See [browser qualification](../../testing/M1/browser-checklist.md).
 
 ## Remaining acceptance
 
-The consolidated qualification record is under review in
-[PR 18](https://github.com/gonz0w/horvium/pull/18). Safari/manual accessibility
+The consolidated qualification record was accepted by maintainer merge of
+[PR 18](https://github.com/gonz0w/horvium/pull/18), source
+`087b502886d9987a7f9cc93f2e4cdd1ab1006f16`, on 2026-10-04. Safari/manual accessibility
 observations and explicit maintainer acceptance remain required. The authorization
 to implement the remaining slices does not accept M1 or authorize future PR merges.
 All PRD requirements remain subject to the full [Test Design](TDD.md).
