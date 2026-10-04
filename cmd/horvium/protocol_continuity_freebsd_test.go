@@ -39,16 +39,26 @@ func continuityPort(t *testing.T) string {
 	_ = l.Close()
 	return port
 }
-func continuityReady(t *testing.T, port string) {
+func continuityReady(t *testing.T, port string, p *nativeProcess) {
 	t.Helper()
-	nativeWait(t, func() bool {
+	deadline := time.Now().Add(20 * time.Second)
+	for time.Now().Before(deadline) {
 		c, e := net.DialTimeout("tcp", net.JoinHostPort("127.0.0.1", port), time.Second)
-		if e != nil {
-			return false
+		if e == nil {
+			_ = c.Close()
+			return
 		}
-		_ = c.Close()
-		return true
-	})
+		time.Sleep(20 * time.Millisecond)
+	}
+	if f, ok := p.cmd.Stderr.(*os.File); ok {
+		b, _ := os.ReadFile(f.Name())
+		for _, fixed := range []string{"illegal option", "NFS server is not available", "already running", "getting export list", "getting mount list", "here we go", "bindresvport_sa", "usage:", "Cannot get port number", "Cannot register", "cannot register", "failed"} {
+			if bytes.Contains(b, []byte(fixed)) {
+				t.Log("DAEMON_DIAGNOSTIC " + fixed)
+			}
+		}
+	}
+	t.Fatal("owned fixture listener did not become ready; raw daemon output withheld")
 }
 
 // Samba may signal its process group during shutdown. Isolate each owned
@@ -58,6 +68,12 @@ func startContinuityDaemon(t *testing.T, binary string, args []string) *nativePr
 	cmd := exec.Command(binary, args...)
 	cmd.Env = []string{"LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin"}
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+	log, err := os.CreateTemp(t.TempDir(), "daemon-log-")
+	if err != nil {
+		t.Fatal("owned daemon diagnostic file")
+	}
+	t.Cleanup(func() { _ = log.Close() })
+	cmd.Stdout, cmd.Stderr = log, log
 	p := &nativeProcess{cmd: cmd, done: make(chan error, 1)}
 	if cmd.Start() != nil {
 		t.Fatal("isolated fixture daemon start")
@@ -109,7 +125,7 @@ func independentSMB(t *testing.T, dir, root string, content []byte) func() {
 	}
 	continuityCommand(t, "/usr/local/bin/testparm", "-s", path)
 	daemon := startContinuityDaemon(t, "/usr/local/sbin/smbd", []string{"--foreground", "--no-process-group", "--configfile=" + path})
-	continuityReady(t, port)
+	continuityReady(t, port, daemon)
 	t.Cleanup(func() {
 		if !daemon.waited {
 			stopContinuityDaemon(t, daemon, syscall.SIGTERM)
@@ -159,16 +175,16 @@ func independentNFS(t *testing.T, dir, root string, content []byte) func() {
 	}
 	rpc := startContinuityDaemon(t, "/usr/sbin/rpcbind", []string{"-d", "-h", "127.0.0.1"})
 	t.Log("NFS_PHASE rpcbind_start")
-	continuityReady(t, "111")
+	continuityReady(t, "111", rpc)
 	t.Log("NFS_PHASE rpcbind_ready")
 	port := continuityPort(t)
 	mountd := startContinuityDaemon(t, "/usr/sbin/mountd", []string{"-d", "-h", "127.0.0.1", "-p", port, path})
 	t.Log("NFS_PHASE mountd_start")
-	continuityReady(t, port)
+	continuityReady(t, port, mountd)
 	t.Log("NFS_PHASE mountd_ready")
-	nfsd := startContinuityDaemon(t, "/usr/sbin/nfsd", []string{"-N", "-t", "-h", "127.0.0.1", "-P", filepath.Join(dir, "nfsd.pid"), "--minthreads", "2", "--maxthreads", "2"})
+	nfsd := startContinuityDaemon(t, "/usr/sbin/nfsd", []string{"--debug", "-t", "-h", "127.0.0.1", "--minthreads", "2", "--maxthreads", "2"})
 	t.Log("NFS_PHASE nfsd_start")
-	continuityReady(t, "2049")
+	continuityReady(t, "2049", nfsd)
 	t.Log("NFS_PHASE nfsd_ready")
 	mount := filepath.Join(dir, "client")
 	if os.Mkdir(mount, 0700) != nil {
