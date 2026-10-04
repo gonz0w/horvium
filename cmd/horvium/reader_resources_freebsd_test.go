@@ -45,6 +45,7 @@ func freezeReaderProbe(t *testing.T, p *performancePair) readerProbe {
 	t.Helper()
 	known := map[string]bool{"zfs": true, "zpool": true, "sysctl": true, "uname": true, "freebsd-version": true, "sh": true}
 	deadline := time.Now().Add(15 * time.Second)
+	guards, commands, stopped := 0, 0, 0
 	for time.Now().Before(deadline) {
 		r, err := p.session.http.PostForm(p.session.base+"/api/refresh", url.Values{"csrf": {p.session.csrf}})
 		if err != nil {
@@ -55,7 +56,7 @@ func freezeReaderProbe(t *testing.T, p *performancePair) readerProbe {
 			t.Fatal("native crash refresh denied")
 		}
 		for attempt := 0; attempt < 12; attempt++ {
-			rows := readerFixtureCommand(t, "/bin/ps", "-axo", "pid=,ppid=,comm=")
+			rows := readerFixtureCommand(t, "/bin/ps", "-axo", "pid=,ppid=,ucomm=")
 			parents, names := map[int]int{}, map[int]string{}
 			for _, line := range strings.Split(string(rows), "\n") {
 				fields := strings.Fields(line)
@@ -69,12 +70,18 @@ func freezeReaderProbe(t *testing.T, p *performancePair) readerProbe {
 				}
 			}
 			for command, guard := range parents {
-				if parents[guard] != p.helper.cmd.Process.Pid || names[guard] != "timeout" || !known[names[command]] {
+				if parents[guard] != p.helper.cmd.Process.Pid || names[guard] != "timeout" {
 					continue
 				}
+				guards++
+				if !known[names[command]] {
+					continue
+				}
+				commands++
 				if syscall.Kill(command, syscall.SIGSTOP) != nil {
 					continue // a fast probe can exit before the signal
 				}
+				stopped++
 				state, _ := exec.Command("/bin/ps", "-p", strconv.Itoa(command), "-o", "ppid=,stat=").Output()
 				f := strings.Fields(string(state))
 				if len(f) == 2 && f[0] == strconv.Itoa(guard) && strings.HasPrefix(f[1], "T") {
@@ -92,7 +99,7 @@ func freezeReaderProbe(t *testing.T, p *performancePair) readerProbe {
 			}
 		}
 	}
-	t.Fatal("could not capture a stopped actual native command; no crash qualification")
+	t.Fatalf("could not capture actual native command: guard_observations=%d command_observations=%d stop_signals=%d; no crash qualification", guards, commands, stopped)
 	return readerProbe{}
 }
 
@@ -279,4 +286,36 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 			t.Log("NATIVE_READER_RESULT " + string(encoded))
 		})
 	}
+}
+
+// A short native gate verifies capture/containment before repeating the measured
+// warm-up and idle workloads. It uses the same built product and capture code.
+func TestNativeBuiltProbeCaptureAndOwnerDeath(t *testing.T) {
+	if os.Getenv("HORVIUM_NATIVE_VM") != "1" {
+		t.Skip("explicit disposable native opt-in required")
+	}
+	if os.Geteuid() != 0 {
+		t.Fatal("capture fixture requires root")
+	}
+	owned := nativeStorageFixture(t)
+	for i := 0; i < 98; i++ {
+		readerFixtureCommand(t, "/sbin/zfs", "create", "-o", "mountpoint=none", owned.Pool+fmt.Sprintf("/item-%03d", i))
+	}
+	count := len(strings.Fields(string(readerFixtureCommand(t, "/sbin/zfs", "list", "-H", "-t", "filesystem", "-o", "name"))))
+	c, path, token := nativeRuntimeConfig(t)
+	built, _ := filepath.Abs("../../.tools/horvium")
+	binary := filepath.Join(filepath.Dir(path), "horvium")
+	copyPerformanceExecutable(t, built, binary)
+	helper := startNativeProcess(t, binary, []string{"helper", "-config", path}, 0, 0)
+	nativeWait(t, func() bool { info, e := os.Stat(c.HelperSocket); return e == nil && info.Mode().Perm() == 0660 })
+	management := startNativeProcess(t, binary, []string{"serve", "-config", path}, c.ManagementUID, c.SocketGID)
+	p := &performancePair{config: c, path: path, helper: helper, management: management}
+	p.session = newPerformanceSession(t, c, token)
+	p.session.ready(t, count, "")
+	probe := freezeReaderProbe(t, p)
+	helper.stop(t, syscall.SIGKILL, false)
+	readerProcessStopped(t, probe.command)
+	readerProcessStopped(t, probe.guard)
+	management.stop(t, syscall.SIGTERM, true)
+	t.Log("NATIVE_BUILT_CAPTURE command_stopped=pass owner_death_subtree_exit=pass")
 }
