@@ -66,8 +66,11 @@ until observations and maintainer review are recorded.
 
 The first contrast-fix run (37233083244) passed four flows, but its recorded narrow
 viewports were 500 CSS pixels: Firefox's desktop window minimum clamped the request.
-That run does not qualify 320/390-pixel reflow. The runner now asserts the actual
-CSS width and uses native keyboard 200% zoom in a 640/780-pixel window for the two
-narrow Firefox cases. Product CSS and browser chrome are not overridden. A complete
-rerun must reach the requested viewport; native 400% and human usability remain
-manual gates.
+That run does not qualify 320/390-pixel reflow. A native-keyboard zoom attempt also
+failed the asserted target width (37233378014), so it supplies no zoom/reflow pass.
+The runner now uses Mozilla's explicit `--allow-system-access` and `/moz/context`
+endpoint solely to remove the owned disposable Firefox chrome's minimum width,
+then returns to content context. This changes no product CSS/CSP, OS setting or
+operator browser profile. Actual `innerWidth` must match the requested CSS width.
+See [Mozilla driver flags](https://firefox-source-docs.mozilla.org/testing/geckodriver/Flags.html).
+Human zoom/usability and Safari remain pending by maintainer choice.

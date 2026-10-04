@@ -67,12 +67,6 @@ class Driver:
         self.command('POST', '/actions', {'actions': [{'type': 'key', 'id': 'keyboard', 'actions': [{'type': 'keyDown', 'value': key}, {'type': 'keyUp', 'value': key}]}]})
         self.command('DELETE', '/actions')
 
-    def zoom_in(self):
-        self.command('POST', '/actions', {'actions': [{'type': 'key', 'id': 'keyboard', 'actions': [
-            {'type': 'keyDown', 'value': '\ue009'}, {'type': 'keyDown', 'value': '+'},
-            {'type': 'keyUp', 'value': '+'}, {'type': 'keyUp', 'value': '\ue009'}]}]})
-        self.command('DELETE', '/actions')
-
     def wait(self, predicate):
         deadline = time.monotonic() + 10
         while time.monotonic() < deadline:
@@ -112,16 +106,19 @@ def check_page(driver):
 
 
 def flow(driver, base, javascript, width, poll=False, firefox=False):
-    narrow_zoom = firefox and width < 500
-    driver.command('POST', '/window/rect', {'width': width * 2 if narrow_zoom else width, 'height': 900})
+    if firefox and width < 500:
+        # Only the disposable browser chrome minimum is adjusted. Product CSS,
+        # CSP, content and selected viewport remain unchanged.
+        driver.command('POST', '/moz/context', {'context': 'chrome'})
+        try:
+            driver.script('document.documentElement.style.setProperty("min-width", "0px", "important")')
+        finally:
+            driver.command('POST', '/moz/context', {'context': 'content'})
+    driver.command('POST', '/window/rect', {'width': width, 'height': 900})
     driver.command('POST', '/url', {'url': base + '/login'})
     driver.wait(lambda: driver.script('return !!document.querySelector("#token")'))
-    if narrow_zoom:
-        # Firefox desktop chrome enforces a 500px minimum window. Native 200%
-        # zoom creates the requested CSS viewport without altering product CSS.
-        for _ in range(6):
-            driver.zoom_in()
-    assert abs(driver.script('return innerWidth') - width) <= 1, 'requested CSS viewport was not reached'
+    actual_width = driver.script('return innerWidth')
+    assert abs(actual_width - width) <= 1, f'requested CSS viewport {width} was not reached: {actual_width}'
     assert driver.script('return document.body.textContent.includes("Synthetic browser fixture")'), 'fixture provenance banner missing'
     driver.type('#token', 'a' * 64)  # Deliberately public synthetic fixture value.
     driver.click('form button[type=submit]')
@@ -224,7 +221,10 @@ def main():
                     port = unused_port()
                     executable = ROOT / '.tools/browser/geckodriver/geckodriver' if args.browser == 'firefox' else Path('/usr/bin/safaridriver')
                     with (path / 'driver.log').open('w') as driver_log:
-                        process = subprocess.Popen([str(executable), '--port', str(port)], stdout=driver_log, stderr=driver_log, start_new_session=True)
+                        driver_args = [str(executable), '--port', str(port)]
+                        if args.browser == 'firefox':
+                            driver_args.append('--allow-system-access')
+                        process = subprocess.Popen(driver_args, stdout=driver_log, stderr=driver_log, start_new_session=True)
                         driver = Driver('http://127.0.0.1:' + str(port))
                         try:
                             for _ in range(100):
@@ -246,7 +246,7 @@ def main():
                                 assert media['dark'] == (theme == 'dark') and media['reduce'], 'requested media preferences not observed'
                             measurements = flow(driver, base, javascript, width, javascript and theme == 'light' and width == 1280, args.browser == 'firefox')
                             measurements['observed_media'] = media
-                            measurements['native_zoom_percent'] = 200 if args.browser == 'firefox' and width < 500 else 100
+                            measurements['viewport_method'] = 'owned browser chrome minimum override' if args.browser == 'firefox' and width < 500 else 'browser window'
                             record = {'browser': args.browser, 'browser_version': capabilities['browserVersion'], 'platform': capabilities['platformName'], 'host_platform': platform.platform(), 'javascript': javascript, 'theme': theme, 'requested_width': width, 'status': 'pass', 'measurements': measurements, 'manual_screen_reader_and_native_zoom': 'pending'}
                             records.append(record)
                             print('BROWSER_RESULT ' + json.dumps(record), flush=True)
