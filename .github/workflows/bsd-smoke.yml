@@ -3,6 +3,10 @@ name: BSD native validation
 on:
   workflow_dispatch:
     inputs:
+      browser:
+        description: Run synthetic console qualification in actual Linux Firefox
+        type: boolean
+        default: false
       continuity:
         description: Run fixture-only independent SMB/NFS continuity
         type: boolean
@@ -84,3 +88,7 @@ jobs:
   performance:
     if: inputs.performance
     uses: ./.github/workflows/bsd-performance.yml
+
+  browser:
+    if: inputs.browser
+    uses: ./.github/workflows/browser-qualification.yml

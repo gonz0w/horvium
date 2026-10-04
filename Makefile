@@ -1,4 +1,4 @@
-.PHONY: tools go-tools check lint test secrets hooks go-check build
+.PHONY: tools go-tools check lint test secrets hooks go-check build browser-preview
 
 GO := $(CURDIR)/.tools/go/bin/go
 export GOTOOLCHAIN := local
@@ -49,3 +49,7 @@ hooks:
 build:
 	mkdir -p .tools/bin
 	$(GO) build -trimpath -o .tools/bin/horvium ./cmd/horvium
+
+# Public synthetic loopback fixture; expires after twenty minutes.
+browser-preview:
+	HORVIUM_UI_PREVIEW=1 $(GO) test -v ./internal/console -run '^TestBrowserPreview$$' -count=1 -timeout=25m

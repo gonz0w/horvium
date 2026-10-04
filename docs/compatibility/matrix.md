@@ -50,3 +50,8 @@ independent SFTP continuity and bounded response/logging behavior; [performance 
 tracks the combined-process synthetic workload separately. The earlier C spike is ABI
 evidence only. No
 physical identity, file-client, scale or throughput claim follows.
+
+Browser fixture tooling now targets actual Firefox 157.0 on Linux amd64 and
+installed Safari on macOS. Execution and the manual accessibility gate are pending;
+see [browser checklist](../testing/M1/browser-checklist.md). Synthetic UI fixtures
+do not establish FreeBSD runtime or SMB/NFS client compatibility.

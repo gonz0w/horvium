@@ -208,3 +208,7 @@ per protocol and teardown in run 37233530125; under review in PR 16. See [contin
 
 All PRD requirements remain subject to the full [Test Design](TDD.md). Native
 reader success is not NAS readiness, commercial qualification or a working UI.
+
+A real-browser WebDriver procedure and operator checklist are prepared; browser
+execution and manual assistive-technology/native-zoom evidence remain pending.
+See [browser qualification](../../testing/M1/browser-checklist.md).

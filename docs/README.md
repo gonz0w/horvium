@@ -53,3 +53,5 @@
 - [M1 assembled HTTP abuse qualification](testing/M1/http-abuse.md)
 
 - [M1 independent SMB/NFS continuity qualification](testing/M1/file-continuity.md)
+
+- [M1 browser qualification and manual accessibility checklist](testing/M1/browser-checklist.md)

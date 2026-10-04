@@ -50,3 +50,15 @@ NFS supplies the companion test. Private fixture configurations are removed and
 the guest discarded; no package/production distribution is implied. Review Samba
 license/redistribution, transitive packages, security maintenance and selected
 version before M3/M5 adoption. See [continuity procedure](../testing/M1/file-continuity.md).
+
+
+## Fixture-only browsers
+
+Firefox 157.0 and geckodriver 0.37.1 are checksum-pinned development downloads
+under ignored `.tools/browser`; official artifact/checksum sources are recorded in
+[the pins](../../tools/browser-pins.json). No browser binary/source is copied into
+Horvium or its release package. These Mozilla-maintained MPL tools and Linux system
+libraries run only on the development/CI host; no Selenium, Node or Go module is
+introduced. Safari uses Apple's installed driver. Version updates require review
+of the checksums and actual browser matrix. Remove this tooling if the browser
+qualification workflow is replaced by an equivalent supported test harness.
