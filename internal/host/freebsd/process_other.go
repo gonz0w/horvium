@@ -5,4 +5,4 @@ package freebsd
 
 import "os/exec"
 
-func configureProcess(cmd *exec.Cmd) {}
+func configureProcess(cmd *exec.Cmd) func() error { return func() error { return nil } }
