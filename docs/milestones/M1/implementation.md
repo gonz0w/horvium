@@ -105,11 +105,13 @@ HTTP listener, operator CLI or installable service.
 
 ## Slice 4: administration security primitives
 
-In review: strict internal version-1 configuration, FreeBSD root-owned config and
+Under review in [PR 7](https://github.com/gonz0w/horvium/pull/7): strict internal
+version-1 configuration, FreeBSD root-owned config and
 service-owned digest files, explicit local token setup/rotation, bounded volatile
 challenges/sessions/throttles, and shared HTTP authentication/CSRF/Host/Origin
 policy. No application route wiring, operator command or console is introduced.
-Native descriptor/ownership and dropped-UID real HTTP fixtures are tracked in
+Native descriptor/ownership and dropped-UID real HTTP fixtures passed on both
+releases and are tracked in
 [security evidence](../../testing/M1/security.md); browser and full runtime
 acceptance remain pending.
 

@@ -5,7 +5,7 @@ validation are separate. Refresh exact versions in each active research manifest
 
 | Area | Target | Evidence/status |
 |---|---|---|
-| Runtime | Approved M1 FreeBSD 15.1 primary / 14.5 compatibility | Native reader/helper fixture tests passed; full NAS runtime pending |
+| Runtime | Approved M1 FreeBSD 15.1 primary / 14.5 compatibility | Native reader/helper/cache/admin fixture tests passed; full NAS runtime pending |
 | Architecture | amd64 first candidate; other FreeBSD architectures as validated | Hardware-neutral design, no universal support claim |
 | Storage | ZFS pools/datasets on supported direct-access devices | Planned; no pool modified by M0 |
 | File clients | macOS and Linux/BSD first; SMB/NFS/SFTP as designed in M3 | Priorities confirmed; version/permission matrix and actual tests pending |
@@ -19,7 +19,7 @@ validation are separate. Refresh exact versions in each active research manifest
 | Product discovery reader | Same two observed release/patch levels, Go 1.27.1 amd64 | Actual Go reader/parser and isolated pool fixture passed; see product evidence |
 | Product helper | Same two observed release/patch levels, Go 1.27.1 + x/sys v0.48.0 amd64 | Actual kernel UID, socket ownership/lifecycle, admission/timeout and reader-over-transport tests passed |
 | Collector/cache | Hardware-neutral Go library; FreeBSD helper integration | Local generation/ownership/concurrency/boundary tests and actual unprivileged native helper outage/recovery passed |
-| Administration security | Hardware-neutral auth/config parser; FreeBSD descriptor ownership and loopback HTTP | Local denial/expiry/capacity tests passed; native fixture execution pending; no operator UI/CLI or deployable auth claim |
+| Administration security | Hardware-neutral auth/config parser; FreeBSD descriptor ownership and loopback HTTP | Local denial/expiry/capacity tests and native credential ownership/atomicity/dropped-UID real HTTP fixtures passed on both releases; UI/CLI and deployable auth pending |
 | Tooling | Python 3.14.7 + checksum-pinned tools on Linux/macOS | See bootstrap status for checks actually run |
 
 Evidence levels: D0 designed; D1 unit/component verified; D2 native/client verified;

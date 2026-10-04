@@ -1,6 +1,7 @@
 # M1 administration security evidence
 
-Status: implementation in review; native execution pending. Approved
+Status: implementation in [PR 7](https://github.com/gonz0w/horvium/pull/7);
+native validation passed on both releases. Approved
 [EDD](../../milestones/M1/EDD.md), [Test Design](../../milestones/M1/TDD.md) and
 [ADR 0005](../../adr/0005-m1-access-and-state.md).
 This slice adds `internal/admin` library contracts only. There is no operator CLI,
@@ -68,7 +69,7 @@ libraries; complete boot/startup-with-missing-pool qualification remains pending
 The SHA-256 token digest is compared in constant time. A successful exchange
 consumes a random pre-auth challenge and produces distinct random 256-bit session
 and CSRF values. Challenges bind to the actual peer IP, expire after two minutes,
-are consumed on attempted exchanges, and have a 32-entry cap. Challenge/session
+are consumed on admitted attempted exchanges, and have a 32-entry cap. Challenge/session
 IDs travel in HttpOnly cookies; response payloads contain the corresponding CSRF
 value. There is no reusable token endpoint without a challenge.
 
@@ -99,7 +100,7 @@ adapters must implement only their declared read/refresh contract; registration 
 a POST-only refresh route belongs to the console slice. No HTTP handler invokes
 native facilities or privileged setup.
 
-All responses, including denials, use `Cache-Control: no-store`, CSP with self-only
+All gate responses, including its denials, use `Cache-Control: no-store`, CSP with self-only
 assets and no inline/eval exception, `form-action 'self'`, `frame-ancestors 'none'`,
 `base-uri 'none'`, nosniff, DENY framing and no-referrer. Exact configured Host values
 are checked on safe requests too. Origins, when supplied, must exactly equal
@@ -122,10 +123,10 @@ body CSRF field. Form content type is URL-encoded, optionally UTF-8 charset; JSO
 multipart, other parameters and malformed/duplicate credential input fail. No
 URL token input is accepted. GET/HEAD bodies are denied. Other methods are denied
 before application dispatch; supported read/refresh routing is still the adapter's
-responsibility. Credential cookies must be canonical unquoted hex values. Duplicate names fail
-even when one value is malformed: count raw credential names before Go can skip
-an invalid cookie during parsing. Invalid input/error
-responses use fixed safe text, never echo tokens, cookies or request bodies.
+responsibility. Credential cookies must be canonical unquoted hex values. Duplicate
+names fail even when one value is malformed: count raw credential names before
+Go can skip an invalid cookie during parsing. Invalid input/error responses use
+fixed safe text, never echo tokens, cookies or request bodies.
 
 Bodies cap at 4 KiB including chunked reads. Handler header/target accounting caps
 at 16 KiB; `HTTPServer` also sets actual net/http MaxHeaderBytes to 16 KiB with
@@ -177,14 +178,46 @@ execution, rather than cross-compilation, determines their result below.
 
 ## Execution record
 
-Local `make check lint test secrets go-check` and a FreeBSD amd64 test
-cross-compilation are the development gates. Initial [native run 37206566944](https://github.com/gonz0w/horvium/actions/runs/37206566944)
+Local `make check lint test secrets go-check` passed, including eleven tooling
+regressions, Go vet/unit/component/race and five bounded fuzz targets. A FreeBSD
+amd64 test cross-compilation also passed; that compilation is not native evidence.
+
+Initial [native run 37206566944](https://github.com/gonz0w/horvium/actions/runs/37206566944)
 passed all five jobs on implementation/suite source
-`ed2ac8aa6e8bb688f480c20558cc47c1b3ae238e`. Both product jobs executed
+`ed2ac8aa6e8bb688f480c20558cc47c1b3ae238e`. Final
+[run 37207056630](https://github.com/gonz0w/horvium/actions/runs/37207056630)
+passed all five jobs on implementation/suite source
+`bb611e3845c9e9a1a9654b7771b209da5ca65caf`, including the malformed-cookie
+regression and additional chunked-body HTTP denial. Both product jobs executed
 `TestNativeCredentialFiles`, `TestNativeAdministrationAsServiceUID` and
-`TestNativeSetupIsAtomicAndDoesNotFollowSpecialFiles` successfully. The cookie
-regression repair and additional chunked-body HTTP fixture need a final native
-run before review-ready status. Exact final source/versions will be recorded below. No skipped fixture
-is counted as native acceptance. Existing native discovery/helper/cache tests run
-alongside this slice. Complete M1, browser, hardware, performance, package and
-production security qualification remain pending.
+`TestNativeSetupIsAtomicAndDoesNotFollowSpecialFiles` successfully. No skipped
+fixture is counted as native acceptance; direct child invocations skip while
+parents require their dropped-UID execution. Existing actual native discovery,
+helper and collector/cache tests also passed.
+
+| Guest | Installed/running kernel and userland | ZFS userland/module | Credential and dropped-UID HTTP fixtures |
+|---|---|---|---|
+| FreeBSD 15.1 amd64 | 15.1-RELEASE-p3 | 2.4.2-1-FreeBSD_g6330a45b0 | Passed |
+| FreeBSD 14.5 amd64 | 14.5-RELEASE | 2.2.9-FreeBSD_g079ba86d7 | Passed |
+
+Go 1.27.1 freebsd/amd64, x/sys v0.48.0, verified module cache; Python 3.14.7 is
+only the development SDK installer. Runner ubuntu-24.04; VM Action
+`a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff`, builder 2.2.8, snapshot QEMU,
+6,144 MiB and default CPU. Image digest was not captured; this is neither an
+immutable image baseline nor performance/hardware qualification. Reviewed SDK
+`src/net/http/csrf.go` SHA-256 is
+`9376ac5c11e3205c51eb596691c18743269deb7e0bf5036023f874bb1bf4f3e6`;
+SDK archive and module pins plus execution metadata are in the
+[source manifest](../../research/M1/source-manifest.json).
+
+Required repo-hygiene/pr-title/dco checks passed on the initial source in
+[run 37206572561](https://github.com/gonz0w/horvium/actions/runs/37206572561)
+and on the final functional source in
+[run 37206990236](https://github.com/gonz0w/horvium/actions/runs/37206990236).
+Both functional commits have verified SSH signatures and author DCO signoffs.
+Final evidence-only commits use the same signing/check requirements.
+
+Complete M1, actual console/HTMX browsers, operator input/logging, installed
+process kill/restart, independent file daemons, hardware, performance, package
+and production security qualification remain pending. Nothing in these fixtures
+enables an operator host service or reads an operator's existing credential state.
