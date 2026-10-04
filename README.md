@@ -10,11 +10,16 @@ requirement or a limit on disks, memory, pools, or datasets.
 **Status:** M0 foundation and the main M1 read-only discovery/management slices
 and crash containment, native resources, HTTP abuse recovery, independent SMB/NFS
 continuity and automated Firefox qualification are accepted. The consolidated
-qualification record is under review in PR 18. Safari/manual
+qualification record was accepted in PR 18. M1 is Validating; Safari/manual
 accessibility acceptance remains pending. See the
 [M1 qualification review](docs/testing/M1/qualification-status.md) for evidence and
 remaining gates. There is no installable port, appliance image or production
 support claim.
+
+M2 storage lifecycle is in design review preparation: [PRD](docs/milestones/M2/PRD.md),
+[EDD](docs/milestones/M2/EDD.md), [Test Design](docs/milestones/M2/TDD.md) and
+[implementation sequence](docs/milestones/M2/implementation.md). These proposals
+need approval before storage-changing product work.
 
 ## Agreed direction
 

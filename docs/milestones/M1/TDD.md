@@ -1,6 +1,7 @@
 # Test Design: native discovery and read-only console
 
-Status: Approved; executing by reviewed slice. Owner: Cam (`@gonz0w`). Date: 2026-10-03.
+Status: Approved. Milestone: Validating; manual acceptance pending.
+Owner: Cam (`@gonz0w`). Date: 2026-10-03.
 Approval: maintainer merge of [PR 3](https://github.com/gonz0w/horvium/pull/3),
 source `527a330f4b1069fa0b7a1414f4d3c6dbab54f5a5`, on 2026-10-03.
 [PRD](PRD.md), [EDD](EDD.md).

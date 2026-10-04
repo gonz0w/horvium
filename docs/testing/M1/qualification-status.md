@@ -1,9 +1,12 @@
 # M1 qualification review
 
-Status: under review; M1 remains Implementing. Owner: Cam (`@gonz0w`).
+Status: qualification record accepted; M1 is Validating and unaccepted.
+Owner: Cam (`@gonz0w`).
 Date: 2026-10-04. Approved [PRD](../../milestones/M1/PRD.md),
 [EDD](../../milestones/M1/EDD.md) and [Test Design](../../milestones/M1/TDD.md).
-This consolidates evidence across the accepted slices and remaining review PRs.
+This consolidates evidence across the accepted slices and open acceptance gates.
+Record approval: maintainer merge of [PR 18](https://github.com/gonz0w/horvium/pull/18),
+source `087b502886d9987a7f9cc93f2e4cdd1ab1006f16`, on 2026-10-04.
 It does not approve M1, waive a test, or authorize merging any PR.
 
 ## Evidence and current limits
@@ -42,11 +45,9 @@ then merged [PR 14](https://github.com/gonz0w/horvium/pull/14) into `main`, incl
 PR 15, and [PR 16](https://github.com/gonz0w/horvium/pull/16) into `main`, including
 PR 17. PR 18 was rebased
 onto these squash merges without changing its qualified product inputs or
-historical evidence. [PR 18](https://github.com/gonz0w/horvium/pull/18), based directly
-on `main`, is the remaining review PR for this consolidated qualification and
-acceptance record. It stays open for the maintainer and requires its own explicit
-merge authorization. Merging this record does not waive the pending manual gates
-or accept M1.
+historical evidence. The maintainer then merged PR 18 into `main`, accepting this
+consolidated qualification record. No M1 implementation/review PR remains open.
+Record acceptance does not waive the pending manual gates or accept M1.
 
 The combined assembled-source workflow passed all eight jobs in
 [run 37234167265](https://github.com/gonz0w/horvium/actions/runs/37234167265), source
@@ -76,8 +77,8 @@ including race and five bounded fuzz targets. Required repository, DCO and title
 checks must pass for the reviewed heads. All review commits remain signed and DCO
 signed off. Historical functional test revisions remain named explicitly instead
 of being substituted by a documentation commit. The maintainer merged the automated
-implementation slices; this consolidated record and full M1 acceptance remain
-under review. No PR has been merged by the agent.
+implementation slices and this consolidated record; full M1 acceptance remains
+pending. No PR has been merged by the agent.
 
 The maintainer explicitly chose to keep manual accessibility pending on 2026-10-04.
 Safari automation was unavailable before session creation because remote automation
@@ -87,7 +88,8 @@ selected browsers and manual screen-reader/keyboard findings. Therefore M1 canno
 be marked accepted until those observations, remaining review and explicit
 maintainer acceptance are recorded. See the [prepared checklist](browser-checklist.md).
 
-M2 storage operations require their approved milestone PRD/EDD/Test Design before
+M2 storage operations require approval of the draft [PRD](../../milestones/M2/PRD.md),
+[EDD](../../milestones/M2/EDD.md) and [Test Design](../../milestones/M2/TDD.md) before
 implementation. SMB/NFS service management, users/ACLs, snapshots/replication,
 retention/restoration, ports packaging and the image remain the following milestone
 work in [the roadmap](../../roadmap/milestones.md). No production NAS or commercial

@@ -1,0 +1,158 @@
+# Test Design: safe storage lifecycle
+
+Status: Draft; no M2 product acceptance evidence. Owner: Cam (`@gonz0w`).
+Date: 2026-10-04. [PRD](PRD.md), [EDD](EDD.md),
+[issue 19](https://github.com/gonz0w/horvium/issues/19).
+Approval record: pending linked design/ADR review.
+TDD means Test Design Document; implementation uses failing behavioral tests first.
+
+## Traceability and required gates
+
+| Requirement | Test ID / observable assertion | Level/environment |
+|---|---|---|
+| M2-REQ-001 | M2-OWN-001: observation/markers never grant ownership; exact selected GUID scopes survive rename/restart; adoption leaves data/properties/mounts/cache/import state unchanged | T1-T3 / E1-E2 |
+| M2-REQ-001, M2-REQ-007 | M2-DRIFT-001: external rename, changed properties/inheritance, reused name, missing pool, foreign child, topology or policy revision suspends the affected write without changing unrelated resources | T2-T3,T6 / E1-E2 |
+| M2-REQ-002 | M2-DEVICE-001: prove stable identity/provider correspondence; deny duplicate/missing identity, aliases, overlap, partition/signature/boot/swap/mount/pool use, wrong geometry and reused paths at review and launch | T1-T3 / E1-E2; E3 for hardware claims |
+| M2-REQ-003 | M2-PLAN-001: UI/CLI share immutable plan; expiry/edit/session/policy/drift forces re-review; duplicate confirm yields one durable job; contradictory reuse denied | T1-T3 / E1-E2 |
+| M2-REQ-003 | M2-PRIV-001: actual kernel UID and helper-peer policy; root/wrong UID/forged actor/unknown operation/arbitrary path/property/scope denied; observe-only defaults remain read-only | T1-T3 / E1-E2 |
+| M2-REQ-003 | M2-HTTP-001: assembled mutation/plan/job/cancel endpoints enforce auth, CSRF, Host/Origin, methods, strict body bounds and no fragment/CLI bypass; logs redact secrets | T2-T3 / E1-E2 |
+| M2-REQ-004 | M2-JOB-001: durable admission precedes launch, applying intent precedes effect, result durability precedes success; no duplicate writes under disconnect/flood/restart/expired replay | T1-T3,T6 / E1-E2 |
+| M2-REQ-004, M2-REQ-007 | M2-RECOVERY-001: abrupt death/reboot/timeout at every acknowledged boundary preserves intent and reservations; reconcile by identity/postconditions and never automatically replay an ambiguous write | T2-T3,T6 / E1-E2 |
+| M2-REQ-004, M2-REQ-007, M2-REQ-010 | M2-STATE-001: native ownership/modes/locks/sync/rename, torn/corrupt/newer/full/read-only store, data-pool absence and older metadata restoration fail safely | T1-T3,T6-T7 / E1-E2 |
+| M2-REQ-005 | M2-POOL-001: actual mirror and RAIDZ2 layouts, reviewed alignment and unused identities match independent native GUID/membership; denial/partial result never destroys an existing pool | T3,T6 / E2 |
+| M2-REQ-005 | M2-DATASET-001: exact owned parent, absent direct child, initial no-mount and nonce/GUID correlation; validated mount namespace; no implicit parents, shadowing or symlink escape | T1-T3,T6 / E1-E2 |
+| M2-REQ-005 | M2-PROPERTY-001: quota/reference-quota/compression actual effects, explicit no-limit versus invalid zero/overflow, ancestor limits and inherited/local sources; partial steps preserve honest state and unrelated properties | T1-T3,T6 / E1-E2 |
+| M2-REQ-005 | M2-FEATURE-001: installed common profile/hash, creation feature set and clean cross-release export/import; no force, feature upgrade or fallback when incompatible | T3,T6 / E2 |
+| M2-REQ-006 | M2-HEALTH-001: bounded real status output on both bundled ZFS versions maps GUID/topology/errors/scans; unknown/truncated/contradictory format is unavailable, never healthy | T1-T3 / E1-E2 |
+| M2-REQ-006 | M2-SCRUB-001: start, progress, native completion, checksum findings, attributable stop and duplicate/conflicting/external scan handling; no success from launch alone | T3,T6 / E2 |
+| M2-REQ-006 | M2-REPLACE-001: exact old leaf GUID/new identity, redundancy/size/alignment denial, actual resilver/completion/errors and helper-death recovery; no detach/force/cancel illusion | T3,T6 / E2; E3 for physical resilience |
+| M2-REQ-008 | M2-CONTINUITY-001: independent fresh SFTP/SMB/NFS fixture reads survive management/helper restart and unrelated storage work; supported scrub/resilver preserves target fixture bytes | T3-T4,T6 / E2 |
+| M2-REQ-009 | M2-UI-001: plan/confirmation/job/detail/recovery pages and CLI parity, JS on/off, actual selected browsers, keyboard/focus/status/light-dark/reduced-motion/narrow/native zoom and screen-reader findings | T2 + actual browser/manual / E1-E2 |
+| M2-REQ-009 | M2-SCALE-001: bounded plan/store/history/queue/device reservations and one launch by default; per-pool serialization with unrelated readers/pools progressing | T1-T3 / E1-E2 |
+| M2-REQ-009 | M2-PERF-001: combined Go RSS/idle CPU/cached latency budgets with real store/job activity and declared large synthetic state; native child and ZFS work reported separately | T8 / E1-E2 |
+| M2-REQ-010 | M2-NATIVE-001: real built helper/unprivileged service/CLI/HTML exercise supported operations on both release candidates, with independent assertions, exact pins and complete fixture teardown | T3 / E2 |
+
+Every row is an M2 behavior acceptance gate. Unit/cross-build results, source
+inspection and old M1 tests do not satisfy M2 native tests. A skipped/unavailable
+capability is unqualified; amend scope/design explicitly rather than count it as
+a pass. Manual browser findings remain required. Physical and external client
+claims need their separate labs; passing E2 does not imply all hardware support.
+
+## Fixture isolation and independent assertions
+
+Use fresh disposable FreeBSD 15.1/14.5 amd64 QEMU guests. Pin the image/runtime
+hash, QEMU/CPU/memory, source/suite/toolchain/modules/assets and actual kernel,
+userland and OpenZFS strings. Inherit M1's verified image/toolchain machinery;
+M2-specific virtual disk attachment and fault control still need implementation
+and qualification. Never accept an arbitrary host device supplied to a test.
+
+Pool creation/device-identity tests use new guest-attached virtual block devices
+with distinct configured identifiers and independently verified native identity.
+The guest's boot disk and foreign sentinel pool are explicit denial controls.
+No special product switch bypasses missing serial/lunid checks to permit md tests.
+File-backed md may support adoption/property/scrub fixtures after native creation,
+but it cannot qualify the real creation identity path. Logical/physical sector
+variants are qualified only when the guest actually reports the intended geometry.
+
+Declare ownership of every backing file, provider, pool, directory, socket, mount,
+daemon and loopback alias before tests create them. Teardown verifies absence of
+all owned resources and preservation of foreign sentinels. Native fixture cleanup
+may destroy only test-owned pools; the product does not gain a destroy operation
+from this test privilege. Discard the guest even after success. A teardown leak
+is failure, not an accepted warning.
+
+For every mutating case, capture independent before/after native GUIDs, membership,
+properties and property sources, feature flags, mount state and fixture-file hashes.
+Inspect actual native state in addition to the product response/job. Capture only
+sanitized assertions and version/hash records, never host inventory or credentials.
+Golden parsers originate in these release-specific observations, including both
+JSON and legacy status formats. Fuzz hostile/oversized/control-byte/duplicate and
+unknown structures; bounded status text does not become a general command parser.
+
+## Failure matrix and deterministic synchronization
+
+Synchronize each cut point with test-owned barriers rather than sleeps. Exercise
+death/disconnect before admission, after durable admission, after applying sync
+but before launch, while the actual native control command is active, after its
+effect but before outcome durability, during registry update, while a scrub or
+resilver is active, and during a metadata export. Kill the actual built process,
+verify descendant/quiescence behavior and check state through an independent
+native observer before restarting.
+
+Repeat with graceful management stop, helper SIGKILL, guest reboot and a disposable
+VM power-cut experiment. These qualify specified recovery logic, not real disk
+controller/cache honesty. A failpoint may coordinate a phase but must not replace
+the actual native write with a fake when recording native acceptance. Record any
+uncertain effect as reconcile-required and prove a retry cannot duplicate it.
+
+Explicit cases include:
+
+- Dataset name reused with a different GUID, external parent rename, changed
+  property source and foreign descendant between review and execution.
+  Parent quota/compression changes affecting an already unadopted descendant are
+  denied before launch; partial impact collection never narrows the required scope.
+- Device disappearing, changing identity at the same path, aliasing a selected
+  member, new signature/use between review and launch, and unsupported geometry.
+- Missing/changed installed feature profile; unavailable boot/data pool; clean
+  reimport of a registered created pool; foreign or force-required import denied.
+  Reboot after create but before GUID durability must not guess ownership or
+  import an unregistered candidate from a matching name/device set.
+- Second helper writer, PID reuse, an orphan guard/native process, damaged store,
+  bad file owner/mode/symlink, failed file/directory sync/rename, quota/space/full
+  filesystem and missing/newer state revision. No new native write follows denial.
+- Root-enrolled scope revoked while queued; duplicate request after lost response;
+  expired replay/tombstone; filled queue/history/metadata budget; uncertain jobs
+  remain visible and are never removed to make capacity.
+- Actual scan cancelled/completed with errors, external scan ambiguity, failed
+  replacement command with possible effect, and interruption during resilver.
+  No automatic force/repair/destroy/detach or claim of generic cancellation.
+
+Restore a consistent older root metadata backup into a fresh fixture containing
+newer ZFS state. Require policy re-enrollment and full identity/job reconciliation;
+the first startup performs no write or automatic adoption. Refuse newer schema
+without rewriting it. This tests state recovery only; file/key/ACL restoration
+belongs to M4 and package migration/removal to M5.
+
+## Continuity, browser and resource procedure
+
+Reuse the independent fixture-only file-daemon separation approach from
+[M1 continuity](../../testing/M1/file-continuity.md), with M2 operations actually
+running. Every protocol performs fresh exact-byte reads at the meaningful job and
+restart phases. Do not reuse cached mounts/files as proof of a new request. Tests
+must verify daemon/config preservation, target content and cleanup independently.
+No macOS/Linux/BSD external client/ACL/locking claim follows from loopback fixtures.
+
+Browser cases cover both successful and refused plans, expired confirmation,
+duplicate submit, queued/running/partial/reconcile-required outcomes, unavailable
+cancel and restored sessions/jobs. Match CLI/HTML/fragment identities and outcomes.
+Run actual pinned Firefox JS on/off, plus Safari and manual screen-reader/keyboard/
+native 200%/400% zoom tests. The pending M1 checklist is not automatically waived
+or transferred as evidence. Record manual defects before M2 acceptance.
+
+Use M1's immutable measured fixture and warm-up/five-minute idle/1,000-page ten-reader
+definitions. Add a small real pool/100-filesystem ownership fixture, admitted jobs,
+reconciliation and native launch/scan polling; large synthetic fixture has 10,000
+filesystem/ownership records, 1,000 retained terminal jobs and 64 admitted jobs.
+Fill byte/count limits and eight eligible independent pool simulations; prove the
+configured launch and four-maintenance defaults instead of starting 64 native
+scans on the small guest. A separate eight-pool native fixture verifies actual
+serialization/concurrency. Report time waiting for a pool reservation separately
+from launch duration and scan time.
+
+Measure paired management/helper RSS (128 MiB small / 256 MiB large targets),
+small idle CPU below 1% of a core and cached p95 below 250 ms. Include generation
+replacement, job polling, admission denial and three controlled restarts. Record
+p50/p95/p99, peaks, sampling gaps, allocated metadata bytes and native child CPU/RSS;
+ARC/daemon/disk work are separate, not hidden in the Go budget or called throughput
+qualification. Evidence validators must reject skipped/empty/incomplete suites.
+
+## Result and acceptance record
+
+Each record names requirement/test IDs, exact tested functional/suite commits,
+input hashes, native commands/capabilities, versions, fixture ownership/topology,
+workload, fault synchronization, independent assertions, result and limitations.
+Maintain a per-release/per-operation pass/fail/skip/unavailable matrix and link the
+approved revision. Keep initial failures/repairs in the record. Update behavior
+docs and compatibility alongside each slice, run repository gates, and keep PRs
+open for review. M2 acceptance requires the approved design, these actual gates
+and an explicit maintainer acceptance record. No M2 native test has run yet.
