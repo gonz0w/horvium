@@ -67,14 +67,15 @@ func TestChallengeAndTokenExchange(t *testing.T) {
 	if _, e = a.Session(s.ID, false); e != nil {
 		t.Fatal(e)
 	}
-	a.Logout(s.ID)
-	if _, e = a.Session(s.ID, false); !errors.Is(e, ErrUnauthorized) {
-		t.Fatal("logout failed")
-	}
 	other := NewAuth(a.digest)
 	if _, e = other.Session(s.ID, false); !errors.Is(e, ErrUnauthorized) {
 		t.Fatal("session survived restart")
 	}
+	a.Logout(s.ID)
+	if _, e = a.Session(s.ID, false); !errors.Is(e, ErrUnauthorized) {
+		t.Fatal("logout failed")
+	}
+
 }
 func TestSessionIdleAbsoluteAndCapacity(t *testing.T) {
 	a, token, now := newTestAuth(t)

@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"strings"
 	"testing"
+	"time"
 )
 
 func sourceFixture(i int) string { return fmt.Sprintf("127.0.1.%d", i+1) }
@@ -240,5 +241,42 @@ func TestHTTPAcceptsStandardUTF8FormAndRejectsSafeRequestBodies(t *testing.T) {
 	h.ServeHTTP(w, r)
 	if w.Code != 400 || calls != 1 {
 		t.Fatal("safe request body admitted to application")
+	}
+}
+
+func TestMalformedDuplicateCookieCannotHideBehindValidSession(t *testing.T) {
+	a, token, _ := newTestAuth(t)
+	g, _ := NewGate(testConfig(), a)
+	cookie, _ := exchangeHTTP(t, g, token)
+	calls := 0
+	h := g.Protect(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { calls++; w.WriteHeader(204) }))
+	r := request("GET", "/", "")
+	r.Header.Set("Cookie", SessionCookie+"="+cookie.Value+"; "+SessionCookie+"=bad\\value")
+	w := httptest.NewRecorder()
+	h.ServeHTTP(w, r)
+	if w.Code != 401 || calls != 0 {
+		t.Fatal("malformed duplicate cookie hid from authentication")
+	}
+}
+func TestDeniedPOSTDoesNotExtendSessionIdleExpiry(t *testing.T) {
+	a, token, now := newTestAuth(t)
+	g, _ := NewGate(testConfig(), a)
+	cookie, _ := exchangeHTTP(t, g, token)
+	h := g.Protect(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { t.Error("denied/expired request reached application") }))
+	*now = now.Add(IdleLifetime - time.Second)
+	r := request("POST", "/refresh", "csrf=incorrect")
+	r.AddCookie(cookie)
+	w := httptest.NewRecorder()
+	h.ServeHTTP(w, r)
+	if w.Code != 403 {
+		t.Fatal("bad csrf")
+	}
+	*now = now.Add(time.Second)
+	r = request("GET", "/", "")
+	r.AddCookie(cookie)
+	w = httptest.NewRecorder()
+	h.ServeHTTP(w, r)
+	if w.Code != 401 {
+		t.Fatal("denied POST extended session")
 	}
 }

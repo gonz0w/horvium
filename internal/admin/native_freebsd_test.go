@@ -325,6 +325,30 @@ func TestNativeAdministrationChild(t *testing.T) {
 	if response.StatusCode != 403 || reads.Load() != 1 {
 		t.Fatal("native csrf bypass")
 	}
+
+	// Chunked body limits and ambiguous cookies must hold over real HTTP too.
+	r, _ = http.NewRequest("POST", s.URL+"/refresh", strings.NewReader("csrf="+session.CSRF+"&padding="+strings.Repeat("x", MaxBodyBytes)))
+	r.ContentLength = -1
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	r.AddCookie(sessionCookie)
+	response, e = client.Do(r)
+	if e != nil {
+		t.Fatal("chunked body fixture")
+	}
+	_ = response.Body.Close()
+	if response.StatusCode != 413 || reads.Load() != 1 {
+		t.Fatal("native body cap bypass")
+	}
+	r, _ = http.NewRequest("GET", s.URL+"/fragment", nil)
+	r.Header.Set("Cookie", SessionCookie+"="+sessionCookie.Value+"; "+SessionCookie+"=bad\\value")
+	response, e = client.Do(r)
+	if e != nil {
+		t.Fatal("cookie fixture")
+	}
+	_ = response.Body.Close()
+	if response.StatusCode != 401 || reads.Load() != 1 {
+		t.Fatal("native ambiguous cookie bypass")
+	}
 	for i := 0; i < 2; i++ {
 		r, _ = http.NewRequest("GET", s.URL+"/", nil)
 		r.AddCookie(sessionCookie)

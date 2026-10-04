@@ -107,20 +107,31 @@ func remoteSource(r *http.Request) (string, error) {
 	}
 	return ip.Unmap().String(), nil
 }
+
+// Count raw credential names before net/http can silently skip an invalid
+// cookie value. Credentials use a canonical unquoted hexadecimal value; a
+// malformed duplicate must not turn an ambiguous request into an authorized one.
 func cookieValue(r *http.Request, name string) (string, error) {
-	var value string
+	value := ""
 	count := 0
-	for _, c := range r.Cookies() {
-		if c.Name == name {
-			value = c.Value
-			count++
+	for _, line := range r.Header.Values("Cookie") {
+		for _, part := range strings.Split(line, ";") {
+			key, v, hasValue := strings.Cut(strings.TrimSpace(part), "=")
+			if strings.TrimSpace(key) == name {
+				count++
+				if !hasValue || !validSecret(v) {
+					return "", ErrUnauthorized
+				}
+				value = v
+			}
 		}
 	}
-	if count != 1 || !validSecret(value) {
+	if count != 1 {
 		return "", ErrUnauthorized
 	}
 	return value, nil
 }
+
 func cookie(w http.ResponseWriter, name, value string, remove bool) {
 	c := &http.Cookie{Name: name, Value: value, HttpOnly: true, SameSite: http.SameSiteStrictMode, Path: "/"}
 	if remove {

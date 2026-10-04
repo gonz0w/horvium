@@ -122,7 +122,9 @@ body CSRF field. Form content type is URL-encoded, optionally UTF-8 charset; JSO
 multipart, other parameters and malformed/duplicate credential input fail. No
 URL token input is accepted. GET/HEAD bodies are denied. Other methods are denied
 before application dispatch; supported read/refresh routing is still the adapter's
-responsibility. Duplicate session/challenge cookies fail. Invalid input/error
+responsibility. Credential cookies must be canonical unquoted hex values. Duplicate names fail
+even when one value is malformed: count raw credential names before Go can skip
+an invalid cookie during parsing. Invalid input/error
 responses use fixed safe text, never echo tokens, cookies or request bodies.
 
 Bodies cap at 4 KiB including chunked reads. Handler header/target accounting caps
@@ -136,7 +138,10 @@ opens a listener nor enables a service, and callers must use gated handlers.
 
 Behavioral tests initially failed against refusal/pass-through stubs. Regression
 tests also exposed rejection of ordinary UTF-8 form submissions and acceptance of
-GET bodies; both now have failing-before-fix coverage. Tests cover strict config,
+GET bodies; both now have failing-before-fix coverage. Final review found that
+Go silently drops a malformed cookie, allowing a duplicate name to hide behind a
+valid credential. A failing behavioral regression now protects raw-name counting,
+with the same case added to the real native HTTP fixture. Tests cover strict config,
 loopback/Host limits, token/challenge replay and entropy failure, session idle/
 absolute expiry/admission, concurrent eight-session admission, source/global
 throttles and rollover, fail-closed source-map saturation, logout/Close/restart,
@@ -173,8 +178,13 @@ execution, rather than cross-compilation, determines their result below.
 ## Execution record
 
 Local `make check lint test secrets go-check` and a FreeBSD amd64 test
-cross-compilation are the development gates. Native source/run, actual guest
-versions and pass/fail results will be recorded after execution. No skipped fixture
+cross-compilation are the development gates. Initial [native run 37206566944](https://github.com/gonz0w/horvium/actions/runs/37206566944)
+passed all five jobs on implementation/suite source
+`ed2ac8aa6e8bb688f480c20558cc47c1b3ae238e`. Both product jobs executed
+`TestNativeCredentialFiles`, `TestNativeAdministrationAsServiceUID` and
+`TestNativeSetupIsAtomicAndDoesNotFollowSpecialFiles` successfully. The cookie
+regression repair and additional chunked-body HTTP fixture need a final native
+run before review-ready status. Exact final source/versions will be recorded below. No skipped fixture
 is counted as native acceptance. Existing native discovery/helper/cache tests run
 alongside this slice. Complete M1, browser, hardware, performance, package and
 production security qualification remain pending.
