@@ -73,3 +73,27 @@ NAS runtime dependency. See [procedure and limits](../testing/M1/performance.md)
 Before its own workflow is on main, dispatch the existing BSD workflow with
 `performance=true`; it calls the same performance workflow from the selected
 branch. Default native runs leave this long measurement disabled.
+
+The manual [independent file-service workflow](../../.github/workflows/bsd-continuity.yml)
+provisions fixture-only Samba and base NFS in disposable guests. Its explicit
+native/protocol opt-ins and [procedure](../testing/M1/file-continuity.md) are required;
+it installs/enables no operator host service and makes no client compatibility claim.
+
+Until its standalone workflow is merged/registered on main, continuity is also
+callable with `continuity=true` in the existing BSD native workflow against the
+qualification branch. The optional flag provisions Samba only in those guests.
+
+
+## Browser qualification
+
+The [browser workflow](../../.github/workflows/browser-qualification.yml) runs
+checksum-pinned Firefox/geckodriver on Linux against an explicitly synthetic
+loopback Go console. Before registration on main, use `browser=true` with the BSD
+workflow against the qualification branch. JavaScript enabled/disabled flows,
+light/dark and reduced-motion media, keyboard focus, fragment/polling behavior,
+escaping, labels, sampled contrast and narrow viewport reflow are asserted by the
+stdlib WebDriver runner. The fixture exports only selected synthetic results.
+Safari uses the installed macOS driver when remote automation is enabled by the
+operator. Manual screen-reader/native-zoom checks remain separate; see the
+[checklist](../testing/M1/browser-checklist.md). Browser test tooling is not a NAS
+runtime dependency and passing headless checks is not accessibility certification.

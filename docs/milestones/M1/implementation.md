@@ -198,6 +198,9 @@ The assembled HTTP abuse suite and pre-handler connection cap passed on both
 native targets in run 37230688573 and are under review in [PR 15](https://github.com/gonz0w/horvium/pull/15).
 See [HTTP abuse evidence](../../testing/M1/http-abuse.md).
 
+Independent SMB/NFS continuity passed both native targets, including seven reads
+per protocol and teardown in run 37233530125; under review in PR 16. See [continuity procedure](../../testing/M1/file-continuity.md).
+
 1. Complete console/CLI native and required-browser evidence, accessibility acceptance.
 2. Qualify native-reader allocation alongside the measured synthetic management budgets.
 3. Extend independent SFTP continuity evidence to SMB/NFS; complete native-probe
@@ -205,3 +208,8 @@ See [HTTP abuse evidence](../../testing/M1/http-abuse.md).
 
 All PRD requirements remain subject to the full [Test Design](TDD.md). Native
 reader success is not NAS readiness, commercial qualification or a working UI.
+
+Actual Firefox passed all four selected synthetic flows in run 37233700130;
+under review in PR 17. Safari and manual assistive-technology/native-zoom evidence
+remain pending by maintainer choice.
+See [browser qualification](../../testing/M1/browser-checklist.md).

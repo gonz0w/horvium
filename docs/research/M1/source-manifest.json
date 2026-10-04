@@ -1609,5 +1609,311 @@
         "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
       }
     ]
+  },
+  "product_file_continuity": {
+    "date": "2026-10-04",
+    "status": "native pass; under maintainer review",
+    "source_revision": "95d94754f634bd8c1eee840d5dc8662472790493",
+    "workflow_run": "https://github.com/gonz0w/horvium/actions/runs/37233530125",
+    "test_ids": [
+      "M1-RESTART-001",
+      "M1-NOCHANGE-001",
+      "M1-AUTH-001"
+    ],
+    "vm": {
+      "action_source": "a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff",
+      "builder": "2.2.8",
+      "memory_mib": 6144,
+      "cpu_image": "native job defaults; not immutable performance baseline"
+    },
+    "guests": [
+      {
+        "installed_kernel": "15.1-RELEASE-p3",
+        "running_kernel": "15.1-RELEASE-p3",
+        "userland": "15.1-RELEASE-p3",
+        "architecture": "amd64",
+        "go": "1.27.1",
+        "zfs_userland": "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+        "zfs_kernel": "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0",
+        "samba_package": "4.23.11_3",
+        "samba_origin": "net/samba423",
+        "smbd_version": "4.23.11",
+        "binary_sha256": {
+          "/usr/bin/timeout": "099b29836a7efe1270842ffe093c971c7883e646293b8906b38652901ef1673d",
+          "/usr/local/sbin/smbd": "b2ef2e55ac3c122c7acc5a1e6b7012c2952f85edfa4e9673b672eecc19f69257",
+          "/usr/local/bin/smbclient": "54d298f2ee4871bb17dd1d703fb5177d3196833196f7260f03497c89f31bc553",
+          "/usr/sbin/nfsd": "e4db394594a237954fca8ce251af51253369f34bf37fe6baf77c9c8dfcbbc313",
+          "/usr/sbin/mountd": "f6576b30835a4cd8800b44c8f797cbc8ee9595c874f06cafd1ad9e3d63f9ccca",
+          "/usr/sbin/rpcbind": "1c5e362b50c9d51d3147a757d550484847c7961fe566386d8e60bd79e1ee9f94",
+          "/sbin/mount_nfs": "048e6cb2bf16e2408443b0d70bd5ae473bd1fa06faa10835ca4e5b7452ae7943"
+        },
+        "protocols": {
+          "SMB": {
+            "fresh_reads": 7,
+            "teardown": "pass"
+          },
+          "NFSv3_TCP": {
+            "fresh_reads": 7,
+            "teardown": "pass"
+          }
+        },
+        "duration": "3.50s"
+      },
+      {
+        "installed_kernel": "14.5-RELEASE",
+        "running_kernel": "14.5-RELEASE",
+        "userland": "14.5-RELEASE",
+        "architecture": "amd64",
+        "go": "1.27.1",
+        "zfs_userland": "zfs-2.2.9-FreeBSD_g079ba86d7",
+        "zfs_kernel": "zfs-kmod-2.2.9-FreeBSD_g079ba86d7",
+        "samba_package": "4.23.11_2",
+        "samba_origin": "net/samba423",
+        "smbd_version": "4.23.11",
+        "binary_sha256": {
+          "/usr/bin/timeout": "1dadc6aaf707f8e4f7a08ea28bfa0d53bf6890ca9ea7873a72e4a051e5f9aa10",
+          "/usr/local/sbin/smbd": "8f576a455c3bcdee66800ef71b5939cb4094f5e8dfe672b546f12a105102d8ab",
+          "/usr/local/bin/smbclient": "e3619a31f0a6101b6091bbb7b7de256e184e3b13c9225874d29a556559cf65f1",
+          "/usr/sbin/nfsd": "672f847b1634c8610a50d245acf5b83d229a09133275822c54c1a90daba08efe",
+          "/usr/sbin/mountd": "c9a61acd368738840c82fa9e5d5b78893a2e74f156656108db3d110a6059f4f9",
+          "/usr/sbin/rpcbind": "e1a46b46261f4201502881a108336db35baedfd2b0b1098263340148c7983b49",
+          "/sbin/mount_nfs": "1e3afbabe3af29138f49e921aad8b2b9f8dd116333c051240284d65cd272bc39"
+        },
+        "protocols": {
+          "SMB": {
+            "fresh_reads": 7,
+            "teardown": "pass"
+          },
+          "NFSv3_TCP": {
+            "fresh_reads": 7,
+            "teardown": "pass"
+          }
+        },
+        "duration": "6.34s"
+      }
+    ],
+    "files": [
+      {
+        "path": "cmd/horvium/protocol_continuity_freebsd_test.go",
+        "sha256": "10b8c6f1e47edda416533eb645ae633783085fb47414f48acae1bb4b5f8f129a"
+      },
+      {
+        "path": "cmd/horvium/lifecycle_freebsd_test.go",
+        "sha256": "9b1048b3fbac9944da9ac898c3840f7a206bd5ba5e99763b878b1fbae220f681"
+      },
+      {
+        "path": "cmd/horvium/native_freebsd_test.go",
+        "sha256": "be0354261b9d86a1fdf11ba89a6b06075653070148bff6aa42c12db437424173"
+      },
+      {
+        "path": "cmd/horvium/performance_freebsd_test.go",
+        "sha256": "e6407e06e4f0cfd00cdce1cf8968ccc79ade9c22232bdea70e11b040f9ce6597"
+      },
+      {
+        "path": "cmd/horvium/reader_resources_freebsd_test.go",
+        "sha256": "2c4dcc3a376c864bb109e0fb696430c1f796879a263c178abbac189ca8f7502c"
+      },
+      {
+        "path": "tools/bsd-continuity.sh",
+        "sha256": "75fb4f32f0636e7e4833422a3fed8d61d84eae0f0e35c03124017d5c8cf5ef9f"
+      },
+      {
+        "path": ".github/workflows/bsd-continuity.yml",
+        "sha256": "c259ff3b434b8186820ab5397f584947832f9f919d506a5ec16c20547fc25a99"
+      },
+      {
+        "path": ".github/workflows/bsd-smoke.yml",
+        "sha256": "e92be75e03c13cfd978ecbf4b19d70bb0da9d5f93a6352072405cb4896c086b3"
+      },
+      {
+        "path": "go.mod",
+        "sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+      }
+    ],
+    "limits": [
+      "exclusive disposable loopback fixtures only; no operator service configuration",
+      "repository Samba package version captured, not package artifact pin",
+      "not macOS/Linux SMB/NFS interoperability, authentication, ACL, locking, throughput or release configuration"
+    ]
+  },
+  "product_browser_qualification": {
+    "date": "2026-10-04",
+    "status": "Firefox automated pass under review; Safari/manual accessibility pending by maintainer choice",
+    "source_revision": "062233c0158e7e6472be5d72f891cae1f4a3acf0",
+    "workflow_run": "https://github.com/gonz0w/horvium/actions/runs/37233700130",
+    "test_ids": [
+      "M1-UI-001",
+      "M1-HTTP-001",
+      "M1-AUTH-001"
+    ],
+    "runner": {
+      "os": "Ubuntu 24.04.5 LTS",
+      "image": "ubuntu24/20260927.320.1",
+      "python": "3.14.7",
+      "go": "1.27.1"
+    },
+    "browser_pins": {
+      "firefox": {
+        "version": "157.0",
+        "url": "https://archive.mozilla.org/pub/firefox/releases/157.0/linux-x86_64/en-US/firefox-157.0.tar.xz",
+        "sha256": "42f2c62a562316982ef5a796738c57602bf84a984f5c616e80bcff4627f78fff",
+        "checksum_source": "https://archive.mozilla.org/pub/firefox/releases/157.0/SHA256SUMS"
+      },
+      "geckodriver": {
+        "version": "0.37.1",
+        "url": "https://github.com/mozilla/geckodriver/releases/download/v0.37.1/geckodriver-v0.37.1-linux64.tar.gz",
+        "sha256": "e815130ea95983e162ae91843b48d3a3ce991735635fce83a647afde21e09f7e",
+        "checksum_source": "https://api.github.com/repos/mozilla/geckodriver/releases/tags/v0.37.1"
+      }
+    },
+    "results": [
+      {
+        "browser": "firefox",
+        "browser_version": "157.0",
+        "platform": "linux",
+        "host_platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "javascript": true,
+        "theme": "light",
+        "requested_width": 1280,
+        "status": "pass",
+        "measurements": {
+          "minimum_sampled_text_contrast": 5.045892109312574,
+          "minimum_control_boundary_contrast": 3.1405817281884527,
+          "viewport_css_width": 1280,
+          "observed_media": {
+            "dark": false,
+            "reduce": true
+          },
+          "viewport_method": "browser window"
+        },
+        "manual_screen_reader_and_native_zoom": "pending"
+      },
+      {
+        "browser": "firefox",
+        "browser_version": "157.0",
+        "platform": "linux",
+        "host_platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "javascript": true,
+        "theme": "dark",
+        "requested_width": 390,
+        "status": "pass",
+        "measurements": {
+          "minimum_sampled_text_contrast": 5.52894265248301,
+          "minimum_control_boundary_contrast": 3.9994804227890834,
+          "viewport_css_width": 390,
+          "observed_media": {
+            "dark": true,
+            "reduce": true
+          },
+          "viewport_method": "owned browser chrome minimum override"
+        },
+        "manual_screen_reader_and_native_zoom": "pending"
+      },
+      {
+        "browser": "firefox",
+        "browser_version": "157.0",
+        "platform": "linux",
+        "host_platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "javascript": false,
+        "theme": "light",
+        "requested_width": 1280,
+        "status": "pass",
+        "measurements": {
+          "minimum_sampled_text_contrast": 5.045892109312574,
+          "minimum_control_boundary_contrast": 3.1405817281884527,
+          "viewport_css_width": 1280,
+          "observed_media": {
+            "dark": false,
+            "reduce": true
+          },
+          "viewport_method": "browser window"
+        },
+        "manual_screen_reader_and_native_zoom": "pending"
+      },
+      {
+        "browser": "firefox",
+        "browser_version": "157.0",
+        "platform": "linux",
+        "host_platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "javascript": false,
+        "theme": "dark",
+        "requested_width": 320,
+        "status": "pass",
+        "measurements": {
+          "minimum_sampled_text_contrast": 5.52894265248301,
+          "minimum_control_boundary_contrast": 3.9994804227890834,
+          "viewport_css_width": 320,
+          "observed_media": {
+            "dark": true,
+            "reduce": true
+          },
+          "viewport_method": "owned browser chrome minimum override"
+        },
+        "manual_screen_reader_and_native_zoom": "pending"
+      }
+    ],
+    "safari_attempt": {
+      "browser": "Safari 27.0 (22625.1.29.11.25)",
+      "os": "macOS 27.0 arm64",
+      "status": "unavailable before session creation: remote automation disabled",
+      "operator_settings_changed": false
+    },
+    "manual_acceptance": "maintainer explicitly kept pending on 2026-10-04",
+    "files": [
+      {
+        "path": "tools/browser-qualification.py",
+        "sha256": "23c8b4f321b2431acd077ef41c20d753e9ae29c5308e9954c2fba806b9772a9c"
+      },
+      {
+        "path": "tools/bootstrap-browser.py",
+        "sha256": "ff3918348d612b1393ee2451f6915983076ade84071efe774353bf8c66f50efa"
+      },
+      {
+        "path": "tools/browser-pins.json",
+        "sha256": "b928b58695981c6e347ff100a55a9a9575751727922ee13a2cf7ef9f967de482"
+      },
+      {
+        "path": ".github/workflows/browser-qualification.yml",
+        "sha256": "8405288e8f588265b7251284dc2a8e5d9495c4bc5024e8590e22787f8b0c0df5"
+      },
+      {
+        "path": "internal/console/assets/console.css",
+        "sha256": "fdc2d1361d4ce22f58ad46a96ed87e1450b3368188027c55c6aaf97284d20daa"
+      },
+      {
+        "path": "internal/console/assets/console.js",
+        "sha256": "0b298c2ddec740961801927f4de6f861004c5166dd369f35c6f9836773ba11d2"
+      },
+      {
+        "path": "internal/console/assets/console.html",
+        "sha256": "376d2b444b45c0fa0e946720d5da7fda01e3dddd093c11d2b738af9116720b35"
+      },
+      {
+        "path": "internal/console/console.go",
+        "sha256": "d0099cf9d772f63b00d0dd83fe7beb7221dff817989c5af7e489faf02bbbbfd5"
+      },
+      {
+        "path": "internal/console/console_test.go",
+        "sha256": "f7a479ea1ef1425130fc4c4e10e6d30536c5cf6f384bfb781063718a71cc54f6"
+      },
+      {
+        "path": "go.mod",
+        "sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+      }
+    ],
+    "limits": [
+      "explicitly synthetic loopback fixture; no native storage or external file-client evidence",
+      "owned disposable Firefox chrome minimum overridden to reach actual CSS widths",
+      "computed contrast covers selected samples, not whole UI or WCAG certification",
+      "Safari, screen readers and human native zoom/usability remain pending"
+    ]
   }
 }

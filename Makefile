@@ -1,4 +1,4 @@
-.PHONY: tools go-tools check lint test secrets hooks go-check build
+.PHONY: tools go-tools check lint test secrets hooks go-check build browser-preview
 
 GO := $(CURDIR)/.tools/go/bin/go
 export GOTOOLCHAIN := local
@@ -18,7 +18,7 @@ check:
 	sh tools/check-repo.sh
 
 lint:
-	.tools/bin/shellcheck tools/check-repo.sh tools/bsd-foundation-smoke.sh tools/bsd-native-discovery.sh tools/bsd-performance.sh tools/research/m1-native.sh .githooks/commit-msg .githooks/pre-commit
+	.tools/bin/shellcheck tools/check-repo.sh tools/bsd-foundation-smoke.sh tools/bsd-native-discovery.sh tools/bsd-performance.sh tools/bsd-continuity.sh tools/research/m1-native.sh .githooks/commit-msg .githooks/pre-commit
 	.tools/bin/actionlint
 	@test -z "$$($(CURDIR)/.tools/go/bin/gofmt -l cmd internal tools/research/m1-geom.go)" || { echo 'Run gofmt on Go sources'; exit 1; }
 	$(GO) vet ./...
@@ -49,3 +49,7 @@ hooks:
 build:
 	mkdir -p .tools/bin
 	$(GO) build -trimpath -o .tools/bin/horvium ./cmd/horvium
+
+# Public synthetic loopback fixture; expires after twenty minutes.
+browser-preview:
+	HORVIUM_UI_PREVIEW=1 $(GO) test -v ./internal/console -run '^TestBrowserPreview$$' -count=1 -timeout=25m
