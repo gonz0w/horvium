@@ -117,6 +117,18 @@ func TestGEOMRelationshipsAndIdentity(t *testing.T) {
 	}
 }
 
+func TestGEOMSysctlTerminator(t *testing.T) {
+	// kern.geom.confxml's SYSCTL_OUT copies sbuf_len + 1, including its NUL.
+	if graph, err := ParseGEOM([]byte(geomFixture+"\x00"), DefaultLimits()); err != nil || len(graph.Providers) != 3 {
+		t.Fatalf("native sysctl terminator rejected: %v", err)
+	}
+	for _, input := range []string{geomFixture + "\x00\x00", strings.Replace(geomFixture, "ada0", "ada\x000", 1), geomFixture + "junk\x00"} {
+		if _, err := ParseGEOM([]byte(input), DefaultLimits()); !errors.Is(err, ErrMalformed) {
+			t.Fatal("embedded/repeated NUL or trailing junk accepted")
+		}
+	}
+}
+
 func TestGEOMRejectsUnsafeOrBrokenGraph(t *testing.T) {
 	for name, input := range map[string]string{
 		"truncated":            strings.TrimSuffix(geomFixture, "</mesh>"),

@@ -20,6 +20,11 @@ func xmlTree(data []byte, limits Limits) (*node, error) {
 	if err := checkInput(data, limits); err != nil {
 		return nil, err
 	}
+	// The string sysctl includes one terminal NUL (sbuf_len + 1). Account for
+	// its byte above, remove exactly one, and still consume/validate all XML.
+	if len(data) > 0 && data[len(data)-1] == 0 {
+		data = data[:len(data)-1]
+	}
 	decoder := xml.NewDecoder(bytes.NewReader(data))
 	var root *node
 	var stack []*node

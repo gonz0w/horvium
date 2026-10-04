@@ -124,3 +124,18 @@ func TestBudgetCountsDiscardedErrorOutput(t *testing.T) {
 		t.Fatal("discarding error output reset the aggregate safety budget")
 	}
 }
+
+func TestAggregateRecordBudgetStopsBeforeAnotherQuery(t *testing.T) {
+	datasetQuery := false
+	source := testSource(func(ctx context.Context, p probe, max int) (readOutput, error) {
+		if p == datasets {
+			datasetQuery = true
+		}
+		return fixtureRead(ctx, p, max)
+	})
+	source.limits.MaxRecords = 1
+	result := source.Collect(context.Background())
+	if datasetQuery || result.Pools.Status != inventory.OK || result.Datasets.Status != inventory.Unavailable || result.Datasets.Problems[0].Code != "limit" {
+		t.Fatal("record exhaustion triggered more work or became successful truncation")
+	}
+}
