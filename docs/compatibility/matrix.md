@@ -57,3 +57,11 @@ on Ubuntu 24.04.5 (37233700130). Safari 27.0 automation was unavailable; manual
 accessibility/native zoom remains pending by maintainer choice. See
 [browser evidence](../testing/M1/browser-checklist.md). These fixtures do not
 establish FreeBSD runtime or SMB/NFS client compatibility.
+
+
+The final combined assembled-source run 37234167265 passed all eight jobs,
+including both pinned resource guests, both native suites/HTTP/SMB/NFS fixtures
+and actual Firefox. Native-small combined Go RSS 33.65–35.45 MiB and idle CPU
+0.080–0.083%; projection RSS 40.20–40.79 MiB, p95 57.877–58.634ms. All exclusion,
+manual-browser and hardware/client/release limits above still apply; M1 remains
+unaccepted. See [consolidated qualification](../testing/M1/qualification-status.md).

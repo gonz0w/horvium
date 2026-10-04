@@ -216,3 +216,11 @@ Actual Firefox passed all four selected synthetic flows in run 37233700130;
 under review in PR 17. Safari and manual assistive-technology/native-zoom evidence
 remain pending by maintainer choice.
 See [browser qualification](../../testing/M1/browser-checklist.md).
+
+
+Final combined run 37234167265 passed all eight automated jobs against one assembled
+functional revision, including pinned resource/crash recovery, native HTTP abuse,
+SMB/NFS continuity and actual Firefox. Exact input hashes/results are consolidated
+in [qualification review](../../testing/M1/qualification-status.md). M1 still needs
+Safari/manual accessibility observations and explicit maintainer review/acceptance;
+these passing automated gates do not authorize merging or M2 implementation.
