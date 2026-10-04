@@ -4,6 +4,7 @@ package helper
 import (
 	"bufio"
 	"context"
+	"encoding/binary"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -19,6 +20,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/gonz0w/horvium/internal/eventlog"
 	"github.com/gonz0w/horvium/internal/host/freebsd"
 	"github.com/gonz0w/horvium/internal/inventory"
 )
@@ -136,7 +138,11 @@ func runChild(t *testing.T, f nativeFixture, mode string, uid uint32) {
 }
 func startServer(t *testing.T, f nativeFixture, source Collector) (*Server, context.CancelFunc, <-chan error) {
 	t.Helper()
-	s, err := NewServer(f.config, source)
+	return startLoggedServer(t, f, source, nil)
+}
+func startLoggedServer(t *testing.T, f nativeFixture, source Collector, events *eventlog.Log) (*Server, context.CancelFunc, <-chan error) {
+	t.Helper()
+	s, err := NewLoggedServer(f.config, source, events)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -439,7 +445,13 @@ func TestNativeHelperChild(t *testing.T) {
 	if mode == "forged" {
 		payload = `{"version":1,"request_id":"r","operation":"inventory","uid":` + strconv.FormatUint(uint64(c.ManagementUID), 10) + `}`
 	}
-	_, _ = conn.Write(frame(payload))
+	if mode == "oversized" {
+		var header [4]byte
+		binary.BigEndian.PutUint32(header[:], maxFrame+1)
+		_, _ = conn.Write(header[:])
+	} else {
+		_, _ = conn.Write(frame(payload))
+	}
 	_ = conn.CloseWrite()
 	var b [1]byte
 	if n, _ := conn.Read(b[:]); n != 0 {
@@ -452,7 +464,11 @@ func TestNativeAdmittedClientsBounded(t *testing.T) {
 	f.config.MaxClients = 1
 	f.config.Timeout = 3 * time.Second
 	var calls atomic.Int32
-	s, err := NewServer(f.config, collectFunc(func(context.Context) inventory.Snapshot { calls.Add(1); return observation() }))
+	logCtx, stopLog := context.WithCancel(context.Background())
+	defer stopLog()
+	sink := &helperEventSink{}
+	events := eventlog.New(logCtx, sink)
+	s, err := NewLoggedServer(f.config, collectFunc(func(context.Context) inventory.Snapshot { calls.Add(1); return observation() }), events)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -533,6 +549,10 @@ func TestNativeAdmittedClientsBounded(t *testing.T) {
 	if err := idle.Wait(); err != nil {
 		t.Fatal("idle client timeout test failed")
 	}
+	rows := helperRecords(t, sink, 2)
+	if rows[0]["error_class"] != "capacity" || rows[0]["outcome"] != "rejected" || rows[1]["error_class"] != "timeout" {
+		t.Fatal("admission/deadline events missing")
+	}
 	runChild(t, f, "allowed", f.uid)
 	if calls.Load() != 1 {
 		t.Fatal("admission slot did not recover after deadline")
@@ -577,5 +597,44 @@ func TestNativeShutdownPreservesReplacement(t *testing.T) {
 	}
 	if data, err := os.ReadFile(f.config.Socket); err != nil || string(data) != "replacement" {
 		t.Fatal("shutdown removed another entry")
+	}
+}
+
+func TestNativeHelperDenialEvents(t *testing.T) {
+	f := fixture(t)
+	f.config.Timeout = 500 * time.Millisecond
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	sink := &helperEventSink{}
+	events := eventlog.New(ctx, sink)
+	var calls atomic.Int32
+	startLoggedServer(t, f, collectFunc(func(context.Context) inventory.Snapshot { calls.Add(1); return observation() }), events)
+	runChild(t, f, "allowed", f.uid)
+	runChild(t, f, "denied", f.denied)
+	runChild(t, f, "denied", 0)
+	runChild(t, f, "forged", f.uid)
+	runChild(t, f, "oversized", f.uid)
+	runChild(t, f, "idle", f.uid)
+	rows := helperRecords(t, sink, 5)
+	classes := map[string]int{}
+	for _, row := range rows {
+		if len(row) != 8 || row["operation"] != "helper" || row["id"] == "r" {
+			t.Fatal("unsafe native helper event")
+		}
+		class, ok := row["error_class"].(string)
+		if !ok {
+			t.Fatal("missing class")
+		}
+		classes[class]++
+	}
+	if classes["permission"] != 2 || classes["protocol"] != 1 || classes["limit"] != 1 || classes["timeout"] != 1 {
+		t.Fatal("native denials misclassified")
+	}
+	if calls.Load() != 1 {
+		t.Fatal("denial reached native collection")
+	}
+	runChild(t, f, "allowed", f.uid)
+	if calls.Load() != 2 {
+		t.Fatal("helper did not recover after denials")
 	}
 }

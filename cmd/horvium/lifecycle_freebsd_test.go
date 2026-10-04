@@ -77,7 +77,12 @@ type nativeProcess struct {
 
 func startNativeProcess(t *testing.T, binary string, args []string, uid, gid uint32) *nativeProcess {
 	t.Helper()
+	return startNativeProcessWithStderr(t, binary, args, uid, gid, nil)
+}
+func startNativeProcessWithStderr(t *testing.T, binary string, args []string, uid, gid uint32, stderr io.Writer) *nativeProcess {
+	t.Helper()
 	cmd := exec.Command(binary, args...)
+	cmd.Stderr = stderr
 	cmd.Env = []string{"LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
 	if uid != 0 {
 		cmd.SysProcAttr = &syscall.SysProcAttr{Credential: &syscall.Credential{Uid: uid, Gid: gid, Groups: []uint32{gid}}}

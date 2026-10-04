@@ -1,7 +1,8 @@
 # M1 combined-process performance qualification
 
-Date: 2026-10-04. Status: synthetic qualification passed; slice 7 under review in
-[PR 10](https://github.com/gonz0w/horvium/pull/10). M1 remains unaccepted.
+Date: 2026-10-04. Status: synthetic qualification accepted by maintainer merge of
+[PR 10](https://github.com/gonz0w/horvium/pull/10), source
+`65750aa81aeca0054a371690fbef5a7e7d9fffcc`. M1 remains unaccepted.
 Work: [issue 1](https://github.com/gonz0w/horvium/issues/1).
 Authority: approved [PRD budgets](../../milestones/M1/PRD.md) and
 [Test Design M1-PERF-001](../../milestones/M1/TDD.md).

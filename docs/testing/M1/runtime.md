@@ -40,8 +40,9 @@ category; this is operational sampling, not a durable security audit ledger.
 A blocked/failed sink cannot block request handling or shutdown. On termination,
 queued events may be lost. No files, syslog socket or telemetry connection are
 opened. An operator can route stderr through FreeBSD system logging; packaged
-logging/rotation configuration is a later delivery gate. Helper authorization
-and protocol-denial events are not yet integrated into this logger.
+logging/rotation configuration is a later delivery gate. Helper request-denial
+events now use this same logger; their validation is tracked separately in
+[helper denial evidence](helper-events.md).
 
 ## Test procedure
 

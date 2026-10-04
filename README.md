@@ -10,7 +10,8 @@ requirement or a limit on disks, memory, pools, or datasets.
 **Status:** M0 foundation, M1 design, native discovery, helper transport and
 collector/cache, administration security, authenticated read-only console, CLI
 and foreground development commands, runtime lifecycle, logging and response
-admission accepted. Synthetic combined-process performance qualification passed and is under review. There is
+admission accepted. Synthetic combined-process performance qualification is accepted. Helper-denial
+logging qualification is in progress. There is
 no installable port, appliance image or production support claim.
 
 ## Agreed direction
