@@ -101,7 +101,10 @@ func stopContinuityDaemon(t *testing.T, p *nativeProcess, signal syscall.Signal)
 	t.Helper()
 	p.stop(t, signal, false)
 	status, ok := p.cmd.ProcessState.Sys().(syscall.WaitStatus)
-	if !ok || !(status.Exited() && status.ExitStatus() == 0 || status.Signaled() && status.Signal() == signal) {
+	// Base rpcbind intentionally exits 2 after handling a termination signal.
+	// Admit only that exact owned executable/requested SIGTERM contract.
+	rpcTermination := p.cmd.Path == "/usr/sbin/rpcbind" && signal == syscall.SIGTERM && status.Exited() && status.ExitStatus() == 2
+	if !ok || !(rpcTermination || status.Exited() && status.ExitStatus() == 0 || status.Signaled() && status.Signal() == signal) {
 		t.Fatal("fixture daemon did not exit with the requested signal or success")
 	}
 	// Daemon shutdown can also signal workers. Any remaining member is still

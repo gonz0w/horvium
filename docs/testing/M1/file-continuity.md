@@ -65,7 +65,9 @@ restart service is added.
 
 Cleanup stops only fixture daemons (nfsd uses SIGUSR1), unmounts the owned client
 and dataset, verifies the unchanged original data properties and destroys/detaches
-only the owned pool/md. A leak or failed assertion fails the test; skipped opt-in
+only the owned pool/md. Base rpcbind deliberately returns exit status 2 after handling SIGTERM; only
+that exact daemon/signal/status is accepted in addition to success or termination
+by the requested signal. Other nonzero exits fail. A leak or failed assertion fails the test; skipped opt-in
 runs do not qualify continuity. No operator's disks, backups, exports, users or
 credentials are fixture input.
 
