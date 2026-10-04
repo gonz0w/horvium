@@ -78,8 +78,10 @@ func TestStartupAndRefreshAreSingleFlight(t *testing.T) {
 		t.Fatal(err)
 	}
 	running(t, m)
+	var firstID string
 	select {
 	case id := <-entered:
+		firstID = id
 		if id == "" {
 			t.Fatal("missing request ID")
 		}
@@ -103,12 +105,16 @@ func TestStartupAndRefreshAreSingleFlight(t *testing.T) {
 	if calls.Load() != 1 {
 		t.Fatal("duplicate refresh queued")
 	}
+	if m.State().CurrentID != firstID {
+		t.Fatal("published generation did not match its helper request")
+	}
 	if err := m.Refresh(); err != nil {
 		t.Fatal(err)
 	}
 	await(t, func() bool { return calls.Load() == 2 && !m.State().Collecting })
-	if m.State().CurrentID == m.State().LastAttempt.ID && m.State().LastAttempt.ID == "" {
-		t.Fatal("missing generation")
+	secondID := <-entered
+	if secondID == firstID || m.State().CurrentID != secondID {
+		t.Fatal("refresh reused or misidentified a generation")
 	}
 }
 func TestFailurePreservesGenerationAndDoesNotLeakErrorText(t *testing.T) {
