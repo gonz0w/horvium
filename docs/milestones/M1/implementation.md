@@ -184,11 +184,12 @@ suite in run 37225094799. Abrupt helper death cannot execute this Go cleanup.
 The maintainer authorized work on all remaining areas on 2026-10-04. Work remains
 in reviewed PRs; this authorization does not merge future PRs or accept M1.
 
-Crash-containment regression in progress: a separate test helper is killed while
-its actual executor owns a stalled probe and descendant, including a descendant
-in a separate session. Qualification is pending; the current executor has no
-parent-death containment. Candidate base-facility changes must be tested before
-claims are made. Existing native restart/session/config evidence remains valid.
+Crash containment is under review in [PR 13](https://github.com/gonz0w/horvium/pull/13):
+base timeout's reaper and Go's FreeBSD parent-death signal contain the fixed probe
+subtree after helper death. The pre-fix leak reproduced on both native targets;
+actual owner-death and guarded bounds cases passed in run 37227688891. See
+[crash-containment evidence](../../testing/M1/crash-containment.md). Integrated
+built-helper death during a captured native command remains to be qualified.
 
 1. Complete console/CLI native and required-browser evidence, accessibility acceptance.
 2. Qualify native-reader allocation alongside the measured synthetic management budgets.

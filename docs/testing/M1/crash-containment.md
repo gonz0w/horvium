@@ -54,6 +54,36 @@ Reviewed the Go 1.27.1 bundled `syscall/exec_freebsd.go` and FreeBSD's
 The selected guest's actual utility behavior and binary hashes must be recorded;
 this source review alone does not qualify those binaries.
 
-Native failing regression source: `eab6a02` (full revision/run recorded after
-execution). Candidate qualification is pending. No native pass, hardware, complete
-M1, NAS protocol, browser/accessibility or package support is claimed here.
+Native failing regression source: `eab6a0237d0940cbf273cfdb5063fc63f3e8572f`.
+[Run 37227304136](https://github.com/gonz0w/horvium/actions/runs/37227304136)
+failed both product jobs: both owner-death cases left the probe and grandchild
+active. Foundation/research jobs passed; the optional performance job was skipped.
+
+Functional fix: `0bda60d844ec6e496775f4390134a0274e0df07f`, under review in
+[PR 13](https://github.com/gonz0w/horvium/pull/13).
+[Run 37227688891](https://github.com/gonz0w/horvium/actions/runs/37227688891)
+passed all five executed jobs. Both owner-death cases and every guarded bounds
+case actually executed and passed on both guests. Each owner-death suite took
+0.04 seconds. Existing native discovery, kernel peer authorization, cache,
+administration, built runtime/CLI/console/restart and independent SFTP tests passed.
+
+| Actual kernel/userland | SDK / architecture | OpenZFS userland/module suffix | `/usr/bin/timeout` SHA-256 |
+|---|---|---|---|
+| 15.1-RELEASE-p3 | Go 1.27.1 / amd64 | 2.4.2-1-FreeBSD_g6330a45b0 | `099b29836a7efe1270842ffe093c971c7883e646293b8906b38652901ef1673d` |
+| 14.5-RELEASE | Go 1.27.1 / amd64 | 2.2.9-FreeBSD_g079ba86d7 | `1dadc6aaf707f8e4f7a08ea28bfa0d53bf6890ca9ea7873a72e4a051e5f9aa10` |
+
+Environment: ubuntu-24.04 hosted runner, VM Action
+`a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff`, builder 2.2.8, 6144 MiB,
+default CPU/image selection. Neither an immutable performance image nor physical
+hardware is qualified by this run. Optional performance was intentionally skipped;
+native resource measurements remain separate. Local
+`make check lint test secrets build go-check` and FreeBSD test-binary
+cross-compilation passed; product remains cgo-free. The final evidence commit is
+documentation-only. Exact functional/suite hashes are in the
+[source manifest](../../research/M1/source-manifest.json).
+
+This establishes owner-death containment at the actual executor boundary. The
+existing built restart fixture freezes the helper before native execution; an
+additional built-helper kill during a captured, stalled native command remains
+part of integrated qualification. No complete M1, NAS protocol, resource,
+browser/accessibility or package support is claimed here.
