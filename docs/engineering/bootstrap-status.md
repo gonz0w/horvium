@@ -14,9 +14,15 @@ Cam (`@gonz0w`) is the initial maintainer and CODEOWNERS owner.
 
 ## Implemented and observed
 
+- Maintainer merged [console/CLI PR 8](https://github.com/gonz0w/horvium/pull/8),
+  source `be23d5491680d578171441b66bbe0eb583b17643`, on 2026-10-04.
+  Foreground read-only console/CLI are accepted slices; runtime/logging/admission
+  qualification is tracked in [PR 9](https://github.com/gonz0w/horvium/pull/9) and
+  [runtime evidence](../testing/M1/runtime.md).
+
 - Maintainer merged [administration security PR 7](https://github.com/gonz0w/horvium/pull/7),
   source `b71b9915653f9b75785ca350991d0730d5ddb4a0`, on 2026-10-04.
-  The next slice adds authenticated console/CLI and foreground development commands;
+  Authenticated console/CLI and foreground development commands are now accepted;
   see [console contracts/evidence](../testing/M1/console.md).
 
 

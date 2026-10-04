@@ -1,6 +1,7 @@
 # M1 runtime lifecycle and observability evidence
 
-Status: slice 6 in development. M1 remains unaccepted.
+Status: slice 6 under review in [PR 9](https://github.com/gonz0w/horvium/pull/9).
+M1 remains unaccepted.
 Date: 2026-10-04. Work: [issue 1](https://github.com/gonz0w/horvium/issues/1).
 Authority: approved [EDD](../../milestones/M1/EDD.md) and
 [Test Design](../../milestones/M1/TDD.md).
@@ -89,7 +90,50 @@ that process. It cannot satisfy the combined management/helper RSS budgets in
 M1-PERF-001 or establish the 16 GB hardware/commercial profile. The existing
 100,000-row and byte-cap rejection tests remain functional limit evidence.
 
-Execution results and exact source/native run will be recorded after validation.
+## Execution record
+
+Functional source: `d7e954b7363986fb8ddf8b2045a27081ff15fe2b`.
+[Native run 37215562745](https://github.com/gonz0w/horvium/actions/runs/37215562745)
+passed all five jobs. Both product jobs passed `TestNativeBuiltProcessRestart`,
+including real independent SFTP reads, previous-session/cursor rejection, helper
+outage/recovery, unchanged config/digest and orderly socket cleanup. All existing
+native discovery/helper/cache/admin/CLI/console fixtures passed as well. The earlier
+source `b35ed752f21798d7ac458d21dd48c202b6a5b122` passed run 37215260408;
+the final revision adds stricter socket readiness, actual OpenSSH client version
+capture and a raw-request/credential/error redaction regression.
+
+| Actual guest / architecture | ZFS userland and module suffix | SDK / base SSH client |
+|---|---|---|
+| 15.1-RELEASE-p3 / amd64 | 2.4.2-1-FreeBSD_g6330a45b0 | Go 1.27.1 / OpenSSH_10.0p2, OpenSSL 3.5.6 |
+| 14.5-RELEASE / amd64 | 2.2.9-FreeBSD_g079ba86d7 | Go 1.27.1 / OpenSSH_10.0p2, OpenSSL 3.0.21 |
+
+QEMU action source `a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff`, builder 2.2.8,
+ubuntu-24.04 runner, 6144 MiB guest memory. Guest CPU defaults and image digest are
+not pinned/captured; benchmark output reported AMD EPYC 9V74 80-Core Processor
+and GOMAXPROCS 2 for both final guests. These are dated observed fixtures,
+not an immutable performance baseline.
+
+| Guest | Datasets | p50 ms/page | p95 ms/page | p99 ms/page | Process peak RSS bytes |
+|---|---:|---:|---:|---:|---:|
+| 15.1 | 100 | 2.658 | 47.63 | 88.78 | 21,168,128 |
+| 15.1 | 10,000 | 2.891 | 62.49 | 117.9 | 25,133,056 |
+| 14.5 | 100 | 2.693 | 49.26 | 95.74 | 22,458,368 |
+| 14.5 | 10,000 | 3.005 | 54.59 | 107.2 | 27,074,560 |
+
+Each row is one 1,000-request diagnostic with ten concurrent readers. Limits
+above apply: no helper RSS, network, prescribed warm-up/idle or replacement peak
+sampling. These values do not mark the PRD performance budget accepted. Exact
+end-heap values, fixture procedure and file hashes are in the
+[source manifest](../../research/M1/source-manifest.json).
+
+Local macOS 27.0 (build 26A5421a), arm64 `make check lint test secrets build go-check` passed (Go 1.27.1,
+product cgo disabled; race uses development cgo). The final log-redaction regression
+also passed targeted race detection. No fixture service was enabled on the
+operator host. A separate local handler diagnostic on Apple M5 Max recorded
+p95 4.097/3.798 ms for 100/10,000 rows; it has the same component-only limitations.
+The final evidence commit changes documentation only, preserving the functional
+revision named above.
+
 Required browser/accessibility, complete process-abuse review, native-probe kill,
 SMB/NFS continuity, integrated helper-denial logging and the full performance
 procedure remain open. No installable port or production support is claimed.

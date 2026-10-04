@@ -134,9 +134,10 @@ also passed; full required browser/accessibility acceptance remains open. See
 
 ## Slice 6: foreground lifecycle, operational logging and response admission
 
-In development: full-response inventory reader admission, bounded fixed-schema
+Under review in [PR 9](https://github.com/gonz0w/horvium/pull/9):
+full-response inventory reader admission, bounded fixed-schema
 operational events, coupled HTTP/collector shutdown and native built-process
-restart/file-service continuity tests. See [runtime evidence](../../testing/M1/runtime.md)
+restart with independent SFTP continuity passed on both native targets. See [runtime evidence](../../testing/M1/runtime.md)
 for the procedure and limitations. Diagnostic authenticated-handler benchmarks
 are separate from the full measured application budget gate.
 
