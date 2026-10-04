@@ -188,7 +188,11 @@
     "module": "golang.org/x/sys",
     "version": "v0.48.0",
     "revision": "613e2570718ecde85c04e69ebd5585c3881c442c",
-    "status": "approved for helper; not yet installed"
+    "status": "implemented by inventory helper; checksum verified; actual native Go wrapper tested on both releases",
+    "module_sum": "h1:bbX/i/6MgT9BVLM9RT1thmxL04yeTAhbEz4SyadbXoo=",
+    "go_mod_sum": "h1:hNLxWAXmnKAxqDtdwIYC4bM9oQPEecfsnNMuSxOs3og=",
+    "license": "BSD-3-Clause; third_party/xsys-LICENSE.txt",
+    "go_minimum": "1.26.0"
   },
   "experiment": {
     "source_revision": "411ca08d99544173a685422957f7a41e3eeaa4aa",
@@ -225,5 +229,22 @@
     "guest_cpu": "Action default; not performance qualification",
     "image_digest": "not captured; not immutable image qualification",
     "evidence": "docs/testing/M1/discovery.md"
+  },
+  "product_helper": {
+    "date": "2026-10-03",
+    "timezone": "America/Denver",
+    "source_revision": "eb8996f92eaa161be543f4455993242565aa3ca5",
+    "suite_revision": "same as source_revision",
+    "run_id": 37166751993,
+    "run_url": "https://github.com/gonz0w/horvium/actions/runs/37166751993",
+    "status": "passed actual native Go helper peer/ownership/admission/reader tests on both releases; full M1 acceptance pending",
+    "go": "go1.27.1 freebsd/amd64",
+    "module": "golang.org/x/sys v0.48.0",
+    "runner": "ubuntu-24.04",
+    "vm_action_revision": "a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff",
+    "guest_memory_mib": 6144,
+    "guest_cpu": "Action default; not performance qualification",
+    "image_digest": "not captured; not immutable image qualification",
+    "evidence": "docs/testing/M1/helper.md"
   }
 }

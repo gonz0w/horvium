@@ -14,6 +14,11 @@ Cam (`@gonz0w`) is the initial maintainer and CODEOWNERS owner.
 
 ## Implemented and observed
 
+- Maintainer merged [native discovery PR 4](https://github.com/gonz0w/horvium/pull/4),
+  source `4a21aa72b4a2bb516018bb06f21dbcc287a4ab0f`, on 2026-10-03.
+  The kernel-authorized helper library is the next reviewed M1 slice; see
+  [implementation/evidence](../milestones/M1/implementation.md).
+
 - Maintainer merged [M1 design PR 3](https://github.com/gonz0w/horvium/pull/3),
   source `527a330f4b1069fa0b7a1414f4d3c6dbab54f5a5`, on 2026-10-03. Its PRD,
   EDD, Test Design and ADRs 0004/0005 authorize the scoped M1 implementation.

@@ -1,6 +1,6 @@
 # M1 helper transport evidence
 
-Status: implementation under review; native execution pending. This is a library
+Status: implementation under review; actual native tests passed on both releases. This is a library
 slice under the approved M1 design, not an installed management service.
 
 ## Contract and safety limits
@@ -72,7 +72,8 @@ reader's owned md/pool fixture are used. Each guest is discarded.
 
 Native cases include exact UID authorization, another UID/root denial, forged
 payload fields, real reader over authenticated transport, unsafe path/mode/owner,
-refusal of preexisting entries, and a non-root listener with root-repaired socket
+refusal of preexisting entries, idle admission-slot expiry/recovery, preservation
+of a root-replaced socket entry during shutdown, and a non-root listener with root-repaired socket
 metadata. The last case proves the client uses kernel UID in addition to path
 metadata. Child tests do not dump host inventory.
 
@@ -86,6 +87,43 @@ metadata. Child tests do not dump host inventory.
 
 ## Execution record
 
-Native run/source and exact guest versions will be recorded after execution.
-No native helper pass, performance claim, NAS readiness or commercial qualification
-is claimed while this record is pending.
+Final [native run 37166751993](https://github.com/gonz0w/horvium/actions/runs/37166751993)
+passed all five jobs, including both actual-product jobs, on source and suite
+`eb8996f92eaa161be543f4455993242565aa3ca5`. The earlier
+[run 37166572843](https://github.com/gonz0w/horvium/actions/runs/37166572843)
+also passed; the final run strengthens wrong-UID denial with an otherwise-valid
+request and adds admission recovery/ancestor/replacement cases.
+
+| Guest | Kernel/userland | ZFS userland/module | Product helper cases |
+|---|---|---|---|
+| FreeBSD 15.1 amd64 | 15.1-RELEASE-p3 for installed/running/userland | 2.4.2-1-FreeBSD_g6330a45b0 | Passed |
+| FreeBSD 14.5 amd64 | 14.5-RELEASE for installed/running/userland | 2.2.9-FreeBSD_g079ba86d7 | Passed |
+
+Go 1.27.1 freebsd/amd64 and x/sys v0.48.0; module verification reported
+“all modules verified” in both guests. Python 3.14.7 is the SDK installer only.
+Runner ubuntu-24.04; pinned VM Action
+`a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff` (v1.5.8), builder 2.2.8,
+snapshot QEMU, 6,144 MiB, default CPU. Image hashes were not captured; this is
+native behavioral evidence, not an immutable image or performance baseline.
+
+Executed `TestNativeHelperKernelAuthorization`, `TestNativeHelperActualReader`,
+`TestNativeHelperUnsafePathsAndOwnership`, `TestNativeClientRejectsNonRootPeer`,
+`TestNativeShutdownPreservesReplacement`, and `TestNativeAdmittedClientsBounded`
+on both guests. The separate existing discovery/pool fixture tests passed too.
+`TestNativeHelperChild` skips its direct parent invocation by design; parents
+explicitly execute it in dropped-credential subprocesses and require each client
+subprocess to succeed; the adversarial listener subprocess is explicitly torn down.
+Credential-version denial is a unit case; an actual unknown kernel ABI was not
+fabricated. No helper/native inventory dump is retained.
+
+Local failing tests preceded framing/server implementation. A race check found
+that a test modified a live server's deadline configuration; the test now uses a
+separate immutable-config server for its idle case. No product configuration is
+mutated while serving. Local repository checks, eleven tooling regression tests,
+Go unit/component tests, vet, race tests, four bounded parser/framing fuzz targets
+and Gitleaks passed. SDK/module source and checksum pins are recorded in the
+[source manifest](../../research/M1/source-manifest.json).
+
+Full service restart, two-generation cache, browser/CLI authentication, application
+RSS/latency and independent file-service gates remain open. No performance, NAS
+readiness, physical disk identity or commercial qualification follows from this run.

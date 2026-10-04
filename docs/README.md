@@ -24,6 +24,7 @@
 - [Testing strategy](testing/strategy.md)
 - [Lab gates](testing/lab-gate.md)
 - [M1 native discovery execution evidence](testing/M1/discovery.md)
+- [M1 helper transport execution evidence](testing/M1/helper.md)
 - [Security and supply chain](security/supply-chain.md)
 - [Design templates](templates/README.md)
 - [M0 foundation acceptance](milestones/M0/acceptance.md)

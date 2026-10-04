@@ -13,5 +13,7 @@
   FreeBSD 15.1/14.5 QEMU guests; extend repository gates to Go/C research source.
 - Implement bounded Go host/GEOM/ZFS inventory libraries with explicit identity
   uncertainty and collection errors, plus native fixture/race/fuzz test gates.
+- Add an inventory-only FreeBSD helper/client library with kernel peer credentials,
+  protected socket lifecycle, bounded framed records and native denial tests.
 
 No product release has been published.
