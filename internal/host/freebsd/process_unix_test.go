@@ -40,6 +40,9 @@ func TestProbeTreeProcess(t *testing.T) {
 	}
 	child := exec.Command(os.Args[0], "-test.run=^TestProbeTreeProcess$", "--", "descendant", ready, parent)
 	child.Env = os.Environ()
+	if mode == "escaped-child" {
+		child.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
+	}
 	if mode != "closed-pipes" {
 		child.Stdout, child.Stderr = os.Stdout, os.Stderr
 	}

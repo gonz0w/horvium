@@ -169,8 +169,8 @@ assertions in run 37221158595.
 
 ## Slice 9: native probe process cleanup
 
-Under review in [PR 12](https://github.com/gonz0w/horvium/pull/12), functional source
-`80f6aa348d00f2b3de14cbeddfe6c0d0d8007bf0`. The actual executor now
+Accepted by maintainer merge of [PR 12](https://github.com/gonz0w/horvium/pull/12),
+source `4adbc2fe00277d64e7da805b0dd7dc60797fd2fc`, on 2026-10-04. The actual executor now
 terminates remaining members of its isolated probe group after parent completion;
 pipe-wait expiry alone previously left descendants active. Synchronized real
 subprocess regressions cover cancellation/deadline/output caps and parent exit,
@@ -180,6 +180,15 @@ Both FreeBSD targets passed all eight synchronized cases and the existing native
 suite in run 37225094799. Abrupt helper death cannot execute this Go cleanup.
 
 ## Remaining slices and acceptance
+
+The maintainer authorized work on all remaining areas on 2026-10-04. Work remains
+in reviewed PRs; this authorization does not merge future PRs or accept M1.
+
+Crash-containment regression in progress: a separate test helper is killed while
+its actual executor owns a stalled probe and descendant, including a descendant
+in a separate session. Qualification is pending; the current executor has no
+parent-death containment. Candidate base-facility changes must be tested before
+claims are made. Existing native restart/session/config evidence remains valid.
 
 1. Complete console/CLI native and required-browser evidence, accessibility acceptance.
 2. Qualify native-reader allocation alongside the measured synthetic management budgets.
