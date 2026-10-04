@@ -46,6 +46,23 @@ type Filesystem struct {
 	Properties             Properties
 }
 
+type DatasetType string
+
+const (
+	FilesystemType DatasetType = "filesystem"
+	VolumeType     DatasetType = "volume"
+	SnapshotType   DatasetType = "snapshot"
+	BookmarkType   DatasetType = "bookmark"
+)
+
+// Version GUIDs can be replicated; OwnerGUID binds them to this local dataset.
+// Observed versions never grant snapshot/bookmark mutation authority.
+type DatasetIdentity struct {
+	GUID, Name string
+	Type       DatasetType
+	OwnerGUID  string
+}
+
 // Observation must come from a fresh complete, bounded helper-side collection.
 // Eligible means native system/encryption/topology/feature gates ALL passed.
 // No implemented adapter supplies this proof yet. M1 inventory cannot supply it.
@@ -54,6 +71,7 @@ type Observation struct {
 	PoolGUID, PoolName string
 	Eligible           bool
 	Filesystems        []Filesystem
+	Identities         []DatasetIdentity
 }
 
 // Policy is trusted local enrollment, never request-supplied authority. GUIDs
@@ -87,6 +105,7 @@ type Review struct {
 	Intent               Intent
 	Context              []Filesystem
 	Affected             []Resource
+	Versions             []DatasetIdentity
 }
 
 // Plan contains only private state and returns independent review copies. It is

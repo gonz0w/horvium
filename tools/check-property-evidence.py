@@ -5,7 +5,9 @@ import re
 import sys
 
 CASES = {'default', 'local', 'inherited', 'received', 'shadowed', 'no_limit',
-         'rename', 'name_reuse', 'foreign_preservation', 'eligibility_denied', 'teardown'}
+         'rename', 'name_reuse', 'foreign_preservation', 'eligibility_denied', 'teardown',
+         'identity_binding', 'complete_filesystems', 'snapshot_owner', 'bookmark_owner',
+         'replicated_guid', 'snapshot_rename', 'snapshot_reuse', 'volume_denial', 'stable_enumeration'}
 
 def validate(text):
     if len(text) > 1 << 20 or re.search(r'(?m)^(?:FAIL|--- (?:FAIL|SKIP):)', text):

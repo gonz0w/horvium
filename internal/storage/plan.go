@@ -44,6 +44,7 @@ func (p Plan) Review() Review {
 	r := p.review
 	r.Context = append([]Filesystem(nil), r.Context...)
 	r.Affected = append([]Resource(nil), r.Affected...)
+	r.Versions = append([]DatasetIdentity(nil), r.Versions...)
 	return r
 }
 
@@ -99,6 +100,7 @@ func prepare(p Policy, o Observation, i Intent) (Review, [32]byte, error) {
 	// Reserve generous header/time/intent overhead before appending context. Every
 	// selected row is counted before retaining it; impact is never silently paged.
 	remaining := maxPlanBytes - 4096
+	context := make(map[string]bool)
 	for _, f := range o.Filesystems {
 		descendant := strings.HasPrefix(f.Name, target.Name+"/")
 		if f.GUID != target.GUID && !ancestors[f.GUID] && !descendant {
@@ -133,11 +135,28 @@ func prepare(p Policy, o Observation, i Intent) (Review, [32]byte, error) {
 			return Review{}, zero, ErrLimit
 		}
 		remaining -= cost
+		context[f.GUID] = true
 		review.Context = append(review.Context, f)
 		if affected {
 			review.Affected = append(review.Affected, Resource{f.GUID, f.Name})
 		}
 	}
+	for _, id := range o.Identities {
+		if (id.Type != SnapshotType && id.Type != BookmarkType) || !context[id.OwnerGUID] {
+			continue
+		}
+		encoded, err := json.Marshal(id)
+		if err != nil {
+			return Review{}, zero, ErrInvalid
+		}
+		cost := len(encoded) + 64
+		if cost > remaining {
+			return Review{}, zero, ErrLimit
+		}
+		remaining -= cost
+		review.Versions = append(review.Versions, id)
+	}
+	sort.Slice(review.Versions, func(i, j int) bool { return review.Versions[i].Name < review.Versions[j].Name })
 	sort.Slice(review.Context, func(i, j int) bool { return review.Context[i].Name < review.Context[j].Name })
 	sort.Slice(review.Affected, func(i, j int) bool { return review.Affected[i].Name < review.Affected[j].Name })
 	return review, digest, nil

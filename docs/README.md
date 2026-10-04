@@ -44,6 +44,7 @@
   [immutable source/version manifest](research/M1/source-manifest.json)
 - [M2 planning model contracts and partial test evidence](testing/M2/planning.md)
 - [M2 native property projection and qualification](testing/M2/properties.md)
+- [M2 dataset identity binding and version drift](testing/M2/identities.md)
 - [Operational runbook plan](operations/README.md)
 
 - [M1 runtime lifecycle and observability evidence](testing/M1/runtime.md).

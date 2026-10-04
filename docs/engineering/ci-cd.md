@@ -110,3 +110,8 @@ duplicate or incomplete native assertions, including missing teardown. The
 existing BSD workflow calls it from the selected branch until standalone manual
 dispatch is registered on main. This qualifies property parsing only, not native
 write eligibility, management transport, M2 storage changes or replication.
+
+The M2 property workflow also requires complete identity/type binding, snapshot
+and bookmark owner/GUID assertions, replicated GUID/rename/name-reuse checks,
+volume refusal and stable enumeration. See [identity qualification](../testing/M2/identities.md);
+these results cannot establish native eligibility or authorize storage writes.

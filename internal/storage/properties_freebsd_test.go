@@ -6,6 +6,7 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
+	"errors"
 	"io"
 	"os"
 	"os/exec"
@@ -100,7 +101,7 @@ func TestNativePropertyObservations(t *testing.T) {
 			return
 		}
 		if !t.Failed() {
-			t.Log("PROPERTY_OBSERVATION_RESULT default=pass local=pass inherited=pass received=pass shadowed=pass no_limit=pass rename=pass name_reuse=pass foreign_preservation=pass eligibility_denied=pass teardown=pass")
+			t.Log("PROPERTY_OBSERVATION_RESULT default=pass local=pass inherited=pass received=pass shadowed=pass no_limit=pass rename=pass name_reuse=pass foreign_preservation=pass eligibility_denied=pass teardown=pass identity_binding=pass complete_filesystems=pass snapshot_owner=pass bookmark_owner=pass replicated_guid=pass snapshot_rename=pass snapshot_reuse=pass volume_denial=pass stable_enumeration=pass")
 		}
 	})
 	if got := strings.TrimSpace(string(must("/sbin/mdconfig", "-l", "-n", "-f", backing))); got != strings.TrimPrefix(unit, "md") {
@@ -185,27 +186,91 @@ func TestNativePropertyObservations(t *testing.T) {
 	if data.Properties.Quota.Effective != "none" || data.Properties.RefQuota.Effective != "2097152" || data.Properties.Compression.Source != Inherited || data.Properties.Compression.SourceGUID != root.GUID {
 		t.Fatal("literal limit or inherited GUID mismatch")
 	}
-	// Independent, different native projection correlates GUIDs, not product data.
-	independent := must("/sbin/zfs", "list", "-H", "-p", "-r", "-t", "filesystem", "-o", "name,guid", pool)
-	nativeGUIDs := map[string]string{}
-	for _, line := range strings.Split(strings.TrimSpace(string(independent)), "\n") {
-		fields := strings.Split(line, "\t")
-		if len(fields) != 2 {
-			t.Fatal("independent GUID shape invalid")
+	// Independently enumerate all native dataset types around the property read.
+	identities := func() []DatasetIdentity {
+		rows := must("/sbin/zfs", "list", "-H", "-p", "-r", "-t", "filesystem,volume,snapshot,bookmark", "-o", "name,guid,type", pool)
+		ids, err := ParseIdentities(rows, pool)
+		if err != nil {
+			t.Fatal("native identity table denied (values withheld):", err)
 		}
-		nativeGUIDs[fields[0]] = fields[1]
+		return ids
 	}
-	for _, f := range files {
-		if nativeGUIDs[f.Name] != f.GUID {
-			t.Fatal("independent GUID disagreement")
+	findID := func(ids []DatasetIdentity, suffix string) DatasetIdentity {
+		for _, id := range ids {
+			if id.Name == pool+suffix {
+				return id
+			}
+		}
+		t.Fatal("owned identity absent")
+		return DatasetIdentity{}
+	}
+	must("/sbin/zfs", "bookmark", pool+"/source@seed", pool+"/source#seed")
+	first := identities()
+	files = parse()
+	second := identities()
+	if err := VerifyIdentityStability(pool, first, second); err != nil {
+		t.Fatal(err)
+	}
+	if err := VerifyFilesystemIdentities(pool, files, second); err != nil {
+		t.Fatal(err)
+	}
+	if err := VerifyFilesystemIdentities(pool, files[:len(files)-1], second); !errors.Is(err, ErrDrift) {
+		t.Fatal("omitted filesystem accepted", err)
+	}
+	changed := append([]DatasetIdentity(nil), second...)
+	for n := range changed {
+		if changed[n].Name == pool+"/data" {
+			changed[n].GUID = "1"
 		}
 	}
-	if len(nativeGUIDs) != len(files) {
-		t.Fatal("filesystem count mismatch")
+	if err := VerifyFilesystemIdentities(pool, files, changed); err == nil {
+		t.Fatal("reused filesystem GUID accepted")
+	}
+	source := findID(second, "/source@seed")
+	replica := findID(second, "/received@seed")
+	bookmark := findID(second, "/source#seed")
+	if source.Type != SnapshotType || replica.Type != SnapshotType || bookmark.Type != BookmarkType || source.GUID != replica.GUID || source.GUID != bookmark.GUID || source.OwnerGUID != find(files, "/source").GUID || replica.OwnerGUID != received.GUID || bookmark.OwnerGUID != source.OwnerGUID {
+		t.Fatal("native version GUID/owner mismatch")
+	}
+	for _, id := range second {
+		guid := strings.TrimSpace(string(must("/sbin/zfs", "get", "-H", "-p", "-o", "value", "guid", id.Name)))
+		if guid != id.GUID {
+			t.Fatal("independent identity GUID disagreement")
+		}
+	}
+	must("/sbin/zfs", "rename", pool+"/source@seed", pool+"/source@renamed")
+	renamed := identities()
+	if findID(renamed, "/source@renamed").GUID != source.GUID {
+		t.Fatal("snapshot rename changed GUID")
+	}
+	if err := VerifyIdentityStability(pool, second, renamed); !errors.Is(err, ErrDrift) {
+		t.Fatal("native rename drift ignored", err)
+	}
+	must("/sbin/zfs", "snapshot", pool+"/source@seed")
+	if findID(identities(), "/source@seed").GUID == source.GUID {
+		t.Fatal("snapshot name reuse confused GUID")
+	}
+	must("/sbin/zfs", "create", "-s", "-V", "8388608", "-o", "volmode=none", pool+"/volume")
+	withVolume := identities()
+	if findID(withVolume, "/volume").Type != VolumeType {
+		t.Fatal("native volume omitted")
+	}
+	if err := VerifyFilesystemIdentities(pool, parse(), withVolume); !errors.Is(err, ErrUnavailable) {
+		t.Fatal("unrepresented volume impact accepted", err)
+	}
+	must("/sbin/zfs", "destroy", pool+"/volume")
+	if err := VerifyFilesystemIdentities(pool, parse(), identities()); err != nil {
+		t.Fatal(err)
 	}
 	before := must("/sbin/zfs", "get", "-H", "-p", "-r", "-o", "name,property,value,received,source", "guid,quota,refquota,compression,mountpoint,canmount,readonly", pool)
 	mounts := must("/sbin/zfs", "list", "-H", "-r", "-o", "name,mounted,mountpoint", pool)
-	_ = parse()
+	stableBefore := identities()
+	if err := VerifyFilesystemIdentities(pool, parse(), stableBefore); err != nil {
+		t.Fatal(err)
+	}
+	if err := VerifyIdentityStability(pool, stableBefore, identities()); err != nil {
+		t.Fatal(err)
+	}
 	if after := must("/sbin/zfs", "get", "-H", "-p", "-r", "-o", "name,property,value,received,source", "guid,quota,refquota,compression,mountpoint,canmount,readonly", pool); !bytes.Equal(before, after) {
 		t.Fatal("read-only projection changed native properties or foreign sentinel")
 	}
@@ -213,7 +278,7 @@ func TestNativePropertyObservations(t *testing.T) {
 		t.Fatal("read-only projection changed mounts")
 	}
 	// Parsing provides no authority, even when every projected property is valid.
-	if _, err := Build(time.Now(), "fixture-session", Policy{Revision: 1, PoolGUID: "1", PoolName: pool}, Observation{Complete: true, PoolGUID: "1", PoolName: pool, Filesystems: files}, Intent{FilesystemGUID: root.GUID, Property: Quota, Value: "none"}); err != ErrUnavailable {
+	if _, err := Build(time.Now(), "fixture-session", Policy{Revision: 1, PoolGUID: "1", PoolName: pool}, Observation{Complete: true, PoolGUID: "1", PoolName: pool, Filesystems: files, Identities: identities()}, Intent{FilesystemGUID: root.GUID, Property: Quota, Value: "none"}); err != ErrUnavailable {
 		t.Fatal("parser enabled native eligibility", err)
 	}
 	must("/sbin/zfs", "rename", pool+"/data", pool+"/renamed")

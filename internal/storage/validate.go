@@ -116,7 +116,7 @@ func validValue(v Value, property Property, guid string) bool {
 // Preflight every count/field and aggregate byte bound BEFORE validation maps,
 // sorting or JSON encoding allocate. The estimate includes structural overhead.
 func preflight(p Policy, o Observation) error {
-	if len(o.Filesystems) > maxRecords || len(p.Scopes) > maxRecords {
+	if len(o.Filesystems) > maxRecords || len(p.Scopes) > maxRecords || len(o.Identities) > maxRecords {
 		return ErrLimit
 	}
 	remaining := maxObservationBytes
@@ -146,6 +146,11 @@ func preflight(p Policy, o Observation) error {
 			}
 		}
 	}
+	for _, id := range o.Identities {
+		if err := debit(id.GUID, id.Name, string(id.Type), id.OwnerGUID); err != nil {
+			return err
+		}
+	}
 	for _, s := range p.Scopes {
 		if len(s.Properties) > 3 {
 			return ErrInvalid
@@ -168,6 +173,9 @@ func indexObservation(o Observation) (map[string]Filesystem, error) {
 	}
 	if !validGUID(o.PoolGUID) {
 		return nil, ErrInvalid
+	}
+	if err := VerifyFilesystemIdentities(o.PoolName, o.Filesystems, o.Identities); err != nil {
+		return nil, err
 	}
 	return indexFilesystems(o.PoolName, o.Filesystems)
 }
