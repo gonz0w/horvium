@@ -17,8 +17,10 @@ python3.14 tools/bootstrap-go.py
 .tools/go/bin/go mod verify
 freebsd-version -kru
 zfs version
+/usr/bin/ssh -V
 test -z "$(.tools/go/bin/gofmt -l cmd internal tools/research/m1-geom.go)"
 .tools/go/bin/go vet ./...
 .tools/go/bin/go build -trimpath -o .tools/horvium ./cmd/horvium
 .tools/go/bin/go test -v -count=1 ./...
-echo 'PASS: product discovery/helper/cache/admin unit/component and native fixture tests'
+.tools/go/bin/go test ./internal/console -run '^$' -bench '^BenchmarkAuthenticatedDatasetPages$' -benchtime=1x
+echo 'PASS: product discovery/helper/cache/admin/console/runtime unit/component and native fixture tests'

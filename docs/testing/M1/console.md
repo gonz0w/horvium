@@ -1,6 +1,7 @@
 # M1 console and CLI evidence
 
-Status: slice 5 under review in [PR 8](https://github.com/gonz0w/horvium/pull/8).
+Status: slice 5 accepted by merge of [PR 8](https://github.com/gonz0w/horvium/pull/8),
+source `be23d5491680d578171441b66bbe0eb583b17643`, on 2026-10-04.
 M1 remains unaccepted.
 Date: 2026-10-04. Authority: approved [EDD](../../milestones/M1/EDD.md) and
 [Test Design](../../milestones/M1/TDD.md). Refs [issue 1](https://github.com/gonz0w/horvium/issues/1).

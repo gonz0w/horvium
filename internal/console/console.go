@@ -27,6 +27,7 @@ type app struct {
 	manager   *observation.Manager
 	gate      *admin.Gate
 	templates *template.Template
+	readers   chan struct{}
 }
 type fact struct{ Label, Value string }
 type row struct {
@@ -61,7 +62,7 @@ func New(c admin.Config, a *admin.Auth, m *observation.Manager) (http.Handler, e
 	if e != nil {
 		return nil, e
 	}
-	app := &app{m, g, t}
+	app := &app{manager: m, gate: g, templates: t, readers: make(chan struct{}, c.MaxReaders)}
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /auth/challenge", g.Challenge)
 	mux.HandleFunc("POST /auth/login", g.Login)
@@ -78,10 +79,10 @@ func New(c admin.Config, a *admin.Auth, m *observation.Manager) (http.Handler, e
 		if path == "/" {
 			pattern = "/{$}"
 		}
-		mux.Handle("GET "+pattern, g.ProtectPage(http.HandlerFunc(app.page)))
+		mux.Handle("GET "+pattern, g.ProtectPage(app.admit(http.HandlerFunc(app.page))))
 	}
 	for _, kind := range []string{"overview", "pools", "datasets", "providers"} {
-		mux.Handle("GET /api/"+kind, g.Protect(http.HandlerFunc(app.api)))
+		mux.Handle("GET /api/"+kind, g.Protect(app.admit(http.HandlerFunc(app.api))))
 	}
 	mux.Handle("GET /refresh", g.ProtectPage(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { http.Error(w, "Method not allowed", 405) })))
 	mux.Handle("POST /refresh", g.ProtectPage(http.HandlerFunc(app.refresh)))
@@ -91,6 +92,26 @@ func New(c admin.Config, a *admin.Auth, m *observation.Manager) (http.Handler, e
 	// Missing assets and unknown paths must not mint a login challenge.
 	mux.Handle("GET /", g.Public(http.NotFoundHandler()))
 	return mux, nil
+}
+
+// Hold the configured reader slot through query, encoding and the final write.
+// Authentication runs first. Overflow is rejected immediately, never queued.
+func (a *app) admit(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		select {
+		case a.readers <- struct{}{}:
+			defer func() { <-a.readers }()
+			next.ServeHTTP(w, r)
+		default:
+			w.Header().Set("Retry-After", "1")
+			if strings.HasPrefix(r.URL.Path, "/api/") {
+				writeJSON(w, map[string]string{"code": "capacity", "message": "View capacity reached; retry shortly"}, 503)
+			} else {
+				// Do not render another large view while admission is exhausted.
+				http.Error(w, "View capacity reached; retry shortly", 503)
+			}
+		}
+	})
 }
 func known(s string) string {
 	if s == "" {

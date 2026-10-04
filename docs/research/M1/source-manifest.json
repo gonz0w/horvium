@@ -304,7 +304,7 @@
   },
   "product_console": {
     "date": "2026-10-04",
-    "status": "slice under maintainer review in PR 8; full M1 unaccepted",
+    "status": "slice accepted in PR 8 merge be23d5491680d578171441b66bbe0eb583b17643; full M1 unaccepted",
     "source_revision": "78ec3c2e829bd24fdbec12fa100a3780a545191d",
     "run_id": 37212702081,
     "result": "all five jobs passed; both product jobs include nonempty owned storage fixture/real helper/exact-UID management/CLI/full HTML/fragments/selection and teardown",
@@ -437,5 +437,174 @@
         "sha256": "4d5e04d8216efe121efd20ee4928ca8caf4d75a1ddfe8fc0a306dcb7a971992e"
       }
     ]
+  },
+  "product_runtime": {
+    "date": "2026-10-04",
+    "status": "slice under maintainer review in PR 9; full M1 unaccepted",
+    "source_revision": "d7e954b7363986fb8ddf8b2045a27081ff15fe2b",
+    "run_id": 37215562745,
+    "result": "all five jobs passed; both native product suites include built-process restart/session/cursor/outage/recovery, unchanged config/digest, orderly shutdown and independent fixture SFTP continuity",
+    "go": "1.27.1",
+    "runtime_cgo_enabled": false,
+    "x_sys": "v0.48.0",
+    "htmx": "2.0.11",
+    "runner": "ubuntu-24.04",
+    "vm_action_revision": "a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff",
+    "vm_builder": "2.2.8",
+    "guest_memory_mib": 6144,
+    "image_digest": "not captured; not an immutable image baseline",
+    "guest_cpu": "default, not pinned; benchmark reports observed model and GOMAXPROCS",
+    "fixture": "actual built processes; root helper/exact non-root management; fixture-only independent base sshd/SFTP; generated handler benchmarks",
+    "pending": [
+      "required browser/accessibility matrix",
+      "complete process-abuse review",
+      "helper death during native probe",
+      "SMB/NFS continuity",
+      "helper authorization/protocol denial event integration",
+      "full warm-up/idle/combined-process RSS/CPU/latency procedure"
+    ],
+    "files": [
+      {
+        "path": "cmd/horvium/filecontinuity_freebsd_test.go",
+        "sha256": "fdee09dc563e75cb116a00de0f2dc562d77a587b848fa4a863b68ba18164feff"
+      },
+      {
+        "path": "cmd/horvium/lifecycle_freebsd_test.go",
+        "sha256": "a76bb75fceb5f4c5c89cd999a049cc98f1bda2871d6f297e20256ae20efe6c4e"
+      },
+      {
+        "path": "internal/console/console.go",
+        "sha256": "d0099cf9d772f63b00d0dd83fe7beb7221dff817989c5af7e489faf02bbbbfd5"
+      },
+      {
+        "path": "internal/console/admission_test.go",
+        "sha256": "098398334353725e889af0d22c52f6d21e75644eddcbb84f46bb5903bcffef1d"
+      },
+      {
+        "path": "internal/console/performance_test.go",
+        "sha256": "e9f49844c910b57dc17d5154d9864ed5e4feff8c60027713ad5f4cb99d5b722d"
+      },
+      {
+        "path": "internal/console/rss_unix_test.go",
+        "sha256": "d68a7f5723f788409243750a6b762a88935838f96f0402300b249d4f3717e7a1"
+      },
+      {
+        "path": "internal/console/rss_other_test.go",
+        "sha256": "e091ce6892c536a7c937df6cc4bcfef222c516111cb19de79138579df68cd459"
+      },
+      {
+        "path": "internal/eventlog/log.go",
+        "sha256": "b48dafe7fb5aa6d65739fdb94f35afcb6aa1be39515810ff3bae1f87e0a7ef6a"
+      },
+      {
+        "path": "internal/eventlog/log_test.go",
+        "sha256": "0871bf35fde44b2bbdb265f993544c02b22167afb9702776784bf14ecdb37c19"
+      },
+      {
+        "path": "internal/observation/manager.go",
+        "sha256": "00b4001b727182f941a09400a0caf9e6bb05f8232616fc11324935d4544e92b2"
+      },
+      {
+        "path": "internal/observation/events_test.go",
+        "sha256": "e7560200182465bb0f5024868090e08c07ca0deb2bf90e3c48457ad48cb71886"
+      },
+      {
+        "path": "internal/service/service.go",
+        "sha256": "ec3004a994c512517e80f536371a1247146c512b4cf4bb0582628240d1f61c92"
+      },
+      {
+        "path": "internal/service/events.go",
+        "sha256": "b0f488de9f535e5b7772ed0d9ccc423614250b7ba901a0b18841860355866e44"
+      },
+      {
+        "path": "internal/service/events_test.go",
+        "sha256": "e206d6b632b99933c6ebce15dbb99fc336f5877dec3703a5d82c79d5c933afb3"
+      },
+      {
+        "path": "internal/service/listener_test.go",
+        "sha256": "1fbc011df7437b9c50b13c4cd9ce6e861316097220c8a979ab55cafcae44da79"
+      },
+      {
+        "path": "tools/bsd-native-discovery.sh",
+        "sha256": "928e17fa2b1be9f272c9b09d6ead00710811fa956bd3d2c25f0277dbd3ff72ff"
+      }
+    ],
+    "guests": [
+      {
+        "os": "FreeBSD 15.1-RELEASE-p3",
+        "architecture": "amd64",
+        "zfs_userland": "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+        "zfs_kernel": "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0",
+        "openssh_client": "OpenSSH_10.0p2",
+        "openssl": "3.5.6 7 Apr 2026"
+      },
+      {
+        "os": "FreeBSD 14.5-RELEASE",
+        "architecture": "amd64",
+        "zfs_userland": "zfs-2.2.9-FreeBSD_g079ba86d7",
+        "zfs_kernel": "zfs-kmod-2.2.9-FreeBSD_g079ba86d7",
+        "openssh_client": "OpenSSH_10.0p2",
+        "openssl": "3.0.21 9 Jun 2026"
+      }
+    ],
+    "diagnostic": {
+      "synthetic_seed": "deterministic integer sequence 0..n-1; no random data",
+      "clients": 10,
+      "requests_per_fixture": 1000,
+      "page_size": 100,
+      "path": "authenticated full HTML via handler; no network/helper process",
+      "warmup": "none; not full M1-PERF-001",
+      "rss": "single test process peak, cumulative across small/large subtests; not combined management/helper",
+      "results": [
+        {
+          "release": "product-freebsd-14.5-amd64",
+          "datasets": 100,
+          "gomaxprocs": 2,
+          "duration_1000_pages_ns": 1253491699,
+          "end_heap_bytes": 2826240,
+          "p50_ms": 2.693,
+          "p95_ms": 49.26,
+          "p99_ms": 95.74,
+          "process_peak_rss_bytes": 22458368,
+          "cpu_reported": "AMD EPYC 9V74 80-Core Processor"
+        },
+        {
+          "release": "product-freebsd-14.5-amd64",
+          "datasets": 10000,
+          "gomaxprocs": 2,
+          "duration_1000_pages_ns": 1402884118,
+          "end_heap_bytes": 3129344,
+          "p50_ms": 3.005,
+          "p95_ms": 54.59,
+          "p99_ms": 107.2,
+          "process_peak_rss_bytes": 27074560,
+          "cpu_reported": "AMD EPYC 9V74 80-Core Processor"
+        },
+        {
+          "release": "product-freebsd-15.1-amd64",
+          "datasets": 100,
+          "gomaxprocs": 2,
+          "duration_1000_pages_ns": 1184873255,
+          "end_heap_bytes": 2310144,
+          "p50_ms": 2.658,
+          "p95_ms": 47.63,
+          "p99_ms": 88.78,
+          "process_peak_rss_bytes": 21168128,
+          "cpu_reported": "AMD EPYC 9V74 80-Core Processor"
+        },
+        {
+          "release": "product-freebsd-15.1-amd64",
+          "datasets": 10000,
+          "gomaxprocs": 2,
+          "duration_1000_pages_ns": 1354956327,
+          "end_heap_bytes": 3063808,
+          "p50_ms": 2.891,
+          "p95_ms": 62.49,
+          "p99_ms": 117.9,
+          "process_peak_rss_bytes": 25133056,
+          "cpu_reported": "AMD EPYC 9V74 80-Core Processor"
+        }
+      ]
+    }
   }
 }
