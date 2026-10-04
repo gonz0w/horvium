@@ -67,6 +67,12 @@ class Driver:
         self.command('POST', '/actions', {'actions': [{'type': 'key', 'id': 'keyboard', 'actions': [{'type': 'keyDown', 'value': key}, {'type': 'keyUp', 'value': key}]}]})
         self.command('DELETE', '/actions')
 
+    def zoom_in(self):
+        self.command('POST', '/actions', {'actions': [{'type': 'key', 'id': 'keyboard', 'actions': [
+            {'type': 'keyDown', 'value': '\ue009'}, {'type': 'keyDown', 'value': '+'},
+            {'type': 'keyUp', 'value': '+'}, {'type': 'keyUp', 'value': '\ue009'}]}]})
+        self.command('DELETE', '/actions')
+
     def wait(self, predicate):
         deadline = time.monotonic() + 10
         while time.monotonic() < deadline:
@@ -105,10 +111,17 @@ def check_page(driver):
     return {'minimum_sampled_text_contrast': min(ratios), 'minimum_control_boundary_contrast': min(borders), 'viewport_css_width': result['width']}
 
 
-def flow(driver, base, javascript, width, poll=False):
-    driver.command('POST', '/window/rect', {'width': width, 'height': 900})
+def flow(driver, base, javascript, width, poll=False, firefox=False):
+    narrow_zoom = firefox and width < 500
+    driver.command('POST', '/window/rect', {'width': width * 2 if narrow_zoom else width, 'height': 900})
     driver.command('POST', '/url', {'url': base + '/login'})
     driver.wait(lambda: driver.script('return !!document.querySelector("#token")'))
+    if narrow_zoom:
+        # Firefox desktop chrome enforces a 500px minimum window. Native 200%
+        # zoom creates the requested CSS viewport without altering product CSS.
+        for _ in range(6):
+            driver.zoom_in()
+    assert abs(driver.script('return innerWidth') - width) <= 1, 'requested CSS viewport was not reached'
     assert driver.script('return document.body.textContent.includes("Synthetic browser fixture")'), 'fixture provenance banner missing'
     driver.type('#token', 'a' * 64)  # Deliberately public synthetic fixture value.
     driver.click('form button[type=submit]')
@@ -231,8 +244,9 @@ def main():
                             media = driver.script('return {dark:matchMedia("(prefers-color-scheme:dark)").matches,reduce:matchMedia("(prefers-reduced-motion:reduce)").matches}')
                             if args.browser == 'firefox':
                                 assert media['dark'] == (theme == 'dark') and media['reduce'], 'requested media preferences not observed'
-                            measurements = flow(driver, base, javascript, width, javascript and theme == 'light' and width == 1280)
+                            measurements = flow(driver, base, javascript, width, javascript and theme == 'light' and width == 1280, args.browser == 'firefox')
                             measurements['observed_media'] = media
+                            measurements['native_zoom_percent'] = 200 if args.browser == 'firefox' and width < 500 else 100
                             record = {'browser': args.browser, 'browser_version': capabilities['browserVersion'], 'platform': capabilities['platformName'], 'host_platform': platform.platform(), 'javascript': javascript, 'theme': theme, 'requested_width': width, 'status': 'pass', 'measurements': measurements, 'manual_screen_reader_and_native_zoom': 'pending'}
                             records.append(record)
                             print('BROWSER_RESULT ' + json.dumps(record), flush=True)

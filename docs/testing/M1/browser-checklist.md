@@ -62,3 +62,12 @@ appearance, zoom/viewport and observations. Keep screenshots/reports synthetic;
 do not include real tokens, cookies, host inventory or customer data. Failures
 need regression fixes and reruns. Manual acceptance remains explicitly pending
 until observations and maintainer review are recorded.
+
+
+The first contrast-fix run (37233083244) passed four flows, but its recorded narrow
+viewports were 500 CSS pixels: Firefox's desktop window minimum clamped the request.
+That run does not qualify 320/390-pixel reflow. The runner now asserts the actual
+CSS width and uses native keyboard 200% zoom in a 640/780-pixel window for the two
+narrow Firefox cases. Product CSS and browser chrome are not overridden. A complete
+rerun must reach the requested viewport; native 400% and human usability remain
+manual gates.
