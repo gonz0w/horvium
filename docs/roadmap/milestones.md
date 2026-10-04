@@ -2,8 +2,10 @@
 
 Detailed PRD/EDD/Test Design documents are written when a milestone becomes active.
 M0 was accepted in [PR 2](https://github.com/gonz0w/horvium/pull/2).
-M1 is active: [PRD](../milestones/M1/PRD.md), [EDD](../milestones/M1/EDD.md),
-[Test Design](../milestones/M1/TDD.md). These drafts need review before product work.
+M1 design was approved in [PR 3](https://github.com/gonz0w/horvium/pull/3):
+[PRD](../milestones/M1/PRD.md), [EDD](../milestones/M1/EDD.md),
+[Test Design](../milestones/M1/TDD.md). See [implementation status](../milestones/M1/implementation.md)
+for reviewed slices and remaining acceptance gates.
 The first deployable release spans M1-M6; intermediate evidence is not a production
 claim. Each milestone links requirements, tests, and compatibility evidence.
 

@@ -1,10 +1,15 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Regression coverage for foundation gates, using disposable Git repositories."""
 import os
+import hashlib
+import io
+import json
+import platform
 import shutil
 import subprocess
 import sys
 import tempfile
+import tarfile
 import unittest
 from pathlib import Path
 
@@ -100,6 +105,47 @@ class FoundationTests(unittest.TestCase):
             self.assertNotEqual(self.command("sh", ".githooks/commit-msg", str(message)).returncode, 0)
         message.write_text("docs: add probe\n\nSigned-off-by: Test Author <author@example.invalid>\n")
         self.assertEqual(self.command("sh", ".githooks/commit-msg", str(message)).returncode, 0)
+
+    def go_archive_fixture(self, bad_checksum=False):
+        data = io.BytesIO()
+        with tarfile.open(fileobj=data, mode="w:gz") as archive:
+            root = tarfile.TarInfo("go")
+            root.type = tarfile.DIRTYPE
+            archive.addfile(root)
+            binary = tarfile.TarInfo("go/bin/go")
+            content = b"test SDK binary\n"
+            binary.size, binary.mode = len(content), 0o755
+            archive.addfile(binary, io.BytesIO(content))
+        archive_path = self.repo / "fixture-go.tar.gz"
+        archive_path.write_bytes(data.getvalue())
+        machine = {"x86_64": "amd64", "amd64": "amd64", "aarch64": "arm64", "arm64": "arm64"}[platform.machine()]
+        target = f"{platform.system().lower()}_{machine}"
+        pin = {"version": "fixture", "artifacts": {target: {
+            "url": archive_path.as_uri(), "size": len(data.getvalue()),
+            "sha256": "0" * 64 if bad_checksum else hashlib.sha256(data.getvalue()).hexdigest(),
+        }}}
+        (self.repo / "tools/go-pins.json").write_text(json.dumps(pin))
+        previous = self.repo / ".tools/go"
+        (previous / "bin").mkdir(parents=True)
+        (previous / "bin/go").write_text("old SDK\n")
+        (previous / "obsolete-source").write_text("must not survive replacement\n")
+        return previous
+
+    def test_go_bootstrap_accepts_root_directory_and_replaces_cleanly(self):
+        previous = self.go_archive_fixture()
+        result = self.command(sys.executable, "tools/bootstrap-go.py")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((previous / "bin/go").read_bytes(), b"test SDK binary\n")
+        self.assertFalse((previous / "obsolete-source").exists())
+        self.assertEqual(self.command(sys.executable, "tools/bootstrap-go.py").returncode, 0)
+
+    def test_go_bootstrap_rejects_bad_checksum_before_replacing_sdk(self):
+        previous = self.go_archive_fixture(bad_checksum=True)
+        result = self.command(sys.executable, "tools/bootstrap-go.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("size/checksum mismatch", result.stderr)
+        self.assertEqual((previous / "bin/go").read_text(), "old SDK\n")
+        self.assertTrue((previous / "obsolete-source").exists())
 
 
 if __name__ == "__main__":

@@ -1,9 +1,12 @@
 # Test Design: native discovery and read-only console
 
-Status: Draft for maintainer review. Owner: Cam (`@gonz0w`). Date: 2026-10-03.
-Approval: pending. [PRD](PRD.md), [EDD](EDD.md).
+Status: Approved; executing by reviewed slice. Owner: Cam (`@gonz0w`). Date: 2026-10-03.
+Approval: maintainer merge of [PR 3](https://github.com/gonz0w/horvium/pull/3),
+source `527a330f4b1069fa0b7a1414f4d3c6dbab54f5a5`, on 2026-10-03.
+[PRD](PRD.md), [EDD](EDD.md).
 TDD here means Test Design Document; implementation uses test-first development.
-All product tests below are planned, not passed by the research spike.
+The research spike does not satisfy these product gates. Completed portions and
+remaining cases are tracked in [implementation status](implementation.md).
 
 ## Traceability and gates
 
@@ -83,6 +86,5 @@ disk throughput or commercial scale.
 
 Each record includes exact OS kernel/userland, OpenZFS, Go/modules/assets,
 browser/client versions, command/procedure, status (pass/fail/skip/unavailable),
-sanitized logs, deviations and linked requirement/test IDs. No product execution
-results exist in this draft. Acceptance requires an approved revision and actual
+sanitized logs, deviations and linked requirement/test IDs. Acceptance requires an approved revision and actual
 evidence, followed by updating the compatibility matrix.

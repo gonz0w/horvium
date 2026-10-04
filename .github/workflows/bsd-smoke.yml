@@ -7,6 +7,28 @@ permissions:
   contents: read
 
 jobs:
+  discovery:
+    name: discovery-freebsd-${{ matrix.release }}-amd64
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        release: ['15.1', '14.5']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Actual product discovery in disposable QEMU
+        uses: vmactions/freebsd-vm@a2f9a41fa97f6848b8c3b791087dfcdaa5b473ff # v1.5.8
+        with:
+          release: ${{ matrix.release }}
+          arch: amd64
+          copyback: false
+          prepare: pkg install -y python314
+          run: env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh
+
   freebsd:
     name: freebsd-foundation-smoke
     runs-on: ubuntu-24.04

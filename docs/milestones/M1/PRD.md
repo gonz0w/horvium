@@ -1,7 +1,8 @@
 # PRD: native discovery and read-only console
 
-Status: Draft for maintainer review. Owner: Cam (`@gonz0w`). Date: 2026-10-03.
-Approval: pending; no product implementation authorized by this document yet.
+Status: Approved; implementing in reviewed slices. Owner: Cam (`@gonz0w`). Date: 2026-10-03.
+Approval: maintainer merged [design PR 3](https://github.com/gonz0w/horvium/pull/3)
+on 2026-10-03, source `527a330f4b1069fa0b7a1414f4d3c6dbab54f5a5`.
 Work: [issue 1](https://github.com/gonz0w/horvium/issues/1).
 Design: [EDD](EDD.md). Acceptance: [Test Design](TDD.md).
 
@@ -39,7 +40,7 @@ remain required later milestones. The console must state this boundary plainly.
 
 ## Compatibility and budgets
 
-Proposed runtime matrix: supported FreeBSD 15.1 primary and 14.5 compatibility,
+Approved runtime targets: supported FreeBSD 15.1 primary and 14.5 compatibility,
 amd64 first. These are dated targets; refresh at approval and implementation.
 Go 1.27.1, HTMX 2.0.11 and the proposed syscall library are pinned in the
 [research manifest](../../research/M1/source-manifest.json). Other architectures
@@ -68,13 +69,14 @@ Proposed budgets, measured on declared fixtures rather than presented as results
 
 ## Decisions and remaining gates
 
-Review the proposed [native boundary ADR](../../adr/0004-native-discovery-boundary.md)
-and [M1 access/state ADR](../../adr/0005-m1-access-and-state.md), plus the
+The approved [native boundary ADR](../../adr/0004-native-discovery-boundary.md)
+and [M1 access/state ADR](../../adr/0005-m1-access-and-state.md) are supported by the
 [research findings](../../research/M1/findings.md). No unresolved hardware or
 client preference blocks this draft: QEMU is authorized, and client priorities
-are recorded above.
+are recorded above. See [implementation status](implementation.md) for actual
+completed components and remaining acceptance gates.
 
 Approval adopts the M1 scope and design only. Release-wide password/identity/ACL
 rules, durable jobs, adoption/drift resolution, encryption/key recovery, backup
 trust/retention and performance qualification remain separate designs before
-their implementation. Approval record must identify reviewer/date/source revision.
+their implementation. The approval record above identifies maintainer/date/source revision.

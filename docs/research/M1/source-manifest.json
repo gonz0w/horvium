@@ -105,6 +105,20 @@
       "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
       "sha256": "8ff68288653c8db3e7e2b8a5146ad780bc63ab005fc1a2cd17cc2b4ccc9ca646",
       "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sbin/mdconfig/mdconfig.c"
+    },
+    {
+      "repository": "freebsd/freebsd-src",
+      "path": "sys/geom/geom_kern.c",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "e4a8634047e97c7e02e598bb9a51430269e42a2b8f0fb72ea72428c84ce7c364",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/geom/geom_kern.c"
+    },
+    {
+      "repository": "freebsd/freebsd-src",
+      "path": "sys/geom/geom_dump.c",
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "4af65c315116d08966d19dc60dfc41d80d14bc47df661d7609a194ed0b70c1f8",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/geom/geom_dump.c"
     }
   ],
   "freebsd_15.1": {
@@ -174,7 +188,7 @@
     "module": "golang.org/x/sys",
     "version": "v0.48.0",
     "revision": "613e2570718ecde85c04e69ebd5585c3881c442c",
-    "status": "proposed, not installed"
+    "status": "approved for helper; not yet installed"
   },
   "experiment": {
     "source_revision": "411ca08d99544173a685422957f7a41e3eeaa4aa",
@@ -196,5 +210,20 @@
         "sha256": "12ba7f7f0dd8c57d1c00044c597083a3f476d91403009801b2dce86282180794"
       }
     ]
+  },
+  "product_discovery": {
+    "date": "2026-10-03",
+    "timezone": "America/Denver",
+    "source_revision": "d70f76af72afc0c5f00328f328d7927aa26a6092",
+    "suite_revision": "same as source_revision",
+    "run_id": 37164798739,
+    "run_url": "https://github.com/gonz0w/horvium/actions/runs/37164798739",
+    "status": "passed actual native reader tests on both releases; full M1 acceptance pending",
+    "go": "go1.27.1 freebsd/amd64",
+    "development_installer": "Python 3.14.7 (not product runtime)",
+    "guest_memory_mib": 6144,
+    "guest_cpu": "Action default; not performance qualification",
+    "image_digest": "not captured; not immutable image qualification",
+    "evidence": "docs/testing/M1/discovery.md"
   }
 }

@@ -11,5 +11,7 @@
   proposed privilege/access decisions, and dated source/dependency evidence.
 - Validate narrow native discovery and socket credential contracts in disposable
   FreeBSD 15.1/14.5 QEMU guests; extend repository gates to Go/C research source.
+- Implement bounded Go host/GEOM/ZFS inventory libraries with explicit identity
+  uncertainty and collection errors, plus native fixture/race/fuzz test gates.
 
 No product release has been published.

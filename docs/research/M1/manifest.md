@@ -1,6 +1,7 @@
 # M1 research manifest
 
-Status: research in progress; M1 design drafted. Updated 2026-10-03.
+Status: initial research complete; M1 design approved and implementation active.
+Updated 2026-10-03. Product progress: [implementation status](../../milestones/M1/implementation.md).
 Evidence: [findings](findings.md), [source/version pins](source-manifest.json),
 [QEMU spike](native-spike.md). Design: [PRD](../../milestones/M1/PRD.md),
 [EDD](../../milestones/M1/EDD.md), [Test Design](../../milestones/M1/TDD.md).
