@@ -6,3 +6,5 @@ package main
 import "os"
 
 func ownedInput(os.FileInfo) bool { return false }
+
+func privatePipe(os.FileInfo) bool { return false }

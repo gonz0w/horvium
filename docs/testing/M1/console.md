@@ -33,7 +33,8 @@ they never redirect background asset loads through challenge creation.
 
 The CLI uses a literal loopback HTTP endpoint, no environment proxy, no redirects,
 a ten-second deadline and a bounded response. It reads a 64-character lowercase
-hex token from an owned mode-0600 regular input or a pipe. No credential flag,
+hex token from an owned mode-0600 regular input, an anonymous pipe or an owned
+mode-0600 named FIFO. Public named FIFOs are denied. No credential flag,
 URL, environment setting or persistent cookie store exists. A command exchanges
 credentials, returns typed JSON, and attempts logout before dropping local cookies.
 Malformed/denied responses produce fixed errors without raw bodies or arguments.

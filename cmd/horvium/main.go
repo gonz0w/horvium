@@ -45,7 +45,7 @@ func protectedInput(f *os.File) bool {
 		return false
 	}
 	if st.Mode()&os.ModeNamedPipe != 0 {
-		return true
+		return privatePipe(st)
 	}
 	if !st.Mode().IsRegular() || st.Mode().Perm()&0077 != 0 {
 		return false

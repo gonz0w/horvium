@@ -89,7 +89,8 @@ horvium inventory -endpoint http://127.0.0.1:8088 -resource overview < /protecte
 horvium inventory -endpoint http://127.0.0.1:8088 -resource datasets -filter photos -limit 50 < /protected/operator/token
 ```
 
-A pipe is also accepted; terminal echo, token flags and environment credentials
+An anonymous pipe or owned mode-0600 named FIFO is also accepted; terminal echo,
+token flags and environment credentials
 are not. Input accepts exactly 64 lowercase hex characters, optionally followed
 by one newline. CLI JSON includes a generation; pass `-generation` to read that
 same observation across resources. `-sort`, `-descending`, `-offset`, `-limit`
