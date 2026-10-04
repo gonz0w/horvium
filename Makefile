@@ -1,4 +1,4 @@
-.PHONY: tools go-tools check lint test secrets hooks go-check
+.PHONY: tools go-tools check lint test secrets hooks go-check build
 
 GO := $(CURDIR)/.tools/go/bin/go
 export GOTOOLCHAIN := local
@@ -20,7 +20,7 @@ check:
 lint:
 	.tools/bin/shellcheck tools/check-repo.sh tools/bsd-foundation-smoke.sh tools/bsd-native-discovery.sh tools/research/m1-native.sh .githooks/commit-msg .githooks/pre-commit
 	.tools/bin/actionlint
-	@test -z "$$($(CURDIR)/.tools/go/bin/gofmt -l internal tools/research/m1-geom.go)" || { echo 'Run gofmt on Go sources'; exit 1; }
+	@test -z "$$($(CURDIR)/.tools/go/bin/gofmt -l cmd internal tools/research/m1-geom.go)" || { echo 'Run gofmt on Go sources'; exit 1; }
 	$(GO) vet ./...
 
 test:
@@ -28,7 +28,7 @@ test:
 	$(GO) test ./...
 
 go-check:
-	@test -z "$$($(CURDIR)/.tools/go/bin/gofmt -l internal tools/research/m1-geom.go)" || { echo 'Run gofmt on Go sources'; exit 1; }
+	@test -z "$$($(CURDIR)/.tools/go/bin/gofmt -l cmd internal tools/research/m1-geom.go)" || { echo 'Run gofmt on Go sources'; exit 1; }
 	$(GO) vet ./...
 	$(GO) test ./...
 	CGO_ENABLED=1 $(GO) test -race ./...
@@ -45,3 +45,7 @@ secrets:
 hooks:
 	git config core.hooksPath .githooks
 	@echo "Git hooks enabled for this clone"
+
+build:
+	mkdir -p .tools/bin
+	$(GO) build -trimpath -o .tools/bin/horvium ./cmd/horvium

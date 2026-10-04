@@ -1,0 +1,217 @@
+<!-- SPDX-License-Identifier: BSD-3-Clause -->
+{{define "head"}}<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>{{.Title}} · Horvium</title>
+<link rel="icon" href="/assets/horvium.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/console.css">
+<script src="/assets/htmx.min.js" defer>
+</script>
+<script src="/assets/console.js" defer>
+</script>{{end}}
+
+{{define "brand"}}<a class="brand" href="/">
+<span class="mark" aria-hidden="true">H</span>
+<span>Horvium<small>STORAGE ON FREEBSD</small>
+</span>
+</a>{{end}}
+
+{{define "login"}}<!doctype html>
+<html lang="en">
+<head>{{template "head" .}}</head>
+<body class="login-body">
+<main class="login-panel">{{template "brand" .}}<p class="eyebrow">M1 · LOCAL ADMINISTRATION</p>
+<h1>Sign in to your host.</h1>
+<p>Use the local setup token to inspect this FreeBSD system.</p>
+<form action="/login" method="post">
+<input type="hidden" name="csrf" value="{{.CSRF}}">
+<label for="token">Administration token</label>
+<input id="token" name="token" type="password" required minlength="64" maxlength="64" autocomplete="off" spellcheck="false" aria-describedby="token-help">
+<p id="token-help" class="muted">Tokens are created locally by an OS administrator. Remote access uses an SSH forward.</p>
+<button type="submit">Sign in</button>
+</form>
+<p class="footnote">Read-only engineering milestone. No shares, storage changes or backup operations are available.</p>
+</main>
+</body>
+</html>{{end}}
+
+{{define "page"}}<!doctype html>
+<html lang="en">
+<head>{{template "head" .}}</head>
+<body>
+<a class="skip" href="#workspace">Skip to content</a>
+<header class="topbar">{{template "brand" .}}<span class="lab-label">M1 <span>READ-ONLY CONSOLE</span>
+</span>
+<form action="/logout" method="post">
+<input type="hidden" name="csrf" value="{{.CSRF}}">
+<button class="quiet" type="submit">Sign out</button>
+</form>
+</header>
+<div class="shell">
+<aside class="sidebar">
+<p class="eyebrow">THIS HOST</p>
+<nav aria-label="Host navigation">
+<a href="/" {{if same .Path "/"}}aria-current="page"{{end}}>Overview</a>
+<p class="nav-label">Storage</p>
+<a href="/storage/pools" {{if same .Path "/storage/pools"}}aria-current="page"{{end}}>Pools</a>
+<a href="/storage/datasets" {{if same .Path "/storage/datasets"}}aria-current="page"{{end}}>Datasets</a>
+<a href="/storage/providers" {{if same .Path "/storage/providers"}}aria-current="page"{{end}}>Providers</a>
+</nav>
+<div class="later">
+<p>Shares <small>Later milestone</small>
+</p>
+<p>Users <small>Later milestone</small>
+</p>
+<p>Protection <small>Later milestone</small>
+</p>
+<p>Jobs <small>Later milestone</small>
+</p>
+<p>System changes <small>Later milestone</small>
+</p>
+</div>
+<p class="sidebar-note">Existing resources are observed, never adopted or changed.</p>
+</aside>
+<div class="content">{{template "workspace" .}}<footer>Horvium · M1 development · No production support claim</footer>
+</div>
+</div>
+</body>
+</html>{{end}}
+
+{{define "collector"}}<p id="collector-status" class="collector" role="status" aria-live="polite" hx-get="/status" hx-trigger="every 30s" hx-swap="outerHTML">{{if .State.Collecting}}Collecting an observation…{{else if .State.LastCompleted.ErrorCode}}Last collection: {{.State.LastCompleted.ErrorCode}}. Cached data is stale.{{else if .State.CurrentID}}Last collection finished {{time .State.LastCompleted.FinishedAt}}{{else}}Waiting for the first observation.{{end}}</p>{{end}}
+
+{{define "workspace"}}<main id="workspace" tabindex="-1">
+<p class="eyebrow">HOST / {{.Title}}</p>
+<div class="page-heading">
+<div>
+<h1>{{.Title}}</h1>
+<p class="muted">Observed state. File traffic runs independently of this console.</p>
+</div>
+<form action="/refresh" method="post" hx-post="/refresh" hx-target="#refresh-status" hx-swap="outerHTML">
+<input type="hidden" name="csrf" value="{{.CSRF}}">
+<input type="hidden" name="return" value="{{.Path}}">
+<button class="secondary" type="submit">Request collection</button>
+</form>
+</div>
+<p id="refresh-status" role="status" aria-live="polite">
+</p>{{template "collector" .}}{{if .Error}}<section class="notice" role="alert">
+<h2>{{.Error}}</h2>
+<p class="mono">{{.ErrorCode}}</p>
+<a href="{{.Path}}">Reload current observation</a>
+</section>{{else}}<p class="generation">Observation <code>{{.Generation}}</code>
+</p>{{if .Overview}}{{template "overview" .}}{{else}}{{template "storage" .}}{{end}}{{end}}</main>{{end}}
+
+{{define "overview"}}<section class="section">
+<div class="section-heading">
+<h2>Host facts</h2>
+<span class="badge">{{status .Overview.HostState}}</span>
+</div>
+<dl class="facts">{{range .Facts}}<div>
+<dt>{{.Label}}</dt>
+<dd>{{.Value}}</dd>
+</div>{{end}}</dl>
+<p class="muted">Host observation: {{time .Overview.HostState.FinishedAt}}</p>
+</section>
+<section class="section">
+<h2>Storage observations</h2>
+<div class="table-scroll">
+<table>
+<caption>Sections in this generation</caption>
+<thead>
+<tr>
+<th scope="col">Section</th>
+<th scope="col">Items</th>
+<th scope="col">Observation</th>
+<th scope="col">Last successful read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
+<a href="/storage/pools?generation={{.Generation}}">Pools</a>
+</th>
+<td>{{count .Overview.PoolCount .Overview.Pools}}</td>
+<td>{{status .Overview.Pools}}</td>
+<td>{{time .Overview.Pools.LastSuccessfulAt}}</td>
+</tr>
+<tr>
+<th scope="row">
+<a href="/storage/datasets?generation={{.Generation}}">Datasets</a>
+</th>
+<td>{{count .Overview.DatasetCount .Overview.Datasets}}</td>
+<td>{{status .Overview.Datasets}}</td>
+<td>{{time .Overview.Datasets.LastSuccessfulAt}}</td>
+</tr>
+<tr>
+<th scope="row">
+<a href="/storage/providers?generation={{.Generation}}">GEOM providers</a>
+</th>
+<td>{{count .Overview.Providers .Overview.GEOM}}</td>
+<td>{{status .Overview.GEOM}}</td>
+<td>{{time .Overview.GEOM.LastSuccessfulAt}}</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="section">
+<h2>Not collected</h2>
+<p class="muted">Shares, file services, users, SMART, protection and jobs are outside this observation. Pool state is not a disk-health or backup guarantee.</p>
+</section>{{end}}
+
+{{define "storage"}}<div class="section-heading">
+<p>{{if same (printf "%s" .Freshness.Status) "ok"}}{{.Total}} matching items{{else}}Resource count unavailable{{end}} · {{status .Freshness}}</p>
+<p class="muted">Section read {{time .Freshness.FinishedAt}}</p>
+</div>{{range .Freshness.Problems}}<p class="notice">{{.Source}}: {{.Code}}</p>{{end}}<form class="filters" action="{{.Path}}" method="get" hx-get="{{.Path}}" hx-target="#workspace" hx-swap="outerHTML" hx-push-url="true">
+<input type="hidden" name="generation" value="{{.Generation}}">
+<div>
+<label for="filter">Filter by name</label>
+<input id="filter" name="filter" value="{{.Filter}}" maxlength="4096" type="search">
+</div>
+<div>
+<label for="sort">Sort by</label>
+<select id="sort" name="sort">{{range .Options}}<option value="{{.Value}}" {{if same $.Sort .Value}}selected{{end}}>{{.Label}}</option>{{end}}</select>
+</div>
+<div>
+<label for="descending">Order</label>
+<select id="descending" name="descending">
+<option value="false" {{if same .Desc "false"}}selected{{end}}>Ascending</option>
+<option value="true" {{if same .Desc "true"}}selected{{end}}>Descending</option>
+</select>
+</div>
+<div>
+<label for="limit">Page size</label>
+<input type="number" id="limit" name="limit" min="1" max="500" value="{{.Limit}}">
+</div>
+<button id="apply-filters" type="submit">Apply</button>
+<a class="reload" href="{{.Path}}">Current generation</a>
+</form>
+<div class="resource-layout">
+<section class="resource-list">
+<div class="table-scroll">
+<table>
+<caption>{{.Title}} in this observation</caption>
+<thead>
+<tr>
+<th scope="col">Name</th>{{range .Columns}}<th scope="col">{{.}}</th>{{end}}</tr>
+</thead>
+<tbody>{{range .Rows}}<tr {{if .Selected}}class="selected"{{end}}>
+<th scope="row">
+<a id="row-{{.Key}}" href="{{.URL}}" hx-get="{{.URL}}" hx-target="#workspace" hx-swap="outerHTML" hx-push-url="true" {{if .Selected}}aria-current="true"{{end}}>{{.Name}}</a>
+</th>{{range .Cells}}<td class="mono">{{.}}</td>{{end}}</tr>{{else}}<tr>
+<td colspan="{{columns .Columns}}">{{if same (printf "%s" .Freshness.Status) "ok"}}No matching resources in this observation.{{else}}This section is unavailable. No resource count is implied.{{end}}</td>
+</tr>{{end}}</tbody>
+</table>
+</div>
+<nav class="pagination" aria-label="Resource pages">{{if .Previous}}<a href="{{.Previous}}" hx-get="{{.Previous}}" hx-target="#workspace" hx-swap="outerHTML" hx-push-url="true">Previous page</a>{{end}}<span>Offset {{.Offset}} · Up to {{.Limit}} items</span>{{if .Next}}<a href="{{.Next}}" hx-get="{{.Next}}" hx-target="#workspace" hx-swap="outerHTML" hx-push-url="true">Next page</a>{{end}}</nav>
+</section>{{if .Detail}}<aside class="detail" aria-labelledby="detail-title">
+<p class="eyebrow">RESOURCE PREVIEW</p>
+<h2 id="detail-title" tabindex="-1">{{.Detail.Name}}</h2>
+<dl>{{range .Detail.Facts}}<div>
+<dt>{{.Label}}</dt>
+<dd class="mono">{{.Value}}</dd>
+</div>{{end}}</dl>
+<p class="muted">Observation only. Collection-local IDs are not durable device identities. No resource is adopted.</p>
+</aside>{{end}}</div>{{end}}
+
+{{define "refresh"}}<p id="refresh-status" role="status" aria-live="polite">{{if .Error}}{{.Error}}{{else}}Collection requested. This view remains on its displayed generation.{{end}} <a href="{{.Path}}">Load current observation</a>
+</p>{{end}}

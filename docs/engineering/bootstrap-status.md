@@ -14,9 +14,15 @@ Cam (`@gonz0w`) is the initial maintainer and CODEOWNERS owner.
 
 ## Implemented and observed
 
+- Maintainer merged [administration security PR 7](https://github.com/gonz0w/horvium/pull/7),
+  source `b71b9915653f9b75785ca350991d0730d5ddb4a0`, on 2026-10-04.
+  The next slice adds authenticated console/CLI and foreground development commands;
+  see [console contracts/evidence](../testing/M1/console.md).
+
+
 - Maintainer merged [collector/cache PR 6](https://github.com/gonz0w/horvium/pull/6),
   source `65c8457980127f9a04909a550af3f160a613cef0`, on 2026-10-04.
-  Administration security is the next focused review slice; see
+  Administration security is now accepted; see
   [security contracts/evidence](../testing/M1/security.md).
 
 - Maintainer merged [helper transport PR 5](https://github.com/gonz0w/horvium/pull/5),

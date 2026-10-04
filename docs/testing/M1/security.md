@@ -102,7 +102,8 @@ native facilities or privileged setup.
 
 All gate responses, including its denials, use `Cache-Control: no-store`, CSP with self-only
 assets and no inline/eval exception, `form-action 'self'`, `frame-ancestors 'none'`,
-`base-uri 'none'`, nosniff, DENY framing and no-referrer. Exact configured Host values
+`base-uri 'none'`, nosniff, DENY framing and same-origin referrer policy (console slice corrects no-referrer; see
+[form compatibility evidence](console.md)). Exact configured Host values
 are checked on safe requests too. Origins, when supplied, must exactly equal
 `http://` plus request Host; scheme, port, slash and duplicate headers matter.
 Fetch Metadata permits only same-origin/none, never cross-site/same-site. Neither

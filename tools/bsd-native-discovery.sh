@@ -17,7 +17,8 @@ python3.14 tools/bootstrap-go.py
 .tools/go/bin/go mod verify
 freebsd-version -kru
 zfs version
-test -z "$(.tools/go/bin/gofmt -l internal tools/research/m1-geom.go)"
+test -z "$(.tools/go/bin/gofmt -l cmd internal tools/research/m1-geom.go)"
 .tools/go/bin/go vet ./...
+.tools/go/bin/go build -trimpath -o .tools/horvium ./cmd/horvium
 .tools/go/bin/go test -v -count=1 ./...
 echo 'PASS: product discovery/helper/cache/admin unit/component and native fixture tests'
