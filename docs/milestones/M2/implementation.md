@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset implementing.
+Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset in review.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -54,7 +54,9 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   `2c7724d503584aa053acaf409ef28e50f3180c40`). No write eligibility follows.
 - Slice 1 identity subset binds full dataset types/GUIDs to independent property
   rows and review version membership; see [identity contracts](../../testing/M2/identities.md).
-  Native execution is pending; no runtime collector or eligibility proof follows.
+  Both pinned guests passed all 20 property/identity assertions and teardown
+  (run 37244653409, source `2d4478c8a8e34b0ac40657d7330b4d73f0df6b21`).
+  No runtime collector or eligibility proof follows.
 - Slice 1 remains incomplete: native eligibility/provider/topology/status
   observations, complete-impact collection and device-use drift gates have not run. No later slice may treat
   model input booleans or old M1 inventory as qualified native write authority.
