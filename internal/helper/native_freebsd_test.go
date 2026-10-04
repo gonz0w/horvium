@@ -2,9 +2,11 @@
 package helper
 
 import (
+	"bufio"
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net"
 	"os"
@@ -213,6 +215,34 @@ func TestNativeHelperUnsafePathsAndOwnership(t *testing.T) {
 		t.Fatal("service-owned directory accepted")
 	}
 	_ = os.Chown(run, 0, int(f.gid))
+	alias := filepath.Join(f.dir, "alias")
+	if err := os.Symlink(run, alias); err != nil {
+		t.Fatal(err)
+	}
+	aliasConfig := f.config
+	aliasConfig.Socket = filepath.Join(alias, "s")
+	if _, err := NewServer(aliasConfig, source); !errors.Is(err, ErrConfig) {
+		t.Fatal("symlink directory accepted")
+	}
+	ancestor := filepath.Join(f.dir, "insecure")
+	if err := os.Mkdir(ancestor, 0777); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Chmod(ancestor, 0777); err != nil {
+		t.Fatal(err)
+	}
+	nested := filepath.Join(ancestor, "run")
+	if err := os.Mkdir(nested, 0750); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Chown(nested, 0, int(f.gid)); err != nil {
+		t.Fatal(err)
+	}
+	ancestorConfig := f.config
+	ancestorConfig.Socket = filepath.Join(nested, "s")
+	if _, err := NewServer(ancestorConfig, source); !errors.Is(err, ErrConfig) {
+		t.Fatal("writable ancestor accepted")
+	}
 	// Refuse existing regular files, symlinks and sockets without removing them.
 	if err := os.WriteFile(f.config.Socket, []byte("fixture"), 0600); err != nil {
 		t.Fatal(err)
@@ -347,12 +377,35 @@ func TestNativeHelperChild(t *testing.T) {
 		}
 		return
 	}
-	if mode == "allowed" || mode == "native" || mode == "nonroot-denied" {
+	if mode == "idle" {
+		conn, err := net.DialUnix("unix", nil, &net.UnixAddr{Name: c.Socket, Net: "unix"})
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer conn.Close()
+		if serverUID, err := peerUID(conn); err != nil || serverUID != 0 {
+			t.Fatal("idle fixture peer is not root")
+		}
+		_ = conn.SetDeadline(time.Now().Add(5 * time.Second))
+		fmt.Fprintln(os.Stdout, "ready")
+		var b [1]byte
+		if n, err := conn.Read(b[:]); n != 0 || err != io.EOF {
+			t.Fatal("idle peer did not expire cleanly")
+		}
+		return
+	}
+	if mode == "allowed" || mode == "native" || mode == "nonroot-denied" || mode == "busy" {
 		client, err := NewClient(c)
 		if err != nil {
 			t.Fatal(err)
 		}
 		s, err := client.Collect(context.Background(), "native-test")
+		if mode == "busy" {
+			if err == nil {
+				t.Fatal("admission cap bypassed")
+			}
+			return
+		}
 		if mode == "nonroot-denied" {
 			if !errors.Is(err, ErrPermission) {
 				t.Fatal("nonroot helper peer accepted")
@@ -380,11 +433,149 @@ func TestNativeHelperChild(t *testing.T) {
 	if serverUID, err := peerUID(conn); err != nil || serverUID != 0 {
 		t.Fatal("test listener is not root")
 	}
-	payload := `{"version":1,"request_id":"r","operation":"inventory","uid":` + strconv.FormatUint(uint64(c.ManagementUID), 10) + `}`
+	// A denied UID sends a valid request: rejection must come from kernel
+	// identity, independently of the separate forged-field parser test.
+	payload := `{"version":1,"request_id":"r","operation":"inventory"}`
+	if mode == "forged" {
+		payload = `{"version":1,"request_id":"r","operation":"inventory","uid":` + strconv.FormatUint(uint64(c.ManagementUID), 10) + `}`
+	}
 	_, _ = conn.Write(frame(payload))
 	_ = conn.CloseWrite()
 	var b [1]byte
 	if n, _ := conn.Read(b[:]); n != 0 {
 		t.Fatal("denied request received inventory")
+	}
+}
+
+func TestNativeAdmittedClientsBounded(t *testing.T) {
+	f := fixture(t)
+	f.config.MaxClients = 1
+	f.config.Timeout = 3 * time.Second
+	var calls atomic.Int32
+	s, err := NewServer(f.config, collectFunc(func(context.Context) inventory.Snapshot { calls.Add(1); return observation() }))
+	if err != nil {
+		t.Fatal(err)
+	}
+	seen := make(chan struct{}, 1)
+	s.peer = func(c *net.UnixConn) (uint32, error) {
+		uid, err := peerUID(c)
+		select {
+		case seen <- struct{}{}:
+		default:
+		}
+		return uid, err
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	done := make(chan error, 1)
+	go func() { done <- s.Serve(ctx) }()
+	t.Cleanup(func() {
+		cancel()
+		select {
+		case err := <-done:
+			if !errors.Is(err, context.Canceled) {
+				t.Error(err)
+			}
+		case <-time.After(5 * time.Second):
+			t.Error("admission fixture did not stop")
+		}
+		if _, err := os.Lstat(f.config.Socket); !os.IsNotExist(err) {
+			t.Error("admission fixture socket leaked")
+		}
+	})
+	deadline := time.Now().Add(3 * time.Second)
+	for {
+		if safeSocket(f.config) == nil {
+			break
+		}
+		if time.Now().After(deadline) {
+			t.Fatal("admission fixture not ready")
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	idle := child(t, f, "idle", f.uid)
+	stdout, err := idle.StdoutPipe()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := idle.Start(); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		if idle.Process != nil {
+			_ = idle.Process.Kill()
+		}
+		_ = idle.Wait()
+	})
+	ready := make(chan bool, 1)
+	go func() {
+		line, err := bufio.NewReader(stdout).ReadString('\n')
+		ready <- err == nil && line == "ready\n"
+	}()
+	select {
+	case ok := <-ready:
+		if !ok {
+			t.Fatal("idle child failed before connect")
+		}
+	case <-time.After(time.Second):
+		t.Fatal("idle child did not connect")
+	}
+	select {
+	case <-seen:
+	case <-time.After(time.Second):
+		t.Fatal("idle client was not admitted")
+	}
+	runChild(t, f, "busy", f.uid)
+	if calls.Load() != 0 {
+		t.Fatal("excess client invoked collection")
+	}
+	// The admitted idle client expires; a subsequent authorized request succeeds.
+	if err := idle.Wait(); err != nil {
+		t.Fatal("idle client timeout test failed")
+	}
+	runChild(t, f, "allowed", f.uid)
+	if calls.Load() != 1 {
+		t.Fatal("admission slot did not recover after deadline")
+	}
+}
+
+func TestNativeShutdownPreservesReplacement(t *testing.T) {
+	f := fixture(t)
+	s, err := NewServer(f.config, collectFunc(func(context.Context) inventory.Snapshot { return observation() }))
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	done := make(chan error, 1)
+	go func() { done <- s.Serve(ctx) }()
+	deadline := time.Now().Add(3 * time.Second)
+	for {
+		if safeSocket(f.config) == nil {
+			break
+		}
+		if time.Now().After(deadline) {
+			t.Fatal("helper not ready")
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	// Only the root test parent can replace an entry in the protected directory.
+	if err := os.Remove(f.config.Socket); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(f.config.Socket, []byte("replacement"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	cancel()
+	select {
+	case err := <-done:
+		if !errors.Is(err, context.Canceled) {
+			t.Fatal(err)
+		}
+	case <-time.After(3 * time.Second):
+		t.Fatal("shutdown timed out")
+	}
+	if data, err := os.ReadFile(f.config.Socket); err != nil || string(data) != "replacement" {
+		t.Fatal("shutdown removed another entry")
 	}
 }

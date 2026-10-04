@@ -209,3 +209,14 @@ func FuzzSnapshot(f *testing.F) {
 		}
 	})
 }
+
+func TestWriterBoundsRecordsBeforeEmission(t *testing.T) {
+	s := observation()
+	s.Pools.Data = append(s.Pools.Data, s.Pools.Data[0])
+	var b bytes.Buffer
+	limits := DefaultLimits()
+	limits.MaxRecords = 7
+	if err := writeSnapshot(&b, "r", s, limits); !errors.Is(err, ErrLimit) || b.Len() != 0 {
+		t.Fatal("oversize collection validated or emitted before record cap")
+	}
+}
