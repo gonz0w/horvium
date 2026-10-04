@@ -134,12 +134,21 @@ also passed; full required browser/accessibility acceptance remains open. See
 
 ## Slice 6: foreground lifecycle, operational logging and response admission
 
-Under review in [PR 9](https://github.com/gonz0w/horvium/pull/9):
+Accepted by maintainer merge of [PR 9](https://github.com/gonz0w/horvium/pull/9),
+source `35c928a75945caaae5c5682eed539ae247caff19`, on 2026-10-04:
 full-response inventory reader admission, bounded fixed-schema
 operational events, coupled HTTP/collector shutdown and native built-process
 restart with independent SFTP continuity passed on both native targets. See [runtime evidence](../../testing/M1/runtime.md)
 for the procedure and limitations. Diagnostic authenticated-handler benchmarks
 are separate from the full measured application budget gate.
+
+## Slice 7: combined-process performance qualification
+
+In progress: guarded native HTTP workloads measure the real management executable
+and a separate test-only helper using actual authenticated transport. The manually
+dispatched, checksum-verified QEMU suite fixes CPU model, core count, memory and
+base images. See [performance procedure/evidence](../../testing/M1/performance.md).
+This is synthetic management qualification, not physical NAS throughput.
 
 ## Remaining slices and acceptance
 

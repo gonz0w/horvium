@@ -14,6 +14,11 @@ Cam (`@gonz0w`) is the initial maintainer and CODEOWNERS owner.
 
 ## Implemented and observed
 
+- Maintainer merged [runtime lifecycle PR 9](https://github.com/gonz0w/horvium/pull/9),
+  source `35c928a75945caaae5c5682eed539ae247caff19`, on 2026-10-04.
+  Performance qualification is the next focused slice; see
+  [procedure/evidence](../testing/M1/performance.md).
+
 - Maintainer merged [console/CLI PR 8](https://github.com/gonz0w/horvium/pull/8),
   source `be23d5491680d578171441b66bbe0eb583b17643`, on 2026-10-04.
   Foreground read-only console/CLI are accepted slices; runtime/logging/admission

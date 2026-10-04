@@ -9,8 +9,8 @@ requirement or a limit on disks, memory, pools, or datasets.
 
 **Status:** M0 foundation, M1 design, native discovery, helper transport and
 collector/cache, administration security, authenticated read-only console, CLI
-and foreground development commands accepted. Runtime lifecycle, logging and
-response admission are being reviewed. There is
+and foreground development commands, runtime lifecycle, logging and response
+admission accepted. Combined-process performance qualification is in progress. There is
 no installable port, appliance image or production support claim.
 
 ## Agreed direction

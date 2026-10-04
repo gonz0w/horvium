@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "builder": "2.2.8",
+  "cpu_model": "qemu64",
+  "cpu_count": 2,
+  "memory_mib": 6144,
+  "anyvm": {
+    "url": "https://github.com/anyvm-org/anyvm/releases/download/v0.7.2/anyvm.py",
+    "sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d"
+  },
+  "images": {
+    "15.1": {
+      "url": "https://github.com/anyvm-org/freebsd-builder/releases/download/v2.2.8/freebsd-15.1.qcow2.zst",
+      "sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+      "bytes": 1023058365
+    },
+    "14.5": {
+      "url": "https://github.com/anyvm-org/freebsd-builder/releases/download/v2.2.8/freebsd-14.5.qcow2.zst",
+      "sha256": "cd90489bb7d94585016e177b9e3f0084f3410454dc0af19481f44ddd5aa45257",
+      "bytes": 1012531750
+    }
+  }
+}

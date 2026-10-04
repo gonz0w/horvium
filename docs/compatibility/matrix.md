@@ -22,6 +22,7 @@ validation are separate. Refresh exact versions in each active research manifest
 | Administration security | Hardware-neutral auth/config parser; FreeBSD descriptor ownership and loopback HTTP | Local denial/expiry/capacity tests and native credential ownership/atomicity/dropped-UID real HTTP fixtures passed on both releases; UI/CLI and deployable auth pending |
 | Console/CLI | Go 1.27.1 with locally embedded HTMX 2.0.11 | Local auth/parity/escaping/strict-query/expiry tests pass; limited in-app browser login/filter/keyboard/refresh/logout and 390-pixel layout verified; actual root-helper/unprivileged foreground runtime/CLI/HTML with owned GUID/property/teardown assertions passed on both releases |
 | Runtime lifecycle / budgets | FreeBSD foreground processes; hardware-neutral response admission/logging | Local admission/logging/lifecycle tests pass; actual built-process kill/restart/outage/recovery and independent fixture-only SFTP reads passed on both FreeBSD targets; 100/10,000-row handler diagnostics recorded; full combined RSS/CPU/latency and SMB/NFS continuity acceptance pending |
+| Performance qualification | Checksum-pinned FreeBSD 15.1/14.5 QEMU images; qemu64, two vCPUs, 6144 MiB | Guarded real HTTP/management plus test-only synthetic helper suite implemented; execution pending; hardware/commercial support remains unmeasured |
 | Tooling | Python 3.14.7 + checksum-pinned tools on Linux/macOS | See bootstrap status for checks actually run |
 
 Evidence levels: D0 designed; D1 unit/component verified; D2 native/client verified;
@@ -39,6 +40,7 @@ records the unprivileged cache/outage/recovery path;
 and the administration boundary; [console evidence](../testing/M1/console.md)
 records native foreground/CLI/HTML and limited synthetic browser execution;
 [runtime evidence](../testing/M1/runtime.md) records built-process restart,
-independent SFTP continuity and bounded response/logging behavior. The earlier C spike is ABI
+independent SFTP continuity and bounded response/logging behavior; [performance qualification](../testing/M1/performance.md)
+tracks the combined-process synthetic workload separately. The earlier C spike is ABI
 evidence only. No
 physical identity, file-client, scale or throughput claim follows.

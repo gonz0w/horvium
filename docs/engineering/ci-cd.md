@@ -50,3 +50,21 @@ Do not make CI or a release depend on running tests against production storage.
 Publish checksums, SBOM/provenance and compatibility evidence for deployable releases.
 Enable remote required checks only after verifying their actual names/results.
 Feature availability and enforcement are recorded in bootstrap status, not assumed.
+
+## Measured management budgets
+
+The opt-in [performance workflow](../../.github/workflows/bsd-performance.yml)
+stages two checksum-pinned builder 2.2.8 images and AnyVM 0.7.2 through
+[the fixture tool](../../tools/prepare-performance-vm.py) and
+[artifact pins](../../tools/performance-vm-pins.json). It explicitly selects the
+QEMU qemu64 CPU model, two cores, 6144 MiB and snapshot mode. Base-image and runtime
+hashes are rechecked after execution. The Ubuntu 24.04 hosted runner and actual
+QEMU version are recorded; hosted scheduling and firmware are not an immutable
+physical benchmark. This replaces host-CPU defaults for the measured workload.
+
+The guest first runs existing native fixtures, then the guarded
+[performance script](../../tools/bsd-performance.sh). Sixty-second warm-ups,
+five-minute small-fixture idle CPU, two 1,000-page ten-reader workloads per size,
+generation replacement and separate record/byte exhaustion run only inside these
+explicit disposable root fixtures. No VM, Python, QEMU or fake source becomes a
+NAS runtime dependency. See [procedure and limits](../testing/M1/performance.md).
