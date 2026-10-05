@@ -11,7 +11,8 @@ reviewed slices; it is not M2 acceptance or native qualification.
 The first [planning model record](../../testing/M2/planning.md) covers a T1
 subset; [identity binding](../../testing/M2/identities.md) tracks independent type
 coverage and version drift as a further partial subset; [property projection](../../testing/M2/properties.md) adds a narrow native
-parser/source/GUID fixture on both releases. None of the complete acceptance rows
+parser/source/GUID fixture on both releases. [Filesystem state](../../testing/M2/dataset-state.md)
+tracks further partial mount/readonly/crypto coverage. None of the complete acceptance rows
 below is satisfied yet.
 TDD means Test Design Document; implementation uses failing behavioral tests first.
 

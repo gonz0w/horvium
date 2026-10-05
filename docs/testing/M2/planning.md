@@ -16,7 +16,8 @@ plan lookup/submission, reservation, job store or native mutation executor.
 This is the first part of slice 1, not completed slice 1 or M2 acceptance.
 
 Trusted prospective helper inputs are a per-pool local policy and a fresh,
-complete filesystem/property observation and independent dataset identity/type table. The policy explicitly selects pool and
+complete filesystem/property observation, independent dataset identity/type table
+and complete filesystem mount/readonly/crypto state table. The policy explicitly selects pool and
 filesystem GUIDs, baseline names/parents and each allowed property. Observation,
 names, property sources and caller claims cannot create scopes. The observation's
 eligibility flag is a prospective native-adapter obligation, not proof from a
@@ -49,7 +50,8 @@ review sizing, not an adopted wire or persistent schema.
   The [property projection](properties.md) adds retained received values to
   context and drift checks. [Dataset identities](identities.md) bind exact filesystem
   coverage and snapshot/bookmark membership; volumes deny this planner. Reviews
-  retain relevant versions with local owner GUIDs. It does not yet show usage, mount policy, topology,
+  retain relevant versions with local owner GUIDs and [filesystem constraints](dataset-state.md)
+  preserve mount/readonly/crypto state. It does not yet show usage, topology,
   devices, feature evidence or operation recovery details.
 - Malformed or duplicate GUIDs/names/scopes, missing/false parents, inconsistent
   sources, unknown properties, incomplete observation or failed eligibility deny
@@ -58,7 +60,7 @@ review sizing, not an adopted wire or persistent schema.
   each at most 64 ASCII bytes, starting with a letter, then letters/digits/`_`/`-`.
   Pool prefixes `mirror`, `raidz`, `draid`, `spare`, `log` are refused. Unsupported
   existing names remain observable through M1 but unmanageable here.
-- Preflight caps policy scopes, filesystem rows and identity records at 100,000 each, individual
+- Preflight caps policy scopes, filesystem rows, identity records and state rows at 100,000 each, individual
   fields at 4,096 bytes, and combined input accounting at 64 MiB before building
   maps or sorting. The review has a 64 KiB ceiling with conservative overhead;
   large impacts fail rather than truncate. These are safety caps, not scale or

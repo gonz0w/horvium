@@ -25,6 +25,8 @@ const (
 	Local       Source   = "local"
 	Received    Source   = "received"
 	Inherited   Source   = "inherited"
+	NoSource    Source   = "-"
+	Temporary   Source   = "temporary"
 )
 
 type Property string
@@ -44,6 +46,13 @@ type Properties struct{ Quota, RefQuota, Compression Value }
 type Filesystem struct {
 	GUID, Name, ParentGUID string
 	Properties             Properties
+}
+
+// FilesystemState preserves observed mount and encryption constraints. It never
+// grants mount/key operations; EncryptionRootGUID is a local identity binding.
+type FilesystemState struct {
+	GUID, Name, EncryptionRootGUID                                                 string
+	Mountpoint, CanMount, Readonly, Mounted, Encryption, EncryptionRoot, KeyStatus Value
 }
 
 type DatasetType string
@@ -72,6 +81,7 @@ type Observation struct {
 	Eligible           bool
 	Filesystems        []Filesystem
 	Identities         []DatasetIdentity
+	States             []FilesystemState
 }
 
 // Policy is trusted local enrollment, never request-supplied authority. GUIDs
@@ -106,6 +116,7 @@ type Review struct {
 	Context              []Filesystem
 	Affected             []Resource
 	Versions             []DatasetIdentity
+	States               []FilesystemState
 }
 
 // Plan contains only private state and returns independent review copies. It is

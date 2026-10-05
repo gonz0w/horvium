@@ -10,7 +10,10 @@ RESULT = ('PROPERTY_OBSERVATION_RESULT default=pass local=pass inherited=pass '
           'foreign_preservation=pass eligibility_denied=pass teardown=pass '
           'identity_binding=pass complete_filesystems=pass snapshot_owner=pass '
           'bookmark_owner=pass replicated_guid=pass snapshot_rename=pass '
-          'snapshot_reuse=pass volume_denial=pass stable_enumeration=pass')
+          'snapshot_reuse=pass volume_denial=pass stable_enumeration=pass '
+          'state_binding=pass mount_sources=pass readonly_denial=pass '
+          'encrypted_loaded_denial=pass encrypted_unloaded_denial=pass '
+          'encryption_root_binding=pass state_drift=pass state_preservation=pass')
 PASS = '--- PASS: TestNativePropertyObservations (1.0s)\n'
 
 class PropertyEvidenceTests(unittest.TestCase):
@@ -33,6 +36,7 @@ class PropertyEvidenceTests(unittest.TestCase):
         for record in [RESULT + '\n' + RESULT,
                        RESULT.replace('teardown=pass', ''),
                        RESULT.replace('identity_binding=pass', ''),
+                       RESULT.replace('state_binding=pass', ''),
                        RESULT.replace('teardown=pass', 'teardown=fail'),
                        RESULT + ' override=pass', RESULT + ' teardown=pass']:
             with self.subTest(record=record), self.assertRaises(ValueError):

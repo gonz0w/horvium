@@ -21,7 +21,8 @@ M2 storage lifecycle design is approved in [PR 20](https://github.com/gonz0w/hor
 [implementation sequence](docs/milestones/M2/implementation.md). The first
 model subset was accepted in PR 21; bounded property-source parsing passed on
 both disposable FreeBSD targets and was accepted in PR 22. Dataset identity/type
-binding and version drift passed both native fixtures and are in review in PR 23. Other native gates, durable jobs and storage
+binding and version drift were accepted in PR 23. Filesystem mount/encryption
+constraints are the next subset. Other native gates, durable jobs and storage
 writes remain pending; the runtime is still read-only.
 
 ## Agreed direction
