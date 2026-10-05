@@ -68,7 +68,9 @@ adds four assertions; all twelve native assertions and host teardown passed on b
 targets; PR 31 accepted this partial subset. The [attachment extension](../../testing/M2/disk-attachments.md)
 adds five assertions including actual empty/populated GPT refusal and owned
 cleanup. All seventeen assertions and both executed native tests are required;
-this extension is pending native qualification. These partial results do not
+all seventeen and host teardown passed on both targets; see its
+[native manifest](../../testing/M2/disk-attachments-manifest.json). Maintainer review
+of this extension is pending. These partial results do not
 satisfy the complete device-safety row. Further fault control and complete device safety still
 need implementation and qualification. Never accept an arbitrary host device supplied to a test.
 

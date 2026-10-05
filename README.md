@@ -36,7 +36,8 @@ assertions and complete teardown on both targets and was accepted in
 [PR 31](https://github.com/gonz0w/horvium/pull/31). The next
 [attachment classifier](docs/testing/M2/disk-attachments.md) distinguishes exact
 DEV/disk-ident correspondence and refuses PART/unsupported attachments; native
-partition-denial qualification is pending. Other native
+partition-denial qualification passed all seventeen assertions and full teardown
+on both targets, with maintainer review pending. Other native
 gates, durable jobs and storage writes remain pending; the runtime is still read-only.
 
 ## Agreed direction

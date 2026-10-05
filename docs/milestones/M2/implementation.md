@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier/native partition-denial subset in progress; Actions disabled.
+Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier/native partition-denial subset qualified; review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -38,7 +38,7 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
 ## Current evidence and slice progress
 
 - Primary source inspection and SHA-256 capture: complete for the documented M2 questions.
-- M2 native mutation/state/failure/browser/resource execution: not started.
+- M2 assembled product mutation/recovery/browser/resource qualification: not started.
 - Physical MicroServer/commercial/controller/client qualification: not supplied.
 - M2 PRD/EDD/Test Design and ADRs 0006/0007: approved in PR 20 as recorded above.
 - Slice 1 first subset accepted in [PR 21](https://github.com/gonz0w/horvium/pull/21),
@@ -105,8 +105,11 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
 - Slice 1 next subset: [disk attachments](../../testing/M2/disk-attachments.md)
   recognizes exact terminal DEV and whole-disk disk-ident LABEL correspondence,
   refuses PART/unknown/contradictory attachments and adds disposable GPT denial
-  controls. Native qualification of all seventeen assertions is pending. No
-  complete use proof, runtime collector or product partitioning follows.
+  controls. Source `0c9882f45c3abc1a81c693af01720ece9e50a9e6` passed all seventeen
+  assertions, both executed native tests and complete preservation/teardown on
+  both targets. See the [native manifest](../../testing/M2/disk-attachments-manifest.json).
+  Maintainer review is pending. No complete use proof, runtime collector or
+  product partitioning follows.
 - Slice 1 remains incomplete: assembled native eligibility/provider proofs, full
   status/scan interpretation, complete-impact collection and device-use drift gates
   have not run. No later slice may treat

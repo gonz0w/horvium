@@ -1,7 +1,7 @@
 # M2 disk attachments and partition denial
 
-Date: 2026-10-05. Status: behavioral tests and FreeBSD cross-build pass;
-native qualification pending. [Approved EDD](../../milestones/M2/EDD.md),
+Date: 2026-10-05. Status: all seventeen assertions, both executed native tests
+and complete preservation/teardown passed on both FreeBSD targets; maintainer review pending. [Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
@@ -74,6 +74,28 @@ fixture, four correlation and five attachment (`native_alias`,
 cases or missing host cleanup cannot qualify. This test-only privilege adds no
 product partition/wipe operation. No controller, physical performance, full
 M2-DEVICE-001 or production claim follows.
+
+## Executed evidence
+
+Signed source `0c9882f45c3abc1a81c693af01720ece9e50a9e6` passed all seventeen
+assertions on FreeBSD 15.1-RELEASE-p3 and 14.5-RELEASE through Mac arm64 / QEMU
+11.1.1 TCG (two CPUs, 6144 MiB). The actual guest roots were ZFS and UFS,
+respectively. Both runs restored the fixture attachment graph, preserved the
+four other guest disks and root correspondence, preserved all original host
+backings/base/runtime inputs, removed disks/image/key/variables and verified
+the owned group stopped. The [sanitized execution manifest](disk-attachments-manifest.json)
+records source/input hashes, actual versions, six utility hashes and outcomes.
+
+An initial run on source `286c51da2d5a6ff59fbe99b8eef815238df1db0e` was
+stopped through its supervisor before native tests after source inspection found
+an incorrect test expectation (`Logical` instead of the existing `Partition`
+kind). Host preservation and teardown passed; the interrupted run remains
+unqualified and is retained separately in the manifest. The corrected signed
+source was fully rerun. Its complete portable review passed 61 tooling tests,
+Go unit/race checks and fourteen bounded fuzz targets; final PR-head review is
+reported separately in the PR. Input changes require fresh native qualification.
+No new controller-death trial is claimed; the accepted original fixture
+containment evidence retains its earlier source.
 
 ## Provenance
 

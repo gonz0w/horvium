@@ -89,6 +89,8 @@ and grants no device-use/write eligibility.
 
 M2 disk attachments: [contract and procedure](../testing/M2/disk-attachments.md)
 recognizes exact DEV/disk-ident correspondence and refuses PART/unsupported
-attachments. Actual empty/populated GPT denial, foreign preservation and teardown
-are pending on both targets; local behavioral/cross-build coverage is separate.
+attachments. Actual empty/populated GPT denial, foreign preservation and full
+teardown passed with all seventeen assertions and both native tests on both
+targets through the Mac supervisor; see the [native manifest](../testing/M2/disk-attachments-manifest.json).
+Maintainer review is pending; local behavioral/cross-build coverage is separate.
 No complete device-use, physical/locality or write eligibility follows.
