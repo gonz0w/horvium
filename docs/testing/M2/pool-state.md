@@ -1,6 +1,7 @@
 # M2 pool identity, incarnation and policy observations
 
-Date: 2026-10-04. Status: behavioral and pinned native subset passed; maintainer review pending.
+Date: 2026-10-04. Status: behavioral and pinned native subset accepted in [PR 25](https://github.com/gonz0w/horvium/pull/25),
+merged source `9f6cc07d3c19f84b656e9130283b21eaa7c7ce13`.
 Design: [approved EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [slice sequence](../../milestones/M2/implementation.md). Extends the
 [filesystem constraints](dataset-state.md); runtime remains read-only.
@@ -122,3 +123,7 @@ Full slice 1 still requires provider/
 topology/status/features/system/device-use and assembled complete-impact collection;
 later privilege/state/recovery/mutation/client/browser/resource gates remain open.
 Manual M1 accessibility and physical/commercial qualification remain pending.
+
+The current native gate adds six [feature/profile assertions](features.md) to
+these 36 cases. The pool manifest preserves its original tested input hashes
+and results; later feature checks do not retroactively qualify it.

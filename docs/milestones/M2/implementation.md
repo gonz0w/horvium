@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset validated; maintainer review pending.
+Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset implementing.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -64,12 +64,16 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   Both pinned guests passed all 28 property/identity/state assertions and teardown
   (run 37246040343, source `6dd07d2b5a52569c97f9b7524476348ecd7faeaf`).
   No complete eligibility or runtime adapter follows.
-- Slice 1 pool observation subset binds permanent/import identities and policy
+- Slice 1 pool observation subset accepted in [PR 25](https://github.com/gonz0w/horvium/pull/25),
+  merged source `9f6cc07d3c19f84b656e9130283b21eaa7c7ce13`: binds permanent/import identities and policy
   metadata to review; [pool contracts](../../testing/M2/pool-state.md).
   Both pinned guests passed all 36 property/identity/state/pool assertions and teardown
   (run 37247751495, source `552f203501c87822c96e9b712beea962b0f43d5a`).
-  Maintainer review pending in [PR 25](https://github.com/gonz0w/horvium/pull/25);
-  no complete eligibility or runtime adapter follows.
+  No complete eligibility or runtime adapter follows.
+- Slice 1 feature subset requires a complete GUID-bound native feature table and
+  immutable drift review; [feature contracts](../../testing/M2/features.md).
+  Exact common profile bytes are checked without a product file reader or creation
+  authority. Native execution pending; cross-release transfer/import remains open.
 - Slice 1 remains incomplete: native eligibility/provider/topology/status
   observations, complete-impact collection and device-use drift gates have not run. No later slice may treat
   model input booleans or old M1 inventory as qualified native write authority.

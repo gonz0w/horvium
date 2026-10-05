@@ -18,6 +18,7 @@ func fixture() (Policy, Observation, Intent) {
 	child := Filesystem{GUID: "102", Name: "tank/data", ParentGUID: "101", Properties: Properties{Quota: Value{"none", Default, "", ""}, RefQuota: Value{"none", Default, "", ""}, Compression: Value{"lz4", Inherited, "101", ""}}}
 	obs := Observation{Complete: true, PoolGUID: "100", PoolName: "tank", Eligible: true, Filesystems: []Filesystem{root, child}}
 	obs.Pool = poolFixture()
+	obs.Features = featureFixture()
 	obs.States = []FilesystemState{stateFixture(root), stateFixture(child)}
 	obs.Identities = []DatasetIdentity{{GUID: "101", Name: "tank", Type: FilesystemType}, {GUID: "102", Name: "tank/data", Type: FilesystemType}}
 	policy := Policy{Revision: 1, PoolGUID: "100", PoolName: "tank", Scopes: []Scope{{GUID: "101", Name: "tank", Properties: []Property{Quota, RefQuota, Compression}}, {GUID: "102", Name: "tank/data", ParentGUID: "101", Properties: []Property{Quota, Compression}}}}
@@ -321,6 +322,7 @@ func TestNewBaselinePreservesGUIDAfterRename(t *testing.T) {
 	}
 	o.PoolName = "renamed"
 	o.Pool.Name = "renamed"
+	o.Features.PoolName = "renamed"
 	if _, err := Build(instant, "session-a", p, o, i); !errors.Is(err, ErrDenied) {
 		t.Fatal("rename automatically enrolled", err)
 	}

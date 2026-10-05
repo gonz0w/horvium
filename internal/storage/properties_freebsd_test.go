@@ -14,6 +14,7 @@ import (
 	"reflect"
 	"regexp"
 	"strings"
+	"syscall"
 	"testing"
 	"time"
 )
@@ -54,6 +55,42 @@ func TestNativePropertyObservations(t *testing.T) {
 			t.Fatalf("fixture command %s failed (values withheld): %v", path, err)
 		}
 		return out
+	}
+	// Installed profile checks are fixture assertions only, not a product file reader.
+	profilePath := "/usr/share/zfs/compatibility.d/openzfs-2.2"
+	for _, path := range []string{"/", "/usr", "/usr/share", "/usr/share/zfs", "/usr/share/zfs/compatibility.d", profilePath} {
+		info, err := os.Lstat(path)
+		if err != nil || info.Mode()&os.ModeSymlink != 0 || info.Mode().Perm()&0022 != 0 {
+			t.Fatal("installed profile path unsafe (values withheld)")
+		}
+		stat, ok := info.Sys().(*syscall.Stat_t)
+		if !ok || stat.Uid != 0 {
+			t.Fatal("installed profile ownership unsafe")
+		}
+		if path == profilePath {
+			if !info.Mode().IsRegular() || info.Size() != 584 {
+				t.Fatal("installed profile shape unavailable")
+			}
+		} else if !info.IsDir() {
+			t.Fatal("installed profile ancestor unavailable")
+		}
+	}
+	profileData, err := os.ReadFile(profilePath)
+	if err != nil {
+		t.Fatal("installed profile read failed")
+	}
+	profileNames, err := CommonFeatureProfile(profileData)
+	if err != nil {
+		t.Fatal("installed common profile differs")
+	}
+	version := strings.TrimSpace(string(must("/bin/freebsd-version", "-u")))
+	format := ""
+	if strings.HasPrefix(version, "14.5-RELEASE") {
+		format = "freebsd-14.5"
+	} else if strings.HasPrefix(version, "15.1-RELEASE") {
+		format = "freebsd-15.1"
+	} else {
+		t.Fatal("unqualified fixture release")
 	}
 	var nonce [8]byte
 	if _, err := rand.Read(nonce[:]); err != nil {
@@ -121,7 +158,7 @@ func TestNativePropertyObservations(t *testing.T) {
 			return
 		}
 		if !t.Failed() {
-			t.Log("PROPERTY_OBSERVATION_RESULT default=pass local=pass inherited=pass received=pass shadowed=pass no_limit=pass rename=pass name_reuse=pass foreign_preservation=pass eligibility_denied=pass teardown=pass identity_binding=pass complete_filesystems=pass snapshot_owner=pass bookmark_owner=pass replicated_guid=pass snapshot_rename=pass snapshot_reuse=pass volume_denial=pass stable_enumeration=pass state_binding=pass mount_sources=pass readonly_denial=pass encrypted_loaded_denial=pass encrypted_unloaded_denial=pass encryption_root_binding=pass state_drift=pass state_preservation=pass pool_identity_binding=pass pool_source_metadata=pass pool_bootfs_denial=pass pool_readonly_denial=pass import_incarnation=pass reimport_drift=pass pool_preservation=pass pool_name_reuse=pass")
+			t.Log("PROPERTY_OBSERVATION_RESULT default=pass local=pass inherited=pass received=pass shadowed=pass no_limit=pass rename=pass name_reuse=pass foreign_preservation=pass eligibility_denied=pass teardown=pass identity_binding=pass complete_filesystems=pass snapshot_owner=pass bookmark_owner=pass replicated_guid=pass snapshot_rename=pass snapshot_reuse=pass volume_denial=pass stable_enumeration=pass state_binding=pass mount_sources=pass readonly_denial=pass encrypted_loaded_denial=pass encrypted_unloaded_denial=pass encryption_root_binding=pass state_drift=pass state_preservation=pass pool_identity_binding=pass pool_source_metadata=pass pool_bootfs_denial=pass pool_readonly_denial=pass import_incarnation=pass reimport_drift=pass pool_preservation=pass pool_name_reuse=pass feature_binding=pass feature_sources=pass feature_preservation=pass installed_profile=pass common_feature_set=pass feature_drift=pass")
 		}
 	})
 	if got := strings.TrimSpace(string(must("/sbin/mdconfig", "-l", "-n", "-f", backing))); got != strings.TrimPrefix(unit, "md") {
@@ -143,6 +180,24 @@ func TestNativePropertyObservations(t *testing.T) {
 			t.Fatal("native pool state denied (values withheld):", err)
 		}
 		return state
+	}
+	features := func() PoolFeatures {
+		rows := must("/sbin/zpool", "get", "-H", "-p", "-o", "name,property,value,source", "all", pool)
+		f, err := ParsePoolFeatures(rows, pool, format)
+		if err != nil {
+			t.Fatal("native features denied (values withheld):", err)
+		}
+		if err := VerifyPoolFeatures(ownedGUID, pool, f); err != nil {
+			t.Fatal("native feature completeness denied:", err)
+		}
+		return f
+	}
+	initialFeatures := features()
+	for _, v := range initialFeatures.Values {
+		independent := strings.TrimSpace(string(must("/sbin/zpool", "get", "-H", "-p", "-o", "value,source", v.Name, pool)))
+		if independent != v.State+"\t"+string(v.Source) {
+			t.Fatal("independent feature value/source differs")
+		}
 	}
 	initialPool := poolState()
 	if err := VerifyPoolState(ownedGUID, pool, initialPool); err != nil {
@@ -383,7 +438,7 @@ func TestNativePropertyObservations(t *testing.T) {
 		t.Fatal("canmount local source mismatch")
 	}
 	policy := Policy{Revision: 1, PoolGUID: ownedGUID, PoolName: pool, Scopes: []Scope{{GUID: data.GUID, Name: data.Name, ParentGUID: data.ParentGUID, Properties: []Property{RefQuota}}}}
-	observation := Observation{Complete: true, Eligible: true, PoolGUID: ownedGUID, PoolName: pool, Filesystems: parse(), Identities: identities(), States: baseline, Pool: poolState()}
+	observation := Observation{Complete: true, Eligible: true, PoolGUID: ownedGUID, PoolName: pool, Filesystems: parse(), Identities: identities(), States: baseline, Pool: poolState(), Features: features()}
 	plan, err := Build(time.Now(), "fixture-session", policy, observation, Intent{FilesystemGUID: data.GUID, Property: RefQuota, Value: "none"})
 	if err != nil {
 		t.Fatal("synthetic policy review failed", err)
@@ -464,8 +519,12 @@ func TestNativePropertyObservations(t *testing.T) {
 	if after := must("/sbin/zfs", "list", "-H", "-r", "-o", "name,mounted,mountpoint", pool); !bytes.Equal(mounts, after) {
 		t.Fatal("read-only projection changed mounts")
 	}
+	featureRead := features()
+	if !reflect.DeepEqual(featureRead, features()) {
+		t.Fatal("feature observations changed native state")
+	}
 	// Parsing provides no authority, even when every projected property is valid.
-	if _, err := Build(time.Now(), "fixture-session", Policy{Revision: 1, PoolGUID: "1", PoolName: pool}, Observation{Complete: true, PoolGUID: "1", PoolName: pool, Filesystems: files, Identities: identities(), States: states(), Pool: poolState()}, Intent{FilesystemGUID: root.GUID, Property: Quota, Value: "none"}); err != ErrUnavailable {
+	if _, err := Build(time.Now(), "fixture-session", Policy{Revision: 1, PoolGUID: "1", PoolName: pool}, Observation{Complete: true, PoolGUID: "1", PoolName: pool, Filesystems: files, Identities: identities(), States: states(), Pool: poolState(), Features: features()}, Intent{FilesystemGUID: root.GUID, Property: Quota, Value: "none"}); err != ErrUnavailable {
 		t.Fatal("parser enabled native eligibility", err)
 	}
 	must("/sbin/zfs", "rename", pool+"/data", pool+"/renamed")
@@ -480,7 +539,7 @@ func TestNativePropertyObservations(t *testing.T) {
 	// mounts or product recovery/import capability follows from fixture preparation.
 	latestFiles := parse()
 	latestRoot := find(latestFiles, "")
-	poolObservation := Observation{Complete: true, Eligible: true, PoolGUID: ownedGUID, PoolName: pool, Pool: poolState(), Filesystems: latestFiles, Identities: identities(), States: states()}
+	poolObservation := Observation{Complete: true, Eligible: true, PoolGUID: ownedGUID, PoolName: pool, Pool: poolState(), Filesystems: latestFiles, Identities: identities(), States: states(), Features: features()}
 	poolPolicy := Policy{Revision: 1, PoolGUID: ownedGUID, PoolName: pool, Scopes: []Scope{{GUID: latestRoot.GUID, Name: pool, Properties: []Property{RefQuota}}}}
 	poolPlan, err := Build(time.Now(), "fixture-session", poolPolicy, poolObservation, Intent{FilesystemGUID: latestRoot.GUID, Property: RefQuota, Value: "none"})
 	if err != nil {
@@ -525,7 +584,7 @@ func TestNativePropertyObservations(t *testing.T) {
 	}
 	oldGUID := ownedGUID
 	must("/sbin/zpool", "destroy", pool)
-	must("/sbin/zpool", "create", "-m", "none", "-o", "cachefile=none", pool, "/dev/"+unit)
+	must("/sbin/zpool", "create", "-m", "none", "-o", "cachefile=none", "-o", "compatibility="+profilePath, pool, "/dev/"+unit)
 	ownedGUID = strings.TrimSpace(string(must("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", pool)))
 	reused := poolState()
 	if !validGUID(ownedGUID) || ownedGUID == oldGUID || reused.Name != pool {
@@ -534,5 +593,60 @@ func TestNativePropertyObservations(t *testing.T) {
 	if err := VerifyPoolState(oldGUID, pool, reused); !errors.Is(err, ErrDrift) {
 		t.Fatal("old pool identity accepted for reused name", err)
 	}
+
+	common := features()
+	allowed := make(map[string]bool)
+	for _, name := range profileNames {
+		allowed["feature@"+name] = true
+	}
+	for _, v := range common.Values {
+		if allowed[v.Name] {
+			if v.State != "enabled" && v.State != "active" {
+				t.Fatal("common profile feature missing")
+			}
+		} else if v.State != "disabled" {
+			t.Fatal("feature outside common profile enabled")
+		}
+	}
+	if poolState().Compatibility.Effective != profilePath {
+		t.Fatal("fixture compatibility profile not retained")
+	}
+	// Create only owned versions to activate a known feature and compare the fresh
+	// native observations under counterfactual trusted model inputs. No eligibility
+	// collector or product mutation is exercised by this fixture setup.
+	commonFiles := parse()
+	commonRoot := find(commonFiles, "")
+	commonObs := Observation{Complete: true, Eligible: true, PoolGUID: ownedGUID, PoolName: pool, Pool: poolState(), Features: common, Filesystems: commonFiles, Identities: identities(), States: states()}
+	commonPolicy := Policy{Revision: 1, PoolGUID: ownedGUID, PoolName: pool, Scopes: []Scope{{GUID: commonRoot.GUID, Name: pool, Properties: []Property{RefQuota}}}}
+	commonPlan, err := Build(time.Now(), "fixture-session", commonPolicy, commonObs, Intent{FilesystemGUID: commonRoot.GUID, Property: RefQuota, Value: "none"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	stateOf := func(f PoolFeatures, name string) string {
+		for _, v := range f.Values {
+			if v.Name == "feature@"+name {
+				return v.State
+			}
+		}
+		t.Fatal("fixture feature absent")
+		return ""
+	}
+	if stateOf(common, "bookmarks") != "enabled" {
+		t.Fatal("bookmarks fixture baseline unexpected")
+	}
+	must("/sbin/zfs", "snapshot", pool+"@feature_probe")
+	must("/sbin/zfs", "bookmark", pool+"@feature_probe", pool+"#feature_probe")
+	commonObs.Features = features()
+	commonObs.Identities = identities()
+	commonObs.Filesystems = parse()
+	commonObs.States = states()
+	if stateOf(commonObs.Features, "bookmarks") != "active" {
+		t.Fatal("native feature activation not observed")
+	}
+	if err := commonPlan.Validate(time.Now(), "fixture-session", commonPolicy, commonObs); !errors.Is(err, ErrDrift) {
+		t.Fatal("native feature/version drift ignored", err)
+	}
+	must("/sbin/zfs", "destroy", pool+"#feature_probe")
+	must("/sbin/zfs", "destroy", pool+"@feature_probe")
 
 }

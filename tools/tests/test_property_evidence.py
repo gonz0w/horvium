@@ -16,7 +16,9 @@ RESULT = ('PROPERTY_OBSERVATION_RESULT default=pass local=pass inherited=pass '
           'encryption_root_binding=pass state_drift=pass state_preservation=pass '
           'pool_identity_binding=pass pool_source_metadata=pass pool_bootfs_denial=pass '
           'pool_readonly_denial=pass import_incarnation=pass reimport_drift=pass '
-          'pool_preservation=pass pool_name_reuse=pass')
+          'pool_preservation=pass pool_name_reuse=pass feature_binding=pass '
+          'feature_sources=pass feature_preservation=pass installed_profile=pass '
+          'common_feature_set=pass feature_drift=pass')
 PASS = '--- PASS: TestNativePropertyObservations (1.0s)\n'
 
 class PropertyEvidenceTests(unittest.TestCase):
@@ -41,6 +43,7 @@ class PropertyEvidenceTests(unittest.TestCase):
                        RESULT.replace('identity_binding=pass', ''),
                        RESULT.replace('state_binding=pass', ''),
                        RESULT.replace('import_incarnation=pass', ''),
+                       RESULT.replace('installed_profile=pass', ''),
                        RESULT.replace('teardown=pass', 'teardown=fail'),
                        RESULT + ' override=pass', RESULT + ' teardown=pass']:
             with self.subTest(record=record), self.assertRaises(ValueError):

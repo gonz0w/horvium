@@ -18,7 +18,7 @@ This is the first part of slice 1, not completed slice 1 or M2 acceptance.
 Trusted prospective helper inputs are a per-pool local policy and a fresh,
 complete filesystem/property observation, independent dataset identity/type table
 and complete filesystem mount/readonly/crypto state table, plus a matching
-pool identity/import/policy observation. The policy explicitly selects pool and
+pool identity/import/policy observation and complete GUID-bound feature table. The policy explicitly selects pool and
 filesystem GUIDs, baseline names/parents and each allowed property. Observation,
 names, property sources and caller claims cannot create scopes. The observation's
 eligibility flag is a prospective native-adapter obligation, not proof from a
@@ -105,3 +105,6 @@ and [filesystem state evidence](dataset-state.md). There are no M2 mutation, sta
 browser or performance execution results. Every complete
 Test Design row remains pending. The retained M1 native results qualify M1 only;
 Safari/manual accessibility remains pending by maintainer choice.
+
+[Feature observation contracts](features.md) add immutable, normalized feature
+states and exact common profile byte checks; they do not qualify product creation.
