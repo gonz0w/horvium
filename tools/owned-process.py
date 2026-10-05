@@ -75,6 +75,20 @@ def native_cleanup(directory, interrupted):
     directory = private_directory(directory)
     if directory.parent != ROOT / '.tools/lab-runs':
         raise ValueError('native cleanup outside local lab refused')
+    device_error = None
+    try:
+        devices = directory / 'devices'
+        if devices.exists() or devices.is_symlink():
+            if devices.is_symlink():
+                devices.unlink()
+            else:
+                import importlib.util
+                spec = importlib.util.spec_from_file_location('device_fixture', ROOT / 'tools/device-fixture.py')
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+                module.remove(devices)
+    except Exception as error:
+        device_error = str(error)
     for name in ('fixture-key', 'vars.fd'):
         (directory / name).unlink(missing_ok=True)
     image = directory / 'image'
@@ -85,10 +99,14 @@ def native_cleanup(directory, interrupted):
     result = directory / 'result.json'
     record = json.loads(result.read_text()) if result.exists() else {}
     if interrupted:
-        record.update(qualified=False, failure='supervisor interrupted the run')
+        record.update(qualified=False, failure='supervisor interrupted the run or worker failed')
+    if device_error:
+        record.update(qualified=False, cleanup_failure=device_error)
     record['supervisor_fixture_cleanup'] = True
     record['supervisor_group_cleaned'] = True
     write_record(result, record)
+    if device_error:
+        raise ValueError('device fixture cleanup failed: ' + device_error)
 
 
 def supervise(directory):

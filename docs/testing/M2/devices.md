@@ -1,6 +1,7 @@
 # M2 disposable virtual device identity fixture
 
-Date: 2026-10-05. Status: local fixture checks passed; repaired native qualification and PR 28 CI blocked by GitHub account limits.
+Date: 2026-10-05. Status: local fixture checks passed; repaired native qualification is pending
+through the supervised Mac runner. GitHub Actions are disabled.
 [Approved EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [implementation sequence](../../milestones/M2/implementation.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -47,13 +48,14 @@ Both release revisions are retained in the source hash record.
 
 ## Ownership, observations and teardown
 
-`tools/device-fixture.py` exclusively creates the fixed backing set and a wrapper
-in a new private fixture directory. It has no arbitrary host disk argument.
-Version/accelerator probes pass through; launch requires a snapshot boot drive,
-with bounded optional firmware drives. It appends only the five declared devices.
-The wrapper calls `/usr/bin/qemu-system-x86_64` directly; the actual QEMU and pinned
-AnyVM remain unmodified. Before launch, verify backing file shape, size and SHA-256.
-Reject option-delimiter paths and symlink paths/files.
+`tools/device-fixture.py` exclusively creates the fixed backing set in a new
+private directory beneath the disposable guest fixture. It accepts no host disk
+input. The local runner launches the actual installed QEMU directly, using its
+snapshot boot drive and bounded optional firmware drives; the appender attaches
+only the five declared test devices after verifying size, mode and SHA-256.
+Reject option-delimiter paths and symlink paths/files. No PATH wrapper, hardcoded
+Linux QEMU path or host `/proc` identity machinery is required. QEMU and the
+pinned upstream runtime/cache artifacts remain unchanged.
 
 The guest runs only read operations:
 
@@ -84,33 +86,34 @@ adds no partitioning, labels, pool creation, mounts, swap or guest disk writes.
 The whole-device hashes verify the read-only test's content preservation; they
 are not a production signature probe or destructive-use allowlist.
 
-The host records the launched QEMU PID, kernel process start ticks and exact argument
-hash. Cleanup checks all three and the real executable before sending SIGTERM;
-PID/command mismatch refuses the signal. Verify termination (or a zombie with no
-remaining executor/file descriptors), then rehash the complete raw backings,
-remove only the declared files/wrapper/records and require directory absence.
-Global snapshot mode keeps the original backings and verified base image unchanged.
-Any startup, assertion, cleanup or pin failure invalidates evidence; discard the
-runner/guest. Process identity checks here are Linux QEMU test infrastructure,
-not a FreeBSD product dependency or M2 executor-containment qualification.
+The [lease supervisor](../local-qualification.md#teardown) owns the foreground
+guest worker and all its child processes. It reserves the worker leader PID until
+group cleanup completes, stops/reaps the owned group and never signals stored
+PIDs from an earlier run. The worker stops/reaps its direct QEMU child before
+rehashing backings and removing the five declared files/manifest. The supervisor
+provides fixed-path fallback removal after abrupt controller death; interrupted
+runs remain unqualified. Unknown entries are preserved and make cleanup fail.
+Backing tampering fails preservation even when disposable files are removed.
+Global snapshot mode preserves the raw originals and verified base image.
 
 ## Execution and evidence
 
-`bsd-devices.yml` is a checksum-pinned opt-in two-release workflow. Before that
-new workflow exists on main, use the existing registered dispatch entry:
+Use a clean signed checkout and select each disposable guest explicitly:
 
 ```sh
-gh workflow run bsd-properties.yml --ref <review-branch> -f device_fixture=true
+python3.14 tools/local-qualification.py devices 15.1 --run
+python3.14 tools/local-qualification.py devices 14.5 --run
+make lab-status
 ```
 
-The property workflow's default behavior stays unchanged; the opt-in fixture selects
-the new sibling workflow. It uses the same verified disposable base images,
-AnyVM, Go toolchain and fresh two-CPU/6,144 MiB snapshot guests as prior evidence.
-No NAS service is installed or enabled.
+Run releases sequentially on the Mac. The two-CPU, 6144 MiB, amd64 TCG guests
+inherit the authenticated base-image/cache, firmware, source archive and isolated
+SSH procedure. No host SSH configuration, service or production disk is used.
+GitHub Actions remain disabled; no hosted dispatch or billing adjustment is needed.
 
 Failing-first fixture/evidence tests cover declared-only launch, non-snapshot or
-extra-boot-drive refusal, backing size/content/symlink changes, process identity
-mismatch and skipped/incomplete/duplicate/failed assertion rejection. Local unit,
+extra-boot-drive refusal, backing size/content/symlink changes, private-directory refusal, cleanup after changed/partially prepared backings,
+foreign-entry preservation and skipped/incomplete/duplicate/failed assertions. Local unit,
 race, parser fuzz and FreeBSD cross-build results are separate from native evidence.
 The checker requires one executed native test and eight exact guest assertions,
 plus one successful host preservation/termination/teardown result; booting a VM,
@@ -135,15 +138,14 @@ failures, successful initial host cleanup/pin checks, repaired local checked
 source/input hashes, inspected primary sources and the unstarted native/CI jobs.
 Local `make check lint test secrets`, `make go-check` (vet/unit/race/twelve bounded
 fuzz targets) and the FreeBSD amd64 inventory test-binary cross-build passed.
-The repaired suite still needs actual execution on both guests, complete teardown
-and successful current-head CI. PR 28 remains a draft pending those gates.
+Current qualification runs locally; the original blocked jobs stay in the
+historical manifest. Both guests must execute all eight repaired assertions,
+preserve the base/runtime/backings, remove declared fixtures and stop the owned
+group. Current-head `make review` evidence and maintainer review are required.
+PR 28 stays draft until those actual gates pass; passing regressions alone never
+qualify the fixture or enable device operations.
 
-Once GitHub Actions account billing/limits are restored, dispatch the device fixture
-from the latest PR branch with the command above and rerun the current-head
-repository checks. Do not accept this fixture or enable any device operation from
-the locally passing regression alone.
-
-Native qualification must record both run/job IDs, exact tested inputs and tool/
+Native qualification must record local source/suite records, exact tested inputs and tool/
 source/image hashes, actual guest versions and observed geometry. Do not export raw
 GEOM/boot inventory, credentials or private keys. Earlier projection manifests
 retain their original sources/case sets. This is partial M2-DEVICE-001/M2-NATIVE-001

@@ -58,12 +58,43 @@ class DeviceFixtureTests(unittest.TestCase):
             with self.assertRaises(FileExistsError): m.prepare(Path(tmp).resolve(), size=4096)
             with self.assertRaises(ValueError): m.prepare(Path(tmp).resolve()/'a,b', size=4096)
 
-    def test_pid_reuse_and_command_mismatch_cannot_authorize_cleanup_signal(self):
-        m=self.module()
-        args=[b'/usr/bin/qemu-system-x86_64',b'-snapshot',b'-drive',b'file=/owned']
-        record={'pid':1234,'start_ticks':'9876','argv_sha256':hashlib.sha256(b'\0'.join(args[1:])).hexdigest()}
-        self.assertEqual(m.verify_process(record,args,'9876'),1234)
-        for ticks,argv in [('9877',args),('9876',[b'/usr/bin/other']+args[1:]),('9876',args+[b'-drive',b'file=/foreign'])]:
-            with self.subTest(ticks=ticks,argv=argv),self.assertRaises(ValueError):m.verify_process(record,argv,ticks)
-        for pid in [True,1,0,-1,'1234']:
-            with self.subTest(pid=pid),self.assertRaises(ValueError):m.verify_process(dict(record,pid=pid),args,'9876')
+    def test_preservation_failure_still_removes_owned_disposable_backings(self):
+        m = self.module()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve() / 'devices'
+            m.prepare(root, size=4096)
+            (root / 'disk-0.raw').write_bytes(b'x' * 4096)
+            with self.assertRaises(ValueError):
+                m.cleanup(root, size=4096)
+            self.assertFalse(root.exists())
+
+    def test_partial_preparation_cleanup_preserves_foreign_entries(self):
+        m = self.module()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve() / 'devices'
+            root.mkdir(mode=0o700)
+            (root / 'disk-0.raw').write_text('owned')
+            (root / 'sentinel').write_text('foreign')
+            with self.assertRaises(OSError):
+                m.remove(root)
+            self.assertEqual((root / 'sentinel').read_text(), 'foreign')
+            self.assertFalse((root / 'disk-0.raw').exists())
+
+    def test_fixture_is_private_and_contains_no_linux_launcher(self):
+        m = self.module()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve() / 'devices'
+            m.prepare(root, size=4096)
+            self.assertFalse((root / 'bin').exists())
+            self.assertEqual(len(list(root.iterdir())), 6)
+            root.chmod(0o755)
+            with self.assertRaises(ValueError):
+                m.verify(root, size=4096)
+
+    def test_detached_qemu_launch_cannot_escape_supervision(self):
+        m = self.module()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve() / 'devices'
+            m.prepare(root, size=4096)
+            with self.assertRaises(ValueError):
+                m.command(['-snapshot', '-drive', 'file=/fixture/base', '-daemonize'], root, size=4096)

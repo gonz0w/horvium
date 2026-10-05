@@ -59,10 +59,9 @@ workflow execution; no account-wide dollar saving is claimed.
 ## Infrastructure still needed
 
 The Mac handles portable checks and the already executed foundation/property
-FreeBSD guests. Nothing persistent needs to be installed. The PR 28 device
-fixture uses Linux process identity/device attachment and still needs a Linux
-host or a reviewed Mac adaptation before native evidence can pass. Pinned
-Firefox also needs Linux, and emulated Mac performance is not a replacement for
+FreeBSD guests. Nothing persistent needs to be installed. PR 28's device
+fixture now uses supervised local attachment on the Mac; its native results must
+be reviewed before acceptance. Pinned Firefox also needs Linux, and emulated Mac performance is not a replacement for
 KVM/physical qualification.
 
 A later disposable x86-64 Linux VM with four vCPUs, 16 GB RAM, approximately 40 GB

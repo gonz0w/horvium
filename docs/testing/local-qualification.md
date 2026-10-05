@@ -56,7 +56,7 @@ python3.14 tools/local-qualification.py properties 14.5 --run
 ```
 
 Supported suites: `foundation`, `research`, `discovery`, `properties`,
-`continuity`, `performance`. Run the two release candidates **sequentially** on
+`continuity`, `performance`, `devices`. Run the two release candidates **sequentially** on
 the Mac. Each guest has two CPUs, 6,144 MiB RAM, qemu64 and snapshot storage.
 Reserve additional RAM for macOS; stop other large workloads while testing.
 These are lab allocations, not Horvium runtime hardware requirements.
@@ -74,10 +74,11 @@ TCG/host/QEMU/firmware independently; results cannot be compared directly with
 hosted/KVM measurements or physical performance. KVM acceleration and macOS ARM
 FreeBSD qualification require a separately reviewed extension.
 
-The virtual-disk fixture in PR 28 is not supported by this runner yet. Its Linux
-process-identity and device attachment wrapper needs a separate Mac adaptation
-and native execution before that gate can pass. Do not count property-suite
-success as device/provider safety proof.
+The [device fixture](M2/devices.md) now uses this supervisor and appends only its
+five newly created snapshot raw disks. Both releases require actual qualification
+before claiming device-fixture observations; property-suite success remains
+separate from device/provider safety proof. Teardown rehashes/removes declared
+backings after stopping QEMU, with supervisor fallback for controller death.
 
 ## Isolation, cache and evidence
 

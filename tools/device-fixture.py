@@ -6,9 +6,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
-import signal
 import stat
-import time
 
 SIZE = 512 << 20
 DISKS = [('HVM-UNIQUE-512', 512, 4096), ('HVM-UNIQUE-4K', 4096, 4096),
@@ -41,20 +39,13 @@ def prepare(root, size=SIZE):
         records.append({'file': path.name, 'serial': serial, 'logical': logical,
                         'physical': physical, 'bytes': size, 'sha256': digest(path)})
     (root / 'disks.json').write_text(json.dumps(records, sort_keys=True) + '\n')
-    # PATH selects this wrapper only for this disposable launch. AnyVM and the
-    # actual /usr/bin QEMU remain unmodified and separately checksum-recorded.
-    bindir = root / 'bin'; bindir.mkdir(mode=0o700)
-    wrapper = bindir / 'qemu-system-x86_64'
-    source = str(Path(__file__).resolve())
-    wrapper.write_text('#!/usr/bin/python3\nimport runpy,sys\n'
-                       f"runpy.run_path({source!r})['launch'](sys.argv[1:], {str(root)!r})\n")
-    wrapper.chmod(0o700)
 
 
 def verify(root, size=SIZE):
     root = directory(root)
-    if root.is_symlink() or not root.is_dir():
-        raise ValueError('fixture directory unavailable')
+    info = root.lstat()
+    if not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or info.st_mode & 0o077:
+        raise ValueError('fixture directory must remain owned and private')
     expected = json.loads((root / 'disks.json').read_text())
     if len(expected) != len(DISKS):
         raise ValueError('fixture manifest incomplete')
@@ -76,7 +67,7 @@ def command(args, root, size=SIZE):
     boot_drives = [d for d in drives if 'if=pflash' not in d.split(',')]
     if args.count('-snapshot') != 1 or len(boot_drives) != 1 or len(drives) > 3:
         raise ValueError('requires one disposable snapshot boot drive')
-    if '-pidfile' in args or '-blockdev' in args:
+    if any(flag in args for flag in ('-pidfile', '-blockdev', '-daemonize')):
         raise ValueError('unexpected disk/process options')
     root = directory(root)
     verify(root, size=size)
@@ -88,62 +79,25 @@ def command(args, root, size=SIZE):
     return list(args) + extra
 
 
-def start_ticks(pid):
-    return Path(f'/proc/{pid}/stat').read_text().rsplit(')', 1)[1].split()[19]
-
-
-def launch(args, root):
-    qualified = command(args, root)
-    if qualified != args:
-        record = {'pid': os.getpid(), 'start_ticks': start_ticks(os.getpid()),
-                  'argv_sha256': hashlib.sha256(b'\0'.join(x.encode() for x in qualified)).hexdigest()}
-        with (Path(root) / 'process.json').open('x') as out:
-            json.dump(record, out)
-    os.execv('/usr/bin/qemu-system-x86_64', ['/usr/bin/qemu-system-x86_64'] + qualified)
-
-
-def verify_process(record, argv, ticks):
-    pid = record['pid']
-    if (type(pid) is not int or pid < 2 or ticks != record['start_ticks']
-            or not argv or argv[0] != b'/usr/bin/qemu-system-x86_64'
-            or hashlib.sha256(b'\0'.join(argv[1:])).hexdigest() != record['argv_sha256']):
-        raise ValueError('fixture process identity changed; discard runner')
-    return pid
-
-
-def active_process(proc):
-    try:
-        return proc.joinpath('stat').read_text().rsplit(')', 1)[1].split()[0] != 'Z'
-    except FileNotFoundError:
-        return False
-
-
-def cleanup(root):
+def remove(root):
+    """Caller must stop/reap the owned guest/group before deleting its files."""
     root = directory(root)
-    record = json.loads((root / 'process.json').read_text())
-    pid = record['pid']
-    if type(pid) is not int or pid < 2:
-        raise ValueError('unsafe fixture process')
-    proc = Path(f'/proc/{pid}')
-    if proc.exists():
-        argv = (proc / 'cmdline').read_bytes().rstrip(b'\0').split(b'\0')
-        verify_process(record, argv, start_ticks(pid))
-        os.kill(pid, signal.SIGTERM)
-        deadline = time.monotonic() + 10
-        while active_process(proc) and time.monotonic() < deadline:
-            # A terminated child can remain as a zombie awaiting AnyVM/init;
-            # its file descriptors and backing access have already ended.
-            time.sleep(0.05)
-        if active_process(proc):
-            raise ValueError('fixture process still active; discard runner')
-    verify(root)
+    info = root.lstat()
+    if not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or info.st_mode & 0o077:
+        raise ValueError('untrusted fixture directory')
     for i in range(len(DISKS)):
-        (root / f'disk-{i}.raw').unlink()
-    (root / 'disks.json').unlink(); (root / 'process.json').unlink()
-    (root / 'bin/qemu-system-x86_64').unlink(); (root / 'bin').rmdir(); root.rmdir()
-    if root.exists():
-        raise ValueError('fixture remains')
-    print('DEVICE_FIXTURE_CLEANUP pass')
+        (root / f'disk-{i}.raw').unlink(missing_ok=True)
+    (root / 'disks.json').unlink(missing_ok=True)
+    # Unknown entries are preserved and make cleanup fail; never rmtree a
+    # device directory or follow a backing symlink into another resource.
+    root.rmdir()
+
+
+def cleanup(root, size=SIZE):
+    try:
+        verify(root, size=size)
+    finally:
+        remove(root)
 
 
 def main():

@@ -73,5 +73,6 @@ and the separate approved [M2 Test Design](../milestones/M2/TDD.md).
 
 M2 virtual device fixture: [identity/geometry procedure](../testing/M2/devices.md)
 local gates passed; both initial guests failed a repaired consumer assumption.
-GitHub account billing/spending limits blocked repaired native jobs and PR 28 CI
-before any step; qualification remains pending. This fixture adds no product write eligibility.
+Original repaired jobs were unstarted under the account scheduling block.
+Actions are now disabled; the rebased fixture uses the Mac lease supervisor,
+with actual two-release qualification pending. This fixture adds no product write eligibility.
