@@ -81,5 +81,7 @@ failures remain separate historical evidence. PR 28 accepted this fixture; compl
 provider/use/physical safety and product write eligibility remain unqualified.
 
 M2 disk correlation: [bounded parser/contract](../testing/M2/disk-correlation.md)
-local behavioral checks passed; both native targets are pending. It is not wired
-into collection or storage planning and grants no device-use/write eligibility.
+all twelve fixture/correlation assertions and complete preservation/teardown passed
+on both targets through the Mac supervisor; see the [native manifest](../testing/M2/disk-correlation-manifest.json).
+Maintainer review is pending. It is not wired into collection or storage planning
+and grants no device-use/write eligibility.

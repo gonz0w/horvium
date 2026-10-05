@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation in progress; Actions disabled.
+Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation qualified; review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -97,8 +97,10 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   complete device-use proof or creation authority follows from fixture qualification.
 - Slice 1 next subset: [native disk correlation](../../testing/M2/disk-correlation.md)
   binds bounded diskinfo serial/geometry to a complete GEOM capture, refusing
-  ambiguous identity and non-direct providers. Local behavioral checks passed;
-  both native targets remain required. Runtime/authority wiring stays absent.
+  ambiguous identity and non-direct providers. Source `031dbe715c0c0d6d94b92c19689f4fd78123c23b`
+  passed all twelve assertions and complete backing/base/runtime/group teardown
+  on both targets through the Mac runner. See the [native manifest](../../testing/M2/disk-correlation-manifest.json).
+  Maintainer review is pending; runtime/authority wiring stays absent.
 - Slice 1 remains incomplete: assembled native eligibility/provider proofs, full
   status/scan interpretation, complete-impact collection and device-use drift gates
   have not run. No later slice may treat

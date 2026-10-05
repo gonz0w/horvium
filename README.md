@@ -32,7 +32,8 @@ The [virtual device fixture](docs/testing/M2/devices.md) passed its eight native
 identity/geometry assertions and complete teardown on both targets;
 [PR 28](https://github.com/gonz0w/horvium/pull/28) accepted the fixture.
 The [native disk correlator](docs/testing/M2/disk-correlation.md) is the next
-read-only provider-safety subset; native qualification is pending. Other native
+read-only provider-safety subset; all twelve assertions and complete teardown
+passed on both targets, with maintainer review pending. Other native
 gates, durable jobs and storage writes remain pending; the runtime is still read-only.
 
 ## Agreed direction

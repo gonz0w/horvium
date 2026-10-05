@@ -62,6 +62,10 @@ func TestDiskObservationRejectsMalformedOrContradictoryGeometry(t *testing.T) {
 		strings.Replace(diskInfoFixture, "/dev/ada0", "/dev/ada0p1", 1),
 		strings.Replace(diskInfoFixture, "4096", "04096", 1),
 		strings.Replace(diskInfoFixture, "4096", "512", 1),
+		// Internally consistent rows must still bind to GEOM, rather than
+		// succeeding merely because their own capacity arithmetic agrees.
+		"/dev/ada0\t512\t3000000000000\t5859375000\t0\t0\n",
+		"/dev/ada0\t4096\t3000000004096\t732421876\t0\t0\n",
 		strings.Replace(diskInfoFixture, "4096", "0", 1),
 		strings.Replace(diskInfoFixture, "3000000000000", "3000000000001", 1),
 		strings.Replace(diskInfoFixture, "3000000000000", "9223372036854775808", 1),

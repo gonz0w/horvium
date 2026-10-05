@@ -1,6 +1,7 @@
 # M2 native disk correlation
 
-Date: 2026-10-05. Status: local behavioral checks passed; native qualification pending.
+Date: 2026-10-05. Status: all twelve native assertions and complete host teardown passed on both
+FreeBSD targets; maintainer review pending.
 [Approved EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
@@ -70,7 +71,14 @@ make lab-status
 
 Use clean signed source and run guests sequentially on the Mac. All disks are
 new fixture-owned 64 MiB snapshot virtio backings; no operator devices are used.
-Source-bound two-release evidence is pending. Older eight-assertion manifests
+Source `031dbe715c0c0d6d94b92c19689f4fd78123c23b` passed all twelve assertions on FreeBSD
+15.1-RELEASE-p3 and 14.5-RELEASE through Mac arm64/QEMU 11.1.1 TCG (two CPUs,
+6144 MiB). Both runs preserved the complete raw backings, base image and
+QEMU/firmware and removed all disks/image/key/variables with verified owned-group
+teardown. The [sanitized execution manifest](disk-correlation-manifest.json)
+records exact input hashes, actual versions/utility/image/runtime hashes and
+outcomes. Final PR-head portable evidence is recorded separately in the PR;
+fixture input changes require fresh qualification. Older eight-assertion manifests
 retain their original tested source and cannot qualify this parser. No complete
 M2-DEVICE-001, product mutation, physical controller or production claim follows.
 
