@@ -11,7 +11,8 @@ CASES = {'default', 'local', 'inherited', 'received', 'shadowed', 'no_limit',
          'state_binding', 'mount_sources', 'readonly_denial', 'encrypted_loaded_denial',
          'encrypted_unloaded_denial', 'encryption_root_binding', 'state_drift', 'state_preservation',
          'pool_identity_binding', 'pool_source_metadata', 'pool_bootfs_denial', 'pool_readonly_denial',
-         'import_incarnation', 'reimport_drift', 'pool_preservation', 'pool_name_reuse'}
+         'import_incarnation', 'reimport_drift', 'pool_preservation', 'pool_name_reuse', 'feature_binding', 'feature_sources',
+         'feature_preservation', 'installed_profile', 'common_feature_set', 'feature_drift'}
 
 def validate(text):
     if len(text) > 1 << 20 or re.search(r'(?m)^(?:FAIL|--- (?:FAIL|SKIP):)', text):

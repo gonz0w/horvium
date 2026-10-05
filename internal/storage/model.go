@@ -69,6 +69,19 @@ type PoolState struct {
 	Health, Readonly, BootFS, AltRoot, CacheFile, Compatibility, MultiHost PoolValue
 }
 
+// PoolFeature is an observed native feature property, never an enable request.
+type PoolFeature struct {
+	Name, State string
+	Source      Source
+}
+
+// PoolFeatures records the complete feature projection for a qualified format.
+// Format selection remains a trusted future native adapter obligation.
+type PoolFeatures struct {
+	PoolGUID, PoolName, Format string
+	Values                     []PoolFeature
+}
+
 type DatasetType string
 
 const (
@@ -97,6 +110,7 @@ type Observation struct {
 	Identities         []DatasetIdentity
 	States             []FilesystemState
 	Pool               PoolState
+	Features           PoolFeatures
 }
 
 // Policy is trusted local enrollment, never request-supplied authority. GUIDs
@@ -133,6 +147,7 @@ type Review struct {
 	Versions             []DatasetIdentity
 	States               []FilesystemState
 	Pool                 PoolState
+	Features             PoolFeatures
 }
 
 // Plan contains only private state and returns independent review copies. It is

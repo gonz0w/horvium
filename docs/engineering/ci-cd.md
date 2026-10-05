@@ -125,3 +125,9 @@ M2 property qualification also requires pool identity/source correlation, bootfs
 and readonly refusal, import incarnation/review drift, policy preservation and
 name reuse. See [pool qualification](../testing/M2/pool-state.md); these observation
 results do not qualify topology, system/device safety or product recovery/import.
+
+M2 property qualification additionally requires feature GUID/source binding,
+read preservation, installed common profile/hash, resulting feature set and
+feature/version review drift. The checker requires all 42 assertions and teardown.
+See [feature qualification](../testing/M2/features.md); cross-release transfer/import
+and product installed-profile/device/creation gates remain pending.
