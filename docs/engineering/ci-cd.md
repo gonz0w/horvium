@@ -131,3 +131,10 @@ read preservation, installed common profile/hash, resulting feature set and
 feature/version review drift. The checker requires all 42 assertions and teardown.
 See [feature qualification](../testing/M2/features.md); cross-release transfer/import
 and product installed-profile/device/creation gates remain pending.
+
+M2 native qualification additionally requires complete paired vdev topology,
+mirror/RAIDZ2 fixtures, independent vdev membership, degraded/unsupported refusal,
+membership drift, read preservation and vdev GUID reuse checks. The checker
+requires all 51 assertions and complete owned-fixture teardown. See
+[topology qualification](../testing/M2/topology.md); full scan/JSON status and
+provider/system/device-use qualification remain pending.

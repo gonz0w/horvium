@@ -24,7 +24,8 @@ both disposable FreeBSD targets and was accepted in PR 22. Dataset identity/type
 binding and version drift were accepted in PR 23. Filesystem mount/encryption
 constraints were accepted in PR 24. Pool identity/incarnation and policy
 observations were accepted in PR 25. Complete native feature observations and
-exact common profile checks passed on both pinned guests and await review in PR 26.
+exact common profile checks were accepted in PR 26. Native vdev membership,
+layout and topology drift checks are the next subset.
 Other native gates, durable jobs and storage
 writes remain pending; the runtime is still read-only.
 

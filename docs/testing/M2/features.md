@@ -1,6 +1,7 @@
 # M2 pool feature observations and common profile checks
 
-Date: 2026-10-04. Status: behavioral and pinned native subset passed; maintainer review pending.
+Date: 2026-10-04. Status: behavioral and pinned native subset accepted in [PR 26](https://github.com/gonz0w/horvium/pull/26),
+merged source `cb39ddfe9dbcd6505f8f9d3f0b257bbb511ee162`.
 Design: [approved EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [slice sequence](../../milestones/M2/implementation.md). Extends the
 [pool observations](pool-state.md); runtime remains read-only.
@@ -126,3 +127,8 @@ Slice 1 still requires provider/topology/status/system/device-use and assembled
 complete-impact collection. Durable state/privilege/recovery/mutation/client/
 browser/resource gates and physical/commercial qualification remain open.
 The maintainer's deferred M1 manual accessibility gate remains pending.
+
+The current native gate adds nine [topology assertions](topology.md) to these
+42 cases and uses owned redundant fixtures. This feature manifest preserves its
+original tested inputs and single-md fixture; later checks do not retroactively
+qualify it.
