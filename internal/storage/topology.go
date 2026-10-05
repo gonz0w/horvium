@@ -125,7 +125,7 @@ func parseStatus(data []byte, name string) (statusView, error) {
 		switch section {
 		case 0:
 			if body == "config:" {
-				if !seen["pool"] || !seen["state"] || !seen["scan"] {
+				if !seen["pool"] || !seen["state"] {
 					return zero, ErrUnavailable
 				}
 				section = 1
@@ -160,6 +160,7 @@ func parseStatus(data []byte, name string) (statusView, error) {
 				}
 				result.topology.Health = value
 			case "scan":
+				result.topology.ScanReported = true
 				result.topology.Scan = value
 				active = key
 			case "status", "action", "see":
@@ -325,7 +326,7 @@ func validateTopology(t PoolTopology) error {
 	if err := preflight(Policy{}, Observation{Topology: t}); err != nil {
 		return err
 	}
-	if !validGUID(t.PoolGUID) || !validName(t.PoolName) || strings.Contains(t.PoolName, "/") || !statusHealth(t.Health) || t.Scan == "" || !statusText(t.Scan) || !statusText(t.Diagnostics) || len(t.Nodes) == 0 {
+	if !validGUID(t.PoolGUID) || !validName(t.PoolName) || strings.Contains(t.PoolName, "/") || !statusHealth(t.Health) || (t.ScanReported != (t.Scan != "")) || !statusText(t.Scan) || !statusText(t.Diagnostics) || len(t.Nodes) == 0 {
 		return ErrInvalid
 	}
 	nodes := make(map[string]Vdev, len(t.Nodes))
@@ -367,7 +368,7 @@ func validateTopology(t PoolTopology) error {
 }
 
 // VerifyPoolTopology recognizes healthy homogeneous mirror or RAIDZ2 groups
-// only, with no leaf/root/data errors or annotations and no requested scan.
+// only, with no leaf/root/data errors or annotations and no reported scan activity in these qualified complete legacy formats.
 // It establishes neither provider provenance nor system/device-use safety.
 func VerifyPoolTopology(guid, name string, t PoolTopology) error {
 	if err := validateTopology(t); err != nil {
@@ -379,7 +380,7 @@ func VerifyPoolTopology(guid, name string, t PoolTopology) error {
 	if t.PoolGUID != guid || t.PoolName != name {
 		return ErrDrift
 	}
-	if t.Health != "ONLINE" || t.Scan != "none requested" || t.ReadErrors != 0 || t.WriteErrors != 0 || t.ChecksumErrors != 0 || t.DataErrors != 0 {
+	if t.Health != "ONLINE" || (t.ScanReported && t.Scan != "none requested") || t.ReadErrors != 0 || t.WriteErrors != 0 || t.ChecksumErrors != 0 || t.DataErrors != 0 {
 		return ErrUnavailable
 	}
 	children := make(map[string]int)

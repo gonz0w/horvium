@@ -13,7 +13,8 @@ Design: [approved EDD](../../milestones/M2/EDD.md), [Test Design](../../mileston
 ```
 
 `ParsePoolTopology` pairs complete successful GUID and resolved full-path views
-of the same pool. Require one pool/state/scan/config/header/error record, the
+of the same pool. Require one pool/state/config/header/error record, retain whether a scan record
+was reported, and require the
 exact five-column NAME/STATE/READ/WRITE/CKSUM header, root name/state agreement,
 and matching row counts, indentation, health, counters and annotations. Preserve
 non-root vdev GUID, parent GUID, sibling ordinal, current address, observed kind,
@@ -38,11 +39,19 @@ set the model's complete/eligible flags from status alone.
 leaves/group) or homogeneous RAIDZ2 groups (at least four), equal leaf counts in
 all groups, and only direct leaf children beneath them. Require zero root/leaf/
 intermediate read/write/checksum and pool data errors, no leaf annotation and
-scan exactly `none requested`. Missing evidence, stripes, mixed/unequal/nested/
+either no reported scan record in the qualified complete native format or an
+explicit `none requested` record. Omission remains `ScanReported=false` with
+empty scan text; it is never fabricated as an idle/completed scan result. Missing evidence, stripes, mixed/unequal/nested/
 unrecognized layouts, adverse health or errors refuse planning. Known unsupported
 bare group names and stripe leaves remain observable; unqualified class sections,
 auxiliary annotations and formats return unavailable, never healthy defaults.
 M1's broader read-only inventory remains available independently.
+
+Both pinned `print_scan_status` wrappers omit the scan line for fresh pools with
+no scrub/error-scrub/resilver/rebuild history to print. This qualified omission
+does not attest kernel quiescence or an attributable scan outcome. No parser can
+detect a whole record removed before capture; a future collector must execute
+the fixed successful command directly, without filtering or partial capture.
 
 Retain qualified status/action/see diagnostics and scan text without interpreting
 progress, completion or attribution. All active, paused, completed, cancelled or
@@ -116,7 +125,17 @@ creation devices or establish an assembled eligibility collector.
 
 ## Qualification and remaining work
 
-Both pinned guests must execute before native claims; a sanitized source/run/hash
+Initial run [37251352156](https://github.com/gonz0w/horvium/actions/runs/37251352156)
+failed on both guests at source `90f8e6df385f6daf41eb018cf35881a87f6b14dd`:
+the parser incorrectly required a scan line for a fresh pool. Neither failure
+provides acceptance evidence; base images/runtime pins still passed their post-checks.
+A failing regression now retains the qualified omitted line explicitly, including
+presence disagreement between views. Source inspection also corrected the fixture
+observer: older verbose `zpool list` emits fixed vdev columns despite custom root
+columns, so the independent check now requests the matching fixed ten columns.
+No generic fallback, unknown-format acceptance or product scan operation was added.
+
+Both pinned guests must execute the repaired suite before native claims; a sanitized source/run/hash
 manifest will record actual results. Earlier projection manifests retain their
 original source/case sets. JSON/status scan interpretation, provider classes,
 stable identity/geometry, system/device-use and complete-impact collection remain

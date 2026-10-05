@@ -93,6 +93,7 @@ type Vdev struct {
 // PoolTopology pairs qualified legacy GUID/path status views. The pool GUID
 // must come from an independent fresh native pool observation, not status text.
 type PoolTopology struct {
+	ScanReported                                        bool
 	PoolGUID, PoolName, Health, Scan, Diagnostics       string
 	ReadErrors, WriteErrors, ChecksumErrors, DataErrors uint64
 	Nodes                                               []Vdev

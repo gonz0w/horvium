@@ -234,7 +234,7 @@ func TestNativePropertyObservations(t *testing.T) {
 	}
 	independentTopology := func(x PoolTopology) {
 		for _, guidView := range []bool{true, false} {
-			args := []string{"list", "-H", "-p", "-v", "-o", "name,health"}
+			args := []string{"list", "-H", "-p", "-v", "-o", "name,size,allocated,free,checkpoint,expandsize,fragmentation,capacity,dedupratio,health"}
 			if guidView {
 				args = append(args, "-g")
 			} else {
@@ -244,10 +244,10 @@ func TestNativePropertyObservations(t *testing.T) {
 			observed := make(map[string]string)
 			for _, line := range strings.Split(strings.TrimSpace(string(must("/sbin/zpool", args...))), "\n") {
 				fields := strings.Fields(line)
-				if len(fields) != 2 || observed[fields[0]] != "" {
+				if len(fields) != 10 || observed[fields[0]] != "" {
 					t.Fatal("independent vdev table shape invalid")
 				}
-				observed[fields[0]] = fields[1]
+				observed[fields[0]] = fields[9]
 			}
 			if observed[pool] != x.Health || len(observed) != len(x.Nodes)+1 {
 				t.Fatal("independent vdev membership differs")

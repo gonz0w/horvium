@@ -9,7 +9,7 @@ import (
 )
 
 func topologyFixture() PoolTopology {
-	return PoolTopology{PoolGUID: "100", PoolName: "tank", Health: "ONLINE", Scan: "none requested", Nodes: []Vdev{
+	return PoolTopology{PoolGUID: "100", PoolName: "tank", Health: "ONLINE", Scan: "none requested", ScanReported: true, Nodes: []Vdev{
 		{GUID: "900", Address: "mirror-0", Kind: "mirror", Health: "ONLINE"},
 		{GUID: "901", ParentGUID: "900", Address: "/dev/ada0", Kind: "leaf", Health: "ONLINE"},
 		{GUID: "902", ParentGUID: "900", Address: "/dev/ada1", Kind: "leaf", Health: "ONLINE", Ordinal: 1},
@@ -241,5 +241,22 @@ func TestTopologyCountersAnnotationsAndUnavailableFormats(t *testing.T) {
 		if _, err := ParsePoolTopology([]byte(data), []byte(topologyPathRows), "tank", "100"); err == nil {
 			t.Fatal("unqualified format accepted")
 		}
+	}
+}
+
+func TestQualifiedLegacyScanOmissionIsRetained(t *testing.T) {
+	// Both inspected print_scan_status wrappers omit the line when there is no
+	// scrub/error-scrub/resilver/rebuild history to print. Keep absence explicit.
+	guids := strings.Replace(topologyGUIDRows, "  scan: none requested\n", "", 1)
+	paths := strings.Replace(topologyPathRows, "  scan: none requested\n", "", 1)
+	got, err := ParsePoolTopology([]byte(guids), []byte(paths), "tank", "100")
+	if err != nil || got.Scan != "" || got.ScanReported {
+		t.Fatal("qualified omission lost", err)
+	}
+	if err := VerifyPoolTopology("100", "tank", got); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ParsePoolTopology([]byte(guids), []byte(topologyPathRows), "tank", "100"); !errors.Is(err, ErrDrift) {
+		t.Fatal("scan presence disagreement ignored", err)
 	}
 }
