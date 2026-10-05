@@ -1,8 +1,9 @@
 # M2 disposable virtual device identity fixture
 
 Date: 2026-10-05. Status: all eight repaired assertions and complete preservation/teardown passed
-on both FreeBSD targets through the supervised Mac runner; maintainer review
-pending in PR 28. GitHub Actions remain disabled.
+on both FreeBSD targets through the supervised Mac runner;
+accepted in PR 28 at merged source `27dafaba7a5d04a4896f27776ef79f4b1f4c2bbc`.
+GitHub Actions remain disabled.
 [Approved EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [implementation sequence](../../milestones/M2/implementation.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -117,7 +118,8 @@ Failing-first fixture/evidence tests cover declared-only launch, non-snapshot or
 extra-boot-drive refusal, backing size/content/symlink changes, private-directory refusal, cleanup after changed/partially prepared backings,
 foreign-entry preservation and skipped/incomplete/duplicate/failed assertions. Local unit,
 race, parser fuzz and FreeBSD cross-build results are separate from native evidence.
-The checker requires one executed native test and eight exact guest assertions,
+For the [disk correlation extension](disk-correlation.md), the checker requires
+one executed native test, eight fixture assertions and four correlation assertions,
 plus one successful host preservation/termination/teardown result; booting a VM,
 a guest-only result or a skipped test cannot qualify this fixture.
 
@@ -169,7 +171,7 @@ listener stopped, all five backings/image/key/variables were removed, and the
 interrupted run remained unqualified. The complete local review gate passed on
 the tested functional source; final PR-head portable evidence is reported in the
 PR. Source/input hashes bind these native results; fixture input changes require fresh
-qualification. PR 28 is ready for maintainer review, not milestone acceptance.
+qualification. PR 28 was accepted by maintainer merge; this is not milestone acceptance.
 
 Native qualification must record local source/suite records, exact tested inputs and tool/
 source/image hashes, actual guest versions and observed geometry. Do not export raw

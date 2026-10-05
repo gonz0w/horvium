@@ -79,3 +79,5 @@
 - [M2 disposable virtual device identity fixture](testing/M2/devices.md).
 
 - [M2 local device fixture qualification manifest](testing/M2/devices-local-manifest.json)
+
+- [M2 native disk correlation](testing/M2/disk-correlation.md)

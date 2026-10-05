@@ -40,6 +40,7 @@ go-deep-check:
 	CGO_ENABLED=1 $(GO) test -race ./...
 	$(GO) test ./internal/inventory -run '^$$' -fuzz '^FuzzPools$$' -fuzztime=3s -parallel=2
 	$(GO) test ./internal/inventory -run '^$$' -fuzz '^FuzzGEOM$$' -fuzztime=3s -parallel=2
+	$(GO) test ./internal/inventory -run '^$$' -fuzz '^FuzzDiskObservation$$' -fuzztime=3s -parallel=2
 	$(GO) test ./internal/helper -run '^$$' -fuzz '^FuzzRequest$$' -fuzztime=3s -parallel=2
 	$(GO) test ./internal/helper -run '^$$' -fuzz '^FuzzSnapshot$$' -fuzztime=3s -parallel=2
 

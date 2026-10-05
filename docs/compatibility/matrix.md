@@ -77,5 +77,9 @@ eight actual assertions on both pinned releases through the Mac supervisor, with
 backing/base/runtime preservation and disk/image/key/variable/group teardown.
 Actual controller SIGKILL cleanup also passed, leaving the interrupted run
 unqualified. Original failed/unstarted hosted jobs and both repaired Mac
-failures remain separate historical evidence. PR 28 review is pending; complete
+failures remain separate historical evidence. PR 28 accepted this fixture; complete
 provider/use/physical safety and product write eligibility remain unqualified.
+
+M2 disk correlation: [bounded parser/contract](../testing/M2/disk-correlation.md)
+local behavioral checks passed; both native targets are pending. It is not wired
+into collection or storage planning and grants no device-use/write eligibility.

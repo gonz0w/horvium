@@ -62,6 +62,9 @@ class LocalQualificationTests(unittest.TestCase):
     def test_device_suite_requires_guest_and_host_teardown_evidence(self):
         checker = self.module.load_tool('check-device-evidence')
         guest = '--- PASS: TestNativeDeviceFixtures (1.0s)\nDEVICE_OBSERVATION_RESULT ' + ' '.join(case + '=pass' for case in sorted(checker.CASES)) + '\n'
+        with self.assertRaises(ValueError):
+            self.module.validate_result('devices', guest)
+        guest += 'DEVICE_CORRELATION_RESULT ' + ' '.join(case + '=pass' for case in sorted(checker.CORRELATION_CASES)) + '\n'
         self.module.validate_result('devices', guest)
         with self.assertRaises(ValueError):
             self.module.validate_result('devices', guest, complete=True)
