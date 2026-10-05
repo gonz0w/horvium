@@ -17,7 +17,8 @@ This is the first part of slice 1, not completed slice 1 or M2 acceptance.
 
 Trusted prospective helper inputs are a per-pool local policy and a fresh,
 complete filesystem/property observation, independent dataset identity/type table
-and complete filesystem mount/readonly/crypto state table. The policy explicitly selects pool and
+and complete filesystem mount/readonly/crypto state table, plus a matching
+pool identity/import/policy observation. The policy explicitly selects pool and
 filesystem GUIDs, baseline names/parents and each allowed property. Observation,
 names, property sources and caller claims cannot create scopes. The observation's
 eligibility flag is a prospective native-adapter obligation, not proof from a
@@ -51,7 +52,8 @@ review sizing, not an adopted wire or persistent schema.
   context and drift checks. [Dataset identities](identities.md) bind exact filesystem
   coverage and snapshot/bookmark membership; volumes deny this planner. Reviews
   retain relevant versions with local owner GUIDs and [filesystem constraints](dataset-state.md)
-  preserve mount/readonly/crypto state. It does not yet show usage, topology,
+  preserve mount/readonly/crypto state. [Pool observations](pool-state.md)
+  bind permanent/import identity and policy metadata. It does not yet show usage, topology,
   devices, feature evidence or operation recovery details.
 - Malformed or duplicate GUIDs/names/scopes, missing/false parents, inconsistent
   sources, unknown properties, incomplete observation or failed eligibility deny
