@@ -2,7 +2,8 @@
 
 Date: 2026-10-04. Status: this research remains source/documentation evidence.
 Subsequent [native property projection](../../testing/M2/properties.md),
-[identity](../../testing/M2/identities.md) and [filesystem state](../../testing/M2/dataset-state.md)
+[identity](../../testing/M2/identities.md), [filesystem state](../../testing/M2/dataset-state.md),
+[pool](../../testing/M2/pool-state.md) and [feature/profile](../../testing/M2/features.md)
 results are recorded separately; current [slice progress](../../milestones/M2/implementation.md)
 tracks partial observations and the remaining native gates.
 Work: [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -27,7 +28,7 @@ prove which source built an existing guest image or what its installed files con
 | Bundled OpenZFS | Prior guest strings 2.4.2-1-FreeBSD_g6330a45b0 / 2.2.9-FreeBSD_g079ba86d7; refreshed branch revisions match the M1 source pins | M2 health/mutation contracts unqualified |
 | Go / x/sys | Product pins 1.27.1 / v0.48.0; exact M1 source/checksums retained | No new dependency proposed |
 | HTMX | Embedded 2.0.11; upstream docs still describe that version | M2 forms/job interaction not implemented |
-| Common profile | `openzfs-2.2`, 584 bytes, SHA-256 `8b5a635bf7609a0f521b08fe0e389c651dd6a266d33bd53a2e253b99089c3bf7`; identical in both inspected source branches | Installed file and cross-release import still untested |
+| Common profile | `openzfs-2.2`, 584 bytes, SHA-256 `8b5a635bf7609a0f521b08fe0e389c651dd6a266d33bd53a2e253b99089c3bf7`; identical in both inspected source branches | Subsequent installed/hash and owned-fixture creation-set evidence is recorded in [feature qualification](../../testing/M2/features.md); cross-release transfer/import remains unqualified |
 
 [FreeBSD security information](https://www.freebsd.org/security/) lists planned
 release EOL dates of 2027-03-31 for 15.1 and 2027-06-30 for 14.5. Refresh these at

@@ -1,6 +1,6 @@
 # M2 pool feature observations and common profile checks
 
-Date: 2026-10-04. Status: behavioral subset passed; pinned native execution pending.
+Date: 2026-10-04. Status: behavioral and pinned native subset passed; maintainer review pending.
 Design: [approved EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [slice sequence](../../milestones/M2/implementation.md). Extends the
 [pool observations](pool-state.md); runtime remains read-only.
@@ -93,9 +93,31 @@ not native unsupported-pool or installed-file fault qualification.
 
 ## Qualification and remaining work
 
-Both pinned guests must execute before native claims; a sanitized source/run/hash
-manifest will record actual results. Earlier projection records retain their
-original sources/cases. This covers only partial M2-PLAN-001, M2-DRIFT-001,
+Run [37249224834](https://github.com/gonz0w/horvium/actions/runs/37249224834)
+passed both pinned guests at functional/suite source
+`f3d7c63918fc5a6ef2d5c3ec1078f413f3179aae`. Each executed all 42 property/identity/
+state/pool/feature assertions and teardown. Both evidence checks passed, and the
+checksum-pinned base images and AnyVM runtime remained unchanged. No native
+repairs were needed.
+
+| Guest | Observed result | Tools |
+|---|---|---|
+| FreeBSD 15.1-RELEASE-p3 amd64 | All 42 assertions and teardown; 47 native feature rows; exact installed profile and resulting common set passed | ZFS userland/module 2.4.2-1-FreeBSD_g6330a45b0; Go 1.27.1 |
+| FreeBSD 14.5-RELEASE amd64 | All 42 assertions and teardown; 39 native feature rows; exact installed profile and resulting common set passed | ZFS userland/module 2.2.9-FreeBSD_g079ba86d7; Go 1.27.1 |
+
+The [sanitized manifest](features-manifest.json) records source/job links,
+individual cases, inspected primary and tested input hashes, native utility
+hashes, profile facts and guest/runtime pins. QEMU 8.2.2 on Ubuntu 24.04.5 used
+fresh snapshot qemu64 guests with two vCPUs and 6,144 MiB, with VNC off. No operator
+inventory, credentials or fixture keys are included.
+
+Local `make check lint test secrets` and `make go-check` passed, including vet,
+complete unit/race suites and eleven bounded fuzz targets. FreeBSD amd64 cross-build
+passed before native execution; compilation alone is not native evidence.
+Subsequent documentation/evidence edits preserve the tested functional/suite bytes.
+Earlier projection records retain their original sources/cases.
+
+This covers only partial M2-PLAN-001, M2-DRIFT-001,
 M2-FEATURE-001 and M2-SCALE-001. Clean cross-release transfer/export/import,
 product installed-file reading, creation/device identity and every complete M2
 acceptance row remain pending. No receiver/send compatibility follows.
