@@ -42,7 +42,7 @@ func TestNativeDeviceFixtures(t *testing.T) {
 		cmd.Stdout = &out
 		cmd.Stderr = io.Discard
 		if err := cmd.Run(); err != nil {
-			t.Fatalf("native fixture read failed (values withheld): %v", err)
+			t.Fatalf("native fixture read failed via %s (arguments/values withheld): %v", path, err)
 		}
 		return out.Bytes()
 	}
@@ -56,7 +56,7 @@ func TestNativeDeviceFixtures(t *testing.T) {
 	selected := func(g GEOM) []Provider {
 		var out []Provider
 		for _, p := range g.Providers {
-			if p.Kind == DiskCandidate && p.MediaSize == 512<<20 {
+			if p.Kind == DiskCandidate && p.MediaSize == deviceFixtureBytes {
 				out = append(out, p)
 			}
 		}

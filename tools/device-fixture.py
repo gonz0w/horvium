@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 import stat
 
-SIZE = 512 << 20
+SIZE = 64 << 20
 DISKS = [('HVM-UNIQUE-512', 512, 4096), ('HVM-UNIQUE-4K', 4096, 4096),
          ('HVM-DUPLICATE', 512, 512), ('HVM-DUPLICATE', 512, 512), ('', 512, 512)]
 

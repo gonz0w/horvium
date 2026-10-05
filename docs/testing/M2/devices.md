@@ -17,7 +17,7 @@ M1 `unique_in_collection` means only observed identifier uniqueness. It proves
 neither durable identity across controllers/restarts nor direct local physical
 provenance, absent use or safety to create/replace storage.
 
-Five newly owned 512 MiB sparse raw files back five virtio block devices:
+Five newly owned 64 MiB sparse raw files back five virtio block devices:
 
 | Fixture serial | Count | Configured logical/physical block size | Required native observation |
 |---|---|---|---|
@@ -138,6 +138,14 @@ failures, successful initial host cleanup/pin checks, repaired local checked
 source/input hashes, inspected primary sources and the unstarted native/CI jobs.
 Local `make check lint test secrets`, `make go-check` (vet/unit/race/twelve bounded
 fuzz targets) and the FreeBSD amd64 inventory test-binary cross-build passed.
+The first supervised Mac run on `ecc6c1daa7eca4112f9b0ebbbfa917b9eb27c448`
+failed at the three-minute native fixture deadline (180.02 seconds). Base/runtime
+and all five 512 MiB backings were preserved; process/key/image/backing teardown
+completed. This is failed evidence. The fixture now uses five 64 MiB disks,
+reducing two complete hash passes from 5 GiB to 640 MiB while retaining all eight
+identity/geometry/boot/preservation assertions and the three-minute bound. This
+is a test-volume change, not a relaxed product or performance budget.
+
 Current qualification runs locally; the original blocked jobs stay in the
 historical manifest. Both guests must execute all eight repaired assertions,
 preserve the base/runtime/backings, remove declared fixtures and stop the owned

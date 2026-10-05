@@ -6,6 +6,8 @@ import (
 	"testing"
 )
 
+const deviceFixtureBytes = 64 << 20
+
 // This is a test-only recognizer for declared blank virtio disks, not a product
 // eligibility check. DEV/LABEL consumers exist without partition/data use.
 func fixtureDiskCorrespondence(graph GEOM, p Provider) error {
@@ -71,7 +73,7 @@ func fixtureDiskCorrespondence(graph GEOM, p Provider) error {
 }
 
 func TestDeviceFixtureAllowsDevAndVerifiedDiskIdentAliases(t *testing.T) {
-	p := Provider{ID: "p", GeomID: "disk", Name: "vtbd1", Class: "DISK", Kind: DiskCandidate, MediaSize: 512 << 20, SectorSize: 512, Identifiers: []Identifier{{Kind: "serial", Value: "HVM-UNIQUE-512", Source: "geom.config.ident"}}}
+	p := Provider{ID: "p", GeomID: "disk", Name: "vtbd1", Class: "DISK", Kind: DiskCandidate, MediaSize: deviceFixtureBytes, SectorSize: 512, Identifiers: []Identifier{{Kind: "serial", Value: "HVM-UNIQUE-512", Source: "geom.config.ident"}}}
 	g := GEOM{Classes: []Class{{ID: "c1", Name: "DISK"}, {ID: "c2", Name: "DEV"}, {ID: "c3", Name: "LABEL"}}, Geoms: []Geom{{ID: "disk", ClassID: "c1", Name: p.Name}, {ID: "dev", ClassID: "c2", Name: p.Name, Consumers: []Consumer{{ProviderID: p.ID}}}}, Providers: []Provider{p}}
 	if err := fixtureDiskCorrespondence(g, p); err != nil {
 		t.Fatal("normal DEV attachment rejected", err)
