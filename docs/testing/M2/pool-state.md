@@ -1,6 +1,6 @@
 # M2 pool identity, incarnation and policy observations
 
-Date: 2026-10-04. Status: behavioral subset implemented; pinned native execution pending.
+Date: 2026-10-04. Status: behavioral and pinned native subset passed; maintainer review pending.
 Design: [approved EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [slice sequence](../../milestones/M2/implementation.md). Extends the
 [filesystem constraints](dataset-state.md); runtime remains read-only.
@@ -93,9 +93,32 @@ No operator inventory, disks, credentials or keys enter the evidence.
 
 ## Qualification and remaining work
 
-Both pinned FreeBSD releases must execute before native claims. A sanitized source/
-run/hash manifest will record actual results. Earlier projection manifests retain
-their original tested source and case sets. Full slice 1 still requires provider/
+Run [37247751495](https://github.com/gonz0w/horvium/actions/runs/37247751495)
+passed both pinned guests at functional/suite source
+`552f203501c87822c96e9b712beea962b0f43d5a`. Each executed all 36 property/identity/
+filesystem-state/pool assertions and teardown. Both evidence checks passed; the
+checksum-pinned base images and AnyVM runtime remained unchanged. No native
+repairs were needed.
+
+| Guest | Observed result | Tools |
+|---|---|---|
+| FreeBSD 15.1-RELEASE-p3 amd64 | All 36 assertions and teardown passed | ZFS userland/module 2.4.2-1-FreeBSD_g6330a45b0; Go 1.27.1 |
+| FreeBSD 14.5-RELEASE amd64 | All 36 assertions and teardown passed | ZFS userland/module 2.2.9-FreeBSD_g079ba86d7; Go 1.27.1 |
+
+The [sanitized manifest](pool-state-manifest.json) records source/job links,
+individual cases, inspected primary and tested input hashes, native utility
+hashes and guest/runtime pins. QEMU 8.2.2 on Ubuntu 24.04.5 used fresh snapshot
+qemu64 guests with two vCPUs and 6,144 MiB, with VNC off. No operator inventory,
+credentials or fixture keys are included. This qualifies these projections and
+pure-model comparisons only, not an eligibility collector or product import.
+
+Local `make check lint test secrets` and `make go-check` passed, including vet,
+complete unit/race suites and ten bounded fuzz targets. FreeBSD amd64 cross-build
+passed before native execution; compilation alone is not native evidence.
+Subsequent evidence/documentation edits preserve the tested functional/suite bytes.
+Earlier projection manifests retain their original tested source and case sets.
+
+Full slice 1 still requires provider/
 topology/status/features/system/device-use and assembled complete-impact collection;
 later privilege/state/recovery/mutation/client/browser/resource gates remain open.
 Manual M1 accessibility and physical/commercial qualification remain pending.

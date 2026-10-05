@@ -23,7 +23,7 @@ model subset was accepted in PR 21; bounded property-source parsing passed on
 both disposable FreeBSD targets and was accepted in PR 22. Dataset identity/type
 binding and version drift were accepted in PR 23. Filesystem mount/encryption
 constraints were accepted in PR 24. Pool identity/incarnation and policy
-observations are the next subset. Other native gates, durable jobs and storage
+observations passed on both pinned guests and await review in PR 25. Other native gates, durable jobs and storage
 writes remain pending; the runtime is still read-only.
 
 ## Agreed direction

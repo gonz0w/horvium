@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset implementing.
+Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset validated; maintainer review pending.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -66,7 +66,10 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   No complete eligibility or runtime adapter follows.
 - Slice 1 pool observation subset binds permanent/import identities and policy
   metadata to review; [pool contracts](../../testing/M2/pool-state.md).
-  Native execution pending; no complete eligibility or runtime adapter follows.
+  Both pinned guests passed all 36 property/identity/state/pool assertions and teardown
+  (run 37247751495, source `552f203501c87822c96e9b712beea962b0f43d5a`).
+  Maintainer review pending in [PR 25](https://github.com/gonz0w/horvium/pull/25);
+  no complete eligibility or runtime adapter follows.
 - Slice 1 remains incomplete: native eligibility/provider/topology/status
   observations, complete-impact collection and device-use drift gates have not run. No later slice may treat
   model input booleans or old M1 inventory as qualified native write authority.
