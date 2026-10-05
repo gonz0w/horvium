@@ -1,7 +1,8 @@
 # M2 disposable virtual device identity fixture
 
-Date: 2026-10-05. Status: local fixture checks passed; repaired native qualification is pending
-through the supervised Mac runner. GitHub Actions are disabled.
+Date: 2026-10-05. Status: all eight repaired assertions and complete preservation/teardown passed
+on both FreeBSD targets through the supervised Mac runner; maintainer review
+pending in PR 28. GitHub Actions remain disabled.
 [Approved EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [implementation sequence](../../milestones/M2/implementation.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -147,18 +148,28 @@ reducing two complete hash passes from 5 GiB to 640 MiB while retaining all eigh
 identity/geometry/boot/preservation assertions and the three-minute bound. This
 is a test-volume change, not a relaxed product or performance budget.
 
-The first repaired 14.5 run on that source failed at the fixture's ZFS-only root
-assumption (12.25 seconds); preservation and teardown completed. Root control now
+The first repaired 14.5 run on `4f669f21aead2094cfa4942adac534fd4bde8073`
+failed at the fixture's ZFS-only root assumption (12.25 seconds); preservation
+and teardown completed. Root control now
 recognizes UFS and ZFS mounts, follows exact leaf/alias GEOM backing on both,
 rejects ambiguous/missing/cyclic controls, and verifies mount/backing stability
 after the reads. ZFS roots additionally retain their pool GUID check.
 
-Current qualification runs locally; the original blocked jobs stay in the
-historical manifest. Both guests must execute all eight repaired assertions,
-preserve the base/runtime/backings, remove declared fixtures and stop the owned
-group. Current-head `make review` evidence and maintainer review are required.
-PR 28 stays draft until those actual gates pass; passing regressions alone never
-qualify the fixture or enable device operations.
+The repaired 64 MiB fixture on source `069d38f98bcc39e94861b22bf7db40a4fac70969` passed all eight
+assertions on FreeBSD 15.1-RELEASE-p3 and 14.5-RELEASE using Mac arm64 / QEMU 11.1.1
+TCG. The actual mounted roots were ZFS on 15.1 and UFS on 14.5. Both runs preserved
+the complete raw backings, base image and QEMU/firmware
+inputs, removed disks/image/key/variables and verified the owned group stopped.
+See the [sanitized local execution record](devices-local-manifest.json), which
+also retains both the first Mac deadline failure and the 14.5 root-control failure
+separately from the original hosted record.
+
+A further live device-fixture controller was killed with SIGKILL. Its QEMU/SSH
+listener stopped, all five backings/image/key/variables were removed, and the
+interrupted run remained unqualified. The complete local review gate passed on
+the tested functional source; final PR-head portable evidence is reported in the
+PR. Source/input hashes bind these native results; fixture input changes require fresh
+qualification. PR 28 is ready for maintainer review, not milestone acceptance.
 
 Native qualification must record local source/suite records, exact tested inputs and tool/
 source/image hashes, actual guest versions and observed geometry. Do not export raw

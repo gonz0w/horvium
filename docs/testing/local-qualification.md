@@ -61,7 +61,7 @@ the Mac. Each guest has two CPUs, 6,144 MiB RAM, qemu64 and snapshot storage.
 Reserve additional RAM for macOS; stop other large workloads while testing.
 These are lab allocations, not Horvium runtime hardware requirements.
 
-Only foundation/15.1 and properties/15.1/14.5 have actual execution evidence
+Foundation/15.1, properties/15.1/14.5 and devices/15.1/14.5 have actual execution evidence
 through this runner. The other selectable suites and Linux host remain unqualified
 through this runner until executed and reviewed; existing hosted evidence is
 separate. The property runs took approximately six to eight minutes on this Mac,
@@ -75,8 +75,9 @@ hosted/KVM measurements or physical performance. KVM acceleration and macOS ARM
 FreeBSD qualification require a separately reviewed extension.
 
 The [device fixture](M2/devices.md) now uses this supervisor and appends only its
-five newly created snapshot raw disks. Both releases require actual qualification
-before claiming device-fixture observations; property-suite success remains
+five newly created snapshot raw disks. Both releases passed all eight device
+observations and complete host teardown; see its
+[execution manifest](M2/devices-local-manifest.json). Property-suite success remains
 separate from device/provider safety proof. Teardown rehashes/removes declared
 backings after stopping QEMU, with supervisor fallback for controller death.
 

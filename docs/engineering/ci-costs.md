@@ -60,9 +60,11 @@ workflow execution; no account-wide dollar saving is claimed.
 
 The Mac handles portable checks and the already executed foundation/property
 FreeBSD guests. Nothing persistent needs to be installed. PR 28's device
-fixture now uses supervised local attachment on the Mac; its native results must
-be reviewed before acceptance. Pinned Firefox also needs Linux, and emulated Mac performance is not a replacement for
-KVM/physical qualification.
+fixture passed all eight native assertions on both targets, with preservation,
+complete teardown and actual controller-SIGKILL cleanup. Its
+[local evidence](../testing/M2/devices-local-manifest.json) awaits maintainer
+review; no home-lab host is needed for this fixture. Pinned Firefox also needs
+Linux, and emulated Mac performance is not a replacement for KVM/physical qualification.
 
 A later disposable x86-64 Linux VM with four vCPUs, 16 GB RAM, approximately 40 GB
 scratch and virtualization/KVM access is a useful starting lab profile, not a

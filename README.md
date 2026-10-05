@@ -28,9 +28,10 @@ exact common profile checks were accepted in PR 26. Native vdev membership,
 layout refusal and topology drift checks were accepted in
 [PR 27](https://github.com/gonz0w/horvium/pull/27). See the
 [topology qualification](docs/testing/M2/topology.md).
-The [virtual device fixture](docs/testing/M2/devices.md) is the next prerequisite
-for provider safety qualification. Other native gates, durable jobs and storage
-writes remain pending; the runtime is still read-only.
+The [virtual device fixture](docs/testing/M2/devices.md) passed its eight native
+identity/geometry assertions and complete teardown on both targets;
+[PR 28](https://github.com/gonz0w/horvium/pull/28) is ready for review. Other native
+gates, durable jobs and storage writes remain pending; the runtime is still read-only.
 
 ## Agreed direction
 
