@@ -83,8 +83,10 @@ passed on both targets; see the [native manifest](../../testing/M2/imported-pool
 PR 34 accepted this subset. The [signature extension](../../testing/M2/filesystem-signatures.md)
 adds seven assertions for UFS and active/removed-pool ZFS recognition, exact probe
 address binding, unavailable-output refusal and whole fixture probe preservation.
-Thirty-six assertions and the same four tests are required; this extension is
-pending native qualification. These partial results do not
+Thirty-six assertions and the same four tests are required; all thirty-six and
+complete preservation/teardown passed on both targets; see the
+[native manifest](../../testing/M2/filesystem-signatures-manifest.json).
+Maintainer review is pending. These partial results do not
 satisfy the complete device-safety row. Further fault control and complete device safety still
 need implementation and qualification. Never accept an arbitrary host device supplied to a test.
 

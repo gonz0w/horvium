@@ -89,3 +89,4 @@
 - [M2 imported-pool use observations](testing/M2/imported-pool-use.md)
 - [M2 imported-pool use native execution manifest](testing/M2/imported-pool-use-manifest.json)
 - [M2 filesystem signature observations](testing/M2/filesystem-signatures.md)
+- [M2 filesystem signature native execution manifest](testing/M2/filesystem-signatures-manifest.json)

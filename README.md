@@ -48,7 +48,8 @@ filesystems; native qualification passed all twenty-nine assertions and complete
 teardown on both targets and was accepted in [PR 34](https://github.com/gonz0w/horvium/pull/34).
 The next [filesystem signature subset](docs/testing/M2/filesystem-signatures.md)
 binds positive base-probe UFS/ZFS observations to freshly correlated disks;
-native qualification is pending. Other native
+native qualification passed all thirty-six assertions and complete teardown on
+both targets, with maintainer review pending. Other native
 gates, durable jobs and storage writes remain pending; the runtime is still read-only.
 
 ## Agreed direction

@@ -1,7 +1,8 @@
 # M2 filesystem signature observations
 
-Date: 2026-10-05. Status: behavioral tests and FreeBSD cross-build pass;
-native qualification pending. [Approved EDD](../../milestones/M2/EDD.md),
+Date: 2026-10-05. Status: all thirty-six assertions, four executed native tests
+and complete preservation/teardown passed on both targets; maintainer review pending.
+[Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
@@ -103,6 +104,29 @@ version/hash records. Prior manifests retain their original source/case sets and
 controller-death evidence; no new controller-death trial is claimed. GitHub Actions
 remain disabled and no persistent runner or host service is installed.
 
+## Executed evidence
+
+Signed source `9a363b053d9ba12d1a23da3465c66f438f72b8d9` passed all thirty-six
+assertions and four native tests on FreeBSD 15.1-RELEASE-p3 and 14.5-RELEASE
+through Mac arm64 / QEMU 11.1.1 TCG (two CPUs, 6144 MiB). Actual roots were ZFS
+and UFS, respectively. UFS recognition bound to the owned read-only mounted disk;
+ZFS recognition bound to its owned unmounted pool disk, including metadata retained
+after guarded destruction. Closed fixture hashes matched before and after probes.
+Pure wrong-address and unsupported-output controls refused with zero projections.
+Existing catalogue/root/mount/swap/other-fixture preservation and teardown passed.
+No new fixture writes, whole-label scan, checksum validation or absence assertion
+was added by this extension.
+
+All five original host disk backings, base images and runtime inputs were
+preserved; owned disks/image/key/variables were removed and process groups
+stopped. The [sanitized execution manifest](filesystem-signatures-manifest.json)
+binds exact source/input hashes, actual versions, twelve utility hashes per guest,
+eight pinned primary files and outcomes. Functional-source review passed 64 tooling
+tests, Go unit/race checks and seventeen bounded fuzz targets. Final PR-head review
+is reported separately; changing any recorded input requires fresh qualification.
+Previous manifests and controller-death evidence retain their original revisions
+and case sets. This is partial M2-DEVICE-001/M2-NATIVE-001 evidence only.
+
 ## Primary source provenance
 
 Pinned revisions: FreeBSD 14.5 `231eee334c098a8398bc959202415c48058f67f0` and
@@ -112,4 +136,5 @@ establish `-u`, read-only opening, scalar stdout without `-l`, and nonzero statu
 for both errors and unrecognized formats. There is no reliable absence result.
 The actual installed `/usr/sbin/fstyp` hash joins the existing eleven device-suite
 utility hashes. Inspected source hashes identify reviewed contracts, not installed
-binary build provenance. Exact native outcomes and tested input hashes are pending.
+binary build provenance. The native manifest records exact tested source/input
+hashes, retrieved primary source hashes and actual native outcomes.

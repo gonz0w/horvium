@@ -118,6 +118,8 @@ M2 filesystem signatures: [contract and procedure](../testing/M2/filesystem-sign
 binds successful base `fstyp -u` UFS/ZFS scalar captures to independently
 correlated direct disks. Portable tests and a FreeBSD cross-build pass; actual
 UFS/ZFS/removed-pool metadata recognition, probe preservation and full teardown
-are pending on both targets. First-label ZFS recognition is not checksum-verified
+passed all thirty-six assertions, four executed tests and complete host cleanup
+on both targets; see the [native manifest](../testing/M2/filesystem-signatures-manifest.json).
+Maintainer review is pending. First-label ZFS recognition is not checksum-verified
 pool identity, all-label coverage, exported-pool membership or blank-disk clearance.
 No collector/planner integration or product mutation authority follows.
