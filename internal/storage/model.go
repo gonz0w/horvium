@@ -55,6 +55,20 @@ type FilesystemState struct {
 	Mountpoint, CanMount, Readonly, Mounted, Encryption, EncryptionRoot, KeyStatus Value
 }
 
+// PoolValue retains native pool property metadata; it is not a setting request.
+type PoolValue struct {
+	Effective string
+	Source    Source
+}
+
+// PoolState binds permanent identity and the current import incarnation. It
+// preserves policy strings without resolving files or granting import authority.
+type PoolState struct {
+	GUID, LoadGUID, Name                                                   string
+	GUIDSource, LoadGUIDSource                                             Source
+	Health, Readonly, BootFS, AltRoot, CacheFile, Compatibility, MultiHost PoolValue
+}
+
 type DatasetType string
 
 const (
@@ -82,6 +96,7 @@ type Observation struct {
 	Filesystems        []Filesystem
 	Identities         []DatasetIdentity
 	States             []FilesystemState
+	Pool               PoolState
 }
 
 // Policy is trusted local enrollment, never request-supplied authority. GUIDs
@@ -117,6 +132,7 @@ type Review struct {
 	Affected             []Resource
 	Versions             []DatasetIdentity
 	States               []FilesystemState
+	Pool                 PoolState
 }
 
 // Plan contains only private state and returns independent review copies. It is

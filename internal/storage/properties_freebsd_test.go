@@ -78,11 +78,30 @@ func TestNativePropertyObservations(t *testing.T) {
 		t.Fatal("invalid fixture md unit; discard guest")
 	}
 	declaredPool := false
+	exportedPool := false
+	ownedGUID := ""
 	t.Cleanup(func() {
 		cleanupCtx, stop := context.WithTimeout(context.Background(), 30*time.Second)
 		defer stop()
 		if declaredPool {
+			if exportedPool {
+				if _, err := command(cleanupCtx, "/sbin/zpool", "list", "-H", pool); err != nil {
+					if !validGUID(ownedGUID) {
+						t.Error("exported fixture identity unavailable; discard guest")
+						return
+					}
+					if _, err := command(cleanupCtx, "/sbin/zpool", "import", "-N", "-d", "/dev/"+unit, "-o", "cachefile=none", "-o", "readonly=off", ownedGUID); err != nil {
+						t.Error("owned exported pool cleanup import failed; discard guest")
+						return
+					}
+				}
+			}
 			if _, err := command(cleanupCtx, "/sbin/zpool", "list", "-H", pool); err == nil {
+				nativeGUID, err := command(cleanupCtx, "/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", pool)
+				if err != nil || !validGUID(ownedGUID) || strings.TrimSpace(string(nativeGUID)) != ownedGUID {
+					t.Error("cleanup pool GUID differs; discard guest")
+					return
+				}
 				if _, err := command(cleanupCtx, "/sbin/zpool", "destroy", pool); err != nil {
 					t.Error("owned pool cleanup failed; discard guest")
 					return
@@ -102,7 +121,7 @@ func TestNativePropertyObservations(t *testing.T) {
 			return
 		}
 		if !t.Failed() {
-			t.Log("PROPERTY_OBSERVATION_RESULT default=pass local=pass inherited=pass received=pass shadowed=pass no_limit=pass rename=pass name_reuse=pass foreign_preservation=pass eligibility_denied=pass teardown=pass identity_binding=pass complete_filesystems=pass snapshot_owner=pass bookmark_owner=pass replicated_guid=pass snapshot_rename=pass snapshot_reuse=pass volume_denial=pass stable_enumeration=pass state_binding=pass mount_sources=pass readonly_denial=pass encrypted_loaded_denial=pass encrypted_unloaded_denial=pass encryption_root_binding=pass state_drift=pass state_preservation=pass")
+			t.Log("PROPERTY_OBSERVATION_RESULT default=pass local=pass inherited=pass received=pass shadowed=pass no_limit=pass rename=pass name_reuse=pass foreign_preservation=pass eligibility_denied=pass teardown=pass identity_binding=pass complete_filesystems=pass snapshot_owner=pass bookmark_owner=pass replicated_guid=pass snapshot_rename=pass snapshot_reuse=pass volume_denial=pass stable_enumeration=pass state_binding=pass mount_sources=pass readonly_denial=pass encrypted_loaded_denial=pass encrypted_unloaded_denial=pass encryption_root_binding=pass state_drift=pass state_preservation=pass pool_identity_binding=pass pool_source_metadata=pass pool_bootfs_denial=pass pool_readonly_denial=pass import_incarnation=pass reimport_drift=pass pool_preservation=pass pool_name_reuse=pass")
 		}
 	})
 	if got := strings.TrimSpace(string(must("/sbin/mdconfig", "-l", "-n", "-f", backing))); got != strings.TrimPrefix(unit, "md") {
@@ -113,6 +132,45 @@ func TestNativePropertyObservations(t *testing.T) {
 	}
 	declaredPool = true
 	must("/sbin/zpool", "create", "-m", "none", "-o", "cachefile=none", pool, "/dev/"+unit)
+	ownedGUID = strings.TrimSpace(string(must("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", pool)))
+	if !validGUID(ownedGUID) {
+		t.Fatal("owned pool identity invalid")
+	}
+	poolState := func() PoolState {
+		rows := must("/sbin/zpool", "get", "-H", "-p", "-o", "name,property,value,source", "guid,load_guid,health,readonly,bootfs,altroot,cachefile,compatibility,multihost", pool)
+		state, err := ParsePoolState(rows, pool)
+		if err != nil {
+			t.Fatal("native pool state denied (values withheld):", err)
+		}
+		return state
+	}
+	initialPool := poolState()
+	if err := VerifyPoolState(ownedGUID, pool, initialPool); err != nil {
+		t.Fatal(err)
+	}
+	independentPool := strings.Split(strings.TrimSpace(string(must("/sbin/zpool", "list", "-H", "-p", "-o", "name,guid,load_guid,health,readonly,bootfs,altroot,cachefile,compatibility,multihost", pool))), "\t")
+	if len(independentPool) != 10 || independentPool[0] != pool || independentPool[1] != initialPool.GUID || independentPool[2] != initialPool.LoadGUID {
+		t.Fatal("independent pool identity disagreement")
+	}
+	for n, v := range poolValues(initialPool) {
+		if v.Effective != independentPool[n+3] {
+			t.Fatal("independent pool value disagreement")
+		}
+	}
+	poolSources := []Source{initialPool.GUIDSource, initialPool.LoadGUIDSource}
+	for _, v := range poolValues(initialPool) {
+		poolSources = append(poolSources, v.Source)
+	}
+	for n, property := range poolProperties {
+		source := strings.TrimSpace(string(must("/sbin/zpool", "get", "-H", "-p", "-o", "source", property, pool)))
+		if source != string(poolSources[n]) {
+			t.Fatal("independent pool source disagreement")
+		}
+	}
+	if initialPool.CacheFile.Effective != "none" {
+		t.Fatal("fixture pool cache policy changed")
+	}
+
 	must("/sbin/zfs", "create", "-o", "mountpoint=none", pool+"/data")
 	projection := func() []byte {
 		return must("/sbin/zfs", "get", "-H", "-p", "-r", "-t", "filesystem", "-o", "name,property,value,received,source", "guid,quota,refquota,compression", pool)
@@ -324,8 +382,8 @@ func TestNativePropertyObservations(t *testing.T) {
 	if changedState.CanMount.Effective != "noauto" || changedState.CanMount.Source != Local || changedState.CanMount.SourceGUID != data.GUID {
 		t.Fatal("canmount local source mismatch")
 	}
-	policy := Policy{Revision: 1, PoolGUID: "1", PoolName: pool, Scopes: []Scope{{GUID: data.GUID, Name: data.Name, ParentGUID: data.ParentGUID, Properties: []Property{RefQuota}}}}
-	observation := Observation{Complete: true, Eligible: true, PoolGUID: "1", PoolName: pool, Filesystems: parse(), Identities: identities(), States: baseline}
+	policy := Policy{Revision: 1, PoolGUID: ownedGUID, PoolName: pool, Scopes: []Scope{{GUID: data.GUID, Name: data.Name, ParentGUID: data.ParentGUID, Properties: []Property{RefQuota}}}}
+	observation := Observation{Complete: true, Eligible: true, PoolGUID: ownedGUID, PoolName: pool, Filesystems: parse(), Identities: identities(), States: baseline, Pool: poolState()}
 	plan, err := Build(time.Now(), "fixture-session", policy, observation, Intent{FilesystemGUID: data.GUID, Property: RefQuota, Value: "none"})
 	if err != nil {
 		t.Fatal("synthetic policy review failed", err)
@@ -371,6 +429,19 @@ func TestNativePropertyObservations(t *testing.T) {
 	if err := VerifyFilesystemStates(pool, identities(), states()); err != nil {
 		t.Fatal(err)
 	}
+	must("/sbin/zpool", "set", "bootfs="+pool+"/data", pool)
+	bootPool := poolState()
+	if bootPool.BootFS.Effective != pool+"/data" {
+		t.Fatal("native boot selector absent")
+	}
+	if err := VerifyPoolState(ownedGUID, pool, bootPool); !errors.Is(err, ErrUnavailable) {
+		t.Fatal("boot-selected fixture qualified", err)
+	}
+	must("/sbin/zpool", "set", "bootfs=", pool)
+	if err := VerifyPoolState(ownedGUID, pool, poolState()); err != nil {
+		t.Fatal(err)
+	}
+	poolBefore := poolState()
 	before := must("/sbin/zfs", "get", "-H", "-p", "-r", "-o", "name,property,value,received,source", "guid,quota,refquota,compression,mountpoint,canmount,readonly", pool)
 	mounts := must("/sbin/zfs", "list", "-H", "-r", "-o", "name,mounted,mountpoint", pool)
 	stateBefore := states()
@@ -380,6 +451,9 @@ func TestNativePropertyObservations(t *testing.T) {
 	}
 	if err := VerifyIdentityStability(pool, stableBefore, identities()); err != nil {
 		t.Fatal(err)
+	}
+	if after := poolState(); after != poolBefore {
+		t.Fatal("pool reader changed policy or incarnation")
 	}
 	if after := states(); !reflect.DeepEqual(stateBefore, after) {
 		t.Fatal("state reader changed native constraints")
@@ -391,7 +465,7 @@ func TestNativePropertyObservations(t *testing.T) {
 		t.Fatal("read-only projection changed mounts")
 	}
 	// Parsing provides no authority, even when every projected property is valid.
-	if _, err := Build(time.Now(), "fixture-session", Policy{Revision: 1, PoolGUID: "1", PoolName: pool}, Observation{Complete: true, PoolGUID: "1", PoolName: pool, Filesystems: files, Identities: identities(), States: states()}, Intent{FilesystemGUID: root.GUID, Property: Quota, Value: "none"}); err != ErrUnavailable {
+	if _, err := Build(time.Now(), "fixture-session", Policy{Revision: 1, PoolGUID: "1", PoolName: pool}, Observation{Complete: true, PoolGUID: "1", PoolName: pool, Filesystems: files, Identities: identities(), States: states(), Pool: poolState()}, Intent{FilesystemGUID: root.GUID, Property: Quota, Value: "none"}); err != ErrUnavailable {
 		t.Fatal("parser enabled native eligibility", err)
 	}
 	must("/sbin/zfs", "rename", pool+"/data", pool+"/renamed")
@@ -402,4 +476,63 @@ func TestNativePropertyObservations(t *testing.T) {
 	if find(parse(), "/data").GUID == data.GUID {
 		t.Fatal("reused name confused GUID identity")
 	}
+	// Test-only export/reimport is confined to this known GUID/provider. No force,
+	// mounts or product recovery/import capability follows from fixture preparation.
+	latestFiles := parse()
+	latestRoot := find(latestFiles, "")
+	poolObservation := Observation{Complete: true, Eligible: true, PoolGUID: ownedGUID, PoolName: pool, Pool: poolState(), Filesystems: latestFiles, Identities: identities(), States: states()}
+	poolPolicy := Policy{Revision: 1, PoolGUID: ownedGUID, PoolName: pool, Scopes: []Scope{{GUID: latestRoot.GUID, Name: pool, Properties: []Property{RefQuota}}}}
+	poolPlan, err := Build(time.Now(), "fixture-session", poolPolicy, poolObservation, Intent{FilesystemGUID: latestRoot.GUID, Property: RefQuota, Value: "none"})
+	if err != nil {
+		t.Fatal("synthetic pool review failed", err)
+	}
+	previousLoad := poolObservation.Pool.LoadGUID
+	beforeImportProperties := projection()
+	beforeImportStates := states()
+	beforeImportIDs := identities()
+	importOwned := func(readonly string) {
+		must("/sbin/zpool", "export", pool)
+		exportedPool = true
+		must("/sbin/zpool", "import", "-N", "-d", "/dev/"+unit, "-o", "cachefile=none", "-o", "readonly="+readonly, ownedGUID)
+		exportedPool = false
+	}
+	importOwned("off")
+	reimported := poolState()
+	if reimported.GUID != ownedGUID || reimported.LoadGUID == previousLoad || reimported.CacheFile.Effective != "none" {
+		t.Fatal("pool incarnation not bound to import")
+	}
+	if !bytes.Equal(beforeImportProperties, projection()) || !reflect.DeepEqual(beforeImportStates, states()) {
+		t.Fatal("unmounted fixture import changed filesystem policy")
+	}
+	if err := VerifyIdentityStability(pool, beforeImportIDs, identities()); err != nil {
+		t.Fatal(err)
+	}
+	poolObservation.Pool = reimported
+	if err := poolPlan.Validate(time.Now(), "fixture-session", poolPolicy, poolObservation); !errors.Is(err, ErrDrift) {
+		t.Fatal("pool reimport drift ignored", err)
+	}
+	importOwned("on")
+	readonlyPool := poolState()
+	if readonlyPool.Readonly.Effective != "on" || readonlyPool.GUID != ownedGUID {
+		t.Fatal("readonly import projection incorrect")
+	}
+	if err := VerifyPoolState(ownedGUID, pool, readonlyPool); !errors.Is(err, ErrUnavailable) {
+		t.Fatal("readonly pool qualified", err)
+	}
+	importOwned("off")
+	if err := VerifyPoolState(ownedGUID, pool, poolState()); err != nil {
+		t.Fatal(err)
+	}
+	oldGUID := ownedGUID
+	must("/sbin/zpool", "destroy", pool)
+	must("/sbin/zpool", "create", "-m", "none", "-o", "cachefile=none", pool, "/dev/"+unit)
+	ownedGUID = strings.TrimSpace(string(must("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", pool)))
+	reused := poolState()
+	if !validGUID(ownedGUID) || ownedGUID == oldGUID || reused.Name != pool {
+		t.Fatal("pool name reuse confused identity")
+	}
+	if err := VerifyPoolState(oldGUID, pool, reused); !errors.Is(err, ErrDrift) {
+		t.Fatal("old pool identity accepted for reused name", err)
+	}
+
 }

@@ -1,7 +1,8 @@
 # M2 filesystem mount and encryption constraints
 
 Date: 2026-10-04. Status: D2 partial filesystem-state projection passed on both pinned guests;
-implementation in [PR 24](https://github.com/gonz0w/horvium/pull/24) for maintainer review.
+accepted in [PR 24](https://github.com/gonz0w/horvium/pull/24), merged source
+`be69a4ee846749e2d845dda5ce0d1633c14eb794`.
 Design: [approved EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [slice sequence](../../milestones/M2/implementation.md). Extends the
 [identity binding](identities.md) with filesystem operational constraints.
@@ -118,3 +119,8 @@ transport submission, durable jobs or mutation executor. Slice 1 eligibility/
 system/provider/topology/feature/device-use and complete-impact collection gates
 remain pending, as do every complete M2 acceptance row, physical/commercial
 qualification and the maintainer's deferred manual M1 accessibility gate.
+
+The current qualification gate additionally requires eight pool identity/import/
+policy assertions in [pool qualification](pool-state.md). This 28-case state
+manifest preserves its original tested source; later checks do not retroactively
+qualify it.

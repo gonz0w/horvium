@@ -136,6 +136,14 @@ func preflight(p Policy, o Observation) error {
 	if err := debit(o.PoolGUID, o.PoolName, p.PoolGUID, p.PoolName); err != nil {
 		return err
 	}
+	if err := debit(o.Pool.GUID, o.Pool.LoadGUID, o.Pool.Name, string(o.Pool.GUIDSource), string(o.Pool.LoadGUIDSource)); err != nil {
+		return err
+	}
+	for _, v := range poolValues(o.Pool) {
+		if err := debit(v.Effective, string(v.Source)); err != nil {
+			return err
+		}
+	}
 	for _, f := range o.Filesystems {
 		if err := debit(f.GUID, f.Name, f.ParentGUID); err != nil {
 			return err
@@ -183,6 +191,9 @@ func indexObservation(o Observation) (map[string]Filesystem, error) {
 	}
 	if !validGUID(o.PoolGUID) {
 		return nil, ErrInvalid
+	}
+	if err := VerifyPoolState(o.PoolGUID, o.PoolName, o.Pool); err != nil {
+		return nil, err
 	}
 	if err := VerifyFilesystemIdentities(o.PoolName, o.Filesystems, o.Identities); err != nil {
 		return nil, err

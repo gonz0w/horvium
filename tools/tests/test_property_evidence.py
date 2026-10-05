@@ -13,7 +13,10 @@ RESULT = ('PROPERTY_OBSERVATION_RESULT default=pass local=pass inherited=pass '
           'snapshot_reuse=pass volume_denial=pass stable_enumeration=pass '
           'state_binding=pass mount_sources=pass readonly_denial=pass '
           'encrypted_loaded_denial=pass encrypted_unloaded_denial=pass '
-          'encryption_root_binding=pass state_drift=pass state_preservation=pass')
+          'encryption_root_binding=pass state_drift=pass state_preservation=pass '
+          'pool_identity_binding=pass pool_source_metadata=pass pool_bootfs_denial=pass '
+          'pool_readonly_denial=pass import_incarnation=pass reimport_drift=pass '
+          'pool_preservation=pass pool_name_reuse=pass')
 PASS = '--- PASS: TestNativePropertyObservations (1.0s)\n'
 
 class PropertyEvidenceTests(unittest.TestCase):
@@ -37,6 +40,7 @@ class PropertyEvidenceTests(unittest.TestCase):
                        RESULT.replace('teardown=pass', ''),
                        RESULT.replace('identity_binding=pass', ''),
                        RESULT.replace('state_binding=pass', ''),
+                       RESULT.replace('import_incarnation=pass', ''),
                        RESULT.replace('teardown=pass', 'teardown=fail'),
                        RESULT + ' override=pass', RESULT + ' teardown=pass']:
             with self.subTest(record=record), self.assertRaises(ValueError):

@@ -120,3 +120,8 @@ M2 property qualification additionally requires complete filesystem state covera
 mount sources, readonly refusal, loaded/unloaded encrypted resource refusal,
 encryption-root identity, state drift and read preservation. See
 [filesystem state qualification](../testing/M2/dataset-state.md).
+
+M2 property qualification also requires pool identity/source correlation, bootfs
+and readonly refusal, import incarnation/review drift, policy preservation and
+name reuse. See [pool qualification](../testing/M2/pool-state.md); these observation
+results do not qualify topology, system/device safety or product recovery/import.

@@ -93,14 +93,21 @@ func prepare(p Policy, o Observation, i Intent) (Review, [32]byte, error) {
 	if !ok || !permits(scopes[target.GUID], i.Property) {
 		return Review{}, zero, ErrDenied
 	}
-	review := Review{PolicyRevision: p.Revision, PoolGUID: o.PoolGUID, PoolName: o.PoolName, Intent: i}
+	review := Review{PolicyRevision: p.Revision, PoolGUID: o.PoolGUID, PoolName: o.PoolName, Intent: i, Pool: o.Pool}
 	ancestors := map[string]bool{}
 	for parent := target.ParentGUID; parent != ""; parent = files[parent].ParentGUID {
 		ancestors[parent] = true
 	}
 	// Reserve generous header/time/intent overhead before appending context. Every
 	// selected row is counted before retaining it; impact is never silently paged.
-	remaining := maxPlanBytes - 4096
+	poolBytes, err := json.Marshal(o.Pool)
+	if err != nil {
+		return Review{}, zero, ErrInvalid
+	}
+	remaining := maxPlanBytes - 4096 - len(poolBytes)
+	if remaining < 0 {
+		return Review{}, zero, ErrLimit
+	}
 	context := make(map[string]bool)
 	for _, f := range o.Filesystems {
 		descendant := strings.HasPrefix(f.Name, target.Name+"/")
