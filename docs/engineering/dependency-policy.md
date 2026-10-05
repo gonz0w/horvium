@@ -15,8 +15,8 @@ or animation dependencies.
 
 Tool pins originate from BSD Cloud's reviewed foundation. Bootstrap verifies
 artifact hashes. Refresh and review pins at milestone entry; do not describe them
-as latest. Dependabot proposes updates for Actions and pip, with Go modules added
-when they exist. Automated updates do not bypass normal review. Security features
+as latest. Dependabot proposes Go module and pip updates. GitHub Actions are disabled
+and their obsolete update ecosystem is removed. Automated updates do not bypass normal review. Security features
 that require host/subscription support are enabled only after capability verification.
 
 ## Current product module
@@ -33,7 +33,7 @@ equivalent owner-death/subtree containment, not reverting to an orphaned probe.
 The approved M1 helper uses `golang.org/x/sys/unix` v0.48.0 solely for FreeBSD
 `GetsockoptXucred`; source `613e2570718ecde85c04e69ebd5585c3881c442c`,
 Go minimum 1.26.0, BSD-3-Clause. Go checksum-database verification and go.sum
-protect module downloads; native CI also runs `go mod verify`. There are no
+protect module downloads; native qualification also runs `go mod verify`. There are no
 transitive modules or cgo requirements. Dependabot proposes gomod updates weekly;
 each requires ordinary review and native denial tests. The Go project maintains
 the syscall adapter. Remove it if an equivalent base Go wrapper replaces the
@@ -58,7 +58,7 @@ Firefox 157.0 and geckodriver 0.37.1 are checksum-pinned development downloads
 under ignored `.tools/browser`; official artifact/checksum sources are recorded in
 [the pins](../../tools/browser-pins.json). No browser binary/source is copied into
 Horvium or its release package. These Mozilla-maintained MPL tools and Linux system
-libraries run only on the development/CI host; no Selenium, Node or Go module is
+libraries run only on the development host; no Selenium, Node or Go module is
 introduced. Safari uses Apple's installed driver. Version updates require review
 of the checksums and actual browser matrix. Remove this tooling if the browser
-qualification workflow is replaced by an equivalent supported test harness.
+qualification harness is replaced by an equivalent supported test procedure.

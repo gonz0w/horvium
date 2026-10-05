@@ -11,8 +11,9 @@ Use explicit peer identity verification and narrowly scoped receive privileges.
 Authentication, service accounts, audit retention, encrypted storage, and key
 recovery require designs before being advertised as supported features.
 
-Workflow defaults are read-only. Actions are immutable-SHA pinned, tools are
-checksum-pinned, and the foundation scanner runs locally and in CI. Dependency
+GitHub Actions are disabled. Tools are checksum-pinned and the foundation
+scanner runs in the complete local review gate. Source-bound evidence requires
+maintainer review; GitHub does not independently attest local check results. Dependency
 updates require review of source/license/security impact. Preserve upstream
 notices. Confirm GitHub security feature availability instead of recording disabled
 or unavailable controls as passed. No paid service is adopted automatically.

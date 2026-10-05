@@ -1,0 +1,15 @@
+{
+  "builder": "2.2.8",
+  "fixture_keys": {
+    "15.1": {
+      "url": "https://github.com/anyvm-org/freebsd-builder/releases/download/v2.2.8/freebsd-15.1-host.id_rsa",
+      "sha256": "9924efd297012529c3a79f9ea6c4dac1fbf033397b6a8bfe3e41d2790bc23208",
+      "bytes": 411
+    },
+    "14.5": {
+      "url": "https://github.com/anyvm-org/freebsd-builder/releases/download/v2.2.8/freebsd-14.5-host.id_rsa",
+      "sha256": "aaf8a632d0274c06044db1f9ed2f2a54370cc78a93a665269b63ab73e934233a",
+      "bytes": 411
+    }
+  }
+}

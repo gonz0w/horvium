@@ -1,0 +1,114 @@
+{
+  "record_type": "local-supervised-lifecycle",
+  "date": "2026-10-05",
+  "source_commit": "9a40e72d7438bbd7bbf8305aa59392ca91de8fd4",
+  "input_sha256": {
+    "tools/owned-process.py": "659f88edea19b847c4e274168044bd0e6e984ed0b1b0c2430106da767b336234",
+    "tools/local-qualification.py": "899520f98a0452381e53ad90780d4477ff61899d567b6ba5451a591a3842b902",
+    "tools/review-gate.py": "e137910d36e5086f73e60fc55da9061dcf3bf63ebe52569e31080c23382e6346",
+    "tools/prepare-performance-vm.py": "22bd3c4effeb94ed8d6946792443d02c8bf52c28f45b6c5de2be4af802a783f7",
+    "tools/local-vm-pins.json": "2961ca8a154f2f1fa508cfc9bcb4c68b8c5430b1e6f97ab6c8ca0ee3be648280",
+    "tools/performance-vm-pins.json": "81f0f30e4171fed38e281c644044521a0cdc9f6693cd9b988b229ef4f85d002b",
+    "tools/bsd-foundation-smoke.sh": "b23f42c96ddf72ebca69b00228e50016ba8c3d62e1084f0f24ee5e01cfe3ce45",
+    "tools/browser-qualification.py": "a0486c73c77503f6fbdf5241a753e278ca2d489ee4bb32b602691e231ea0e9c7",
+    "tools/check-repo.py": "4c835424e0d09873bb619ab3452acf4c028855e5e1c1cf13e5388f18d5e5aeca",
+    "Makefile": "ec930762234c8c811de1f3a99de3404a93a268f92a2f4793d25258dff07306b1"
+  },
+  "host": {
+    "host_os": "Darwin",
+    "host_arch": "arm64",
+    "qemu_version": "QEMU emulator version 11.1.1",
+    "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+    "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+    "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+    "cpu_model": "qemu64",
+    "cpu_count": 2,
+    "memory_mib": 6144,
+    "accelerator": "tcg"
+  },
+  "portable_review": {
+    "base_commit": "7032ffba296ab6c7c2b807d52601866051ffebbb",
+    "title": "ci: eliminate Actions with supervised local qualification",
+    "command": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets",
+      "go-deep-check"
+    ],
+    "qualified": true,
+    "tool_regressions": 47,
+    "race_and_all_twelve_fuzz_targets": "passed",
+    "supervisor": {
+      "reason": "exit",
+      "group_cleaned": true,
+      "escalated": false,
+      "worker_returncode": 0
+    }
+  },
+  "foundation_guest": {
+    "suite": "foundation",
+    "release": "15.1",
+    "started_at": "2026-10-05T17:39:32.437071+00:00",
+    "completed_at": "2026-10-05T17:40:58.906664+00:00",
+    "image": {
+      "release": "15.1",
+      "builder": "2.2.8",
+      "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+      "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+      "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+      "cpu_model": "qemu64",
+      "cpu_count": 2,
+      "memory_mib": 6144
+    },
+    "guest_assertions": true,
+    "base_preserved": true,
+    "runtime_preserved": true,
+    "host_teardown": true,
+    "qualified": true,
+    "supervisor_fixture_cleanup": true,
+    "supervisor_group_cleaned": true
+  },
+  "foundation_supervisor": {
+    "reason": "exit",
+    "group_cleaned": true,
+    "escalated": false,
+    "worker_returncode": 0
+  },
+  "abrupt_controller": {
+    "suite": "foundation",
+    "release": "15.1",
+    "controller_signal": "SIGKILL",
+    "live_qemu_and_ssh_listener_observed": true,
+    "qualified": false,
+    "supervisor_reason": "owner-disconnected",
+    "group_cleaned": true,
+    "listener_closed": true,
+    "fixture_key_image_vars_removed": true
+  },
+  "abrupt_controller_supervisor": {
+    "reason": "owner-disconnected",
+    "group_cleaned": true,
+    "escalated": false,
+    "worker_returncode": 1
+  },
+  "preview": {
+    "preview_listener_observed": true,
+    "active_status_nonzero": true,
+    "operator_stop_succeeded": true,
+    "listener_closed": true,
+    "final_lab_status_zero": true
+  },
+  "preview_supervisor": {
+    "reason": "operator-stop",
+    "group_cleaned": true,
+    "escalated": false,
+    "worker_returncode": -15
+  },
+  "limits": [
+    "Property suites from the earlier local manifest were not rerun for this host supervisor change.",
+    "No new Linux host, Firefox/Safari flow, FreeBSD 14.5 supervisor run, device/provider fixture, physical performance, detached macOS app, supervisor-death or power-loss claim.",
+    "Portable final PR-head review is reported in the PR separately; this manifest binds the executed supervisor source."
+  ]
+}

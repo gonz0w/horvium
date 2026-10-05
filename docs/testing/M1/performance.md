@@ -9,8 +9,10 @@ Authority: approved [PRD budgets](../../milestones/M1/PRD.md) and
 
 ## Fixture and measurement
 
-The separate manual [workflow](../../../.github/workflows/bsd-performance.yml)
-is also callable from the existing BSD workflow with `performance=true`. It
+Current execution uses the [local runner](../local-qualification.md), selecting
+`performance` explicitly for each release. GitHub Actions are disabled. Historical
+hosted run inputs and measurements below retain their original provenance. The
+original [workflow source](https://github.com/gonz0w/horvium/blob/65750aa81aeca0054a371690fbef5a7e7d9fffcc/.github/workflows/bsd-performance.yml)
 verifies compressed builder 2.2.8 FreeBSD 15.1/14.5 images and AnyVM 0.7.2 against
 [SHA-256 pins](../../../tools/performance-vm-pins.json). It captures the decompressed
 base-image hash and rechecks base/runtime hashes after the snapshot-mode run.

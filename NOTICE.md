@@ -3,6 +3,8 @@
 Horvium's repository tooling, hooks, tool pins, workflow baseline, issue forms,
 and ruleset definitions are adapted from BSD Cloud Console, BSD-3-Clause,
 local source revision `bfbc526e136c2b8d9ea6088df40b3b8d357b8c62`.
+The adapted executable Actions workflows have since been removed under the local
+review policy; this historical attribution remains.
 Engineering and document-lifecycle conventions also follow BSD Cloud Core,
 local source revision `4c427f282fb2447b020ac7da177558c0017dda02`.
 
@@ -11,6 +13,18 @@ conditions are retained in [LICENSE](LICENSE). External tools and actions retain
 their own licenses; their reviewed versions and artifact checksums are recorded
 in [tool pins](tools/pins.json). They are development dependencies, not bundled
 Horvium runtime components.
+
+## Disposable VM assets
+
+The local development runner fetches existing anyvm-org/freebsd-builder 2.2.8
+images and public builder fixture SSH keys. Source URLs and checksums are recorded
+in [image pins](tools/performance-vm-pins.json) and
+[fixture-key pins](tools/local-vm-pins.json); key digests were checked against
+[publisher release metadata](https://api.github.com/repos/anyvm-org/freebsd-builder/releases/tags/v2.2.8)
+on 2026-10-05. Assets remain in ignored development fixtures, with keys removed
+after use; no image, private-key content or upstream launcher code is vendored.
+The operator supplies QEMU/UEFI; actual runtime hashes are captured per run.
+This introduces no NAS runtime dependency or redistribution claim.
 
 ## Go syscall adapter
 

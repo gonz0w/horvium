@@ -75,7 +75,7 @@ Cam (`@gonz0w`) is the initial maintainer and CODEOWNERS owner.
   passed on source `dc0630973095f51ef5b5508b92ecae83e5a9a993`.
 - [FreeBSD 15.1 amd64 foundation smoke](https://github.com/gonz0w/horvium/actions/runs/37159774954)
   passed on that same source. This proves shell/hook behavior only.
-- Active main ruleset requires PRs, signed history, linear history, resolved
+- At bootstrap, the active main ruleset required PRs, signed history, linear history, resolved
   conversations, and repo-hygiene/pr-title/dco. Force pushes and deletion are
   blocked; no bypass actors. Solo phase has zero independent required approvals.
 - Active `v*` tag rules forbid moving/deleting release tags. Signing tags remains
@@ -95,7 +95,7 @@ Cam (`@gonz0w`) is the initial maintainer and CODEOWNERS owner.
   or a deployable release. BSD Cloud's reporting address is not assumed.
 - GitHub security-and-analysis capability metadata was unavailable for this
   private repository. Repository-native secret scanning/push protection and
-  paid security features are not claimed; Gitleaks runs locally and in CI.
+  paid security features are not claimed; Gitleaks now runs in the complete local review gate.
 - Native NAS operations, protocol clients, physical controllers/disks, commercial
   scale, restore, upgrade, packages, images, SBOM/provenance, and production support
   require their later milestone evidence. No installable port has been published.
@@ -103,3 +103,28 @@ Cam (`@gonz0w`) is the initial maintainer and CODEOWNERS owner.
 Python/linters/scanners are development-only. Tool installation supports Linux
 and macOS; native FreeBSD validation has separate gates. See the
 [lab model](../testing/lab-gate.md) and [compatibility matrix](../compatibility/matrix.md).
+
+## Local review policy update — 2026-10-05
+
+The maintainer authorized zero repository GitHub Actions execution and local
+review/native qualification. Repository Actions permissions were changed and
+read back with `enabled=false`; separate queued/in-progress workflow queries both
+returned zero. Runnable workflow files and the obsolete Actions Dependabot
+update ecosystem are removed in this change. No runner/service is registered.
+
+Main ruleset 24433553 was updated and read back. The only removed rule is
+`required_status_checks` (repo-hygiene/pr-title/dco). Its name, branch target,
+active enforcement, main ref conditions, empty bypass list and every other rule
+and PR parameter match the immediately preceding live snapshot. Signed history,
+PRs, linear history, resolved conversations and deletion/force-push protection
+remain active. Versioned [main configuration](../../.github/main-ruleset.json)
+matches the returned configuration. Release ruleset 24433555 was read before/after
+and is identical. Solo-phase approval count remains zero; agents leave PRs open.
+
+The [local review gate](local-review.md) replaces hosted title/DCO/content/Go/deep
+checks with source-bound local reports and maintainer evidence review. GitHub
+cannot independently enforce local execution. No fake successful status is
+published. Existing hosted failures and charges remain historical records, not
+new execution. Scope is Horvium only; other repositories and account billing are
+unchanged. Actual local native and teardown evidence is tracked separately in
+[local qualification](../testing/local-qualification.md).

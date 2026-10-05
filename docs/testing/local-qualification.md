@@ -1,0 +1,165 @@
+# Local qualification
+
+Status: the Mac runner executed the existing property suite on both FreeBSD
+targets on 2026-10-05, with all 51 assertions, unchanged base/runtime and owned
+cleanup. Foundation shell/DCO smoke also passed on 15.1. See the
+[sanitized execution manifest](local-qualification-manifest.json) for exact
+source commits, image/tool hashes and versions. Local results do not replace
+previously accepted manifests or establish new M2 device/runtime eligibility.
+
+The updated lease supervisor was then qualified on source
+`9a40e72d7438bbd7bbf8305aa59392ca91de8fd4`: foundation/15.1 passed with
+unchanged artifacts and verified group/fixture cleanup. Killing the controller
+of a second live QEMU guest stopped its listener and removed key/image/variables;
+that interrupted run correctly remained unqualified. A real preview was reachable,
+reported active, stopped through `lab-stop`, and had its listener closed; final
+`lab-status` verified all owned sessions stopped. The complete portable gate,
+47 tooling regressions, race and all twelve fuzz targets passed. See the separate
+[sanitized teardown manifest](local-teardown-manifest.json). Earlier property
+runs retain their original source evidence; other guest/browser combinations
+were not requalified by these host-lifecycle tests.
+
+## Mac first
+
+The maintainer selected the current Mac as the first lab host. Run repository
+checks and deep Go checks there before requesting review:
+
+```sh
+make tools
+PR_TITLE='ci: move qualification to local hosts' make review
+```
+
+Attach the checked commit/base/title and results to the PR. The
+[local review gate](../engineering/local-review.md) runs all portable checks,
+race detection and bounded fuzzing; GitHub Actions are disabled. Automated
+Firefox currently has Linux-only artifact pins and needs a local Linux lab.
+Safari uses the installed-driver procedure; manual accessibility remains pending.
+
+## Disposable FreeBSD guests
+
+Prerequisites: Python 3.14, Git, OpenSSH, QEMU with x86 UEFI firmware and `unzstd`.
+The current Mac already has QEMU and zstd; this runner installs no host packages,
+services, GitHub runner or SSH configuration. On a future Linux lab, provision
+QEMU/OVMF/zstd first. No nested virtualization is required by the current TCG
+runner.
+
+Use a clean committed checkout. The runner transfers `git archive HEAD`, never
+the host's ignored files, `.tools`, Git credentials or private configuration.
+
+```sh
+# Describe the selected guest without downloading or starting it.
+python3.14 tools/local-qualification.py properties 15.1
+
+# Explicitly start one disposable guest and run only the selected suite.
+python3.14 tools/local-qualification.py properties 15.1 --run
+python3.14 tools/local-qualification.py properties 14.5 --run
+```
+
+Supported suites: `foundation`, `research`, `discovery`, `properties`,
+`continuity`, `performance`. Run the two release candidates **sequentially** on
+the Mac. Each guest has two CPUs, 6,144 MiB RAM, qemu64 and snapshot storage.
+Reserve additional RAM for macOS; stop other large workloads while testing.
+These are lab allocations, not Horvium runtime hardware requirements.
+
+Only foundation/15.1 and properties/15.1/14.5 have actual execution evidence
+through this runner. The other selectable suites and Linux host remain unqualified
+through this runner until executed and reviewed; existing hosted evidence is
+separate. The property runs took approximately six to eight minutes on this Mac,
+including boot, package/SDK preparation, cold compilation and complete cleanup.
+
+The runner uses TCG on both hosts. On an ARM Mac, amd64 executes through software
+emulation and can be substantially slower. Performance procedures retain their
+original assertions: slow results are failures, never adjusted to pass. Record
+TCG/host/QEMU/firmware independently; results cannot be compared directly with
+hosted/KVM measurements or physical performance. KVM acceleration and macOS ARM
+FreeBSD qualification require a separately reviewed extension.
+
+The virtual-disk fixture in PR 28 is not supported by this runner yet. Its Linux
+process-identity and device attachment wrapper needs a separate Mac adaptation
+and native execution before that gate can pass. Do not count property-suite
+success as device/provider safety proof.
+
+## Isolation, cache and evidence
+
+Only a randomly allocated **127.0.0.1 SSH port** is forwarded; there is no VNC,
+public listener, host NFS export or host disk attachment. OpenSSH uses `-F
+/dev/null`, a checksum-verified public builder fixture key, disabled SSH agent,
+and a private per-run known-hosts file. Fixture credentials never authorize the
+guest to log into the host. The key is deleted after execution and is never
+cached or committed. Guest package/SDK downloads still require internet access;
+local execution means no GitHub-hosted runner minutes, not an air-gapped test.
+
+Compressed images and the pinned upstream AnyVM artifact are cached by SHA-256
+under ignored `.tools/lab-cache`. Every cache hit is authenticated; corrupt
+entries fail closed. Fresh image copies are decompressed per run, with snapshot
+mode and before/after image verification. Cached images are never writable
+guest disks. The local runner drives QEMU directly; it does not execute AnyVM or
+allow it to change the host's SSH configuration.
+
+Private logs and `result.json` are retained under ignored `.tools/lab-runs`.
+The record names the exact source commit, suite/release, image/runtime hashes,
+QEMU/firmware, host architecture, emulation mode, assertions and cleanup result.
+Qualification requires a successful guest command, suite-specific assertion
+validation, unchanged base/runtime and verified owned-process termination.
+Missing/skipped/failed assertions and cleanup/preservation failures remain
+unqualified. Normal teardown removes the fresh image, private key and variable
+store; logs and the known-hosts file remain for inspection. Preservation failure remains unqualified; the supervisor still removes disposable
+image/key/variable-store files after stopping the owned group.
+
+## Teardown
+
+```sh
+make lab-status
+make lab-stop
+make lab-status
+```
+
+`lab-status` exits nonzero for active or unverified sessions. `lab-stop` requests
+termination through each private owned session socket and waits for a completed
+teardown record. It never kills by process name or signals a stale stored PID.
+These commands cover supervised local guests, review gates, previews and browser
+fixture/driver groups; they do not control unrelated operator processes.
+
+A short-lived supervisor owns each foreground worker group and watches an open
+lease pipe to its controller. Normal exit, failure, timeout, Ctrl-C, SIGTERM and
+controller SIGKILL all close that lease or trigger explicit cleanup. It sends
+TERM, waits a bounded grace period, escalates to KILL if needed, verifies no live
+group member remains, then reaps its child. Holding the leader unreaped reserves
+its PID while signalling, avoiding accidental kills after PID reuse. On guest
+interruption it also deletes the fixed fixture key/image/variable-store paths
+inside the private lab directory and marks the run unqualified. Successful
+qualification requires guest/base/runtime checks and the supervisor's verified
+teardown. Status records and socket directories are private and ignored.
+
+The supervisor installs no service and exits after cleanup. A running Mac preview
+expires through the Go fixture's twenty-minute timer as well. Temporary lab/cache
+and evidence files are inert: the compressed verified cache can remain for reuse.
+Inspect retained logs, then delete only stopped session/evidence directories or
+the cache if disk space is needed. Never remove active session sockets to hide a
+running job; `lab-stop` first, then require a successful `lab-status`.
+
+Host power loss, killing the supervisor itself as well as its controller, or a
+host process deliberately detaching into another group cannot be covered by this
+lease. External macOS browser applications may also be outside the group. Such
+runs remain unqualified: stale sockets/metadata are reported as UNVERIFIED and
+are never permission to signal an old PID. Investigate the specific owned process
+identity manually before recovery; no broad process-name kill or production
+storage cleanup belongs in this procedure.
+
+Review/sanitize selected evidence before putting it in a PR; never commit raw
+guest/host inventories, key material or credentials. A local record is input to
+the milestone evidence review, not automatic milestone acceptance. Preserve
+both release candidates and requirement/test traceability.
+
+## Optional later home lab
+
+A dedicated x86-64 Linux host/VM can run the same sequential fixtures. Suggested
+starting allocation: four vCPUs, 16 GB RAM, 40 GB scratch space and internet
+access. These are unmeasured provisioning suggestions. A later KVM runner needs
+virtualization or nested virtualization, controlled `/dev/kvm` access and its own
+recorded execution evidence. This host stays separate from live NAS storage.
+
+A GitHub runner is unnecessary: run local scripts on the isolated lab when those
+gates are needed. This work registers no persistent execution service. Native
+replication/restore will require two isolated FreeBSD peers; hardware power-loss
+and controller failures remain physical-lab gates.

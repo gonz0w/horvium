@@ -8,9 +8,17 @@ and assistive-technology evidence before UI acceptance.
 
 ## Automated procedure
 
+GitHub Actions are disabled. On a prepared Linux lab, run
+`python3.14 tools/bootstrap-browser.py` then
+`python3.14 tools/browser-qualification.py --browser firefox --output .tools/browser-result.json`.
+On the Mac use `--browser safari` with remote automation already enabled by the
+operator. The runner supervises fixture/driver groups; external browser app
+lifecycle and manual accessibility require separate observations. No persistent
+runner is installed. Historical hosted results below retain their provenance.
+
 `tools/browser-qualification.py` controls an actual browser using stdlib W3C
 WebDriver requests. Firefox/geckodriver downloads have pinned official hashes.
-The Linux workflow exercises JavaScript enabled/disabled in light/dark appearances
+The local Linux runner exercises JavaScript enabled/disabled in light/dark appearances
 at desktop and 390/320 CSS-pixel widths. It verifies observed dark/reduced-motion
 media, keyboard order and visible focus, literal hostile resource names, labels,
 polite status, full-page fallback, HTMX filter/detail focus, actual status polling
@@ -39,7 +47,7 @@ The maintainer chose to keep manual accessibility acceptance pending on
 Run `make browser-preview` in the checkout. It prints a loopback URL, displays a
 “Synthetic browser fixture” banner, and expires after twenty minutes. The deliberately
 public login value is 64 lowercase `a` characters. It observes no host/storage and
-has no usable production credential. Stop with Control-C. Use the same functional
+has no usable production credential. Stop with Control-C or `make lab-stop`; verify `make lab-status` afterward. Use the same functional
 revision as the recorded automated run; record OS/browser versions and date.
 
 For Safari on macOS (VoiceOver) and Firefox on Linux (available screen reader),

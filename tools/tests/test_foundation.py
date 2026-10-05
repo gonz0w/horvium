@@ -68,15 +68,29 @@ class FoundationTests(unittest.TestCase):
         result = self.check()
         self.assertEqual(result.returncode, 0, result.stderr)
 
-    def test_mutable_action_reference_is_rejected(self):
-        path = self.repo / ".github/workflows/repository.yml"
-        path.write_text(path.read_text().replace("@3d3c42e5aac5ba805825da76410c181273ba90b1", "@main"))
-        self.assertIn("external action must use a full commit SHA", self.check().stderr)
+    def test_actions_workflow_reintroduction_is_rejected(self):
+        path = self.repo / '.github/workflows/probe.yml'
+        path.parent.mkdir(exist_ok=True)
+        path.write_text('name: probe\njobs: {}\n')
+        self.assertIn('GitHub Actions are disabled by repository policy', self.check().stderr)
+
+    def test_required_hosted_status_reintroduction_is_rejected(self):
+        path = self.repo / '.github/main-ruleset.json'
+        data = json.loads(path.read_text())
+        data['rules'].append({'type': 'required_status_checks'})
+        path.write_text(json.dumps(data) + '\n')
+        self.assertIn('local review policy forbids required hosted status checks', self.check().stderr)
+
+    def test_signed_history_protection_cannot_be_removed(self):
+        path = self.repo / '.github/main-ruleset.json'
+        data = json.loads(path.read_text())
+        data['rules'] = [rule for rule in data['rules'] if rule['type'] != 'required_signatures']
+        path.write_text(json.dumps(data) + '\n')
+        self.assertIn('main protection missing: required_signatures', self.check().stderr)
 
     def test_duplicate_yaml_security_keys_are_rejected(self):
-        path = self.repo / ".github/workflows/repository.yml"
-        path.write_text(path.read_text() + "\npermissions:\n  contents: write\n")
-        self.assertIn("duplicate YAML key: permissions", self.check().stderr)
+        (self.repo / 'probe.yml').write_text('permissions: read\npermissions: write\n')
+        self.assertIn('duplicate YAML key: permissions', self.check().stderr)
 
     def test_secret_filename_with_spaces_is_rejected(self):
         (self.repo / "key with spaces.key").write_text("not a real key\n")

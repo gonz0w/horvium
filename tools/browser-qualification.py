@@ -5,9 +5,8 @@ import argparse
 import json
 import os
 import platform
-import signal
 import socket
-import subprocess
+import importlib.util
 import tempfile
 import time
 import urllib.error
@@ -15,6 +14,9 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+SPEC = importlib.util.spec_from_file_location('owned_process', ROOT / 'tools/owned-process.py')
+OWNED = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(OWNED)
 ELEMENT = 'element-6066-11e4-a52e-4f735466cecf'
 
 
@@ -177,13 +179,7 @@ def unused_port():
 
 
 def stop_process(process):
-    if process.poll() is None:
-        os.killpg(process.pid, signal.SIGTERM)
-        try:
-            process.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            os.killpg(process.pid, signal.SIGKILL)
-            process.wait(timeout=5)
+    process.stop()
 
 
 def close_driver(driver, process):
@@ -209,7 +205,7 @@ def main():
         with (path / 'fixture.log').open('w+') as log:
             env = os.environ.copy()
             env.update(HORVIUM_UI_PREVIEW='1', GOENV='off', GOTOOLCHAIN='local', CGO_ENABLED='0', GOCACHE=str(ROOT / '.tools/go-cache'), GOMODCACHE=str(ROOT / '.tools/go-modules'))
-            fixture = subprocess.Popen([str(ROOT / '.tools/go/bin/go'), 'test', '-v', './internal/console', '-run', '^TestBrowserPreview$', '-count=1', '-timeout=25m'], cwd=ROOT, env=env, stdout=log, stderr=log, start_new_session=True)
+            fixture = OWNED.OwnedProcess([str(ROOT / '.tools/go/bin/go'), 'test', '-v', './internal/console', '-run', '^TestBrowserPreview$', '-count=1', '-timeout=25m'], cwd=ROOT, env=env, stdout=log, stderr=log)
             try:
                 base = None
                 for _ in range(600):
@@ -232,7 +228,7 @@ def main():
                         driver_args = [str(executable), '--port', str(port)]
                         if args.browser == 'firefox':
                             driver_args.append('--allow-system-access')
-                        process = subprocess.Popen(driver_args, stdout=driver_log, stderr=driver_log, start_new_session=True)
+                        process = OWNED.OwnedProcess(driver_args, stdout=driver_log, stderr=driver_log)
                         driver = Driver('http://127.0.0.1:' + str(port))
                         try:
                             for _ in range(100):
