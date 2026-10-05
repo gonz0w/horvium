@@ -1,8 +1,11 @@
 # Local qualification
 
-Status: development tooling; actual executions and limitations must be recorded
-separately. Local results do not replace previously accepted manifests or qualify
-new native behavior merely because a VM boots.
+Status: the Mac runner executed the existing property suite on both FreeBSD
+targets on 2026-10-05, with all 51 assertions, unchanged base/runtime and owned
+cleanup. Foundation shell/DCO smoke also passed on 15.1. See the
+[sanitized execution manifest](local-qualification-manifest.json) for exact
+source commits, image/tool hashes and versions. Local results do not replace
+previously accepted manifests or establish new M2 device/runtime eligibility.
 
 ## Mac first
 
@@ -50,6 +53,12 @@ Supported suites: `foundation`, `research`, `discovery`, `properties`,
 the Mac. Each guest has two CPUs, 6,144 MiB RAM, qemu64 and snapshot storage.
 Reserve additional RAM for macOS; stop other large workloads while testing.
 These are lab allocations, not Horvium runtime hardware requirements.
+
+Only foundation/15.1 and properties/15.1/14.5 have actual execution evidence
+through this runner. The other selectable suites and Linux host remain unqualified
+through this runner until executed and reviewed; existing hosted evidence is
+separate. The property runs took approximately six to eight minutes on this Mac,
+including boot, package/SDK preparation, cold compilation and complete cleanup.
 
 The runner uses TCG on both hosts. On an ARM Mac, amd64 executes through software
 emulation and can be substantially slower. Performance procedures retain their

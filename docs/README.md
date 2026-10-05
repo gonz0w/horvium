@@ -21,6 +21,7 @@
 - [CI/CD](engineering/ci-cd.md)
 - [CI cost controls](engineering/ci-costs.md)
 - [Local Mac/FreeBSD qualification](testing/local-qualification.md)
+- [Local runner execution manifest](testing/local-qualification-manifest.json)
 - [Dependency policy](engineering/dependency-policy.md)
 - [Release strategy](engineering/release-strategy.md)
 - [Document lifecycle](process/document-lifecycle.md)

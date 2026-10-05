@@ -12,6 +12,18 @@ their own licenses; their reviewed versions and artifact checksums are recorded
 in [tool pins](tools/pins.json). They are development dependencies, not bundled
 Horvium runtime components.
 
+## Disposable VM assets
+
+The local development runner fetches existing anyvm-org/freebsd-builder 2.2.8
+images and public builder fixture SSH keys. Source URLs and checksums are recorded
+in [image pins](tools/performance-vm-pins.json) and
+[fixture-key pins](tools/local-vm-pins.json); key digests were checked against
+[publisher release metadata](https://api.github.com/repos/anyvm-org/freebsd-builder/releases/tags/v2.2.8)
+on 2026-10-05. Assets remain in ignored development fixtures, with keys removed
+after use; no image, private-key content or upstream launcher code is vendored.
+The operator supplies QEMU/UEFI; actual runtime hashes are captured per run.
+This introduces no NAS runtime dependency or redistribution claim.
+
 ## Go syscall adapter
 
 `golang.org/x/sys` v0.48.0, source revision

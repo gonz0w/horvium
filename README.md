@@ -72,6 +72,9 @@ make go-check
 
 Native FreeBSD checks and physical hardware tests have separate gates. Passing
 these foundation checks does not demonstrate functioning storage or file shares.
+Use the [local qualification runner](docs/testing/local-qualification.md) for
+supported disposable FreeBSD suites on the development Mac; see
+[CI cost controls](docs/engineering/ci-costs.md) for hosted fallbacks.
 
 The Go module provides discovery, cache, administration, console and authenticated
 CLI adapters. `make build` creates a cgo-free foreground development executable;
