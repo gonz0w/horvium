@@ -75,3 +75,5 @@
 - [M1 browser qualification and manual accessibility checklist](testing/M1/browser-checklist.md)
 
 - [Consolidated M1 qualification review and open acceptance gates](testing/M1/qualification-status.md)
+
+- [M2 disposable virtual device identity fixture](testing/M2/devices.md).

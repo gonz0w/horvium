@@ -1,6 +1,6 @@
 # M2 vdev topology observations and review drift
 
-Date: 2026-10-04. Status: behavioral and pinned native subset passed; PR 27 review pending.
+Date: 2026-10-04. Status: behavioral and pinned native subset passed; subset accepted in PR 27.
 Design: [approved EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [slice sequence](../../milestones/M2/implementation.md). Extends the
 [pool](pool-state.md) and [feature](features.md) observations; runtime remains read-only.
@@ -157,8 +157,8 @@ refusal has behavioral/source coverage, without native fault injection or a full
 error/scan lifecycle claim. Native attach/resilver completion is fixture setup;
 reported scan text remains uninterpreted and denied by this partial verifier.
 
-Earlier projection manifests retain their original source/case sets. PR 27 is
-open for maintainer review; these results do not accept slice 1 or M2.
+Earlier projection manifests retain their original source/case sets. PR 27 accepted this subset at merged source
+`7032ffba296ab6c7c2b807d52601866051ffebbb`; these results do not accept slice 1 or M2.
 JSON/status scan interpretation, provider classes,
 stable identity/geometry, system/device-use and complete-impact collection remain
 pending. Full M2 operation/state/recovery/client/browser/resource and physical/
