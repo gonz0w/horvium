@@ -27,6 +27,10 @@ if ! .tools/go/bin/go test -v -count=1 ./internal/inventory -run '^TestNativeDis
     cat .tools/device-native.log
     exit 1
 fi
+if ! .tools/go/bin/go test -v -count=1 ./internal/storage -run '^TestNativeImportedPoolUse$' >> .tools/device-native.log 2>&1; then
+    cat .tools/device-native.log
+    exit 1
+fi
 if ! .tools/go/bin/go test -v -count=1 ./internal/storage -run '^TestNativeSystemDeviceUse$' >> .tools/device-native.log 2>&1; then
     cat .tools/device-native.log
     exit 1

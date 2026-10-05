@@ -306,6 +306,85 @@ func (r *systemResolver) disks(addresses []string) ([]inventory.Provider, error)
 	return disks, nil
 }
 
+func newSystemResolver(geom []byte, b *systemBudget) (*systemResolver, error) {
+	graph, err := inventory.ParseGEOM(geom, b.limits)
+	if err != nil {
+		if errors.Is(err, inventory.ErrLimit) {
+			return nil, ErrLimit
+		}
+		return nil, ErrInvalid
+	}
+	if err := b.spend(len(graph.Classes) + len(graph.Geoms) + len(graph.Providers)); err != nil {
+		return nil, err
+	}
+	r := systemResolver{providers: make(map[string]inventory.Provider), geoms: make(map[string]inventory.Geom), names: make(map[string][]string), outputs: make(map[string]int), budget: b}
+	for _, g := range graph.Geoms {
+		if err := b.spend(len(g.Consumers)); err != nil {
+			return nil, err
+		}
+		r.geoms[g.ID] = g
+	}
+	for _, p := range graph.Providers {
+		r.providers[p.ID] = p
+		r.names[p.Name] = append(r.names[p.Name], p.ID)
+		r.outputs[p.GeomID]++
+	}
+	return &r, nil
+}
+
+type poolBacking struct {
+	guid, health string
+	disks        []inventory.Provider
+}
+
+func resolvePoolUse(p PoolUseCapture, r *systemResolver) (poolBacking, error) {
+	if len(p.GUID) < 2 || p.GUID[len(p.GUID)-1] != '\n' {
+		return poolBacking{}, ErrInvalid
+	}
+	guid := string(p.GUID[:len(p.GUID)-1])
+	if err := systemField(guid, r.budget.limits); err != nil {
+		return poolBacking{}, err
+	}
+	if !validGUID(guid) {
+		return poolBacking{}, ErrInvalid
+	}
+	for _, capture := range [][]byte{p.StatusGUIDs, p.StatusPaths} {
+		if len(capture) > 1<<20 || strings.Count(string(capture), "\n") > 8192 {
+			return poolBacking{}, ErrLimit
+		}
+		for _, line := range strings.Split(string(capture), "\n") {
+			if len(line) > r.budget.limits.MaxFieldBytes {
+				return poolBacking{}, ErrLimit
+			}
+		}
+	}
+	topology, err := ParsePoolTopology(p.StatusGUIDs, p.StatusPaths, p.Name, guid)
+	if err != nil {
+		return poolBacking{}, err
+	}
+	if err := r.budget.spend(len(topology.Nodes)); err != nil {
+		return poolBacking{}, err
+	}
+	parents := make(map[string]bool)
+	for _, node := range topology.Nodes {
+		parents[node.ParentGUID] = true
+	}
+	var leaves []string
+	for _, node := range topology.Nodes {
+		if !parents[node.GUID] {
+			if node.Kind != "leaf" || !devicePath(node.Address) {
+				return poolBacking{}, ErrUnavailable
+			}
+			leaves = append(leaves, node.Address)
+		}
+	}
+	disks, err := r.disks(leaves)
+	if err != nil {
+		return poolBacking{}, err
+	}
+	return poolBacking{guid: guid, health: topology.Health, disks: disks}, nil
+}
+
 // ParseSystemDeviceUse correlates complete GEOM, mount -p, swapinfo -k and paired
 // status/GUID captures for exactly the mounted ZFS pools. Unsupported or partial
 // source/backing means unavailable, never absent use. No native commands run.
@@ -333,28 +412,10 @@ func ParseSystemDeviceUse(geom, mount, swap []byte, pools []PoolUseCapture, limi
 			return zero, ErrLimit
 		}
 	}
-	graph, err := inventory.ParseGEOM(geom, limits)
-	if err != nil {
-		if errors.Is(err, inventory.ErrLimit) {
-			return zero, ErrLimit
-		}
-		return zero, ErrInvalid
-	}
 	b := systemBudget{limits: limits, remaining: limits.MaxRecords}
-	if err := b.spend(len(graph.Classes) + len(graph.Geoms) + len(graph.Providers)); err != nil {
+	r, err := newSystemResolver(geom, &b)
+	if err != nil {
 		return zero, err
-	}
-	r := systemResolver{providers: make(map[string]inventory.Provider), geoms: make(map[string]inventory.Geom), names: make(map[string][]string), outputs: make(map[string]int), budget: &b}
-	for _, g := range graph.Geoms {
-		if err := b.spend(len(g.Consumers)); err != nil {
-			return zero, err
-		}
-		r.geoms[g.ID] = g
-	}
-	for _, p := range graph.Providers {
-		r.providers[p.ID] = p
-		r.names[p.Name] = append(r.names[p.Name], p.ID)
-		r.outputs[p.GeomID]++
 	}
 	mounts, err := mountTable(mount, &b)
 	if err != nil {
@@ -376,10 +437,6 @@ func ParseSystemDeviceUse(geom, mount, swap []byte, pools []PoolUseCapture, limi
 	if len(required) != len(pools) {
 		return zero, ErrUnavailable
 	}
-	type poolBacking struct {
-		guid  string
-		disks []inventory.Provider
-	}
 	backing := make(map[string]poolBacking)
 	for _, p := range pools {
 		if err := b.spend(1); err != nil {
@@ -391,51 +448,11 @@ func ParseSystemDeviceUse(geom, mount, swap []byte, pools []PoolUseCapture, limi
 		if !required[p.Name] || backing[p.Name].guid != "" {
 			return zero, ErrUnavailable
 		}
-		if len(p.GUID) < 2 || p.GUID[len(p.GUID)-1] != '\n' {
-			return zero, ErrInvalid
-		}
-		guid := string(p.GUID[:len(p.GUID)-1])
-		if err := systemField(guid, limits); err != nil {
-			return zero, err
-		}
-		if !validGUID(guid) {
-			return zero, ErrInvalid
-		}
-		for _, capture := range [][]byte{p.StatusGUIDs, p.StatusPaths} {
-			if len(capture) > 1<<20 || strings.Count(string(capture), "\n") > 8192 {
-				return zero, ErrLimit
-			}
-			for _, line := range strings.Split(string(capture), "\n") {
-				if len(line) > limits.MaxFieldBytes {
-					return zero, ErrLimit
-				}
-			}
-		}
-		topology, err := ParsePoolTopology(p.StatusGUIDs, p.StatusPaths, p.Name, guid)
+		observed, err := resolvePoolUse(p, r)
 		if err != nil {
 			return zero, err
 		}
-		if err := b.spend(len(topology.Nodes)); err != nil {
-			return zero, err
-		}
-		parents := make(map[string]bool)
-		for _, node := range topology.Nodes {
-			parents[node.ParentGUID] = true
-		}
-		var leaves []string
-		for _, node := range topology.Nodes {
-			if !parents[node.GUID] {
-				if node.Kind != "leaf" || !devicePath(node.Address) {
-					return zero, ErrUnavailable
-				}
-				leaves = append(leaves, node.Address)
-			}
-		}
-		disks, err := r.disks(leaves)
-		if err != nil {
-			return zero, err
-		}
-		backing[p.Name] = poolBacking{guid, disks}
+		backing[p.Name] = observed
 	}
 	directCache := make(map[string][]inventory.Provider)
 	resolve := func(address string) ([]inventory.Provider, error) {

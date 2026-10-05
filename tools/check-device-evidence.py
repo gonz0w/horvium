@@ -10,6 +10,8 @@ CORRELATION_CASES={'unique_serial','duplicate_denial','missing_denial','geometry
 ATTACHMENT_CASES={'native_alias','partition_denial','blank_table_denial','fixture_teardown','foreign_preservation'}
 SYSTEM_USE_CASES={'root_backing','mounted_disk','active_swap','unsupported_denial','fixture_teardown','foreign_preservation'}
 
+IMPORTED_POOL_CASES={'unmounted_pool','catalogue_binding','missing_denial','fixture_teardown','foreign_preservation','root_preservation'}
+
 def validate(text, guest=False):
     if len(text)>1<<20 or re.search(r'(?m)^(?:FAIL|--- (?:FAIL|SKIP):)',text):
         raise ValueError('native device evidence failed, skipped or oversized')
@@ -44,6 +46,14 @@ def validate(text, guest=False):
     expected={case+'=pass' for case in SYSTEM_USE_CASES}
     if len(fields)!=len(expected) or set(fields)!=expected:
         raise ValueError('missing, duplicate, unknown or failed system-use assertion')
+    passes=re.findall(r'(?m)^--- PASS: TestNativeImportedPoolUse \([0-9.]+s\)$',text)
+    records=re.findall(r'DEVICE_IMPORTED_POOL_RESULT ([^\n]+)',text)
+    if len(passes)!=1 or len(records)!=1:
+        raise ValueError('one executed native imported-pool result required')
+    fields=records[0].split()
+    expected={case+'=pass' for case in IMPORTED_POOL_CASES}
+    if len(fields)!=len(expected) or set(fields)!=expected:
+        raise ValueError('missing, duplicate, unknown or failed imported-pool assertion')
     if not guest and len(re.findall(r'(?m)^DEVICE_FIXTURE_CLEANUP pass$',text))!=1:
         raise ValueError('complete owned host fixture teardown required')
 

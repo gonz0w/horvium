@@ -38,10 +38,14 @@ assertions and complete teardown on both targets and was accepted in
 DEV/disk-ident correspondence and refuses PART/unsupported attachments; native
 partition-denial qualification passed all seventeen assertions and full teardown
 on both targets and was accepted in [PR 32](https://github.com/gonz0w/horvium/pull/32).
-The next [system device-use subset](docs/testing/M2/system-device-use.md) maps
+The [system device-use subset](docs/testing/M2/system-device-use.md) maps
 root, mount and swap observations to their direct GEOM disks; native UFS/swap
 qualification passed all twenty-three assertions and complete teardown on both
-targets, with maintainer review pending. Other native
+targets and was accepted in [PR 33](https://github.com/gonz0w/horvium/pull/33).
+The next [imported-pool use subset](docs/testing/M2/imported-pool-use.md) maps
+all imported pools to their direct GEOM disks, including pools with no mounted
+filesystems; native qualification passed all twenty-nine assertions and complete
+teardown on both targets, with maintainer review pending. Other native
 gates, durable jobs and storage writes remain pending; the runtime is still read-only.
 
 ## Agreed direction

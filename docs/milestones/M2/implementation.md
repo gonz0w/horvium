@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset qualified; review pending; Actions disabled.
+Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset qualified; review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -110,14 +110,24 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   assertions, both executed native tests and complete preservation/teardown on
   both targets. See the [native manifest](../../testing/M2/disk-attachments-manifest.json).
   No complete use proof, runtime collector or product partitioning follows.
-- Slice 1 next subset: [system device use](../../testing/M2/system-device-use.md)
+- Slice 1 subset accepted in [PR 33](https://github.com/gonz0w/horvium/pull/33),
+  merged source `bbf7fe22ea0d81cbd459171f633e99c3096f7ee0`: [system device use](../../testing/M2/system-device-use.md)
   correlates full GEOM, mount/swap and mounted-pool GUID/status captures to
   positive root/mount/swap backing facts. Disposable UFS and active swap tests
   extend the suite to twenty-three assertions and three executed native tests;
   source `3f97271f0a785d45baeb62311e8681e56d55b6a9` passed all twenty-three
   assertions, three executed native tests and complete preservation/teardown on
   both targets. See the [native manifest](../../testing/M2/system-device-use-manifest.json).
-  Maintainer review is pending. No unused-device or write authority follows.
+  No unused-device or write authority follows.
+- Slice 1 next subset: [imported-pool use](../../testing/M2/imported-pool-use.md)
+  correlates the complete all-imported-pool catalogue and independent GUID/status
+  captures to positive disk membership, including pools without mounts. Six new
+  assertions extend the devices suite to twenty-nine assertions and four executed
+  native tests. Signed source `5b0a94128aa081fbb3f5d8a79ed8ab560d1f4a09`
+  passed all twenty-nine assertions, four executed tests and full preservation/
+  teardown on both targets; see the [native manifest](../../testing/M2/imported-pool-use-manifest.json).
+  Maintainer review is pending. Exported pools, signatures and complete use
+  clearance remain open.
 - Slice 1 remains incomplete: assembled native eligibility/provider proofs, full
   status/scan interpretation, complete-impact collection and device-use drift gates
   have not run. No later slice may treat
