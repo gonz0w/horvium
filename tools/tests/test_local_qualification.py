@@ -68,6 +68,9 @@ class LocalQualificationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.module.validate_result('devices', guest)
         guest += '--- PASS: TestNativeDiskAttachments (1.0s)\nDEVICE_ATTACHMENT_RESULT ' + ' '.join(case + '=pass' for case in sorted(checker.ATTACHMENT_CASES)) + '\n'
+        with self.assertRaises(ValueError):
+            self.module.validate_result('devices', guest)
+        guest += '--- PASS: TestNativeSystemDeviceUse (1.0s)\nDEVICE_SYSTEM_USE_RESULT ' + ' '.join(case + '=pass' for case in sorted(checker.SYSTEM_USE_CASES)) + '\n'
         self.module.validate_result('devices', guest)
         with self.assertRaises(ValueError):
             self.module.validate_result('devices', guest, complete=True)

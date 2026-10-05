@@ -86,7 +86,11 @@ bound to their earlier source and do not qualify the new parser. The
 [attachment extension](M2/disk-attachments.md) adds five mandatory assertions
 and a second executed native test, for seventeen assertions. It partitions only
 one independently verified owned snapshot fixture disk and removes its table
-without force; previous manifests retain their actual source and case sets.
+without force. The [system-use extension](M2/system-device-use.md) adds six
+assertions and a third native test, for twenty-three assertions. Only two owned
+snapshot disks are used for UFS/mount/swap controls; cleanup removes owned
+mount/swap and the VM is discarded. Previous manifests retain their actual source
+and case sets.
 
 ## Isolation, cache and evidence
 

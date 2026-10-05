@@ -37,6 +37,7 @@ test-go:
 go-check: lint-go test-go go-deep-check
 
 go-deep-check:
+	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzSystemDeviceUse$$' -fuzztime=3s -parallel=2
 	CGO_ENABLED=1 $(GO) test -race ./...
 	$(GO) test ./internal/inventory -run '^$$' -fuzz '^FuzzPools$$' -fuzztime=3s -parallel=2
 	$(GO) test ./internal/inventory -run '^$$' -fuzz '^FuzzGEOM$$' -fuzztime=3s -parallel=2

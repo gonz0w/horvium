@@ -92,5 +92,12 @@ recognizes exact DEV/disk-ident correspondence and refuses PART/unsupported
 attachments. Actual empty/populated GPT denial, foreign preservation and full
 teardown passed with all seventeen assertions and both native tests on both
 targets through the Mac supervisor; see the [native manifest](../testing/M2/disk-attachments-manifest.json).
-Maintainer review is pending; local behavioral/cross-build coverage is separate.
+PR 32 accepted this subset at merged source `f53688f29d6ba85e47b7062bbada73a857f02378`;
+local behavioral/cross-build coverage is separate.
 No complete device-use, physical/locality or write eligibility follows.
+
+M2 system device use: [contract and procedure](../testing/M2/system-device-use.md)
+correlates positive root/mount/swap backing through complete GEOM and mounted
+ZFS pool GUID/status captures. Native UFS/swap/root preservation and full teardown
+are pending on both targets. No absent-signature/pool-use, physical/locality,
+complete device clearance or product mutation claim follows.

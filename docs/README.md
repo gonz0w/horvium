@@ -84,3 +84,4 @@
 - [M2 disk correlation native execution manifest](testing/M2/disk-correlation-manifest.json)
 - [M2 disk attachments and partition denial](testing/M2/disk-attachments.md)
 - [M2 disk attachment native execution manifest](testing/M2/disk-attachments-manifest.json)
+- [M2 system device-use observations](testing/M2/system-device-use.md)

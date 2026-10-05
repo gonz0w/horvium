@@ -69,8 +69,11 @@ targets; PR 31 accepted this partial subset. The [attachment extension](../../te
 adds five assertions including actual empty/populated GPT refusal and owned
 cleanup. All seventeen assertions and both executed native tests are required;
 all seventeen and host teardown passed on both targets; see its
-[native manifest](../../testing/M2/disk-attachments-manifest.json). Maintainer review
-of this extension is pending. These partial results do not
+[native manifest](../../testing/M2/disk-attachments-manifest.json). PR 32 accepted
+this subset. The [system-use extension](../../testing/M2/system-device-use.md)
+adds six assertions for actual UFS mount, active swap, root backing, denial,
+foreign preservation and teardown. Twenty-three assertions and all three tests
+are required; this extension is pending native qualification. These partial results do not
 satisfy the complete device-safety row. Further fault control and complete device safety still
 need implementation and qualification. Never accept an arbitrary host device supplied to a test.
 

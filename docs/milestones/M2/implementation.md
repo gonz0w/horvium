@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier/native partition-denial subset qualified; review pending; Actions disabled.
+Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -102,14 +102,19 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   passed all twelve assertions and complete backing/base/runtime/group teardown
   on both targets through the Mac runner. See the [native manifest](../../testing/M2/disk-correlation-manifest.json).
   Runtime/authority wiring stays absent.
-- Slice 1 next subset: [disk attachments](../../testing/M2/disk-attachments.md)
+- Slice 1 subset accepted in [PR 32](https://github.com/gonz0w/horvium/pull/32),
+  merged source `f53688f29d6ba85e47b7062bbada73a857f02378`: [disk attachments](../../testing/M2/disk-attachments.md)
   recognizes exact terminal DEV and whole-disk disk-ident LABEL correspondence,
   refuses PART/unknown/contradictory attachments and adds disposable GPT denial
   controls. Source `0c9882f45c3abc1a81c693af01720ece9e50a9e6` passed all seventeen
   assertions, both executed native tests and complete preservation/teardown on
   both targets. See the [native manifest](../../testing/M2/disk-attachments-manifest.json).
-  Maintainer review is pending. No complete use proof, runtime collector or
-  product partitioning follows.
+  No complete use proof, runtime collector or product partitioning follows.
+- Slice 1 next subset: [system device use](../../testing/M2/system-device-use.md)
+  correlates full GEOM, mount/swap and mounted-pool GUID/status captures to
+  positive root/mount/swap backing facts. Disposable UFS and active swap tests
+  extend the suite to twenty-three assertions and three executed native tests;
+  native qualification is pending. No unused-device or write authority follows.
 - Slice 1 remains incomplete: assembled native eligibility/provider proofs, full
   status/scan interpretation, complete-impact collection and device-use drift gates
   have not run. No later slice may treat

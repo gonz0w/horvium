@@ -90,7 +90,11 @@ The subsequent [attachment denial test](disk-attachments.md) creates an owned
 GPT table/partition on the uniquely identified 512-byte snapshot fixture,
 verifies empty/populated PART refusal and deletes the owned partition/table.
 It preserves the other four disks and root correspondence; it grants no product
-partition/wipe authority. The modified guest backing is discarded.
+partition/wipe authority. The subsequent [system-use test](system-device-use.md)
+creates one owned UFS filesystem, mounts it read-only and activates a separate
+owned swap fixture, then removes only its own mount/swap. It preserves the other
+three disks and root correspondence. The modified guest backings are discarded;
+all original host raw files remain unchanged under snapshot mode.
 The whole-device hashes verify the read-only test's content preservation; they
 are not a production signature probe or destructive-use allowlist.
 
@@ -124,8 +128,8 @@ extra-boot-drive refusal, backing size/content/symlink changes, private-director
 foreign-entry preservation and skipped/incomplete/duplicate/failed assertions. Local unit,
 race, parser fuzz and FreeBSD cross-build results are separate from native evidence.
 For the [disk correlation extension](disk-correlation.md), the checker requires
-both executed native tests, eight fixture assertions, four correlation assertions
-and five attachment assertions, plus one successful host
+all three executed native tests, eight fixture assertions, four correlation
+assertions, five attachment assertions and six system-use assertions, plus one successful host
 preservation/termination/teardown result; booting a VM,
 a guest-only result or a skipped test cannot qualify this fixture.
 
