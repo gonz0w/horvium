@@ -59,7 +59,7 @@ Reject option-delimiter paths and symlink paths/files. No PATH wrapper, hardcode
 Linux QEMU path or host `/proc` identity machinery is required. QEMU and the
 pinned upstream runtime/cache artifacts remain unchanged.
 
-The guest runs only read operations:
+The original `TestNativeDeviceFixtures` runs only read operations:
 
 ```text
 /sbin/sysctl -b kern.geom.confxml
@@ -84,8 +84,13 @@ and prove the root disks are outside the declared set. Preserve the root mount a
 the root is ZFS. UFS image roots require no invented pool identity.
 No boot disk content or arbitrary operator resource is opened for hashing or writes.
 
-Repeat graph observations and whole-device hashes after the reads. This fixture
+Repeat graph observations and whole-device hashes after the reads. This original read-only test
 adds no partitioning, labels, pool creation, mounts, swap or guest disk writes.
+The subsequent [attachment denial test](disk-attachments.md) creates an owned
+GPT table/partition on the uniquely identified 512-byte snapshot fixture,
+verifies empty/populated PART refusal and deletes the owned partition/table.
+It preserves the other four disks and root correspondence; it grants no product
+partition/wipe authority. The modified guest backing is discarded.
 The whole-device hashes verify the read-only test's content preservation; they
 are not a production signature probe or destructive-use allowlist.
 
@@ -119,8 +124,9 @@ extra-boot-drive refusal, backing size/content/symlink changes, private-director
 foreign-entry preservation and skipped/incomplete/duplicate/failed assertions. Local unit,
 race, parser fuzz and FreeBSD cross-build results are separate from native evidence.
 For the [disk correlation extension](disk-correlation.md), the checker requires
-one executed native test, eight fixture assertions and four correlation assertions,
-plus one successful host preservation/termination/teardown result; booting a VM,
+both executed native tests, eight fixture assertions, four correlation assertions
+and five attachment assertions, plus one successful host
+preservation/termination/teardown result; booting a VM,
 a guest-only result or a skipped test cannot qualify this fixture.
 
 The initial run [37327282454](https://github.com/gonz0w/horvium/actions/runs/37327282454)

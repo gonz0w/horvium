@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation qualified; review pending; Actions disabled.
+Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier/native partition-denial subset in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -95,12 +95,18 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   at merged source `27dafaba7a5d04a4896f27776ef79f4b1f4c2bbc`. Original hosted failures/unstarted jobs, the first Mac deadline
   failure and the first 14.5 root-control failure are retained. No product selector,
   complete device-use proof or creation authority follows from fixture qualification.
-- Slice 1 next subset: [native disk correlation](../../testing/M2/disk-correlation.md)
+- Slice 1 subset accepted in [PR 31](https://github.com/gonz0w/horvium/pull/31),
+  merged source `ef60c33489a2ddd30c99e2a8e865a76272473f2b`: [native disk correlation](../../testing/M2/disk-correlation.md)
   binds bounded diskinfo serial/geometry to a complete GEOM capture, refusing
   ambiguous identity and non-direct providers. Source `031dbe715c0c0d6d94b92c19689f4fd78123c23b`
   passed all twelve assertions and complete backing/base/runtime/group teardown
   on both targets through the Mac runner. See the [native manifest](../../testing/M2/disk-correlation-manifest.json).
-  Maintainer review is pending; runtime/authority wiring stays absent.
+  Runtime/authority wiring stays absent.
+- Slice 1 next subset: [disk attachments](../../testing/M2/disk-attachments.md)
+  recognizes exact terminal DEV and whole-disk disk-ident LABEL correspondence,
+  refuses PART/unknown/contradictory attachments and adds disposable GPT denial
+  controls. Native qualification of all seventeen assertions is pending. No
+  complete use proof, runtime collector or product partitioning follows.
 - Slice 1 remains incomplete: assembled native eligibility/provider proofs, full
   status/scan interpretation, complete-impact collection and device-use drift gates
   have not run. No later slice may treat
