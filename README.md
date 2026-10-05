@@ -46,11 +46,15 @@ The [imported-pool use subset](docs/testing/M2/imported-pool-use.md) maps
 all imported pools to their direct GEOM disks, including pools with no mounted
 filesystems; native qualification passed all twenty-nine assertions and complete
 teardown on both targets and was accepted in [PR 34](https://github.com/gonz0w/horvium/pull/34).
-The next [filesystem signature subset](docs/testing/M2/filesystem-signatures.md)
+The [filesystem signature subset](docs/testing/M2/filesystem-signatures.md)
 binds positive base-probe UFS/ZFS observations to freshly correlated disks;
 native qualification passed all thirty-six assertions and complete teardown on
-both targets, with maintainer review pending. Other native
-gates, durable jobs and storage writes remain pending; the runtime is still read-only.
+both targets and was accepted in [PR 35](https://github.com/gonz0w/horvium/pull/35).
+The next [combined device-use subset](docs/testing/M2/device-use-review.md) retains
+selected positive use facts in an immutable baseline and requires new review on
+identity/geometry/mount/swap/pool/signature drift; native qualification is pending.
+Other native gates, durable jobs and storage writes remain pending; the runtime is
+still read-only.
 
 ## Agreed direction
 

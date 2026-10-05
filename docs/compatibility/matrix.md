@@ -120,6 +120,14 @@ correlated direct disks. Portable tests and a FreeBSD cross-build pass; actual
 UFS/ZFS/removed-pool metadata recognition, probe preservation and full teardown
 passed all thirty-six assertions, four executed tests and complete host cleanup
 on both targets; see the [native manifest](../testing/M2/filesystem-signatures-manifest.json).
-Maintainer review is pending. First-label ZFS recognition is not checksum-verified
+PR 35 accepted this subset. First-label ZFS recognition is not checksum-verified
 pool identity, all-label coverage, exported-pool membership or blank-disk clearance.
 No collector/planner integration or product mutation authority follows.
+
+M2 combined device use: [contract and procedure](../testing/M2/device-use-review.md)
+retains selected disk correspondence, positive mount/swap/imported-pool backing and
+optional signature recognition in an immutable baseline. Portable tests and a
+FreeBSD cross-build pass; actual joined facts, fresh unchanged pool comparison,
+new/removed-use drift and complete teardown are pending on both targets. No
+collector/planner integration, complete signature absence, unused flag, locality,
+reservation, enrollment or mutation authority follows.

@@ -4,6 +4,7 @@ package storage
 import (
 	"bytes"
 	"context"
+	"errors"
 	"io"
 	"os"
 	"os/exec"
@@ -83,7 +84,7 @@ func TestNativeSystemDeviceUse(t *testing.T) {
 		}
 		return graph, raw, mounts, swaps, pools, use
 	}
-	graph, raw, mounts, _, _, baseline := collect()
+	graph, raw, mounts, baselineSwap, _, baseline := collect()
 	var disks []inventory.Provider
 	boot, err := systemFixtureBootDisk(graph)
 	if err != nil {
@@ -185,6 +186,29 @@ func TestNativeSystemDeviceUse(t *testing.T) {
 			t.Fatal("selected owned fixture identity/geometry/backing unavailable")
 		}
 	}
+	combined := func(raw, mounts, swap []byte, disk inventory.Provider, probe *FilesystemProbeCapture) (DeviceUseReview, DeviceUseCapture) {
+		list := run("/sbin/zpool", "list", "-H", "-p", "-o", "name,guid,size,alloc,free,health")
+		rows, err := inventory.ParsePools(list, inventory.DefaultLimits())
+		if err != nil {
+			t.Fatal("combined imported catalogue unavailable", err)
+		}
+		var status []PoolUseCapture
+		for _, row := range rows {
+			if !validName(row.Name) || strings.ContainsAny(row.Name, "/@#") {
+				t.Fatal("combined pool address unavailable")
+			}
+			status = append(status, PoolUseCapture{Name: row.Name, GUID: run("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", row.Name), StatusGUIDs: run("/sbin/zpool", "status", "-g", "-p", row.Name), StatusPaths: run("/sbin/zpool", "status", "-L", "-P", "-p", row.Name)})
+		}
+		path := "/dev/" + disk.Name
+		inputs := DeviceUseCapture{GEOM: raw, Mounts: mounts, Swap: swap, Pools: list, PoolStatus: status, DiskInfo: run("/usr/sbin/diskinfo", path), DiskSerial: run("/usr/sbin/diskinfo", "-s", path), Filesystem: probe}
+		review, err := ReviewDeviceUse(inputs, inventory.DefaultLimits())
+		if err != nil {
+			t.Fatal("combined native system use unavailable", err)
+		}
+		return review, inputs
+	}
+	beforeMount, _ := combined(raw, mounts, baselineSwap, mountDisk, nil)
+	beforeSwap, _ := combined(raw, mounts, baselineSwap, swapDisk, nil)
 	before := make(map[string]string)
 	for _, p := range disks {
 		if p.ID != mountDisk.ID && p.ID != swapDisk.ID {
@@ -262,6 +286,27 @@ func TestNativeSystemDeviceUse(t *testing.T) {
 	if signatureErr != nil || signature.Type != "ufs" || !reflect.DeepEqual(signature.Disk.Provider, mountDisk) {
 		t.Fatal("actual UFS signature did not bind declared disk", signatureErr)
 	}
+	activeMountReview, activeMountInputs := combined(activeGEOM, activeMounts, activeSwap, mountDisk, &probe)
+	joinedMount := activeMountReview.Observation()
+	if len(joinedMount.Mounts) != 1 || joinedMount.Mounts[0].Target != mountpoint || len(joinedMount.Swap)+len(joinedMount.Pools) != 0 || !joinedMount.SignatureAvailable || joinedMount.Signature != "ufs" {
+		t.Fatal("native mount/signature did not join selected disk")
+	}
+	activeSwapReview, activeSwapInputs := combined(activeGEOM, activeMounts, activeSwap, swapDisk, nil)
+	joinedSwap := activeSwapReview.Observation()
+	if len(joinedSwap.Swap) != 1 || len(joinedSwap.Mounts)+len(joinedSwap.Pools) != 0 || joinedSwap.SignatureAvailable || joinedSwap.Signature != "" {
+		t.Fatal("native swap did not retain unavailable signature evidence")
+	}
+	if err := beforeMount.Validate(activeMountInputs, inventory.DefaultLimits()); !errors.Is(err, ErrDrift) {
+		t.Fatal("new actual mount did not invalidate baseline", err)
+	}
+	if err := beforeSwap.Validate(activeSwapInputs, inventory.DefaultLimits()); !errors.Is(err, ErrDrift) {
+		t.Fatal("new actual swap did not invalidate baseline", err)
+	}
+	copy := activeMountReview.Observation()
+	copy.Mounts[0].Disks[0].Identifiers[0].Value = "changed"
+	if !reflect.DeepEqual(activeMountReview.Observation(), joinedMount) {
+		t.Fatal("native-derived nested review was mutable")
+	}
 	if strings.TrimSpace(string(run("/sbin/sha256", "-q", probePath))) != probeHash {
 		t.Fatal("filesystem probe changed read-only UFS fixture bytes")
 	}
@@ -276,7 +321,18 @@ func TestNativeSystemDeviceUse(t *testing.T) {
 	if !cleanup() {
 		t.Fatal("owned system-use cleanup failed")
 	}
-	after, _, _, _, _, final := collect()
+	after, finalGEOM, finalMounts, finalSwap, _, final := collect()
+	_, finalMountInputs := combined(finalGEOM, finalMounts, finalSwap, mountDisk, nil)
+	_, finalSwapInputs := combined(finalGEOM, finalMounts, finalSwap, swapDisk, nil)
+	if beforeMount.Validate(finalMountInputs, inventory.DefaultLimits()) != nil || beforeSwap.Validate(finalSwapInputs, inventory.DefaultLimits()) != nil {
+		t.Fatal("actual positive-use cleanup did not restore baseline")
+	}
+	if err := activeMountReview.Validate(finalMountInputs, inventory.DefaultLimits()); !errors.Is(err, ErrDrift) {
+		t.Fatal("actual mount removal did not invalidate baseline", err)
+	}
+	if err := activeSwapReview.Validate(finalSwapInputs, inventory.DefaultLimits()); !errors.Is(err, ErrDrift) {
+		t.Fatal("actual swap removal did not invalidate baseline", err)
+	}
 	if !reflect.DeepEqual(root(final), initialRoot) {
 		t.Fatal("root mount/GUID/backing changed")
 	}
@@ -305,5 +361,6 @@ func TestNativeSystemDeviceUse(t *testing.T) {
 		}
 	}
 	t.Log("DEVICE_SIGNATURE_UFS_RESULT ufs_signature=pass probe_preservation=pass unsupported_denial=pass")
+	t.Log("DEVICE_USE_SYSTEM_RESULT mount_join=pass swap_join=pass mount_drift=pass swap_drift=pass copy_isolation=pass use_cleanup=pass mount_removal_drift=pass swap_removal_drift=pass")
 	t.Log("DEVICE_SYSTEM_USE_RESULT root_backing=pass mounted_disk=pass active_swap=pass unsupported_denial=pass fixture_teardown=pass foreign_preservation=pass")
 }

@@ -86,7 +86,12 @@ address binding, unavailable-output refusal and whole fixture probe preservation
 Thirty-six assertions and the same four tests are required; all thirty-six and
 complete preservation/teardown passed on both targets; see the
 [native manifest](../../testing/M2/filesystem-signatures-manifest.json).
-Maintainer review is pending. These partial results do not
+PR 35 accepted this subset. The [combined-use extension](../../testing/M2/device-use-review.md)
+adds fifteen assertions for actual use joins, independently recollected unchanged
+pool use, new/removed mount/swap/pool drift, retained residual signatures, missing
+status denial, immutable copies and unavailable signature evidence. Fifty-one
+assertions and the same four tests are required; this extension is pending native
+qualification. These partial results do not
 satisfy the complete device-safety row. Further fault control and complete device safety still
 need implementation and qualification. Never accept an arbitrary host device supplied to a test.
 

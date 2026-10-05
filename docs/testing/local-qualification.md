@@ -185,3 +185,10 @@ A GitHub runner is unnecessary: run local scripts on the isolated lab when those
 gates are needed. This work registers no persistent execution service. Native
 replication/restore will require two isolated FreeBSD peers; hardware power-loss
 and controller failures remain physical-lab gates.
+
+The combined-use extension adds fifteen assertions to the same four tests, for
+fifty-one assertions. It adds read-only native collection and pure immutable
+baseline comparisons to existing owned fixtures, with no additional fixture writes.
+Both complete `DEVICE_USE_POOL_RESULT` and `DEVICE_USE_SYSTEM_RESULT` marker sets
+are required; thirty-six-case signature evidence cannot qualify the extension.
+See [combined device-use review](M2/device-use-review.md).
