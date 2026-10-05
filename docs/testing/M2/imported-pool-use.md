@@ -1,7 +1,8 @@
 # M2 imported-pool use observations
 
-Date: 2026-10-05. Status: behavioral tests and FreeBSD cross-build pass;
-native qualification pending. [Approved EDD](../../milestones/M2/EDD.md),
+Date: 2026-10-05. Status: all twenty-nine assertions, four executed tests and
+complete preservation/teardown passed on both targets; maintainer review pending.
+[Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
@@ -100,6 +101,27 @@ The six new cases are `unmounted_pool`, `catalogue_binding`, `missing_denial`,
 manifests retain their original source and case sets; no new controller-death
 trial is claimed. GitHub Actions remain disabled and all checks run locally.
 
+## Executed evidence
+
+Signed source `5b0a94128aa081fbb3f5d8a79ed8ab560d1f4a09` passed all twenty-nine
+assertions and four native tests on FreeBSD 15.1-RELEASE-p3 and 14.5-RELEASE
+through Mac arm64 / QEMU 11.1.1 TCG (two CPUs, 6144 MiB). Actual roots were ZFS
+and UFS, respectively. Both unmounted imported pools mapped to their declared
+disk, missing-status observations refused, only owned pools were removed without
+force, foreign fixture bytes/catalogues and root/mount/swap facts were preserved,
+and all fixture identities/geometries remained unchanged. The subsequent actual
+UFS/swap test passed again on both releases.
+
+All five original host disk backings, base images and runtime inputs were
+preserved; owned disks/image/key/variables were removed and process groups
+stopped. The [sanitized execution manifest](imported-pool-use-manifest.json) binds
+source/input hashes, actual versions, eleven utility hashes per guest, pinned
+primary sources and outcomes. The functional-source review passed 63 tooling
+tests, Go unit/race checks and sixteen bounded fuzz targets. Final PR-head review
+is reported separately; changing recorded inputs requires fresh qualification.
+Previous manifests and controller-death evidence retain their original revisions
+and case sets. This is partial M2-DEVICE-001/M2-NATIVE-001 evidence only.
+
 ## Primary source provenance
 
 Release-pinned FreeBSD/OpenZFS sources were inspected before native execution.
@@ -115,4 +137,6 @@ The actual executed zpool/sysctl/mount/diskinfo binaries must be hashed with the
 other existing device-suite utilities. Inspected source hashes identify reviewed
 contracts; they do not establish installed binary build provenance. Export only
 sanitized assertion/version/hash records, never raw host inventories or fixture
-credentials. Native outcomes and exact tested source/input hashes remain pending.
+credentials. The native manifest records exact tested source/input hashes, all
+retrieved primary source hashes and actual outcomes. Binary build provenance
+remains unproven.

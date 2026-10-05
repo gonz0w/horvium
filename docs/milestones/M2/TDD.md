@@ -74,11 +74,13 @@ this subset. The [system-use extension](../../testing/M2/system-device-use.md)
 adds six assertions for actual UFS mount, active swap, root backing, denial,
 foreign preservation and teardown. Twenty-three assertions and all three tests
 are required; all twenty-three and full teardown passed on both targets; see
-the [native manifest](../../testing/M2/system-device-use-manifest.json). PR 33 accepted this subset. The [imported-pool extension](../../testing/M2/imported-pool-use.md)
+the [native manifest](../../testing/M2/system-device-use-manifest.json). PR 33
+accepted this subset. The [imported-pool extension](../../testing/M2/imported-pool-use.md)
 adds six assertions for an actual unmounted imported pool, catalogue binding,
 missing-status denial, foreign/root preservation and teardown. Twenty-nine
-assertions and all four tests are required; this extension is pending native
-qualification. These partial results do not
+assertions and all four tests are required; all twenty-nine and complete teardown
+passed on both targets; see the [native manifest](../../testing/M2/imported-pool-use-manifest.json).
+Maintainer review is pending. These partial results do not
 satisfy the complete device-safety row. Further fault control and complete device safety still
 need implementation and qualification. Never accept an arbitrary host device supplied to a test.
 

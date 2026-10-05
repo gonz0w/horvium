@@ -108,6 +108,8 @@ M2 imported-pool use: [contract and procedure](../testing/M2/imported-pool-use.m
 binds the all-imported-pool catalogue, independent GUID/status and GEOM captures
 to positive disk membership, including pools with no mounts. Portable behavioral
 tests and a FreeBSD cross-build pass; actual unmounted-pool/root/foreign
-preservation and full teardown are pending on both targets. No exported-pool or
+preservation and full teardown passed all twenty-nine assertions and four tests
+on both targets; see the [native manifest](../testing/M2/imported-pool-use-manifest.json).
+Maintainer review is pending. No exported-pool or
 signature absence, complete device clearance, collector/planner integration or
 product mutation authority follows.

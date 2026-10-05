@@ -44,7 +44,8 @@ qualification passed all twenty-three assertions and complete teardown on both
 targets and was accepted in [PR 33](https://github.com/gonz0w/horvium/pull/33).
 The next [imported-pool use subset](docs/testing/M2/imported-pool-use.md) maps
 all imported pools to their direct GEOM disks, including pools with no mounted
-filesystems; native qualification is pending. Other native
+filesystems; native qualification passed all twenty-nine assertions and complete
+teardown on both targets, with maintainer review pending. Other native
 gates, durable jobs and storage writes remain pending; the runtime is still read-only.
 
 ## Agreed direction

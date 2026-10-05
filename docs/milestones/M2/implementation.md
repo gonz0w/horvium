@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset in progress; Actions disabled.
+Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset qualified; review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -123,8 +123,11 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   correlates the complete all-imported-pool catalogue and independent GUID/status
   captures to positive disk membership, including pools without mounts. Six new
   assertions extend the devices suite to twenty-nine assertions and four executed
-  native tests. Native qualification is pending; exported pools, signatures and
-  complete use clearance remain open.
+  native tests. Signed source `5b0a94128aa081fbb3f5d8a79ed8ab560d1f4a09`
+  passed all twenty-nine assertions, four executed tests and full preservation/
+  teardown on both targets; see the [native manifest](../../testing/M2/imported-pool-use-manifest.json).
+  Maintainer review is pending. Exported pools, signatures and complete use
+  clearance remain open.
 - Slice 1 remains incomplete: assembled native eligibility/provider proofs, full
   status/scan interpretation, complete-impact collection and device-use drift gates
   have not run. No later slice may treat
