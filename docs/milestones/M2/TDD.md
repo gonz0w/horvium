@@ -166,4 +166,5 @@ approved revision. Keep initial failures/repairs in the record. Update behavior
 docs and compatibility alongside each slice, run repository gates, and keep PRs
 open for review. M2 acceptance requires the approved design, these actual gates
 and an explicit maintainer acceptance record. The native property projection
-subset passed as linked above; all other M2 native gates remain unexecuted.
+and identity/state projection subsets passed as linked above. Complete acceptance
+rows and the remaining native gates are still pending.

@@ -98,7 +98,8 @@ no operator inventory or disk is used.
 Local gates passed: `make check lint test secrets` and `make go-check` (vet, complete unit
 suite, race detector and bounded fuzzing, including the new property planner).
 The FreeBSD amd64 test-binary cross-build also passed; it checks compilation only. Native property-source results are tracked separately in
-[the projection record](properties.md) and [identity binding evidence](identities.md). There are no M2 mutation, state-failure,
+[the projection record](properties.md), [identity binding evidence](identities.md)
+and [filesystem state evidence](dataset-state.md). There are no M2 mutation, state-failure,
 browser or performance execution results. Every complete
 Test Design row remains pending. The retained M1 native results qualify M1 only;
 Safari/manual accessibility remains pending by maintainer choice.

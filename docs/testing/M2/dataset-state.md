@@ -1,6 +1,7 @@
 # M2 filesystem mount and encryption constraints
 
-Date: 2026-10-04. Status: implemented behavioral subset; pinned native execution pending.
+Date: 2026-10-04. Status: D2 partial filesystem-state projection passed on both pinned guests;
+implementation in [PR 24](https://github.com/gonz0w/horvium/pull/24) for maintainer review.
 Design: [approved EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [slice sequence](../../milestones/M2/implementation.md). Extends the
 [identity binding](identities.md) with filesystem operational constraints.
@@ -87,10 +88,33 @@ boot, skip, unit pass, missing or failed cases cannot qualify.
 
 ## Qualification and remaining work
 
-Both pinned FreeBSD releases must execute before a native claim. The sanitized
-source/run/hash manifest will be added after qualification. The runtime remains
-read-only with no native state collector, root enrollment, transport submission,
-durable jobs or mutation executor. Slice 1 eligibility/system/provider/topology/
-feature/device-use and complete-impact collection gates remain pending, as do
-full M2 qualification, physical/commercial evidence and the maintainer's deferred
-manual M1 accessibility gate.
+Run [37246040343](https://github.com/gonz0w/horvium/actions/runs/37246040343)
+passed both pinned guests at functional/suite source
+`6dd07d2b5a52569c97f9b7524476348ecd7faeaf`. Each executed all 28 property/identity/
+state assertions and teardown. Both evidence checks passed; the checksum-pinned
+base image and AnyVM runtime remained unchanged. No native repairs were needed.
+
+| Guest | Observed result | Tools |
+|---|---|---|
+| FreeBSD 15.1-RELEASE-p3 amd64 | All 28 assertions and teardown passed | ZFS userland/module 2.4.2-1-FreeBSD_g6330a45b0; Go 1.27.1 |
+| FreeBSD 14.5-RELEASE amd64 | All 28 assertions and teardown passed | ZFS userland/module 2.2.9-FreeBSD_g079ba86d7; Go 1.27.1 |
+
+The [sanitized manifest](dataset-state-manifest.json) records source/job links,
+individual cases, inspected primary and tested input hashes, native utility
+hashes and guest/runtime pins. QEMU 8.2.2 on Ubuntu 24.04.5 used fresh snapshot
+qemu64 guests with two vCPUs and 6,144 MiB, with VNC off. No operator resource or
+fixture key material is included in the evidence. This fixture qualifies only
+these projections and pure-model comparisons, not a native eligibility collector.
+
+Local `make check lint test secrets` and `make go-check` passed, including vet,
+complete unit/race suites and nine bounded fuzz targets. FreeBSD amd64 cross-build
+passed before native execution; compilation alone is not native evidence.
+Subsequent evidence/documentation edits preserve the tested functional/suite bytes.
+Earlier [property](properties.md) and [identity](identities.md) manifests retain
+their original source and case sets, with no retroactive claims.
+
+The runtime remains read-only with no native state collector, root enrollment,
+transport submission, durable jobs or mutation executor. Slice 1 eligibility/
+system/provider/topology/feature/device-use and complete-impact collection gates
+remain pending, as do every complete M2 acceptance row, physical/commercial
+qualification and the maintainer's deferred manual M1 accessibility gate.
