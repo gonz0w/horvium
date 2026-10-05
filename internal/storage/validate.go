@@ -116,7 +116,7 @@ func validValue(v Value, property Property, guid string) bool {
 // Preflight every count/field and aggregate byte bound BEFORE validation maps,
 // sorting or JSON encoding allocate. The estimate includes structural overhead.
 func preflight(p Policy, o Observation) error {
-	if len(o.Filesystems) > maxRecords || len(p.Scopes) > maxRecords || len(o.Identities) > maxRecords || len(o.States) > maxRecords || len(o.Features.Values) > maxFeatures {
+	if len(o.Filesystems) > maxRecords || len(p.Scopes) > maxRecords || len(o.Identities) > maxRecords || len(o.States) > maxRecords || len(o.Features.Values) > maxFeatures || len(o.Topology.Nodes) > maxVdevs {
 		return ErrLimit
 	}
 	remaining := maxObservationBytes
@@ -149,6 +149,14 @@ func preflight(p Policy, o Observation) error {
 	}
 	for _, v := range o.Features.Values {
 		if err := debit(v.Name, v.State, string(v.Source)); err != nil {
+			return err
+		}
+	}
+	if err := debit(o.Topology.PoolGUID, o.Topology.PoolName, o.Topology.Health, o.Topology.Scan, o.Topology.Diagnostics); err != nil {
+		return err
+	}
+	for _, v := range o.Topology.Nodes {
+		if err := debit(v.GUID, v.ParentGUID, v.Address, v.Kind, v.Health, v.Annotation); err != nil {
 			return err
 		}
 	}
@@ -205,6 +213,12 @@ func indexObservation(o Observation) (map[string]Filesystem, error) {
 	}
 	if err := VerifyPoolFeatures(o.PoolGUID, o.PoolName, o.Features); err != nil {
 		return nil, err
+	}
+	if err := VerifyPoolTopology(o.PoolGUID, o.PoolName, o.Topology); err != nil {
+		return nil, err
+	}
+	if o.Topology.Health != o.Pool.Health.Effective {
+		return nil, ErrDrift
 	}
 	if err := VerifyFilesystemIdentities(o.PoolName, o.Filesystems, o.Identities); err != nil {
 		return nil, err

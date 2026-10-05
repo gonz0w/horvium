@@ -44,6 +44,7 @@ go-check:
 	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzFilesystemStates$$' -fuzztime=3s -parallel=2
 	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzPoolState$$' -fuzztime=3s -parallel=2
 	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzPoolFeatures$$' -fuzztime=3s -parallel=2
+	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzPoolTopology$$' -fuzztime=3s -parallel=2
 
 secrets:
 	.tools/bin/gitleaks dir --redact --no-banner --config .gitleaks.toml .

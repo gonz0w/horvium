@@ -13,6 +13,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
+	"strconv"
 	"strings"
 	"syscall"
 	"testing"
@@ -98,25 +99,18 @@ func TestNativePropertyObservations(t *testing.T) {
 	}
 	pool := "horvium_m2_" + hex.EncodeToString(nonce[:])
 	dir := t.TempDir()
-	backing := filepath.Join(dir, "owned.img")
-	file, err := os.OpenFile(backing, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := file.Truncate(512 << 20); err != nil {
-		file.Close()
-		t.Fatal(err)
-	}
-	if err := file.Close(); err != nil {
-		t.Fatal(err)
-	}
-	unit := strings.TrimSpace(string(must("/sbin/mdconfig", "-a", "-t", "vnode", "-f", backing)))
-	if !regexp.MustCompile(`^md[0-9]+$`).MatchString(unit) {
-		t.Fatal("invalid fixture md unit; discard guest")
-	}
+	type ownedMD struct{ unit, backing string }
+	var ownedMDs []ownedMD
 	declaredPool := false
 	exportedPool := false
 	ownedGUID := ""
+	importArgs := func(readonly string) []string {
+		args := []string{"import", "-N"}
+		for _, md := range ownedMDs {
+			args = append(args, "-d", "/dev/"+md.unit)
+		}
+		return append(args, "-o", "cachefile=none", "-o", "readonly="+readonly, ownedGUID)
+	}
 	t.Cleanup(func() {
 		cleanupCtx, stop := context.WithTimeout(context.Background(), 30*time.Second)
 		defer stop()
@@ -127,7 +121,7 @@ func TestNativePropertyObservations(t *testing.T) {
 						t.Error("exported fixture identity unavailable; discard guest")
 						return
 					}
-					if _, err := command(cleanupCtx, "/sbin/zpool", "import", "-N", "-d", "/dev/"+unit, "-o", "cachefile=none", "-o", "readonly=off", ownedGUID); err != nil {
+					if _, err := command(cleanupCtx, "/sbin/zpool", importArgs("off")...); err != nil {
 						t.Error("owned exported pool cleanup import failed; discard guest")
 						return
 					}
@@ -149,18 +143,52 @@ func TestNativePropertyObservations(t *testing.T) {
 				return
 			}
 		}
-		if _, err := command(cleanupCtx, "/sbin/mdconfig", "-d", "-u", strings.TrimPrefix(unit, "md")); err != nil {
-			t.Error("owned md detach failed")
-			return
-		}
-		if _, err := command(cleanupCtx, "/sbin/mdconfig", "-l", "-n", "-f", backing); err == nil {
-			t.Error("owned md remains attached")
-			return
+		for _, md := range ownedMDs {
+			actual, err := command(cleanupCtx, "/sbin/mdconfig", "-l", "-n", "-f", md.backing)
+			if err != nil || strings.TrimSpace(string(actual)) != strings.TrimPrefix(md.unit, "md") {
+				t.Error("owned backing/provider changed; discard guest")
+				return
+			}
+			if _, err := command(cleanupCtx, "/sbin/mdconfig", "-d", "-u", strings.TrimPrefix(md.unit, "md")); err != nil {
+				t.Error("owned md detach failed")
+				return
+			}
+			if _, err := command(cleanupCtx, "/sbin/mdconfig", "-l", "-n", "-f", md.backing); err == nil {
+				t.Error("owned md remains attached")
+				return
+			}
 		}
 		if !t.Failed() {
-			t.Log("PROPERTY_OBSERVATION_RESULT default=pass local=pass inherited=pass received=pass shadowed=pass no_limit=pass rename=pass name_reuse=pass foreign_preservation=pass eligibility_denied=pass teardown=pass identity_binding=pass complete_filesystems=pass snapshot_owner=pass bookmark_owner=pass replicated_guid=pass snapshot_rename=pass snapshot_reuse=pass volume_denial=pass stable_enumeration=pass state_binding=pass mount_sources=pass readonly_denial=pass encrypted_loaded_denial=pass encrypted_unloaded_denial=pass encryption_root_binding=pass state_drift=pass state_preservation=pass pool_identity_binding=pass pool_source_metadata=pass pool_bootfs_denial=pass pool_readonly_denial=pass import_incarnation=pass reimport_drift=pass pool_preservation=pass pool_name_reuse=pass feature_binding=pass feature_sources=pass feature_preservation=pass installed_profile=pass common_feature_set=pass feature_drift=pass")
+			t.Log("PROPERTY_OBSERVATION_RESULT default=pass local=pass inherited=pass received=pass shadowed=pass no_limit=pass rename=pass name_reuse=pass foreign_preservation=pass eligibility_denied=pass teardown=pass identity_binding=pass complete_filesystems=pass snapshot_owner=pass bookmark_owner=pass replicated_guid=pass snapshot_rename=pass snapshot_reuse=pass volume_denial=pass stable_enumeration=pass state_binding=pass mount_sources=pass readonly_denial=pass encrypted_loaded_denial=pass encrypted_unloaded_denial=pass encryption_root_binding=pass state_drift=pass state_preservation=pass pool_identity_binding=pass pool_source_metadata=pass pool_bootfs_denial=pass pool_readonly_denial=pass import_incarnation=pass reimport_drift=pass pool_preservation=pass pool_name_reuse=pass feature_binding=pass feature_sources=pass feature_preservation=pass installed_profile=pass common_feature_set=pass feature_drift=pass topology_binding=pass mirror_layout=pass raidz2_layout=pass independent_vdevs=pass degraded_denial=pass unsupported_layout=pass topology_drift=pass topology_preservation=pass vdev_guid_reuse=pass")
 		}
 	})
+	createMD := func() string {
+		backing := filepath.Join(dir, "owned-"+strconv.Itoa(len(ownedMDs))+".img")
+		file, err := os.OpenFile(backing, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := file.Truncate(512 << 20); err != nil {
+			file.Close()
+			t.Fatal(err)
+		}
+		if err := file.Close(); err != nil {
+			t.Fatal(err)
+		}
+		unit := strings.TrimSpace(string(must("/sbin/mdconfig", "-a", "-t", "vnode", "-f", backing)))
+		if !regexp.MustCompile(`^md[0-9]+$`).MatchString(unit) {
+			t.Fatal("invalid fixture md unit; discard guest")
+		}
+		ownedMDs = append(ownedMDs, ownedMD{unit, backing})
+		if got := strings.TrimSpace(string(must("/sbin/mdconfig", "-l", "-n", "-f", backing))); got != strings.TrimPrefix(unit, "md") {
+			t.Fatal("fixture backing correspondence failed")
+		}
+		return unit
+	}
+	unit := createMD()
+	secondUnit := createMD()
+	thirdUnit, fourthUnit := createMD(), createMD()
+	backing := ownedMDs[0].backing
 	if got := strings.TrimSpace(string(must("/sbin/mdconfig", "-l", "-n", "-f", backing))); got != strings.TrimPrefix(unit, "md") {
 		t.Fatal("fixture backing correspondence failed")
 	}
@@ -168,7 +196,7 @@ func TestNativePropertyObservations(t *testing.T) {
 		t.Fatal("fixture namespace unexpectedly exists")
 	}
 	declaredPool = true
-	must("/sbin/zpool", "create", "-m", "none", "-o", "cachefile=none", pool, "/dev/"+unit)
+	must("/sbin/zpool", "create", "-m", "none", "-o", "cachefile=none", pool, "mirror", "/dev/"+unit, "/dev/"+secondUnit, "mirror", "/dev/"+thirdUnit, "/dev/"+fourthUnit)
 	ownedGUID = strings.TrimSpace(string(must("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", pool)))
 	if !validGUID(ownedGUID) {
 		t.Fatal("owned pool identity invalid")
@@ -180,6 +208,68 @@ func TestNativePropertyObservations(t *testing.T) {
 			t.Fatal("native pool state denied (values withheld):", err)
 		}
 		return state
+	}
+	topology := func() PoolTopology {
+		before := poolState()
+		if before.GUID != ownedGUID {
+			t.Fatal("topology pool identity differs")
+		}
+		capture := func() PoolTopology {
+			guids := must("/sbin/zpool", "status", "-g", "-p", pool)
+			paths := must("/sbin/zpool", "status", "-L", "-P", "-p", pool)
+			x, err := ParsePoolTopology(guids, paths, pool, ownedGUID)
+			if err != nil {
+				t.Fatal("native topology denied (values withheld):", err)
+			}
+			return x
+		}
+		a, b := capture(), capture()
+		if err := VerifyTopologyStability(a, b); err != nil {
+			t.Fatal("native topology changed during capture", err)
+		}
+		if after := poolState(); after != before {
+			t.Fatal("pool policy/incarnation changed during status capture")
+		}
+		return a
+	}
+	independentTopology := func(x PoolTopology) {
+		for _, guidView := range []bool{true, false} {
+			args := []string{"list", "-H", "-p", "-v", "-o", "name,size,allocated,free,checkpoint,expandsize,fragmentation,capacity,dedupratio,health"}
+			if guidView {
+				args = append(args, "-g")
+			} else {
+				args = append(args, "-L", "-P")
+			}
+			args = append(args, pool)
+			observed := make(map[string]string)
+			for _, line := range strings.Split(strings.TrimSpace(string(must("/sbin/zpool", args...))), "\n") {
+				fields := strings.Fields(line)
+				if len(fields) != 10 || observed[fields[0]] != "" {
+					t.Fatal("independent vdev table shape invalid")
+				}
+				observed[fields[0]] = fields[9]
+			}
+			if observed[pool] != x.Health || len(observed) != len(x.Nodes)+1 {
+				t.Fatal("independent vdev membership differs")
+			}
+			for _, node := range x.Nodes {
+				key := node.Address
+				if guidView {
+					key = node.GUID
+				}
+				if observed[key] != node.Health {
+					t.Fatal("independent vdev identity/state differs")
+				}
+			}
+		}
+	}
+	initialTopology := topology()
+	if err := VerifyPoolTopology(ownedGUID, pool, initialTopology); err != nil {
+		t.Fatal(err)
+	}
+	independentTopology(initialTopology)
+	if len(initialTopology.Nodes) != 6 {
+		t.Fatal("owned mirror membership incomplete")
 	}
 	features := func() PoolFeatures {
 		rows := must("/sbin/zpool", "get", "-H", "-p", "-o", "name,property,value,source", "all", pool)
@@ -438,7 +528,7 @@ func TestNativePropertyObservations(t *testing.T) {
 		t.Fatal("canmount local source mismatch")
 	}
 	policy := Policy{Revision: 1, PoolGUID: ownedGUID, PoolName: pool, Scopes: []Scope{{GUID: data.GUID, Name: data.Name, ParentGUID: data.ParentGUID, Properties: []Property{RefQuota}}}}
-	observation := Observation{Complete: true, Eligible: true, PoolGUID: ownedGUID, PoolName: pool, Filesystems: parse(), Identities: identities(), States: baseline, Pool: poolState(), Features: features()}
+	observation := Observation{Complete: true, Eligible: true, PoolGUID: ownedGUID, PoolName: pool, Filesystems: parse(), Identities: identities(), States: baseline, Pool: poolState(), Features: features(), Topology: topology()}
 	plan, err := Build(time.Now(), "fixture-session", policy, observation, Intent{FilesystemGUID: data.GUID, Property: RefQuota, Value: "none"})
 	if err != nil {
 		t.Fatal("synthetic policy review failed", err)
@@ -524,7 +614,7 @@ func TestNativePropertyObservations(t *testing.T) {
 		t.Fatal("feature observations changed native state")
 	}
 	// Parsing provides no authority, even when every projected property is valid.
-	if _, err := Build(time.Now(), "fixture-session", Policy{Revision: 1, PoolGUID: "1", PoolName: pool}, Observation{Complete: true, PoolGUID: "1", PoolName: pool, Filesystems: files, Identities: identities(), States: states(), Pool: poolState(), Features: features()}, Intent{FilesystemGUID: root.GUID, Property: Quota, Value: "none"}); err != ErrUnavailable {
+	if _, err := Build(time.Now(), "fixture-session", Policy{Revision: 1, PoolGUID: "1", PoolName: pool}, Observation{Complete: true, PoolGUID: "1", PoolName: pool, Filesystems: files, Identities: identities(), States: states(), Pool: poolState(), Features: features(), Topology: topology()}, Intent{FilesystemGUID: root.GUID, Property: Quota, Value: "none"}); err != ErrUnavailable {
 		t.Fatal("parser enabled native eligibility", err)
 	}
 	must("/sbin/zfs", "rename", pool+"/data", pool+"/renamed")
@@ -539,7 +629,7 @@ func TestNativePropertyObservations(t *testing.T) {
 	// mounts or product recovery/import capability follows from fixture preparation.
 	latestFiles := parse()
 	latestRoot := find(latestFiles, "")
-	poolObservation := Observation{Complete: true, Eligible: true, PoolGUID: ownedGUID, PoolName: pool, Pool: poolState(), Filesystems: latestFiles, Identities: identities(), States: states(), Features: features()}
+	poolObservation := Observation{Complete: true, Eligible: true, PoolGUID: ownedGUID, PoolName: pool, Pool: poolState(), Filesystems: latestFiles, Identities: identities(), States: states(), Features: features(), Topology: topology()}
 	poolPolicy := Policy{Revision: 1, PoolGUID: ownedGUID, PoolName: pool, Scopes: []Scope{{GUID: latestRoot.GUID, Name: pool, Properties: []Property{RefQuota}}}}
 	poolPlan, err := Build(time.Now(), "fixture-session", poolPolicy, poolObservation, Intent{FilesystemGUID: latestRoot.GUID, Property: RefQuota, Value: "none"})
 	if err != nil {
@@ -552,7 +642,7 @@ func TestNativePropertyObservations(t *testing.T) {
 	importOwned := func(readonly string) {
 		must("/sbin/zpool", "export", pool)
 		exportedPool = true
-		must("/sbin/zpool", "import", "-N", "-d", "/dev/"+unit, "-o", "cachefile=none", "-o", "readonly="+readonly, ownedGUID)
+		must("/sbin/zpool", importArgs(readonly)...)
 		exportedPool = false
 	}
 	importOwned("off")
@@ -582,9 +672,88 @@ func TestNativePropertyObservations(t *testing.T) {
 	if err := VerifyPoolState(ownedGUID, pool, poolState()); err != nil {
 		t.Fatal(err)
 	}
+	readTopology := topology()
+	if err := VerifyTopologyStability(readTopology, topology()); err != nil {
+		t.Fatal("status reads changed membership", err)
+	}
+	attachedUnit := createMD()
+	freshFiles := parse()
+	freshRoot := find(freshFiles, "")
+	nativeObs := Observation{Complete: true, Eligible: true, PoolGUID: ownedGUID, PoolName: pool, Pool: poolState(), Features: features(), Topology: readTopology, Filesystems: freshFiles, Identities: identities(), States: states()}
+	nativePolicy := Policy{Revision: 1, PoolGUID: ownedGUID, PoolName: pool, Scopes: []Scope{{GUID: freshRoot.GUID, Name: pool, Properties: []Property{RefQuota}}}}
+	nativePlan, err := Build(time.Now(), "fixture-session", nativePolicy, nativeObs, Intent{FilesystemGUID: freshRoot.GUID, Property: RefQuota, Value: "none"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	// External-root fixture mutation tests drift; product attach/offline/online is not added.
+	must("/sbin/zpool", "attach", pool, "/dev/"+unit, "/dev/"+attachedUnit)
+	must("/sbin/zpool", "wait", "-t", "resilver", pool)
+	attached := topology()
+	if attached.PoolGUID != readTopology.PoolGUID || len(attached.Nodes) != 7 {
+		t.Fatal("native same-pool membership change absent")
+	}
+	if err := VerifyPoolTopology(ownedGUID, pool, attached); !errors.Is(err, ErrUnavailable) {
+		t.Fatal("changed width/scan qualified", err)
+	}
+	if err := VerifyTopologyStability(readTopology, attached); !errors.Is(err, ErrDrift) {
+		t.Fatal("native membership drift ignored", err)
+	}
+	nativeObs.Topology = attached
+	nativeObs.Pool = poolState()
+	nativeObs.Features = features()
+	nativeObs.Filesystems = parse()
+	nativeObs.Identities = identities()
+	nativeObs.States = states()
+	if err := nativePlan.Validate(time.Now(), "fixture-session", nativePolicy, nativeObs); !errors.Is(err, ErrDrift) {
+		t.Fatal("native review drift ignored", err)
+	}
+	must("/sbin/zpool", "offline", pool, "/dev/"+unit)
+	degraded := topology()
+	offline := false
+	for _, node := range degraded.Nodes {
+		if node.Address == "/dev/"+unit && node.Health == "OFFLINE" {
+			offline = true
+		}
+	}
+	if degraded.Health != "DEGRADED" || !offline {
+		t.Fatal("degraded native state lost")
+	}
+	if err := VerifyPoolTopology(ownedGUID, pool, degraded); !errors.Is(err, ErrUnavailable) {
+		t.Fatal("degraded native topology qualified", err)
+	}
+	must("/sbin/zpool", "online", pool, "/dev/"+unit)
+	must("/sbin/zpool", "wait", "-t", "resilver", pool)
+	destroyOwned := func() {
+		if current := strings.TrimSpace(string(must("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", pool))); current != ownedGUID {
+			t.Fatal("owned pool changed before fixture destroy")
+		}
+		must("/sbin/zpool", "destroy", pool)
+	}
+	destroyOwned()
+	must("/sbin/zpool", "create", "-m", "none", "-o", "cachefile=none", pool, "raidz2", "/dev/"+unit, "/dev/"+secondUnit, "/dev/"+thirdUnit, "/dev/"+fourthUnit)
+	ownedGUID = strings.TrimSpace(string(must("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", pool)))
+	raidz := topology()
+	independentTopology(raidz)
+	if len(raidz.Nodes) != 5 {
+		t.Fatal("owned RAIDZ2 membership incomplete")
+	}
+	if err := VerifyPoolTopology(ownedGUID, pool, raidz); err != nil {
+		t.Fatal("native RAIDZ2 layout denied", err)
+	}
+	destroyOwned()
+	must("/sbin/zpool", "create", "-m", "none", "-o", "cachefile=none", pool, "/dev/"+unit, "/dev/"+secondUnit)
+	ownedGUID = strings.TrimSpace(string(must("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", pool)))
+	stripe := topology()
+	independentTopology(stripe)
+	if len(stripe.Nodes) != 2 {
+		t.Fatal("owned stripe membership incomplete")
+	}
+	if err := VerifyPoolTopology(ownedGUID, pool, stripe); !errors.Is(err, ErrUnavailable) {
+		t.Fatal("unsupported native stripe qualified", err)
+	}
 	oldGUID := ownedGUID
-	must("/sbin/zpool", "destroy", pool)
-	must("/sbin/zpool", "create", "-m", "none", "-o", "cachefile=none", "-o", "compatibility="+profilePath, pool, "/dev/"+unit)
+	destroyOwned()
+	must("/sbin/zpool", "create", "-m", "none", "-o", "cachefile=none", "-o", "compatibility="+profilePath, pool, "mirror", "/dev/"+unit, "/dev/"+secondUnit)
 	ownedGUID = strings.TrimSpace(string(must("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", pool)))
 	reused := poolState()
 	if !validGUID(ownedGUID) || ownedGUID == oldGUID || reused.Name != pool {
@@ -594,6 +763,17 @@ func TestNativePropertyObservations(t *testing.T) {
 		t.Fatal("old pool identity accepted for reused name", err)
 	}
 
+	reusedTopology := topology()
+	independentTopology(reusedTopology)
+	oldNodes := make(map[string]bool)
+	for _, node := range initialTopology.Nodes {
+		oldNodes[node.GUID] = true
+	}
+	for _, node := range reusedTopology.Nodes {
+		if oldNodes[node.GUID] {
+			t.Fatal("recreated vdev retained old GUID")
+		}
+	}
 	common := features()
 	allowed := make(map[string]bool)
 	for _, name := range profileNames {
@@ -616,7 +796,7 @@ func TestNativePropertyObservations(t *testing.T) {
 	// collector or product mutation is exercised by this fixture setup.
 	commonFiles := parse()
 	commonRoot := find(commonFiles, "")
-	commonObs := Observation{Complete: true, Eligible: true, PoolGUID: ownedGUID, PoolName: pool, Pool: poolState(), Features: common, Filesystems: commonFiles, Identities: identities(), States: states()}
+	commonObs := Observation{Complete: true, Eligible: true, PoolGUID: ownedGUID, PoolName: pool, Pool: poolState(), Features: common, Topology: topology(), Filesystems: commonFiles, Identities: identities(), States: states()}
 	commonPolicy := Policy{Revision: 1, PoolGUID: ownedGUID, PoolName: pool, Scopes: []Scope{{GUID: commonRoot.GUID, Name: pool, Properties: []Property{RefQuota}}}}
 	commonPlan, err := Build(time.Now(), "fixture-session", commonPolicy, commonObs, Intent{FilesystemGUID: commonRoot.GUID, Property: RefQuota, Value: "none"})
 	if err != nil {

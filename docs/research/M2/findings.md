@@ -3,7 +3,8 @@
 Date: 2026-10-04. Status: this research remains source/documentation evidence.
 Subsequent [native property projection](../../testing/M2/properties.md),
 [identity](../../testing/M2/identities.md), [filesystem state](../../testing/M2/dataset-state.md),
-[pool](../../testing/M2/pool-state.md) and [feature/profile](../../testing/M2/features.md)
+[pool](../../testing/M2/pool-state.md), [feature/profile](../../testing/M2/features.md)
+and [vdev topology](../../testing/M2/topology.md)
 results are recorded separately; current [slice progress](../../milestones/M2/implementation.md)
 tracks partial observations and the remaining native gates.
 Work: [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -24,8 +25,8 @@ prove which source built an existing guest image or what its installed files con
 
 | Component | Dated source/prior evidence | M2 qualification |
 |---|---|---|
-| FreeBSD | 15.1/14.5 supported upstream; prior M1 guests 15.1-RELEASE-p3 / 14.5-RELEASE amd64 | No M2 native operation executed |
-| Bundled OpenZFS | Prior guest strings 2.4.2-1-FreeBSD_g6330a45b0 / 2.2.9-FreeBSD_g079ba86d7; refreshed branch revisions match the M1 source pins | M2 health/mutation contracts unqualified |
+| FreeBSD | 15.1/14.5 supported upstream; prior M1 guests 15.1-RELEASE-p3 / 14.5-RELEASE amd64 | Subsequent partial M2 native observation/fixture results are linked above; no product mutation execution |
+| Bundled OpenZFS | Prior guest strings 2.4.2-1-FreeBSD_g6330a45b0 / 2.2.9-FreeBSD_g079ba86d7; refreshed branch revisions match the M1 source pins | Subsequent paired legacy topology/coarse health results are linked above; full scan/JSON and mutation contracts remain unqualified |
 | Go / x/sys | Product pins 1.27.1 / v0.48.0; exact M1 source/checksums retained | No new dependency proposed |
 | HTMX | Embedded 2.0.11; upstream docs still describe that version | M2 forms/job interaction not implemented |
 | Common profile | `openzfs-2.2`, 584 bytes, SHA-256 `8b5a635bf7609a0f521b08fe0e389c651dd6a266d33bd53a2e253b99089c3bf7`; identical in both inspected source branches | Subsequent installed/hash and owned-fixture creation-set evidence is recorded in [feature qualification](../../testing/M2/features.md); cross-release transfer/import remains unqualified |

@@ -42,6 +42,7 @@ func Build(at time.Time, session string, policy Policy, observation Observation,
 
 func (p Plan) Review() Review {
 	r := p.review
+	r.Topology.Nodes = append([]Vdev(nil), r.Topology.Nodes...)
 	r.Features.Values = append([]PoolFeature(nil), r.Features.Values...)
 	r.Context = append([]Filesystem(nil), r.Context...)
 	r.Affected = append([]Resource(nil), r.Affected...)
@@ -94,7 +95,8 @@ func prepare(p Policy, o Observation, i Intent) (Review, [32]byte, error) {
 	if !ok || !permits(scopes[target.GUID], i.Property) {
 		return Review{}, zero, ErrDenied
 	}
-	review := Review{PolicyRevision: p.Revision, PoolGUID: o.PoolGUID, PoolName: o.PoolName, Intent: i, Pool: o.Pool, Features: o.Features}
+	review := Review{PolicyRevision: p.Revision, PoolGUID: o.PoolGUID, PoolName: o.PoolName, Intent: i, Pool: o.Pool, Features: o.Features, Topology: o.Topology}
+	review.Topology = normalizedTopology(o.Topology)
 	review.Features.Values = append([]PoolFeature(nil), o.Features.Values...)
 	sort.Slice(review.Features.Values, func(i, j int) bool { return review.Features.Values[i].Name < review.Features.Values[j].Name })
 	ancestors := map[string]bool{}
@@ -106,7 +108,8 @@ func prepare(p Policy, o Observation, i Intent) (Review, [32]byte, error) {
 	poolBytes, err := json.Marshal(struct {
 		Pool     PoolState
 		Features PoolFeatures
-	}{o.Pool, o.Features})
+		Topology PoolTopology
+	}{o.Pool, o.Features, o.Topology})
 	if err != nil {
 		return Review{}, zero, ErrInvalid
 	}

@@ -82,6 +82,23 @@ type PoolFeatures struct {
 	Values                     []PoolFeature
 }
 
+// Vdev retains native GUIDs, parent membership and sibling order. Addresses are
+// observations, not stable provider identities or execution authorizations.
+type Vdev struct {
+	GUID, ParentGUID, Address, Kind, Health, Annotation string
+	Ordinal                                             int
+	ReadErrors, WriteErrors, ChecksumErrors             uint64
+}
+
+// PoolTopology pairs qualified legacy GUID/path status views. The pool GUID
+// must come from an independent fresh native pool observation, not status text.
+type PoolTopology struct {
+	ScanReported                                        bool
+	PoolGUID, PoolName, Health, Scan, Diagnostics       string
+	ReadErrors, WriteErrors, ChecksumErrors, DataErrors uint64
+	Nodes                                               []Vdev
+}
+
 type DatasetType string
 
 const (
@@ -111,6 +128,7 @@ type Observation struct {
 	States             []FilesystemState
 	Pool               PoolState
 	Features           PoolFeatures
+	Topology           PoolTopology
 }
 
 // Policy is trusted local enrollment, never request-supplied authority. GUIDs
@@ -148,6 +166,7 @@ type Review struct {
 	States               []FilesystemState
 	Pool                 PoolState
 	Features             PoolFeatures
+	Topology             PoolTopology
 }
 
 // Plan contains only private state and returns independent review copies. It is

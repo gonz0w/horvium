@@ -1,0 +1,304 @@
+{
+  "common_profile": {
+    "bytes": 584,
+    "cross_release_transfer_import": "pending",
+    "installed_fixture_ownership_size_hash_and_creation_set": "passed on both guests",
+    "names": 39,
+    "path": "/usr/share/zfs/compatibility.d/openzfs-2.2",
+    "product_anchored_file_reader": "not implemented",
+    "sha256": "8b5a635bf7609a0f521b08fe0e389c651dd6a266d33bd53a2e253b99089c3bf7"
+  },
+  "date": "2026-10-04",
+  "design_source": "753f601960529cd17596d0ffc628afe38d041c82",
+  "fixture": "Fresh snapshot guest; test-declared random pool, five owned 512 MiB file-backed md providers; two two-leaf mirror groups, owned attach to one group, offline/online, RAIDZ2 and unsupported stripe cases; owned filesystem/snapshot/bookmark/stream/sparse-volume/encrypted-root-and-child with fresh random fixture-only keys; no key material exported; GUID/provider-scoped unmounted export/import and owned pool name reuse without force; installed root-owned common profile read-only checks, final owned two-leaf mirror created with absolute approved profile, owned bookmark feature activation and recreated vdev GUID checks; no operator disk inputs",
+  "functional_and_suite_source": "5cfcfbbf357e93af3155f1e0d411a3f6df2b00c6",
+  "guests": [
+    {
+      "base_image_and_anyvm_unchanged_after_execution": true,
+      "cases": {
+        "bookmark_owner": "pass",
+        "common_feature_set": "pass",
+        "complete_filesystems": "pass",
+        "default": "pass",
+        "degraded_denial": "pass",
+        "eligibility_denied": "pass",
+        "encrypted_loaded_denial": "pass",
+        "encrypted_unloaded_denial": "pass",
+        "encryption_root_binding": "pass",
+        "feature_binding": "pass",
+        "feature_drift": "pass",
+        "feature_preservation": "pass",
+        "feature_sources": "pass",
+        "foreign_preservation": "pass",
+        "identity_binding": "pass",
+        "import_incarnation": "pass",
+        "independent_vdevs": "pass",
+        "inherited": "pass",
+        "installed_profile": "pass",
+        "local": "pass",
+        "mirror_layout": "pass",
+        "mount_sources": "pass",
+        "name_reuse": "pass",
+        "no_limit": "pass",
+        "pool_bootfs_denial": "pass",
+        "pool_identity_binding": "pass",
+        "pool_name_reuse": "pass",
+        "pool_preservation": "pass",
+        "pool_readonly_denial": "pass",
+        "pool_source_metadata": "pass",
+        "raidz2_layout": "pass",
+        "readonly_denial": "pass",
+        "received": "pass",
+        "reimport_drift": "pass",
+        "rename": "pass",
+        "replicated_guid": "pass",
+        "shadowed": "pass",
+        "snapshot_owner": "pass",
+        "snapshot_rename": "pass",
+        "snapshot_reuse": "pass",
+        "stable_enumeration": "pass",
+        "state_binding": "pass",
+        "state_drift": "pass",
+        "state_preservation": "pass",
+        "teardown": "pass",
+        "topology_binding": "pass",
+        "topology_drift": "pass",
+        "topology_preservation": "pass",
+        "unsupported_layout": "pass",
+        "vdev_guid_reuse": "pass",
+        "volume_denial": "pass"
+      },
+      "go": "go1.27.1 freebsd/amd64",
+      "host_os": "Ubuntu 24.04.5",
+      "job_id": 111581515703,
+      "job_url": "https://github.com/gonz0w/horvium/actions/runs/37252047398/job/111581515703",
+      "kernel_installed_running_userland": "15.1-RELEASE-p3",
+      "native_utility_sha256": {
+        "/sbin/mdconfig": "4848babf6961cfb427d7a5824d6061cc300a53eb650d04fca81c8488e72b46d6",
+        "/sbin/zfs": "ad02488cbfbc489be74b4e8674c85d1d856758756b2a0b9a477abbf6f7c6398a",
+        "/sbin/zpool": "fdc340695bd80a88b087ee78d6051fd048b1c163cee39e345e5a559a58667c85"
+      },
+      "qemu_sha256": "8a35ccba41582fc6c38b9df85fc9e35fa1d42f414d2d7d8090ee9b2f5e7c0854",
+      "qemu_version": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+      "release": "15.1",
+      "result": "passed",
+      "runner_image": "20260927.320.1",
+      "verified_fixture_pins": {
+        "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+        "builder": "2.2.8",
+        "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+        "cpu_count": 2,
+        "cpu_model": "qemu64",
+        "memory_mib": 6144,
+        "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+        "release": "15.1"
+      },
+      "zfs_module": "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0",
+      "zfs_userland": "zfs-2.4.2-1-FreeBSD_g6330a45b0"
+    },
+    {
+      "base_image_and_anyvm_unchanged_after_execution": true,
+      "cases": {
+        "bookmark_owner": "pass",
+        "common_feature_set": "pass",
+        "complete_filesystems": "pass",
+        "default": "pass",
+        "degraded_denial": "pass",
+        "eligibility_denied": "pass",
+        "encrypted_loaded_denial": "pass",
+        "encrypted_unloaded_denial": "pass",
+        "encryption_root_binding": "pass",
+        "feature_binding": "pass",
+        "feature_drift": "pass",
+        "feature_preservation": "pass",
+        "feature_sources": "pass",
+        "foreign_preservation": "pass",
+        "identity_binding": "pass",
+        "import_incarnation": "pass",
+        "independent_vdevs": "pass",
+        "inherited": "pass",
+        "installed_profile": "pass",
+        "local": "pass",
+        "mirror_layout": "pass",
+        "mount_sources": "pass",
+        "name_reuse": "pass",
+        "no_limit": "pass",
+        "pool_bootfs_denial": "pass",
+        "pool_identity_binding": "pass",
+        "pool_name_reuse": "pass",
+        "pool_preservation": "pass",
+        "pool_readonly_denial": "pass",
+        "pool_source_metadata": "pass",
+        "raidz2_layout": "pass",
+        "readonly_denial": "pass",
+        "received": "pass",
+        "reimport_drift": "pass",
+        "rename": "pass",
+        "replicated_guid": "pass",
+        "shadowed": "pass",
+        "snapshot_owner": "pass",
+        "snapshot_rename": "pass",
+        "snapshot_reuse": "pass",
+        "stable_enumeration": "pass",
+        "state_binding": "pass",
+        "state_drift": "pass",
+        "state_preservation": "pass",
+        "teardown": "pass",
+        "topology_binding": "pass",
+        "topology_drift": "pass",
+        "topology_preservation": "pass",
+        "unsupported_layout": "pass",
+        "vdev_guid_reuse": "pass",
+        "volume_denial": "pass"
+      },
+      "go": "go1.27.1 freebsd/amd64",
+      "host_os": "Ubuntu 24.04.5",
+      "job_id": 111581515902,
+      "job_url": "https://github.com/gonz0w/horvium/actions/runs/37252047398/job/111581515902",
+      "kernel_installed_running_userland": "14.5-RELEASE",
+      "native_utility_sha256": {
+        "/sbin/mdconfig": "380e00cde6bcbe24fc45421834a2104d98f1b2aabd1d430f4a1028e4cf7e54a4",
+        "/sbin/zfs": "56272b887f21fc31c3da98a9240c5c24ce817b9477fe160972c578cfce1a1f12",
+        "/sbin/zpool": "06c2b7f784a4e1d7a10eedbe27b7adaaeaa83c6dfec8dd7384f9e9ba1b719c47"
+      },
+      "qemu_sha256": "8a35ccba41582fc6c38b9df85fc9e35fa1d42f414d2d7d8090ee9b2f5e7c0854",
+      "qemu_version": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+      "release": "14.5",
+      "result": "passed",
+      "runner_image": "20260927.320.1",
+      "verified_fixture_pins": {
+        "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+        "builder": "2.2.8",
+        "compressed_sha256": "cd90489bb7d94585016e177b9e3f0084f3410454dc0af19481f44ddd5aa45257",
+        "cpu_count": 2,
+        "cpu_model": "qemu64",
+        "memory_mib": 6144,
+        "qcow2_sha256": "6593466e8d6341eaad95755973ab594222516dd75bcd99b18239b5047e5396f4",
+        "release": "14.5"
+      },
+      "zfs_module": "zfs-kmod-2.2.9-FreeBSD_g079ba86d7",
+      "zfs_userland": "zfs-2.2.9-FreeBSD_g079ba86d7"
+    }
+  ],
+  "model_accepted_source": "f334094eae3d3b6d8ca740465ac09cb5be08ba20",
+  "primary_source_sha256": {
+    "14.5/cmd/zpool/compatibility.d/openzfs-2.2": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "8b5a635bf7609a0f521b08fe0e389c651dd6a266d33bd53a2e253b99089c3bf7"
+    },
+    "14.5/cmd/zpool/zpool_main.c": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "17f327583bbb28c9f08e3c6baed875faf3e10a79710f98677e4c4e65f3cf2a13"
+    },
+    "14.5/man/man8/zpool-status.8": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "1aed70b1f2bc2880dbc2315e0968f6b189ce151f8c981e5394b585f7e1d5686b"
+    },
+    "14.5/module/zcommon/zfeature_common.c": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "dd936e9a0236eeb9b1b4db17743a730cb5ef3ccf877c095056957e4ed0deb41a"
+    },
+    "15.1/cmd/zpool/compatibility.d/openzfs-2.2": {
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "8b5a635bf7609a0f521b08fe0e389c651dd6a266d33bd53a2e253b99089c3bf7"
+    },
+    "15.1/cmd/zpool/zpool_main.c": {
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "3e9b2f8e47d4ca8554eaf93a1222e1385858ccc3ccb7a99a60423484b05fc181"
+    },
+    "15.1/man/man8/zpool-status.8": {
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "1ef7e3239610f26fe99c8c45b2c2da2407c04ce99beb86e12b8f6138dd97f372"
+    },
+    "15.1/module/zcommon/zfeature_common.c": {
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "fbb389534a9a6315cfdcea1337e327aebc2a1af8389585ae189c13165b51df1e"
+    },
+    "cmd/zfs/zfs_main.c": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "d3c39d72f53787f71885ab0139b71b7e02dfb5d3089e8f4f3bbe50957060487d"
+    },
+    "lib/libzfs/libzfs_dataset.c": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "5d11cc549b47d84cce40080f3777bae68ad94898eb3e0cc068175d21f334e537"
+    },
+    "lib/libzfs/libzfs_pool.c": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "05138da4aaae59e8703ae835ab8a4533220f711f906e843ab47332a88219c8fe"
+    },
+    "lib/libzfs/libzfs_util.c": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "2e644c424712ce53a60e9a24ab4a14fb02f67ba088ee3717ba38f664f5215a16"
+    },
+    "man/man7/zfsprops.7": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "3f3f694b95a70bb830dc6d8fae55713eaec964251df9439240e0a0b15f64be3a"
+    },
+    "man/man7/zpoolprops.7": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "62e6808dabeb15696748e0b9b0b3ec67b7ba42a7ff8761f1f93ac042ec88d4da"
+    },
+    "man/man8/zfs-list.8": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "0c348f400e6cf2d83223c09cf01560c0b75608e1c20772556896adf49d65315f"
+    },
+    "man/man8/zpool-import.8": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "4330ad139656546d2253b33a12ca5c65eba9e2bf3ea47e3e11e27a91ea84ff44"
+    }
+  },
+  "prior_failed_execution": {
+    "cause": "Parser required a scan line omitted by both pinned formatters for fresh pools with no scan history to print",
+    "guests": [
+      {
+        "job_id": 111579467211,
+        "release": "15.1"
+      },
+      {
+        "job_id": 111579467443,
+        "release": "14.5"
+      }
+    ],
+    "repair": "Failing behavioral regression then explicit ScanReported absence and paired-presence drift; fixture independent list projection corrected to common fixed ten columns from inspected formatter",
+    "repair_source": "5cfcfbbf357e93af3155f1e0d411a3f6df2b00c6",
+    "result": "failed on both guests before completing assertions; no acceptance evidence",
+    "run_id": 37251352156,
+    "run_url": "https://github.com/gonz0w/horvium/actions/runs/37251352156",
+    "source": "90f8e6df385f6daf41eb018cf35881a87f6b14dd"
+  },
+  "run_id": 37252047398,
+  "run_url": "https://github.com/gonz0w/horvium/actions/runs/37252047398",
+  "schema_version": 1,
+  "scope": "Partial native property, dataset identity/type/version, mount/readonly/encryption and pool identity/import-incarnation/policy and feature projections plus installed common profile/hash/fixture creation feature-set and paired legacy vdev topology/health/review-drift checks only; no full scan/JSON status interpretation or provider/system/device-use qualification; no cross-release transfer/import qualification; no native eligibility, enrollment, mutation, durable job or complete M2 acceptance",
+  "tested_input_sha256": {
+    ".github/workflows/bsd-properties.yml": "aafdc02b6b1b0dca5b36900d2ff1a3daf66b389ba42c725df65560790a8ec3bd",
+    "Makefile": "07775c360420e79f78b0e32bbe5151ded11bd5712ec1660f6d5f86d8adf5e0b2",
+    "go.mod": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+    "go.sum": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+    "internal/storage/feature_names.go": "aac75ef72a600c30b29504b66673c86d6fa2050a24dc9f10a9a61e9737e06dd1",
+    "internal/storage/features.go": "fd4718101606afb61ec380cd6fd6b118170d32dd3dd1b8578a3c7d557c3d6512",
+    "internal/storage/features_test.go": "a2eed88f92102cae6a17f375f45142bd1cb3c0439824e734f3cc1f2509d14eef",
+    "internal/storage/identities.go": "407727cce1a4c7ed5ebd22fc901a94f77c92e9138a68cc9e635ea6ce57b0f3c8",
+    "internal/storage/identities_test.go": "a61b5ad2732b53a025360f9e7289ba3f5148eb828b739ffcb3899391fe887555",
+    "internal/storage/model.go": "3db307ed81855476627b2d27e07ca0e7876b2727a7d4c4c4432d2957be0ed736",
+    "internal/storage/plan.go": "8303ab08a60d4a334b36f40cd231840a142b95021e0a968072f1a1daddd5f15b",
+    "internal/storage/plan_test.go": "e065f0fcb21579a1a5fe4177bcddac16bfb43e6851117e8a052ba13a95c919b7",
+    "internal/storage/pool.go": "412dd656cdef6f8975bb332083db69bd0b2214dedb629126cd66cab16cb7f6cb",
+    "internal/storage/pool_test.go": "1cb15c2086ed39856d876045f2321e7f00fe602e593835d8ebee1a6141664f86",
+    "internal/storage/properties.go": "45c4b0e44fdbccab58be889bbcf4f47f388db513ec1ff71dcc5e4272c0aa06a9",
+    "internal/storage/properties_freebsd_test.go": "d07ecf29c66cf2fd1488be60b18233e61211b449eac2f8541f0b98170a447137",
+    "internal/storage/properties_test.go": "8f61d3ae7cd575026d97d3db21ccff99cf1fe92c2e926c62f7d51c16b9e6c738",
+    "internal/storage/state.go": "7c6145e4ee30092a4eb57b87e70d5e7b69a619991f8b8d66b06c67ba475dc368",
+    "internal/storage/state_test.go": "5f1d13c56fb3cd4743899b4041932713fe93f6e0e7ee942c5295678f241549f9",
+    "internal/storage/topology.go": "87ba9d454352b323926b81dc46cacb105e8150e84921e994ca7d288bec1b628d",
+    "internal/storage/topology_test.go": "e48bc9c9e456ad6c7658d5eb25bf2a5bc9a5bb1bea8763141776f995c8369928",
+    "internal/storage/validate.go": "25b59ae4f4d300be9d81574f230aa6bda0bdd8b8d07cba89829c09f85f8fc808",
+    "tools/bootstrap-go.py": "3ac95fa2ac6e942c9f25a81cb20e5191756cd1e9c39668edc813fa0b214d19d1",
+    "tools/bsd-properties.sh": "4ae518e5beace722a934725563f12a6b5a45914a779325754e5aa1c0353e067f",
+    "tools/check-property-evidence.py": "ba58ae8615564e8e2a6b3fa0355a42511581c69355708166a5d34637caa274cd",
+    "tools/go-pins.json": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+    "tools/performance-vm-pins.json": "81f0f30e4171fed38e281c644044521a0cdc9f6693cd9b988b229ef4f85d002b",
+    "tools/prepare-performance-vm.py": "9f52f5f47c8a0f79a3adfa27b7d24ae480f4174d6c6aa91a3ec696cc3a7deb9e",
+    "tools/tests/test_property_evidence.py": "d1a8c4d73531f0257168b969afbe878305c77ace360bed84096a19b4c1281690"
+  }
+}

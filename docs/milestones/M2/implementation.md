@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset validated; maintainer review pending.
+Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset validated, PR 27 review pending.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -70,15 +70,24 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   Both pinned guests passed all 36 property/identity/state/pool assertions and teardown
   (run 37247751495, source `552f203501c87822c96e9b712beea962b0f43d5a`).
   No complete eligibility or runtime adapter follows.
-- Slice 1 feature subset requires a complete GUID-bound native feature table and
+- Slice 1 feature subset accepted in [PR 26](https://github.com/gonz0w/horvium/pull/26),
+  merged source `cb39ddfe9dbcd6505f8f9d3f0b257bbb511ee162`: requires a complete GUID-bound native feature table and
   immutable drift review; [feature contracts](../../testing/M2/features.md).
   Exact common profile bytes are checked without a product file reader or creation
   authority. Both pinned guests passed all 42 property/identity/state/pool/feature
   assertions and teardown (run 37249224834, source
-  `f3d7c63918fc5a6ef2d5c3ec1078f413f3179aae`). Maintainer review pending in
-  [PR 26](https://github.com/gonz0w/horvium/pull/26); cross-release transfer/import remains open.
-- Slice 1 remains incomplete: native eligibility/provider/topology/status
-  observations, complete-impact collection and device-use drift gates have not run. No later slice may treat
+  `f3d7c63918fc5a6ef2d5c3ec1078f413f3179aae`). Cross-release transfer/import remains open.
+- Slice 1 topology subset requires complete paired native GUID/path status,
+  homogeneous mirror/RAIDZ2 refusal checks and immutable membership/health drift;
+  [topology contracts](../../testing/M2/topology.md). Both pinned guests passed all
+  51 assertions and teardown (run 37252047398, source
+  `5cfcfbbf357e93af3155f1e0d411a3f6df2b00c6`);
+  [PR 27](https://github.com/gonz0w/horvium/pull/27) is open for review. Initial native
+  scan-omission failure and failing-first repair are retained in the evidence record.
+  Full scan/JSON status and provider/system/device-use proofs remain open.
+- Slice 1 remains incomplete: assembled native eligibility/provider proofs, full
+  status/scan interpretation, complete-impact collection and device-use drift gates
+  have not run. No later slice may treat
   model input booleans or old M1 inventory as qualified native write authority.
 
 The approval adopts scope and gates, not passing native behavior or a NAS release.
