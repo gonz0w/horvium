@@ -1,7 +1,9 @@
 # M2 disk attachments and partition denial
 
 Date: 2026-10-05. Status: all seventeen assertions, both executed native tests
-and complete preservation/teardown passed on both FreeBSD targets; maintainer review pending. [Approved EDD](../../milestones/M2/EDD.md),
+and complete preservation/teardown passed on both FreeBSD targets; accepted in
+[PR 32](https://github.com/gonz0w/horvium/pull/32) at merged source
+`f53688f29d6ba85e47b7062bbada73a857f02378`. [Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
