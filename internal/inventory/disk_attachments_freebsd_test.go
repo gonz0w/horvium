@@ -181,7 +181,7 @@ func TestNativeDiskAttachments(t *testing.T) {
 				for _, p := range g.Providers {
 					if p.GeomID == geom.ID {
 						outputs++
-						if p.Kind != Logical || p.Class != "PART" || p.MediaSize != 16<<20 || p.SectorSize != target.SectorSize {
+						if p.Kind != Partition || p.Class != "PART" || p.MediaSize != 16<<20 || p.SectorSize != target.SectorSize {
 							t.Fatal("actual partition observation mismatch")
 						}
 					}
