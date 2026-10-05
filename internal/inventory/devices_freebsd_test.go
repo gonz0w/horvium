@@ -4,6 +4,7 @@ package inventory
 import (
 	"bytes"
 	"context"
+	"errors"
 	"io"
 	"os"
 	"os/exec"
@@ -46,12 +47,13 @@ func TestNativeDeviceFixtures(t *testing.T) {
 		}
 		return out.Bytes()
 	}
-	collect := func() GEOM {
-		g, err := ParseGEOM(run("/sbin/sysctl", "-b", "kern.geom.confxml"), DefaultLimits())
+	collect := func() (GEOM, []byte) {
+		data := run("/sbin/sysctl", "-b", "kern.geom.confxml")
+		g, err := ParseGEOM(data, DefaultLimits())
 		if err != nil {
 			t.Fatal("native fixture graph unavailable", err)
 		}
-		return g
+		return g, data
 	}
 	selected := func(g GEOM) []Provider {
 		var out []Provider
@@ -82,7 +84,7 @@ func TestNativeDeviceFixtures(t *testing.T) {
 		}
 		return value
 	}
-	graph := collect()
+	graph, rawGEOM := collect()
 	disks := selected(graph)
 	seen := make(map[string]int)
 	before := make(map[string]string)
@@ -110,10 +112,12 @@ func TestNativeDeviceFixtures(t *testing.T) {
 			t.Fatal("native sector/identity variant mismatch")
 		}
 		path := "/dev/" + p.Name
-		if strings.TrimSpace(string(run("/usr/sbin/diskinfo", "-s", path))) != id {
+		serialData := run("/usr/sbin/diskinfo", "-s", path)
+		if strings.TrimSpace(string(serialData)) != id {
 			t.Fatal("independent serial mismatch")
 		}
-		fields := strings.Fields(string(run("/usr/sbin/diskinfo", path)))
+		geometryData := run("/usr/sbin/diskinfo", path)
+		fields := strings.Fields(string(geometryData))
 		if (len(fields) != 6 && len(fields) != 9) || fields[0] != path {
 			t.Fatal("independent geometry projection unavailable")
 		}
@@ -127,6 +131,19 @@ func TestNativeDeviceFixtures(t *testing.T) {
 		}
 		if nums[0] != expectedSector || nums[1] != p.MediaSize || nums[2] != p.MediaSize/p.SectorSize || nums[3] != expectedStripe || nums[4] != 0 {
 			t.Fatal("independent native geometry mismatch")
+		}
+		projection, err := ParseDiskObservation(rawGEOM, geometryData, serialData, DefaultLimits())
+		if expectedIdentity == IdentityUnique {
+			if err != nil || !reflect.DeepEqual(projection.Provider, p) || projection.SectorCount != nums[2] || projection.StripeSize != nums[3] || projection.StripeOffset != nums[4] {
+				t.Fatal("product identity/geometry projection did not correlate")
+			}
+			changed := append([]string(nil), fields...)
+			changed[1] = strconv.FormatUint(expectedSector*2, 10)
+			if _, err := ParseDiskObservation(rawGEOM, []byte(strings.Join(changed, "\t")+"\n"), serialData, DefaultLimits()); err == nil {
+				t.Fatal("product accepted contradictory geometry projection")
+			}
+		} else if !errors.Is(err, ErrDiskCorrelation) || !reflect.DeepEqual(projection, DiskObservation{}) {
+			t.Fatal("product accepted duplicate/missing native serial")
 		}
 		// DEV and native disk-ident LABEL attachments are correspondence facts,
 		// never evidence that a provider is unused or safe for creation.
@@ -177,7 +194,7 @@ func TestNativeDeviceFixtures(t *testing.T) {
 			t.Fatal("guest boot disk selected as test backing")
 		}
 	}
-	afterGraph := collect()
+	afterGraph, _ := collect()
 	after := selected(afterGraph)
 	if !reflect.DeepEqual(disks, after) {
 		t.Fatal("native fixture identity/geometry drifted")
@@ -195,4 +212,5 @@ func TestNativeDeviceFixtures(t *testing.T) {
 		t.Fatal("guest root pool identity changed")
 	}
 	t.Log("DEVICE_OBSERVATION_RESULT distinct_serial=pass duplicate_serial=pass missing_serial=pass sector_variants=pass diskinfo_correlation=pass backing_relationships=pass boot_exclusion=pass read_preservation=pass")
+	t.Log("DEVICE_CORRELATION_RESULT unique_serial=pass duplicate_denial=pass missing_denial=pass geometry_binding=pass")
 }

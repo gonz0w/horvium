@@ -80,6 +80,9 @@ observations and complete host teardown; see its
 [execution manifest](M2/devices-local-manifest.json). Property-suite success remains
 separate from device/provider safety proof. Teardown rehashes/removes declared
 backings after stopping QEMU, with supervisor fallback for controller death.
+The [disk correlation extension](M2/disk-correlation.md) adds four mandatory
+assertions to the current devices suite; previous eight-assertion manifests remain
+bound to their earlier source and do not qualify the new parser.
 
 ## Isolation, cache and evidence
 

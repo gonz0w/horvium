@@ -6,6 +6,7 @@ import re
 
 CASES={'distinct_serial','duplicate_serial','missing_serial','sector_variants',
        'diskinfo_correlation','backing_relationships','boot_exclusion','read_preservation'}
+CORRELATION_CASES={'unique_serial','duplicate_denial','missing_denial','geometry_binding'}
 
 def validate(text, guest=False):
     if len(text)>1<<20 or re.search(r'(?m)^(?:FAIL|--- (?:FAIL|SKIP):)',text):
@@ -18,6 +19,13 @@ def validate(text, guest=False):
     expected={case+'=pass' for case in CASES}
     if len(fields)!=len(expected) or set(fields)!=expected:
         raise ValueError('missing, duplicate, unknown or failed device assertion')
+    correlation=re.findall(r'DEVICE_CORRELATION_RESULT ([^\n]+)',text)
+    if len(correlation)!=1:
+        raise ValueError('one executed device correlation result required')
+    fields=correlation[0].split()
+    expected={case+'=pass' for case in CORRELATION_CASES}
+    if len(fields)!=len(expected) or set(fields)!=expected:
+        raise ValueError('missing, duplicate, unknown or failed correlation assertion')
     if not guest and len(re.findall(r'(?m)^DEVICE_FIXTURE_CLEANUP pass$',text))!=1:
         raise ValueError('complete owned host fixture teardown required')
 

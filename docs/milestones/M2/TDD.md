@@ -62,7 +62,10 @@ hash, QEMU/CPU/memory, source/suite/toolchain/modules/assets and actual kernel,
 userland and OpenZFS strings. Inherit M1's verified image/toolchain machinery;
 [Virtual disk attachment/identity fixture](../../testing/M2/devices.md) tooling
 passed its eight prerequisite assertions and owned host teardown on both targets;
-PR 28 review is pending. Further fault control and complete device safety still
+PR 28 accepted the fixture at merged source
+`27dafaba7a5d04a4896f27776ef79f4b1f4c2bbc`. The [disk correlation extension](../../testing/M2/disk-correlation.md)
+adds four assertions; all twelve native assertions and host teardown passed on both
+targets. Review is pending; this does not satisfy the complete device-safety row. Further fault control and complete device safety still
 need implementation and qualification. Never accept an arbitrary host device supplied to a test.
 
 Pool creation/device-identity tests use new guest-attached virtual block devices
