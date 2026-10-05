@@ -128,17 +128,10 @@ func TestNativeDeviceFixtures(t *testing.T) {
 		if nums[0] != expectedSector || nums[1] != p.MediaSize || nums[2] != p.MediaSize/p.SectorSize || nums[3] != expectedStripe || nums[4] != 0 {
 			t.Fatal("independent native geometry mismatch")
 		}
-		// New disks are not partitioned and have no backing consumer. This is a
-		// fixture-shape assertion, never proof of absent labels/use/remote activity.
-		for _, g := range graph.Geoms {
-			if g.ID == p.GeomID && len(g.Consumers) != 0 {
-				t.Fatal("direct fixture disk has backing consumers")
-			}
-			for _, c := range g.Consumers {
-				if c.ProviderID == p.ID {
-					t.Fatal("blank fixture acquired GEOM consumer")
-				}
-			}
+		// DEV and native disk-ident LABEL attachments are correspondence facts,
+		// never evidence that a provider is unused or safe for creation.
+		if err := fixtureDiskCorrespondence(graph, p); err != nil {
+			t.Fatal(err)
 		}
 		hash := strings.TrimSpace(string(run("/sbin/sha256", "-q", path)))
 		if len(hash) != 64 {

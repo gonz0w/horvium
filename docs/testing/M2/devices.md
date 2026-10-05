@@ -39,6 +39,12 @@ the native record. They do not prove which sources built the guest binaries:
 [14.5 GEOM serial producer](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/geom/geom_disk.c),
 [15.1 GEOM serial producer](https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/geom/geom_disk.c).
 
+[Pinned DEV producer](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/geom/geom_dev.c),
+[LABEL producer](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/geom/label/g_label.c)
+and [disk-ident alias](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/geom/label/g_label_disk_ident.c)
+explain why a blank disk can have incoming consumers without partition/data use.
+Both release revisions are retained in the source hash record.
+
 ## Ownership, observations and teardown
 
 `tools/device-fixture.py` exclusively creates the fixed backing set and a wrapper
@@ -65,8 +71,10 @@ Fixture providers are resolved from the complete native graph, then checked agai
 exact declared serial/count/size/class expectations. This test's fixed size and
 `vtbd` address checks describe its virtual fixture, not a product selection rule.
 Independent diskinfo ioctls confirm serial, logical sector, byte/sector capacity,
-stripe size and offset. Require direct DISK provenance and no consumers on these
-blank test disks; absence of consumers alone never proves no signatures/use.
+stripe size and offset. Require direct DISK provenance without backing parents. Native DEV attachments
+and optional disk-ident LABEL aliases are checked by class/parent/address/geometry;
+other incoming consumers refuse this fixture recognizer. These attachments do
+not establish absent labels/use. Consumer absence alone is never a safety proof.
 Trace the mounted ZFS guest root's actual leaf paths through GEOM backing edges
 and prove the root disks are outside the declared set. Preserve that root pool GUID.
 No boot disk content or arbitrary operator resource is opened for hashing or writes.
@@ -107,6 +115,15 @@ race, parser fuzz and FreeBSD cross-build results are separate from native evide
 The checker requires one executed native test and eight exact guest assertions,
 plus one successful host preservation/termination/teardown result; booting a VM,
 a guest-only result or a skipped test cannot qualify this fixture.
+
+The initial run [37327282454](https://github.com/gonz0w/horvium/actions/runs/37327282454)
+failed on both guests at source `b35c7f7f68e98a3dbe561f3d6d1d8215382cf9c5`: the fixture
+incorrectly required no incoming GEOM consumers for blank disks. Owned host cleanup
+and base-image/AnyVM post-checks passed, but neither guest supplied acceptance
+evidence. Inspected DEV/LABEL producers explain normal device-node and disk-ident
+attachments. A failing regression now checks their exact correspondence and rejects
+partition/unknown/contradictory attachment shapes; no product use check was relaxed.
+The repaired suite still requires native execution on both guests.
 
 Native qualification must record both run/job IDs, exact tested inputs and tool/
 source/image hashes, actual guest versions and observed geometry. Do not export raw
