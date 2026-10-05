@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: BSD-3-Clause
-"""Check complete working-tree content, including committed files in CI."""
+"""Check complete working-tree content, including committed files before review."""
 import json
 import re
 import subprocess
@@ -19,7 +19,7 @@ REQUIRED = (
     "README.md", "CONTRIBUTING.md", "SECURITY.md", "GOVERNANCE.md", "AGENTS.md",
     "LICENSE", "CODE_OF_CONDUCT.md", ".github/CODEOWNERS",
     ".github/PULL_REQUEST_TEMPLATE.md", ".github/dependabot.yml",
-    ".github/workflows/repository.yml", "docs/templates/TDD_TEMPLATE.md",
+    ".github/main-ruleset.json", "tools/review-gate.py", "tools/owned-process.py", "docs/templates/TDD_TEMPLATE.md",
     "NOTICE.md", "docs/project/charter.md", "docs/architecture/baseline.md",
     "docs/engineering/bootstrap-status.md", "docs/testing/strategy.md",
     "docs/compatibility/matrix.md", "packaging/ports/README.md",
@@ -107,17 +107,20 @@ for path in sorted(ROOT.rglob("*")):
         except (ValueError, yaml.YAMLError) as exc:
             error(rel, f"invalid configuration: {exc}")
             continue
-        if rel.parts[:2] == (".github", "workflows"):
-            if not isinstance(data, dict) or not isinstance(data.get("jobs"), dict):
-                error(rel, "workflow must define jobs")
-                continue
-            if data.get("permissions") != {"contents": "read"}:
-                error(rel, "workflow default permissions must be contents: read")
-            for job in data["jobs"].values():
-                for step in job.get("steps", []):
-                    action = step.get("uses", "")
-                    if action and not action.startswith("./") and not re.fullmatch(r"[\w.-]+/[\w./-]+@[0-9a-f]{40}", action):
-                        error(rel, f"external action must use a full commit SHA: {action}")
+        if rel.parts[:2] == (".github", "workflows") and path.suffix in {".yml", ".yaml"}:
+            error(rel, "GitHub Actions are disabled by repository policy")
+        if str(rel) == '.github/main-ruleset.json':
+            types = {rule['type'] for rule in data.get('rules', [])}
+            for required in ('deletion', 'non_fast_forward', 'required_linear_history', 'required_signatures', 'pull_request'):
+                if required not in types:
+                    error(rel, 'main protection missing: ' + required)
+            if 'required_status_checks' in types:
+                error(rel, 'local review policy forbids required hosted status checks')
+            if data.get('bypass_actors') or data.get('enforcement') != 'active':
+                error(rel, 'main protections must remain active without bypasses')
+            pr = next((rule.get('parameters', {}) for rule in data.get('rules', []) if rule['type'] == 'pull_request'), {})
+            if not pr.get('required_review_thread_resolution'):
+                error(rel, 'main PR conversations must be resolved')
 
 if subprocess.run(["git", "rev-parse", "--is-inside-work-tree"], cwd=ROOT, capture_output=True).returncode == 0:
     for args in (["git", "diff", "--check", "--", ".", ":(exclude)*.md"], ["git", "diff", "--cached", "--check", "--", ".", ":(exclude)*.md"]):
@@ -128,4 +131,4 @@ if subprocess.run(["git", "rev-parse", "--is-inside-work-tree"], cwd=ROOT, captu
 if errors:
     print("\n".join(f"ERROR: {message}" for message in errors), file=sys.stderr)
     sys.exit(1)
-print("Repository content, configuration, license, links, and action pins passed")
+print("Repository content, configuration, license, links, and local review policy passed")

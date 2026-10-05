@@ -14,19 +14,14 @@ checks and deep Go checks there before requesting review:
 
 ```sh
 make tools
-make check lint test secrets
-make go-check
+PR_TITLE='ci: move qualification to local hosts' make review
 ```
 
-Attach the checked commit and results to the PR. Race detection and bounded fuzzing
-remain review expectations; automatic hosted runs now perform formatting, vet
-and unit/component tests for changes beyond allowlisted prose. `make go-check`
-still runs the complete portable Go gate.
-
-Automated Firefox currently has Linux-only artifact pins; its existing Linux
-workflow remains a manually selected fallback. Safari automation can use the
-existing installed-driver procedure; manual accessibility acceptance remains
-pending. This change does not invent macOS Firefox qualification.
+Attach the checked commit/base/title and results to the PR. The
+[local review gate](../engineering/local-review.md) runs all portable checks,
+race detection and bounded fuzzing; GitHub Actions are disabled. Automated
+Firefox currently has Linux-only artifact pins and needs a local Linux lab.
+Safari uses the installed-driver procedure; manual accessibility remains pending.
 
 ## Disposable FreeBSD guests
 
@@ -96,13 +91,48 @@ Qualification requires a successful guest command, suite-specific assertion
 validation, unchanged base/runtime and verified owned-process termination.
 Missing/skipped/failed assertions and cleanup/preservation failures remain
 unqualified. Normal teardown removes the fresh image, private key and variable
-store; logs and the known-hosts file remain for inspection. Failed preservation
-may leave a quarantined image for diagnosis.
+store; logs and the known-hosts file remain for inspection. Preservation failure remains unqualified; the supervisor still removes disposable
+image/key/variable-store files after stopping the owned group.
 
-Use Ctrl-C to interrupt: the owning process terminates/waits for its child and
-records failure. SIGKILL or host power loss prevents this cleanup; discard that
-run and terminate its specific QEMU child before starting another. No broad
-process-name kill or production storage cleanup is part of the procedure.
+## Teardown
+
+```sh
+make lab-status
+make lab-stop
+make lab-status
+```
+
+`lab-status` exits nonzero for active or unverified sessions. `lab-stop` requests
+termination through each private owned session socket and waits for a completed
+teardown record. It never kills by process name or signals a stale stored PID.
+These commands cover supervised local guests, review gates, previews and browser
+fixture/driver groups; they do not control unrelated operator processes.
+
+A short-lived supervisor owns each foreground worker group and watches an open
+lease pipe to its controller. Normal exit, failure, timeout, Ctrl-C, SIGTERM and
+controller SIGKILL all close that lease or trigger explicit cleanup. It sends
+TERM, waits a bounded grace period, escalates to KILL if needed, verifies no live
+group member remains, then reaps its child. Holding the leader unreaped reserves
+its PID while signalling, avoiding accidental kills after PID reuse. On guest
+interruption it also deletes the fixed fixture key/image/variable-store paths
+inside the private lab directory and marks the run unqualified. Successful
+qualification requires guest/base/runtime checks and the supervisor's verified
+teardown. Status records and socket directories are private and ignored.
+
+The supervisor installs no service and exits after cleanup. A running Mac preview
+expires through the Go fixture's twenty-minute timer as well. Temporary lab/cache
+and evidence files are inert: the compressed verified cache can remain for reuse.
+Inspect retained logs, then delete only stopped session/evidence directories or
+the cache if disk space is needed. Never remove active session sockets to hide a
+running job; `lab-stop` first, then require a successful `lab-status`.
+
+Host power loss, killing the supervisor itself as well as its controller, or a
+host process deliberately detaching into another group cannot be covered by this
+lease. External macOS browser applications may also be outside the group. Such
+runs remain unqualified: stale sockets/metadata are reported as UNVERIFIED and
+are never permission to signal an old PID. Investigate the specific owned process
+identity manually before recovery; no broad process-name kill or production
+storage cleanup belongs in this procedure.
 
 Review/sanitize selected evidence before putting it in a PR; never commit raw
 guest/host inventories, key material or credentials. A local record is input to
@@ -117,6 +147,7 @@ access. These are unmeasured provisioning suggestions. A later KVM runner needs
 virtualization or nested virtualization, controlled `/dev/kvm` access and its own
 recorded execution evidence. This host stays separate from live NAS storage.
 
-An isolated self-hosted GitHub runner is optional later work. This PR does not
-register one, introduce persistent execution of PR code on the Mac, or change
-branch protection. Local suite selection provides savings without that service.
+A GitHub runner is unnecessary: run local scripts on the isolated lab when those
+gates are needed. This work registers no persistent execution service. Native
+replication/restore will require two isolated FreeBSD peers; hardware power-loss
+and controller failures remain physical-lab gates.

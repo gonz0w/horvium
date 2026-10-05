@@ -10,7 +10,7 @@ Related work: [M1 issue](https://github.com/gonz0w/horvium/issues/1).
 Can both candidate releases expose numeric ZFS inventory, GEOM geometry, and
 kernel-authenticated Unix socket identity without production implementation?
 
-The manual [workflow](../../../.github/workflows/bsd-smoke.yml) runs isolated
+The original manual [historical workflow](https://github.com/gonz0w/horvium/blob/4eb60c868aa90ea72c11884c8c606d734ea2fe2f/.github/workflows/bsd-smoke.yml) runs isolated
 QEMU amd64 guests for FreeBSD 15.1 and 14.5. The pinned VM Action provisions the
 guest; it is test infrastructure, not Horvium runtime infrastructure. Capture
 actual kernel/userland and ZFS versions from logs, separately from source snapshots.
@@ -72,3 +72,6 @@ physical disk identities, SMART, controller failure, client protocols, productio
 authorization, socket deployment, memory budgets, or NAS recovery. No product
 service is installed or enabled. Spike code requires ordinary design/tests/review
 before any production reuse.
+
+Current execution uses the [local qualification runner](../../testing/local-qualification.md);
+GitHub Actions are disabled. Historical source/run links above retain provenance.

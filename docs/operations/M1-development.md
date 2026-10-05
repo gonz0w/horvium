@@ -13,7 +13,7 @@ CGO_ENABLED=0 and embedded console assets. macOS/Linux can build and run synthet
 unit tests and the HTTP client; actual helper/management/token state require
 FreeBSD and fail explicitly elsewhere. `make check lint test secrets go-check`
 validates repository and Go behavior. Native validation is opt-in through the
-[QEMU workflow](../engineering/ci-cd.md).
+[local QEMU procedure](../engineering/ci-cd.md).
 
 An OS administrator supplies a dedicated non-login service UID/group, a protected
 root-owned config and helper directory, and boot/system storage for credential
@@ -75,6 +75,10 @@ non-root service UID in a separate foreground process. Root management is denied
 A missing/unsafe socket at management startup is an explicit failure; after startup,
 a helper outage produces unavailable/stale state and scheduled recovery attempts.
 Ctrl-C/SIGTERM stop the foreground processes; they install or enable nothing.
+Inside a disposable local QEMU lab, stopping the supervised VM also terminates
+all guest services and removes its fresh disk/key/variable-store files. The
+host `make lab-status`/`make lab-stop` commands cover supervised sessions only;
+manually launched foreground commands require their own explicit shutdown.
 
 Browse `http://127.0.0.1:8088/login` and submit the local token. Remote lab access
 uses an SSH local forward to this loopback listener, with an explicitly allowed

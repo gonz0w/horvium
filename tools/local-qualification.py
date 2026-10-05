@@ -6,6 +6,7 @@ import importlib.util
 import json
 import platform
 import shutil
+import signal
 import socket
 import subprocess
 import sys
@@ -107,6 +108,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('suite', choices=SUITES)
     parser.add_argument('release', choices=['15.1', '14.5'])
+    parser.add_argument('--owned-directory', type=Path, help=argparse.SUPPRESS)
     parser.add_argument('--run', action='store_true', help='Explicitly opt into this disposable guest')
     args = parser.parse_args()
     if not args.run:
@@ -130,8 +132,30 @@ def main():
     code, vars_template = firmware(qemu)
     runs = ROOT / '.tools/lab-runs'
     runs.mkdir(parents=True, exist_ok=True)
-    directory = Path(tempfile.mkdtemp(prefix=f'{args.suite}-{args.release}-', dir=runs))
-    directory.chmod(0o700)
+    supervisor = load_tool('owned-process')
+    if args.owned_directory is None:
+        directory = Path(tempfile.mkdtemp(prefix=f'{args.suite}-{args.release}-', dir=runs))
+        directory.chmod(0o700)
+        process = supervisor.OwnedProcess(
+            [sys.executable, str(Path(__file__).resolve()), args.suite, args.release,
+             '--run', '--owned-directory', str(directory)], native_fixture=directory)
+        print(f'Owned lab fixture: {directory}; supervisor: {process.directory}', flush=True)
+        try:
+            status = process.wait()
+        finally:
+            process.stop()
+        result = json.loads((directory / 'result.json').read_text())
+        if status or not result.get('qualified') or not process.record()['group_cleaned']:
+            raise ValueError('qualification failed or interrupted; inspect private records')
+        print('PASS: native assertions, preserved base/runtime and supervised teardown', flush=True)
+        return
+    directory = supervisor.private_directory(args.owned_directory)
+    if directory.parent != runs:
+        raise ValueError('worker directory is outside the owned local lab')
+    def interrupted(_signum, _frame):
+        raise InterruptedError('owned lab interrupted')
+    signal.signal(signal.SIGTERM, interrupted)
+    signal.signal(signal.SIGINT, interrupted)
     guest, key = None, directory / 'fixture-key'
     record = {'source_commit': source, 'suite': args.suite, 'release': args.release,
               'started_at': datetime.now(timezone.utc).isoformat(),
@@ -142,6 +166,7 @@ def main():
               'cpu_model': 'qemu64', 'cpu_count': 2, 'memory_mib': 6144,
               'accelerator': 'tcg', 'qualified': False, 'host_teardown': False,
               'base_preserved': False}
+    supervisor.write_record(directory / 'result.json', record)
     base_before = None
     image, variables = directory / 'image', directory / 'vars.fd'
     try:
@@ -220,7 +245,7 @@ def main():
             record['completed_at'] = datetime.now(timezone.utc).isoformat()
             (directory / 'result.json').write_text(json.dumps(record, indent=2) + '\n')
             print(f'Qualification record: {directory / "result.json"}', flush=True)
-    print('PASS: guest assertions, unchanged base/runtime and owned host process teardown', flush=True)
+    print('Guest assertions and fixture cleanup complete; supervisor is verifying process teardown', flush=True)
 
 
 if __name__ == '__main__':

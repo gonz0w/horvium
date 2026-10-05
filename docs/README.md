@@ -19,6 +19,7 @@
 - [Bootstrap status](engineering/bootstrap-status.md)
 - [Git workflow](engineering/git-workflow.md)
 - [CI/CD](engineering/ci-cd.md)
+- [Complete local review gate](engineering/local-review.md)
 - [CI cost controls](engineering/ci-costs.md)
 - [Local Mac/FreeBSD qualification](testing/local-qualification.md)
 - [Local runner execution manifest](testing/local-qualification-manifest.json)

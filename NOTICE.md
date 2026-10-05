@@ -3,6 +3,8 @@
 Horvium's repository tooling, hooks, tool pins, workflow baseline, issue forms,
 and ruleset definitions are adapted from BSD Cloud Console, BSD-3-Clause,
 local source revision `bfbc526e136c2b8d9ea6088df40b3b8d357b8c62`.
+The adapted executable Actions workflows have since been removed under the local
+review policy; this historical attribution remains.
 Engineering and document-lifecycle conventions also follow BSD Cloud Core,
 local source revision `4c427f282fb2447b020ac7da177558c0017dda02`.
 

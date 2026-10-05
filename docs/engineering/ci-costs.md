@@ -1,7 +1,7 @@
 # CI cost controls
 
-Date: 2026-10-05. Goal: reduce hosted compute while retaining independent required
-checks and complete local/native acceptance evidence.
+Date: 2026-10-05. Goal: eliminate repository GitHub Actions execution and keep
+complete local/native review evidence.
 
 ## Audit
 
@@ -32,47 +32,48 @@ a dependency PR still follows repository workflow policy.
 Sources checked on this date: [runner pricing and per-job rounding](https://docs.github.com/en/billing/reference/actions-runner-pricing),
 [allowances, storage and self-hosted billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions).
 
-## Automatic review gate
+## Zero Actions policy
 
-Keep the existing `repo-hygiene`, `pr-title`, and `dco` job names and protections.
-Never path-skip the entire required workflow. Repository content/link/config
-checks, tool lint/tests and secrets checks run on every PR update and main push.
-Only an allowlisted change consisting entirely of root policy/prose files or
-`docs/*.md` recursively omits Go installation, formatting, vet and unit tests.
-Unknown paths, tooling/workflow/build changes, mixed changes, code deletion or
-rename, and missing/empty comparisons run Go checks. Diff failures fail the job.
+The maintainer approved moving all checks to local execution. Delete runnable
+workflows, disable Actions at repository level, remove only Actions-required
+status checks from the live main ruleset, and retain signed commits, PRs, linear
+history, resolved conversations, deletion/force-push protection and no bypasses.
+Release-tag protection is unchanged. Dependabot Go/pip update proposals remain;
+the obsolete Actions dependency ecosystem is removed. No self-hosted runner is
+registered and no success statuses are posted to simulate independent CI.
 
-Routine hosted CI does not repeat race/fuzz checks. Run `make go-check` locally
-before review and name the tested source in the PR. A manually dispatched
-repository workflow with `thorough=true` is the paid fallback; it runs the deep
-gate without repeating vet/unit tests within that job. Main retains the cheap
-integration check after a merge. No required check is replaced by an unverified
-success status or removed from the ruleset.
+Use [the complete local review gate](local-review.md) and
+[explicit native qualification](../testing/local-qualification.md). GitHub no
+longer independently verifies check results: maintainers inspect source-bound
+portable/native evidence before merging. Historical hosted run links remain
+provenance, not instructions to start more paid jobs.
 
-## Native suite selection
+Repository Actions disabling stops new workflow execution, including workflows
+still present on main/older branches while this PR awaits review. Removing files
+and the local policy regression prevents accidental reintroduction. Existing
+charges and other repositories' usage are unaffected; account billing totals are
+not inferred from the repository setting. No paid run is dispatched to measure
+savings. The prior 70–80% planning estimate is superseded by zero repository
+workflow execution; no account-wide dollar saving is claimed.
 
-The BSD dispatcher now accepts **one `suite` choice**. Default `none` starts no
-VM. `properties`, `discovery`, `research` and `continuity` each select two release
-guests; `foundation` selects one guest; `performance` selects two long-running
-guests; `browser` selects only the existing Linux Firefox job. `full` explicitly
-selects all suites, with continuity included in discovery guests. It is reserved
-for assembled milestone/release review, not every narrow iteration.
+## Infrastructure still needed
 
-The previous boolean `browser`/`continuity`/`performance` dispatcher inputs are
-replaced by this choice. Historical execution records keep their original
-inputs; new requests use, for example:
+The Mac handles portable checks and the already executed foundation/property
+FreeBSD guests. Nothing persistent needs to be installed. The PR 28 device
+fixture uses Linux process identity/device attachment and still needs a Linux
+host or a reviewed Mac adaptation before native evidence can pass. Pinned
+Firefox also needs Linux, and emulated Mac performance is not a replacement for
+KVM/physical qualification.
 
-```sh
-gh workflow run bsd-smoke.yml --ref YOUR_REVIEW_BRANCH -f suite=properties
-```
+A later disposable x86-64 Linux VM with four vCPUs, 16 GB RAM, approximately 40 GB
+scratch and virtualization/KVM access is a useful starting lab profile, not a
+measured hardware requirement. Run local scripts there over operator-controlled
+access; an Actions runner is unnecessary. Replication/restore needs a second
+isolated FreeBSD peer when implemented; physical power-loss/controller evidence
+needs hardware. Those gates remain open, rather than moved into misleading
+portable checks.
 
-Prefer [local qualification](../testing/local-qualification.md) on the Mac for
-supported suites. Existing standalone manual workflows remain available as paid
-fallbacks. Do not dispatch broad qualification while iterating on logs/docs.
-Historical research should run only when its contracts/toolchain change or when
-explicitly reviewing the complete matrix.
-
-The planning target is 70–80% fewer hosted minutes at a similar workload, driven
-by local native/deep checks and narrow selection. It is not a measured saving or
-a promise about the account's bill. Review the next billing period after the
-change is merged; no paid qualification is dispatched solely to measure savings.
+Every foreground lab/review/preview process is supervised. Use `make lab-status`
+and `make lab-stop`; read [teardown and its limits](../testing/local-qualification.md#teardown).
+Teardown removes owned live guest images, variable stores and fixture keys.
+Checksum caches and private evidence remain inert files, with no running service.

@@ -61,8 +61,8 @@ race and bounded request/response fuzz tests. macOS sandbox execution needs loca
 Unix-socket binding permission; no FreeBSD peer behavior is inferred from these
 injected-credential component tests.
 
-Native: manually dispatch `.github/workflows/bsd-smoke.yml` against the reviewed
-branch. The product jobs execute `HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh`
+Native: use the [local runner](../local-qualification.md) with `discovery` for
+each reviewed release. The guest executes `HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh`
 in disposable 15.1/14.5 amd64 QEMU guests, including actual Go helper tests.
 The test parent remains root; reexecuted children use `syscall.Credential` to drop
 UID/GID before connecting. `nobody` is the allowed fixture UID; `daemon` uses the

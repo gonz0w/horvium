@@ -11,14 +11,17 @@ Use short-lived topic branches from `main`. Add a failing test, implement the
 smallest correct change, then refactor with passing tests. Bug fixes add regression
 coverage. Keep a PR focused on one outcome and update its docs alongside code.
 
-Run `make tools`, `make hooks`, then `make check lint test secrets` and
-`make go-check` before requesting review; report the tested commit/results in
-the PR. Race/fuzz checks normally run locally to reduce hosted cost. Native
-evidence still needs both declared release candidates and disposable fixtures;
-see [local qualification](docs/testing/local-qualification.md). Product gates
-will add Go checks, native FreeBSD integration, client tests, and recovery tests
-when their components exist. Developer tests may use VMs; Horvium's runtime scope
-is a dedicated file server.
+Run `make tools` and `make hooks`. After signing/signing off the changes, run
+`PR_TITLE='type: actual proposed PR title' make review` from a clean checkout.
+It verifies commit signatures/DCO/title and runs `make check lint test secrets`
+plus all race/fuzz checks; see the [local review gate](docs/engineering/local-review.md).
+Report the tested source/base/title and results in the PR. GitHub Actions are
+disabled: maintainers review the evidence before merging. Native evidence still
+needs both declared release candidates and disposable fixtures; see
+[local qualification and teardown](docs/testing/local-qualification.md).
+Use `make lab-status` and `make lab-stop` to verify/stop owned development sessions.
+Native FreeBSD, client, recovery and release gates remain separate. Developer
+tests may use VMs; Horvium's runtime is a dedicated file server.
 
 Use Conventional-Commit-style titles and DCO trailers (`git commit -s`). Protected
 history and release tags require signatures. See [Git workflow](docs/engineering/git-workflow.md).

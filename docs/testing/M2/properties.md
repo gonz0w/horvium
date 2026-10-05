@@ -90,13 +90,13 @@ suite once in a separate evidence log and runs
 empty/unit-only logs, missing/duplicate/unknown assertions, failure and missing
 teardown. Each release must emit the complete native record and test pass.
 
-The [dedicated workflow](../../../.github/workflows/bsd-properties.yml) reuses the
+The [local runner](../local-qualification.md) reuses the
 existing [verified VM preparation](../../../tools/prepare-performance-vm.py) and
 [image/runtime pins](../../../tools/performance-vm-pins.json): builder 2.2.8,
 AnyVM 0.7.2, snapshot mode, qemu64, two vCPUs and 6,144 MiB. Image and AnyVM
 SHA-256 checks run before/after execution; QEMU version/binary hash and actual
-FreeBSD/OpenZFS/toolchain versions are recorded. A nested call in the existing
-BSD workflow permits branch qualification before the new workflow is on main.
+FreeBSD/OpenZFS/toolchain versions are recorded. The clean committed review checkout is archived into each guest; GitHub Actions
+are disabled. Historical hosted evidence below retains its source/run provenance.
 These CPU/memory settings describe the disposable lab, not hardware requirements.
 
 | Environment | Property projection | Remaining evidence |
