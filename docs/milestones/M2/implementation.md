@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset validated, PR 27 review pending.
+Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; PR 28 review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -82,9 +82,19 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   [topology contracts](../../testing/M2/topology.md). Both pinned guests passed all
   51 assertions and teardown (run 37252047398, source
   `5cfcfbbf357e93af3155f1e0d411a3f6df2b00c6`);
-  [PR 27](https://github.com/gonz0w/horvium/pull/27) is open for review. Initial native
+  [PR 27](https://github.com/gonz0w/horvium/pull/27) accepted this subset, merged source
+  `7032ffba296ab6c7c2b807d52601866051ffebbb`. Initial native
   scan-omission failure and failing-first repair are retained in the evidence record.
   Full scan/JSON status and provider/system/device-use proofs remain open.
+- Slice 1 device fixture prerequisite: [virtual disk identities/geometry](../../testing/M2/devices.md)
+  under the approved Test Design. Source `069d38f98bcc39e94861b22bf7db40a4fac70969` passed all
+  eight repaired native assertions and complete backing/base/runtime/group
+  preservation/teardown on both targets through the Mac supervisor. A further
+  actual controller-SIGKILL fixture stopped its VM/listener and removed all owned
+  disks/image/key/variables while remaining unqualified. PR 28 awaits maintainer
+  review. Original hosted failures/unstarted jobs, the first Mac deadline
+  failure and the first 14.5 root-control failure are retained. No product selector,
+  complete device-use proof or creation authority follows from fixture qualification.
 - Slice 1 remains incomplete: assembled native eligibility/provider proofs, full
   status/scan interpretation, complete-impact collection and device-use drift gates
   have not run. No later slice may treat

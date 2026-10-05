@@ -25,11 +25,13 @@ binding and version drift were accepted in PR 23. Filesystem mount/encryption
 constraints were accepted in PR 24. Pool identity/incarnation and policy
 observations were accepted in PR 25. Complete native feature observations and
 exact common profile checks were accepted in PR 26. Native vdev membership,
-layout refusal and topology drift checks passed on both pinned guests;
-[PR 27](https://github.com/gonz0w/horvium/pull/27) is open for review. See the
+layout refusal and topology drift checks were accepted in
+[PR 27](https://github.com/gonz0w/horvium/pull/27). See the
 [topology qualification](docs/testing/M2/topology.md).
-Other native gates, durable jobs and storage
-writes remain pending; the runtime is still read-only.
+The [virtual device fixture](docs/testing/M2/devices.md) passed its eight native
+identity/geometry assertions and complete teardown on both targets;
+[PR 28](https://github.com/gonz0w/horvium/pull/28) is ready for review. Other native
+gates, durable jobs and storage writes remain pending; the runtime is still read-only.
 
 ## Agreed direction
 

@@ -137,3 +137,19 @@ class OwnedProcessTests(unittest.TestCase):
         self.addCleanup(process.stop)
         self.assertEqual(process.wait(timeout=15), 7)
         self.assertTrue(process.record()['group_cleaned'])
+
+    def test_interrupted_device_fixture_is_removed_with_native_resources(self):
+        self.tool.ROOT = self.root
+        import shutil
+        (self.root / 'tools').mkdir()
+        shutil.copyfile(ROOT / 'tools/device-fixture.py', self.root / 'tools/device-fixture.py')
+        lab = self.root / '.tools/lab-runs/fixture'
+        lab.mkdir(parents=True, mode=0o700)
+        devices = lab / 'devices'
+        devices.mkdir(mode=0o700)
+        (devices / 'disk-0.raw').write_text('partially prepared disposable backing')
+        (lab / 'fixture-key').write_text('synthetic credential')
+        self.tool.native_cleanup(lab, interrupted=True)
+        self.assertFalse(devices.exists())
+        self.assertFalse((lab / 'fixture-key').exists())
+        self.assertFalse(json.loads((lab / 'result.json').read_text())['qualified'])

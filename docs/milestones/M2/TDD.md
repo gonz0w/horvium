@@ -19,7 +19,8 @@ tables, feature drift and partial installed/common-profile checks.
 [Topology observations](../../testing/M2/topology.md) track paired legacy
 GUID/path membership, redundant layout refusal and review drift; full scan/JSON
 status and native provider/use eligibility remain pending. None of the complete acceptance rows
-below is satisfied yet.
+below is satisfied yet. The virtual-device identity/geometry prerequisite passed
+on both pinned guests through the Mac supervisor; see [fixture evidence](../../testing/M2/devices.md).
 TDD means Test Design Document; implementation uses failing behavioral tests first.
 
 ## Traceability and required gates
@@ -59,8 +60,10 @@ claims need their separate labs; passing E2 does not imply all hardware support.
 Use fresh disposable FreeBSD 15.1/14.5 amd64 QEMU guests. Pin the image/runtime
 hash, QEMU/CPU/memory, source/suite/toolchain/modules/assets and actual kernel,
 userland and OpenZFS strings. Inherit M1's verified image/toolchain machinery;
-M2-specific virtual disk attachment and fault control still need implementation
-and qualification. Never accept an arbitrary host device supplied to a test.
+[Virtual disk attachment/identity fixture](../../testing/M2/devices.md) tooling
+passed its eight prerequisite assertions and owned host teardown on both targets;
+PR 28 review is pending. Further fault control and complete device safety still
+need implementation and qualification. Never accept an arbitrary host device supplied to a test.
 
 Pool creation/device-identity tests use new guest-attached virtual block devices
 with distinct configured identifiers and independently verified native identity.

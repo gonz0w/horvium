@@ -21,6 +21,7 @@ SUITES = {
     'foundation': ('git', 'sh tools/bsd-foundation-smoke.sh FreeBSD'),
     'research': ('python314', 'env HORVIUM_RESEARCH_VM=1 sh tools/research/m1-native.sh'),
     'discovery': ('python314', 'env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh'),
+    'devices': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_DEVICE_VM=1 sh tools/bsd-devices.sh'),
     'properties': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_PROPERTY_VM=1 sh tools/bsd-properties.sh'),
     'continuity': ('python314 samba423', 'env HORVIUM_NATIVE_VM=1 HORVIUM_CONTINUITY_VM=1 sh tools/bsd-continuity.sh'),
     'performance': ('python314', 'env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh && env HORVIUM_NATIVE_VM=1 HORVIUM_PERF_VM=1 sh tools/bsd-performance.sh'),
@@ -67,9 +68,12 @@ def stop_guest(process):
         process.wait(timeout=10)
 
 
-def validate_result(suite, log):
+def validate_result(suite, log, complete=False):
     if '--- FAIL:' in log or '\nFAIL\n' in log:
         raise ValueError('guest test failure')
+    if suite == 'devices':
+        load_tool('check-device-evidence').validate(log, guest=not complete)
+        return
     if suite in ('properties', 'performance'):
         load_tool('check-property-evidence' if suite == 'properties' else 'check-performance-evidence').validate(log)
         return
@@ -169,6 +173,8 @@ def main():
     supervisor.write_record(directory / 'result.json', record)
     base_before = None
     image, variables = directory / 'image', directory / 'vars.fd'
+    devices = directory / 'devices'
+    device_tool = load_tool('device-fixture') if args.suite == 'devices' else None
     try:
         subprocess.run([sys.executable, str(TOOLS / 'prepare-performance-vm.py'), args.release,
                         str(image), '--cache', str(ROOT / '.tools/lab-cache')], check=True)
@@ -183,8 +189,14 @@ def main():
             listener.bind(('127.0.0.1', 0))
             port = listener.getsockname()[1]
         ssh = ssh_command(key, directory / 'known_hosts', port)
+        command = qemu_command(qemu, base, code, variables, port)
+        if device_tool:
+            device_tool.prepare(devices)
+            record['device_backings'] = device_tool.verify(devices)
+            supervisor.write_record(directory / 'result.json', record)
+            command = [qemu] + device_tool.command(command[1:], devices)
         with (directory / 'serial.log').open('w') as serial:
-            guest = subprocess.Popen(qemu_command(qemu, base, code, variables, port),
+            guest = subprocess.Popen(command,
                                      stdin=subprocess.DEVNULL, stdout=serial, stderr=serial)
             deadline = time.monotonic() + 900
             while True:
@@ -218,6 +230,10 @@ def main():
     finally:
         try:
             stop_guest(guest)
+            if device_tool and devices.exists():
+                device_tool.cleanup(devices)
+                record['device_backings_preserved'] = True
+                record['device_fixture_teardown'] = not devices.exists()
             if base_before:
                 record['base_preserved'] = vm.digest(base) == base_before
                 subprocess.run([sys.executable, str(TOOLS / 'prepare-performance-vm.py'), args.release,
@@ -234,6 +250,12 @@ def main():
                 shutil.rmtree(image)
             variables.unlink(missing_ok=True)
             record['host_teardown'] = True
+            if device_tool and record.get('guest_assertions'):
+                if not record.get('device_backings_preserved') or not record.get('device_fixture_teardown'):
+                    raise ValueError('device preservation/teardown incomplete')
+                with (directory / 'qualification.log').open('a') as log:
+                    log.write('DEVICE_FIXTURE_CLEANUP pass\n')
+                validate_result(args.suite, (directory / 'qualification.log').read_text(), complete=True)
             record['qualified'] = bool(record.get('guest_assertions') and record['base_preserved']
                                        and record['host_teardown'] and not record.get('failure'))
         except BaseException as error:
