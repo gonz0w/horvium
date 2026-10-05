@@ -45,6 +45,7 @@ func (p Plan) Review() Review {
 	r.Context = append([]Filesystem(nil), r.Context...)
 	r.Affected = append([]Resource(nil), r.Affected...)
 	r.Versions = append([]DatasetIdentity(nil), r.Versions...)
+	r.States = append([]FilesystemState(nil), r.States...)
 	return r
 }
 
@@ -141,6 +142,22 @@ func prepare(p Policy, o Observation, i Intent) (Review, [32]byte, error) {
 			review.Affected = append(review.Affected, Resource{f.GUID, f.Name})
 		}
 	}
+	for _, s := range o.States {
+		if !context[s.GUID] {
+			continue
+		}
+		encoded, err := json.Marshal(s)
+		if err != nil {
+			return Review{}, zero, ErrInvalid
+		}
+		cost := len(encoded) + 64
+		if cost > remaining {
+			return Review{}, zero, ErrLimit
+		}
+		remaining -= cost
+		review.States = append(review.States, s)
+	}
+	sort.Slice(review.States, func(i, j int) bool { return review.States[i].Name < review.States[j].Name })
 	for _, id := range o.Identities {
 		if (id.Type != SnapshotType && id.Type != BookmarkType) || !context[id.OwnerGUID] {
 			continue

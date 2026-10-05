@@ -194,6 +194,7 @@ func TestUnrelatedVersionChangeDoesNotExpandScope(t *testing.T) {
 	sibling.GUID = "103"
 	sibling.Name = "tank/sibling"
 	o.Filesystems = append(o.Filesystems, sibling)
+	o.States = append(o.States, stateFixture(sibling))
 	o.Identities = append(o.Identities, DatasetIdentity{GUID: "103", Name: "tank/sibling", Type: FilesystemType}, DatasetIdentity{GUID: "201", Name: "tank/sibling@seed", Type: SnapshotType, OwnerGUID: "103"})
 	plan, err := Build(instant, "session-a", p, o, i)
 	if err != nil {

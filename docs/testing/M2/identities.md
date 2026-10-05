@@ -1,7 +1,8 @@
 # M2 dataset identity binding
 
 Date: 2026-10-04. Status: D2 partial identity projection passed on both pinned release fixtures;
-implementation in [PR 23](https://github.com/gonz0w/horvium/pull/23) for maintainer review.
+accepted in [PR 23](https://github.com/gonz0w/horvium/pull/23), merged source
+`4011e3d9848b2430c7ab30d7d70981a3e0fdd88c`.
 Design: [approved M2 Test Design](../../milestones/M2/TDD.md),
 [slice sequence](../../milestones/M2/implementation.md).
 
@@ -106,3 +107,8 @@ This is partial D2 observation evidence, not mutation or release qualification.
 Full slice 1, every complete M2 Test Design row, state/recovery/privilege/mutation/
 resource/browser gates and hardware/commercial support remain pending. Manual M1
 accessibility remains pending by maintainer choice.
+
+The current property qualification gate also requires the eight filesystem-state
+assertions in [state qualification](dataset-state.md). The 20-case identity
+manifest preserves its original tested source; later checker changes do not
+retroactively qualify it.

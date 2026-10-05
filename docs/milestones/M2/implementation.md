@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset in review.
+Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset in review.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -52,11 +52,17 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   values; [native projection evidence](../../testing/M2/properties.md) passed on
   both pinned FreeBSD guests (run 37242881791, source
   `2c7724d503584aa053acaf409ef28e50f3180c40`). No write eligibility follows.
-- Slice 1 identity subset binds full dataset types/GUIDs to independent property
+- Slice 1 identity subset accepted in [PR 23](https://github.com/gonz0w/horvium/pull/23),
+  merged source `4011e3d9848b2430c7ab30d7d70981a3e0fdd88c`: binds full dataset types/GUIDs to independent property
   rows and review version membership; see [identity contracts](../../testing/M2/identities.md).
   Both pinned guests passed all 20 property/identity assertions and teardown
   (run 37244653409, source `2d4478c8a8e34b0ac40657d7330b4d73f0df6b21`).
   No runtime collector or eligibility proof follows.
+- Slice 1 filesystem state subset adds complete mount/readonly/crypto constraints
+  and review drift; [state contracts](../../testing/M2/dataset-state.md).
+  Both pinned guests passed all 28 property/identity/state assertions and teardown
+  (run 37246040343, source `6dd07d2b5a52569c97f9b7524476348ecd7faeaf`).
+  No complete eligibility or runtime adapter follows.
 - Slice 1 remains incomplete: native eligibility/provider/topology/status
   observations, complete-impact collection and device-use drift gates have not run. No later slice may treat
   model input booleans or old M1 inventory as qualified native write authority.

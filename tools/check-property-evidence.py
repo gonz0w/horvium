@@ -7,7 +7,9 @@ import sys
 CASES = {'default', 'local', 'inherited', 'received', 'shadowed', 'no_limit',
          'rename', 'name_reuse', 'foreign_preservation', 'eligibility_denied', 'teardown',
          'identity_binding', 'complete_filesystems', 'snapshot_owner', 'bookmark_owner',
-         'replicated_guid', 'snapshot_rename', 'snapshot_reuse', 'volume_denial', 'stable_enumeration'}
+         'replicated_guid', 'snapshot_rename', 'snapshot_reuse', 'volume_denial', 'stable_enumeration',
+         'state_binding', 'mount_sources', 'readonly_denial', 'encrypted_loaded_denial',
+         'encrypted_unloaded_denial', 'encryption_root_binding', 'state_drift', 'state_preservation'}
 
 def validate(text):
     if len(text) > 1 << 20 or re.search(r'(?m)^(?:FAIL|--- (?:FAIL|SKIP):)', text):

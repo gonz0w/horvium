@@ -115,3 +115,8 @@ The M2 property workflow also requires complete identity/type binding, snapshot
 and bookmark owner/GUID assertions, replicated GUID/rename/name-reuse checks,
 volume refusal and stable enumeration. See [identity qualification](../testing/M2/identities.md);
 these results cannot establish native eligibility or authorize storage writes.
+
+M2 property qualification additionally requires complete filesystem state coverage,
+mount sources, readonly refusal, loaded/unloaded encrypted resource refusal,
+encryption-root identity, state drift and read preservation. See
+[filesystem state qualification](../testing/M2/dataset-state.md).

@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"strings"
 	"testing"
@@ -101,7 +102,7 @@ func TestNativePropertyObservations(t *testing.T) {
 			return
 		}
 		if !t.Failed() {
-			t.Log("PROPERTY_OBSERVATION_RESULT default=pass local=pass inherited=pass received=pass shadowed=pass no_limit=pass rename=pass name_reuse=pass foreign_preservation=pass eligibility_denied=pass teardown=pass identity_binding=pass complete_filesystems=pass snapshot_owner=pass bookmark_owner=pass replicated_guid=pass snapshot_rename=pass snapshot_reuse=pass volume_denial=pass stable_enumeration=pass")
+			t.Log("PROPERTY_OBSERVATION_RESULT default=pass local=pass inherited=pass received=pass shadowed=pass no_limit=pass rename=pass name_reuse=pass foreign_preservation=pass eligibility_denied=pass teardown=pass identity_binding=pass complete_filesystems=pass snapshot_owner=pass bookmark_owner=pass replicated_guid=pass snapshot_rename=pass snapshot_reuse=pass volume_denial=pass stable_enumeration=pass state_binding=pass mount_sources=pass readonly_denial=pass encrypted_loaded_denial=pass encrypted_unloaded_denial=pass encryption_root_binding=pass state_drift=pass state_preservation=pass")
 		}
 	})
 	if got := strings.TrimSpace(string(must("/sbin/mdconfig", "-l", "-n", "-f", backing))); got != strings.TrimPrefix(unit, "md") {
@@ -262,14 +263,126 @@ func TestNativePropertyObservations(t *testing.T) {
 	if err := VerifyFilesystemIdentities(pool, parse(), identities()); err != nil {
 		t.Fatal(err)
 	}
+	// Mount and encryption observations are independently correlated, never
+	// treated as the remaining pool/topology/system eligibility proof.
+	states := func() []FilesystemState {
+		rows := must("/sbin/zfs", "get", "-H", "-p", "-r", "-t", "filesystem", "-o", "name,property,value,received,source", "guid,mountpoint,canmount,readonly,mounted,encryption,encryptionroot,keystatus", pool)
+		result, err := ParseFilesystemStates(rows, pool)
+		if err != nil {
+			t.Fatal("native state table denied (values withheld):", err)
+		}
+		return result
+	}
+	findState := func(rows []FilesystemState, suffix string) FilesystemState {
+		for _, s := range rows {
+			if s.Name == pool+suffix {
+				return s
+			}
+		}
+		t.Fatal("owned filesystem state absent")
+		return FilesystemState{}
+	}
+	baseline := states()
+	if err := VerifyFilesystemStates(pool, identities(), baseline); err != nil {
+		t.Fatal(err)
+	}
+	if err := VerifyFilesystemStates(pool, identities(), baseline[:len(baseline)-1]); !errors.Is(err, ErrDrift) {
+		t.Fatal("whole state row omitted", err)
+	}
+	independentState := must("/sbin/zfs", "list", "-H", "-p", "-r", "-t", "filesystem", "-o", "name,guid,mountpoint,canmount,readonly,mounted,encryption,encryptionroot,keystatus", pool)
+	count := 0
+	for _, line := range strings.Split(strings.TrimSpace(string(independentState)), "\n") {
+		fields := strings.Split(line, "\t")
+		if len(fields) != 9 {
+			t.Fatal("independent state shape invalid")
+		}
+		s := findState(baseline, strings.TrimPrefix(fields[0], pool))
+		if s.GUID != fields[1] {
+			t.Fatal("independent state GUID disagreement")
+		}
+		for n, v := range stateValues(s) {
+			if v.Effective != fields[n+2] {
+				t.Fatal("independent state value disagreement")
+			}
+		}
+		count++
+	}
+	if count != len(baseline) {
+		t.Fatal("independent state coverage differs")
+	}
+	foreign := findState(baseline, "/foreign")
+	if foreign.Mountpoint.Effective != "none" || foreign.Mountpoint.Source != Local || foreign.Mounted.Effective != "no" || foreign.Encryption.Effective != "off" {
+		t.Fatal("native mount/source mismatch")
+	}
+	must("/sbin/zfs", "set", "readonly=on", pool+"/foreign")
+	if err := VerifyFilesystemStates(pool, identities(), states()); !errors.Is(err, ErrUnavailable) {
+		t.Fatal("readonly fixture qualified", err)
+	}
+	must("/sbin/zfs", "inherit", "readonly", pool+"/foreign")
+	must("/sbin/zfs", "set", "canmount=noauto", pool+"/data")
+	changedState := findState(states(), "/data")
+	if changedState.CanMount.Effective != "noauto" || changedState.CanMount.Source != Local || changedState.CanMount.SourceGUID != data.GUID {
+		t.Fatal("canmount local source mismatch")
+	}
+	policy := Policy{Revision: 1, PoolGUID: "1", PoolName: pool, Scopes: []Scope{{GUID: data.GUID, Name: data.Name, ParentGUID: data.ParentGUID, Properties: []Property{RefQuota}}}}
+	observation := Observation{Complete: true, Eligible: true, PoolGUID: "1", PoolName: pool, Filesystems: parse(), Identities: identities(), States: baseline}
+	plan, err := Build(time.Now(), "fixture-session", policy, observation, Intent{FilesystemGUID: data.GUID, Property: RefQuota, Value: "none"})
+	if err != nil {
+		t.Fatal("synthetic policy review failed", err)
+	}
+	observation.States = states()
+	if err := plan.Validate(time.Now(), "fixture-session", policy, observation); !errors.Is(err, ErrDrift) {
+		t.Fatal("native state change ignored", err)
+	}
+	must("/sbin/zfs", "set", "canmount=on", pool+"/data")
+	// Fresh random encryption material belongs only to this disposable fixture.
+	// Never log it, retain it as evidence or grant any product key operation.
+	keyPath := filepath.Join(dir, "owned.key")
+	var key [32]byte
+	if _, err := rand.Read(key[:]); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(keyPath, key[:], 0600); err != nil {
+		t.Fatal(err)
+	}
+	must("/sbin/zfs", "create", "-o", "mountpoint=none", "-o", "encryption=aes-256-gcm", "-o", "keyformat=raw", "-o", "keylocation=file://"+keyPath, pool+"/encrypted")
+	must("/sbin/zfs", "create", "-o", "mountpoint=none", pool+"/encrypted/child")
+	encrypted := states()
+	cryptoRoot := findState(encrypted, "/encrypted")
+	cryptoChild := findState(encrypted, "/encrypted/child")
+	if cryptoRoot.EncryptionRootGUID != cryptoRoot.GUID || cryptoChild.EncryptionRootGUID != cryptoRoot.GUID || cryptoChild.Encryption.Effective != "aes-256-gcm" || cryptoChild.KeyStatus.Effective != "available" {
+		t.Fatal("encryption root/key binding mismatch")
+	}
+	if err := VerifyFilesystemStates(pool, identities(), encrypted); !errors.Is(err, ErrUnavailable) {
+		t.Fatal("loaded encryption fixture qualified", err)
+	}
+	must("/sbin/zfs", "unload-key", pool+"/encrypted")
+	if findState(states(), "/encrypted/child").KeyStatus.Effective != "unavailable" {
+		t.Fatal("unloaded key state lost")
+	}
+	if err := VerifyFilesystemStates(pool, identities(), states()); !errors.Is(err, ErrUnavailable) {
+		t.Fatal("unloaded encryption fixture qualified", err)
+	}
+	must("/sbin/zfs", "destroy", pool+"/encrypted/child")
+	must("/sbin/zfs", "destroy", pool+"/encrypted")
+	if err := os.Remove(keyPath); err != nil {
+		t.Fatal(err)
+	}
+	if err := VerifyFilesystemStates(pool, identities(), states()); err != nil {
+		t.Fatal(err)
+	}
 	before := must("/sbin/zfs", "get", "-H", "-p", "-r", "-o", "name,property,value,received,source", "guid,quota,refquota,compression,mountpoint,canmount,readonly", pool)
 	mounts := must("/sbin/zfs", "list", "-H", "-r", "-o", "name,mounted,mountpoint", pool)
+	stateBefore := states()
 	stableBefore := identities()
 	if err := VerifyFilesystemIdentities(pool, parse(), stableBefore); err != nil {
 		t.Fatal(err)
 	}
 	if err := VerifyIdentityStability(pool, stableBefore, identities()); err != nil {
 		t.Fatal(err)
+	}
+	if after := states(); !reflect.DeepEqual(stateBefore, after) {
+		t.Fatal("state reader changed native constraints")
 	}
 	if after := must("/sbin/zfs", "get", "-H", "-p", "-r", "-o", "name,property,value,received,source", "guid,quota,refquota,compression,mountpoint,canmount,readonly", pool); !bytes.Equal(before, after) {
 		t.Fatal("read-only projection changed native properties or foreign sentinel")
@@ -278,7 +391,7 @@ func TestNativePropertyObservations(t *testing.T) {
 		t.Fatal("read-only projection changed mounts")
 	}
 	// Parsing provides no authority, even when every projected property is valid.
-	if _, err := Build(time.Now(), "fixture-session", Policy{Revision: 1, PoolGUID: "1", PoolName: pool}, Observation{Complete: true, PoolGUID: "1", PoolName: pool, Filesystems: files, Identities: identities()}, Intent{FilesystemGUID: root.GUID, Property: Quota, Value: "none"}); err != ErrUnavailable {
+	if _, err := Build(time.Now(), "fixture-session", Policy{Revision: 1, PoolGUID: "1", PoolName: pool}, Observation{Complete: true, PoolGUID: "1", PoolName: pool, Filesystems: files, Identities: identities(), States: states()}, Intent{FilesystemGUID: root.GUID, Property: Quota, Value: "none"}); err != ErrUnavailable {
 		t.Fatal("parser enabled native eligibility", err)
 	}
 	must("/sbin/zfs", "rename", pool+"/data", pool+"/renamed")
