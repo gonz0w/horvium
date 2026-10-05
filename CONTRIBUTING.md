@@ -11,7 +11,11 @@ Use short-lived topic branches from `main`. Add a failing test, implement the
 smallest correct change, then refactor with passing tests. Bug fixes add regression
 coverage. Keep a PR focused on one outcome and update its docs alongside code.
 
-Run `make tools`, `make hooks`, then `make check lint test secrets`. Product gates
+Run `make tools`, `make hooks`, then `make check lint test secrets` and
+`make go-check` before requesting review; report the tested commit/results in
+the PR. Race/fuzz checks normally run locally to reduce hosted cost. Native
+evidence still needs both declared release candidates and disposable fixtures;
+see [local qualification](docs/testing/local-qualification.md). Product gates
 will add Go checks, native FreeBSD integration, client tests, and recovery tests
 when their components exist. Developer tests may use VMs; Horvium's runtime scope
 is a dedicated file server.

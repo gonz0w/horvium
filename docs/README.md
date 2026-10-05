@@ -19,6 +19,8 @@
 - [Bootstrap status](engineering/bootstrap-status.md)
 - [Git workflow](engineering/git-workflow.md)
 - [CI/CD](engineering/ci-cd.md)
+- [CI cost controls](engineering/ci-costs.md)
+- [Local Mac/FreeBSD qualification](testing/local-qualification.md)
 - [Dependency policy](engineering/dependency-policy.md)
 - [Release strategy](engineering/release-strategy.md)
 - [Document lifecycle](process/document-lifecycle.md)

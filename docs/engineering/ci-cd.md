@@ -9,7 +9,8 @@ immutable commit SHAs. Default workflow permissions are read-only and checkout
 does not retain credentials. Untrusted fork code never runs in a privileged
 `pull_request_target` job. Put untrusted metadata in environment variables.
 
-The manually dispatched [BSD workflow](../../.github/workflows/bsd-smoke.yml)
+See [cost controls](ci-costs.md) and [local qualification](../testing/local-qualification.md)
+for the current selection and evidence policy. The manually dispatched [BSD workflow](../../.github/workflows/bsd-smoke.yml)
 keeps foundation shell/hook smoke separate from the M1 QEMU research jobs. The
 research jobs use fresh file-backed storage and explicit disposable-VM opt-in on
 FreeBSD 15.1/14.5 amd64. They validate narrow GEOM/ZFS/credential contracts, not
@@ -24,8 +25,10 @@ not execution evidence.
 
 `make tools` now also installs the checksum-pinned Go SDK from
 [artifact pins](../../tools/go-pins.json); automatic toolchain download is disabled.
-The repository job runs Go formatting/vet, unit/component tests, race detection,
-and bounded pool/GEOM/parser and helper framing fuzzing through `make go-check`. Go/C research programs
+The repository job runs Go formatting/vet and unit/component tests for changes
+beyond allowlisted prose. Race detection and bounded parser/helper fuzzing run
+locally through `make go-check`, with an explicit `thorough=true` manual hosted
+fallback. Required repository checks always run, including on prose-only changes. Go/C research programs
 stay outside the product package build; product code uses the standard library plus the approved focused FreeBSD x/sys
 adapter. Module checksums are recorded in go.sum and verified natively.
 
@@ -70,26 +73,26 @@ generation replacement and separate record/byte exhaustion run only inside these
 explicit disposable root fixtures. No VM, Python, QEMU or fake source becomes a
 NAS runtime dependency. See [procedure and limits](../testing/M1/performance.md).
 
-Before its own workflow is on main, dispatch the existing BSD workflow with
-`performance=true`; it calls the same performance workflow from the selected
-branch. Default native runs leave this long measurement disabled.
+Dispatch the standalone performance workflow or select `suite=performance` in
+the BSD dispatcher against the reviewed branch. The default dispatcher starts
+no guest; `suite=full` explicitly includes the long measurement.
 
 The manual [independent file-service workflow](../../.github/workflows/bsd-continuity.yml)
 provisions fixture-only Samba and base NFS in disposable guests. Its explicit
 native/protocol opt-ins and [procedure](../testing/M1/file-continuity.md) are required;
 it installs/enables no operator host service and makes no client compatibility claim.
 
-Until its standalone workflow is merged/registered on main, continuity is also
-callable with `continuity=true` in the existing BSD native workflow against the
-qualification branch. The optional flag provisions Samba only in those guests.
+Continuity is callable through its standalone workflow or `suite=continuity`
+in the BSD dispatcher. `suite=full` includes continuity in discovery guests.
+Samba is provisioned only inside these explicitly selected disposable guests.
 
 
 ## Browser qualification
 
 The [browser workflow](../../.github/workflows/browser-qualification.yml) runs
 checksum-pinned Firefox/geckodriver on Linux against an explicitly synthetic
-loopback Go console. Before registration on main, use `browser=true` with the BSD
-workflow against the qualification branch. JavaScript enabled/disabled flows,
+loopback Go console. Select `suite=browser` in the BSD
+dispatcher or use the standalone manual browser workflow. JavaScript enabled/disabled flows,
 light/dark and reduced-motion media, keyboard focus, fragment/polling behavior,
 escaping, labels, sampled contrast and narrow viewport reflow are asserted by the
 stdlib WebDriver runner. The fixture exports only selected synthetic results.
@@ -107,8 +110,8 @@ existing checksum-verified VM image/AnyVM tooling with explicit qemu64, two vCPU
 [storage property script](../../tools/bsd-properties.sh), with both disposable
 native/property opt-ins. Its evidence validator refuses skipped, failed,
 duplicate or incomplete native assertions, including missing teardown. The
-existing BSD workflow calls it from the selected branch until standalone manual
-dispatch is registered on main. This qualifies property parsing only, not native
+BSD dispatcher calls it only for `suite=properties` or `suite=full`; its
+standalone manual workflow remains available. This qualifies property parsing only, not native
 write eligibility, management transport, M2 storage changes or replication.
 
 The M2 property workflow also requires complete identity/type binding, snapshot

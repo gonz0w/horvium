@@ -2,6 +2,7 @@ name: BSD independent file-service continuity
 
 on:
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read

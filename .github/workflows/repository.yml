@@ -5,6 +5,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      thorough:
+        description: Also run race detection and bounded fuzzing (normally local)
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -23,16 +28,30 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          fetch-depth: 0
+      - name: Select product checks
+        id: scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: python3 tools/ci-scope.py
       - name: Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version-file: .python-version
       - name: Install pinned development tools
-        run: make tools
+        run: python3 tools/bootstrap-tools.py
+      - name: Install pinned Go SDK
+        if: steps.scope.outputs.go == 'true' || inputs.thorough
+        run: make go-tools
       - name: Repository checks
-        run: make check lint test secrets
+        run: make check lint-tools test-tools secrets
+      - name: Product formatting, vet and unit checks
+        if: steps.scope.outputs.go == 'true' || inputs.thorough
+        run: make lint-go test-go
       - name: Product race and bounded parser fuzz checks
-        run: make go-check
+        if: github.event_name == 'workflow_dispatch' && inputs.thorough
+        run: make go-deep-check
 
   pr-title:
     name: pr-title

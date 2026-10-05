@@ -3,24 +3,18 @@ name: BSD native validation
 on:
   workflow_dispatch:
     inputs:
-      browser:
-        description: Run synthetic console qualification in actual Linux Firefox
-        type: boolean
-        default: false
-      continuity:
-        description: Run fixture-only independent SMB/NFS continuity
-        type: boolean
-        default: false
-      performance:
-        description: Run the measured application budgets in separate pinned VMs
-        type: boolean
-        default: false
+      suite:
+        description: Select one suite; full is an explicit milestone/release run
+        type: choice
+        default: none
+        options: [none, discovery, properties, continuity, performance, browser, foundation, research, full]
 
 permissions:
   contents: read
 
 jobs:
   discovery:
+    if: inputs.suite == 'discovery' || inputs.suite == 'full'
     name: product-freebsd-${{ matrix.release }}-amd64
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -39,14 +33,15 @@ jobs:
           release: ${{ matrix.release }}
           arch: amd64
           copyback: false
-          prepare: pkg install -y python314 ${{ inputs.continuity && 'samba423' || '' }}
+          prepare: pkg install -y python314 ${{ inputs.suite == 'full' && 'samba423' || '' }}
           run: |
             env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh
-            if [ "${{ inputs.continuity }}" = true ]; then
+            if [ "${{ inputs.suite == 'full' }}" = true ]; then
               env HORVIUM_NATIVE_VM=1 HORVIUM_CONTINUITY_VM=1 sh tools/bsd-continuity.sh
             fi
 
   freebsd:
+    if: inputs.suite == 'foundation' || inputs.suite == 'full'
     name: freebsd-foundation-smoke
     runs-on: ubuntu-24.04
     timeout-minutes: 25
@@ -65,6 +60,7 @@ jobs:
           run: sh tools/bsd-foundation-smoke.sh FreeBSD
 
   research:
+    if: inputs.suite == 'research' || inputs.suite == 'full'
     name: research-freebsd-${{ matrix.release }}-amd64
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -86,12 +82,17 @@ jobs:
           run: env HORVIUM_RESEARCH_VM=1 sh tools/research/m1-native.sh
 
   performance:
-    if: inputs.performance
+    if: inputs.suite == 'performance' || inputs.suite == 'full'
     uses: ./.github/workflows/bsd-performance.yml
 
   browser:
-    if: inputs.browser
+    if: inputs.suite == 'browser' || inputs.suite == 'full'
     uses: ./.github/workflows/browser-qualification.yml
 
   properties:
+    if: inputs.suite == 'properties' || inputs.suite == 'full'
     uses: ./.github/workflows/bsd-properties.yml
+
+  continuity:
+    if: inputs.suite == 'continuity'
+    uses: ./.github/workflows/bsd-continuity.yml
