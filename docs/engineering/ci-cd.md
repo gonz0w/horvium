@@ -128,7 +128,8 @@ results do not qualify topology, system/device safety or product recovery/import
 
 M2 property qualification additionally requires feature GUID/source binding,
 read preservation, installed common profile/hash, resulting feature set and
-feature/version review drift. The checker requires all 42 assertions and teardown.
+feature/version review drift. This subset added the earlier 42 assertions;
+the current checker also requires the topology assertions and teardown below.
 See [feature qualification](../testing/M2/features.md); cross-release transfer/import
 and product installed-profile/device/creation gates remain pending.
 

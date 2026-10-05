@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset implementing.
+Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset validated, PR 27 review pending.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -79,10 +79,15 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   `f3d7c63918fc5a6ef2d5c3ec1078f413f3179aae`). Cross-release transfer/import remains open.
 - Slice 1 topology subset requires complete paired native GUID/path status,
   homogeneous mirror/RAIDZ2 refusal checks and immutable membership/health drift;
-  [topology contracts](../../testing/M2/topology.md). Native execution pending.
+  [topology contracts](../../testing/M2/topology.md). Both pinned guests passed all
+  51 assertions and teardown (run 37252047398, source
+  `5cfcfbbf357e93af3155f1e0d411a3f6df2b00c6`);
+  [PR 27](https://github.com/gonz0w/horvium/pull/27) is open for review. Initial native
+  scan-omission failure and failing-first repair are retained in the evidence record.
   Full scan/JSON status and provider/system/device-use proofs remain open.
-- Slice 1 remains incomplete: native eligibility/provider/topology/status
-  observations, complete-impact collection and device-use drift gates have not run. No later slice may treat
+- Slice 1 remains incomplete: assembled native eligibility/provider proofs, full
+  status/scan interpretation, complete-impact collection and device-use drift gates
+  have not run. No later slice may treat
   model input booleans or old M1 inventory as qualified native write authority.
 
 The approval adopts scope and gates, not passing native behavior or a NAS release.

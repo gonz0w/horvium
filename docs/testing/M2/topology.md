@@ -1,6 +1,6 @@
 # M2 vdev topology observations and review drift
 
-Date: 2026-10-04. Status: behavioral subset passed; pinned native execution pending.
+Date: 2026-10-04. Status: behavioral and pinned native subset passed; PR 27 review pending.
 Design: [approved EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [slice sequence](../../milestones/M2/implementation.md). Extends the
 [pool](pool-state.md) and [feature](features.md) observations; runtime remains read-only.
@@ -135,9 +135,31 @@ observer: older verbose `zpool list` emits fixed vdev columns despite custom roo
 columns, so the independent check now requests the matching fixed ten columns.
 No generic fallback, unknown-format acceptance or product scan operation was added.
 
-Both pinned guests must execute the repaired suite before native claims; a sanitized source/run/hash
-manifest will record actual results. Earlier projection manifests retain their
-original source/case sets. JSON/status scan interpretation, provider classes,
+The repaired suite passed on both pinned guests in
+[run 37252047398](https://github.com/gonz0w/horvium/actions/runs/37252047398),
+source `5cfcfbbf357e93af3155f1e0d411a3f6df2b00c6`. Each executed all 51 assertions
+and complete owned-fixture teardown; base-image/AnyVM hashes agreed before and
+after execution. [The sanitized manifest](topology-manifest.json) retains tested
+input, native utility, primary source and fixture hashes, both job IDs and the
+initial failure/repair record. Raw logs and fixture secrets are not committed.
+
+| Target | Observed kernel/userland | Observed ZFS userland/module | Result |
+|---|---|---|---|
+| FreeBSD 15.1 amd64 | 15.1-RELEASE-p3 | 2.4.2-1-FreeBSD_g6330a45b0 | All 51 assertions and teardown passed |
+| FreeBSD 14.5 amd64 | 14.5-RELEASE | 2.2.9-FreeBSD_g079ba86d7 | All 51 assertions and teardown passed |
+
+Both guests used Go 1.27.1, QEMU 8.2.2, two qemu64 CPUs and 6,144 MiB RAM.
+Local `make check lint test secrets` and `make go-check` passed, including vet,
+full unit/race suites and twelve bounded fuzz targets. The FreeBSD amd64 test
+binary cross-build passed; compilation is separate from the native results.
+Native error-counter observations here are zero; nonzero/overflow/unknown-unit
+refusal has behavioral/source coverage, without native fault injection or a full
+error/scan lifecycle claim. Native attach/resilver completion is fixture setup;
+reported scan text remains uninterpreted and denied by this partial verifier.
+
+Earlier projection manifests retain their original source/case sets. PR 27 is
+open for maintainer review; these results do not accept slice 1 or M2.
+JSON/status scan interpretation, provider classes,
 stable identity/geometry, system/device-use and complete-impact collection remain
 pending. Full M2 operation/state/recovery/client/browser/resource and physical/
 commercial gates remain open, including clean cross-release feature-profile import.
