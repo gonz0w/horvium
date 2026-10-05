@@ -64,7 +64,9 @@ floods. `FuzzSystemDeviceUse` is the fifteenth bounded local review target.
 The [five-disk snapshot fixture](devices.md) first runs its eight original
 read-only, four correlation and five attachment assertions. The third test,
 `TestNativeSystemDeviceUse`, independently validates the five declared 64 MiB
-serial/count/sector cases and the sole declared boot-image disk. The actual UFS/ZFS
+serial/count/sector cases and the sole positive-capacity boot-image disk. Empty
+unbacked optical providers are excluded from this test-only boot-image selector;
+an additional positive-capacity disk refuses it. The actual UFS/ZFS
 root must map to that image, outside all fixture disks. Every fixture must be
 absent from observed mount/swap backing. Independent diskinfo identity/geometry
 and the accepted attachment classifier must agree before any fixture writes.
@@ -100,6 +102,14 @@ complete host preservation/teardown. The six new cases are `root_backing`,
 `foreign_preservation`. Skipped/missing/duplicate/failed cases, a guest-only pass
 or unverified cleanup cannot qualify. Prior manifests retain their original source
 and case sets. No complete device safety or physical/controller support follows.
+
+The initial 15.1 run at source `42cab8524d3690ac6f9ff19fae28cb6c57397392`
+passed the original seventeen assertions but failed the new test before writes
+at its boot-image selector (0.15 seconds). QEMU also presents an empty DVD drive.
+The selector now excludes zero-capacity unbacked devices and still refuses extra
+positive-capacity disks, with a failing behavioral regression. Original backing/
+base/runtime preservation and complete teardown passed; this initial run remains
+unqualified. Fresh native qualification of the repaired source is pending.
 
 ## Primary source provenance
 

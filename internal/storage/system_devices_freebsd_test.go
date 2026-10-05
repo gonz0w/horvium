@@ -85,17 +85,17 @@ func TestNativeSystemDeviceUse(t *testing.T) {
 	}
 	graph, raw, mounts, _, _, baseline := collect()
 	var disks []inventory.Provider
-	var boot, mountDisk, swapDisk inventory.Provider
+	boot, err := systemFixtureBootDisk(graph)
+	if err != nil {
+		t.Fatal("declared boot image unavailable or ambiguous", err)
+	}
+	var mountDisk, swapDisk inventory.Provider
 	seen := make(map[string]int)
 	for _, p := range graph.Providers {
 		if p.Kind != inventory.DiskCandidate {
 			continue
 		}
 		if p.MediaSize != 64<<20 {
-			if boot.ID != "" {
-				t.Fatal("unexpected extra boot-image disk")
-			}
-			boot = p
 			continue
 		}
 		if p.Class != "DISK" || !strings.HasPrefix(p.Name, "vtbd") || strings.ContainsAny(p.Name, "/ \\\t\r\n") {

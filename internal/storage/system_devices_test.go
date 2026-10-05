@@ -165,3 +165,38 @@ func TestSystemUseBoundsAggregateRecordsAndRowFloods(t *testing.T) {
 		t.Fatal("field flood accepted")
 	}
 }
+
+// Only the declared disposable fixture's boot-image selector; zero-capacity
+// unbacked devices never identify its boot image or a writable fixture.
+func systemFixtureBootDisk(graph inventory.GEOM) (inventory.Provider, error) {
+	var boot inventory.Provider
+	for _, p := range graph.Providers {
+		if p.Kind != inventory.DiskCandidate || p.MediaSize == 64<<20 || p.MediaSize == 0 {
+			continue
+		}
+		if boot.ID != "" {
+			return inventory.Provider{}, ErrUnavailable
+		}
+		boot = p
+	}
+	if boot.ID == "" {
+		return inventory.Provider{}, ErrUnavailable
+	}
+	return boot, nil
+}
+func TestSystemFixtureBootImageExcludesEmptyOpticalDevice(t *testing.T) {
+	boot := inventory.Provider{ID: "boot", Name: "vtbd0", Kind: inventory.DiskCandidate, MediaSize: 4 << 30}
+	empty := inventory.Provider{ID: "empty", Name: "cd0", Kind: inventory.DiskCandidate}
+	fixture := inventory.Provider{ID: "fixture", Name: "vtbd1", Kind: inventory.DiskCandidate, MediaSize: 64 << 20}
+	graph := inventory.GEOM{Providers: []inventory.Provider{boot, empty, fixture}}
+	if got, err := systemFixtureBootDisk(graph); err != nil || !reflect.DeepEqual(got, boot) {
+		t.Fatal("unbacked optical device became a boot image", err)
+	}
+	graph.Providers[1].MediaSize = 1 << 20
+	if _, err := systemFixtureBootDisk(graph); err == nil {
+		t.Fatal("additional positive-capacity device ignored")
+	}
+	if _, err := systemFixtureBootDisk(inventory.GEOM{Providers: []inventory.Provider{empty, fixture}}); err == nil {
+		t.Fatal("missing boot image accepted")
+	}
+}
