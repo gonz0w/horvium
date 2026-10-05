@@ -142,75 +142,43 @@ func TestNativeDeviceFixtures(t *testing.T) {
 	if seen["HVM-UNIQUE-512"] != 1 || seen["HVM-UNIQUE-4K"] != 1 || seen["HVM-DUPLICATE"] != 2 || seen[""] != 1 {
 		t.Fatal("fixture serial cases incomplete")
 	}
-	// Resolve the guest's mounted ZFS root through actual pool paths and GEOM
-	// backing edges. Read it as a negative control; never touch its disk content.
-	rootPool := ""
-	for _, line := range strings.Split(string(run("/sbin/mount", "-p")), "\n") {
-		fields := strings.Fields(line)
-		if len(fields) >= 3 && fields[1] == "/" && fields[2] == "zfs" {
-			rootPool = strings.Split(fields[0], "/")[0]
+	// Resolve the image's actual mounted root: supplied images can use UFS or
+	// ZFS. Follow its exact leaf/alias backing; never hash boot disk content.
+	mountedRoot := func() fixtureRootMount {
+		root, err := fixtureMountedRoot(run("/sbin/mount", "-p"))
+		if err != nil {
+			t.Fatal(err)
 		}
+		return root
 	}
-	if rootPool == "" || strings.HasPrefix(rootPool, "-") {
-		t.Fatal("guest root control unavailable")
-	}
-	bootGUID := strings.TrimSpace(string(run("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", rootPool)))
-	if _, err := strconv.ParseUint(bootGUID, 10, 64); err != nil || bootGUID == "0" {
-		t.Fatal("guest root pool identity missing")
-	}
-	providers := make(map[string]Provider)
-	geoms := make(map[string]Geom)
-	names := make(map[string]string)
-	for _, p := range graph.Providers {
-		providers[p.ID] = p
-		names[p.Name] = p.ID
-	}
-	for _, g := range graph.Geoms {
-		geoms[g.ID] = g
-	}
-	roots := make(map[string]bool)
-	var follow func(string, map[string]bool)
-	follow = func(id string, visiting map[string]bool) {
-		p, ok := providers[id]
-		if !ok || visiting[id] || len(visiting) > 32 {
-			t.Fatal("root backing correspondence unavailable")
+	rootMount := mountedRoot()
+	rootPool, bootGUID := "", ""
+	leaves := []string{strings.TrimPrefix(rootMount.Source, "/dev/")}
+	if rootMount.Type == "zfs" {
+		rootPool = strings.Split(rootMount.Source, "/")[0]
+		bootGUID = strings.TrimSpace(string(run("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", rootPool)))
+		if _, err := strconv.ParseUint(bootGUID, 10, 64); err != nil || bootGUID == "0" {
+			t.Fatal("guest root pool identity missing")
 		}
-		if p.Kind == DiskCandidate {
-			roots[p.Name] = true
-			return
-		}
-		visiting[id] = true
-		defer delete(visiting, id)
-		consumers := geoms[p.GeomID].Consumers
-		if len(consumers) == 0 {
-			t.Fatal("root backing chain incomplete")
-		}
-		for _, c := range consumers {
-			if c.ProviderID == "" {
-				t.Fatal("root consumer detached")
+		leaves = nil
+		for _, line := range strings.Split(string(run("/sbin/zpool", "status", "-L", "-P", rootPool)), "\n") {
+			fields := strings.Fields(line)
+			if len(fields) >= 5 && strings.HasPrefix(fields[0], "/dev/") {
+				leaves = append(leaves, strings.TrimPrefix(fields[0], "/dev/"))
 			}
-			follow(c.ProviderID, visiting)
 		}
 	}
-	for _, line := range strings.Split(string(run("/sbin/zpool", "status", "-L", "-P", rootPool)), "\n") {
-		fields := strings.Fields(line)
-		if len(fields) >= 5 && strings.HasPrefix(fields[0], "/dev/") {
-			id := names[strings.TrimPrefix(fields[0], "/dev/")]
-			if id == "" {
-				t.Fatal("root leaf absent from GEOM")
-			}
-			follow(id, make(map[string]bool))
-		}
-	}
-	if len(roots) == 0 {
-		t.Fatal("guest boot-disk control missing")
+	roots, err := fixtureBootDisks(graph, leaves)
+	if err != nil {
+		t.Fatal(err)
 	}
 	for _, p := range disks {
 		if roots[p.Name] {
 			t.Fatal("guest boot disk selected as test backing")
 		}
 	}
-	after := selected(collect())
+	afterGraph := collect()
+	after := selected(afterGraph)
 	if !reflect.DeepEqual(disks, after) {
 		t.Fatal("native fixture identity/geometry drifted")
 	}
@@ -219,7 +187,11 @@ func TestNativeDeviceFixtures(t *testing.T) {
 			t.Fatal("read-only fixture changed content")
 		}
 	}
-	if strings.TrimSpace(string(run("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", rootPool))) != bootGUID {
+	afterRoots, err := fixtureBootDisks(afterGraph, leaves)
+	if err != nil || !reflect.DeepEqual(roots, afterRoots) || mountedRoot() != rootMount {
+		t.Fatal("guest root mount/backing identity changed")
+	}
+	if rootPool != "" && strings.TrimSpace(string(run("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", rootPool))) != bootGUID {
 		t.Fatal("guest root pool identity changed")
 	}
 	t.Log("DEVICE_OBSERVATION_RESULT distinct_serial=pass duplicate_serial=pass missing_serial=pass sector_variants=pass diskinfo_correlation=pass backing_relationships=pass boot_exclusion=pass read_preservation=pass")

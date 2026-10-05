@@ -77,8 +77,9 @@ stripe size and offset. Require direct DISK provenance without backing parents. 
 and optional disk-ident LABEL aliases are checked by class/parent/address/geometry;
 other incoming consumers refuse this fixture recognizer. These attachments do
 not establish absent labels/use. Consumer absence alone is never a safety proof.
-Trace the mounted ZFS guest root's actual leaf paths through GEOM backing edges
-and prove the root disks are outside the declared set. Preserve that root pool GUID.
+Trace the actual mounted UFS/ZFS guest root's leaf/alias paths through GEOM backing edges
+and prove the root disks are outside the declared set. Preserve the root mount and backing correspondence; preserve its pool GUID when
+the root is ZFS. UFS image roots require no invented pool identity.
 No boot disk content or arbitrary operator resource is opened for hashing or writes.
 
 Repeat graph observations and whole-device hashes after the reads. This fixture
@@ -145,6 +146,12 @@ completed. This is failed evidence. The fixture now uses five 64 MiB disks,
 reducing two complete hash passes from 5 GiB to 640 MiB while retaining all eight
 identity/geometry/boot/preservation assertions and the three-minute bound. This
 is a test-volume change, not a relaxed product or performance budget.
+
+The first repaired 14.5 run on that source failed at the fixture's ZFS-only root
+assumption (12.25 seconds); preservation and teardown completed. Root control now
+recognizes UFS and ZFS mounts, follows exact leaf/alias GEOM backing on both,
+rejects ambiguous/missing/cyclic controls, and verifies mount/backing stability
+after the reads. ZFS roots additionally retain their pool GUID check.
 
 Current qualification runs locally; the original blocked jobs stay in the
 historical manifest. Both guests must execute all eight repaired assertions,

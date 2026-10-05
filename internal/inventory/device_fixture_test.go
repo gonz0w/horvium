@@ -3,6 +3,8 @@ package inventory
 
 import (
 	"errors"
+	"path"
+	"strings"
 	"testing"
 )
 
@@ -98,4 +100,136 @@ func TestDeviceFixtureAllowsDevAndVerifiedDiskIdentAliases(t *testing.T) {
 			t.Fatal("unqualified fixture relationship accepted")
 		}
 	}
+}
+
+func TestDeviceFixtureRootMountSupportsUFSAndZFS(t *testing.T) {
+	for _, text := range []string{"/dev/gpt/rootfs / ufs rw 1 1\n", "zroot/ROOT/default / zfs rw 0 0\n"} {
+		root, err := fixtureMountedRoot([]byte(text))
+		if err != nil || root.Source == "" {
+			t.Fatal("valid mounted fixture root rejected", err)
+		}
+	}
+	for _, text := range []string{"", "host:/root / nfs rw 0 0\n", "/dev/../foreign / ufs rw 1 1\n", "relative / ufs rw 1 1\n", "-pool / zfs rw 0 0\n", "zroot / zfs rw 0 0\nzroot / zfs rw 0 0\n"} {
+		if _, err := fixtureMountedRoot([]byte(text)); err == nil {
+			t.Fatal("missing/unsupported/ambiguous root accepted")
+		}
+	}
+}
+
+func TestDeviceFixtureBootBackingFollowsAliasesAndRejectsBrokenGraphs(t *testing.T) {
+	g := GEOM{Providers: []Provider{
+		{ID: "disk", GeomID: "d", Name: "vtbd0", Kind: DiskCandidate},
+		{ID: "part", GeomID: "p", Name: "vtbd0p2", Kind: Logical},
+		{ID: "label", GeomID: "l", Name: "gpt/rootfs", Kind: Logical},
+	}, Geoms: []Geom{
+		{ID: "d"}, {ID: "p", Consumers: []Consumer{{ProviderID: "disk"}}},
+		{ID: "l", Consumers: []Consumer{{ProviderID: "part"}}},
+	}}
+	roots, err := fixtureBootDisks(g, []string{"gpt/rootfs"})
+	if err != nil || len(roots) != 1 || !roots["vtbd0"] {
+		t.Fatal("boot backing alias not resolved", err)
+	}
+	for _, change := range []func(*GEOM){
+		func(x *GEOM) { x.Geoms[1].Consumers = []Consumer{{ProviderID: "label"}} },
+		func(x *GEOM) { x.Geoms[1].Consumers = nil },
+		func(x *GEOM) { x.Geoms[1].Consumers = []Consumer{{ProviderID: "missing"}} },
+		func(x *GEOM) { x.Providers = append(x.Providers, Provider{ID: "other", Name: "gpt/rootfs"}) },
+	} {
+		x := GEOM{Providers: append([]Provider(nil), g.Providers...), Geoms: append([]Geom(nil), g.Geoms...)}
+		change(&x)
+		if _, err := fixtureBootDisks(x, []string{"gpt/rootfs"}); err == nil {
+			t.Fatal("broken/cyclic/ambiguous boot backing accepted")
+		}
+	}
+	for _, leaves := range [][]string{nil, {"unknown"}} {
+		if _, err := fixtureBootDisks(g, leaves); err == nil {
+			t.Fatal("unavailable boot control accepted")
+		}
+	}
+}
+
+type fixtureRootMount struct{ Source, Type string }
+
+func fixtureMountedRoot(data []byte) (fixtureRootMount, error) {
+	deny := errors.New("guest root control unavailable")
+	var root fixtureRootMount
+	for _, line := range strings.Split(string(data), "\n") {
+		fields := strings.Fields(line)
+		if len(fields) < 2 || fields[1] != "/" {
+			continue
+		}
+		if len(fields) != 6 || root.Source != "" {
+			return fixtureRootMount{}, deny
+		}
+		root = fixtureRootMount{Source: fields[0], Type: fields[2]}
+		if path.Clean(root.Source) != root.Source || strings.HasPrefix(root.Source, "-") {
+			return fixtureRootMount{}, deny
+		}
+		switch root.Type {
+		case "ufs":
+			if !strings.HasPrefix(root.Source, "/dev/") || root.Source == "/dev/" {
+				return fixtureRootMount{}, deny
+			}
+		case "zfs":
+			if strings.HasPrefix(root.Source, "/") || root.Source == "." {
+				return fixtureRootMount{}, deny
+			}
+		default:
+			return fixtureRootMount{}, deny
+		}
+	}
+	if root.Source == "" {
+		return fixtureRootMount{}, deny
+	}
+	return root, nil
+}
+
+func fixtureBootDisks(graph GEOM, leaves []string) (map[string]bool, error) {
+	deny := errors.New("root backing correspondence unavailable")
+	providers := make(map[string]Provider)
+	geoms := make(map[string]Geom)
+	names := make(map[string][]string)
+	for _, p := range graph.Providers {
+		providers[p.ID] = p
+		names[p.Name] = append(names[p.Name], p.ID)
+	}
+	for _, g := range graph.Geoms {
+		geoms[g.ID] = g
+	}
+	roots := make(map[string]bool)
+	var follow func(string, map[string]bool) error
+	follow = func(id string, visiting map[string]bool) error {
+		p, ok := providers[id]
+		if !ok || visiting[id] || len(visiting) > 32 {
+			return deny
+		}
+		if p.Kind == DiskCandidate {
+			roots[p.Name] = true
+			return nil
+		}
+		visiting[id] = true
+		defer delete(visiting, id)
+		consumers := geoms[p.GeomID].Consumers
+		if len(consumers) == 0 {
+			return deny
+		}
+		for _, c := range consumers {
+			if err := follow(c.ProviderID, visiting); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	for _, leaf := range leaves {
+		if len(names[leaf]) != 1 {
+			return nil, deny
+		}
+		if err := follow(names[leaf][0], make(map[string]bool)); err != nil {
+			return nil, err
+		}
+	}
+	if len(roots) == 0 {
+		return nil, deny
+	}
+	return roots, nil
 }
