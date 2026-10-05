@@ -1,7 +1,9 @@
 # M2 imported-pool use observations
 
 Date: 2026-10-05. Status: all twenty-nine assertions, four executed tests and
-complete preservation/teardown passed on both targets; maintainer review pending.
+complete preservation/teardown passed on both targets; accepted in
+[PR 34](https://github.com/gonz0w/horvium/pull/34), merged source
+`50d6399b58f201ea26ec007879fe56792993c312`.
 [Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).

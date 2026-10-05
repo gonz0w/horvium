@@ -99,6 +99,10 @@ creates one owned UFS filesystem, mounts it read-only and activates a separate
 owned swap fixture, then removes only its own mount/swap. It preserves the other
 three disks and root correspondence. The modified guest backings are discarded;
 all original host raw files remain unchanged under snapshot mode.
+The [signature extension](filesystem-signatures.md) uses base `fstyp -u` on the
+owned UFS and active/removed-pool ZFS fixtures, with whole-device probe-preservation
+controls and unsupported-output/address denial. It adds no fixture mutation.
+First-label recognition is positive metadata evidence, not blank-disk clearance.
 The whole-device hashes verify the read-only test's content preservation; they
 are not a production signature probe or destructive-use allowlist.
 
@@ -134,7 +138,7 @@ race, parser fuzz and FreeBSD cross-build results are separate from native evide
 For the [disk correlation extension](disk-correlation.md), the checker requires
 all four executed native tests, eight fixture assertions, four correlation
 assertions, five attachment assertions, six system-use assertions and six
-imported-pool assertions, plus one successful host
+imported-pool assertions and seven signature assertions, plus one successful host
 preservation/termination/teardown result; booting a VM,
 a guest-only result or a skipped test cannot qualify this fixture.
 
