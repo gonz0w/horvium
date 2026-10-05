@@ -16,7 +16,8 @@ messages. Never silently disable signing to make a commit succeed.
 
 The versioned main ruleset requires PRs, signed commits, linear history, resolved
 conversations. Required Actions status checks are removed under the local review
-policy; Actions are disabled for the repository. Block force pushes and deletion. Release tag rules prevent moving/deleting `v*` tags; signed tags remain
+policy; Actions are disabled for the repository. Block force pushes and deletion.
+Release tag rules prevent moving/deleting `v*` tags; signed tags remain
 a release check. Do not assume merely storing a ruleset JSON applies it remotely.
 
 During the solo phase, independent approval count is zero and mandatory CODEOWNERS

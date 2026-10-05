@@ -58,7 +58,7 @@ Firefox 157.0 and geckodriver 0.37.1 are checksum-pinned development downloads
 under ignored `.tools/browser`; official artifact/checksum sources are recorded in
 [the pins](../../tools/browser-pins.json). No browser binary/source is copied into
 Horvium or its release package. These Mozilla-maintained MPL tools and Linux system
-libraries run only on the development/CI host; no Selenium, Node or Go module is
+libraries run only on the development host; no Selenium, Node or Go module is
 introduced. Safari uses Apple's installed driver. Version updates require review
 of the checksums and actual browser matrix. Remove this tooling if the browser
-qualification workflow is replaced by an equivalent supported test harness.
+qualification harness is replaced by an equivalent supported test procedure.

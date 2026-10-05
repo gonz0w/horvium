@@ -7,6 +7,18 @@ cleanup. Foundation shell/DCO smoke also passed on 15.1. See the
 source commits, image/tool hashes and versions. Local results do not replace
 previously accepted manifests or establish new M2 device/runtime eligibility.
 
+The updated lease supervisor was then qualified on source
+`9a40e72d7438bbd7bbf8305aa59392ca91de8fd4`: foundation/15.1 passed with
+unchanged artifacts and verified group/fixture cleanup. Killing the controller
+of a second live QEMU guest stopped its listener and removed key/image/variables;
+that interrupted run correctly remained unqualified. A real preview was reachable,
+reported active, stopped through `lab-stop`, and had its listener closed; final
+`lab-status` verified all owned sessions stopped. The complete portable gate,
+47 tooling regressions, race and all twelve fuzz targets passed. See the separate
+[sanitized teardown manifest](local-teardown-manifest.json). Earlier property
+runs retain their original source evidence; other guest/browser combinations
+were not requalified by these host-lifecycle tests.
+
 ## Mac first
 
 The maintainer selected the current Mac as the first lab host. Run repository
