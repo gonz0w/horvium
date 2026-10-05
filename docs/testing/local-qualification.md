@@ -90,7 +90,11 @@ without force. The [system-use extension](M2/system-device-use.md) adds six
 assertions and a third native test, for twenty-three assertions. Only two owned
 snapshot disks are used for UFS/mount/swap controls; cleanup removes owned
 mount/swap and the VM is discarded. Previous manifests retain their actual source
-and case sets.
+and case sets. The [imported-pool extension](M2/imported-pool-use.md) adds six
+assertions and a fourth native test, for twenty-nine assertions. It runs before
+the UFS/swap test, creates one unmounted pool on the unique 4K snapshot disk and
+destroys only its verified owned pool without force. The modified guest is
+discarded; this supplies no product create/destroy or signature-clearance authority.
 
 ## Isolation, cache and evidence
 

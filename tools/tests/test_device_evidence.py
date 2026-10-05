@@ -14,13 +14,16 @@ ATTACH_PASS='--- PASS: TestNativeDiskAttachments (1.0s)\n'
 SYSTEM='DEVICE_SYSTEM_USE_RESULT root_backing=pass mounted_disk=pass active_swap=pass unsupported_denial=pass fixture_teardown=pass foreign_preservation=pass\n'
 SYSTEM_PASS='--- PASS: TestNativeSystemDeviceUse (1.0s)\n'
 
+IMPORTED='DEVICE_IMPORTED_POOL_RESULT unmounted_pool=pass catalogue_binding=pass missing_denial=pass fixture_teardown=pass foreign_preservation=pass root_preservation=pass\n'
+IMPORTED_PASS='--- PASS: TestNativeImportedPoolUse (1.0s)\n'
+
 class DeviceEvidenceTests(unittest.TestCase):
     def module(self):
         m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m);return m
 
     def test_native_result_and_owned_host_teardown_required(self):
-        m=self.module();m.validate(RESULT+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+SYSTEM+SYSTEM_PASS+CLEAN)
-        m.validate(RESULT+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+SYSTEM+SYSTEM_PASS, guest=True)
+        m=self.module();m.validate(RESULT+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+SYSTEM+SYSTEM_PASS+IMPORTED+IMPORTED_PASS+CLEAN)
+        m.validate(RESULT+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+SYSTEM+SYSTEM_PASS+IMPORTED+IMPORTED_PASS, guest=True)
         with self.assertRaises(ValueError):m.validate(RESULT+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+CLEAN)
         with self.assertRaises(ValueError):m.validate(RESULT+CORRELATION+PASS+CLEAN)
         with self.assertRaises(ValueError):m.validate(RESULT+PASS+CLEAN)
@@ -30,20 +33,25 @@ class DeviceEvidenceTests(unittest.TestCase):
     def test_case_omission_duplication_unknown_or_failure_denied(self):
         m=self.module()
         for text in [RESULT.replace('missing_serial=pass',''), RESULT.replace('boot_exclusion=pass','boot_exclusion=fail'), RESULT.rstrip()+' invented=pass\n', RESULT+RESULT]:
-            with self.subTest(text=text),self.assertRaises(ValueError):m.validate(text+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+SYSTEM+SYSTEM_PASS+CLEAN)
+            with self.subTest(text=text),self.assertRaises(ValueError):m.validate(text+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+SYSTEM+SYSTEM_PASS+IMPORTED+IMPORTED_PASS+CLEAN)
 
     def test_correlation_case_omission_duplication_or_failure_denied(self):
         m=self.module()
         for text in [CORRELATION.replace('missing_denial=pass',''),CORRELATION.replace('geometry_binding=pass','geometry_binding=fail'),CORRELATION+CORRELATION,CORRELATION.rstrip()+' invented=pass\n']:
-            with self.subTest(text=text),self.assertRaises(ValueError):m.validate(RESULT+text+ATTACHMENTS+PASS+ATTACH_PASS+SYSTEM+SYSTEM_PASS+CLEAN)
+            with self.subTest(text=text),self.assertRaises(ValueError):m.validate(RESULT+text+ATTACHMENTS+PASS+ATTACH_PASS+SYSTEM+SYSTEM_PASS+IMPORTED+IMPORTED_PASS+CLEAN)
 
     def test_attachment_result_and_executed_test_are_required(self):
         m=self.module()
-        base=RESULT+CORRELATION+PASS+CLEAN+SYSTEM+SYSTEM_PASS
+        base=RESULT+CORRELATION+PASS+CLEAN+SYSTEM+SYSTEM_PASS+IMPORTED+IMPORTED_PASS
         for extra in [ATTACHMENTS,ATTACH_PASS,ATTACH_PASS+ATTACHMENTS.replace('partition_denial=pass',''),ATTACH_PASS+ATTACHMENTS.replace('fixture_teardown=pass','fixture_teardown=fail'),ATTACH_PASS+ATTACHMENTS+ATTACHMENTS,ATTACH_PASS+ATTACH_PASS+ATTACHMENTS]:
             with self.subTest(extra=extra),self.assertRaises(ValueError):m.validate(base+extra)
 
     def test_system_use_requires_actual_test_complete_cases_and_cleanup(self):
-        m=self.module();base=RESULT+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+CLEAN
+        m=self.module();base=RESULT+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+CLEAN+IMPORTED+IMPORTED_PASS
         for extra in [SYSTEM,SYSTEM_PASS,SYSTEM_PASS+SYSTEM.replace('active_swap=pass',''),SYSTEM_PASS+SYSTEM.replace('fixture_teardown=pass','fixture_teardown=fail'),SYSTEM_PASS+SYSTEM+SYSTEM,SYSTEM_PASS+SYSTEM_PASS+SYSTEM,SYSTEM_PASS+SYSTEM.rstrip()+' invented=pass\n',SYSTEM+SYSTEM_PASS+'FAIL\n',SYSTEM+SYSTEM_PASS+'--- SKIP: TestNativeSystemDeviceUse (0.0s)\n']:
+            with self.subTest(extra=extra),self.assertRaises(ValueError):m.validate(base+extra)
+
+    def test_imported_pool_requires_actual_test_complete_cases_and_cleanup(self):
+        m=self.module();base=RESULT+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+SYSTEM+SYSTEM_PASS+CLEAN
+        for extra in [IMPORTED,IMPORTED_PASS,IMPORTED_PASS+IMPORTED.replace('unmounted_pool=pass',''),IMPORTED_PASS+IMPORTED.replace('fixture_teardown=pass','fixture_teardown=fail'),IMPORTED_PASS+IMPORTED+IMPORTED,IMPORTED_PASS+IMPORTED_PASS+IMPORTED,IMPORTED_PASS+IMPORTED.rstrip()+' invented=pass\n',IMPORTED+IMPORTED_PASS+'FAIL\n',IMPORTED+IMPORTED_PASS+'--- SKIP: TestNativeImportedPoolUse (0.0s)\n']:
             with self.subTest(extra=extra),self.assertRaises(ValueError):m.validate(base+extra)

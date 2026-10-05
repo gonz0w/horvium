@@ -101,5 +101,13 @@ correlates positive root/mount/swap backing through complete GEOM and mounted
 ZFS pool GUID/status captures. Actual UFS/swap/root preservation and full teardown
 passed with all twenty-three assertions and three tests on both targets through
 the Mac supervisor; see the [native manifest](../testing/M2/system-device-use-manifest.json).
-Maintainer review is pending. No absent-signature/pool-use, physical/locality,
+PR 33 accepted this subset. No absent-signature/pool-use, physical/locality,
 complete device clearance or product mutation claim follows.
+
+M2 imported-pool use: [contract and procedure](../testing/M2/imported-pool-use.md)
+binds the all-imported-pool catalogue, independent GUID/status and GEOM captures
+to positive disk membership, including pools with no mounts. Portable behavioral
+tests and a FreeBSD cross-build pass; actual unmounted-pool/root/foreign
+preservation and full teardown are pending on both targets. No exported-pool or
+signature absence, complete device clearance, collector/planner integration or
+product mutation authority follows.

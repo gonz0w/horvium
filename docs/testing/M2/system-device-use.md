@@ -2,7 +2,8 @@
 
 Date: 2026-10-05. Status: all twenty-three assertions, three executed native
 tests and complete preservation/teardown passed on both FreeBSD targets;
-maintainer review pending. [Approved EDD](../../milestones/M2/EDD.md),
+accepted in [PR 33](https://github.com/gonz0w/horvium/pull/33), merged source
+`bbf7fe22ea0d81cbd459171f633e99c3096f7ee0`. [Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
