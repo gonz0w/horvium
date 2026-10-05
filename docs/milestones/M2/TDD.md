@@ -73,7 +73,9 @@ all seventeen and host teardown passed on both targets; see its
 this subset. The [system-use extension](../../testing/M2/system-device-use.md)
 adds six assertions for actual UFS mount, active swap, root backing, denial,
 foreign preservation and teardown. Twenty-three assertions and all three tests
-are required; this extension is pending native qualification. These partial results do not
+are required; all twenty-three and full teardown passed on both targets; see
+the [native manifest](../../testing/M2/system-device-use-manifest.json). Maintainer
+review is pending. These partial results do not
 satisfy the complete device-safety row. Further fault control and complete device safety still
 need implementation and qualification. Never accept an arbitrary host device supplied to a test.
 

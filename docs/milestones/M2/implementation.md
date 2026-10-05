@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset in progress; Actions disabled.
+Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset qualified; review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -114,7 +114,10 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   correlates full GEOM, mount/swap and mounted-pool GUID/status captures to
   positive root/mount/swap backing facts. Disposable UFS and active swap tests
   extend the suite to twenty-three assertions and three executed native tests;
-  native qualification is pending. No unused-device or write authority follows.
+  source `3f97271f0a785d45baeb62311e8681e56d55b6a9` passed all twenty-three
+  assertions, three executed native tests and complete preservation/teardown on
+  both targets. See the [native manifest](../../testing/M2/system-device-use-manifest.json).
+  Maintainer review is pending. No unused-device or write authority follows.
 - Slice 1 remains incomplete: assembled native eligibility/provider proofs, full
   status/scan interpretation, complete-impact collection and device-use drift gates
   have not run. No later slice may treat

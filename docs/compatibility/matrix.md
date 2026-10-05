@@ -98,6 +98,8 @@ No complete device-use, physical/locality or write eligibility follows.
 
 M2 system device use: [contract and procedure](../testing/M2/system-device-use.md)
 correlates positive root/mount/swap backing through complete GEOM and mounted
-ZFS pool GUID/status captures. Native UFS/swap/root preservation and full teardown
-are pending on both targets. No absent-signature/pool-use, physical/locality,
+ZFS pool GUID/status captures. Actual UFS/swap/root preservation and full teardown
+passed with all twenty-three assertions and three tests on both targets through
+the Mac supervisor; see the [native manifest](../testing/M2/system-device-use-manifest.json).
+Maintainer review is pending. No absent-signature/pool-use, physical/locality,
 complete device clearance or product mutation claim follows.

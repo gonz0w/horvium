@@ -1,7 +1,8 @@
 # M2 system device-use observations
 
-Date: 2026-10-05. Status: behavioral tests and FreeBSD cross-build pass;
-native qualification pending. [Approved EDD](../../milestones/M2/EDD.md),
+Date: 2026-10-05. Status: all twenty-three assertions, three executed native
+tests and complete preservation/teardown passed on both FreeBSD targets;
+maintainer review pending. [Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
@@ -109,7 +110,28 @@ at its boot-image selector (0.15 seconds). QEMU also presents an empty DVD drive
 The selector now excludes zero-capacity unbacked devices and still refuses extra
 positive-capacity disks, with a failing behavioral regression. Original backing/
 base/runtime preservation and complete teardown passed; this initial run remains
-unqualified. Fresh native qualification of the repaired source is pending.
+unqualified and is retained separately in the native manifest. The repaired
+source passed all twenty-three assertions and full teardown on both releases.
+
+## Executed evidence
+
+Signed source `3f97271f0a785d45baeb62311e8681e56d55b6a9` passed all twenty-three
+assertions and all three tests on FreeBSD 15.1-RELEASE-p3 and 14.5-RELEASE using
+Mac arm64 / QEMU 11.1.1 TCG (two CPUs, 6144 MiB). The actual roots were ZFS and
+UFS, respectively. Both actual UFS mounts and active swap fixtures mapped to
+their expected disks and were removed. The other three guest disks and root
+source/type/GUID/backing were preserved. All original host raw backings, base
+images and runtime inputs were preserved; owned disks/image/key/variables were
+removed and process groups stopped.
+
+The [sanitized execution manifest](system-device-use-manifest.json) binds source/
+input hashes, actual versions, eleven utility hashes, inspected source/name-buffer
+headers and outcomes. The functional-source local review passed 62 tooling tests,
+Go unit/race checks and fifteen bounded fuzz targets. Final PR-head portable
+evidence is reported separately in the PR; input changes require fresh native
+qualification. Prior manifests and controller-death evidence retain their original
+source/case sets; no new controller-death trial is claimed. This is partial
+M2-DEVICE-001/M2-NATIVE-001 evidence, not complete native eligibility or M2 acceptance.
 
 ## Primary source provenance
 
