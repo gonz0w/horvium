@@ -1,5 +1,9 @@
 # SPDX-License-Identifier: BSD-3-Clause
 import importlib.util
+import os
+import subprocess
+import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -25,6 +29,34 @@ class CIScopeTests(unittest.TestCase):
 
     def test_mixed_change_cannot_hide_deleted_or_renamed_code(self):
         self.assertTrue(self.module.needs_go(['docs/change.md', 'cmd/horvium/main.go']))
+
+
+    def test_git_rename_to_documentation_cannot_hide_deleted_code(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            def git(*args):
+                return subprocess.check_output(['git', *args], cwd=root, text=True).strip()
+            git('init', '-b', 'main')
+            git('config', 'user.name', 'Fixture')
+            git('config', 'user.email', 'fixture@example.invalid')
+            git('config', 'commit.gpgsign', 'false')
+            git('config', 'core.hooksPath', '/dev/null')
+            (root / 'internal').mkdir()
+            (root / 'internal/code.go').write_text('package example\n')
+            git('add', '.')
+            git('commit', '-m', 'test: initial source')
+            base = git('rev-parse', 'HEAD')
+            (root / 'docs').mkdir()
+            git('mv', 'internal/code.go', 'docs/code.md')
+            git('commit', '-m', 'docs: rename source')
+            head = git('rev-parse', 'HEAD')
+            output = root / 'outputs'
+            result = subprocess.run([sys.executable, str(ROOT / 'tools/ci-scope.py')],
+                                    cwd=root, capture_output=True, text=True,
+                                    env={**os.environ, 'BASE_SHA': base, 'HEAD_SHA': head,
+                                         'GITHUB_OUTPUT': str(output)})
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(output.read_text(), 'go=true\n')
 
 
 if __name__ == '__main__':
