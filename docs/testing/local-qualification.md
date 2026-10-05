@@ -82,7 +82,11 @@ separate from device/provider safety proof. Teardown rehashes/removes declared
 backings after stopping QEMU, with supervisor fallback for controller death.
 The [disk correlation extension](M2/disk-correlation.md) adds four mandatory
 assertions to the current devices suite; previous eight-assertion manifests remain
-bound to their earlier source and do not qualify the new parser.
+bound to their earlier source and do not qualify the new parser. The
+[attachment extension](M2/disk-attachments.md) adds five mandatory assertions
+and a second executed native test, for seventeen assertions. It partitions only
+one independently verified owned snapshot fixture disk and removes its table
+without force; previous manifests retain their actual source and case sets.
 
 ## Isolation, cache and evidence
 

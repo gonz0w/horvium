@@ -83,5 +83,14 @@ provider/use/physical safety and product write eligibility remain unqualified.
 M2 disk correlation: [bounded parser/contract](../testing/M2/disk-correlation.md)
 all twelve fixture/correlation assertions and complete preservation/teardown passed
 on both targets through the Mac supervisor; see the [native manifest](../testing/M2/disk-correlation-manifest.json).
-Maintainer review is pending. It is not wired into collection or storage planning
+PR 31 accepted this subset at merged source `ef60c33489a2ddd30c99e2a8e865a76272473f2b`.
+It is not wired into collection or storage planning
 and grants no device-use/write eligibility.
+
+M2 disk attachments: [contract and procedure](../testing/M2/disk-attachments.md)
+recognizes exact DEV/disk-ident correspondence and refuses PART/unsupported
+attachments. Actual empty/populated GPT denial, foreign preservation and full
+teardown passed with all seventeen assertions and both native tests on both
+targets through the Mac supervisor; see the [native manifest](../testing/M2/disk-attachments-manifest.json).
+Maintainer review is pending; local behavioral/cross-build coverage is separate.
+No complete device-use, physical/locality or write eligibility follows.

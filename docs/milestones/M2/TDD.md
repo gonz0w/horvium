@@ -65,7 +65,13 @@ passed its eight prerequisite assertions and owned host teardown on both targets
 PR 28 accepted the fixture at merged source
 `27dafaba7a5d04a4896f27776ef79f4b1f4c2bbc`. The [disk correlation extension](../../testing/M2/disk-correlation.md)
 adds four assertions; all twelve native assertions and host teardown passed on both
-targets. Review is pending; this does not satisfy the complete device-safety row. Further fault control and complete device safety still
+targets; PR 31 accepted this partial subset. The [attachment extension](../../testing/M2/disk-attachments.md)
+adds five assertions including actual empty/populated GPT refusal and owned
+cleanup. All seventeen assertions and both executed native tests are required;
+all seventeen and host teardown passed on both targets; see its
+[native manifest](../../testing/M2/disk-attachments-manifest.json). Maintainer review
+of this extension is pending. These partial results do not
+satisfy the complete device-safety row. Further fault control and complete device safety still
 need implementation and qualification. Never accept an arbitrary host device supplied to a test.
 
 Pool creation/device-identity tests use new guest-attached virtual block devices

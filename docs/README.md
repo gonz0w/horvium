@@ -81,5 +81,6 @@
 - [M2 local device fixture qualification manifest](testing/M2/devices-local-manifest.json)
 
 - [M2 native disk correlation](testing/M2/disk-correlation.md)
-
 - [M2 disk correlation native execution manifest](testing/M2/disk-correlation-manifest.json)
+- [M2 disk attachments and partition denial](testing/M2/disk-attachments.md)
+- [M2 disk attachment native execution manifest](testing/M2/disk-attachments-manifest.json)

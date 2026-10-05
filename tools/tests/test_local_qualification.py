@@ -65,6 +65,9 @@ class LocalQualificationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.module.validate_result('devices', guest)
         guest += 'DEVICE_CORRELATION_RESULT ' + ' '.join(case + '=pass' for case in sorted(checker.CORRELATION_CASES)) + '\n'
+        with self.assertRaises(ValueError):
+            self.module.validate_result('devices', guest)
+        guest += '--- PASS: TestNativeDiskAttachments (1.0s)\nDEVICE_ATTACHMENT_RESULT ' + ' '.join(case + '=pass' for case in sorted(checker.ATTACHMENT_CASES)) + '\n'
         self.module.validate_result('devices', guest)
         with self.assertRaises(ValueError):
             self.module.validate_result('devices', guest, complete=True)

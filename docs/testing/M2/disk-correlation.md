@@ -1,7 +1,8 @@
 # M2 native disk correlation
 
 Date: 2026-10-05. Status: all twelve native assertions and complete host teardown passed on both
-FreeBSD targets; maintainer review pending.
+FreeBSD targets; accepted in [PR 31](https://github.com/gonz0w/horvium/pull/31) at
+merged source `ef60c33489a2ddd30c99e2a8e865a76272473f2b`.
 [Approved EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
