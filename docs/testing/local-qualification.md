@@ -95,6 +95,11 @@ assertions and a fourth native test, for twenty-nine assertions. It runs before
 the UFS/swap test, creates one unmounted pool on the unique 4K snapshot disk and
 destroys only its verified owned pool without force. The modified guest is
 discarded; this supplies no product create/destroy or signature-clearance authority.
+The [signature extension](M2/filesystem-signatures.md) adds seven mandatory probe
+assertions to those same four tests, for thirty-six assertions. It introduces no
+fixture writes; it binds actual UFS/ZFS recognition, probes removed-pool metadata
+and verifies whole bytes of its probed fixture before/after. Unknown output never
+establishes absence. Prior manifests retain their original case sets.
 
 ## Isolation, cache and evidence
 

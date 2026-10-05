@@ -264,6 +264,16 @@ func TestNativeImportedPoolUse(t *testing.T) {
 	if found != 1 || createdGUID == "" {
 		t.Fatal("owned pool missing from complete catalogue")
 	}
+	probe := func(raw []byte) (FilesystemSignature, FilesystemProbeCapture, []byte, []byte) {
+		info, serial := must("/usr/sbin/diskinfo", path), must("/usr/sbin/diskinfo", "-s", path)
+		capture := FilesystemProbeCapture{Device: path, Output: must("/usr/sbin/fstyp", "-u", path)}
+		got, err := ParseFilesystemSignature(raw, info, serial, capture, inventory.DefaultLimits())
+		if err != nil || got.Type != "zfs" || !reflect.DeepEqual(got.Disk.Provider, selected) {
+			t.Fatal("actual ZFS signature did not bind declared disk", err)
+		}
+		return got, capture, info, serial
+	}
+	probe(actual.raw)
 	// Independent fixed six-column native row must identify the same pool GUID.
 	matches := 0
 	for _, line := range strings.Split(string(actual.list), "\n") {
@@ -301,6 +311,20 @@ func TestNativeImportedPoolUse(t *testing.T) {
 	if err != nil || !reflect.DeepEqual(after.use, baseline.use) {
 		t.Fatal("foreign imported catalogue changed", err)
 	}
+	// The pool is gone from the actual imported catalogue, but the base probe
+	// still recognizes its residual first-label metadata. Never call this blank.
+	probeHash := strings.TrimSpace(string(must("/sbin/sha256", "-q", path)))
+	if len(probeHash) != 64 {
+		t.Fatal("closed fixture probe hash unavailable")
+	}
+	_, probeCapture, info, serial := probe(after.raw)
+	if strings.TrimSpace(string(must("/sbin/sha256", "-q", path))) != probeHash {
+		t.Fatal("filesystem probe changed closed fixture bytes")
+	}
+	probeCapture.Device = "/dev/" + boot.Name
+	if got, err := ParseFilesystemSignature(after.raw, info, serial, probeCapture, inventory.DefaultLimits()); err == nil || !reflect.DeepEqual(got, FilesystemSignature{}) {
+		t.Fatal("signature probe from another address accepted")
+	}
 	afterSystem := systemUse(after)
 	if !reflect.DeepEqual(initialSystem, afterSystem) {
 		t.Fatal("root/mount/swap backing changed")
@@ -319,5 +343,6 @@ func TestNativeImportedPoolUse(t *testing.T) {
 			t.Fatal("foreign fixture bytes changed")
 		}
 	}
+	t.Log("DEVICE_SIGNATURE_ZFS_RESULT zfs_signature=pass removed_signature=pass probe_preservation=pass binding_denial=pass")
 	t.Log("DEVICE_IMPORTED_POOL_RESULT unmounted_pool=pass catalogue_binding=pass missing_denial=pass fixture_teardown=pass foreign_preservation=pass root_preservation=pass")
 }

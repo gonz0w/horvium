@@ -251,6 +251,24 @@ func TestNativeSystemDeviceUse(t *testing.T) {
 	if !foundMount || !foundSwap {
 		t.Fatal("actual mount/swap fixture missing")
 	}
+	probePath := "/dev/" + mountDisk.Name
+	probeHash := strings.TrimSpace(string(run("/sbin/sha256", "-q", probePath)))
+	if len(probeHash) != 64 {
+		t.Fatal("read-only UFS probe hash unavailable")
+	}
+	probeInfo, probeSerial := run("/usr/sbin/diskinfo", probePath), run("/usr/sbin/diskinfo", "-s", probePath)
+	probe := FilesystemProbeCapture{Device: probePath, Output: run("/usr/sbin/fstyp", "-u", probePath)}
+	signature, signatureErr := ParseFilesystemSignature(activeGEOM, probeInfo, probeSerial, probe, inventory.DefaultLimits())
+	if signatureErr != nil || signature.Type != "ufs" || !reflect.DeepEqual(signature.Disk.Provider, mountDisk) {
+		t.Fatal("actual UFS signature did not bind declared disk", signatureErr)
+	}
+	if strings.TrimSpace(string(run("/sbin/sha256", "-q", probePath))) != probeHash {
+		t.Fatal("filesystem probe changed read-only UFS fixture bytes")
+	}
+	probe.Output = []byte(strings.Replace(string(probe.Output), "ufs", "unknown", 1))
+	if got, err := ParseFilesystemSignature(activeGEOM, probeInfo, probeSerial, probe, inventory.DefaultLimits()); err == nil || !reflect.DeepEqual(got, FilesystemSignature{}) {
+		t.Fatal("unrecognized native signature accepted or called blank")
+	}
 	result, err := ParseSystemDeviceUse(activeGEOM, activeMounts, []byte(strings.Replace(string(activeSwap), "1K-blocks", "1M-blocks", 1)), pools, inventory.DefaultLimits())
 	if err == nil || !reflect.DeepEqual(result, SystemDeviceUse{}) {
 		t.Fatal("unsupported native capture accepted or partial result exposed")
@@ -286,5 +304,6 @@ func TestNativeSystemDeviceUse(t *testing.T) {
 			t.Fatal("foreign fixture content changed")
 		}
 	}
+	t.Log("DEVICE_SIGNATURE_UFS_RESULT ufs_signature=pass probe_preservation=pass unsupported_denial=pass")
 	t.Log("DEVICE_SYSTEM_USE_RESULT root_backing=pass mounted_disk=pass active_swap=pass unsupported_denial=pass fixture_teardown=pass foreign_preservation=pass")
 }
