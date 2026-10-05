@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture implementing.
+Date: 2026-10-04. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture locally checked; repaired native/CI execution blocked by GitHub account limits.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -87,7 +87,11 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   scan-omission failure and failing-first repair are retained in the evidence record.
   Full scan/JSON status and provider/system/device-use proofs remain open.
 - Slice 1 device fixture prerequisite: [virtual disk identities/geometry](../../testing/M2/devices.md)
-  under the approved Test Design; native execution pending. No product selector or
+  under the approved Test Design; [draft PR 28](https://github.com/gonz0w/horvium/pull/28).
+  Both initial guests failed the blank-consumer assumption; regression repair and
+  local gates passed, but account billing/spending limits prevented all repaired
+  native/CI jobs from starting. See the retained failed/unstarted execution record.
+  No product selector or
   device-use/creation authority follows from fixture qualification.
 - Slice 1 remains incomplete: assembled native eligibility/provider proofs, full
   status/scan interpretation, complete-impact collection and device-use drift gates

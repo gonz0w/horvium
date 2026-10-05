@@ -1,0 +1,282 @@
+{
+  "blocked_pr_ci": {
+    "result": "jobs not started: same account scheduling block; no code failure result",
+    "run_id": 37328289533,
+    "run_url": "https://github.com/gonz0w/horvium/actions/runs/37328289533",
+    "source": "3ded164fe4cab801e15fe6cd95cbc0e4766c3f23"
+  },
+  "blocked_repaired_native_execution": {
+    "annotation": "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the Billing & plans section in your settings",
+    "jobs": [
+      {
+        "job_id": 111824516973,
+        "release": "15.1"
+      },
+      {
+        "job_id": 111824517227,
+        "release": "14.5"
+      }
+    ],
+    "result": "not started: zero steps executed",
+    "run_id": 37328280188,
+    "run_url": "https://github.com/gonz0w/horvium/actions/runs/37328280188",
+    "source": "3ded164fe4cab801e15fe6cd95cbc0e4766c3f23"
+  },
+  "date": "2026-10-05",
+  "design_source": "753f601960529cd17596d0ffc628afe38d041c82",
+  "initial_native_execution": {
+    "cause": "Fixture required zero incoming GEOM consumers for a blank disk; DEV/LABEL attachments are not proof of partition/data use",
+    "guests": [
+      {
+        "base_image_and_anyvm_unchanged_after_execution": true,
+        "declared_backings": [
+          {
+            "bytes": 536870912,
+            "file": "disk-0.raw",
+            "logical": 512,
+            "physical": 4096,
+            "serial": "HVM-UNIQUE-512",
+            "sha256": "9acca8e8c22201155389f65abbf6bc9723edc7384ead80503839f49dcc56d767"
+          },
+          {
+            "bytes": 536870912,
+            "file": "disk-1.raw",
+            "logical": 4096,
+            "physical": 4096,
+            "serial": "HVM-UNIQUE-4K",
+            "sha256": "9acca8e8c22201155389f65abbf6bc9723edc7384ead80503839f49dcc56d767"
+          },
+          {
+            "bytes": 536870912,
+            "file": "disk-2.raw",
+            "logical": 512,
+            "physical": 512,
+            "serial": "HVM-DUPLICATE",
+            "sha256": "9acca8e8c22201155389f65abbf6bc9723edc7384ead80503839f49dcc56d767"
+          },
+          {
+            "bytes": 536870912,
+            "file": "disk-3.raw",
+            "logical": 512,
+            "physical": 512,
+            "serial": "HVM-DUPLICATE",
+            "sha256": "9acca8e8c22201155389f65abbf6bc9723edc7384ead80503839f49dcc56d767"
+          },
+          {
+            "bytes": 536870912,
+            "file": "disk-4.raw",
+            "logical": 512,
+            "physical": 512,
+            "serial": "",
+            "sha256": "9acca8e8c22201155389f65abbf6bc9723edc7384ead80503839f49dcc56d767"
+          }
+        ],
+        "go": "go version go1.27.1 freebsd/amd64",
+        "guest_assertions": "failed before complete result; no passing case set",
+        "host_os": "Ubuntu 24.04.5",
+        "host_teardown": "passed: exact owned QEMU stopped, whole backings unchanged, declared artifacts absent",
+        "job_id": 111821139786,
+        "job_url": "https://github.com/gonz0w/horvium/actions/runs/37327282454/job/111821139786",
+        "kernel_installed_running_userland": "15.1-RELEASE-p3",
+        "native_utility_sha256": {
+          "/sbin/mount": "c46db28eff4edb2011ad1463b5891db0fb009879c07ac26b6d11ee55e40a4c38",
+          "/sbin/sha256": "b49fc069216ba000bb7482785bb601177ad65eab77d7c65ff2e7d186d01c0e4f",
+          "/sbin/sysctl": "482b0e13db8d55c8de12a08c94bf4fc3a4039a254d37e157f864e08aad9ce7c7",
+          "/sbin/zpool": "fdc340695bd80a88b087ee78d6051fd048b1c163cee39e345e5a559a58667c85",
+          "/usr/sbin/diskinfo": "38c92c1ecbf7b6813dcd5b89743ec0c294ca2c2d9922d590faba81bda206963b"
+        },
+        "qemu_sha256": "8a35ccba41582fc6c38b9df85fc9e35fa1d42f414d2d7d8090ee9b2f5e7c0854",
+        "qemu_version": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+        "release": "15.1",
+        "result": "failed",
+        "runner_image": "20260927.320.1",
+        "verified_fixture_pins": {
+          "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+          "builder": "2.2.8",
+          "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+          "cpu_count": 2,
+          "cpu_model": "qemu64",
+          "memory_mib": 6144,
+          "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+          "release": "15.1"
+        },
+        "zfs_module": "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0",
+        "zfs_userland": "zfs-2.4.2-1-FreeBSD_g6330a45b0"
+      },
+      {
+        "base_image_and_anyvm_unchanged_after_execution": true,
+        "declared_backings": [
+          {
+            "bytes": 536870912,
+            "file": "disk-0.raw",
+            "logical": 512,
+            "physical": 4096,
+            "serial": "HVM-UNIQUE-512",
+            "sha256": "9acca8e8c22201155389f65abbf6bc9723edc7384ead80503839f49dcc56d767"
+          },
+          {
+            "bytes": 536870912,
+            "file": "disk-1.raw",
+            "logical": 4096,
+            "physical": 4096,
+            "serial": "HVM-UNIQUE-4K",
+            "sha256": "9acca8e8c22201155389f65abbf6bc9723edc7384ead80503839f49dcc56d767"
+          },
+          {
+            "bytes": 536870912,
+            "file": "disk-2.raw",
+            "logical": 512,
+            "physical": 512,
+            "serial": "HVM-DUPLICATE",
+            "sha256": "9acca8e8c22201155389f65abbf6bc9723edc7384ead80503839f49dcc56d767"
+          },
+          {
+            "bytes": 536870912,
+            "file": "disk-3.raw",
+            "logical": 512,
+            "physical": 512,
+            "serial": "HVM-DUPLICATE",
+            "sha256": "9acca8e8c22201155389f65abbf6bc9723edc7384ead80503839f49dcc56d767"
+          },
+          {
+            "bytes": 536870912,
+            "file": "disk-4.raw",
+            "logical": 512,
+            "physical": 512,
+            "serial": "",
+            "sha256": "9acca8e8c22201155389f65abbf6bc9723edc7384ead80503839f49dcc56d767"
+          }
+        ],
+        "go": "go version go1.27.1 freebsd/amd64",
+        "guest_assertions": "failed before complete result; no passing case set",
+        "host_os": "Ubuntu 24.04.5",
+        "host_teardown": "passed: exact owned QEMU stopped, whole backings unchanged, declared artifacts absent",
+        "job_id": 111821140084,
+        "job_url": "https://github.com/gonz0w/horvium/actions/runs/37327282454/job/111821140084",
+        "kernel_installed_running_userland": "14.5-RELEASE",
+        "native_utility_sha256": {
+          "/sbin/mount": "91a17c3b3275f65dcb51966b7f33ba214735d54763d0c99a2956db0247c3f388",
+          "/sbin/sha256": "fef0c0e6aee66e8adb7261466d3aa8cf10375e879eca68c917ff767565ad51f7",
+          "/sbin/sysctl": "7601327d63fcf4da02174b404bc54c2b2d1493e5186ea0d2e4b28e1efebfd7ae",
+          "/sbin/zpool": "06c2b7f784a4e1d7a10eedbe27b7adaaeaa83c6dfec8dd7384f9e9ba1b719c47",
+          "/usr/sbin/diskinfo": "50e0846108500fc6e2ff7d812eda8cfc7613ad69f6b974a273ef67cca90c3ba0"
+        },
+        "qemu_sha256": "8a35ccba41582fc6c38b9df85fc9e35fa1d42f414d2d7d8090ee9b2f5e7c0854",
+        "qemu_version": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+        "release": "14.5",
+        "result": "failed",
+        "runner_image": "20260927.320.1",
+        "verified_fixture_pins": {
+          "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+          "builder": "2.2.8",
+          "compressed_sha256": "cd90489bb7d94585016e177b9e3f0084f3410454dc0af19481f44ddd5aa45257",
+          "cpu_count": 2,
+          "cpu_model": "qemu64",
+          "memory_mib": 6144,
+          "qcow2_sha256": "6593466e8d6341eaad95755973ab594222516dd75bcd99b18239b5047e5396f4",
+          "release": "14.5"
+        },
+        "zfs_module": "zfs-kmod-2.2.9-FreeBSD_g079ba86d7",
+        "zfs_userland": "zfs-2.2.9-FreeBSD_g079ba86d7"
+      }
+    ],
+    "repair": "Failing behavioral regression followed by exact test-only DEV/optional disk-ident LABEL correspondence; unqualified classes/contradictory relationships still reject; product device-use proof remains unimplemented",
+    "result": "failed on both guests; no guest acceptance evidence",
+    "run_id": 37327282454,
+    "run_url": "https://github.com/gonz0w/horvium/actions/runs/37327282454",
+    "source": "b35c7f7f68e98a3dbe561f3d6d1d8215382cf9c5"
+  },
+  "local_checked_input_sha256": {
+    ".github/workflows/bsd-devices.yml": "d3b81b118b6c7dfa19f715fe50af188f9ee64f788faa477660d817a01f360060",
+    ".github/workflows/bsd-properties.yml": "ec7e8fb726429a584384b179fe4047d8058b7a88bdfc719b06882692e130c9f0",
+    "Makefile": "b9661d771bcc123da5c877d8ccb0c55a09c6ab11db75480e435a1912d378bf6b",
+    "go.mod": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+    "go.sum": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+    "internal/inventory/clone.go": "3573cdbcd96b52d611c36ce84527331580dae121a21aed014a3f4b2382689b3e",
+    "internal/inventory/clone_test.go": "e2ab5ea29b25a8e58229e9574250eb35086a74415013bff5ced58b788abdc016",
+    "internal/inventory/device_fixture_test.go": "4d1b8321af1a788aeeb2078bafbf6741632af76092057437d16b92c7fdd0828d",
+    "internal/inventory/devices_freebsd_test.go": "943ecf94ae91b421d3b7680d442976eb6474c78444c4374919a77d62761890b6",
+    "internal/inventory/model.go": "dd531a8bb6b95e0e9fcc15a6da030fcacc86ca839420db829bcc9f8c7b600617",
+    "internal/inventory/parse.go": "039e50c19003a3093dbaff98f26cdc7ac5fc0d3c46a012775bc29697b9faacc1",
+    "internal/inventory/parse_geom.go": "aed24efa5d12228c1eb47a3e0552eb16a5222993e65db8581804fa23ed6de9bf",
+    "internal/inventory/parse_test.go": "95a593626afd2b0066127c3b395d9f5184a6597105fa03c4e00f217d183872b8",
+    "internal/inventory/parse_zfs.go": "d998da649605c8c37bffcd43b2f270e54123b8d4526aaf1ddf9b96f9c6d59577",
+    "internal/inventory/validate.go": "1ade407b0dc235a36fe286d98a0841dafae274030a890efd5d3b0318d0132eb4",
+    "tools/bootstrap-go.py": "3ac95fa2ac6e942c9f25a81cb20e5191756cd1e9c39668edc813fa0b214d19d1",
+    "tools/bsd-devices.sh": "9db6d3e92c02c3f0c319bba047df4bf64950d663240388ceac5e0e45681dd1ef",
+    "tools/check-device-evidence.py": "65a3181839c03ba4f6bbaa2e5e256ffbe4b977448f9e99320b3cf5fb4ee68886",
+    "tools/device-fixture.py": "905940088fd02bf5557f8a1215b2aa65295cf4574f9c44c9053b8f69bbb90ccf",
+    "tools/go-pins.json": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+    "tools/performance-vm-pins.json": "81f0f30e4171fed38e281c644044521a0cdc9f6693cd9b988b229ef4f85d002b",
+    "tools/prepare-performance-vm.py": "9f52f5f47c8a0f79a3adfa27b7d24ae480f4174d6c6aa91a3ec696cc3a7deb9e",
+    "tools/tests/test_device_evidence.py": "b618bf043ea5435708626906bd65d7550804c8656bc9c819a0fbf9f7e9ed71bd",
+    "tools/tests/test_device_fixture.py": "eef285652569713cb8ade6dab6a246a121997c8a9c9c14eaea0567f5c0152f63"
+  },
+  "local_checked_source": "3ded164fe4cab801e15fe6cd95cbc0e4766c3f23",
+  "local_checks": {
+    "freebsd_amd64_inventory_test_binary": "compiled; not native execution",
+    "make check lint test secrets": "passed",
+    "make go-check": "passed: vet, unit/race suites and twelve bounded fuzz targets"
+  },
+  "primary_source_sha256": {
+    "14.5/sys/dev/virtio/block/virtio_blk.c": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "ffb1f9d744a7cde24d0cec360b4fd8e26b66ace0a9b12b0a68a94cd92c5330d3"
+    },
+    "14.5/sys/geom/geom_dev.c": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "91ea77e9b7390c6954173b3f56a7fe92344e3069ec082024a47a00bc583f4449"
+    },
+    "14.5/sys/geom/geom_disk.c": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "c49ce337fa84cbca23e447733f0d8c49a74a7910eec537ba6395ec06d49d0e5c"
+    },
+    "14.5/sys/geom/label/g_label.c": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "92cdd42234b8b0d430bbee8ad2e39bff5b7a266c98a971b7b0f2ee5837a294a2"
+    },
+    "14.5/sys/geom/label/g_label_disk_ident.c": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "bca48fdf9c0c687cc44449b5c67c2d0435ddde119f0fa77866f8123ede8d60ce"
+    },
+    "14.5/usr.sbin/diskinfo/diskinfo.8": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "8a06019b6a9cba69a0079d3b09d788e21a3ef65f759192707ed681e74838b4d3"
+    },
+    "14.5/usr.sbin/diskinfo/diskinfo.c": {
+      "revision": "231eee334c098a8398bc959202415c48058f67f0",
+      "sha256": "0dd9050ee91a0cd0c8a7a286bc3b078002438c5a5d9817c5a2eb695a6b4ab27a"
+    },
+    "15.1/sys/dev/virtio/block/virtio_blk.c": {
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "ed48f885dca40cd0d01fcec79919f6ee88d36c553ca8a65afca054d2aa786a90"
+    },
+    "15.1/sys/geom/geom_dev.c": {
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "4f1c5c34f3f0392002b5e1fa6887ab811ea6c7ad6197b36ffe9f4c70a32b6e44"
+    },
+    "15.1/sys/geom/geom_disk.c": {
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "44bceec35da7e8eddce47ce0b57672aac266ada7c0575d1d6c844b027b140afe"
+    },
+    "15.1/sys/geom/label/g_label.c": {
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "62fb68acb37f5ada35a17a3ae9e4d9246ea57030ae4fd12cb144aeb0906c8a99"
+    },
+    "15.1/sys/geom/label/g_label_disk_ident.c": {
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "3a6d2b018bf3ed300bcca998cc353a50d5174f5b183d45b12bc7c4cc09482c1d"
+    },
+    "15.1/usr.sbin/diskinfo/diskinfo.8": {
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "8a06019b6a9cba69a0079d3b09d788e21a3ef65f759192707ed681e74838b4d3"
+    },
+    "15.1/usr.sbin/diskinfo/diskinfo.c": {
+      "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+      "sha256": "0dd9050ee91a0cd0c8a7a286bc3b078002438c5a5d9817c5a2eb695a6b4ab27a"
+    }
+  },
+  "schema_version": 1,
+  "scope": "Disposable virtual disk identity/geometry fixture infrastructure only; no product device selector, enrollment, write eligibility or complete M2 acceptance",
+  "status": "unqualified: repaired native jobs and PR CI did not start because of GitHub account billing/spending-limit block"
+}

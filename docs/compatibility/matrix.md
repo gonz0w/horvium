@@ -70,3 +70,8 @@ and actual Firefox. Native-small combined Go RSS 33.65–35.45 MiB and idle CPU
 manual-browser and hardware/client/release limits above still apply; M1 remains
 unaccepted and Validating. See [consolidated qualification](../testing/M1/qualification-status.md)
 and the separate approved [M2 Test Design](../milestones/M2/TDD.md).
+
+M2 virtual device fixture: [identity/geometry procedure](../testing/M2/devices.md)
+local gates passed; both initial guests failed a repaired consumer assumption.
+GitHub account billing/spending limits blocked repaired native jobs and PR 28 CI
+before any step; qualification remains pending. This fixture adds no product write eligibility.

@@ -1,6 +1,6 @@
 # M2 disposable virtual device identity fixture
 
-Date: 2026-10-05. Status: fixture behavioral checks passed; native qualification pending.
+Date: 2026-10-05. Status: local fixture checks passed; repaired native qualification and PR 28 CI blocked by GitHub account limits.
 [Approved EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [implementation sequence](../../milestones/M2/implementation.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -123,7 +123,25 @@ and base-image/AnyVM post-checks passed, but neither guest supplied acceptance
 evidence. Inspected DEV/LABEL producers explain normal device-node and disk-ident
 attachments. A failing regression now checks their exact correspondence and rejects
 partition/unknown/contradictory attachment shapes; no product use check was relaxed.
-The repaired suite still requires native execution on both guests.
+At repaired source `3ded164fe4cab801e15fe6cd95cbc0e4766c3f23`,
+[run 37328280188](https://github.com/gonz0w/horvium/actions/runs/37328280188)
+did not start either guest: GitHub reported failed account payments or a spending
+limit requiring adjustment. Zero steps executed. The same scheduling annotation
+blocked all checks in [PR CI run 37328289533](https://github.com/gonz0w/horvium/actions/runs/37328289533).
+These are unstarted gates, not failing product assertions or native passes.
+
+[The sanitized execution record](devices-manifest.json) preserves the initial
+failures, successful initial host cleanup/pin checks, repaired local checked
+source/input hashes, inspected primary sources and the unstarted native/CI jobs.
+Local `make check lint test secrets`, `make go-check` (vet/unit/race/twelve bounded
+fuzz targets) and the FreeBSD amd64 inventory test-binary cross-build passed.
+The repaired suite still needs actual execution on both guests, complete teardown
+and successful current-head CI. PR 28 remains a draft pending those gates.
+
+Once GitHub Actions account billing/limits are restored, dispatch the device fixture
+from the latest PR branch with the command above and rerun the current-head
+repository checks. Do not accept this fixture or enable any device operation from
+the locally passing regression alone.
 
 Native qualification must record both run/job IDs, exact tested inputs and tool/
 source/image hashes, actual guest versions and observed geometry. Do not export raw
