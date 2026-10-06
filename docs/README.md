@@ -95,4 +95,4 @@
 
 - [M2 positive pool-label identity](testing/M2/pool-labels.md).
 
-- [M2 disk access](testing/M2/disk-access.md): identity-bound native aggregate access and review drift; qualification pending.
+- [M2 disk access](testing/M2/disk-access.md): identity-bound native aggregate access and review drift; both releases and full teardown qualified, review pending.

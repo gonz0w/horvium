@@ -59,7 +59,8 @@ pool identities and recorded state to the same disk; all fifty-nine assertions
 and full teardown passed on both targets; accepted in PR 37.
 The next [disk-access subset](docs/testing/M2/disk-access.md) binds aggregate
 GEOM access counters to disk identity and invalidates review on access drift;
-native qualification and maintainer review remain pending.
+all sixty-eight native assertions and full preservation/teardown passed on both
+targets; maintainer review remains pending.
 Other native gates, durable jobs and storage writes remain pending; the runtime is
 still read-only.
 

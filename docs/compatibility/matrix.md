@@ -144,6 +144,8 @@ No all-label checksum integrity, signature absence, collector or write authority
 M2 aggregate disk access: [contract and procedure](../testing/M2/disk-access.md)
 binds native GEOM access counts to independently correlated direct disks and
 requires fresh review on count changes. Provider/consumer consistency and missing
-mode refusal have portable coverage; actual direct/alias-held-descriptor tests
-and complete preservation/teardown on both targets are pending. Zero counters
+mode refusal have portable coverage; all sixty-eight assertions, four native tests
+and complete preservation/teardown passed on both targets. Actual direct/alias
+read/write opens and close/restoration qualified on the owned virtual disk; see
+the [native manifest](../testing/M2/disk-access-manifest.json). Maintainer review is pending. Zero counters
 are not complete device clearance. No runtime collector or product writes follow.

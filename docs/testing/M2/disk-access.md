@@ -1,7 +1,7 @@
 # M2 aggregate disk access
 
-Date: 2026-10-05. Status: implementing; portable behavior tested; native
-qualification and maintainer review pending. [Approved EDD](../../milestones/M2/EDD.md),
+Date: 2026-10-05. Status: all sixty-eight assertions, four native tests and complete
+preservation/teardown passed on both targets; maintainer review pending. [Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
 ## Observation contract
@@ -96,3 +96,30 @@ reservation/enrollment and last-moment execution checks remain unqualified.
 M2-DEVICE-001 and slice 1 remain incomplete. M1 manual Safari/accessibility remains
 pending by maintainer choice. GitHub Actions remain disabled; all work runs locally
 on the Mac with supervised disposable QEMU and mandatory teardown.
+
+## Executed qualification
+
+Signed functional/suite source `53b74a8844f5f0bce42b08ae044929aacdfaa92f` passed all sixty-eight assertions
+in four executed tests on FreeBSD 15.1-RELEASE-p3 (ZFS root) and 14.5-RELEASE
+(UFS root), through Mac arm64 / QEMU 11.1.1 TCG, two CPUs and 6144 MiB.
+Actual direct read-only and alias read-only/read-write handles produced bound
+access observations and review drift. Independently recollected held access
+validated unchanged. Closing all handles restored zero access and invalidated
+the held-open review; all five guest disk hashes matched before/after and root
+mount/GUID/backing remained unchanged. No bytes were written through these handles.
+
+The existing identity, partition, mount, swap, imported/exported pool, signature
+and immutable review assertions also passed. Both guests preserved all original
+host disk backings, base images and QEMU/firmware inputs, removed owned disks,
+image/key/variables and verified their supervised process groups stopped. The
+[sanitized manifest](disk-access-manifest.json) records exact input hashes,
+actual versions, thirteen native utility hashes per guest, ten pinned source
+hashes, all assertion groups and unchanged hashes of every prior M2 manifest.
+There were no unqualified native attempts for this extension.
+
+The same signed functional source passed complete local review: `make check lint
+test secrets go-deep-check`, 67 tooling tests, Go unit/race checks and twenty
+bounded fuzz targets, with owned review processes stopped. Final PR-head review
+is recorded separately after these documentation/evidence updates. These results
+qualify aggregate access observation and drift on the declared virtual fixtures;
+complete device eligibility and M2 acceptance remain pending.
