@@ -272,6 +272,8 @@ mode-only versus ACL-enabled distinction, conservative permission refusal,
 ancestor denial before lock creation, retained private modes/UIDs/inodes/ACLs/bytes,
 real NFSv4 named-user access and kernel UID denial, and owned mount/device/child
 teardown. Require all 108 lease/read/ACL assertions, ten parent tests and 57
-codec subtests on both releases. Native qualification is pending; complete
+codec subtests on both releases. Both targets passed at signed source
+`33f4d91bc57adb71f27ce80bbe0552fb1e7685d2`, including complete teardown; see the
+[manifest](../../testing/M2/state-acl-manifest.json). Review is pending; complete
 provisioning, coordinated races, publication/admission/recovery and M2 acceptance
 remain open.

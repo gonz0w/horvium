@@ -185,5 +185,9 @@ actual-descriptor capability/ACL queries to ancestors, private directories, lock
 and ownership records. The conservative policy rejects named principals,
 inheritance and nonowner grants beyond its allowlist. The expanded state suite
 requires 108 named assertions, ten parent tests and 57 codec subtests on both
-releases; native qualification and review are pending. No publisher, runtime
+releases; all passed at signed source `33f4d91bc57adb71f27ce80bbe0552fb1e7685d2`
+with complete teardown. See the [manifest](../testing/M2/state-acl-manifest.json)
+for 15.1-RELEASE-p3/ZFS-root and 14.5-RELEASE/UFS-root observations, including
+owned UFS POSIX/NFSv4 controls and retained initial failure/repair. Maintainer
+review is pending. No publisher, runtime
 state provisioning or storage writes follow.

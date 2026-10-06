@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation implementing; Actions disabled.
+Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -218,6 +218,10 @@ The [ACL boundary](../../testing/M2/state-acl.md) strengthens actual opened-obje
 validation before lock creation or record reads. It adds forty-five assertions
 using owned memory-backed UFS fixtures with POSIX and NFSv4 ACLs, plus portable
 policy tests. The state suite requires 108 assertions, ten parent tests and 57
-codec subtests. Native qualification and review are pending. No ACL modification
+codec subtests. Both targets passed at signed source
+`33f4d91bc57adb71f27ce80bbe0552fb1e7685d2`, with complete teardown; see the
+[manifest](../../testing/M2/state-acl-manifest.json). Initial native baseline
+refusal and a deliberately stopped diagnostic source retain exact evidence.
+Maintainer review is pending. No ACL modification
 exists in product code; publication, runtime provisioning, full budgets and
 recovery remain ahead.

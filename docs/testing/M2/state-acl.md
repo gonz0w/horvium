@@ -1,6 +1,6 @@
 # M2 descriptor-based state ACL validation
 
-Date: 2026-10-05. Status: implementing; native qualification and review pending.
+Date: 2026-10-05. Status: partial descriptor ACL boundary qualified; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -90,6 +90,44 @@ python3.14 tools/local-qualification.py state 15.1 --run
 python3.14 tools/local-qualification.py state 14.5 --run
 make lab-status
 ```
+
+## Executed evidence
+
+The [source-bound manifest](state-acl-manifest.json) records signed/DCO functional
+and suite source `33f4d91bc57adb71f27ce80bbe0552fb1e7685d2`, based on merged PR 41
+source `a6406670cb7804a1d15582a615114fefdbeac337`. All 92 recorded source/tool inputs
+remain identical to the tested source. All nineteen earlier M2 manifests retain
+their exact bytes, original tested sources and scopes.
+
+Local review passed `make check lint test secrets go-deep-check`: 71 tooling
+tests, Go unit/race checks and all 21 bounded fuzz targets. Both full native runs
+passed all 108 named assertions, ten parent tests and 57 distinct codec subtests,
+without failures or skips at this repaired source.
+
+| Native fixture | ACL test | Ownership read test | Lease test | Result |
+| --- | --- | --- | --- | --- |
+| FreeBSD 15.1-RELEASE-p3, ZFS root | 0.31 s | 0.12 s | 0.12 s | All required cases passed |
+| FreeBSD 14.5-RELEASE, UFS root | 0.32 s | 0.11 s | 0.17 s | All required cases passed |
+
+The ACL test uses both owned UFS ACL models on each release; default root-filesystem
+lease/read controls also rerun. Durations describe tests, not NAS performance.
+Both runs preserved pinned base/runtime artifacts, removed owned children,
+descriptors, mount/device/fixture/image/key/variables and stopped supervised groups.
+Four native utility hashes per release, result/log hashes and 24 pinned primary
+source records are retained. Final documentation-head portable review is separate.
+
+The first full native attempt at `b14ec04b9e429a833b17906379587b81b147a022` refused
+ordinary baseline leases. Sanitized descriptor diagnostics at
+`2e1a3aedc68b40d243aa84fdcd819c6c7f5277e7` confirmed working capability queries and
+ABI retrieval; read-named-attributes had been mapped to write-named-attributes.
+Independent literal positive/read and negative/write regressions expose and fix
+that shared fixture/policy typo. A separate failing regression excludes POSIX-only
+permission bits from the NFSv4 rights mask. The superseded diagnostic full run was
+deliberately stopped after diagnosis; both unqualified attempts retain exact
+sources, reasons, hashes and complete teardown. A cross-built test at repaired
+source passed all 45 ACL controls in that owned diagnostic VM; it is recorded as
+a diagnostic, not complete qualification. Only the later complete source-bound
+native runs above qualify this subset. Maintainer review remains pending.
 
 ## Primary evidence and remaining gates
 
