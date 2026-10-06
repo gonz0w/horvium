@@ -348,7 +348,7 @@ func TestNativeImportedPoolUse(t *testing.T) {
 	// reimport only its verified GUID without force. The product gains no import
 	// operation; failure leaves the guest unqualified and it is discarded.
 	labels := func(c capture) (PoolLabels, PoolLabelCapture) {
-		probe := PoolLabelCapture{Device: path, Output: must("/sbin/zdb", "-l", path)}
+		probe := PoolLabelCapture{Device: path, Output: must("/usr/sbin/zdb", "-l", path)}
 		got, err := ParsePoolLabels(c.raw, must("/usr/sbin/diskinfo", path), must("/usr/sbin/diskinfo", "-s", path), probe, inventory.DefaultLimits())
 		if err != nil || !reflect.DeepEqual(got.Disk.Provider, selected) || len(got.Configurations) == 0 {
 			t.Fatal("native pool labels unavailable", err)

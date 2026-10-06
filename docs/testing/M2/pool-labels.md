@@ -87,6 +87,12 @@ cleanup controls pass: `active_identity`, `exported_identity`, `imported_absence
 Existing manifests remain immutable, bound to their actual tested source/case sets.
 The fixture export/reimport privilege is not product mutation authority.
 
+The first 15.1 attempt at source `57124972f94265fde2082e7b170b50cd9be938ab`
+stopped during utility hashing because the fixture used `/sbin/zdb` instead of
+the installed `/usr/sbin/zdb`. No native tests or fixture storage writes executed.
+Host backings/base/runtime were preserved, all owned files removed and the group
+stopped. This attempt remains unqualified; the repaired fixture is rerun fully.
+
 Run sequentially from clean signed source through the Mac supervisor:
 
 ```sh

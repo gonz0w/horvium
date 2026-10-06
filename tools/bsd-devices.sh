@@ -17,7 +17,7 @@ python3.14 tools/bootstrap-go.py
 freebsd-version -kru
 zfs version
 /sbin/mount -p | awk '$2 == "/" {printf "DEVICE_ROOT_FS %s\n", $3}'
-/sbin/sha256 /sbin/zdb /sbin/sysctl /sbin/mount /sbin/zpool /usr/sbin/diskinfo /sbin/sha256 /sbin/gpart /sbin/newfs /sbin/swapon /sbin/swapoff /sbin/umount /usr/sbin/swapinfo /usr/sbin/fstyp
+/sbin/sha256 /usr/sbin/zdb /sbin/sysctl /sbin/mount /sbin/zpool /usr/sbin/diskinfo /sbin/sha256 /sbin/gpart /sbin/newfs /sbin/swapon /sbin/swapoff /sbin/umount /usr/sbin/swapinfo /usr/sbin/fstyp
 .tools/go/bin/go vet ./internal/inventory ./internal/storage
 if ! .tools/go/bin/go test -v -count=1 ./internal/inventory -run '^TestNativeDeviceFixtures$' > .tools/device-native.log 2>&1; then
     cat .tools/device-native.log
