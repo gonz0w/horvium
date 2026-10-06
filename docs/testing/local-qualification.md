@@ -277,4 +277,5 @@ assertions, nineteen parents and the same 57 codec subtests. Native fixtures cov
 exact reduced reservation limits, unrelated state denial, orphan preservation/
 uncertainty, real pre-rename namespace changes and concurrent last-slot refusal.
 There are no extra host services or live storage fixtures. Both targets and complete
-owned guest/host teardown are required; native qualification is pending.
+owned guest/host teardown passed at signed source `bf80cb9f2e1c196eae330ae0d681d86e0c466033`;
+see the [manifest](M2/ownership-capacity-manifest.json).

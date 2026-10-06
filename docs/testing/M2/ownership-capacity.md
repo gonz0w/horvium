@@ -1,6 +1,6 @@
 # M2 ownership publication capacity
 
-Date: 2026-10-06. Status: implementing; native qualification pending.
+Date: 2026-10-06. Status: qualified on both declared native targets; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -80,5 +80,35 @@ make lab-status
 
 Shared native selectors/evidence validation trigger one complete portable review.
 Evidence-only documentation followups may reuse matching executed deep evidence
-while rerunning baseline/source/title checks. Native qualification remains pending;
-cross-compilation alone demonstrates no native behavior.
+while rerunning baseline/source/title checks. Executed qualification below retains its actual source; cross-compilation alone
+demonstrates no native behavior.
+
+
+## Executed qualification
+
+Signed functional/suite source `bf80cb9f2e1c196eae330ae0d681d86e0c466033` passed all
+234 assertions, nineteen parent tests and 57 codec subtests on both declared
+releases, with no skips or failures. See the [sanitized manifest](ownership-capacity-manifest.json)
+for source/input/SDK/module/image/runtime/utility/log provenance. Portable review
+passed 87 tooling regressions, all ordinary Go tests, race checks across eleven
+packages and all 22 compiler-listed bounded fuzz targets. Shared evidence tooling
+correctly selected full portable mode; deep checks executed once at this source.
+
+Both guests passed exact reduced creation/replacement limits, refusal before
+temporary creation, preservation of unrelated unsafe/damaged/newer records and
+orphan bytes, retained uncertainty, late namespace/capacity refusal and concurrent
+last-slot serialization. Existing real UFS ENOSPC/read-only and POSIX/NFSv4 ACL
+controls also passed. No native qualification failures occurred.
+
+| Target | Root | Capacity parent | Full owned guest | Result |
+|---|---|---|---|---|
+| 15.1-RELEASE-p3 | zfs | 0.19 s | 32.769 s | all 234; complete teardown |
+| 14.5-RELEASE | ufs | 0.15 s | 26.824 s | all 234; complete teardown |
+
+Both guests verified the same cross-built executable before execution. Every owned
+group stopped; base/runtime hashes were preserved and images/keys/variables/test
+executables removed. All 22 prior M2 manifests remain byte-identical. The final
+prose-only followup records its own source/title/baseline and original deep source
+in the PR; native execution is not relabeled as that head. Mixed-store allocation,
+durable jobs/admission/recovery, populated scale/resource workloads, M2 acceptance
+and deferred M1 manual accessibility remain pending.

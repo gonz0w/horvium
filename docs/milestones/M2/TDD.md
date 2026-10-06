@@ -323,5 +323,7 @@ refuse unrelated unsafe/corrupt/newer state, retain unknown/orphan objects, latc
 orphan uncertainty, and serialize last-slot writers. Require 234 named assertions,
 nineteen parents and 57 codec subtests on both releases with preservation/teardown.
 Reduced native bounds prove accounting, not populated M2-SCALE-001/resource gates.
-Native qualification is pending; mixed job budgets, durable admission/restoration/
+Both targets passed at signed source `bf80cb9f2e1c196eae330ae0d681d86e0c466033` with
+full teardown; see the [manifest](../../testing/M2/ownership-capacity-manifest.json).
+Maintainer review is pending; mixed job budgets, durable admission/restoration/
 recovery, abrupt death/power loss and full M2 acceptance remain open.

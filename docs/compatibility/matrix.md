@@ -223,6 +223,8 @@ scale, hardware or client support claim.
 M2 ownership capacity: [contract/procedure](../testing/M2/ownership-capacity.md)
 connects complete catalog validation and old-plus-new logical-byte/count reservation
 to private publication. The expanded state gate requires 234 assertions, nineteen
-parents and 57 codec subtests on both existing targets. Native qualification is
+parents and 57 codec subtests on both existing targets. Both passed at signed source
+`bf80cb9f2e1c196eae330ae0d681d86e0c466033` with full teardown; see the
+[manifest](../testing/M2/ownership-capacity-manifest.json). Maintainer review is
 pending. Reduced fixture limits add no populated scale, commercial hardware,
 client, mixed-store admission or recovery support claim.
