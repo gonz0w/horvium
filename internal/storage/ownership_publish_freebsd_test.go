@@ -420,10 +420,15 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 	}
 	setFixtureACL(t, int(f.Fd()), 2, namedFixtureACL(original, 2, 4))
 	check("acl_denial", lease.PublishOwnership(next, 1) != nil)
+	catalog, ce := lease.InspectOwnership()
+	check("catalog_acl_denial", ce != nil && catalog.Records == nil && catalog.Bytes == 0)
 	current, e := readStateACL(int(f.Fd()), 2)
 	b, be := os.ReadFile(record)
 	check("acl_preservation", e == nil && current == namedFixtureACL(original, 2, 4) && be == nil && bytes.Equal(b, ownershipGolden()))
+	check("catalog_acl_preservation", e == nil && current == namedFixtureACL(original, 2, 4) && be == nil && bytes.Equal(b, ownershipGolden()))
 	setFixtureACL(t, int(f.Fd()), 2, original)
+	catalog, ce = lease.InspectOwnership()
+	check("catalog_acl_restored", ce == nil && len(catalog.Records) == 1)
 	if f.Close() != nil {
 		t.Fatal("owned ACL restore failed")
 	}

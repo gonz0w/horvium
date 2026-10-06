@@ -43,6 +43,9 @@ func TestNativeOwnershipReadProcess(t *testing.T) {
 		t.Fatal("root descriptors not inherited")
 	}
 	s := &StateDirectory{directory: dir, writer: writer}
+	if catalog, err := s.InspectOwnership(); !errors.Is(err, ErrStateDirectory) || !reflect.DeepEqual(catalog, OwnershipCatalog{}) {
+		t.Fatal("non-root catalog returned metadata", err)
+	}
 	p, err := DecodeOwnershipRecord(ownershipGolden())
 	if err != nil || !errors.Is(s.PublishOwnership(p, 0), ErrStateDirectory) {
 		t.Fatal("non-root inherited-descriptor publisher accepted")

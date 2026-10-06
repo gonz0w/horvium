@@ -78,8 +78,9 @@ objects before trusting mode bits. All 108 expanded assertions and complete
 teardown passed on both targets; accepted in PR 42.
 The [ownership publication prerequisite](docs/testing/M2/ownership-publication.md)
 adds private metadata publication and explicit uncertainty after failed durability.
-All 161 assertions and complete teardown passed on both targets; review is pending.
-Runtime enrollment and full store/recovery gates remain open.
+All 161 assertions and complete teardown passed on both targets; accepted in PR 43.
+The [bounded ownership catalog](docs/testing/M2/ownership-catalog.md) passed all 202 assertions
+and complete teardown on both targets; maintainer review is pending. Runtime enrollment and full store/recovery gates remain open.
 Other native gates, durable jobs and storage writes remain pending; the runtime is
 still read-only.
 
