@@ -125,7 +125,7 @@ func (b *stateCatalogBuilder) add(entry stateRecordName, data []byte) error {
 		}
 		b.catalog.Ownership = append(b.catalog.Ownership, OwnershipSummary{PoolGUID: p.PoolGUID, Revision: p.Revision, Bytes: size})
 	} else {
-		j, err := DecodeJobRecord(data)
+		j, err := decodeCatalogJob(data)
 		if err != nil {
 			return err
 		}
@@ -147,4 +147,19 @@ func (b *stateCatalogBuilder) add(entry stateRecordName, data []byte) error {
 	}
 	b.catalog.Bytes += size
 	return nil
+}
+
+// Each decoder independently enforces its exact complete shape/kind/checksum.
+// Trying the two accepted formats cannot synthesize a missing review baseline.
+// Only census consumes this projection; typed readers never discard a baseline.
+func decodeCatalogJob(data []byte) (Job, error) {
+	j, err := DecodeJobRecord(data)
+	if err == nil {
+		return j, nil
+	}
+	p, err := DecodePropertyJob(data)
+	if err != nil {
+		return Job{}, err
+	}
+	return p.Job(), nil
 }

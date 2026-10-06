@@ -420,4 +420,18 @@ Cross-compilation proves portability only. No native operations/file formats in
 accepted readers/publishers change; native persistence/admission/recovery and
 full M2 acceptance remain separate gates. Six parents/859 subtests, required baseline and storage race/all 18 fuzz targets
 passed at signed source `ddec32450bfc533eca98c2e39d6a68ce09951404`;
-see the [manifest](../../testing/M2/property-jobs-manifest.json). Review is pending.
+see the [manifest](../../testing/M2/property-jobs-manifest.json). Accepted in PR 53.
+
+
+## Native property-job store prerequisite
+
+The [procedure](../../testing/M2/property-job-storage.md) adds partial M2-STATE-001,
+M2-JOB-001 and M2-PRIV-001 at T1/T3: complete private baseline reads and ID binding,
+immutable durable predecessors, format conversion denial, combined byte/class/
+submission accounting, actual shared publication/phase failures and uncertainty,
+late namespace/valid-baseline drift, duplicate serialization, safe-file refusal,
+POSIX/NFSv4 ACL/kernel UID controls and real UFS ENOSPC/read-only preservation.
+Require all 555 named assertions, fifty parents and 1,804 distinct codec subtests
+on both declared targets with complete guest/host teardown. Shared evidence changes
+require a complete portable review. Qualification is pending; no admission/native
+effect, recovery/acknowledgement cut or M2 acceptance claim follows.

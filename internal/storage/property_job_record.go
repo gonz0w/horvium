@@ -26,7 +26,7 @@ type propertyJobRecord struct {
 }
 
 // EncodePropertyJob checks a single bounded unit of lifecycle and baseline
-// metadata. No native reader/publisher accepts this distinct record kind yet.
+// metadata. Encoding alone supplies none of the native StateDirectory safeguards.
 func EncodePropertyJob(p PropertyJob) ([]byte, error) {
 	normalized, err := normalizePropertyJob(p)
 	if err != nil {

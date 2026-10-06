@@ -307,3 +307,9 @@ subtests. Both candidates passed at signed source `dc789c4e3672f61e670e6c4352e1e
 full teardown; see the [manifest](M2/job-publication-manifest.json). Actual UFS ENOSPC/read-only job controls extend the shared
 pipeline/ACL/capacity suite. Shared evidence/selector changes require a complete
 portable review; evidence-only followups may reuse exact matching deep execution.
+
+
+The [property-job store extension](M2/property-job-storage.md) raises the state
+gate to 555 assertions, fifty parents and 1,804 codec/model subtests. Both job
+formats share the existing owned namespace/ACL/UFS/capacity fixtures. The same
+prebuilt execution and complete teardown rules apply; qualification is pending.

@@ -93,8 +93,9 @@ passed all 432 state assertions and full teardown on both targets; accepted in
 PR 51. The [reviewed property intent](docs/testing/M2/property-intent.md) capture/codec
 passed portable qualification; accepted in PR 52. The
 [property job binding](docs/testing/M2/property-jobs.md) combines that baseline
-with immutable lifecycle metadata and passed portable qualification; review is
-pending. Runtime admission remains disabled.
+with immutable lifecycle metadata and passed portable qualification; accepted in
+PR 53. The [native property-job store](docs/testing/M2/property-job-storage.md)
+extends the safe shared store; qualification is pending. Runtime admission remains disabled.
 Runtime enrollment and full store/recovery gates remain open.
 Other native gates, durable jobs and storage writes remain pending; the runtime is
 still read-only.

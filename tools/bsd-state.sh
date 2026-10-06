@@ -19,7 +19,7 @@ zfs version
 /sbin/mount -p | awk '$2 == "/" {printf "STATE_ROOT_FS %s\n", $3}'
 /sbin/sha256 /sbin/mount /sbin/umount /sbin/mdconfig /sbin/newfs
 .tools/go/bin/go vet ./internal/storage
-if ! .tools/go/bin/go test -v -count=1 ./internal/storage -run '^Test(Native(StateDirectory|OwnershipRead|OwnershipCatalog|OwnershipCapacity|JobRead|JobPublication|StateCatalog|StateACL|OwnershipPublish|OwnershipPublishFilesystem)|StateACLPolicy|MixedOwnershipPublicationCapacity|StateCatalog(Names|Records|Limits)|Ownership.*|Job.*)$' > .tools/state-native.log 2>&1; then
+if ! .tools/go/bin/go test -v -count=1 ./internal/storage -run '^Test(Native(StateDirectory|OwnershipRead|OwnershipCatalog|OwnershipCapacity|JobRead|JobPublication|PropertyJobStorage|StateCatalog|StateACL|OwnershipPublish|OwnershipPublishFilesystem)|StateACLPolicy|MixedOwnershipPublicationCapacity|StateCatalog(Names|Records|Limits)|Property.*|Ownership.*|Job.*)$' > .tools/state-native.log 2>&1; then
     cat .tools/state-native.log
     exit 1
 fi

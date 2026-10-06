@@ -108,6 +108,13 @@ func TestNativeStateACLProcess(t *testing.T) {
 	if p, err := s.ReadOwnership("100"); err != ErrStateDirectory || p.PoolGUID != "" {
 		t.Fatal("ACL grant bypassed product kernel UID guard")
 	}
+	property := nativePropertyJobFixture(t)
+	if p, err := s.ReadPropertyJob(property.job.ID); err != ErrStateDirectory || !reflect.DeepEqual(p, PropertyJob{}) {
+		t.Fatal("property read bypassed kernel UID")
+	}
+	if err := s.PublishPropertyJob(property, 0); err != ErrStateDirectory {
+		t.Fatal("property publication bypassed kernel UID")
+	}
 	job := jobFixture()
 	if j, err := s.ReadJob(job.ID); err != ErrStateDirectory || j.ID != "" {
 		t.Fatal("ACL grant bypassed job reader kernel UID guard")
@@ -152,6 +159,21 @@ func TestNativeStateACLProcess(t *testing.T) {
 	if err != nil || readErr != nil || !bytes.Equal(data, jobBytes) {
 		t.Fatal("kernel job grant did not read fixture bytes")
 	}
+	propertyFD, err := unix.Openat(3, "job-"+property.job.ID+".json", unix.O_RDONLY|unix.O_NOFOLLOW, 0)
+	if err != nil {
+		t.Fatal("native property grant unavailable")
+	}
+	propertyFile := os.NewFile(uintptr(propertyFD), "acl-property-record")
+	defer propertyFile.Close()
+	if unix.Fstat(propertyFD, &st) != nil || st.Uid != 0 || st.Mode&07777 != 0600 {
+		t.Fatal("property private mode/UID not retained")
+	}
+	want, err := EncodePropertyJob(property)
+	data, readErr = io.ReadAll(io.LimitReader(propertyFile, 65537))
+	if err != nil || readErr != nil || !bytes.Equal(data, want) {
+		t.Fatal("kernel property grant did not read fixture bytes")
+	}
+
 }
 
 func TestNativeStateACL(t *testing.T) {
@@ -273,6 +295,19 @@ func TestNativeStateACL(t *testing.T) {
 				t.Fatal("owned job descriptor unavailable")
 			}
 			defer jobRecord.Close()
+
+			property := nativePropertyJobFixture(t)
+			propertyBytes, err := EncodePropertyJob(property)
+			propertyPath := filepath.Join(statePath, "job-"+property.job.ID+".json")
+			if err != nil || os.WriteFile(propertyPath, propertyBytes, 0600) != nil {
+				t.Fatal("owned property record unavailable")
+			}
+			propertyRecord, err := os.OpenFile(propertyPath, os.O_RDWR, 0)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer propertyRecord.Close()
+			propertyFD := int(propertyRecord.Fd())
 			jobFD := int(jobRecord.Fd())
 			dirFD, lockFD, recordFD := int(s.directory.Fd()), int(s.writer.Fd()), int(record.Fd())
 			posix, e1 := unix.Fpathconf(dirFD, 59)
@@ -287,6 +322,21 @@ func TestNativeStateACL(t *testing.T) {
 			}
 			dirACL, lockACL, recordACL := original(dirFD), original(lockFD), original(recordFD)
 			jobACL := original(jobFD)
+			propertyACL := original(propertyFD)
+			propertyNext, err := TransitionPropertyJob(property, JobApplying, property.job.History[0].At+1, "launch-intent", "")
+			if err != nil {
+				t.Fatal(err)
+			}
+			validProperty := func() bool {
+				p, e := s.ReadPropertyJob(property.job.ID)
+				return e == nil && reflect.DeepEqual(p, property)
+			}
+			deniedPropertyRead := func() bool {
+				p, e := s.ReadPropertyJob(property.job.ID)
+				return e == ErrStateDirectory && reflect.DeepEqual(p, PropertyJob{})
+			}
+			deniedPropertyPublish := func() bool { return s.PublishPropertyJob(propertyNext, 1) == ErrStateDirectory }
+			check(prefix+"property_baseline", validProperty())
 			validJob := func() bool { j, e := s.ReadJob(job.ID); return e == nil && j.ID == job.ID }
 			if !validJob() {
 				t.Fatal("baseline job ACL read refused")
@@ -314,7 +364,7 @@ func TestNativeStateACL(t *testing.T) {
 			preserved := func(fd int, mode uint16, want stateACL) bool {
 				var st, named unix.Stat_t
 				a, e := readStateACL(fd, model.kind)
-				path := map[int]string{dirFD: statePath, lockFD: filepath.Join(statePath, stateWriterName), recordFD: recordPath, jobFD: jobPath}[fd]
+				path := map[int]string{dirFD: statePath, lockFD: filepath.Join(statePath, stateWriterName), recordFD: recordPath, jobFD: jobPath, propertyFD: propertyPath}[fd]
 				return unix.Fstat(fd, &st) == nil && unix.Lstat(path, &named) == nil && named.Dev == st.Dev && named.Ino == st.Ino && st.Uid == 0 && st.Mode&07777 == mode && e == nil && a == want
 			}
 			bad := namedFixtureACL(dirACL, model.kind, 0)
@@ -324,6 +374,8 @@ func TestNativeStateACL(t *testing.T) {
 			check(prefix+"job_directory_denial", deniedJob())
 			check(prefix+"catalog_directory_denial", deniedCatalog())
 			check(prefix+"job_publish_directory_denial", deniedPublication())
+			check(prefix+"property_read_directory_denial", deniedPropertyRead())
+			check(prefix+"property_publish_directory_denial", deniedPropertyPublish())
 			check(prefix+"directory_no_repair", preserved(dirFD, 0700, bad))
 			setFixtureACL(t, dirFD, model.kind, dirACL)
 			parent := filepath.Join(mountpoint, "ancestor")
@@ -349,6 +401,8 @@ func TestNativeStateACL(t *testing.T) {
 			check(prefix+"job_lock_denial", deniedJob())
 			check(prefix+"catalog_lock_denial", deniedCatalog())
 			check(prefix+"job_publish_lock_denial", deniedPublication())
+			check(prefix+"property_read_lock_denial", deniedPropertyRead())
+			check(prefix+"property_publish_lock_denial", deniedPropertyPublish())
 			check(prefix+"lock_no_repair", preserved(lockFD, 0600, bad))
 			setFixtureACL(t, lockFD, model.kind, lockACL)
 			bad = namedFixtureACL(recordACL, model.kind, 0)
@@ -356,6 +410,7 @@ func TestNativeStateACL(t *testing.T) {
 			check(prefix+"record_denial", deniedRead())
 			check(prefix+"catalog_ownership_denial", deniedCatalog())
 			check(prefix+"job_publish_ownership_denial", deniedPublication())
+			check(prefix+"property_publish_ownership_denial", deniedPropertyPublish())
 			data, e := os.ReadFile(recordPath)
 			check(prefix+"record_no_repair", preserved(recordFD, 0600, bad) && e == nil && bytes.Equal(data, ownershipGolden()))
 			setFixtureACL(t, recordFD, model.kind, recordACL)
@@ -364,9 +419,18 @@ func TestNativeStateACL(t *testing.T) {
 			check(prefix+"job_record_denial", deniedJob())
 			check(prefix+"catalog_job_denial", deniedCatalog())
 			check(prefix+"job_publish_job_denial", deniedPublication())
+			check(prefix+"property_publish_job_denial", deniedPropertyPublish())
 			data, e = os.ReadFile(jobPath)
 			check(prefix+"job_record_no_repair", preserved(jobFD, 0600, bad) && e == nil && bytes.Equal(data, jobBytes))
 			setFixtureACL(t, jobFD, model.kind, jobACL)
+			bad = namedFixtureACL(propertyACL, model.kind, 0)
+			setFixtureACL(t, propertyFD, model.kind, bad)
+			check(prefix+"property_read_record_denial", deniedPropertyRead())
+			check(prefix+"property_publish_record_denial", deniedPropertyPublish())
+			data, e = os.ReadFile(propertyPath)
+			check(prefix+"property_record_preserved", preserved(propertyFD, 0600, bad) && e == nil && bytes.Equal(data, propertyBytes))
+			setFixtureACL(t, propertyFD, model.kind, propertyACL)
+
 			if model.kind == 2 {
 				setFixtureACL(t, dirFD, 3, testModeACL(2, 0700))
 			} else {
@@ -378,6 +442,8 @@ func TestNativeStateACL(t *testing.T) {
 			check(prefix+"inheritance_read_denial", deniedRead())
 			check(prefix+"catalog_inheritance_denial", deniedCatalog())
 			check(prefix+"job_publish_inheritance_denial", deniedPublication())
+			check(prefix+"property_read_inheritance_denial", deniedPropertyRead())
+			check(prefix+"property_publish_inheritance_denial", deniedPropertyPublish())
 			if model.kind == 2 {
 				a, e := readStateACL(dirFD, 3)
 				check(prefix+"inheritance_no_repair", e == nil && a.Count == 3)
@@ -390,6 +456,7 @@ func TestNativeStateACL(t *testing.T) {
 				setFixtureACL(t, dirFD, 4, namedFixtureACL(dirACL, 4, 1))
 				setFixtureACL(t, recordFD, 4, namedFixtureACL(recordACL, 4, 8))
 				setFixtureACL(t, jobFD, 4, namedFixtureACL(jobACL, 4, 8))
+				setFixtureACL(t, propertyFD, 4, namedFixtureACL(propertyACL, 4, 8))
 				processPath, e := os.MkdirTemp("/tmp", "horvium-acl-process-")
 				if e != nil {
 					t.Fatal("process fixture unavailable")
@@ -429,6 +496,9 @@ func TestNativeStateACL(t *testing.T) {
 				check("job_kernel_uid_denial", childErr == nil)
 				check("catalog_kernel_uid_denial", childErr == nil)
 				check("job_publish_kernel_uid_denial", childErr == nil)
+				check("property_kernel_grant", childErr == nil)
+				check("property_read_kernel_uid_denial", childErr == nil)
+				check("property_publish_kernel_uid_denial", childErr == nil)
 				if os.RemoveAll(processPath) != nil {
 					t.Fatal("process fixture removal failed")
 				}
@@ -437,14 +507,17 @@ func TestNativeStateACL(t *testing.T) {
 				setFixtureACL(t, dirFD, 4, dirACL)
 				setFixtureACL(t, recordFD, 4, recordACL)
 				setFixtureACL(t, jobFD, 4, jobACL)
+				setFixtureACL(t, propertyFD, 4, propertyACL)
 			}
 			check(prefix+"restored_read", valid())
 			check(prefix+"job_restored_read", validJob())
 			catalog, e := s.InspectState()
-			check(prefix+"catalog_restored", e == nil && len(catalog.Ownership) == 1 && len(catalog.Jobs) == 1 && catalog.Bytes == uint64(len(ownershipGolden())+len(jobBytes)))
+			check(prefix+"catalog_restored", e == nil && len(catalog.Ownership) == 1 && len(catalog.Jobs) == 2 && catalog.Bytes == uint64(len(ownershipGolden())+len(jobBytes)+len(propertyBytes)))
 			check(prefix+"job_publish_restored", s.PublishJob(nextJob, 1) == nil)
+			check(prefix+"property_read_restored", validProperty())
+			check(prefix+"property_publish_restored", s.PublishPropertyJob(propertyNext, 1) == nil)
 			check(prefix+"lease_close", s.Close() == nil)
-			if record.Close() != nil || jobRecord.Close() != nil || pf.Close() != nil {
+			if record.Close() != nil || jobRecord.Close() != nil || propertyRecord.Close() != nil || pf.Close() != nil {
 				t.Fatal("owned fixture descriptor close failed")
 			}
 			check(prefix+"unmount", cleanup() && !mounted)

@@ -8,7 +8,7 @@ import (
 
 // PropertyJob retains a property review and lifecycle as one immutable metadata
 // unit. It cannot authorize work, restore a plan, or prove native eligibility.
-// StateDirectory does not accept this format until its separate native gates pass.
+// Native metadata access additionally requires the StateDirectory root lease.
 type PropertyJob struct {
 	job    Job
 	intent PropertyIntent
