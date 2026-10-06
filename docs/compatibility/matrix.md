@@ -267,6 +267,8 @@ M2 reviewed property intent: [capture/codec contract](../testing/M2/property-int
 is pure bounded metadata for the existing property planner. It retains the current
 reviewed baseline and plan-scoped session/policy binding; no raw session token,
 restored plan, job embedding or execution authority. Existing job v1/native
-publication remains unchanged. Portable qualification is pending; cross-compilation
-is not native proof. Prior native sources/manifests and runtime read-only scope
+publication remains unchanged. Seven parents/769 subtests, storage race/all 17 fuzz
+targets passed at signed source `e66d59eec2e05137a11d8533b327206c3682e423`; see the
+[manifest](../testing/M2/property-intent-manifest.json). Review is pending.
+Cross-compilation is not native proof. Prior native sources/manifests and runtime read-only scope
 remain; no new hardware/client/resource/recovery support claim follows.

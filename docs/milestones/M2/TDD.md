@@ -401,6 +401,7 @@ policy drift, exact timestamps/uint64, strict required shapes, valid-checksum
 semantic refusals and bounded hostile codec input. Existing ownership/job parser
 regressions remain mandatory. Storage-only race/all fuzz and baseline checks are
 required; FreeBSD cross-compilation proves portability only. No filesystem/syscall,
-job publication or native eligibility adapter changes. Portable qualification is
-pending. Native execution, job embedding/admission, attribution/postconditions,
+job publication or native eligibility adapter changes. Seven parents/769 subtests,
+storage race/all 17 storage fuzz targets passed at signed source `e66d59eec2e05137a11d8533b327206c3682e423`;
+see the [manifest](../../testing/M2/property-intent-manifest.json). Review is pending. Native execution, job embedding/admission, attribution/postconditions,
 recovery/cuts and M2 acceptance remain unqualified.

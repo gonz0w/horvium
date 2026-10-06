@@ -1,6 +1,6 @@
 # M2 reviewed property intent capture and codec
 
-Date: 2026-10-06. Status: implementing; portable qualification pending.
+Date: 2026-10-06. Status: portable qualification passed; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -128,3 +128,29 @@ admission/deduplication, resource reservations, applying executor/boot attributi
 recovery postconditions/quiescence, retention/tombstones/export/restore and actual
 acknowledgement/reboot/power-cut gates remain open. Runtime stays read-only;
 M2 acceptance and deferred M1 manual accessibility remain pending.
+
+
+## Executed qualification
+
+Signed functional/test source `e66d59eec2e05137a11d8533b327206c3682e423` passed seven parent tests
+and 769 distinct subtests, including 741 required-shape checks, without skips or
+failures. See the [sanitized manifest](property-intent-manifest.json) for exact
+source/input/toolchain/case and log provenance. The expected missing-API compile
+failure and superseded test-helper Go-vet refusal retain their original evidence.
+
+Local `make review` passed all baseline checks (92 tooling regressions),
+storage-only race checks and all 17 compiler-listed storage fuzz targets in
+87.101 seconds. No unrelated package deep run or complete milestone suite ran.
+The new record and existing ownership/job shape regressions passed together.
+
+A supervised cgo-free FreeBSD/amd64 test binary compiled at the same source and
+was removed without execution; this proves portability only. No VM, mount,
+filesystem fixture or host service was started. All owned supervisor groups stopped
+and teardown was verified. All 27 prior M2 manifests remain byte-identical and
+retain their actual sources. Final documentation-only review reruns baseline/
+signature/DCO/title/source checks and may reuse this exact-input deep execution.
+
+This qualifies bounded property-review capture and internal codec consistency.
+Complete executable intent/job embedding, native eligibility, admission/reservations,
+executor attribution/postconditions, recovery/cuts, M2 acceptance and deferred M1
+manual accessibility remain open.
