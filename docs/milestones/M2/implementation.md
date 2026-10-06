@@ -208,7 +208,7 @@ assertions extend the state suite to sixty-three lease/read cases, two native
 tests, six unit tests and fifty-seven codec subtests. Both native targets passed
 at signed source `94cf66e9c3a34184c76b84858cb7ef998e4bd2dc`, including complete
 preservation and teardown; see the [manifest](../../testing/M2/ownership-read-manifest.json).
-PR 41 accepted the reader at merged source `a6406670cb7804a1d15582a615114fefdbeac337`. It performs no file publication or runtime enrollment and
+PR 41 accepted the reader at merged source `a6406670cb7804a1d15582a615114fefdbeac336`. It performs no file publication or runtime enrollment and
 consumes no unqualified slice 1 observation. ACL provisioning, full store budgets,
 atomic publication, durable jobs and recovery remain ahead.
 
@@ -308,7 +308,7 @@ open. Ownership publication still refuses all job files; no runtime caller exist
 The [mixed catalog](../../testing/M2/state-catalog.md) validates the complete
 ownership/job namespace through the held root lease, counts both kinds against
 64 MiB, and refuses excess 64 nonterminal/1,000 terminal job records and conflicting
-submission IDs. Require 337 state assertions, thirty-two parents and 176 codec/schema
+submission IDs. Require 336 state assertions, thirty-two parents and 176 codec/schema
 subtests on both releases with complete teardown. Native qualification is pending.
 The ownership-only publisher remains strict; mixed publication reservation,
 complete intent, durable admission and recovery remain later gates.

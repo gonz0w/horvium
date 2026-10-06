@@ -47,9 +47,9 @@ plus new temporary byte reservation, remains a later gate.
 
 ## Qualification procedure
 
-Require **337 named assertions**, thirty-two parents (nine native and twenty-three
+Require **336 named assertions**, thirty-two parents (nine native and twenty-three
 unit), and all **176 codec/schema subtests** on both declared FreeBSD targets.
-The census adds forty-nine native controls: complete sorted independent mixed
+The census adds forty-eight native controls: complete sorted independent mixed
 observations; exact total bytes and class counts; reduced ownership/class/byte
 bounds and actual populated 64/1,000 job ceilings plus exhaustion; conflicting
 submissions; byte/inode/foreign/orphan preservation; unknown namespace;

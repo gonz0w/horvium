@@ -370,7 +370,7 @@ M2-JOB-001/M2-PRIV-001 at T1/T3. Require whole-namespace strict validation and z
 catalog on error, shared ownership/job byte totals, exact sorted summaries,
 nonterminal reconciliation, actual 64/1,000 class ceilings and exhaustion, submission
 collision refusal, unsafe files/ACLs/UID denial, ordinary drift, preserved uncertainty
-and complete owned teardown. Require 337 named assertions, thirty-two parent tests
+and complete owned teardown. Require 336 named assertions, thirty-two parent tests
 and 176 codec/schema subtests on both releases. Native qualification is pending.
 This census grants no publication/admission/recovery authority or M2-SCALE-001
 resource acceptance; ownership-only publication remains strict.

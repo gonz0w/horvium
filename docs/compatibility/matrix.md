@@ -56,7 +56,7 @@ physical identity, file-client, scale or throughput claim follows.
 
 Actual Firefox 157.0/geckodriver 0.37.1 passed the synthetic console's four
 JavaScript enabled/disabled, light/dark and verified 1280/390/320 CSS-pixel flows
-on Ubuntu 24.04.5 (37233700130); automated qualification was accepted with PR 16.
+on Ubuntu 24.04.5 (37233600130); automated qualification was accepted with PR 16.
 Safari 27.0 automation was unavailable; manual
 accessibility/native zoom remains pending by maintainer choice. See
 [browser evidence](../testing/M1/browser-checklist.md). These fixtures do not
@@ -248,7 +248,7 @@ actual recovery, commercial scale or new hardware/client support follows.
 
 
 M2 mixed state catalog: [contract/procedure](../testing/M2/state-catalog.md) requires
-337 assertions, thirty-two parents and 176 codec/schema subtests on both existing
+336 assertions, thirty-two parents and 176 codec/schema subtests on both existing
 targets. Complete private ownership/job census and shared byte/class ceilings;
 native qualification is pending. Actual record counts do not qualify commercial
 resources/scale, mixed publication, admission or recovery; runtime remains read-only.
