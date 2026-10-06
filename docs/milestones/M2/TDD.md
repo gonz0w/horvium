@@ -325,5 +325,22 @@ nineteen parents and 57 codec subtests on both releases with preservation/teardo
 Reduced native bounds prove accounting, not populated M2-SCALE-001/resource gates.
 Both targets passed at signed source `bf80cb9f2e1c196eae330ae0d681d86e0c466033` with
 full teardown; see the [manifest](../../testing/M2/ownership-capacity-manifest.json).
-Maintainer review is pending; mixed job budgets, durable admission/restoration/
+Accepted in PR 47; mixed job budgets, durable admission/restoration/
 recovery, abrupt death/power loss and full M2 acceptance remain open.
+
+
+## Job lifecycle metadata prerequisite
+
+The [job lifecycle procedure](../../testing/M2/job-records.md) covers partial
+M2-JOB-001/M2-STATE-001 and M2-RECOVERY-001 (projection only) at T1. Require strict
+bounded shape/version/checksum/intent/history validation, independent round trips,
+all required fields at each object level, checksummed invalid lifecycle refusal,
+full uint64 precision, no terminal replay/post-launch cancellation, retained
+uncertainty and restart projections with no execution. Fuzz every accepted hostile
+input for exact semantic round trips and zero metadata on denial. Portable
+qualification passed at signed source `a3791513f6423fe5860064e93f89399c21dc1445`: seven tests,
+119 schema subtests, baseline and focused storage race/all 15 fuzz checks; see the
+[manifest](../../testing/M2/job-records-manifest.json). Review is pending; no native
+file/acknowledgement/recovery claim follows.
+Full durable baseline/attribution data, mixed store/admission/retention, actual
+restarts/restoration/quiescence and complete M2 acceptance remain open.

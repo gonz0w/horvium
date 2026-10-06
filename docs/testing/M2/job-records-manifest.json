@@ -1,0 +1,413 @@
+{
+  "record_type": "M2-job-lifecycle-codec",
+  "date": "2026-10-06",
+  "source_commit": "a3791513f6423fe5860064e93f89399c21dc1445",
+  "base_commit": "807420918f532ecbd31fa24f1d6b64184d61c88d",
+  "requirements": [
+    "M2-JOB-001 (partial)",
+    "M2-STATE-001 (partial)",
+    "M2-RECOVERY-001 (projection only)"
+  ],
+  "input_sha256": {
+    "internal/storage/job.go": "24f893a95ca2d5a7318e1e05a636681227b2e6ea85b02f796b70bbc32d73b2f0",
+    "internal/storage/job_record.go": "5e9395ef191f69a890bed62422723728427495eab675f094e6ee71740d456f88",
+    "internal/storage/job_record_test.go": "dca1d8f13f15281cdc86bf8a11eb73de2ba46899a811e95882d7238763c87e1a",
+    "internal/storage/ownership_record.go": "82e9ed408ce7e5db9f99b1f61cbbd20ae9d76b0d7750f4027245461c648d97bb",
+    "internal/storage/model.go": "d78cfd6b016fec90ceb13df5a9ae4a21475b739796fc40538075a92719627a21",
+    "internal/storage/validate.go": "25b59ae4f4d300be9d81574f230aa6bda0bdd8b8d07cba89829c09f85f8fc808",
+    "go.mod": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+    "go.sum": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+    "tools/go-pins.json": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+    "tools/review-plan.py": "f20842107452a91ffaf686f959bcf83fcf78aae00377cea94928e8ea42789bf3",
+    "tools/review-gate.py": "4753c6a115eaf44047709ae19d2495a8e6763fb99b20f2f60255c31a887daa68",
+    "tools/deep-check.py": "3dc9864520964cf0226b3cc7f9dd85fe2e20ef72710c5e71374f2cc5bd9ec53b",
+    "tools/owned-process.py": "5a1be877e73dd3bfda0e96f47f728e6844090e8550819f49c4aa4abe2d4c5d3d"
+  },
+  "behavior": {
+    "executed_parent_tests": [
+      "TestJobChecksumCannotGrantLifecycle",
+      "TestJobLifecycleAndRestart",
+      "TestJobLifecycleDenials",
+      "TestJobMetadataLimitsAndPrecision",
+      "TestJobRecordCanonicalAndIndependent",
+      "TestJobRecordRequiredFieldsAndTypes",
+      "TestJobRecordStrictDenials"
+    ],
+    "executed_subtests": [
+      "TestJobRecordRequiredFieldsAndTypes//checksum/case",
+      "TestJobRecordRequiredFieldsAndTypes//checksum/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes//checksum/missing",
+      "TestJobRecordRequiredFieldsAndTypes//checksum/null",
+      "TestJobRecordRequiredFieldsAndTypes//checksum/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes//job/case",
+      "TestJobRecordRequiredFieldsAndTypes//job/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes//job/missing",
+      "TestJobRecordRequiredFieldsAndTypes//job/null",
+      "TestJobRecordRequiredFieldsAndTypes//job/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes//kind/case",
+      "TestJobRecordRequiredFieldsAndTypes//kind/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes//kind/missing",
+      "TestJobRecordRequiredFieldsAndTypes//kind/null",
+      "TestJobRecordRequiredFieldsAndTypes//kind/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes//version/case",
+      "TestJobRecordRequiredFieldsAndTypes//version/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes//version/missing",
+      "TestJobRecordRequiredFieldsAndTypes//version/null",
+      "TestJobRecordRequiredFieldsAndTypes//version/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/at/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/at/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/at/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/at/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/at/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/observation_digest/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/observation_digest/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/observation_digest/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/observation_digest/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/observation_digest/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/reason/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/reason/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/reason/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/reason/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/reason/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/revision/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/revision/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/revision/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/revision/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/revision/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/state/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/state/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/state/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/state/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/0/state/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/history/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/id/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/id/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/id/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/id/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/id/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/filesystem_guid/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/filesystem_guid/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/filesystem_guid/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/filesystem_guid/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/filesystem_guid/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/property/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/property/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/property/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/property/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/property/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/value/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/value/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/value/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/value/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/value/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/change/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/plan_id/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/plan_id/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/plan_id/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/plan_id/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/plan_id/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/policy_revision/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/policy_revision/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/policy_revision/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/policy_revision/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/policy_revision/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/pool_guid/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/pool_guid/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/pool_guid/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/pool_guid/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/pool_guid/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/submission_id/case",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/submission_id/duplicate",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/submission_id/missing",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/submission_id/null",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/submission_id/wrong_type",
+      "TestJobRecordRequiredFieldsAndTypes/job/intent/wrong_type",
+      "TestJobRecordStrictDenials/array",
+      "TestJobRecordStrictDenials/case",
+      "TestJobRecordStrictDenials/damage",
+      "TestJobRecordStrictDenials/duplicate",
+      "TestJobRecordStrictDenials/empty",
+      "TestJobRecordStrictDenials/escaped_duplicate",
+      "TestJobRecordStrictDenials/kind",
+      "TestJobRecordStrictDenials/missing",
+      "TestJobRecordStrictDenials/null",
+      "TestJobRecordStrictDenials/null_history",
+      "TestJobRecordStrictDenials/number_exponent",
+      "TestJobRecordStrictDenials/number_fraction",
+      "TestJobRecordStrictDenials/number_negative",
+      "TestJobRecordStrictDenials/number_string",
+      "TestJobRecordStrictDenials/overflow",
+      "TestJobRecordStrictDenials/trailing",
+      "TestJobRecordStrictDenials/truncated",
+      "TestJobRecordStrictDenials/unknown",
+      "TestJobRecordStrictDenials/version"
+    ],
+    "required_parents": 7,
+    "required_subtests": 119,
+    "failed_or_skipped": false,
+    "command": [
+      "go",
+      "test",
+      "-json",
+      "./internal/storage",
+      "-run",
+      "^TestJob",
+      "-count=1"
+    ],
+    "log_sha256": "fb6fe248f29ed073b95b82d4579c29f9866ffd836514b3b3c65302c8de855d45"
+  },
+  "portable_review": {
+    "source_commit": "a3791513f6423fe5860064e93f89399c21dc1445",
+    "title": "feat(storage): validate bounded job lifecycle records",
+    "command": [
+      "make",
+      "review"
+    ],
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./internal/storage"
+      ],
+      "native_review_required": true
+    },
+    "qualified": true,
+    "deep_executed": true,
+    "tool_regressions": 87,
+    "elapsed_seconds": 76.449,
+    "checks_log_sha256": "bc8807a761682422c172a7597a75db9eb4d93c84e36fd8f035ffb767dbe47784",
+    "deep_log_sha256": "71b45282e36e9ec06bd2f1956b5df9e9847e428660a3a69c0fa4cfdedea2806e",
+    "result": {
+      "fuzz_targets": [
+        {
+          "package": "./internal/storage",
+          "target": "FuzzDeviceUseReview"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemSignature"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemStates"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzIdentities"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzImportedPoolUse"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipCatalogNames"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolFeatures"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolLabels"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolState"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolTopology"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzProperties"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyPlan"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzSystemDeviceUse"
+        }
+      ],
+      "race_packages": [
+        "./internal/storage"
+      ]
+    },
+    "supervisors": [
+      {
+        "completed": true,
+        "group_cleaned": true,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "escalated": false
+      },
+      {
+        "completed": true,
+        "group_cleaned": true,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "escalated": false
+      }
+    ]
+  },
+  "portability": {
+    "source_commit": "a3791513f6423fe5860064e93f89399c21dc1445",
+    "toolchain_version": "go version go1.27.1 darwin/arm64",
+    "toolchain_binary_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+    "target_os": "freebsd",
+    "target_arch": "amd64",
+    "cgo_enabled": false,
+    "command": [
+      "go",
+      "test",
+      "-c",
+      "-trimpath",
+      "./internal/storage",
+      "-o",
+      "<owned temporary artifact>"
+    ],
+    "compile_passed": true,
+    "executed": false,
+    "artifact_sha256": "775e2b9c1784b01ab0a56786ec84274151c14df711ddb5a686202ef6f1aa41fa",
+    "artifact_removed": true,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "native_review": {
+    "plan_marker_preserved": true,
+    "assessment": "No native/syscall/file-store/provider/helper behavior changes. Lifecycle codec uses unchanged fixed-shape ownership token parser on bytes only. No native runtime, admission or recovery result claimed; no unrelated fixture suite rerun.",
+    "native_execution": false
+  },
+  "prior_m2_manifest_sha256": [
+    {
+      "path": "docs/testing/M2/dataset-state-manifest.json",
+      "sha256": "742c54282f4eb0405deea105b40ff02138ca98cb04cc09ce47f38dccff227021"
+    },
+    {
+      "path": "docs/testing/M2/device-use-review-manifest.json",
+      "sha256": "3b9a3f90aca2f3dfcc61e0b31f9af3ee2a45dcf3d452fa837da6af1c23d0ef4d"
+    },
+    {
+      "path": "docs/testing/M2/devices-local-manifest.json",
+      "sha256": "813ea84749164efb9940c3cb472d555a524729893ff85fbac8b63bd5a88ca1b8"
+    },
+    {
+      "path": "docs/testing/M2/devices-manifest.json",
+      "sha256": "93b015d90819214f9b2e837afa9a0bdbe51c0f5c0771e90608feed4348c650cd"
+    },
+    {
+      "path": "docs/testing/M2/disk-access-manifest.json",
+      "sha256": "0cda31cd37254cdd0e17e34df14029735609b5807f62e081e0ceded4ce9cbf52"
+    },
+    {
+      "path": "docs/testing/M2/disk-attachments-manifest.json",
+      "sha256": "56a4d0029603f13e504c73e4f4a0f53938888340530fb7d03d846f3936d00667"
+    },
+    {
+      "path": "docs/testing/M2/disk-correlation-manifest.json",
+      "sha256": "370984097837e061ce171cac785695ec369ef726b184b4895ca3ef69e8dd3978"
+    },
+    {
+      "path": "docs/testing/M2/features-manifest.json",
+      "sha256": "7d5c9fdd433a5aca3f8f96eb3a4f8c7153fa5aaf6e9bd72715caae3689029ae5"
+    },
+    {
+      "path": "docs/testing/M2/filesystem-signatures-manifest.json",
+      "sha256": "cc0b444f6140728306ce9b0e13362ef5474110f0c3948bce23d0838da2ac98b7"
+    },
+    {
+      "path": "docs/testing/M2/identities-manifest.json",
+      "sha256": "8dbc093fe986cb4e18ecaa8ba2097eb24746d4d5b202033a34372d05d344f5fc"
+    },
+    {
+      "path": "docs/testing/M2/imported-pool-use-manifest.json",
+      "sha256": "9c0d30872511adee7069e832fbdcb8def0fafbd9a96ccd61bf7297c073d6c174"
+    },
+    {
+      "path": "docs/testing/M2/ownership-capacity-manifest.json",
+      "sha256": "42554db9cf3b26071760e484569ab7fdd7d4067d217ffe815ebb7d38aee55a14"
+    },
+    {
+      "path": "docs/testing/M2/ownership-catalog-manifest.json",
+      "sha256": "928a59373eaba9d6b05d2f8f60c8d683e581ac0e7c8625ebc357892a2b16c24e"
+    },
+    {
+      "path": "docs/testing/M2/ownership-publication-manifest.json",
+      "sha256": "ce036597acde7d41d7165cdfb3d19a8e72bc82ed54d00ac3f6678449346a6b90"
+    },
+    {
+      "path": "docs/testing/M2/ownership-read-manifest.json",
+      "sha256": "0436c1e2fca5b4b771e5179820a3d54271df8352a8d25a56950fc10d159059b8"
+    },
+    {
+      "path": "docs/testing/M2/ownership-records-manifest.json",
+      "sha256": "5f25b1eb8dec8a69593aeb23cb94b9b0e5b955083878d4745365d91c202afbf8"
+    },
+    {
+      "path": "docs/testing/M2/pool-labels-manifest.json",
+      "sha256": "82f3348e58248dda08b4d9c70487147b429e304d17e8ffd40500ac1e63667b68"
+    },
+    {
+      "path": "docs/testing/M2/pool-state-manifest.json",
+      "sha256": "12be8f7c3e6358a52b5494d822fc3366a91a4ff39abb1b1ffdc3f091f2180d30"
+    },
+    {
+      "path": "docs/testing/M2/properties-manifest.json",
+      "sha256": "74da0b8025b86d12501cd93e8a648dac47aecf59898edd8d16963eaae23fb693"
+    },
+    {
+      "path": "docs/testing/M2/state-acl-manifest.json",
+      "sha256": "a558abf1753ce2cc5947f6480e48bdf2d0199e451ca3b3620faff00ecfca305a"
+    },
+    {
+      "path": "docs/testing/M2/state-directory-manifest.json",
+      "sha256": "a74b71d1fb7139890e3e6d229c7941379b8a7865cd3c3a8335b23b5f462fffa9"
+    },
+    {
+      "path": "docs/testing/M2/system-device-use-manifest.json",
+      "sha256": "fed30b8059bc52c149c19e2aec40b5db6dae375c8170e728de21a667e63ec62c"
+    },
+    {
+      "path": "docs/testing/M2/topology-manifest.json",
+      "sha256": "5e2200057bb83935053a93993c928cbfae9daa5e5c784f9ed005346b315447b6"
+    }
+  ],
+  "failing_first": "Focused job tests failed with missing lifecycle types and codec/transition functions before implementation.",
+  "lab_status": {
+    "all_owned_sessions_stopped": true,
+    "teardown_verified": true,
+    "sessions_checked": 112
+  },
+  "limits": [
+    "In-memory lifecycle/property-intent metadata only; no native operation or persistent job file.",
+    "Intent lacks full reviewed baseline, native attribution, boot/process identity and complete recovery postconditions; not admissible durable intent.",
+    "Checksums, identifiers, timestamps, observation references and success labels grant no authority.",
+    "Reconciliation resolution is intentionally disabled; projection is not persisted startup recovery or executor-quiescence proof.",
+    "Ownership-only catalog still refuses job files; mixed budgets, duplicates, tombstones, retention, admission and recovery remain open.",
+    "Existing native manifests retain immutable executed source and byte-identical content; compilation alone is not native qualification.",
+    "No full milestone run or unrelated native suite; storage-only race and compiler-listed fuzz inventory executed.",
+    "Final evidence-only documentation head needs its own baseline/source/title report and original deep source when reused."
+  ]
+}
