@@ -130,7 +130,7 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 		e := unix.Fstatat(dir, name, &current, unix.AT_SYMLINK_NOFOLLOW)
 		if exists {
 			if e != nil || !sameOwnershipMetadata(prior, current) {
-				return fmt.Errorf("destination metadata: %w", ErrDrift)
+				return fmt.Errorf("destination metadata equality dev=%t inode=%t mode=%t uid=%t gid=%t links=%t size=%t mtime=%t ctime=%t birth=%t flags=%t generation=%t: %w", prior.Dev == current.Dev, prior.Ino == current.Ino, prior.Mode == current.Mode, prior.Uid == current.Uid, prior.Gid == current.Gid, prior.Nlink == current.Nlink, prior.Size == current.Size, prior.Mtim == current.Mtim, prior.Ctim == current.Ctim, prior.Btim == current.Btim, prior.Flags == current.Flags, prior.Gen == current.Gen, ErrDrift)
 			}
 		} else if e != unix.ENOENT {
 			return ErrDrift
