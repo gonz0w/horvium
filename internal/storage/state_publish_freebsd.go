@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"io"
 	"os"
 
@@ -124,12 +125,12 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 		}
 		var temporaryStat, current unix.Stat_t
 		if unix.Fstatat(dir, temporary, &temporaryStat, unix.AT_SYMLINK_NOFOLLOW) != nil || !sameOwnershipMetadata(written, temporaryStat) {
-			return ErrDrift
+			return fmt.Errorf("temporary metadata: %w", ErrDrift)
 		}
 		e := unix.Fstatat(dir, name, &current, unix.AT_SYMLINK_NOFOLLOW)
 		if exists {
 			if e != nil || !sameOwnershipMetadata(prior, current) {
-				return ErrDrift
+				return fmt.Errorf("destination metadata: %w", ErrDrift)
 			}
 		} else if e != unix.ENOENT {
 			return ErrDrift
