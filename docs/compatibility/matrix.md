@@ -225,6 +225,12 @@ connects complete catalog validation and old-plus-new logical-byte/count reserva
 to private publication. The expanded state gate requires 234 assertions, nineteen
 parents and 57 codec subtests on both existing targets. Both passed at signed source
 `bf80cb9f2e1c196eae330ae0d681d86e0c466033` with full teardown; see the
-[manifest](../testing/M2/ownership-capacity-manifest.json). Maintainer review is
-pending. Reduced fixture limits add no populated scale, commercial hardware,
+[manifest](../testing/M2/ownership-capacity-manifest.json). Accepted in PR 47. Reduced fixture limits add no populated scale, commercial hardware,
 client, mixed-store admission or recovery support claim.
+
+
+M2 job lifecycle codec: [contract/procedure](../testing/M2/job-records.md) adds
+bounded in-memory property-intent lifecycle metadata and strict checksums/schema,
+with no native/file/runtime wiring. Portable qualification is pending. Existing
+FreeBSD support candidates and their immutable native sources are unchanged;
+compilation alone grants no native durable job/admission/recovery or scale claim.

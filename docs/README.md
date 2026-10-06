@@ -107,4 +107,6 @@
 
 - [M2 bounded ownership catalog](testing/M2/ownership-catalog.md): complete bounded read-only record inspection, orphan refusal and ordinary drift; both targets passed all 202 assertions and complete teardown, accepted in PR 46.
 
-- [M2 ownership publication capacity](testing/M2/ownership-capacity.md): complete namespace validation, transient-byte/count reservation and final rechecks; both targets passed all 234 assertions and complete teardown, review pending.
+- [M2 ownership publication capacity](testing/M2/ownership-capacity.md): complete namespace validation, transient-byte/count reservation and final rechecks; both targets passed all 234 assertions and complete teardown, accepted in PR 47.
+
+- [M2 job lifecycle metadata](testing/M2/job-records.md): bounded lifecycle/strict codec and restart projections without replay; portable qualification pending.
