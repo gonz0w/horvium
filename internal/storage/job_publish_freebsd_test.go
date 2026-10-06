@@ -136,12 +136,45 @@ func TestNativeJobPublication(t *testing.T) {
 	rewriteHistory.History[0].At = 999
 	check("history_rewrite_denial", errors.Is(s.PublishJob(rewriteHistory, 2), ErrDrift))
 	phase := "preflight"
+	var preSync, postSync unix.Stat_t
+	var tempName string
 	observationErr := s.publishJobBounded(rewritten, 2, defaultStateCatalogLimits, func(tx ownershipPublication) ownershipPublication {
 		instrument := func(name string, f func() error) func() error { return func() error { phase = name; return f() } }
 		tx.write = instrument("write", tx.write)
-		tx.syncFile = instrument("sync-file", tx.syncFile)
+		realSync := tx.syncFile
+		tx.syncFile = func() error {
+			phase = "sync-file"
+			entries, e := os.ReadDir(path)
+			if e != nil {
+				t.Fatal("owned diagnostic names")
+			}
+			for _, entry := range entries {
+				if strings.HasPrefix(entry.Name(), ".job-") {
+					tempName = entry.Name()
+				}
+			}
+			if tempName == "" || unix.Fstatat(int(s.directory.Fd()), tempName, &preSync, unix.AT_SYMLINK_NOFOLLOW) != nil {
+				t.Fatal("owned diagnostic pre-sync")
+			}
+			err := realSync()
+			if unix.Fstatat(int(s.directory.Fd()), tempName, &postSync, unix.AT_SYMLINK_NOFOLLOW) != nil {
+				t.Fatal("owned diagnostic post-sync")
+			}
+			return err
+		}
 		tx.closeFile = instrument("close", tx.closeFile)
-		tx.verify = instrument("verify", tx.verify)
+		realVerify := tx.verify
+		tx.verify = func() error {
+			phase = "verify"
+			err := realVerify()
+			if err != nil {
+				var now unix.Stat_t
+				statErr := unix.Fstatat(int(s.directory.Fd()), tempName, &now, unix.AT_SYMLINK_NOFOLLOW)
+				_, catalogErr := s.inspectStateLocked(defaultStateCatalogLimits, nil, tempName)
+				t.Log("owned drift diagnostic", "sync_metadata_equal", sameOwnershipMetadata(preSync, postSync), "mtime_equal", preSync.Mtim == postSync.Mtim, "ctime_equal", preSync.Ctim == postSync.Ctim, "after_close_equal", statErr == nil && sameOwnershipMetadata(postSync, now), "catalog_error", catalogErr)
+			}
+			return err
+		}
 		tx.rename = instrument("rename", tx.rename)
 		tx.syncDirectory = instrument("sync-directory", tx.syncDirectory)
 		return tx
@@ -149,6 +182,7 @@ func TestNativeJobPublication(t *testing.T) {
 	if observationErr != nil {
 		t.Fatal("owned observation", phase, observationErr)
 	}
+
 	finished, e := TransitionJob(rewritten, JobSucceeded, 1003, "verified", strings.Repeat("d", 64))
 	if e != nil {
 		t.Fatal(e)
