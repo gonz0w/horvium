@@ -1,6 +1,6 @@
 # M2 bounded ownership catalog
 
-Date: 2026-10-06. Status: implementing; native qualification pending.
+Date: 2026-10-06. Status: qualified on both declared native targets; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -98,5 +98,37 @@ The expanded native evidence checker and guest selectors are shared tooling, so
 this PR conservatively triggers full portable race/fuzz execution once. Subsequent
 prose-only qualification updates can reuse matching executed deep evidence while
 rerunning cheap baseline/identity checks. No unrelated native suites are required
-by this read-only state prerequisite. Exact execution records will be appended
-after actual qualification; cross-compilation alone proves none of these cases.
+by this read-only state prerequisite. The executed records below retain the actual source; cross-compilation alone
+proves none of these cases.
+
+
+## Executed qualification
+
+Signed functional/suite source `5ea125fdc815fd7c6c54aba36824e50ea876b9f6` passed all
+202 assertions, seventeen parent tests and 57 codec subtests on both declared
+releases, without skips or failures. See the [sanitized manifest](ownership-catalog-manifest.json)
+for complete source/input/SDK/module/image/runtime/utility/log provenance. The
+portable review passed 86 tooling tests, all ordinary Go tests, race checks across
+all eleven packages and all **22 compiler-listed bounded fuzz targets**, including
+the new catalog-name parser. Shared native evidence tooling correctly selected
+full portable mode; its deep checks executed once at the functional source.
+
+Both actual root filesystems supported repeated independent scans and preserved
+bytes/inodes. All unknown/orphan/unsafe/damaged record controls, final real-file/
+namespace drift, inherited UID denial and owned UFS POSIX ACL controls passed.
+Package-private reduced bounds did not relax any production ceiling. Inspection
+preserved orphan bytes and the existing publication-uncertainty latch; it neither
+removed state nor claimed recovery. There were no failed native qualification runs.
+
+| Target | Root | Catalog parent | Full owned guest | Result |
+|---|---|---|---|---|
+| 15.1-RELEASE-p3 | zfs | 0.1 s | 32.315 s | all 202; complete teardown |
+| 14.5-RELEASE | ufs | 0.11 s | 32.312 s | all 202; complete teardown |
+
+Both verified the same cross-built executable before execution. The supervisor
+verified every owned group stopped, unchanged base/runtime hashes and removal of
+image/key/variables/executable. All 21 prior M2 manifests remain byte-identical.
+The final documentation followup records its current source/title/baseline and
+original deep source in the PR; it does not relabel native execution as the new head.
+Complete store allocation/admission/recovery, populated scale/resource workloads,
+M2 acceptance and deferred M1 manual accessibility remain pending.

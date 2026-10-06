@@ -214,5 +214,7 @@ adds no OS/architecture, client, hardware or runtime feature support claim.
 M2 ownership catalog: [contract/procedure](../testing/M2/ownership-catalog.md)
 adds bounded ownership-only record inspection, complete namespace refusal and
 ordinary drift checks. The expanded state gate requires 202 assertions,
-seventeen parent tests and 57 codec subtests on both releases. Native execution
-is pending; no new compatibility, write-admission, recovery or scale claim follows.
+seventeen parent tests and 57 codec subtests on both releases. Both targets passed all 202 at signed source `5ea125fdc815fd7c6c54aba36824e50ea876b9f6`,
+with full teardown; see the [manifest](../testing/M2/ownership-catalog-manifest.json).
+Maintainer review is pending. Inspection alone grants no write-admission, recovery,
+scale, hardware or client support claim.

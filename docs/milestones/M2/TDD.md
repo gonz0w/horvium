@@ -308,5 +308,7 @@ all 202 named assertions, seventeen parents and 57 codec subtests on both
 releases, with full preservation/teardown. Reduced-limit native fixtures are
 budget-code proof, not full populated large-workload/resource qualification.
 Inspection never repairs/deletes state, clears publication uncertainty or grants
-write authority. Native qualification remains pending. Job/admission/recovery,
+write authority. Both targets passed all 202 at signed source `5ea125fdc815fd7c6c54aba36824e50ea876b9f6`
+with full teardown; see the [manifest](../../testing/M2/ownership-catalog-manifest.json).
+Maintainer review is pending. Job/admission/recovery,
 full store allocation and complete M2 acceptance remain open.

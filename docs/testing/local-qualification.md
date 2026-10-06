@@ -267,4 +267,6 @@ assertions and seventeen parent tests, with the same 57 codec subtests. It adds
 complete ownership namespace/record inspection and actual reduced-budget/drift
 controls; existing owned UFS ACL and inherited-UID fixtures also test inspection.
 No additional disks, mounts or runtime services are introduced. Both declared
-native targets and full teardown remain required; qualification is pending.
+native targets passed all 202 at signed source `5ea125fdc815fd7c6c54aba36824e50ea876b9f6`,
+with full teardown; see the [manifest](M2/ownership-catalog-manifest.json).
+Inspection-only proof leaves full-store admission/recovery and resource gates open.
