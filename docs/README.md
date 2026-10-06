@@ -117,4 +117,6 @@
 
 - [M2 durable job publication](testing/M2/job-publication.md): current predecessor and immutable history checks, shared publication capacity and uncertainty; both targets passed all 432 assertions and teardown; accepted in PR 51.
 
-- [M2 reviewed property intent](testing/M2/property-intent.md): immutable complete current property-review capture and strict bounded codec; seven parents/769 subtests and focused storage race/fuzz passed, review pending.
+- [M2 reviewed property intent](testing/M2/property-intent.md): immutable complete current property-review capture and strict bounded codec; seven parents/769 subtests and focused storage race/fuzz passed; accepted in PR 52.
+
+- [M2 property job binding](testing/M2/property-jobs.md): single bounded baseline/lifecycle record and immutable successors; six parents/859 subtests and focused storage race/fuzz passed, review pending.
