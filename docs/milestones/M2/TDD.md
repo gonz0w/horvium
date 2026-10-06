@@ -310,5 +310,18 @@ budget-code proof, not full populated large-workload/resource qualification.
 Inspection never repairs/deletes state, clears publication uncertainty or grants
 write authority. Both targets passed all 202 at signed source `5ea125fdc815fd7c6c54aba36824e50ea876b9f6`
 with full teardown; see the [manifest](../../testing/M2/ownership-catalog-manifest.json).
-Maintainer review is pending. Job/admission/recovery,
+Accepted in PR 46. Job/admission/recovery,
 full store allocation and complete M2 acceptance remain open.
+
+
+## Ownership publication capacity prerequisite
+
+The [capacity procedure](../../testing/M2/ownership-capacity.md) adds partial
+M2-STATE-001/M2-OWN-001 at T1/T3: validate the complete namespace before writing,
+reserve old-plus-new transient bytes and published count, recheck before rename,
+refuse unrelated unsafe/corrupt/newer state, retain unknown/orphan objects, latch
+orphan uncertainty, and serialize last-slot writers. Require 234 named assertions,
+nineteen parents and 57 codec subtests on both releases with preservation/teardown.
+Reduced native bounds prove accounting, not populated M2-SCALE-001/resource gates.
+Native qualification is pending; mixed job budgets, durable admission/restoration/
+recovery, abrupt death/power loss and full M2 acceptance remain open.

@@ -12,7 +12,7 @@ import (
 // through the held lease. It never deletes, repairs or publishes files, resets
 // uncertainty, enrolls a resource or authorizes storage work. Unknown/damaged
 // entries and orphan temporaries return no usable or partial catalog. Future
-// store admission/recovery must separately enforce these findings.
+// store recovery and runtime admission remain separate gates.
 func (s *StateDirectory) InspectOwnership() (OwnershipCatalog, error) {
 	return s.inspectOwnership(maxRecords, maxOwnershipCatalogBytes, nil)
 }
@@ -28,6 +28,13 @@ func (s *StateDirectory) inspectOwnership(limit int, byteLimit uint64, afterRead
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	return s.inspectOwnershipLocked(limit, byteLimit, afterRead, "")
+}
+
+// Caller holds mu. Publication alone may exclude its exact inode-validated
+// temporary name; all other temporaries remain uncertain. Public inspection
+// never supplies an exclusion.
+func (s *StateDirectory) inspectOwnershipLocked(limit int, byteLimit uint64, afterRead func(), ownTemporary string) (OwnershipCatalog, error) {
 	dir, err := s.ownershipDirectoryLocked()
 	if err != nil {
 		return OwnershipCatalog{}, err
@@ -49,9 +56,13 @@ func (s *StateDirectory) inspectOwnership(limit int, byteLimit uint64, afterRead
 		return OwnershipCatalog{}, ErrDrift
 	}
 	var names []string
+	nameLimit := limit + 1
+	if ownTemporary != "" {
+		nameLimit++
+	}
 	for {
 		batch, e := scan.Readdirnames(64)
-		if len(names)+len(batch) > limit+1 {
+		if len(names)+len(batch) > nameLimit {
 			return OwnershipCatalog{}, ErrLimit
 		}
 		names = append(names, batch...)
@@ -64,6 +75,24 @@ func (s *StateDirectory) inspectOwnership(limit int, byteLimit uint64, afterRead
 	}
 	if scan.Close() != nil {
 		return OwnershipCatalog{}, ErrStateDirectory
+	}
+	if ownTemporary != "" {
+		found := false
+		filtered := make([]string, 0, len(names))
+		for _, name := range names {
+			if name == ownTemporary {
+				if found {
+					return OwnershipCatalog{}, ErrDrift
+				}
+				found = true
+			} else {
+				filtered = append(filtered, name)
+			}
+		}
+		if !found {
+			return OwnershipCatalog{}, ErrDrift
+		}
+		names = filtered
 	}
 	guids, err := ownershipCatalogNames(names, limit)
 	if err != nil {

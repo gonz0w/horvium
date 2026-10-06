@@ -270,3 +270,11 @@ No additional disks, mounts or runtime services are introduced. Both declared
 native targets passed all 202 at signed source `5ea125fdc815fd7c6c54aba36824e50ea876b9f6`,
 with full teardown; see the [manifest](M2/ownership-catalog-manifest.json).
 Inspection-only proof leaves full-store admission/recovery and resource gates open.
+
+
+The [ownership capacity extension](M2/ownership-capacity.md) expands state to 234
+assertions, nineteen parents and the same 57 codec subtests. Native fixtures cover
+exact reduced reservation limits, unrelated state denial, orphan preservation/
+uncertainty, real pre-rename namespace changes and concurrent last-slot refusal.
+There are no extra host services or live storage fixtures. Both targets and complete
+owned guest/host teardown are required; native qualification is pending.

@@ -15,7 +15,8 @@ import (
 // authority. expectedRevision zero requires an absent record and initial revision
 // one; replacement requires the exact previous revision and its successor. No
 // deletion, repair, cross-record transaction or automatic retry is provided.
-// Full store budgets/recovery and runtime enrollment remain separate gates.
+// Ownership capacity includes old records and the transition temporary. Job
+// budgets/recovery and runtime enrollment remain separate gates.
 func (s *StateDirectory) PublishOwnership(p Policy, expectedRevision uint64) error {
 	return s.publishOwnership(p, expectedRevision, nil)
 }
@@ -23,6 +24,10 @@ func (s *StateDirectory) PublishOwnership(p Policy, expectedRevision uint64) err
 // wrap is a package-private deterministic test seam, never configurable by the
 // operator/request/runtime. Production uses the actual transaction unchanged.
 func (s *StateDirectory) publishOwnership(p Policy, expected uint64, wrap func(ownershipPublication) ownershipPublication) error {
+	return s.publishOwnershipBounded(p, expected, ownershipPublicationLimits{maxRecords, maxOwnershipCatalogBytes}, wrap)
+}
+
+func (s *StateDirectory) publishOwnershipBounded(p Policy, expected uint64, limits ownershipPublicationLimits, wrap func(ownershipPublication) ownershipPublication) error {
 	if s == nil || os.Geteuid() != 0 {
 		return ErrStateDirectory
 	}
@@ -32,6 +37,9 @@ func (s *StateDirectory) publishOwnership(p Policy, expected uint64, wrap func(o
 	}
 	if !validOwnershipPublicationRevision(p.Revision, expected) {
 		return ErrDrift
+	}
+	if !limits.valid() {
+		return ErrLimit
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -49,6 +57,16 @@ func (s *StateDirectory) publishOwnership(p Policy, expected uint64, wrap func(o
 	kind := unix.ByteSliceToString(fs.Fstypename[:])
 	if kind != "ufs" && kind != "zfs" {
 		return ErrStateDirectory
+	}
+	catalog, err := s.inspectOwnershipLocked(limits.records, limits.bytes, nil, "")
+	if errors.Is(err, ErrStateUncertain) {
+		s.publicationBlocked = true
+	}
+	if err != nil {
+		return err
+	}
+	if err = allowOwnershipPublication(catalog, p, expected, uint64(len(data)), limits); err != nil {
+		return err
 	}
 	name := "ownership-" + p.PoolGUID + ".json"
 	var prior unix.Stat_t
@@ -130,7 +148,7 @@ func (s *StateDirectory) publishOwnership(p Policy, expected uint64, wrap func(o
 		}
 		return syncFile()
 	}
-	tx.verify = func() error {
+	verifyObjects := func() error {
 		if _, e := s.ownershipDirectoryLocked(); e != nil {
 			return e
 		}
@@ -147,6 +165,19 @@ func (s *StateDirectory) publishOwnership(p Policy, expected uint64, wrap func(o
 			return ErrDrift
 		}
 		return nil
+	}
+	tx.verify = func() error {
+		if e := verifyObjects(); e != nil {
+			return e
+		}
+		catalog, e := s.inspectOwnershipLocked(limits.records, limits.bytes, nil, temporary)
+		if e != nil {
+			return e
+		}
+		if e = allowOwnershipPublication(catalog, p, expected, uint64(len(data)), limits); e != nil {
+			return e
+		}
+		return verifyObjects()
 	}
 	tx.rename = func() error { return unix.Renameat(dir, temporary, dir, name) }
 	tx.syncDirectory = func() error { return unix.Fsync(dir) }

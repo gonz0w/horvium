@@ -55,6 +55,14 @@ func TestOwnershipPublicationOrderAndFailures(t *testing.T) {
 	if !errors.Is(commitOwnershipPublication(tx), ErrStateUncertain) {
 		t.Fatal("cleanup failure lost")
 	}
+	// Final catalog failures keep their safety category after owned-temp cleanup.
+	for _, cause := range []error{ErrDrift, ErrLimit, ErrStateRecord, ErrStateUncertain} {
+		cleaned := false
+		tx := ownershipPublication{write: func() error { return cause }, cleanup: func() error { cleaned = true; return nil }}
+		if !errors.Is(commitOwnershipPublication(tx), cause) || !cleaned {
+			t.Fatal("catalog denial hidden or owned cleanup skipped", cause)
+		}
+	}
 }
 
 func TestOwnershipPublicationRevision(t *testing.T) {
