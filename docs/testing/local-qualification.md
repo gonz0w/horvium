@@ -213,9 +213,19 @@ The M2 [state-directory prerequisite](M2/state-directory.md) uses the `state`
 suite on disposable system-storage fixtures under `/root`, with owned copied
 executables and temporary mounts. The [ownership-read](M2/ownership-read.md) and
 [ACL validation](M2/state-acl.md) extensions require all 108 named assertions,
-three executed native tests, seven unit tests and fifty-seven codec subtests;
+three executed native tests, seven unit tests and fifty-seven codec subtests
+at the accepted ACL source;
 missing/skipped/incomplete records fail. ACL controls format only new owned 32 MiB
 memory devices and mount them as UFS with POSIX or NFSv4 ACLs inside the guest.
 No operator disk, host mount or persistent runner/service is used. The ordinary
 supervisor verifies base/runtime preservation, image/key/variable removal and
 process teardown before qualification.
+
+
+The [ownership publication extension](M2/ownership-publication.md) expands `state`
+to 161 mandatory assertions, five native tests, nine unit tests and fifty-seven
+codec subtests. Native qualification is pending. It adds one new owned 32 MiB
+UFS memory device for real ENOSPC/read-only/ACL controls; all fixtures remain
+inside the disposable guest. Phase-error seams qualify accounting separately
+from actual I/O failure or power-cut durability. Prior manifests keep their exact
+sources and case sets; the supervisor still requires full owned cleanup.

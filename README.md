@@ -73,9 +73,12 @@ The [native ownership reader](docs/testing/M2/ownership-read.md) binds those
 records to safe opened file objects and the held state directory. All sixty-three
 lease/read assertions and complete teardown passed on both targets; accepted in
 PR 41. Default-ACL disposable fixtures define the qualified scope.
-The next [state ACL validation](docs/testing/M2/state-acl.md) checks actual opened
+The accepted [state ACL validation](docs/testing/M2/state-acl.md) checks actual opened
 objects before trusting mode bits. All 108 expanded assertions and complete
-teardown passed on both targets; maintainer review is pending.
+teardown passed on both targets; accepted in PR 42.
+The [ownership publication prerequisite](docs/testing/M2/ownership-publication.md)
+adds private metadata publication and explicit uncertainty after failed durability.
+Its expanded native qualification is pending; it grants no runtime enrollment.
 Other native gates, durable jobs and storage writes remain pending; the runtime is
 still read-only.
 

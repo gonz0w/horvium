@@ -1,6 +1,6 @@
 # M2 descriptor-based state ACL validation
 
-Date: 2026-10-05. Status: partial descriptor ACL boundary qualified; maintainer review pending.
+Date: 2026-10-05. Status: partial descriptor ACL boundary accepted in [PR 42](https://github.com/gonz0w/horvium/pull/42).
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -149,3 +149,8 @@ publisher, enrollment or runtime storage writer. No external client/share ACL,
 hardware/controller/commercial support claim follows. Prior manifests retain
 their original sources and scopes. M2 acceptance and maintainer-deferred M1
 Safari/manual accessibility remain pending. GitHub Actions stay disabled.
+
+
+The later [ownership publisher](ownership-publication.md) has a separate contract,
+source and qualification gate. It does not relabel this accepted manifest or
+close its runtime provisioning, store-budget, crash or recovery limitations.

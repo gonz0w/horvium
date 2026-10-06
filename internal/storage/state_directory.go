@@ -17,8 +17,9 @@ var (
 // Do not copy it; close the owned handle when its lifetime ends. No runtime wiring
 // creates or opens state directories yet. Only the FreeBSD implementation opens.
 type StateDirectory struct {
-	mu                sync.Mutex
-	directory, writer *os.File
+	mu                 sync.Mutex
+	directory, writer  *os.File
+	publicationBlocked bool
 }
 
 // Close releases owned descriptors once, including for a zero handle. It never
