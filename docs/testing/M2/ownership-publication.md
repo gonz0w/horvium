@@ -96,7 +96,8 @@ anchoring, directory/lock/destination drift and removal of owned temporaries.
 
 A separate owned 32 MiB memory-backed UFS fixture installs only a test-owned
 masked POSIX named grant, preserving exact ACL and bytes across refusal. Fill
-that filesystem until the actual write returns ENOSPC; publication must fail
+that filesystem until large and fragment-sized allocations exhaust it; require
+actual ENOSPC and independently observed zero free blocks before publication. It must fail
 without replacing the old record or leaking a temporary. Close writable handles,
 remount it read-only and prove per-call refusal through test-constructed real
 read-only descriptors. Unmount, detach only the recorded owned md unit and remove
@@ -108,6 +109,15 @@ error accounting and ordering, including visible unsynced replacement and blocke
 future writes. They **do not** establish actual kernel/device EIO, crash/reboot/
 power-cut durability or a successful durable job acknowledgement. Test-only seams
 are neither environment failpoints nor operator-facing configuration.
+
+The first 15.1 run at signed source
+`451a738e6d5a60d2e52a7bd7ed6ae094d9c31813` passed normal publication and the
+old lease/read/ACL controls but failed the full-filesystem fixture: large-block
+ENOSPC left UFS fragments available for the small record, so publication correctly
+succeeded. The fixture now exhausts tiny allocations and requires `fstatfs` zero
+free space before denial; no passing threshold was relaxed. The failed run stays
+unqualified, with unchanged base/runtime and complete host teardown. No
+publication code changed for this fixture repair.
 
 Native qualification and its sanitized manifest are pending. Source inputs and
 previous accepted manifests must retain exact provenance; full host supervisor

@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 	"syscall"
 	"testing"
@@ -442,7 +443,31 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 		}
 	}
 	_ = out.Close()
-	check("native_enospc", full)
+	// Large allocations can return ENOSPC while UFS retains fragments sufficient
+	// for a small ownership record. Exhaust those through new tiny owned files,
+	// then independently require zero free space before calling the publisher.
+	var fragments []string
+	for n := 0; n < 256; n++ {
+		name := filepath.Join(mountpoint, "fragment-"+strconv.Itoa(n))
+		f, openErr := os.OpenFile(name, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+		if openErr != nil {
+			if !errors.Is(openErr, syscall.ENOSPC) {
+				t.Fatal("fragment fixture unavailable")
+			}
+			break
+		}
+		fragments = append(fragments, name)
+		_, writeErr := f.Write(block[:512])
+		_ = f.Close()
+		if writeErr != nil {
+			if !errors.Is(writeErr, syscall.ENOSPC) {
+				t.Fatal("fragment allocation failed")
+			}
+			break
+		}
+	}
+	var fullFS unix.Statfs_t
+	check("native_enospc", full && unix.Fstatfs(int(lease.directory.Fd()), &fullFS) == nil && fullFS.Bfree == 0)
 	err = lease.PublishOwnership(next, 1)
 	b, e = os.ReadFile(record)
 	check("full_denial", err != nil && e == nil && bytes.Equal(b, ownershipGolden()))
@@ -454,6 +479,11 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 		}
 	}
 	check("full_cleanup", clean)
+	for _, name := range fragments {
+		if os.Remove(name) != nil {
+			t.Fatal("owned fragment cleanup failed")
+		}
+	}
 	if os.Remove(filler) != nil || lease.Close() != nil {
 		t.Fatal("full fixture reset failed")
 	}
