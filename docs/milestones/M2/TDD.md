@@ -357,7 +357,22 @@ identity/intent/history rewrites and stale/skipped/truncated updates. Require al
 275 state assertions, twenty-eight parents and 176 codec/schema subtests on both
 releases with complete fixture/base/runtime/process teardown. Both passed at
 signed source `5241ae7f0bccde0423613af1dfcde9aed951ac34`; see the
-[manifest](../../testing/M2/job-read-manifest.json). Review is pending. Mixed store
+[manifest](../../testing/M2/job-read-manifest.json). Accepted in PR 49. Mixed store
 publication/admission, complete executable intent, native
 attribution/quiescence, acknowledgement cuts/restoration and M2 acceptance remain
 open; the job reader cannot grant storage authority.
+
+
+## Mixed state census prerequisite
+
+The [census procedure](../../testing/M2/state-catalog.md) adds partial M2-STATE-001/
+M2-JOB-001/M2-PRIV-001 at T1/T3. Require whole-namespace strict validation and zero
+catalog on error, shared ownership/job byte totals, exact sorted summaries,
+nonterminal reconciliation, actual 64/1,000 class ceilings and exhaustion, submission
+collision refusal, unsafe files/ACLs/UID denial, ordinary drift, preserved uncertainty
+and complete owned teardown. Require 336 named assertions, thirty-two parent tests
+and 176 codec/schema subtests on both releases. Both passed at signed source
+`b79ff0f03a85c719882b93e8080f562704cc6bac` with complete teardown; see the
+[manifest](../../testing/M2/state-catalog-manifest.json). Review is pending.
+This census grants no publication/admission/recovery authority or M2-SCALE-001
+resource acceptance; ownership-only publication remains strict.

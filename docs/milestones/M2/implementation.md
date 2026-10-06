@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation accepted in PR 42; ownership publication accepted in PR 43; bounded ownership catalog accepted in PR 46; ownership capacity accepted in PR 47; job lifecycle metadata accepted in PR 48; native job reader qualified, review pending; Actions disabled.
+Date: 2026-10-06. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation accepted in PR 42; ownership publication accepted in PR 43; bounded ownership catalog accepted in PR 46; ownership capacity accepted in PR 47; job lifecycle metadata accepted in PR 48; native job reader accepted in PR 49; mixed state census qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -208,7 +208,7 @@ assertions extend the state suite to sixty-three lease/read cases, two native
 tests, six unit tests and fifty-seven codec subtests. Both native targets passed
 at signed source `94cf66e9c3a34184c76b84858cb7ef998e4bd2dc`, including complete
 preservation and teardown; see the [manifest](../../testing/M2/ownership-read-manifest.json).
-PR 41 accepted the reader at merged source `a6406670cb7804a1d15582a615114fefdbeac337`. It performs no file publication or runtime enrollment and
+PR 41 accepted the reader at merged source `a6406670cb7804a1d15582a615114fefdbeac336`. It performs no file publication or runtime enrollment and
 consumes no unqualified slice 1 observation. ACL provisioning, full store budgets,
 atomic publication, durable jobs and recovery remain ahead.
 
@@ -297,7 +297,20 @@ job-ID-selected native reads using shared ownership descriptor validation and a
 pure append-only successor guard. Identity, intent and historical events cannot
 change. The expanded state gate requires 275 assertions, twenty-eight parents and
 176 codec/schema subtests. Both releases passed with full teardown at signed source `5241ae7f0bccde0423613af1dfcde9aed951ac34`; see the
-[manifest](../../testing/M2/job-read-manifest.json). Review is pending. Job-file
+[manifest](../../testing/M2/job-read-manifest.json). Accepted in PR 49. Job-file
 publication, complete durable
-intent, mixed namespaces/budgets, admission/deduplication and actual recovery remain
+intent, mixed publication budgets, admission/deduplication and actual recovery remain
 open. Ownership publication still refuses all job files; no runtime caller exists.
+
+
+## Mixed state census prerequisite
+
+The [mixed catalog](../../testing/M2/state-catalog.md) validates the complete
+ownership/job namespace through the held root lease, counts both kinds against
+64 MiB, and refuses excess 64 nonterminal/1,000 terminal job records and conflicting
+submission IDs. Require 336 state assertions, thirty-two parents and 176 codec/schema
+subtests on both releases with complete teardown. Both passed at signed source
+`b79ff0f03a85c719882b93e8080f562704cc6bac`; see the [manifest](../../testing/M2/state-catalog-manifest.json).
+Maintainer review is pending.
+The ownership-only publisher remains strict; mixed publication reservation,
+complete intent, durable admission and recovery remain later gates.

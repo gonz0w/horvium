@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"runtime"
 	"strings"
@@ -110,6 +111,9 @@ func TestNativeStateACLProcess(t *testing.T) {
 	job := jobFixture()
 	if j, err := s.ReadJob(job.ID); err != ErrStateDirectory || j.ID != "" {
 		t.Fatal("ACL grant bypassed job reader kernel UID guard")
+	}
+	if c, err := s.InspectState(); err != ErrStateDirectory || !reflect.DeepEqual(c, StateCatalog{}) {
+		t.Fatal("ACL grant bypassed catalog kernel UID guard")
 	}
 	var st unix.Stat_t
 	if unix.Fstat(3, &st) != nil || st.Uid != 0 || st.Mode&07777 != 0700 {
@@ -292,6 +296,10 @@ func TestNativeStateACL(t *testing.T) {
 			}
 			deniedRead := func() bool { p, e := s.ReadOwnership("100"); return e == ErrStateDirectory && p.PoolGUID == "" }
 			deniedJob := func() bool { j, e := s.ReadJob(job.ID); return e == ErrStateDirectory && j.ID == "" }
+			deniedCatalog := func() bool {
+				c, e := s.InspectState()
+				return e == ErrStateDirectory && reflect.DeepEqual(c, StateCatalog{})
+			}
 			preserved := func(fd int, mode uint16, want stateACL) bool {
 				var st, named unix.Stat_t
 				a, e := readStateACL(fd, model.kind)
@@ -303,6 +311,7 @@ func TestNativeStateACL(t *testing.T) {
 			check(prefix+"directory_denial", deniedOpen(statePath))
 			check(prefix+"directory_read_denial", deniedRead())
 			check(prefix+"job_directory_denial", deniedJob())
+			check(prefix+"catalog_directory_denial", deniedCatalog())
 			check(prefix+"directory_no_repair", preserved(dirFD, 0700, bad))
 			setFixtureACL(t, dirFD, model.kind, dirACL)
 			parent := filepath.Join(mountpoint, "ancestor")
@@ -326,17 +335,20 @@ func TestNativeStateACL(t *testing.T) {
 			check(prefix+"lock_denial", deniedOpen(statePath))
 			check(prefix+"lock_read_denial", deniedRead())
 			check(prefix+"job_lock_denial", deniedJob())
+			check(prefix+"catalog_lock_denial", deniedCatalog())
 			check(prefix+"lock_no_repair", preserved(lockFD, 0600, bad))
 			setFixtureACL(t, lockFD, model.kind, lockACL)
 			bad = namedFixtureACL(recordACL, model.kind, 0)
 			setFixtureACL(t, recordFD, model.kind, bad)
 			check(prefix+"record_denial", deniedRead())
+			check(prefix+"catalog_ownership_denial", deniedCatalog())
 			data, e := os.ReadFile(recordPath)
 			check(prefix+"record_no_repair", preserved(recordFD, 0600, bad) && e == nil && bytes.Equal(data, ownershipGolden()))
 			setFixtureACL(t, recordFD, model.kind, recordACL)
 			bad = namedFixtureACL(jobACL, model.kind, 0)
 			setFixtureACL(t, jobFD, model.kind, bad)
 			check(prefix+"job_record_denial", deniedJob())
+			check(prefix+"catalog_job_denial", deniedCatalog())
 			data, e = os.ReadFile(jobPath)
 			check(prefix+"job_record_no_repair", preserved(jobFD, 0600, bad) && e == nil && bytes.Equal(data, jobBytes))
 			setFixtureACL(t, jobFD, model.kind, jobACL)
@@ -349,6 +361,7 @@ func TestNativeStateACL(t *testing.T) {
 			}
 			check(prefix+"inheritance_denial", deniedOpen(statePath))
 			check(prefix+"inheritance_read_denial", deniedRead())
+			check(prefix+"catalog_inheritance_denial", deniedCatalog())
 			if model.kind == 2 {
 				a, e := readStateACL(dirFD, 3)
 				check(prefix+"inheritance_no_repair", e == nil && a.Count == 3)
@@ -398,6 +411,7 @@ func TestNativeStateACL(t *testing.T) {
 				check("kernel_nfs4_grant", childErr == nil)
 				check("kernel_uid_denial", childErr == nil)
 				check("job_kernel_uid_denial", childErr == nil)
+				check("catalog_kernel_uid_denial", childErr == nil)
 				if os.RemoveAll(processPath) != nil {
 					t.Fatal("process fixture removal failed")
 				}
@@ -409,6 +423,8 @@ func TestNativeStateACL(t *testing.T) {
 			}
 			check(prefix+"restored_read", valid())
 			check(prefix+"job_restored_read", validJob())
+			catalog, e := s.InspectState()
+			check(prefix+"catalog_restored", e == nil && len(catalog.Ownership) == 1 && len(catalog.Jobs) == 1 && catalog.Bytes == uint64(len(ownershipGolden())+len(jobBytes)))
 			check(prefix+"lease_close", s.Close() == nil)
 			if record.Close() != nil || jobRecord.Close() != nil || pf.Close() != nil {
 				t.Fatal("owned fixture descriptor close failed")

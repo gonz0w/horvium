@@ -56,7 +56,7 @@ physical identity, file-client, scale or throughput claim follows.
 
 Actual Firefox 157.0/geckodriver 0.37.1 passed the synthetic console's four
 JavaScript enabled/disabled, light/dark and verified 1280/390/320 CSS-pixel flows
-on Ubuntu 24.04.5 (37233700130); automated qualification was accepted with PR 16.
+on Ubuntu 24.04.5 (37233600130); automated qualification was accepted with PR 16.
 Safari 27.0 automation was unavailable; manual
 accessibility/native zoom remains pending by maintainer choice. See
 [browser evidence](../testing/M1/browser-checklist.md). These fixtures do not
@@ -242,6 +242,14 @@ M2 native job reader: [contract/procedure](../testing/M2/job-read.md) adds priva
 ID-selected native metadata reads and immutable successor validation. Require all
 275 state assertions, twenty-eight parents and 176 codec/schema subtests on both
 existing targets. Both passed at signed source `5241ae7f0bccde0423613af1dfcde9aed951ac34` with
-full teardown; see the [manifest](../testing/M2/job-read-manifest.json). Review is
-pending. No runtime job publication/admission,
+full teardown; see the [manifest](../testing/M2/job-read-manifest.json). Accepted in
+PR 49. No runtime job publication/admission,
 actual recovery, commercial scale or new hardware/client support follows.
+
+
+M2 mixed state catalog: [contract/procedure](../testing/M2/state-catalog.md) requires
+336 assertions, thirty-two parents and 176 codec/schema subtests on both existing
+targets. Complete private ownership/job census and shared byte/class ceilings;
+both passed at signed source `b79ff0f03a85c719882b93e8080f562704cc6bac` with full teardown; see the
+[manifest](../testing/M2/state-catalog-manifest.json). Review is pending. Actual record counts do not qualify commercial
+resources/scale, mixed publication, admission or recovery; runtime remains read-only.

@@ -289,3 +289,13 @@ native job access cannot bypass the product's kernel UID guard. All added files
 are owned disposable fixtures; no persistent services or operator storage are used.
 Both targets passed at signed source `5241ae7f0bccde0423613af1dfcde9aed951ac34` with full
 teardown; see the [manifest](M2/job-read-manifest.json).
+
+
+The [mixed state census](M2/state-catalog.md) expands the state suite to 336 named
+assertions, thirty-two parents (nine native, twenty-three unit) and 176 codec/schema
+subtests. Both declared targets and complete teardown are required. Actual owned
+64/1,000 job populations test fixed census limits. Both passed at signed source
+`b79ff0f03a85c719882b93e8080f562704cc6bac` with full teardown; see the
+[manifest](M2/state-catalog-manifest.json).
+Shared evidence/selector changes select one complete portable review. Ownership-only
+publication stays strict and no job admission/recovery follows.
