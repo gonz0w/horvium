@@ -248,4 +248,18 @@ Five behavioral tests and fifty-seven subtests passed without skips at signed
 source `e9f685c2f4460b7b4545bfa761c9089a2743439a`; all twenty-one bounded fuzz
 targets and complete portable review passed. See the
 [source-bound manifest](../../testing/M2/ownership-records-manifest.json).
-Maintainer review and actual file/store/recovery gates remain open.
+PR 40 accepted the codec; actual file/store/recovery gates remain open.
+
+## Native ownership read prerequisite
+
+The [native reader](../../testing/M2/ownership-read.md) covers partial M2-OWN-001/
+M2-STATE-001 at T1/T3: actual descriptor-relative private-file reads, UID/owner/
+mode/link/type/byte/version/checksum/identity refusal, kernel-dropped UID with
+inherited descriptors, unchanged valid/control/foreign bytes, stable anchoring
+after directory rename, directory/lock drift denial and complete teardown. The
+state suite requires all sixty-three lease/read assertions, two native tests, six
+unit tests and fifty-seven codec subtests on both targets. Both targets passed at
+signed source `94cf66e9c3a34184c76b84858cb7ef998e4bd2dc` with complete teardown; see
+the [manifest](../../testing/M2/ownership-read-manifest.json). Review is pending;
+ACL provisioning, coordinated races, full store/publication/admission/recovery and
+M2 acceptance remain open.

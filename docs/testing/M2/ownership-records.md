@@ -1,6 +1,7 @@
 # M2 strict ownership record codec
 
-Date: 2026-10-05. Status: partial codec portable-qualified; maintainer review pending.
+Date: 2026-10-05. Status: partial codec accepted in
+[PR 40](https://github.com/gonz0w/horvium/pull/40).
 Authority: [approved M2 EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).

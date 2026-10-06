@@ -166,6 +166,16 @@ version 1 ownership metadata using the existing policy model, required exact JSO
 fields, duplicate/null/version refusal, canonical checksums and 64 KiB bounds.
 Five behavioral tests and fifty-seven subtests passed without skips; complete
 portable review passed with twenty-one bounded fuzz targets. Maintainer review
-remains pending; see the [source-bound manifest](../testing/M2/ownership-records-manifest.json).
+accepted in PR 40; see the [source-bound manifest](../testing/M2/ownership-records-manifest.json).
 FreeBSD/amd64 compilation alone is not native file
 qualification. No file operations, enrollment, durable jobs or runtime wiring exist.
+
+M2 native ownership reader: [contract/procedure](../testing/M2/ownership-read.md)
+adds bounded record reads through the held root directory, exact owner/mode/link/
+type checks, file/name metadata comparisons and pool-GUID binding to the accepted
+codec. Sixty-three assertions, two native tests, six unit tests and fifty-seven
+codec subtests passed on FreeBSD 15.1-RELEASE-p3/ZFS root and 14.5-RELEASE/UFS root
+at signed source `94cf66e9c3a34184c76b84858cb7ef998e4bd2dc`; see the
+[source-bound manifest](../testing/M2/ownership-read-manifest.json). Complete
+preservation/teardown passed; maintainer review is pending.
+Default-ACL fixtures only; no enrollment, publisher or runtime write authority.

@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec portable-qualified, review pending; Actions disabled.
+Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -195,7 +195,19 @@ canonical bytes, uint64 precision, capacity refusal and immutable round trips.
 It adds the twenty-first bounded portable fuzz target. Signed source
 `e9f685c2f4460b7b4545bfa761c9089a2743439a` passed five behavioral tests, fifty-seven
 subtests, complete local review and all twenty-one fuzz targets; see the
-[manifest](../../testing/M2/ownership-records-manifest.json). Maintainer review
-remains pending; prior native manifests retain their original sources. Atomic
+[manifest](../../testing/M2/ownership-records-manifest.json). PR 40 accepted the codec
+at merged source `52a583b4a83ab44fc51fab85f36e48efc18601d4`; prior native manifests retain their original sources. Atomic
 publication, job schemas, durable admission and all recovery/native gates remain
 ahead. This independent prerequisite consumes no unqualified slice 1 gate.
+
+## Native ownership read prerequisite
+
+The [ownership reader](../../testing/M2/ownership-read.md) connects the accepted
+codec to bounded private file reads through the held directory. Its twenty-eight
+assertions extend the state suite to sixty-three lease/read cases, two native
+tests, six unit tests and fifty-seven codec subtests. Both native targets passed
+at signed source `94cf66e9c3a34184c76b84858cb7ef998e4bd2dc`, including complete
+preservation and teardown; see the [manifest](../../testing/M2/ownership-read-manifest.json).
+Maintainer review is pending. It performs no file publication or runtime enrollment and
+consumes no unqualified slice 1 observation. ACL provisioning, full store budgets,
+atomic publication, durable jobs and recovery remain ahead.
