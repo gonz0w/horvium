@@ -1,6 +1,6 @@
 # M2 bounded native ownership record reads
 
-Date: 2026-10-05. Status: partial native read boundary qualified; review pending.
+Date: 2026-10-05. Status: partial native read boundary accepted in [PR 41](https://github.com/gonz0w/horvium/pull/41).
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -118,7 +118,8 @@ preserved pinned base/runtime artifacts and foreign/control bytes, removed owned
 guest fixtures, images, keys and firmware variables, and completed supervised
 process-group teardown. Ten pinned primary source records, actual utility hashes
 and qualification/result log hashes are retained in the manifest. No initial
-unqualified native attempt occurred. Maintainer review is still required.
+unqualified native attempt occurred. PR 41 accepted this read subset at merged
+source `a6406670cb7804a1d15582a615114fefdbeac337`.
 
 ## Primary sources and remaining gates
 
@@ -138,3 +139,6 @@ restore remain ahead. Read byte bounds do not establish a filesystem I/O deadlin
 There is no runtime enrollment or record-writing path. M2 acceptance and M1's
 maintainer-deferred Safari/manual accessibility gate remain pending. GitHub Actions
 stay disabled; no physical/controller/commercial qualification follows.
+
+The subsequent [ACL validation](state-acl.md) extends opened-object checks. The
+PR 41 manifest retains its original default-ACL scope and tested source.

@@ -135,3 +135,6 @@ The complete M2-STATE-001 and other gates listed above remain open.
 
 GitHub Actions remain disabled. The maintainer-deferred M1 Safari/manual
 accessibility gate remains pending. No physical/controller/commercial claim follows.
+
+The subsequent [ACL validation](state-acl.md) extends opened-object checks. The
+PR 39 manifest retains its original default-ACL scope and tested source.

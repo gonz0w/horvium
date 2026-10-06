@@ -177,5 +177,13 @@ codec. Sixty-three assertions, two native tests, six unit tests and fifty-seven
 codec subtests passed on FreeBSD 15.1-RELEASE-p3/ZFS root and 14.5-RELEASE/UFS root
 at signed source `94cf66e9c3a34184c76b84858cb7ef998e4bd2dc`; see the
 [source-bound manifest](../testing/M2/ownership-read-manifest.json). Complete
-preservation/teardown passed; maintainer review is pending.
+preservation/teardown passed; accepted in PR 41.
 Default-ACL fixtures only; no enrollment, publisher or runtime write authority.
+
+M2 state ACL validation: [contract/procedure](../testing/M2/state-acl.md) adds
+actual-descriptor capability/ACL queries to ancestors, private directories, locks
+and ownership records. The conservative policy rejects named principals,
+inheritance and nonowner grants beyond its allowlist. The expanded state suite
+requires 108 named assertions, ten parent tests and 57 codec subtests on both
+releases; native qualification and review are pending. No publisher, runtime
+state provisioning or storage writes follow.
