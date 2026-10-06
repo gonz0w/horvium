@@ -19,7 +19,7 @@ zfs version
 /sbin/mount -p | awk '$2 == "/" {printf "STATE_ROOT_FS %s\n", $3}'
 /sbin/sha256 /sbin/mount /sbin/umount
 .tools/go/bin/go vet ./internal/storage
-if ! .tools/go/bin/go test -v -count=1 ./internal/storage -run '^TestNativeStateDirectory$' > .tools/state-native.log 2>&1; then
+if ! .tools/go/bin/go test -v -count=1 ./internal/storage -run '^Test(Native(StateDirectory|OwnershipRead)|Ownership.*)$' > .tools/state-native.log 2>&1; then
     cat .tools/state-native.log
     exit 1
 fi

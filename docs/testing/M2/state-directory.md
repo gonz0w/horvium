@@ -47,9 +47,11 @@ Tests failed first because the directory boundary and errors were absent.
 Native assertions use actual FreeBSD descriptor/mode/ownership/locking operations;
 portable tests cannot substitute for them. The non-FreeBSD stub has local coverage.
 The evidence checker first failed when missing; runner integration first failed
-because the suite was absent. It now requires exactly thirty-five named assertions
+because the suite was absent. At PR 39 it required exactly thirty-five named assertions
 and one executed `TestNativeStateDirectory`, refusing missing/failed/duplicate/
-unknown/skipped/oversized evidence. Existing twenty portable fuzz targets remain;
+unknown/skipped/oversized evidence. The [reader extension](ownership-read.md)
+adds a separately source-bound native file/codec suite. At PR 39 twenty portable
+fuzz targets remained;
 this privileged directory prerequisite adds no output parser or untrusted route.
 
 This partial boundary does not decode/enumerate/checksum any job/ownership record,
