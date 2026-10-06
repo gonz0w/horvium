@@ -14,9 +14,9 @@ func testModeACL(kind int, mode uint32) stateACL {
 		}
 	} else {
 		for i, tag := range []uint32{1, 4, 64} {
-			p := uint32(0x80 | 0x200 | 0x1000 | 0x8000)
+			p := uint32(0x40 | 0x200 | 0x1000 | 0x8000)
 			if i == 0 {
-				p |= 0x100 | 0x400 | 0x800 | 0x2000 | 0x4000
+				p |= 0x80 | 0x100 | 0x400 | 0x800 | 0x2000 | 0x4000
 			}
 			bits := (mode >> uint(6-i*3)) & 7
 			if bits&4 != 0 {
@@ -35,6 +35,22 @@ func testModeACL(kind int, mode uint32) stateACL {
 }
 
 func TestStateACLPolicy(t *testing.T) {
+	// Independent literal ABI cases distinguish read-named (0x40) from
+	// write-named (0x80); a mode-generated fixture must not hide a shared typo.
+	attribute := stateACL{Max: 254, Count: 3}
+	for i, tag := range []uint32{1, 4, 64} {
+		attribute.Entries[i] = stateACLEntry{Tag: tag, ID: ^uint32(0), Type: 0x100, Perm: 0x200 | 0x1000 | 0x8000}
+	}
+	readAttribute := attribute
+	readAttribute.Entries[1].Perm |= 0x40
+	if !safeStateACLValue(readAttribute, 4, 0700, false) {
+		t.Error("ordinary nonowner read-named attribute right refused")
+	}
+	writeAttribute := attribute
+	writeAttribute.Entries[1].Perm |= 0x80
+	if safeStateACLValue(writeAttribute, 4, 0700, false) {
+		t.Error("nonowner write-named attribute right accepted")
+	}
 	if unsafe.Sizeof(stateACLEntry{}) != 16 || unsafe.Sizeof(stateACL{}) != 4088 || unsafe.Offsetof(stateACL{}.Entries) != 24 {
 		t.Fatal("FreeBSD ACL ABI layout mismatch")
 	}

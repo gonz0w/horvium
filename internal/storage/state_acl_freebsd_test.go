@@ -74,7 +74,7 @@ func diagnoseFixtureACL(t *testing.T, paths []string) {
 					id = id || entry.ID != ^uint32(0)
 					rights = rights || kind == 4 && entry.Perm&^uint32(0xfff9) != 0
 					types = types || kind == 4 && entry.Type != 0x100 && entry.Type != 0x200
-					nonownerWrite = nonownerWrite || kind == 4 && entry.Tag != 1 && entry.Type == 0x100 && entry.Perm&uint32(0x10|0x20|0x100|0x400|0x800|0x2000|0x4000) != 0
+					nonownerWrite = nonownerWrite || kind == 4 && entry.Tag != 1 && entry.Type == 0x100 && entry.Perm&uint32(0x10|0x20|0x80|0x100|0x400|0x800|0x2000|0x4000) != 0
 				}
 			}
 			t.Logf("ACL diagnostic part=%d posix=%d/%v nfs4=%d/%v kind=%d retrieval=%v max=%d count=%d spare_zero=%t named=%t flags=%t special_id=%t unknown_rights=%t unknown_type=%t nonowner_write=%t", i, p, pe, n, ne, kind, err, a.Max, a.Count, a.Spare == [4]int32{}, named, flags, id, rights, types, nonownerWrite)

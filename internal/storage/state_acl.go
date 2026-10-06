@@ -14,6 +14,17 @@ type stateACL struct {
 	Entries    [254]stateACLEntry
 }
 
+// FreeBSD NFSv4 rights from sys/sys/acl.h; POSIX ACL_READ/ACL_WRITE have
+// different values and are not valid NFSv4 rights.
+const (
+	stateNFSReadData            uint32 = 0x0008
+	stateNFSReadNamedAttributes uint32 = 0x0040
+	stateNFSReadAttributes      uint32 = 0x0200
+	stateNFSReadACL             uint32 = 0x1000
+	stateNFSSynchronize         uint32 = 0x8000
+	stateNFSKnownRights         uint32 = 0xfff9
+)
+
 // Require no named principals or inheritance. POSIX access ACLs must be exactly
 // the three mode entries; default ACLs must be empty. NFSv4 allows only owner,
 // group and everyone entries. Nonowner grants are bounded by mode and FreeBSD's
@@ -44,7 +55,7 @@ func safeStateACLValue(a stateACL, kind int, mode uint32, directory bool) bool {
 	}
 	var seen uint32
 	for _, e := range a.Entries[:a.Count] {
-		if e.ID != ^uint32(0) || e.Flags != 0 || e.Perm&^uint32(0xfff9) != 0 || e.Type != 0x100 && e.Type != 0x200 {
+		if e.ID != ^uint32(0) || e.Flags != 0 || e.Perm&^stateNFSKnownRights != 0 || e.Type != 0x100 && e.Type != 0x200 {
 			return false
 		}
 		var bits uint32
@@ -62,12 +73,12 @@ func safeStateACLValue(a stateACL, kind int, mode uint32, directory bool) bool {
 			continue
 		}
 		seen |= e.Tag
-		allowed := uint32(0x80 | 0x200 | 0x1000 | 0x8000) // read named attrs, status, ACL, synchronize
+		allowed := stateNFSReadNamedAttributes | stateNFSReadAttributes | stateNFSReadACL | stateNFSSynchronize
 		if e.Tag == 1 {
-			allowed = 0xfff9
+			allowed = stateNFSKnownRights
 		} else {
 			if bits&4 != 0 {
-				allowed |= 8
+				allowed |= stateNFSReadData
 			}
 			if bits&1 != 0 {
 				allowed |= 1
