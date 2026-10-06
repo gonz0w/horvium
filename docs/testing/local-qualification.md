@@ -208,3 +208,11 @@ native tests to sixty-eight assertions. Successful logs must include the complet
 `DEVICE_ACCESS_RESULT` group. All handles close before the existing filesystem
 fixtures start; no bytes are written through them. Both declared releases and
 full preservation/teardown must pass before qualification is recorded.
+
+The M2 [state-directory prerequisite](M2/state-directory.md) uses the `state`
+suite on disposable system-storage fixtures under `/root`, with a separately
+owned copied test executable and temporary filesystem mount. It attaches no
+extra disks and creates no persistent runner/service. The new suite requires all
+thirty-five assertions and one executed native test; missing/skipped/incomplete
+records fail. The ordinary supervisor still verifies base/runtime preservation,
+image/key/variable removal and process teardown before qualification.

@@ -147,5 +147,13 @@ requires fresh review on count changes. Provider/consumer consistency and missin
 mode refusal have portable coverage; all sixty-eight assertions, four native tests
 and complete preservation/teardown passed on both targets. Actual direct/alias
 read/write opens and close/restoration qualified on the owned virtual disk; see
-the [native manifest](../testing/M2/disk-access-manifest.json). Maintainer review is pending. Zero counters
+the [native manifest](../testing/M2/disk-access-manifest.json). Accepted in PR 38. Zero counters
 are not complete device clearance. No runtime collector or product writes follow.
+
+M2 state directory: [contract and procedure](../testing/M2/state-directory.md)
+implements a root-owned, descriptor-anchored UFS/ZFS directory lease and stable
+single-writer advisory lock. Native ownership/permission/symlink/hardlink/FIFO
+refusal, competing writers, successful sync, process-death release, foreign
+preservation and teardown are pending on both declared releases. This is a
+partial M2-STATE-001 prerequisite, not a record store or durable job admission.
+M1 collection and the management runtime remain read-only.
