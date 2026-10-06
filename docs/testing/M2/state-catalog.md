@@ -1,6 +1,6 @@
 # M2 mixed state catalog and capacity census
 
-Date: 2026-10-06. Status: implementing; native qualification pending.
+Date: 2026-10-06. Status: qualified on both declared native targets; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -95,3 +95,41 @@ open. No native storage write, enrollment, service deployment, release or
 physical/commercial/client support claim follows. Preserve earlier manifests at
 their actual executed sources. Deferred M1 accessibility and M2 acceptance remain
 pending.
+
+
+## Executed qualification
+
+Signed functional/suite source `b79ff0f03a85c719882b93e8080f562704cc6bac` passed all 336 state
+assertions, thirty-two parents and 176 codec/schema subtests on both declared
+releases with no skips/failures. See the [sanitized manifest](state-catalog-manifest.json)
+for source/input/SDK/module/image/runtime/utility/log provenance. Shared verification
+changes selected one complete portable review: all baseline checks,
+91 tooling regressions, race checks across eleven packages and all
+24 compiler-listed bounded fuzz targets passed in 112.706 seconds.
+
+Actual mixed catalogs accounted for both record types and preserved reconciliation
+as nonterminal. Owned 64/1,000 populations passed exact ceilings; the next record
+was refused without eviction. Invalid bytes, duplicate submissions and unsafe
+objects returned no usable catalog. Ordinary record/namespace drift and both ACL
+models passed their refusal/restoration controls. The inherited-descriptor child
+refused the non-root UID despite an effective native NFSv4 read grant. Previously
+latched uncertainty remained latched.
+
+The initial guest passed every product control but remained unqualified because
+the evidence checker mistakenly required an extra placeholder assertion. A
+failing regression fixed that verifier expectation; the failed source/log and
+complete teardown are retained in the manifest. Historical evidence is not relabeled.
+
+| Target | Root | Census parent | Full owned guest | Result |
+|---|---|---|---|---|
+| 15.1-RELEASE-p3 | zfs | 1.83 s | 34.706 s | all 336; complete teardown |
+| 14.5-RELEASE | ufs | 1.6 s | 35.078 s | all 336; complete teardown |
+
+Both guests verified the same cross-built executable before execution. All owned
+leases/files/mounts/memory devices/children closed or were removed; supervisor
+groups stopped, base/runtime hashes were preserved, and snapshots/keys/variables/
+test executables removed. All 25 prior M2 manifests remain byte-identical.
+Final evidence-only review reruns baseline checks and retains the original executed
+deep source when reusing its result. Native evidence keeps the actual tested head.
+Mixed/job publication, complete intent, admission/recovery, M2 acceptance and
+deferred M1 accessibility remain open.

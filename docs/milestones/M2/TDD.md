@@ -371,6 +371,8 @@ catalog on error, shared ownership/job byte totals, exact sorted summaries,
 nonterminal reconciliation, actual 64/1,000 class ceilings and exhaustion, submission
 collision refusal, unsafe files/ACLs/UID denial, ordinary drift, preserved uncertainty
 and complete owned teardown. Require 336 named assertions, thirty-two parent tests
-and 176 codec/schema subtests on both releases. Native qualification is pending.
+and 176 codec/schema subtests on both releases. Both passed at signed source
+`b79ff0f03a85c719882b93e8080f562704cc6bac` with complete teardown; see the
+[manifest](../../testing/M2/state-catalog-manifest.json). Review is pending.
 This census grants no publication/admission/recovery authority or M2-SCALE-001
 resource acceptance; ownership-only publication remains strict.

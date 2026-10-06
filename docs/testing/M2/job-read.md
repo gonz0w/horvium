@@ -97,11 +97,12 @@ Traceability: partial M2-STATE-001/M2-JOB-001/M2-PRIV-001 at T1/T3.
 
 ## Remaining boundaries
 
-There is no job publication, mixed catalog/budget, durable admission/deduplication,
-reservation release, tombstone/retention, executor quiescence, startup recovery or
-restoration. The ownership-only catalog/publisher continue to refuse all job files,
-including valid lifecycle files; the next assembled namespace must validate and
-account for both kinds before admitting writes. Reading a job in a disposable
+Job publication, mixed publication capacity reservation, durable admission/
+deduplication, reservation release, tombstone/retention, executor quiescence, startup
+recovery and restoration remain open. The later [mixed state census](state-catalog.md)
+now validates and accounts for ownership/job records without authorizing writes. The ownership-only catalog/publisher continue to refuse all job files,
+including valid lifecycle files; future mixed publication must use the complete census and reserve temporary
+capacity before admitting writes. Reading a job in a disposable
 fixture therefore does not qualify a functioning job store or recovery anchor.
 No physical/commercial/client/scale or power-loss claim follows. Existing native
 manifests retain their original executed sources; new evidence does not relabel
@@ -138,5 +139,5 @@ groups stopped; base/runtime hashes were preserved and snapshots/keys/variables/
 test executables removed. All 24 prior M2 manifests remain byte-identical. The
 final evidence-only review reruns baseline checks and retains the original deep
 source when matching execution is reused; native execution is not relabeled as
-that documentation head. Job publication, complete intent/mixed budgets, admission,
+that documentation head. Job publication, complete intent/mixed publication budgets, admission,
 actual recovery, M2 acceptance and deferred M1 accessibility remain pending.
