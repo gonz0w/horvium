@@ -1,6 +1,6 @@
 # M2 property job binding and record
 
-Date: 2026-10-06. Status: implementing; portable qualification pending.
+Date: 2026-10-06. Status: portable qualification passed; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -93,8 +93,32 @@ PR_TITLE='feat(storage): bind reviewed property baselines to jobs' make review
 make lab-status
 ```
 
-Qualification is pending. FreeBSD cross-compilation will establish portability
-only. Native persistence, complete executable intent/eligibility, actual admission
+Portable qualification below establishes metadata consistency. FreeBSD
+cross-compilation establishes portability only. Native persistence, complete executable intent/eligibility, actual admission
 and reservations, caller/executor attribution, postconditions, restart/restore/
 acknowledgement cuts and M2 acceptance remain open. The runtime remains read-only;
 the deferred M1 manual accessibility gate remains pending.
+
+
+## Executed qualification
+
+Signed functional/test source `ddec32450bfc533eca98c2e39d6a68ce09951404` passed six parent tests
+and 859 distinct subtests, including 830 required-shape cases, without skips or
+failures. The [sanitized manifest](property-jobs-manifest.json) records exact
+source/inputs/toolchain/cases and log hashes, including the missing-API failure
+before implementation.
+
+Local `make review` passed all required baseline checks (92 tooling regressions),
+storage-only race checks and all 18 compiler-listed storage fuzz targets in
+94.039 seconds. No complete milestone deep suite or unrelated native suite ran.
+A supervised cgo-free FreeBSD/amd64 test binary compiled at the same source,
+was removed and was never executed. All owned process groups stopped with verified
+teardown; no VM, mount, fixture or host service started. All 28 prior M2 manifests
+remain byte-identical with their actual original sources. Final prose/evidence
+review reruns baseline/signature/DCO/title/source checks and may reuse this
+exact-input executed deep result.
+
+This qualifies bounded metadata binding/encoding/immutable successors. Native
+persistence, full executable eligibility/intent, admission/reservations, attribution/
+postconditions, recovery/acknowledgement cuts, M2 acceptance and the deferred M1
+manual accessibility gate remain open.

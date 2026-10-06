@@ -276,7 +276,11 @@ remain; no new hardware/client/resource/recovery support claim follows.
 
 M2 property job binding: [metadata contract](../testing/M2/property-jobs.md)
 combines the current reviewed baseline with immutable lifecycle metadata under a
-single 64 KiB bound. Portable qualification is pending. Existing job/ownership
+single 64 KiB bound. Portable qualification passed at signed source
+ `ddec32450bfc533eca98c2e39d6a68ce09951404`:
+six parents/859 subtests, storage race/all 18 fuzz targets and FreeBSD cross-compilation;
+see the [manifest](../testing/M2/property-jobs-manifest.json). Review is pending.
+Existing job/ownership
 wire versions, native readers/publishers and runtime remain unchanged; they reject
 the distinct new kind. No native persistence, execution, migration, resource,
 hardware/client, recovery or commercial support claim follows.

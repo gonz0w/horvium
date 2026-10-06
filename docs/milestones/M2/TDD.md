@@ -418,4 +418,6 @@ and byte limits and hostile-input round trips. Require baseline and storage-only
 race/all compiler-listed fuzz checks. Existing metadata regressions remain required.
 Cross-compilation proves portability only. No native operations/file formats in
 accepted readers/publishers change; native persistence/admission/recovery and
-full M2 acceptance remain separate gates. Qualification is pending.
+full M2 acceptance remain separate gates. Six parents/859 subtests, required baseline and storage race/all 18 fuzz targets
+passed at signed source `ddec32450bfc533eca98c2e39d6a68ce09951404`;
+see the [manifest](../../testing/M2/property-jobs-manifest.json). Review is pending.
