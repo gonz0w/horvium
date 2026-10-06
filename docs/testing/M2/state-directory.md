@@ -1,7 +1,7 @@
 # M2 private state directory and single-writer lease
 
-Date: 2026-10-05. Status: implementing; native qualification and maintainer
-review pending. [Approved EDD](../../milestones/M2/EDD.md),
+Date: 2026-10-05. Status: partial boundary qualified on both declared releases;
+maintainer review pending. [Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
@@ -106,6 +106,30 @@ establish qualification. Sources are not installed binary build provenance.
 - [FreeBSD open](https://man.freebsd.org/cgi/man.cgi?query=open&sektion=2&format=html)
 - [FreeBSD flock](https://man.freebsd.org/cgi/man.cgi?query=flock&sektion=2&format=html)
 - [FreeBSD fsync](https://man.freebsd.org/cgi/man.cgi?query=fsync&sektion=2&format=html)
+
+## Executed evidence
+
+Signed/DCO functional and suite source
+`123044304e75f6df27d43eee085c23435ddbcce1`, based on merged PR 38 source
+`dea2efefc3c9b9a50053bc4794a5a21685ad5132`, passed local
+`make check lint test secrets go-deep-check`: seventy tooling tests, Go unit/race
+checks and all twenty bounded fuzz targets. The
+[source-bound manifest](state-directory-manifest.json) records eighty-two unchanged
+functional/test/tool inputs, native versions and utility hashes, assertions,
+qualification log/result hashes, ten pinned primary-source hashes and sixteen
+unchanged prior M2 manifests. Final documentation-head portable review is
+separate; native evidence retains this exact functional/suite source.
+
+| Native fixture | State filesystem | Executed test | Named assertions | Preservation and teardown |
+| --- | --- | --- | --- | --- |
+| FreeBSD 15.1-RELEASE-p3 / OpenZFS 2.4.2 | ZFS root | `TestNativeStateDirectory`, 0.13 s | 35/35 pass | base/runtime preserved; mounts/children/fixtures/image/key/variables removed; group stopped |
+| FreeBSD 14.5-RELEASE / OpenZFS 2.2.9 | UFS root | `TestNativeStateDirectory`, 0.13 s | 35/35 pass | base/runtime preserved; mounts/children/fixtures/image/key/variables removed; group stopped |
+
+Both fixtures used Go 1.27.1, Python 3.14.7 and owned x86-64 QEMU 11.1.1 TCG
+guests with two CPUs and 6144 MiB. These are disposable test profiles, not product
+resource requirements or hardware support evidence. No native attempt failed or
+skipped. The historical device/property suites were not rerun or relabeled here.
+The complete M2-STATE-001 and other gates listed above remain open.
 
 GitHub Actions remain disabled. The maintainer-deferred M1 Safari/manual
 accessibility gate remains pending. No physical/controller/commercial claim follows.

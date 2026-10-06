@@ -230,5 +230,8 @@ lock-file owner/mode/link/type/content refusal, native close-on-exec flags,
 competing first writers, successful file/directory sync, dropped kernel UID,
 actual separate-process contention/death/reacquisition, stable lock inode,
 foreign preservation and complete fixture teardown. Both declared releases and
-full host base/runtime/group teardown are required; qualification is pending.
+full host base/runtime/group teardown passed at signed functional/suite source
+`123044304e75f6df27d43eee085c23435ddbcce1`; see the
+[native manifest](../../testing/M2/state-directory-manifest.json). Maintainer
+review remains pending.
 No full record/durable job/recovery/power-cut/ACL/hardware claim follows.

@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset implementing; Actions disabled.
+Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset qualified on both targets, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -178,6 +178,9 @@ those unqualified gates and cannot admit or launch storage jobs. The
 existing private root-provisioned local UFS/ZFS directory, establishes a stable
 single-writer lock and synchronizes its empty lock file and parent directory.
 Thirty-five native assertions, separate process death/reacquisition and full
-teardown on both releases are required; qualification and review are pending.
+preservation/teardown passed on both releases at signed functional/suite source
+`123044304e75f6df27d43eee085c23435ddbcce1`; see the
+[native manifest](../../testing/M2/state-directory-manifest.json). Maintainer
+review remains pending; default-ACL disposable fixtures are the qualified scope.
 Strict records, sync/rename/failure/power-cut tests, durable admission, reservation,
 recovery, restored metadata, helper negotiation and UI/CLI work remain ahead.

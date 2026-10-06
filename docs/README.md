@@ -97,4 +97,4 @@
 
 - [M2 disk access](testing/M2/disk-access.md): identity-bound native aggregate access and review drift; both releases and full teardown qualified, accepted in PR 38.
 
-- [M2 state directory](testing/M2/state-directory.md): private directory and stable single-writer lock prerequisite; qualification pending.
+- [M2 state directory](testing/M2/state-directory.md): private directory and stable single-writer lock prerequisite; thirty-five native assertions and full teardown passed on both targets; review pending.

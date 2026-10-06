@@ -154,6 +154,9 @@ M2 state directory: [contract and procedure](../testing/M2/state-directory.md)
 implements a root-owned, descriptor-anchored UFS/ZFS directory lease and stable
 single-writer advisory lock. Native ownership/permission/symlink/hardlink/FIFO
 refusal, competing writers, successful sync, process-death release, foreign
-preservation and teardown are pending on both declared releases. This is a
+preservation and teardown passed all thirty-five assertions on both declared
+releases (15.1 ZFS root, 14.5 UFS root); see the
+[source-bound manifest](../testing/M2/state-directory-manifest.json). Maintainer
+review remains pending. Only default-ACL disposable fixtures are qualified. This is a
 partial M2-STATE-001 prerequisite, not a record store or durable job admission.
 M1 collection and the management runtime remain read-only.
