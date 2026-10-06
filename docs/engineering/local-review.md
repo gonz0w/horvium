@@ -25,7 +25,7 @@ proposed PR title. Unsigned, empty, dirty or divergent ranges fail before tests.
 
 The gate always runs `make check lint test secrets go-deep-check`: content,
 links/configuration, ShellCheck, formatting/vet, tooling/Go tests, Gitleaks, race
-detection and all nineteen bounded fuzz targets. There are no prose-only skips.
+detection and all twenty bounded fuzz targets. There are no prose-only skips.
 A final identity check rejects changes to HEAD, tree or working files during the
 run. These portable checks do not establish native FreeBSD or client behavior.
 

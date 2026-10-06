@@ -28,6 +28,7 @@ type DeviceUseCapture struct {
 // No eligible/unused/enrolled state or write authority is produced.
 type DeviceUse struct {
 	Disk                inventory.DiskObservation
+	Access              inventory.AccessMode
 	Mounts              []MountUse
 	Swap                []SwapUse
 	Pools               []ImportedPoolUse
@@ -74,7 +75,7 @@ func ReviewDeviceUse(c DeviceUseCapture, limits inventory.Limits) (DeviceUseRevi
 			}
 		}
 	}
-	stages := 4 // mount preparse, disk correspondence, system use, imported use
+	stages := 5 // mount preparse, disk correspondence/access, system use, imported use
 	if c.Filesystem != nil {
 		stages++
 		if !take(len(c.Filesystem.Device)) || !take(len(c.Filesystem.Output)) {
@@ -92,7 +93,7 @@ func ReviewDeviceUse(c DeviceUseCapture, limits inventory.Limits) (DeviceUseRevi
 	// Refuse rather than borrow unused quota or silently truncate projections.
 	perStage := limits
 	perStage.MaxRecords /= stages
-	perStage.MaxXMLElements /= stages - 1 // All except mount preparse read GEOM.
+	perStage.MaxXMLElements /= stages // Access reads XML twice; mount preparse does not.
 	if perStage.MaxRecords <= 2 || perStage.MaxXMLElements == 0 {
 		return zero, ErrLimit
 	}
@@ -133,7 +134,17 @@ func ReviewDeviceUse(c DeviceUseCapture, limits inventory.Limits) (DeviceUseRevi
 	if err != nil {
 		return zero, err
 	}
-	use := DeviceUse{Disk: disk}
+	access, err := inventory.ParseDiskAccess(c.GEOM, c.DiskInfo, c.DiskSerial, perStage)
+	if err != nil {
+		if errors.Is(err, inventory.ErrLimit) {
+			return zero, ErrLimit
+		}
+		return zero, ErrUnavailable
+	}
+	if !reflect.DeepEqual(access.Disk, disk) {
+		return zero, ErrDrift
+	}
+	use := DeviceUse{Disk: disk, Access: access.Mode}
 	selected := func(disks []inventory.Provider) bool {
 		for _, d := range disks {
 			if d.ID == disk.Provider.ID {

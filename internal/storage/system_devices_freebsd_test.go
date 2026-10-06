@@ -207,6 +207,99 @@ func TestNativeSystemDeviceUse(t *testing.T) {
 		}
 		return review, inputs
 	}
+	// Hold real descriptors only on the independently verified owned blank disk.
+	// No bytes are written, including for the read/write handle. All opens close
+	// before the existing UFS/swap fixture starts; the VM is always discarded.
+	attachments, err := inventory.ParseDiskAttachments(raw, mountDisk.Name, inventory.DefaultLimits())
+	if err != nil || len(attachments.Aliases) != 1 {
+		t.Fatal("owned raw-open alias unavailable", err)
+	}
+	accessBaseline, _ := combined(raw, mounts, baselineSwap, mountDisk, nil)
+	if accessBaseline.Observation().Access != (inventory.AccessMode{}) {
+		t.Fatal("owned raw-open disk already accessed")
+	}
+	openHashes := make(map[string]string)
+	for _, d := range disks {
+		openHashes[d.Name] = strings.TrimSpace(string(run("/sbin/sha256", "-q", "/dev/"+d.Name)))
+		if len(openHashes[d.Name]) != 64 {
+			t.Fatal("raw-open fixture hash unavailable")
+		}
+	}
+	var handles []*os.File
+	closeHandles := func() bool {
+		ok := true
+		for i := len(handles) - 1; i >= 0; i-- {
+			if handles[i] != nil {
+				if handles[i].Close() != nil {
+					ok = false
+				}
+				handles[i] = nil
+			}
+		}
+		return ok
+	}
+	t.Cleanup(func() {
+		if !closeHandles() {
+			t.Error("owned raw handles did not close")
+		}
+	})
+	open := func(path string, flags int) {
+		f, err := os.OpenFile(path, flags, 0)
+		if err != nil {
+			t.Fatal("owned raw handle unavailable (address withheld)", err)
+		}
+		handles = append(handles, f)
+	}
+	accessNow := func() (DeviceUseReview, DeviceUseCapture) {
+		_, g, m, s, _, _ := collect()
+		return combined(g, m, s, mountDisk, nil)
+	}
+	open("/dev/"+mountDisk.Name, os.O_RDONLY)
+	readReview, readCapture := accessNow()
+	if readReview.Observation().Access.Read == 0 || readReview.Observation().Access.Write != 0 || !errors.Is(accessBaseline.Validate(readCapture, inventory.DefaultLimits()), ErrDrift) {
+		t.Fatal("actual raw read open did not invalidate baseline")
+	}
+	open("/dev/"+attachments.Aliases[0].Name, os.O_RDONLY)
+	aliasReview, aliasCapture := accessNow()
+	if aliasReview.Observation().Access.Read <= readReview.Observation().Access.Read || !errors.Is(readReview.Validate(aliasCapture, inventory.DefaultLimits()), ErrDrift) {
+		t.Fatal("actual alias read open did not propagate to direct disk")
+	}
+	open("/dev/"+attachments.Aliases[0].Name, os.O_RDWR)
+	writeReview, writeCapture := accessNow()
+	if writeReview.Observation().Access.Write == 0 || !errors.Is(aliasReview.Validate(writeCapture, inventory.DefaultLimits()), ErrDrift) {
+		t.Fatal("actual alias write open did not invalidate baseline")
+	}
+	_, unchangedCapture := accessNow()
+	if writeReview.Validate(unchangedCapture, inventory.DefaultLimits()) != nil {
+		t.Fatal("unchanged held-open access did not revalidate")
+	}
+	copyAccess := writeReview.Observation()
+	copyAccess.Access.Read++
+	if writeReview.Observation().Access == copyAccess.Access {
+		t.Fatal("access snapshot was mutable")
+	}
+	if !closeHandles() {
+		t.Fatal("owned raw-open close failed")
+	}
+	closedReview, closedCapture := accessNow()
+	if closedReview.Observation().Access != (inventory.AccessMode{}) || accessBaseline.Validate(closedCapture, inventory.DefaultLimits()) != nil || !errors.Is(writeReview.Validate(closedCapture, inventory.DefaultLimits()), ErrDrift) {
+		t.Fatal("actual close did not restore/invalidate access baselines")
+	}
+	for _, d := range disks {
+		if strings.TrimSpace(string(run("/sbin/sha256", "-q", "/dev/"+d.Name))) != openHashes[d.Name] {
+			t.Fatal("raw handle fixture changed disk bytes")
+		}
+	}
+	_, closedGEOM, _, _, _, closedSystem := collect()
+	if !reflect.DeepEqual(root(closedSystem), initialRoot) {
+		t.Fatal("raw-open root preservation failed")
+	}
+	badAccess := closedCapture
+	badAccess.GEOM = bytes.Replace(closedGEOM, []byte("<mode>r0w0e0</mode>"), []byte("<mode>unsupported</mode>"), -1)
+	if r, err := ReviewDeviceUse(badAccess, inventory.DefaultLimits()); err == nil || !reflect.DeepEqual(r.Observation(), DeviceUse{}) {
+		t.Fatal("unsupported actual access projection accepted")
+	}
+	t.Log("DEVICE_ACCESS_RESULT raw_read=pass alias_read=pass alias_write=pass access_drift=pass unchanged=pass close_drift=pass unavailable_denial=pass byte_preservation=pass handles_closed=pass")
 	beforeMount, _ := combined(raw, mounts, baselineSwap, mountDisk, nil)
 	beforeSwap, _ := combined(raw, mounts, baselineSwap, swapDisk, nil)
 	before := make(map[string]string)

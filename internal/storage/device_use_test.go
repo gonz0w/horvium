@@ -209,3 +209,35 @@ func FuzzDeviceUseReview(f *testing.F) {
 		}
 	})
 }
+
+func TestDeviceUseAccessDriftAndUnavailableModes(t *testing.T) {
+	c := deviceUseFixture()
+	baseline, err := ReviewDeviceUse(c, inventory.DefaultLimits())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if baseline.Observation().Access != (inventory.AccessMode{}) {
+		t.Fatal("zero snapshot changed")
+	}
+	// Immediate consumers carry aggregate access; DEV-only opens need no mount.
+	g := strings.Replace(signatureGEOM, `<mode>r0w0e0</mode>`, `<mode>r1w0e0</mode>`, 1)
+	g = strings.Replace(g, "</mesh>", `<class id="raw"><name>DEV</name><geom id="rawg"><name>ada1</name><consumer id="rawc"><provider ref="p1"/><mode>r1w0e0</mode></consumer></geom></class></mesh>`, 1)
+	c.GEOM = []byte(g)
+	fresh, err := ReviewDeviceUse(c, inventory.DefaultLimits())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if fresh.Observation().Access.Read != 1 || !errors.Is(baseline.Validate(c, inventory.DefaultLimits()), ErrDrift) {
+		t.Fatal("raw access did not invalidate baseline")
+	}
+	if !errors.Is(fresh.Validate(deviceUseFixture(), inventory.DefaultLimits()), ErrDrift) {
+		t.Fatal("raw close did not invalidate baseline")
+	}
+	for _, g := range []string{strings.Replace(signatureGEOM, "<mode>r0w0e0</mode>", "", 1), strings.Replace(signatureGEOM, "r0w0e0", "r1w0e0", 1)} {
+		c := deviceUseFixture()
+		c.GEOM = []byte(g)
+		if r, err := ReviewDeviceUse(c, inventory.DefaultLimits()); err == nil || !reflect.DeepEqual(r.Observation(), DeviceUse{}) {
+			t.Fatal("unavailable or inconsistent access escaped")
+		}
+	}
+}

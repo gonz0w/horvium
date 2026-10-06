@@ -2,7 +2,7 @@
 
 Date: 2026-10-05. Status: implementation and portable behavioral tests complete;
 all fifty-nine assertions and four native tests, preservation and complete teardown
-passed on both targets; maintainer review pending. [Approved EDD](../../milestones/M2/EDD.md),
+passed on both targets; accepted in PR 37. [Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
 ## Observation contract
