@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation accepted in PR 42; ownership publication accepted in PR 43; bounded ownership catalog accepted in PR 46; ownership capacity accepted in PR 47; job lifecycle metadata accepted in PR 48; native job reader accepted in PR 49; mixed state census qualified, review pending; Actions disabled.
+Date: 2026-10-06. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation accepted in PR 42; ownership publication accepted in PR 43; bounded ownership catalog accepted in PR 46; ownership capacity accepted in PR 47; job lifecycle metadata accepted in PR 48; native job reader accepted in PR 49; mixed state census accepted in PR 50; durable job metadata qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -53,7 +53,7 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   both pinned FreeBSD guests (run 37242881791, source
   `2c7724d503584aa053acaf409ef28e50f3180c40`). No write eligibility follows.
 - Slice 1 identity subset accepted in [PR 23](https://github.com/gonz0w/horvium/pull/23),
-  merged source `4011e3d9848b2430c7ab30d7d70981a3e0fdd88c`: binds full dataset types/GUIDs to independent property
+  merged source `4011e3d9848b2432c7ab30d7d70981a3e0fdd88c`: binds full dataset types/GUIDs to independent property
   rows and review version membership; see [identity contracts](../../testing/M2/identities.md).
   Both pinned guests passed all 20 property/identity assertions and teardown
   (run 37244653409, source `2d4478c8a8e34b0ac40657d7330b4d73f0df6b21`).
@@ -179,7 +179,7 @@ existing private root-provisioned local UFS/ZFS directory, establishes a stable
 single-writer lock and synchronizes its empty lock file and parent directory.
 Thirty-five native assertions, separate process death/reacquisition and full
 preservation/teardown passed on both releases at signed functional/suite source
-`123044304e75f6df27d43eee085c23435ddbcce1`; see the
+`123044324e75f6df27d43eee085c23435ddbcce1`; see the
 [native manifest](../../testing/M2/state-directory-manifest.json). Maintainer
 review accepted in PR 39 at merged source `b84e0572d389078ec0b8514ff4d7919b56b96b7f`; default-ACL disposable fixtures are the qualified scope.
 Strict records, sync/rename/failure/power-cut tests, durable admission, reservation,
@@ -311,6 +311,18 @@ ownership/job namespace through the held root lease, counts both kinds against
 submission IDs. Require 336 state assertions, thirty-two parents and 176 codec/schema
 subtests on both releases with complete teardown. Both passed at signed source
 `b79ff0f03a85c719882b93e8080f562704cc6bac`; see the [manifest](../../testing/M2/state-catalog-manifest.json).
-Maintainer review is pending.
-The ownership-only publisher remains strict; mixed publication reservation,
+Accepted in PR 50. The next publication extension addresses mixed reservation;
 complete intent, durable admission and recovery remain later gates.
+
+
+## Durable job metadata publication prerequisite
+
+The [job publisher](../../testing/M2/job-publication.md) reads exact durable
+predecessors, appends immutable lifecycle history and uses the shared native
+sync/rename pipeline. Both publishers require a complete mixed census and reserve
+old plus new bytes and job class slots before temp creation and before rename.
+Require 432 state assertions, thirty-five parents and 176 schema subtests on both
+releases with full teardown. Both passed at signed source `dc789c4e3672f61e670e6c4352e1eae89b3fb13a`;
+see the [manifest](../../testing/M2/job-publication-manifest.json). Review is pending. This metadata-only
+boundary admits/executes no job; complete intent, admission/reservations, retention
+and actual recovery/acknowledgement cuts remain later gates.

@@ -15,6 +15,11 @@ func (s *StateDirectory) ReadJob(id string) (Job, error) {
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	return s.readJobLocked(id)
+}
+
+// Caller holds mu and has checked effective UID and the canonical selector.
+func (s *StateDirectory) readJobLocked(id string) (Job, error) {
 	data, err := s.readStateBytesLocked("job-" + id + ".json")
 	if err != nil {
 		return Job{}, err

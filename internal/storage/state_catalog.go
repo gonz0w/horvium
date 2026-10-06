@@ -55,8 +55,12 @@ func stateCatalogNames(names []string, limits stateCatalogLimits) ([]stateRecord
 			writer = true
 			continue
 		}
-		if strings.HasPrefix(name, ".ownership-") && strings.HasSuffix(name, ".tmp") {
-			nonce := strings.TrimSuffix(strings.TrimPrefix(name, ".ownership-"), ".tmp")
+		if (strings.HasPrefix(name, ".ownership-") || strings.HasPrefix(name, ".job-")) && strings.HasSuffix(name, ".tmp") {
+			prefix := ".ownership-"
+			if strings.HasPrefix(name, ".job-") {
+				prefix = ".job-"
+			}
+			nonce := strings.TrimSuffix(strings.TrimPrefix(name, prefix), ".tmp")
 			if len(nonce) == 32 && strings.IndexFunc(nonce, func(r rune) bool { return !(r >= '0' && r <= '9' || r >= 'a' && r <= 'f') }) < 0 {
 				return nil, ErrStateUncertain
 			}

@@ -48,9 +48,9 @@ updates return `ErrDrift`; malformed lifecycle/budget errors retain their catego
 Inputs remain unchanged. A valid transition cannot replay a terminal job or
 resolve reconciliation without the later qualified resolution path.
 
-Future publication must obtain the predecessor from the current safe durable
-record under the same writer lock, repeat native/revision checks and durably
-publish before acknowledgement. This guard does none of those steps. It does not
+The later [job publisher](job-publication.md) obtains the predecessor from the current safe durable
+record under the same writer lock, applies revision/successor checks and confirms
+metadata durability. Native execution/admission remains a later gate. This guard does none of those steps. It does not
 compare live resource identity, acquire a reservation or supply root authority.
 The job lifecycle intent still lacks complete reviewed native baseline/attribution
 and recovery postconditions; it is not admissible executable intent.
@@ -97,12 +97,11 @@ Traceability: partial M2-STATE-001/M2-JOB-001/M2-PRIV-001 at T1/T3.
 
 ## Remaining boundaries
 
-Job publication, mixed publication capacity reservation, durable admission/
-deduplication, reservation release, tombstone/retention, executor quiescence, startup
+The later [job publisher](job-publication.md) adds metadata publication/shared
+capacity reservation. Durable admission/deduplication, reservation release, tombstone/retention, executor quiescence, startup
 recovery and restoration remain open. The later [mixed state census](state-catalog.md)
-now validates and accounts for ownership/job records without authorizing writes. The ownership-only catalog/publisher continue to refuse all job files,
-including valid lifecycle files; future mixed publication must use the complete census and reserve temporary
-capacity before admitting writes. Reading a job in a disposable
+now validates and accounts for ownership/job records without authorizing writes. The ownership-only catalog continues to refuse job files; both publishers now
+use the complete mixed census and reserve temporary capacity. Reading a job in a disposable
 fixture therefore does not qualify a functioning job store or recovery anchor.
 No physical/commercial/client/scale or power-loss claim follows. Existing native
 manifests retain their original executed sources; new evidence does not relabel

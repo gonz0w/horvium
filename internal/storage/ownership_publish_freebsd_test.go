@@ -280,6 +280,55 @@ func TestNativeOwnershipPublish(t *testing.T) {
 	if drift.Close() != nil {
 		t.Fatal("drift close failed")
 	}
+	// Staging must not rebind a changed predecessor, even at the same revision.
+	for _, kind := range []string{"inode", "bytes"} {
+		lease, folder := newLease("staged-" + kind)
+		if lease.PublishOwnership(p, 0) != nil {
+			t.Fatal("staged predecessor baseline")
+		}
+		name := filepath.Join(folder, "ownership-100.json")
+		control := ownershipGolden()
+		if kind == "bytes" {
+			changed, e := DecodeOwnershipRecord(control)
+			if e != nil {
+				t.Fatal(e)
+			}
+			changed.Scopes[0].Properties = []Property{Compression}
+			control, e = EncodeOwnershipRecord(changed)
+			if e != nil {
+				t.Fatal(e)
+			}
+		}
+		err = lease.publishOwnership(next, 1, func(tx ownershipPublication) ownershipPublication {
+			sync := tx.syncFile
+			tx.syncFile = func() error {
+				if e := sync(); e != nil {
+					return e
+				}
+				if kind == "inode" {
+					if os.Rename(name, name+"-retained") != nil {
+						t.Fatal("owned predecessor move")
+					}
+				}
+				if os.WriteFile(name, control, 0600) != nil {
+					t.Fatal("owned predecessor change")
+				}
+				return nil
+			}
+			return tx
+		})
+		b, e = os.ReadFile(name)
+		check("staged_"+kind+"_denial", errors.Is(err, ErrDrift) && e == nil && bytes.Equal(b, control) && noTemps(folder))
+		if kind == "inode" {
+			b, e = os.ReadFile(name + "-retained")
+			if e != nil || !bytes.Equal(b, ownershipGolden()) {
+				t.Fatal("retained original damaged")
+			}
+		}
+		if lease.Close() != nil {
+			t.Fatal("staged lease close")
+		}
+	}
 	// Renaming the directory never redirects publication to a replacement path.
 	moved := filepath.Join(anchor, "moved")
 	if os.Rename(path, moved) != nil || os.Mkdir(path, 0700) != nil {
@@ -432,6 +481,11 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 	if f.Close() != nil {
 		t.Fatal("owned ACL restore failed")
 	}
+	job := catalogJob(1, false)
+	jobBytes, _ := EncodeJobRecord(job)
+	jobNext, _ := TransitionJob(job, JobApplying, 1001, "launch-intent", "")
+	jobPath := filepath.Join(path, "job-"+job.ID+".json")
+	check("ufs_job_publication", lease.PublishJob(job, 0) == nil)
 	// Fill only this new 32 MiB memory filesystem, observing real ENOSPC.
 	filler := filepath.Join(mountpoint, "filler")
 	out, e := os.OpenFile(filler, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
@@ -473,13 +527,16 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 	}
 	var fullFS unix.Statfs_t
 	check("native_enospc", full && unix.Fstatfs(int(lease.directory.Fd()), &fullFS) == nil && fullFS.Bfree == 0)
+	jobErr := lease.PublishJob(jobNext, 1)
+	jb, je := os.ReadFile(jobPath)
+	check("job_full_denial", jobErr != nil && je == nil && bytes.Equal(jb, jobBytes))
 	err = lease.PublishOwnership(next, 1)
 	b, e = os.ReadFile(record)
 	check("full_denial", err != nil && e == nil && bytes.Equal(b, ownershipGolden()))
 	entries, e := os.ReadDir(path)
 	clean := e == nil
 	for _, entry := range entries {
-		if strings.HasPrefix(entry.Name(), ".ownership-") {
+		if strings.HasPrefix(entry.Name(), ".ownership-") || strings.HasPrefix(entry.Name(), ".job-") {
 			clean = false
 		}
 	}
@@ -512,6 +569,9 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 	var fs unix.Statfs_t
 	check("native_readonly", unix.Fstatfs(int(dir.Fd()), &fs) == nil && fs.Flags&unix.MNT_RDONLY != 0)
 	check("readonly_denial", errors.Is(ro.PublishOwnership(next, 1), ErrStateDirectory))
+	check("job_readonly_denial", errors.Is(ro.PublishJob(jobNext, 1), ErrStateDirectory))
+	jb, je = os.ReadFile(jobPath)
+	check("job_readonly_preservation", je == nil && bytes.Equal(jb, jobBytes))
 	b, e = os.ReadFile(record)
 	check("readonly_preservation", e == nil && bytes.Equal(b, ownershipGolden()))
 	if ro.Close() != nil {

@@ -2,6 +2,7 @@
 package storage
 
 import (
+	"fmt"
 	"io"
 	"os"
 
@@ -26,6 +27,11 @@ func (s *StateDirectory) inspectState(limits stateCatalogLimits, afterRead func(
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	return s.inspectStateLocked(limits, afterRead, "")
+}
+
+// Caller holds mu; only publication may exclude its exact inode-validated temp.
+func (s *StateDirectory) inspectStateLocked(limits stateCatalogLimits, afterRead func(), ownTemporary string) (StateCatalog, error) {
 	dir, err := s.ownershipDirectoryLocked()
 	if err != nil {
 		return StateCatalog{}, err
@@ -43,10 +49,13 @@ func (s *StateDirectory) inspectState(limits stateCatalogLimits, afterRead func(
 	defer scan.Close()
 	var opened unix.Stat_t
 	if unix.Fstat(fd, &opened) != nil || !sameOwnershipMetadata(before, opened) {
-		return StateCatalog{}, ErrDrift
+		return StateCatalog{}, fmt.Errorf("state census metadata: %w", ErrDrift)
 	}
 	var names []string
 	nameLimit := limits.ownership + limits.nonterminal + limits.terminal + 1
+	if ownTemporary != "" {
+		nameLimit++
+	}
 	for {
 		batch, e := scan.Readdirnames(64)
 		if len(names)+len(batch) > nameLimit {
@@ -62,6 +71,24 @@ func (s *StateDirectory) inspectState(limits stateCatalogLimits, afterRead func(
 	}
 	if scan.Close() != nil {
 		return StateCatalog{}, ErrStateDirectory
+	}
+	if ownTemporary != "" {
+		found := false
+		filtered := make([]string, 0, len(names))
+		for _, name := range names {
+			if name == ownTemporary {
+				if found {
+					return StateCatalog{}, fmt.Errorf("state census metadata: %w", ErrDrift)
+				}
+				found = true
+			} else {
+				filtered = append(filtered, name)
+			}
+		}
+		if !found {
+			return StateCatalog{}, fmt.Errorf("state census metadata: %w", ErrDrift)
+		}
+		names = filtered
 	}
 	entries, err := stateCatalogNames(names, limits)
 	if err != nil {
@@ -86,7 +113,7 @@ func (s *StateDirectory) inspectState(limits stateCatalogLimits, afterRead func(
 			return StateCatalog{}, e
 		}
 		if unix.Fstatat(dir, entry.name, &after, unix.AT_SYMLINK_NOFOLLOW) != nil || !sameOwnershipMetadata(prior, after) {
-			return StateCatalog{}, ErrDrift
+			return StateCatalog{}, fmt.Errorf("state census metadata: %w", ErrDrift)
 		}
 		metadata = append(metadata, after)
 	}
@@ -96,7 +123,7 @@ func (s *StateDirectory) inspectState(limits stateCatalogLimits, afterRead func(
 	for i, entry := range entries {
 		var current unix.Stat_t
 		if unix.Fstatat(dir, entry.name, &current, unix.AT_SYMLINK_NOFOLLOW) != nil || !sameOwnershipMetadata(metadata[i], current) {
-			return StateCatalog{}, ErrDrift
+			return StateCatalog{}, fmt.Errorf("state census metadata: %w", ErrDrift)
 		}
 	}
 	if _, err = s.ownershipDirectoryLocked(); err != nil {
@@ -104,7 +131,7 @@ func (s *StateDirectory) inspectState(limits stateCatalogLimits, afterRead func(
 	}
 	var after unix.Stat_t
 	if unix.Fstat(dir, &after) != nil || !sameOwnershipMetadata(before, after) {
-		return StateCatalog{}, ErrDrift
+		return StateCatalog{}, fmt.Errorf("state census namespace: %w", ErrDrift)
 	}
 	return b.catalog, nil
 }

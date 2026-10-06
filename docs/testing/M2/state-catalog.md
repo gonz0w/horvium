@@ -1,6 +1,7 @@
 # M2 mixed state catalog and capacity census
 
-Date: 2026-10-06. Status: qualified on both declared native targets; maintainer review pending.
+Date: 2026-10-06. Status: accepted in [PR 50](https://github.com/gonz0w/horvium/pull/50),
+merged source `28265a8befea2286375997d5592bdaf57f2e875c`.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -18,7 +19,8 @@ Enumerate through a fresh descriptor with an independent offset, bound the entir
 name set, and classify every name before reading. Require the stable lock and
 canonical `ownership-<GUID>.json` or `job-<ID>.json` filenames. Duplicate names,
 missing lock, unknown entries and malformed names return no partial catalog.
-Recognized orphan ownership temporaries return `ErrStateUncertain` and remain
+Recognized orphan ownership temporaries (and job temporaries added by the
+[job publication extension](job-publication.md)) return `ErrStateUncertain` and remain
 untouched; other unsupported files remain unknown. There is no cleanup or repair.
 
 Every record uses the shared descriptor-relative private byte reader: root-owned
@@ -41,9 +43,9 @@ capability ceilings, not tested commercial workload or memory promises.
 
 Inspection leaves a previously latched publication uncertainty in place. An
 operator must still reconcile it; a successful census cannot make writes safe.
-The ownership-only inspector/publisher retain their accepted strict namespace and
-refuse job files. Adoption of this census into mixed publication, including old
-plus new temporary byte reservation, remains a later gate.
+The ownership-only inspector retains its strict namespace and refuses job files.
+The later [job publication extension](job-publication.md) adopts this census in
+both publishers, including old plus new temporary byte reservation.
 
 ## Qualification procedure
 
@@ -88,8 +90,8 @@ separate. All native files are newly owned disposable fixtures.
 
 ## Remaining boundaries
 
-Job publication and mixed publication capacity reservation, complete executable
-intent, admission/deduplication, reservations, tombstones/retention, restoration,
+The later [job publisher](job-publication.md) addresses mixed metadata publication
+and temporary reservation. Complete executable intent, admission/deduplication, reservations, tombstones/retention, restoration,
 executor quiescence, startup recovery and acknowledgement/power-cut gates remain
 open. No native storage write, enrollment, service deployment, release or
 physical/commercial/client support claim follows. Preserve earlier manifests at

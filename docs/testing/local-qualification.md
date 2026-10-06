@@ -299,3 +299,11 @@ subtests. Both declared targets and complete teardown are required. Actual owned
 [manifest](M2/state-catalog-manifest.json).
 Shared evidence/selector changes select one complete portable review. Ownership-only
 publication stays strict and no job admission/recovery follows.
+
+
+The [job publication extension](M2/job-publication.md) expands state to 432 named
+assertions, thirty-five parents (ten native, twenty-five unit) and 176 schema
+subtests. Both candidates passed at signed source `dc789c4e3672f61e670e6c4352e1eae89b3fb13a` with
+full teardown; see the [manifest](M2/job-publication-manifest.json). Actual UFS ENOSPC/read-only job controls extend the shared
+pipeline/ACL/capacity suite. Shared evidence/selector changes require a complete
+portable review; evidence-only followups may reuse exact matching deep execution.
