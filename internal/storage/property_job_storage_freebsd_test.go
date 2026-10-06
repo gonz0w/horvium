@@ -299,7 +299,8 @@ func TestNativePropertyJobStorage(t *testing.T) {
 			}
 			return tx
 		})
-		check(phase+"_failure", errors.Is(e, injected) && noTemps(dir))
+		_, unpublished := os.Stat(filepath.Join(dir, "job-"+p.job.ID+".json"))
+		check(phase+"_failure", errors.Is(e, ErrStateDirectory) && os.IsNotExist(unpublished) && noTemps(dir))
 	}
 	uncertain, dir := lease("uncertain")
 	e = uncertain.publishPropertyJobBounded(p, 0, defaultStateCatalogLimits, func(tx ownershipPublication) ownershipPublication {
