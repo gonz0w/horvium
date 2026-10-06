@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation qualified, review pending; Actions disabled.
+Date: 2026-10-06. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation accepted in PR 42; ownership publication qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -222,6 +222,22 @@ codec subtests. Both targets passed at signed source
 `33f4d91bc57adb71f27ce80bbe0552fb1e7685d2`, with complete teardown; see the
 [manifest](../../testing/M2/state-acl-manifest.json). Initial native baseline
 refusal and a deliberately stopped diagnostic source retain exact evidence.
-Maintainer review is pending. No ACL modification
+PR 42 accepted this subset at merged source `73a47a04578cd14f8f8d1ef2a978b17ff21fdd8e`. No ACL modification
 exists in product code; publication, runtime provisioning, full budgets and
 recovery remain ahead.
+
+## Ownership publication prerequisite
+
+The [private publisher](../../testing/M2/ownership-publication.md) extends the
+held lease and strict codec with same-directory exclusive temporary creation,
+file sync/close, descriptor/name revalidation, rename and directory sync. Exact
+previous revisions serialize cooperating updates. Failed final sync or cleanup
+blocks further publication on that lease and requires reconciliation; reads stay
+available. No runtime enrollment, storage jobs, total-store budgets or recovery
+controller consumes this prerequisite yet. Both targets passed all 161 assertions,
+fourteen parent tests and 57 codec subtests at signed functional/suite source
+`eabf4691fc55b825db74ba73501d758126fda4e7`, with complete teardown; see the
+[manifest](../../testing/M2/ownership-publication-manifest.json). The initial
+large-allocation ENOSPC fixture failure retains its exact unqualified source and
+teardown; tiny allocations plus zero-free-space verification repaired that fixture.
+Review is pending; complete M2 state, recovery and mutation gates remain open.

@@ -9,8 +9,8 @@ import (
 )
 
 // ReadOwnership reads only a GUID-selected record through the held directory.
-// It produces metadata, not enrollment/admission authority. Default-ACL fixtures
-// define the native qualification scope; ACL provisioning and runtime store
+// It produces metadata, not enrollment/admission authority. Descriptor ACL checks
+// refuse unsafe effective grants; provisioning and runtime store
 // wiring remain open. Missing/unsafe/damaged files never become empty enrollment.
 func (s *StateDirectory) ReadOwnership(poolGUID string) (Policy, error) {
 	if s == nil || os.Geteuid() != 0 {
@@ -21,16 +21,14 @@ func (s *StateDirectory) ReadOwnership(poolGUID string) (Policy, error) {
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if s.directory == nil || s.writer == nil {
-		return Policy{}, ErrStateDirectory
-	}
-	dir, writer := int(s.directory.Fd()), int(s.writer.Fd())
-	var dst, wst, named unix.Stat_t
-	if unix.Fstat(dir, &dst) != nil || dst.Mode&unix.S_IFMT != unix.S_IFDIR || dst.Uid != 0 || dst.Mode&07777 != 0700 || unix.Fstat(writer, &wst) != nil || !validStateLock(wst) || unix.Fstatat(dir, stateWriterName, &named, unix.AT_SYMLINK_NOFOLLOW) != nil || !validStateLock(named) || named.Dev != wst.Dev || named.Ino != wst.Ino {
-		return Policy{}, ErrStateDirectory
-	}
-	if !safeStateACL(dir, uint32(dst.Mode), true) || !safeStateACL(writer, uint32(wst.Mode), false) {
-		return Policy{}, ErrStateDirectory
+	return s.readOwnershipLocked(poolGUID)
+}
+
+// Caller holds s.mu and has checked the kernel UID and selector.
+func (s *StateDirectory) readOwnershipLocked(poolGUID string) (Policy, error) {
+	dir, err := s.ownershipDirectoryLocked()
+	if err != nil {
+		return Policy{}, err
 	}
 	name := "ownership-" + poolGUID + ".json"
 	var prior unix.Stat_t
@@ -88,4 +86,20 @@ func privateOwnershipFile(st unix.Stat_t) bool {
 // detect ordinary drift, not malicious root modification or a filesystem fence.
 func sameOwnershipMetadata(a, b unix.Stat_t) bool {
 	return a.Dev == b.Dev && a.Ino == b.Ino && a.Mode == b.Mode && a.Uid == b.Uid && a.Gid == b.Gid && a.Nlink == b.Nlink && a.Size == b.Size && a.Mtim == b.Mtim && a.Ctim == b.Ctim && a.Btim == b.Btim && a.Flags == b.Flags && a.Gen == b.Gen
+}
+
+// Caller holds s.mu. A held descriptor is revalidated before every operation.
+func (s *StateDirectory) ownershipDirectoryLocked() (int, error) {
+	if s.directory == nil || s.writer == nil {
+		return -1, ErrStateDirectory
+	}
+	dir, writer := int(s.directory.Fd()), int(s.writer.Fd())
+	var dst, wst, named unix.Stat_t
+	if unix.Fstat(dir, &dst) != nil || dst.Mode&unix.S_IFMT != unix.S_IFDIR || dst.Uid != 0 || dst.Mode&07777 != 0700 || unix.Fstat(writer, &wst) != nil || !validStateLock(wst) || unix.Fstatat(dir, stateWriterName, &named, unix.AT_SYMLINK_NOFOLLOW) != nil || !validStateLock(named) || named.Dev != wst.Dev || named.Ino != wst.Ino {
+		return -1, ErrStateDirectory
+	}
+	if !safeStateACL(dir, uint32(dst.Mode), true) || !safeStateACL(writer, uint32(wst.Mode), false) {
+		return -1, ErrStateDirectory
+	}
+	return dir, nil
 }

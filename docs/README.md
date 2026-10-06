@@ -101,4 +101,6 @@
 - [M2 ownership records](testing/M2/ownership-records.md): strict bounded metadata codec; accepted in PR 40; no file store or durable admission.
 - [M2 native ownership reads](testing/M2/ownership-read.md): bounded descriptor reads, object/identity refusal and unchanged bytes; both native targets qualified, accepted in PR 41.
 
-- [M2 state ACL validation](testing/M2/state-acl.md): descriptor-based permission checks and disposable POSIX/NFSv4 controls; both native targets qualified, review pending.
+- [M2 state ACL validation](testing/M2/state-acl.md): descriptor-based permission checks and disposable POSIX/NFSv4 controls; both native targets qualified; accepted in PR 42.
+
+- [M2 ownership publication](testing/M2/ownership-publication.md): ordered private metadata publication, revision checks and uncertainty; both native targets passed 161 assertions and complete teardown, review pending.

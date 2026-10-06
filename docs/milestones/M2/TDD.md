@@ -274,6 +274,23 @@ real NFSv4 named-user access and kernel UID denial, and owned mount/device/child
 teardown. Require all 108 lease/read/ACL assertions, ten parent tests and 57
 codec subtests on both releases. Both targets passed at signed source
 `33f4d91bc57adb71f27ce80bbe0552fb1e7685d2`, including complete teardown; see the
-[manifest](../../testing/M2/state-acl-manifest.json). Review is pending; complete
+[manifest](../../testing/M2/state-acl-manifest.json). PR 42 accepted this subset; complete
 provisioning, coordinated races, publication/admission/recovery and M2 acceptance
 remain open.
+
+## Ownership publication prerequisite
+
+The [publisher contract/procedure](../../testing/M2/ownership-publication.md)
+adds partial M2-STATE-001/M2-OWN-001 at T1/T3. Failing-first portable phase/revision
+and evidence-checker tests precede implementation. Native tests require real
+private file creation/replacement, canonical bytes, preserved old opened inode,
+strict existing-record refusal, stale/concurrent revision denial, stable lock,
+anchoring/drift, inherited-descriptor kernel UID denial, actual UFS ENOSPC and
+read-only mounts, ACL preservation and complete teardown. Package-private seams
+inject phase errors around native operations to qualify ordering/accounting only;
+they do not qualify real device EIO, abrupt process/reboot/power-cut durability.
+Require all 161 named assertions, fourteen parent tests and 57 codec subtests on
+both releases. Both targets passed at signed source `eabf4691fc55b825db74ba73501d758126fda4e7`
+with complete teardown; see the [manifest](../../testing/M2/ownership-publication-manifest.json).
+Review is pending. Full store budgets, temporary
+record discovery after death, durable admission and recovery remain open.
