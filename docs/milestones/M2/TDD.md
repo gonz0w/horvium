@@ -373,6 +373,19 @@ collision refusal, unsafe files/ACLs/UID denial, ordinary drift, preserved uncer
 and complete owned teardown. Require 336 named assertions, thirty-two parent tests
 and 176 codec/schema subtests on both releases. Both passed at signed source
 `b79ff0f03a85c719882b93e8080f562704cc6bac` with complete teardown; see the
-[manifest](../../testing/M2/state-catalog-manifest.json). Review is pending.
+[manifest](../../testing/M2/state-catalog-manifest.json). Accepted in PR 50.
 This census grants no publication/admission/recovery authority or M2-SCALE-001
 resource acceptance; ownership-only publication remains strict.
+
+
+## Durable job metadata publication prerequisite
+
+The [publication procedure](../../testing/M2/job-publication.md) adds partial
+M2-STATE-001/M2-JOB-001/M2-PRIV-001 at T1/T3: current-predecessor immutable history,
+actual private file publication and every durability/refusal phase, complete mixed
+capacity preflight/final rechecks, terminal-slot exhaustion, preserved uncertainty,
+unsafe/ACL/UID denials, concurrent duplicate/last-slot serialization and actual
+UFS ENOSPC/read-only job controls. Require 427 named assertions, thirty-five parents
+and 176 schema subtests on both releases with full owned teardown. Native
+qualification is pending. No runtime admission/native effect, executable intent,
+reservation/pruning/recovery or acknowledgement/power-loss acceptance follows.

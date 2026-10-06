@@ -251,5 +251,12 @@ M2 mixed state catalog: [contract/procedure](../testing/M2/state-catalog.md) req
 336 assertions, thirty-two parents and 176 codec/schema subtests on both existing
 targets. Complete private ownership/job census and shared byte/class ceilings;
 both passed at signed source `b79ff0f03a85c719882b93e8080f562704cc6bac` with full teardown; see the
-[manifest](../testing/M2/state-catalog-manifest.json). Review is pending. Actual record counts do not qualify commercial
+[manifest](../testing/M2/state-catalog-manifest.json). Accepted in PR 50. Actual record counts do not qualify commercial
 resources/scale, mixed publication, admission or recovery; runtime remains read-only.
+
+
+M2 durable job metadata: [contract/procedure](../testing/M2/job-publication.md)
+requires 427 assertions, thirty-five parents and 176 schema subtests on both
+existing release/root candidates. Shared publication capacity and immutable
+predecessor/history; native qualification is pending. No new hardware/client,
+commercial resource/scale, admission/recovery or controller durability claim.

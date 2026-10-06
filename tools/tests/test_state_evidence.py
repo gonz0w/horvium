@@ -27,6 +27,13 @@ RESULT += 'STATE_CATALOG_RESULT '+' '.join(c+'=pass' for c in STATE_CATALOG_CASE
 # Append new ACL cases to their existing result, not a second marker.
 RESULT=RESULT.replace('STATE_ACL_RESULT ','STATE_ACL_RESULT '+' '.join(c+'=pass' for c in ['posix_catalog_directory_denial', 'posix_catalog_lock_denial', 'posix_catalog_ownership_denial', 'posix_catalog_job_denial', 'posix_catalog_inheritance_denial', 'posix_catalog_restored', 'nfs4_catalog_directory_denial', 'nfs4_catalog_lock_denial', 'nfs4_catalog_ownership_denial', 'nfs4_catalog_job_denial', 'nfs4_catalog_inheritance_denial', 'nfs4_catalog_restored', 'catalog_kernel_uid_denial'])+' ',1)
 TESTS += ['TestNativeStateCatalog', 'TestStateCatalogNames', 'TestStateCatalogRecords', 'TestStateCatalogLimits']
+JOB_PUBLICATION_CASES=['canonical_bytes', 'cleanup_uncertain', 'close_failure', 'closed_denial', 'create', 'create_byte_denial', 'denial_preservation', 'directory_anchor', 'directory_denial', 'directory_sync_uncertain', 'duplicate_denial', 'exact_create', 'exact_replace', 'file_sync_failure', 'fixture_teardown', 'foreign_preservation', 'history_rewrite_denial', 'inert_denial', 'intent_rewrite_denial', 'invalid_denial', 'invalid_limits', 'job_exact_mixed_bytes', 'job_reserves_owner_bytes', 'late_bytes_denial', 'late_count_denial', 'late_orphan_denial', 'late_submission_denial', 'late_unknown_denial', 'lease_close', 'lock_denial', 'mixed_accounting', 'mixed_ownership_create', 'mixed_ownership_replace', 'new_inode', 'no_temporary', 'nonterminal_limit', 'old_descriptor_preserved', 'orphan_latch', 'owner_exact_mixed_bytes', 'owner_reserves_job_bytes', 'preflight_job_orphan_denial', 'preflight_ownership_denial', 'preflight_ownership_orphan_denial', 'preflight_unknown_denial', 'private_file', 'readback', 'rename_failure', 'replace', 'replacement_reservation', 'revision_denial', 'serialized_catalog', 'serialized_duplicate', 'serialized_last_slot', 'stable_lock', 'stale_denial', 'submission_collision', 'terminal_limit', 'terminal_publication', 'terminal_replay_denial', 'uncertain_job_blocked', 'uncertain_owner_blocked', 'uncertain_readable', 'unsafe_damage_denial', 'unsafe_directory_denial', 'unsafe_fifo_denial', 'unsafe_hardlink_denial', 'unsafe_mode_denial', 'unsafe_newer_denial', 'unsafe_owner_denial', 'unsafe_symlink_denial', 'unsafe_wrong_id_denial', 'unsafe_wrong_kind_denial', 'verify_failure', 'write_failure']
+ACL_CASES += ['posix_job_publish_directory_denial', 'posix_job_publish_lock_denial', 'posix_job_publish_ownership_denial', 'posix_job_publish_job_denial', 'posix_job_publish_inheritance_denial', 'posix_job_publish_restored', 'nfs4_job_publish_directory_denial', 'nfs4_job_publish_lock_denial', 'nfs4_job_publish_ownership_denial', 'nfs4_job_publish_job_denial', 'nfs4_job_publish_inheritance_denial', 'nfs4_job_publish_restored', 'job_publish_kernel_uid_denial']
+PUBLISH_FS_CASES += ['ufs_job_publication', 'job_full_denial', 'job_readonly_denial', 'job_readonly_preservation']
+RESULT += 'JOB_PUBLICATION_RESULT '+' '.join(c+'=pass' for c in JOB_PUBLICATION_CASES)+'\n'
+RESULT=RESULT.replace('STATE_ACL_RESULT ','STATE_ACL_RESULT '+' '.join(c+'=pass' for c in ['posix_job_publish_directory_denial', 'posix_job_publish_lock_denial', 'posix_job_publish_ownership_denial', 'posix_job_publish_job_denial', 'posix_job_publish_inheritance_denial', 'posix_job_publish_restored', 'nfs4_job_publish_directory_denial', 'nfs4_job_publish_lock_denial', 'nfs4_job_publish_ownership_denial', 'nfs4_job_publish_job_denial', 'nfs4_job_publish_inheritance_denial', 'nfs4_job_publish_restored', 'job_publish_kernel_uid_denial'])+' ',1)
+RESULT=RESULT.replace('OWNERSHIP_PUBLISH_FS_RESULT ','OWNERSHIP_PUBLISH_FS_RESULT '+' '.join(c+'=pass' for c in ['ufs_job_publication', 'job_full_denial', 'job_readonly_denial', 'job_readonly_preservation'])+' ',1)
+TESTS += ['TestNativeJobPublication', 'TestJobPublicationCapacity', 'TestMixedOwnershipPublicationCapacity']
 PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
 
 class StateEvidenceTests(unittest.TestCase):
@@ -40,7 +47,7 @@ class StateEvidenceTests(unittest.TestCase):
 
     def test_missing_duplicate_unknown_failed_or_oversized_cases_denied(self):
         m=self.module()
-        for case in set(CASES+READ_CASES+ACL_CASES+PUBLISH_CASES+PUBLISH_FS_CASES+CATALOG_CASES+CAPACITY_CASES+JOB_READ_CASES+STATE_CATALOG_CASES):
+        for case in set(CASES+READ_CASES+ACL_CASES+PUBLISH_CASES+PUBLISH_FS_CASES+CATALOG_CASES+CAPACITY_CASES+JOB_READ_CASES+STATE_CATALOG_CASES+JOB_PUBLICATION_CASES):
             for bad in [RESULT.replace(case+'=pass',''),RESULT.replace(case+'=pass',case+'=fail'),RESULT.rstrip()+' '+case+'=pass\n']:
                 with self.subTest(case=case),self.assertRaises(ValueError):m.validate(PASS+bad)
         for bad in [RESULT.rstrip()+' invented=pass\n',RESULT+'x'*(1<<20)]:
@@ -103,3 +110,17 @@ class MixedCatalogEvidenceTests(unittest.TestCase):
         m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
         self.assertNotIn('job_',m.STATE_CATALOG_CASES)
         m.validate(PASS+RESULT.replace('job_=pass',''))
+
+
+class JobPublicationEvidenceTests(unittest.TestCase):
+    def test_old_336_assertion_evidence_cannot_qualify_publication(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
+        old_result=RESULT.split('JOB_PUBLICATION_RESULT ')[0]
+        for prefix in ['posix_','nfs4_']:
+            for name in ['directory_denial','lock_denial','ownership_denial','job_denial','inheritance_denial','restored']:
+                old_result=old_result.replace(' '+prefix+'job_publish_'+name+'=pass','')
+        for case in ['job_publish_kernel_uid_denial','ufs_job_publication','job_full_denial','job_readonly_denial','job_readonly_preservation']:
+            old_result=old_result.replace(' '+case+'=pass','')
+        new_tests=['TestNativeJobPublication','TestJobPublicationCapacity','TestMixedOwnershipPublicationCapacity']
+        old_pass='\n'.join(line for line in PASS.splitlines() if not any(name in line for name in new_tests))+'\n'
+        with self.assertRaises(ValueError):m.validate(old_pass+old_result)

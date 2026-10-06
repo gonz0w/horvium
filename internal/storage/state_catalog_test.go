@@ -41,6 +41,9 @@ func TestStateCatalogNames(t *testing.T) {
 	if out, e := stateCatalogNames([]string{"writer.lock", ".ownership-" + strings.Repeat("a", 32) + ".tmp"}, defaultStateCatalogLimits); !errors.Is(e, ErrStateUncertain) || out != nil {
 		t.Fatal("orphan accepted", e)
 	}
+	if out, e := stateCatalogNames([]string{"writer.lock", ".job-" + strings.Repeat("a", 32) + ".tmp"}, defaultStateCatalogLimits); !errors.Is(e, ErrStateUncertain) || out != nil {
+		t.Fatal("job orphan accepted", e)
+	}
 	for _, input := range [][]string{nil, {"ownership-100.json"}, {"writer.lock", "writer.lock"}, {"writer.lock", "job-" + id + ".json", "job-" + id + ".json"}} {
 		if out, e := stateCatalogNames(input, defaultStateCatalogLimits); e == nil || out != nil {
 			t.Fatal("missing/duplicate name accepted")

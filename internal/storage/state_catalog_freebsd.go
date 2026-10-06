@@ -26,6 +26,11 @@ func (s *StateDirectory) inspectState(limits stateCatalogLimits, afterRead func(
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	return s.inspectStateLocked(limits, afterRead, "")
+}
+
+// Caller holds mu; only publication may exclude its exact inode-validated temp.
+func (s *StateDirectory) inspectStateLocked(limits stateCatalogLimits, afterRead func(), ownTemporary string) (StateCatalog, error) {
 	dir, err := s.ownershipDirectoryLocked()
 	if err != nil {
 		return StateCatalog{}, err
@@ -47,6 +52,9 @@ func (s *StateDirectory) inspectState(limits stateCatalogLimits, afterRead func(
 	}
 	var names []string
 	nameLimit := limits.ownership + limits.nonterminal + limits.terminal + 1
+	if ownTemporary != "" {
+		nameLimit++
+	}
 	for {
 		batch, e := scan.Readdirnames(64)
 		if len(names)+len(batch) > nameLimit {
@@ -62,6 +70,24 @@ func (s *StateDirectory) inspectState(limits stateCatalogLimits, afterRead func(
 	}
 	if scan.Close() != nil {
 		return StateCatalog{}, ErrStateDirectory
+	}
+	if ownTemporary != "" {
+		found := false
+		filtered := make([]string, 0, len(names))
+		for _, name := range names {
+			if name == ownTemporary {
+				if found {
+					return StateCatalog{}, ErrDrift
+				}
+				found = true
+			} else {
+				filtered = append(filtered, name)
+			}
+		}
+		if !found {
+			return StateCatalog{}, ErrDrift
+		}
+		names = filtered
 	}
 	entries, err := stateCatalogNames(names, limits)
 	if err != nil {

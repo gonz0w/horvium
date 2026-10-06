@@ -432,6 +432,11 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 	if f.Close() != nil {
 		t.Fatal("owned ACL restore failed")
 	}
+	job := catalogJob(1, false)
+	jobBytes, _ := EncodeJobRecord(job)
+	jobNext, _ := TransitionJob(job, JobApplying, 1001, "launch-intent", "")
+	jobPath := filepath.Join(path, "job-"+job.ID+".json")
+	check("ufs_job_publication", lease.PublishJob(job, 0) == nil)
 	// Fill only this new 32 MiB memory filesystem, observing real ENOSPC.
 	filler := filepath.Join(mountpoint, "filler")
 	out, e := os.OpenFile(filler, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
@@ -473,13 +478,16 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 	}
 	var fullFS unix.Statfs_t
 	check("native_enospc", full && unix.Fstatfs(int(lease.directory.Fd()), &fullFS) == nil && fullFS.Bfree == 0)
+	jobErr := lease.PublishJob(jobNext, 1)
+	jb, je := os.ReadFile(jobPath)
+	check("job_full_denial", jobErr != nil && je == nil && bytes.Equal(jb, jobBytes))
 	err = lease.PublishOwnership(next, 1)
 	b, e = os.ReadFile(record)
 	check("full_denial", err != nil && e == nil && bytes.Equal(b, ownershipGolden()))
 	entries, e := os.ReadDir(path)
 	clean := e == nil
 	for _, entry := range entries {
-		if strings.HasPrefix(entry.Name(), ".ownership-") {
+		if strings.HasPrefix(entry.Name(), ".ownership-") || strings.HasPrefix(entry.Name(), ".job-") {
 			clean = false
 		}
 	}
@@ -512,6 +520,9 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 	var fs unix.Statfs_t
 	check("native_readonly", unix.Fstatfs(int(dir.Fd()), &fs) == nil && fs.Flags&unix.MNT_RDONLY != 0)
 	check("readonly_denial", errors.Is(ro.PublishOwnership(next, 1), ErrStateDirectory))
+	check("job_readonly_denial", errors.Is(ro.PublishJob(jobNext, 1), ErrStateDirectory))
+	jb, je = os.ReadFile(jobPath)
+	check("job_readonly_preservation", je == nil && bytes.Equal(jb, jobBytes))
 	b, e = os.ReadFile(record)
 	check("readonly_preservation", e == nil && bytes.Equal(b, ownershipGolden()))
 	if ro.Close() != nil {
