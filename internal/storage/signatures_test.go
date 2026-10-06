@@ -10,7 +10,7 @@ import (
 	"github.com/gonz0w/horvium/internal/inventory"
 )
 
-var signatureGEOM = strings.Replace(systemGEOM, `<geom id="d1"><name>ada1</name>`, `<geom id="d1"><name>ada1</name><config><ident>sig-unique</ident></config>`, 1)
+var signatureGEOM = strings.Replace(strings.Replace(systemGEOM, `<provider id="p1">`, `<provider id="p1"><mode>r0w0e0</mode>`, 1), `<geom id="d1"><name>ada1</name>`, `<geom id="d1"><name>ada1</name><config><ident>sig-unique</ident></config>`, 1)
 
 const signatureInfo = "/dev/ada1\t512\t67108864\t131072\t0\t0\n"
 const signatureSerial = "sig-unique\n"

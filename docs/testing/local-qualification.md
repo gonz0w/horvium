@@ -201,3 +201,10 @@ Both targets passed all fifty-nine assertions and complete preservation/teardown
 see the [native manifest](M2/pool-labels-manifest.json). The initial utility-path
 and native-format failures remain unqualified with verified cleanup. Prior
 fifty-one-case evidence remains separate.
+
+The M2 [disk-access extension](M2/disk-access.md) adds nine mandatory assertions
+for held direct/alias raw handles and access review drift, extending the same four
+native tests to sixty-eight assertions. Successful logs must include the complete
+`DEVICE_ACCESS_RESULT` group. All handles close before the existing filesystem
+fixtures start; no bytes are written through them. Both declared releases and
+full preservation/teardown must pass before qualification is recorded.

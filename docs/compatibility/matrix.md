@@ -138,5 +138,14 @@ binds complete default zdb -l configurations to independently correlated disks,
 retaining native pool state and requiring review on export/label drift. Portable
 tests/cross-build pass; all fifty-nine assertions, four tests, actual export/reimport
 and full preservation/teardown passed on both targets; see the
-[native manifest](../testing/M2/pool-labels-manifest.json). Review remains pending.
+[native manifest](../testing/M2/pool-labels-manifest.json). Accepted in PR 37.
 No all-label checksum integrity, signature absence, collector or write authority follows.
+
+M2 aggregate disk access: [contract and procedure](../testing/M2/disk-access.md)
+binds native GEOM access counts to independently correlated direct disks and
+requires fresh review on count changes. Provider/consumer consistency and missing
+mode refusal have portable coverage; all sixty-eight assertions, four native tests
+and complete preservation/teardown passed on both targets. Actual direct/alias
+read/write opens and close/restoration qualified on the owned virtual disk; see
+the [native manifest](../testing/M2/disk-access-manifest.json). Maintainer review is pending. Zero counters
+are not complete device clearance. No runtime collector or product writes follow.

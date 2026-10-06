@@ -89,6 +89,9 @@ class LocalQualificationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.module.validate_result('devices', guest)
         guest += 'DEVICE_POOL_LABEL_RESULT ' + ' '.join(case + '=pass' for case in sorted(checker.POOL_LABEL_CASES)) + '\n'
+        with self.assertRaises(ValueError):
+            self.module.validate_result('devices', guest)
+        guest += 'DEVICE_ACCESS_RESULT ' + ' '.join(case + '=pass' for case in sorted(checker.ACCESS_CASES)) + '\n'
         self.module.validate_result('devices', guest)
         with self.assertRaises(ValueError):
             self.module.validate_result('devices', guest, complete=True)

@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset qualified, review pending; Actions disabled.
+Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -147,12 +147,18 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   targets; see the [native manifest](../../testing/M2/device-use-review-manifest.json).
   PR 36 accepted the combined device-use subset. Missing signature evidence remains unavailable and
   unchanged positive facts never grant launch or unused-device authority.
-- Slice 1 next subset: [positive pool-label identity](../../testing/M2/pool-labels.md)
+- Slice 1 subset accepted in [PR 37](https://github.com/gonz0w/horvium/pull/37): [positive pool-label identity](../../testing/M2/pool-labels.md)
   binds bounded default zdb -l configurations and exported/native-state drift to
   independently observed disks. Signed source `be438496ab6316433af60d57d13aefc2cbfb6a86` passed all
   fifty-nine assertions, four native tests and complete preservation/teardown on
   both targets; see the [native manifest](../../testing/M2/pool-labels-manifest.json).
   The initial utility-path and native-format failures retain verified teardown.
+  PR 37 accepted this positive subset at merged source `d52fa620ab76d5787d782c1ad9de6b4b415bee20`; full device eligibility remains pending.
+- Slice 1 next subset: [disk access](../../testing/M2/disk-access.md) requires
+  identity-bound provider/consumer aggregate counts, access drift and disposable
+  direct/alias-held-descriptor tests. Signed source `53b74a8844f5f0bce42b08ae044929aacdfaa92f`
+  passed all sixty-eight assertions, four tests and complete preservation/teardown
+  on both targets; see the [native manifest](../../testing/M2/disk-access-manifest.json).
   Maintainer review and full device eligibility remain pending.
 - Slice 1 remains incomplete: assembled native eligibility/provider proofs, full
   status/scan interpretation, complete-impact collection and device-use drift gates

@@ -23,7 +23,8 @@ SIGNATURES=SIGNATURE_UFS+SIGNATURE_ZFS
 USE_POOL='DEVICE_USE_POOL_RESULT imported_join=pass new_pool_drift=pass unchanged=pass residual_join=pass pool_removal_drift=pass missing_capture_denial=pass no_clearance=pass\n'
 USE_SYSTEM='DEVICE_USE_SYSTEM_RESULT mount_join=pass swap_join=pass mount_drift=pass swap_drift=pass copy_isolation=pass use_cleanup=pass mount_removal_drift=pass swap_removal_drift=pass\n'
 LABELS='DEVICE_POOL_LABEL_RESULT active_identity=pass exported_identity=pass imported_absence=pass export_drift=pass probe_preservation=pass binding_denial=pass reimport_identity=pass unavailable_denial=pass\n'
-USES=USE_POOL+USE_SYSTEM+LABELS
+ACCESS='DEVICE_ACCESS_RESULT raw_read=pass alias_read=pass alias_write=pass access_drift=pass unchanged=pass close_drift=pass unavailable_denial=pass byte_preservation=pass handles_closed=pass\n'
+USES=USE_POOL+USE_SYSTEM+LABELS+ACCESS
 
 class DeviceEvidenceTests(unittest.TestCase):
     def module(self):
@@ -71,12 +72,17 @@ class DeviceEvidenceTests(unittest.TestCase):
                 with self.subTest(bad=bad),self.assertRaises(ValueError):m.validate(base+other+bad)
 
     def test_combined_use_requires_complete_native_join_and_drift_cases(self):
-        m=self.module();base=RESULT+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+SYSTEM+SYSTEM_PASS+IMPORTED+IMPORTED_PASS+SIGNATURES+CLEAN
+        m=self.module();base=RESULT+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+SYSTEM+SYSTEM_PASS+IMPORTED+IMPORTED_PASS+SIGNATURES+LABELS+ACCESS+CLEAN
         for record,other,key in [(USE_POOL,USE_SYSTEM,'pool_removal_drift'),(USE_SYSTEM,USE_POOL,'swap_join')]:
             for bad in ['',record.replace(key+'=pass',''),record.replace(key+'=pass',key+'=fail'),record+record,record.rstrip()+' invented=pass\n']:
                 with self.subTest(bad=bad),self.assertRaises(ValueError):m.validate(base+other+bad)
 
     def test_exported_labels_require_complete_observation_drift_and_preservation(self):
-        m=self.module();base=RESULT+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+SYSTEM+SYSTEM_PASS+IMPORTED+IMPORTED_PASS+SIGNATURES+USE_POOL+USE_SYSTEM+CLEAN
+        m=self.module();base=RESULT+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+SYSTEM+SYSTEM_PASS+IMPORTED+IMPORTED_PASS+SIGNATURES+USE_POOL+USE_SYSTEM+ACCESS+CLEAN
         for bad in ['',LABELS.replace('exported_identity=pass',''),LABELS.replace('probe_preservation=pass','probe_preservation=fail'),LABELS+LABELS,LABELS.rstrip()+' invented=pass\n']:
+            with self.subTest(bad=bad),self.assertRaises(ValueError):m.validate(base+bad)
+
+    def test_access_requires_complete_held_descriptor_drift_and_cleanup(self):
+        m=self.module();base=RESULT+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+SYSTEM+SYSTEM_PASS+IMPORTED+IMPORTED_PASS+SIGNATURES+USE_POOL+USE_SYSTEM+LABELS+CLEAN
+        for bad in ['',ACCESS.replace('alias_write=pass',''),ACCESS.replace('handles_closed=pass','handles_closed=fail'),ACCESS+ACCESS,ACCESS.rstrip()+' invented=pass\n']:
             with self.subTest(bad=bad),self.assertRaises(ValueError):m.validate(base+bad)
