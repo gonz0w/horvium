@@ -1,7 +1,7 @@
 # M2 combined device-use review
 
 Date: 2026-10-05. Status: all fifty-one assertions, four executed native tests
-and complete preservation/teardown passed on both targets; maintainer review pending.
+and complete preservation/teardown passed on both targets; accepted in PR 36.
 [Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [issue 19](https://github.com/gonz0w/horvium/issues/19).
 

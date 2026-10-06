@@ -92,9 +92,11 @@ pool use, new/removed mount/swap/pool drift, retained residual signatures, missi
 status denial, immutable copies and unavailable signature evidence. Fifty-one
 assertions and the same four tests are required; all fifty-one and complete host
 preservation/teardown passed on both targets; see the
-[native manifest](../../testing/M2/device-use-review-manifest.json). Maintainer review
-is pending. These partial results do not
-satisfy the complete device-safety row. Further fault control and complete device safety still
+[native manifest](../../testing/M2/device-use-review-manifest.json). PR 36 accepted this subset. These partial results do not
+satisfy the complete device-safety row. The [pool-label extension](../../testing/M2/pool-labels.md) adds eight required
+assertions for actual export/reimport identity, missing imported membership, drift,
+probe preservation and denial, for fifty-nine assertions in four tests; qualification
+is pending. Further fault control and complete device safety still
 need implementation and qualification. Never accept an arbitrary host device supplied to a test.
 
 Pool creation/device-identity tests use new guest-attached virtual block devices

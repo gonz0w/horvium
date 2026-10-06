@@ -22,7 +22,8 @@ SIGNATURE_ZFS='DEVICE_SIGNATURE_ZFS_RESULT zfs_signature=pass removed_signature=
 SIGNATURES=SIGNATURE_UFS+SIGNATURE_ZFS
 USE_POOL='DEVICE_USE_POOL_RESULT imported_join=pass new_pool_drift=pass unchanged=pass residual_join=pass pool_removal_drift=pass missing_capture_denial=pass no_clearance=pass\n'
 USE_SYSTEM='DEVICE_USE_SYSTEM_RESULT mount_join=pass swap_join=pass mount_drift=pass swap_drift=pass copy_isolation=pass use_cleanup=pass mount_removal_drift=pass swap_removal_drift=pass\n'
-USES=USE_POOL+USE_SYSTEM
+LABELS='DEVICE_POOL_LABEL_RESULT active_identity=pass exported_identity=pass imported_absence=pass export_drift=pass probe_preservation=pass binding_denial=pass reimport_identity=pass unavailable_denial=pass\n'
+USES=USE_POOL+USE_SYSTEM+LABELS
 
 class DeviceEvidenceTests(unittest.TestCase):
     def module(self):
@@ -74,3 +75,8 @@ class DeviceEvidenceTests(unittest.TestCase):
         for record,other,key in [(USE_POOL,USE_SYSTEM,'pool_removal_drift'),(USE_SYSTEM,USE_POOL,'swap_join')]:
             for bad in ['',record.replace(key+'=pass',''),record.replace(key+'=pass',key+'=fail'),record+record,record.rstrip()+' invented=pass\n']:
                 with self.subTest(bad=bad),self.assertRaises(ValueError):m.validate(base+other+bad)
+
+    def test_exported_labels_require_complete_observation_drift_and_preservation(self):
+        m=self.module();base=RESULT+CORRELATION+ATTACHMENTS+PASS+ATTACH_PASS+SYSTEM+SYSTEM_PASS+IMPORTED+IMPORTED_PASS+SIGNATURES+USE_POOL+USE_SYSTEM+CLEAN
+        for bad in ['',LABELS.replace('exported_identity=pass',''),LABELS.replace('probe_preservation=pass','probe_preservation=fail'),LABELS+LABELS,LABELS.rstrip()+' invented=pass\n']:
+            with self.subTest(bad=bad),self.assertRaises(ValueError):m.validate(base+bad)

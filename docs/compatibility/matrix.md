@@ -130,5 +130,11 @@ optional signature recognition in an immutable baseline. Portable tests and a
 FreeBSD cross-build pass; actual joined facts, fresh unchanged pool comparison,
 new/removed-use drift and complete teardown passed all fifty-one assertions and
 four tests on both targets; see the [native manifest](../testing/M2/device-use-review-manifest.json).
-Maintainer review is pending. No collector/planner integration, complete signature absence, unused flag, locality,
+PR 36 accepted the combined device-use subset. No collector/planner integration, complete signature absence, unused flag, locality,
 reservation, enrollment or mutation authority follows.
+
+M2 positive pool labels: [contract and procedure](../testing/M2/pool-labels.md)
+binds complete default zdb -l configurations to independently correlated disks,
+retaining native pool state and requiring review on export/label drift. Portable
+tests/cross-build pass; both-target native export/reimport and teardown are pending.
+No all-label checksum integrity, signature absence, collector or write authority follows.

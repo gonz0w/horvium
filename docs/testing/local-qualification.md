@@ -192,3 +192,9 @@ baseline comparisons to existing owned fixtures, with no additional fixture writ
 Both complete `DEVICE_USE_POOL_RESULT` and `DEVICE_USE_SYSTEM_RESULT` marker sets
 are required; thirty-six-case signature evidence cannot qualify the extension.
 See [combined device-use review](M2/device-use-review.md).
+
+The [pool-label extension](M2/pool-labels.md) adds eight required cases to the
+same four native tests, for fifty-nine assertions. It exports and reimports only
+the verified owned fixture GUID without force, checks unchanged exported disk
+bytes across probes and preserves prior foreign/root/host teardown controls.
+Both-target execution is pending; prior fifty-one-case evidence remains separate.

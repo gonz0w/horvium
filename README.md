@@ -50,10 +50,12 @@ The [filesystem signature subset](docs/testing/M2/filesystem-signatures.md)
 binds positive base-probe UFS/ZFS observations to freshly correlated disks;
 native qualification passed all thirty-six assertions and complete teardown on
 both targets and was accepted in [PR 35](https://github.com/gonz0w/horvium/pull/35).
-The next [combined device-use subset](docs/testing/M2/device-use-review.md) retains
+The [combined device-use subset](docs/testing/M2/device-use-review.md) retains
 selected positive use facts in an immutable baseline and requires new review on
 identity/geometry/mount/swap/pool/signature drift. All fifty-one assertions and full
-teardown passed on both targets, with maintainer review pending.
+teardown passed on both targets, with accepted in PR 36.
+The next [pool-label subset](docs/testing/M2/pool-labels.md) binds positive exported
+pool identities and recorded state to the same disk; native qualification is pending.
 Other native gates, durable jobs and storage writes remain pending; the runtime is
 still read-only.
 

@@ -92,3 +92,5 @@
 - [M2 filesystem signature native execution manifest](testing/M2/filesystem-signatures-manifest.json)
 - [M2 combined device-use review](testing/M2/device-use-review.md)
 - [M2 combined device-use native execution manifest](testing/M2/device-use-review-manifest.json)
+
+- [M2 positive pool-label identity](testing/M2/pool-labels.md).
