@@ -67,7 +67,8 @@ native assertions and complete preservation/teardown passed on both targets;
 accepted in PR 39.
 The next [ownership record codec](docs/testing/M2/ownership-records.md) validates
 bounded versioned metadata and checksums without granting enrollment or writing
-files. Portable qualification and maintainer review remain pending.
+files. Five behavioral tests, fifty-seven subtests and all twenty-one bounded fuzz
+targets passed; maintainer review remains pending.
 Other native gates, durable jobs and storage writes remain pending; the runtime is
 still read-only.
 

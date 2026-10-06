@@ -164,5 +164,8 @@ M1 collection and the management runtime remain read-only.
 M2 ownership records: [strict codec](../testing/M2/ownership-records.md) implements
 version 1 ownership metadata using the existing policy model, required exact JSON
 fields, duplicate/null/version refusal, canonical checksums and 64 KiB bounds.
-Portable review is pending; FreeBSD/amd64 compilation alone is not native file
+Five behavioral tests and fifty-seven subtests passed without skips; complete
+portable review passed with twenty-one bounded fuzz targets. Maintainer review
+remains pending; see the [source-bound manifest](../testing/M2/ownership-records-manifest.json).
+FreeBSD/amd64 compilation alone is not native file
 qualification. No file operations, enrollment, durable jobs or runtime wiring exist.

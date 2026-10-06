@@ -244,4 +244,8 @@ unknown refusal, identity/parent/property consistency, canonical damage checksum
 byte/capacity limits, immutable round trips and no implicit scope. Independently
 recomputed checksums on invalid policies must still refuse; fuzzing cannot return
 authority on denial. No filesystem operations or admission are implemented here.
-Portable qualification is pending; actual file/store/recovery gates remain open.
+Five behavioral tests and fifty-seven subtests passed without skips at signed
+source `e9f685c2f4460b7b4545bfa761c9089a2743439a`; all twenty-one bounded fuzz
+targets and complete portable review passed. See the
+[source-bound manifest](../../testing/M2/ownership-records-manifest.json).
+Maintainer review and actual file/store/recovery gates remain open.

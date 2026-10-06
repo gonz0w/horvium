@@ -1,0 +1,483 @@
+{
+  "date": "2026-10-05",
+  "status": "partial strict ownership-record codec portable-qualified; maintainer review pending",
+  "requirements": [
+    "partial M2-OWN-001",
+    "partial M2-STATE-001 / T1",
+    "ADR 0007"
+  ],
+  "source_commit": "e9f685c2f4460b7b4545bfa761c9089a2743439a",
+  "base_commit": "b84e0572d389078ec0b8514ff4d7919b56b96b7f",
+  "input_sha256": [
+    {
+      "path": "Makefile",
+      "sha256": "0bba41746ddc6ec72cef84199e699075f9c79f65afaf7e88a2022a164e5f2e66"
+    },
+    {
+      "path": "go.mod",
+      "sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+    },
+    {
+      "path": "internal/inventory/clone.go",
+      "sha256": "3573cdbcd96b52d611c36ce84527331580dae121a21aed014a3f4b2382689b3e"
+    },
+    {
+      "path": "internal/inventory/clone_test.go",
+      "sha256": "e2ab5ea29b25a8e58229e9574250eb35086a74415013bff5ced58b788abdc016"
+    },
+    {
+      "path": "internal/inventory/device_fixture_test.go",
+      "sha256": "be7279d8ccd4f72bf7398933b38baf46cf8c73fba52af385ea5010bbe01ccf7f"
+    },
+    {
+      "path": "internal/inventory/devices_freebsd_test.go",
+      "sha256": "c13fc2cd2d3cec2632d08cc3dbea9315d41ee599edaf821c5d9b6ced827a0c73"
+    },
+    {
+      "path": "internal/inventory/disk_access.go",
+      "sha256": "923021e5a501a31e290a74a30345de3687f8b087b69c10b6f908501754744cbc"
+    },
+    {
+      "path": "internal/inventory/disk_access_test.go",
+      "sha256": "fa2bfcba5bb1a8d7c650ed8e80ac008cbfcedcbb8477c0aed6afcc8dd9a71d76"
+    },
+    {
+      "path": "internal/inventory/disk_attachments.go",
+      "sha256": "1998fba3bbfe5a0c944b1f9a5ad85556bb275cf9b72bb608a9e9a9d0f4c3ec02"
+    },
+    {
+      "path": "internal/inventory/disk_attachments_freebsd_test.go",
+      "sha256": "1ce7f1105059b5773886ce53efffbf95d4111a8cd13d0008d51c592b644d50bd"
+    },
+    {
+      "path": "internal/inventory/disk_attachments_test.go",
+      "sha256": "805de246fd562a8e1cae2d5a3da152f404805f6f0e4e6eddcc7c02b83422aa32"
+    },
+    {
+      "path": "internal/inventory/disk_observation.go",
+      "sha256": "d0bd389ee15a487be015e173862e00cdc01d78d44dd34489c98eb672c0646c20"
+    },
+    {
+      "path": "internal/inventory/disk_observation_test.go",
+      "sha256": "c5bdf8259d7e191db9fc6cc7fdd00c93e57677a579b0770d13c301270718e587"
+    },
+    {
+      "path": "internal/inventory/model.go",
+      "sha256": "dd531a8bb6b95e0e9fcc15a6da030fcacc86ca839420db829bcc9f8c7b600617"
+    },
+    {
+      "path": "internal/inventory/parse.go",
+      "sha256": "039e50c19003a3093dbaff98f26cdc7ac5fc0d3c46a012775bc29697b9faacc1"
+    },
+    {
+      "path": "internal/inventory/parse_geom.go",
+      "sha256": "aed24efa5d12228c1eb47a3e0552eb16a5222993e65db8581804fa23ed6de9bf"
+    },
+    {
+      "path": "internal/inventory/parse_test.go",
+      "sha256": "95a593626afd2b0066127c3b395d9f5184a6597105fa03c4e00f217d183872b8"
+    },
+    {
+      "path": "internal/inventory/parse_zfs.go",
+      "sha256": "d998da649605c8c37bffcd43b2f270e54123b8d4526aaf1ddf9b96f9c6d59577"
+    },
+    {
+      "path": "internal/inventory/validate.go",
+      "sha256": "1ade407b0dc235a36fe286d98a0841dafae274030a890efd5d3b0318d0132eb4"
+    },
+    {
+      "path": "internal/storage/device_use.go",
+      "sha256": "9f958fc6afc9f2119bd154e8e31c3b79096522c99f3c624765f9a8301c87fc48"
+    },
+    {
+      "path": "internal/storage/device_use_test.go",
+      "sha256": "a51a74c81d4534f264bc17e6f40cfa215177fd81bf793b4fccdbdc048c79ef1a"
+    },
+    {
+      "path": "internal/storage/feature_names.go",
+      "sha256": "aac75ef72a600c30b29504b66673c86d6fa2050a24dc9f10a9a61e9737e06dd1"
+    },
+    {
+      "path": "internal/storage/features.go",
+      "sha256": "fd4718101606afb61ec380cd6fd6b118170d32dd3dd1b8578a3c7d557c3d6512"
+    },
+    {
+      "path": "internal/storage/features_test.go",
+      "sha256": "a2eed88f92102cae6a17f375f45142bd1cb3c0439824e734f3cc1f2509d14eef"
+    },
+    {
+      "path": "internal/storage/identities.go",
+      "sha256": "407727cce1a4c7ed5ebd22fc901a94f77c92e9138a68cc9e635ea6ce57b0f3c8"
+    },
+    {
+      "path": "internal/storage/identities_test.go",
+      "sha256": "a61b5ad2732b53a025360f9e7289ba3f5148eb828b739ffcb3899391fe887555"
+    },
+    {
+      "path": "internal/storage/imported_pools.go",
+      "sha256": "a5bf82f09b696500d5f323049c65d879bbdbc9d4b7c854dedbd17f08220d833b"
+    },
+    {
+      "path": "internal/storage/imported_pools_freebsd_test.go",
+      "sha256": "519afdab17423a9d2625dec0823304fb053a9467d7e39e916748c70d22cdbefe"
+    },
+    {
+      "path": "internal/storage/imported_pools_test.go",
+      "sha256": "9cf5f067440fb8a42641912a425b5ab9f49c73b03ecda1e5fe824172f7476f44"
+    },
+    {
+      "path": "internal/storage/labels.go",
+      "sha256": "5c4bf5b4f7f2491efba6891442360b694be8914f3024723a59e99be0be324520"
+    },
+    {
+      "path": "internal/storage/labels_test.go",
+      "sha256": "8da6c2b661cac5b00f36b36b4132c782124981338602954201204050d5cc4c9e"
+    },
+    {
+      "path": "internal/storage/model.go",
+      "sha256": "d78cfd6b016fec90ceb13df5a9ae4a21475b739796fc40538075a92719627a21"
+    },
+    {
+      "path": "internal/storage/ownership_record.go",
+      "sha256": "82e9ed408ce7e5db9f99b1f61cbbd20ae9d76b0d7750f4027245461c648d97bb"
+    },
+    {
+      "path": "internal/storage/ownership_record_test.go",
+      "sha256": "deb591189730491b3e4ca7a20e976d441fd20dea4b2977ae79e1ac5e6ec8347c"
+    },
+    {
+      "path": "internal/storage/plan.go",
+      "sha256": "8303ab08a60d4a334b36f40cd231840a142b95021e0a968072f1a1daddd5f15b"
+    },
+    {
+      "path": "internal/storage/plan_test.go",
+      "sha256": "e065f0fcb21579a1a5fe4177bcddac16bfb43e6851117e8a052ba13a95c919b7"
+    },
+    {
+      "path": "internal/storage/pool.go",
+      "sha256": "412dd656cdef6f8975bb332083db69bd0b2214dedb629126cd66cab16cb7f6cb"
+    },
+    {
+      "path": "internal/storage/pool_test.go",
+      "sha256": "1cb15c2086ed39856d876045f2321e7f00fe602e593835d8ebee1a6141664f86"
+    },
+    {
+      "path": "internal/storage/properties.go",
+      "sha256": "45c4b0e44fdbccab58be889bbcf4f47f388db513ec1ff71dcc5e4272c0aa06a9"
+    },
+    {
+      "path": "internal/storage/properties_freebsd_test.go",
+      "sha256": "d07ecf29c66cf2fd1488be60b18233e61211b449eac2f8541f0b98170a447137"
+    },
+    {
+      "path": "internal/storage/properties_test.go",
+      "sha256": "8f61d3ae7cd575026d97d3db21ccff99cf1fe92c2e926c62f7d51c16b9e6c738"
+    },
+    {
+      "path": "internal/storage/signatures.go",
+      "sha256": "136d2939a7bb32a8dabbac459b38651f78d796dad99ca394661cacdcd86b2e7d"
+    },
+    {
+      "path": "internal/storage/signatures_test.go",
+      "sha256": "7b41c922d3bf322dc522f0846e09de22f1c198c60b0873cba33997b537ad7077"
+    },
+    {
+      "path": "internal/storage/state.go",
+      "sha256": "7c6145e4ee30092a4eb57b87e70d5e7b69a619991f8b8d66b06c67ba475dc368"
+    },
+    {
+      "path": "internal/storage/state_directory.go",
+      "sha256": "4bcdbdeacd888505ee95c94e63237b1d0734b637c107ca3b3b6f964c1d74dac2"
+    },
+    {
+      "path": "internal/storage/state_directory_freebsd.go",
+      "sha256": "907fba751a807f758546cdd239dec461e8c45ad3115bf18482619561e4bcc3ee"
+    },
+    {
+      "path": "internal/storage/state_directory_freebsd_test.go",
+      "sha256": "f7f4361e29175c307450f514ce2352c422c1f68d21f2b777a525e05e6c2c6981"
+    },
+    {
+      "path": "internal/storage/state_directory_other.go",
+      "sha256": "2b20f62fca9968ed565c77621fc98810a01eec43a624ca6541addd5b13fbb9b9"
+    },
+    {
+      "path": "internal/storage/state_directory_other_test.go",
+      "sha256": "23b9230feb6c65b129b3d04bb7189bd4558c4082a3e9b31e147540c9ed2aeca1"
+    },
+    {
+      "path": "internal/storage/state_test.go",
+      "sha256": "5f1d13c56fb3cd4743899b4041932713fe93f6e0e7ee942c5295678f241549f9"
+    },
+    {
+      "path": "internal/storage/system_devices.go",
+      "sha256": "6f08af9b2610fc7b0d9332d9f111b7576c758cfb0640f961cc4a3ef50d4faadb"
+    },
+    {
+      "path": "internal/storage/system_devices_freebsd_test.go",
+      "sha256": "182cf512de5dc6900a607e9f45ead124c66f21dd02d9e805af8e03f21d5a4c3e"
+    },
+    {
+      "path": "internal/storage/system_devices_test.go",
+      "sha256": "2041a6b3159a04e881697df0b34a391cc7e42ede5300fb443d7210e2764432bf"
+    },
+    {
+      "path": "internal/storage/topology.go",
+      "sha256": "87ba9d454352b323926b81dc46cacb105e8150e84921e994ca7d288bec1b628d"
+    },
+    {
+      "path": "internal/storage/topology_test.go",
+      "sha256": "e48bc9c9e456ad6c7658d5eb25bf2a5bc9a5bb1bea8763141776f995c8369928"
+    },
+    {
+      "path": "internal/storage/validate.go",
+      "sha256": "25b59ae4f4d300be9d81574f230aa6bda0bdd8b8d07cba89829c09f85f8fc808"
+    },
+    {
+      "path": "tools/bootstrap-go.py",
+      "sha256": "3ac95fa2ac6e942c9f25a81cb20e5191756cd1e9c39668edc813fa0b214d19d1"
+    },
+    {
+      "path": "tools/bootstrap-tools.py",
+      "sha256": "8d23f46440a2ae8fdf1586ead4606ec3a6aaf14c8d2331c46dda280f49d7bb09"
+    },
+    {
+      "path": "tools/bsd-state.sh",
+      "sha256": "74b50da2e4f856e0623ee076d9e487ec9bd289a351d8139818025f710b5fdbc0"
+    },
+    {
+      "path": "tools/check-dco.py",
+      "sha256": "3c93b6667d72f5d7d1b6eb84c0e5ec6c42489eb894dced34f6a7d04ab21af803"
+    },
+    {
+      "path": "tools/check-repo.py",
+      "sha256": "4c835424e0d09873bb619ab3452acf4c028855e5e1c1cf13e5388f18d5e5aeca"
+    },
+    {
+      "path": "tools/check-repo.sh",
+      "sha256": "d8ea0c91ef79cec28c2b1cf309912ee9b277cc9fea4fd35e948c9cc0a1cf04ee"
+    },
+    {
+      "path": "tools/check-state-evidence.py",
+      "sha256": "694f237f8d8336e22ad553fd0a24d8669812f6a9ec05d8515af4213ffbfd807a"
+    },
+    {
+      "path": "tools/go-pins.json",
+      "sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64"
+    },
+    {
+      "path": "tools/local-qualification.py",
+      "sha256": "30bd571ca07cdb7afe196560bdd2c92c4395442938d11432613e00bbaa78fc23"
+    },
+    {
+      "path": "tools/local-vm-pins.json",
+      "sha256": "2961ca8a154f2f1fa508cfc9bcb4c68b8c5430b1e6f97ab6c8ca0ee3be648280"
+    },
+    {
+      "path": "tools/owned-process.py",
+      "sha256": "5f936837400c9180493f327e862c0bfeabeff37fde4e730b2f59749c913e4898"
+    },
+    {
+      "path": "tools/performance-vm-pins.json",
+      "sha256": "81f0f30e4171fed38e281c644044521a0cdc9f6693cd9b988b229ef4f85d002b"
+    },
+    {
+      "path": "tools/pins.json",
+      "sha256": "d9e333ef5165e4c9d4852731439b8819f74b4403a0b6e7339e7fa06a1b6edf65"
+    },
+    {
+      "path": "tools/prepare-performance-vm.py",
+      "sha256": "22bd3c4effeb94ed8d6946792443d02c8bf52c28f45b6c5de2be4af802a783f7"
+    },
+    {
+      "path": "tools/requirements-ci.txt",
+      "sha256": "ba9cda3816893aef2685822438e7cdbb7dc563b1ce9bd8e6166b5c475da3ad5f"
+    },
+    {
+      "path": "tools/review-gate.py",
+      "sha256": "e137910d36e5086f73e60fc55da9061dcf3bf63ebe52569e31080c23382e6346"
+    },
+    {
+      "path": "tools/tests/test_browser_tools.py",
+      "sha256": "5ad2bf7630a62885379d8fba8cd415c4f3e4d771d343aabe016fe4aac4c54004"
+    },
+    {
+      "path": "tools/tests/test_device_evidence.py",
+      "sha256": "9c51b0f89dbab66f6fe79b5cede9ff544233b339fa188d619c80c9d663202f8d"
+    },
+    {
+      "path": "tools/tests/test_device_fixture.py",
+      "sha256": "c4903181b02cb2b4dfe1643efac373079c73d6d0a1b710cb2759489e35740ca3"
+    },
+    {
+      "path": "tools/tests/test_foundation.py",
+      "sha256": "d2e512e903f43904eb8829435aba139d4dd4d67d585f211cdbe5fe95ea8f63c7"
+    },
+    {
+      "path": "tools/tests/test_local_qualification.py",
+      "sha256": "cdcfaac7806b2008bbdf2d2244e823af8d8c8aea17411e0135ff5073ebe2823c"
+    },
+    {
+      "path": "tools/tests/test_owned_process.py",
+      "sha256": "00411dd83b28dcf1539a43b4b0779244e3d9c8387a7a84bce76b4c7fe108f23e"
+    },
+    {
+      "path": "tools/tests/test_performance_evidence.py",
+      "sha256": "4ec08f7d380ab322245b1e1e0dbfa4879253da7b82fbf924187d5f7926972af7"
+    },
+    {
+      "path": "tools/tests/test_performance_vm.py",
+      "sha256": "a84abae99c211f97c3523454ba23b538753579112aec686abc6531b1902c04cc"
+    },
+    {
+      "path": "tools/tests/test_property_evidence.py",
+      "sha256": "d1a8c4d73531f0257168b969afbe878305c77ace360bed84096a19b4c1281690"
+    },
+    {
+      "path": "tools/tests/test_review_gate.py",
+      "sha256": "1df006173cb2a331be8528fc87ec5fcc06edcae7ce3069468296b094e68f7c8d"
+    },
+    {
+      "path": "tools/tests/test_state_evidence.py",
+      "sha256": "75509e549568d96db67e90625e97ad3f7e8015ceaa5f402153f1b0740990a883"
+    }
+  ],
+  "functional_source_portable_review": {
+    "source_commit": "e9f685c2f4460b7b4545bfa761c9089a2743439a",
+    "base_commit": "b84e0572d389078ec0b8514ff4d7919b56b96b7f",
+    "title": "feat(storage): validate bounded ownership state records",
+    "checks": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets",
+      "go-deep-check"
+    ],
+    "host_os": "Darwin",
+    "host_arch": "arm64",
+    "tooling_tests": 70,
+    "go_unit_tests": "pass",
+    "race": "pass",
+    "bounded_fuzz_targets": 21,
+    "signed_dco_commits": 1,
+    "supervisor_group_cleaned": true,
+    "result_sha256": "20e022f3639657886f253db3eaced1d46486e8f638700929de8feaf48d5dac62",
+    "checks_log_sha256": "ca1e13c4973ca88fd003942a414d586fa0c73d5f88d3e2df8bddb1a8c5f577fa"
+  },
+  "behavioral_tests": {
+    "source_commit": "e9f685c2f4460b7b4545bfa761c9089a2743439a",
+    "command": "go test -json -count=1 ./internal/storage -run ^TestOwnership",
+    "executed_tests": [
+      "TestOwnershipRecordRoundTripAndCanonicalBytes",
+      "TestOwnershipChecksumDoesNotGrantInvalidScope",
+      "TestOwnershipRecordStrictDenials",
+      "TestOwnershipRecordRejectsInvalidPolicies",
+      "TestOwnershipRecordCapacityAndRevision"
+    ],
+    "subtests_passed": 57,
+    "skipped": 0,
+    "failed": 0,
+    "result": "pass",
+    "log_sha256": "7b82bdf8e8a1dd3cd0b6f532746c0c7e6f376eaf3bfe6328ae04b1689e1769bb"
+  },
+  "freebsd_compilation": {
+    "source_commit": "e9f685c2f4460b7b4545bfa761c9089a2743439a",
+    "target": "freebsd/amd64",
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "command": "GOTOOLCHAIN=local GOENV=off CGO_ENABLED=0 GOOS=freebsd GOARCH=amd64 go test -c ./internal/storage",
+    "binary_sha256": "8f7d9550e7d74da237b8c08e70e8d4de545eda6993049c6ee3641b740f1884b1",
+    "compiled": true,
+    "executed": false,
+    "build_artifact_removed": true
+  },
+  "failing_first": {
+    "failure": "codec entry points absent before implementation",
+    "log_sha256": "5c50043bd93f769ac81626585d3af4cd31d2ddfebf44fd816c042bd67d58cbf2"
+  },
+  "unchanged_prior_manifests": [
+    {
+      "path": "docs/testing/M2/dataset-state-manifest.json",
+      "sha256": "742c54282f4eb0405deea105b40ff02138ca98cb04cc09ce47f38dccff227021"
+    },
+    {
+      "path": "docs/testing/M2/device-use-review-manifest.json",
+      "sha256": "3b9a3f90aca2f3dfcc61e0b31f9af3ee2a45dcf3d452fa837da6af1c23d0ef4d"
+    },
+    {
+      "path": "docs/testing/M2/devices-local-manifest.json",
+      "sha256": "813ea84749164efb9940c3cb472d555a524729893ff85fbac8b63bd5a88ca1b8"
+    },
+    {
+      "path": "docs/testing/M2/devices-manifest.json",
+      "sha256": "93b015d90819214f9b2e837afa9a0bdbe51c0f5c0771e90608feed4348c650cd"
+    },
+    {
+      "path": "docs/testing/M2/disk-access-manifest.json",
+      "sha256": "0cda31cd37254cdd0e17e34df14029735609b5807f62e081e0ceded4ce9cbf52"
+    },
+    {
+      "path": "docs/testing/M2/disk-attachments-manifest.json",
+      "sha256": "56a4d0029603f13e504c73e4f4a0f53938888340530fb7d03d846f3936d00667"
+    },
+    {
+      "path": "docs/testing/M2/disk-correlation-manifest.json",
+      "sha256": "370984097837e061ce171cac785695ec369ef726b184b4895ca3ef69e8dd3978"
+    },
+    {
+      "path": "docs/testing/M2/features-manifest.json",
+      "sha256": "7d5c9fdd433a5aca3f8f96eb3a4f8c7153fa5aaf6e9bd72715caae3689029ae5"
+    },
+    {
+      "path": "docs/testing/M2/filesystem-signatures-manifest.json",
+      "sha256": "cc0b444f6140728306ce9b0e13362ef5474110f0c3948bce23d0838da2ac98b7"
+    },
+    {
+      "path": "docs/testing/M2/identities-manifest.json",
+      "sha256": "8dbc093fe986cb4e18ecaa8ba2097eb24746d4d5b202033a34372d05d344f5fc"
+    },
+    {
+      "path": "docs/testing/M2/imported-pool-use-manifest.json",
+      "sha256": "9c0d30872511adee7069e832fbdcb8def0fafbd9a96ccd61bf7297c073d6c174"
+    },
+    {
+      "path": "docs/testing/M2/pool-labels-manifest.json",
+      "sha256": "82f3348e58248dda08b4d9c70487147b429e304d17e8ffd40500ac1e63667b68"
+    },
+    {
+      "path": "docs/testing/M2/pool-state-manifest.json",
+      "sha256": "12be8f7c3e6358a52b5494d822fc3366a91a4ff39abb1b1ffdc3f091f2180d30"
+    },
+    {
+      "path": "docs/testing/M2/properties-manifest.json",
+      "sha256": "74da0b8025b86d12501cd93e8a648dac47aecf59898edd8d16963eaae23fb693"
+    },
+    {
+      "path": "docs/testing/M2/state-directory-manifest.json",
+      "sha256": "a74b71d1fb7139890e3e6d229c7941379b8a7865cd3c3a8335b23b5f462fffa9"
+    },
+    {
+      "path": "docs/testing/M2/system-device-use-manifest.json",
+      "sha256": "fed30b8059bc52c149c19e2aec40b5db6dae375c8170e728de21a667e63ec62c"
+    },
+    {
+      "path": "docs/testing/M2/topology-manifest.json",
+      "sha256": "5e2200057bb83935053a93993c928cbfae9daa5e5c784f9ed005346b315447b6"
+    }
+  ],
+  "native_runs": [],
+  "limitations": [
+    "Only byte/model operations: no file access, root enrollment, native eligibility, helper request, runtime wiring or admission. Successful decoding/checksums are not write authority.",
+    "Five portable behavioral tests and 57 subtests execute without skips, including independently checksummed invalid content. All 21 bounded fuzz targets pass. Conservative structural budget may refuse JSON below 64 KiB; scope is never truncated.",
+    "FreeBSD/amd64 compile-only proof uses pinned Go 1.27.1 with cgo disabled. The resulting test binary is hashed and removed, not executed. No native record/store/durability claim follows.",
+    "No new QEMU VM, fixture mount, persistent runner or host service. The existing supervised local review tears down its owned group; GitHub Actions remain disabled.",
+    "Prior native manifests are unchanged and retain original tested sources. State-directory qualification was accepted in PR 39; those assertions were not rerun or relabeled here.",
+    "Strict job/outcome/history schemas, trusted file/ACL checks, enumeration and atomic publication, full-store/read-only/I/O failures, duplicate admission/tombstones, reservations, executor recovery, acknowledgement cuts, reboot/power-loss and metadata export/restore remain unimplemented/unqualified.",
+    "Full M2-OWN-001/M2-STATE-001, slice 2 and M2 acceptance remain open. Missing slice 1 native observations confer no authority. M1 Safari/manual accessibility remains maintainer-deferred.",
+    "Final PR-head portable review is recorded separately; evidence/documentation updates leave all functional/test/tool input hashes unchanged."
+  ]
+}

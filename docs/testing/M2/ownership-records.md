@@ -1,6 +1,6 @@
 # M2 strict ownership record codec
 
-Date: 2026-10-05. Status: implementing; portable review pending.
+Date: 2026-10-05. Status: partial codec portable-qualified; maintainer review pending.
 Authority: [approved M2 EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -86,6 +86,25 @@ filesystem effect. FreeBSD/amd64 compilation is a portability check, not an actu
 FreeBSD file/store qualification. PR 39's thirty-five native directory assertions
 retain their original tested source and immutable manifest; they are not rerun or
 relabeled as record-store evidence here.
+
+## Executed evidence
+
+Signed/DCO functional source `e9f685c2f4460b7b4545bfa761c9089a2743439a`, based on
+merged PR 39 source `b84e0572d389078ec0b8514ff4d7919b56b96b7f`, passed all five
+behavioral tests and fifty-seven subtests with no failures/skips. Complete local
+`make check lint test secrets go-deep-check` passed seventy tooling tests, Go
+unit/race checks and all twenty-one bounded fuzz targets, including the new codec.
+The [manifest](ownership-records-manifest.json) records those results and hashes,
+eighty-four unchanged code/test/tool inputs and seventeen unchanged prior M2
+manifests. Final documentation-head review is separate; these results retain the
+actual functional source.
+
+The same source compiled the storage test binary for FreeBSD/amd64 using pinned
+Go 1.27.1 with cgo disabled. The binary was hashed and removed; it was not executed.
+Behavioral execution and full review used the development Mac (Darwin/arm64).
+This slice starts no VM or host service. The supervised review stopped its owned
+process group; Actions remain disabled. Native file/store qualification still
+requires disposable FreeBSD execution when those operations are implemented.
 
 Strict job/outcome/history schemas, record enumeration/file ownership/ACL checks,
 same-directory sync/rename publication, full-store/read-only/I/O failure, duplicate
