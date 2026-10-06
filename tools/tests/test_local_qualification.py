@@ -39,6 +39,15 @@ class LocalQualificationTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 self.module.validate_result('continuity', log)
 
+    def test_state_suite_requires_actual_complete_native_lock_and_cleanup_cases(self):
+        checker=self.module.load_tool('check-state-evidence')
+        result='STATE_DIRECTORY_RESULT '+' '.join(c+'=pass' for c in sorted(checker.CASES))+'\n'
+        passed='--- PASS: TestNativeStateDirectory (1.0s)\n'
+        self.assertIn('HORVIUM_STATE_VM=1',self.module.SUITES['state'][1])
+        self.module.validate_result('state',passed+result)
+        for bad in ['',passed,result,passed+result.replace('process_reaped=pass',''),passed+result.replace('fixture_teardown=pass','fixture_teardown=fail')]:
+            with self.assertRaises(ValueError):self.module.validate_result('state',bad)
+
     def test_cleanup_waits_for_owned_child_and_does_not_signal_arbitrary_pids(self):
         process = Mock()
         process.poll.return_value = None

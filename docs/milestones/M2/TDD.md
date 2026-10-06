@@ -103,8 +103,8 @@ required assertions for held direct/alias read/write handles, review drift,
 unchanged access, close/restoration, unavailable mode refusal and byte preservation.
 Sixty-eight assertions in the same four tests and full host preservation/teardown
 are required; both targets passed with complete preservation/teardown; see the
-[native manifest](../../testing/M2/disk-access-manifest.json). Maintainer review
-is pending. Further fault control and complete device safety still
+[native manifest](../../testing/M2/disk-access-manifest.json). PR 38 accepted
+this subset. Further fault control and complete device safety still
 need implementation and qualification. Never accept an arbitrary host device supplied to a test.
 
 Pool creation/device-identity tests use new guest-attached virtual block devices
@@ -219,3 +219,19 @@ open for review. M2 acceptance requires the approved design, these actual gates
 and an explicit maintainer acceptance record. The native property projection
 and identity/state projection subsets passed as linked above. Complete acceptance
 rows and the remaining native gates are still pending.
+
+## State-directory prerequisite
+
+The [state-directory contract](../../testing/M2/state-directory.md) implements an
+independent partial M2-STATE-001 boundary, without using unqualified device
+eligibility or admitting storage work. Its thirty-five required assertions cover
+root ownership/modes, descriptor anchoring, safe-path/ancestor/symlink refusal,
+lock-file owner/mode/link/type/content refusal, native close-on-exec flags,
+competing first writers, successful file/directory sync, dropped kernel UID,
+actual separate-process contention/death/reacquisition, stable lock inode,
+foreign preservation and complete fixture teardown. Both declared releases and
+full host base/runtime/group teardown passed at signed functional/suite source
+`123044304e75f6df27d43eee085c23435ddbcce1`; see the
+[native manifest](../../testing/M2/state-directory-manifest.json). Maintainer
+review remains pending.
+No full record/durable job/recovery/power-cut/ACL/hardware claim follows.

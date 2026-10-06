@@ -1,7 +1,7 @@
 # M2 aggregate disk access
 
 Date: 2026-10-05. Status: all sixty-eight assertions, four native tests and complete
-preservation/teardown passed on both targets; maintainer review pending. [Approved EDD](../../milestones/M2/EDD.md),
+preservation/teardown passed on both targets; accepted in PR 38. [Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
 ## Observation contract

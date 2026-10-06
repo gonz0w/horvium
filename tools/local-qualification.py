@@ -22,6 +22,7 @@ SUITES = {
     'research': ('python314', 'env HORVIUM_RESEARCH_VM=1 sh tools/research/m1-native.sh'),
     'discovery': ('python314', 'env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh'),
     'devices': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_DEVICE_VM=1 sh tools/bsd-devices.sh'),
+    'state': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_STATE_VM=1 sh tools/bsd-state.sh'),
     'properties': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_PROPERTY_VM=1 sh tools/bsd-properties.sh'),
     'continuity': ('python314 samba423', 'env HORVIUM_NATIVE_VM=1 HORVIUM_CONTINUITY_VM=1 sh tools/bsd-continuity.sh'),
     'performance': ('python314', 'env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh && env HORVIUM_NATIVE_VM=1 HORVIUM_PERF_VM=1 sh tools/bsd-performance.sh'),
@@ -71,6 +72,9 @@ def stop_guest(process):
 def validate_result(suite, log, complete=False):
     if '--- FAIL:' in log or '\nFAIL\n' in log:
         raise ValueError('guest test failure')
+    if suite == 'state':
+        load_tool('check-state-evidence').validate(log)
+        return
     if suite == 'devices':
         load_tool('check-device-evidence').validate(log, guest=not complete)
         return

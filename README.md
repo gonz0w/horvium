@@ -57,10 +57,14 @@ teardown passed on both targets; PR 36 accepted this subset.
 The accepted [pool-label subset](docs/testing/M2/pool-labels.md) binds positive exported
 pool identities and recorded state to the same disk; all fifty-nine assertions
 and full teardown passed on both targets; accepted in PR 37.
-The next [disk-access subset](docs/testing/M2/disk-access.md) binds aggregate
+The accepted [disk-access subset](docs/testing/M2/disk-access.md) binds aggregate
 GEOM access counters to disk identity and invalidates review on access drift;
 all sixty-eight native assertions and full preservation/teardown passed on both
-targets; maintainer review remains pending.
+targets; accepted in PR 38.
+The next [state-directory subset](docs/testing/M2/state-directory.md) establishes
+the root-owned single-writer boundary for future durable metadata. All thirty-five
+native assertions and complete preservation/teardown passed on both targets;
+maintainer review remains pending.
 Other native gates, durable jobs and storage writes remain pending; the runtime is
 still read-only.
 

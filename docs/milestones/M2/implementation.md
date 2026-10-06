@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset qualified, review pending; Actions disabled.
+Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset qualified on both targets, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -154,12 +154,12 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
   both targets; see the [native manifest](../../testing/M2/pool-labels-manifest.json).
   The initial utility-path and native-format failures retain verified teardown.
   PR 37 accepted this positive subset at merged source `d52fa620ab76d5787d782c1ad9de6b4b415bee20`; full device eligibility remains pending.
-- Slice 1 next subset: [disk access](../../testing/M2/disk-access.md) requires
+- Slice 1 subset accepted in [PR 38](https://github.com/gonz0w/horvium/pull/38): [disk access](../../testing/M2/disk-access.md) requires
   identity-bound provider/consumer aggregate counts, access drift and disposable
   direct/alias-held-descriptor tests. Signed source `53b74a8844f5f0bce42b08ae044929aacdfaa92f`
   passed all sixty-eight assertions, four tests and complete preservation/teardown
   on both targets; see the [native manifest](../../testing/M2/disk-access-manifest.json).
-  Maintainer review and full device eligibility remain pending.
+  PR 38 accepted this access subset at merged source `dea2efefc3c9b9a50053bc4794a5a21685ad5132`; full device eligibility remains pending.
 - Slice 1 remains incomplete: assembled native eligibility/provider proofs, full
   status/scan interpretation, complete-impact collection and device-use drift gates
   have not run. No later slice may treat
@@ -168,3 +168,19 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
 The approval adopts scope and gates, not passing native behavior or a NAS release.
 Record actual slice results here and in the compatibility matrix; skipped fixtures
 are never acceptance evidence. Full M1 acceptance remains a separate pending decision.
+
+## Independent slice 2 prerequisite
+
+The approved durable-state boundary can be implemented and qualified while
+slice 1's device/impact/status gates remain open; this work consumes none of
+those unqualified gates and cannot admit or launch storage jobs. The
+[state-directory lease](../../testing/M2/state-directory.md) opens only an
+existing private root-provisioned local UFS/ZFS directory, establishes a stable
+single-writer lock and synchronizes its empty lock file and parent directory.
+Thirty-five native assertions, separate process death/reacquisition and full
+preservation/teardown passed on both releases at signed functional/suite source
+`123044304e75f6df27d43eee085c23435ddbcce1`; see the
+[native manifest](../../testing/M2/state-directory-manifest.json). Maintainer
+review remains pending; default-ACL disposable fixtures are the qualified scope.
+Strict records, sync/rename/failure/power-cut tests, durable admission, reservation,
+recovery, restored metadata, helper negotiation and UI/CLI work remain ahead.
