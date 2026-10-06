@@ -316,6 +316,34 @@ func TestNativeJobPublication(t *testing.T) {
 			t.Fatal("known cleaned failure blocked safe fixture successor")
 		}
 	}
+	// A ctime-only change after the final snapshot still refuses publication.
+	ctimeLease, ctimeDir := newLease("ctime-drift")
+	if ctimeLease.PublishJob(j, 0) != nil {
+		t.Fatal("ctime baseline")
+	}
+	ctimeTarget := filepath.Join(ctimeDir, "job-"+j.ID+".json")
+	ctimeBefore, e := os.Stat(ctimeTarget)
+	if e != nil {
+		t.Fatal(e)
+	}
+	err = ctimeLease.publishJobBounded(next, 1, defaultStateCatalogLimits, func(tx ownershipPublication) ownershipPublication {
+		verify := tx.verify
+		tx.verify = func() error {
+			var before, after unix.Stat_t
+			if unix.Fstatat(int(ctimeLease.directory.Fd()), "job-"+j.ID+".json", &before, unix.AT_SYMLINK_NOFOLLOW) != nil {
+				t.Fatal("owned ctime observation")
+			}
+			if unix.UtimesNanoAt(int(ctimeLease.directory.Fd()), "job-"+j.ID+".json", []unix.Timespec{before.Atim, before.Mtim}, unix.AT_SYMLINK_NOFOLLOW) != nil || unix.Fstatat(int(ctimeLease.directory.Fd()), "job-"+j.ID+".json", &after, unix.AT_SYMLINK_NOFOLLOW) != nil || before.Ctim == after.Ctim || before.Mtim != after.Mtim {
+				t.Fatal("owned ctime-only change unavailable")
+			}
+			return verify()
+		}
+		return tx
+	})
+	check("destination_ctime_denial", errors.Is(err, ErrDrift))
+	ctimeAfter, se := os.Stat(ctimeTarget)
+	b, e = os.ReadFile(ctimeTarget)
+	check("ctime_denial_preservation", e == nil && se == nil && bytes.Equal(b, data) && os.SameFile(ctimeBefore, ctimeAfter) && ctimeBefore.ModTime() == ctimeAfter.ModTime() && noTemps(ctimeDir))
 	uncertain, dir := newLease("sync-uncertain")
 	if uncertain.PublishJob(j, 0) != nil {
 		t.Fatal("uncertain baseline")
@@ -342,14 +370,6 @@ func TestNativeJobPublication(t *testing.T) {
 		return tx
 	})
 	check("cleanup_uncertain", errors.Is(err, ErrStateUncertain) && errors.Is(cleanup.PublishJob(j, 0), ErrStateUncertain) && errors.Is(cleanup.PublishOwnership(p, 0), ErrStateUncertain))
-	publishedFailure, _ := newLease("published-sync-uncertain")
-	err = publishedFailure.publishJobBounded(j, 0, defaultStateCatalogLimits, func(tx ownershipPublication) ownershipPublication {
-		tx.syncPublished = func() error { return errors.New("owned published-inode sync failure") }
-		return tx
-	})
-	visible, visibleErr := publishedFailure.ReadJob(j.ID)
-	check("published_sync_uncertain", errors.Is(err, ErrStateUncertain) && visibleErr == nil && visible.ID == j.ID && errors.Is(publishedFailure.PublishJob(next, 1), ErrStateUncertain) && errors.Is(publishedFailure.PublishOwnership(p, 0), ErrStateUncertain))
-
 	// Add actual records after file sync to prove the final census cannot be skipped.
 	for _, kind := range []string{"unknown", "orphan", "bytes", "count", "submission"} {
 		fixture, dir := newLease("late-" + kind)

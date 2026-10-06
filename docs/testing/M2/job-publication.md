@@ -24,13 +24,17 @@ intent. Its recorded state/reason/digest cannot prove a storage operation occurr
 
 Ownership and job publication share one native descriptor-relative transaction.
 Under the held mutex/lease, require writable local UFS/ZFS and a complete safe
-[mixed census](state-catalog.md). Validate current predecessor bytes and identity.
+[mixed census](state-catalog.md). Validate current predecessor bytes and identity. Preserve that original inode and
+exact byte sequence across staging, then bind a fresh full metadata snapshot
+after temporary file sync/close. Validate identical predecessor bytes and the
+complete successor again, with strict before/read/after checks. Deferred UFS
+rename bookkeeping can change ctime during staging I/O; it does not bypass the
+final full metadata comparisons. No metadata exception or automatic retry is used.
 Exclusively create a private same-directory `.job-<32-lowercase-hex>.tmp` (ownership
 uses its existing prefix), validate opened-object ACL, write, file-sync, close,
 and revalidate temporary/destination/lease. Repeat complete census and capacity
 checks before rename, excluding only this exact already inode-validated temporary.
-Rename to `job-<ID>.json`, sync the actual private published inode, then sync
-the directory. An old open descriptor retains
+Rename to `job-<ID>.json`, then sync the directory. An old open descriptor retains
 its old bytes. No cross-record atomic transaction is claimed.
 
 Recognized orphan job and ownership temporaries return `ErrStateUncertain` and
@@ -67,9 +71,9 @@ phase wrappers are package-private disposable fixture seams, not operator settin
 
 ## Qualification procedure
 
-Require **429 named state assertions**, thirty-five parents (ten native and
+Require **430 named state assertions**, thirty-five parents (ten native and
 twenty-five unit), and all **176 codec/schema subtests** on both declared targets.
-The seventy-six native job controls cover actual creation/replacement/canonical
+The seventy-seven native job controls cover actual creation/replacement/canonical
 private bytes, predecessor/history/intent refusal, terminal outcomes/replay denial,
 mixed ownership creation/replacement, exact shared byte and class budgets, no
 partials/eviction, anchored rename, stable lock/old descriptors, unsafe/damaged

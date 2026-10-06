@@ -9,7 +9,7 @@ import (
 )
 
 func TestOwnershipPublicationOrderAndFailures(t *testing.T) {
-	phases := []string{"write", "file_sync", "close", "verify", "rename", "published_sync", "directory_sync"}
+	phases := []string{"write", "file_sync", "close", "verify", "rename", "directory_sync"}
 	for _, fail := range append([]string{""}, phases...) {
 		var calls []string
 		step := func(name string) func() error {
@@ -21,7 +21,7 @@ func TestOwnershipPublicationOrderAndFailures(t *testing.T) {
 				return nil
 			}
 		}
-		tx := ownershipPublication{write: step("write"), syncFile: step("file_sync"), closeFile: step("close"), verify: step("verify"), rename: step("rename"), syncPublished: step("published_sync"), syncDirectory: step("directory_sync"), cleanup: step("cleanup")}
+		tx := ownershipPublication{write: step("write"), syncFile: step("file_sync"), closeFile: step("close"), verify: step("verify"), rename: step("rename"), syncDirectory: step("directory_sync"), cleanup: step("cleanup")}
 		err := commitOwnershipPublication(tx)
 		if fail == "" {
 			if err != nil || !reflect.DeepEqual(calls, phases) {
@@ -36,7 +36,7 @@ func TestOwnershipPublicationOrderAndFailures(t *testing.T) {
 				break
 			}
 		}
-		if fail == "published_sync" || fail == "directory_sync" {
+		if fail == "directory_sync" {
 			if !errors.Is(err, ErrStateUncertain) {
 				t.Fatal("published uncertain result hidden", err)
 			}

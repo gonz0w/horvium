@@ -2,6 +2,7 @@
 package storage
 
 import (
+	"bytes"
 	"crypto/rand"
 	"encoding/hex"
 	"errors"
@@ -42,6 +43,7 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 		return err
 	}
 	var prior unix.Stat_t
+	var original []byte
 	exists := true
 	if err = unix.Fstatat(dir, name, &prior, unix.AT_SYMLINK_NOFOLLOW); err == unix.ENOENT {
 		exists = false
@@ -49,6 +51,10 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 		return ErrStateDirectory
 	}
 	if exists {
+		original, err = s.readStateBytesLocked(name)
+		if err != nil {
+			return err
+		}
 		if e := predecessor(); e != nil {
 			return e
 		}
@@ -119,6 +125,38 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 		}
 		return syncFile()
 	}
+	// Keep the original inode and exact bytes across staging. On UFS, deferred
+	// rename bookkeeping can change ctime when later I/O flushes dependencies.
+	// Bind the authoritative full metadata snapshot after staging sync, then
+	// retain strict before/read/after and pre-rename comparisons. No retries or
+	// timestamp exceptions are used in that final verification window.
+	initial := prior
+	tx.closeFile = func() error {
+		if e := closeFile(); e != nil {
+			return e
+		}
+		if !exists {
+			return nil
+		}
+		if unix.Fstatat(dir, name, &prior, unix.AT_SYMLINK_NOFOLLOW) != nil || prior.Dev != initial.Dev || prior.Ino != initial.Ino {
+			return ErrDrift
+		}
+		current, e := s.readStateBytesLocked(name)
+		if e != nil {
+			return e
+		}
+		if !bytes.Equal(original, current) {
+			return ErrDrift
+		}
+		if e = predecessor(); e != nil {
+			return e
+		}
+		var after unix.Stat_t
+		if unix.Fstatat(dir, name, &after, unix.AT_SYMLINK_NOFOLLOW) != nil || !sameOwnershipMetadata(prior, after) {
+			return ErrDrift
+		}
+		return nil
+	}
 	verifyObjects := func() error {
 		if _, e := s.ownershipDirectoryLocked(); e != nil {
 			return e
@@ -151,28 +189,6 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 		return verifyObjects()
 	}
 	tx.rename = func() error { return unix.Renameat(dir, temporary, dir, name) }
-	// UFS soft updates may finish rename link bookkeeping after parent sync,
-	// changing ctime without changing effective links/content. Synchronize the
-	// actual published inode as well; never weaken predecessor drift comparison.
-	tx.syncPublished = func() error {
-		if e := unix.Fsync(dir); e != nil {
-			return e
-		}
-		publishedFD, e := unix.Openat(dir, name, unix.O_RDONLY|unix.O_NOFOLLOW|unix.O_NONBLOCK|unix.O_CLOEXEC, 0)
-		if e != nil {
-			return e
-		}
-		published := os.NewFile(uintptr(publishedFD), "storage-published-record")
-		defer published.Close()
-		var current unix.Stat_t
-		if unix.Fstat(publishedFD, &current) != nil || !privateOwnershipFile(current) || current.Dev != created.Dev || current.Ino != created.Ino || current.Size != int64(len(data)) || !safeStateACL(publishedFD, uint32(current.Mode), false) {
-			return ErrDrift
-		}
-		if e = published.Sync(); e != nil {
-			return e
-		}
-		return published.Close()
-	}
 	tx.syncDirectory = func() error { return unix.Fsync(dir) }
 	if wrap != nil {
 		tx = wrap(tx)
