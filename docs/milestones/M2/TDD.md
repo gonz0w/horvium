@@ -385,7 +385,7 @@ M2-STATE-001/M2-JOB-001/M2-PRIV-001 at T1/T3: current-predecessor immutable hist
 actual private file publication and every durability/refusal phase, complete mixed
 capacity preflight/final rechecks, terminal-slot exhaustion, preserved uncertainty,
 unsafe/ACL/UID denials, concurrent duplicate/last-slot serialization and actual
-UFS ENOSPC/read-only job controls. Require 427 named assertions, thirty-five parents
+UFS ENOSPC/read-only job controls. Require 429 named assertions, thirty-five parents
 and 176 schema subtests on both releases with full owned teardown. Native
 qualification is pending. No runtime admission/native effect, executable intent,
 reservation/pruning/recovery or acknowledgement/power-loss acceptance follows.

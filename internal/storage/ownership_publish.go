@@ -12,7 +12,7 @@ var ErrStateUncertain = errors.New("storage state publication requires reconcili
 // Native implementations still perform real descriptor-relative operations;
 // this is not an executor, user failpoint or durability simulation interface.
 type ownershipPublication struct {
-	write, syncFile, closeFile, verify, rename, syncDirectory, cleanup func() error
+	write, syncFile, closeFile, verify, rename, syncPublished, syncDirectory, cleanup func() error
 }
 
 func commitOwnershipPublication(tx ownershipPublication) error {
@@ -29,7 +29,7 @@ func commitOwnershipPublication(tx ownershipPublication) error {
 	}
 	// Rename has already published. Never unlink/roll back the destination on a
 	// failed directory sync: a visible record is not a durable acknowledgement.
-	if tx.syncDirectory() != nil {
+	if tx.syncPublished() != nil || tx.syncDirectory() != nil {
 		return ErrStateUncertain
 	}
 	return nil

@@ -130,7 +130,7 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 		e := unix.Fstatat(dir, name, &current, unix.AT_SYMLINK_NOFOLLOW)
 		if exists {
 			if e != nil || !sameOwnershipMetadata(prior, current) {
-				return fmt.Errorf("destination metadata equality dev=%t inode=%t mode=%t uid=%t gid=%t links=%t size=%t mtime=%t ctime=%t birth=%t flags=%t generation=%t: %w", prior.Dev == current.Dev, prior.Ino == current.Ino, prior.Mode == current.Mode, prior.Uid == current.Uid, prior.Gid == current.Gid, prior.Nlink == current.Nlink, prior.Size == current.Size, prior.Mtim == current.Mtim, prior.Ctim == current.Ctim, prior.Btim == current.Btim, prior.Flags == current.Flags, prior.Gen == current.Gen, ErrDrift)
+				return fmt.Errorf("destination metadata: %w", ErrDrift)
 			}
 		} else if e != unix.ENOENT {
 			return ErrDrift
@@ -151,6 +151,25 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 		return verifyObjects()
 	}
 	tx.rename = func() error { return unix.Renameat(dir, temporary, dir, name) }
+	// UFS soft updates may finish rename link bookkeeping after parent sync,
+	// changing ctime without changing effective links/content. Synchronize the
+	// actual published inode as well; never weaken predecessor drift comparison.
+	tx.syncPublished = func() error {
+		publishedFD, e := unix.Openat(dir, name, unix.O_RDONLY|unix.O_NOFOLLOW|unix.O_NONBLOCK|unix.O_CLOEXEC, 0)
+		if e != nil {
+			return e
+		}
+		published := os.NewFile(uintptr(publishedFD), "storage-published-record")
+		defer published.Close()
+		var current unix.Stat_t
+		if unix.Fstat(publishedFD, &current) != nil || !privateOwnershipFile(current) || current.Dev != created.Dev || current.Ino != created.Ino || current.Size != int64(len(data)) || !safeStateACL(publishedFD, uint32(current.Mode), false) {
+			return ErrDrift
+		}
+		if e = published.Sync(); e != nil {
+			return e
+		}
+		return published.Close()
+	}
 	tx.syncDirectory = func() error { return unix.Fsync(dir) }
 	if wrap != nil {
 		tx = wrap(tx)

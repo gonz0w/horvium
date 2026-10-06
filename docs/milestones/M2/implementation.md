@@ -321,7 +321,7 @@ The [job publisher](../../testing/M2/job-publication.md) reads exact durable
 predecessors, appends immutable lifecycle history and uses the shared native
 sync/rename pipeline. Both publishers require a complete mixed census and reserve
 old plus new bytes and job class slots before temp creation and before rename.
-Require 427 state assertions, thirty-five parents and 176 schema subtests on both
+Require 429 state assertions, thirty-five parents and 176 schema subtests on both
 releases with full teardown. Native qualification is pending. This metadata-only
 boundary admits/executes no job; complete intent, admission/reservations, retention
 and actual recovery/acknowledgement cuts remain later gates.
