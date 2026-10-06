@@ -10,13 +10,15 @@ READ_CASES=['missing_denial','selector_denial','valid_read','bytes_preserved','i
 ACL_CASES=['descriptor_denial','posix_filesystem', 'posix_capabilities', 'posix_baseline', 'posix_directory_denial', 'posix_directory_read_denial', 'posix_directory_no_repair', 'posix_ancestor_denial', 'posix_ancestor_no_creation', 'posix_lock_denial', 'posix_lock_read_denial', 'posix_lock_no_repair', 'posix_record_denial', 'posix_record_no_repair', 'posix_inheritance_denial', 'posix_inheritance_read_denial', 'posix_inheritance_no_repair', 'posix_restored_read', 'posix_lease_close', 'posix_unmount', 'posix_device_teardown', 'nfs4_filesystem', 'nfs4_capabilities', 'nfs4_baseline', 'nfs4_directory_denial', 'nfs4_directory_read_denial', 'nfs4_directory_no_repair', 'nfs4_ancestor_denial', 'nfs4_ancestor_no_creation', 'nfs4_lock_denial', 'nfs4_lock_read_denial', 'nfs4_lock_no_repair', 'nfs4_record_denial', 'nfs4_record_no_repair', 'nfs4_inheritance_denial', 'nfs4_inheritance_read_denial', 'nfs4_inheritance_no_repair', 'nfs4_restored_read', 'nfs4_lease_close', 'nfs4_unmount', 'nfs4_device_teardown', 'kernel_nfs4_grant', 'kernel_uid_denial', 'process_teardown', 'fixture_teardown']
 PUBLISH_CASES=['create', 'canonical_bytes', 'private_file', 'duplicate_denial', 'revision_denial', 'invalid_denial', 'capacity_denial', 'replace', 'old_descriptor_preserved', 'new_inode', 'readback', 'stable_lock', 'no_temporary', 'uncertain_write_blocked', 'uncertain_readable', 'cleanup_uncertain', 'cleanup_write_blocked', 'serialized_revision', 'destination_drift', 'directory_anchor', 'replacement_untouched', 'directory_drift', 'lock_drift', 'lease_close', 'closed_denial', 'inert_denial', 'foreign_preservation', 'fixture_teardown', 'mode_denial', 'owner_denial', 'hardlink_denial', 'symlink_denial', 'fifo_denial', 'directory_denial', 'damage_denial', 'newer_denial', 'wrong_pool_denial', 'write_failure', 'file_sync_failure', 'close_failure', 'verify_failure', 'rename_failure', 'directory_sync_uncertain']
 PUBLISH_FS_CASES=['catalog_acl_denial','catalog_acl_preservation','catalog_acl_restored','ufs_publication', 'acl_denial', 'acl_preservation', 'native_enospc', 'full_denial', 'full_cleanup', 'native_readonly', 'readonly_denial', 'readonly_preservation', 'filesystem_teardown']
-TESTS=['TestNativeOwnershipCatalog','TestOwnershipCatalogNames','TestOwnershipCatalogLimits','TestNativeOwnershipPublish','TestNativeOwnershipPublishFilesystem','TestOwnershipPublicationOrderAndFailures','TestOwnershipPublicationRevision','TestNativeStateACL','TestStateACLPolicy', 'TestNativeStateDirectory','TestNativeOwnershipRead','TestOwnershipRecordRoundTripAndCanonicalBytes','TestOwnershipChecksumDoesNotGrantInvalidScope','TestOwnershipRecordStrictDenials','TestOwnershipRecordRejectsInvalidPolicies','TestOwnershipRecordCapacityAndRevision','TestOwnershipReadMetadataDrift']
+TESTS=['TestNativeOwnershipCapacity','TestOwnershipPublicationCapacity','TestNativeOwnershipCatalog','TestOwnershipCatalogNames','TestOwnershipCatalogLimits','TestNativeOwnershipPublish','TestNativeOwnershipPublishFilesystem','TestOwnershipPublicationOrderAndFailures','TestOwnershipPublicationRevision','TestNativeStateACL','TestStateACLPolicy', 'TestNativeStateDirectory','TestNativeOwnershipRead','TestOwnershipRecordRoundTripAndCanonicalBytes','TestOwnershipChecksumDoesNotGrantInvalidScope','TestOwnershipRecordStrictDenials','TestOwnershipRecordRejectsInvalidPolicies','TestOwnershipRecordCapacityAndRevision','TestOwnershipReadMetadataDrift']
 SUBTESTS={'TestOwnershipChecksumDoesNotGrantInvalidScope':10,'TestOwnershipRecordStrictDenials':32,'TestOwnershipRecordRejectsInvalidPolicies':15}
 RESULT='STATE_DIRECTORY_RESULT '+' '.join(c+'=pass' for c in CASES)+'\nOWNERSHIP_READ_RESULT '+' '.join(c+'=pass' for c in READ_CASES)+'\n'
 RESULT+='STATE_ACL_RESULT '+' '.join(c+'=pass' for c in ACL_CASES)+'\n'
 RESULT+='OWNERSHIP_PUBLISH_RESULT '+' '.join(c+'=pass' for c in PUBLISH_CASES)+'\nOWNERSHIP_PUBLISH_FS_RESULT '+' '.join(c+'=pass' for c in PUBLISH_FS_CASES)+'\n'
 CATALOG_CASES=['byte_accounting', 'byte_limit', 'closed_denial', 'complete_catalog', 'count_limit', 'damage_denial', 'directory_anchor', 'directory_denial', 'directory_drift_denial', 'empty_catalog', 'empty_denial', 'exact_limits', 'fifo_denial', 'fixture_teardown', 'foreign_preservation', 'hardlink_denial', 'independent_results', 'inert_denial', 'inode_preservation', 'invalid_limits', 'lease_close', 'lock_drift_denial', 'malformed_name_denial', 'mode_denial', 'namespace_drift_denial', 'newer_denial', 'orphan_denial', 'orphan_preservation', 'oversize_denial', 'owner_denial', 'record_drift_denial', 'record_preservation', 'repeated_catalog', 'sorted_records', 'symlink_denial', 'uncertainty_preserved', 'unknown_denial', 'wrong_pool_denial']
 RESULT+='OWNERSHIP_CATALOG_RESULT '+' '.join(c+'=pass' for c in CATALOG_CASES)+'\n'
+CAPACITY_CASES=['create_byte_denial', 'exact_create', 'count_denial', 'replacement_reservation', 'denial_preservation', 'exact_replace', 'replacement_readback', 'stale_denial', 'invalid_limits', 'stable_lock', 'unknown_denial', 'damage_denial', 'newer_denial', 'wrong_pool_denial', 'mode_denial', 'symlink_denial', 'hardlink_denial', 'fifo_denial', 'directory_denial', 'orphan_denial', 'orphan_preservation', 'orphan_latch', 'late_unknown_denial', 'late_orphan_denial', 'late_count_denial', 'late_bytes_denial', 'late_orphan_latch', 'serialized_capacity', 'serialized_catalog', 'foreign_preservation', 'lease_close', 'fixture_teardown']
+RESULT+='OWNERSHIP_CAPACITY_RESULT '+' '.join(c+'=pass' for c in CAPACITY_CASES)+'\n'
 PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
 
 class StateEvidenceTests(unittest.TestCase):
@@ -30,7 +32,7 @@ class StateEvidenceTests(unittest.TestCase):
 
     def test_missing_duplicate_unknown_failed_or_oversized_cases_denied(self):
         m=self.module()
-        for case in set(CASES+READ_CASES+ACL_CASES+PUBLISH_CASES+PUBLISH_FS_CASES+CATALOG_CASES):
+        for case in set(CASES+READ_CASES+ACL_CASES+PUBLISH_CASES+PUBLISH_FS_CASES+CATALOG_CASES+CAPACITY_CASES):
             for bad in [RESULT.replace(case+'=pass',''),RESULT.replace(case+'=pass',case+'=fail'),RESULT.rstrip()+' '+case+'=pass\n']:
                 with self.subTest(case=case),self.assertRaises(ValueError):m.validate(PASS+bad)
         for bad in [RESULT.rstrip()+' invented=pass\n',RESULT+'x'*(1<<20)]:
@@ -49,3 +51,11 @@ class CatalogEvidenceTests(unittest.TestCase):
         m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
         old_result=RESULT[:RESULT.index('OWNERSHIP_CATALOG_RESULT ')]
         with self.assertRaises(ValueError):m.validate(PASS+old_result)
+
+
+class CapacityEvidenceTests(unittest.TestCase):
+    def test_old_202_assertion_evidence_never_qualifies_capacity(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
+        old_pass=PASS.replace('--- PASS: TestNativeOwnershipCapacity (1.0s)\n','').replace('--- PASS: TestOwnershipPublicationCapacity (1.0s)\n','')
+        old_result=RESULT[:RESULT.index('OWNERSHIP_CAPACITY_RESULT ')]
+        with self.assertRaises(ValueError):m.validate(old_pass+old_result)

@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation accepted in PR 42; ownership publication accepted in PR 43; bounded ownership catalog qualified, review pending; Actions disabled.
+Date: 2026-10-06. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation accepted in PR 42; ownership publication accepted in PR 43; bounded ownership catalog accepted in PR 46; ownership capacity qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -254,5 +254,22 @@ repair, orphan deletion, durable admission or storage work. Its expanded state
 suite requires 202 assertions, seventeen parent tests and 57 codec subtests on
 both releases, with complete teardown. Both targets passed all 202 at signed source `5ea125fdc815fd7c6c54aba36824e50ea876b9f6`
 with full teardown; see the [manifest](../../testing/M2/ownership-catalog-manifest.json).
-Maintainer review is pending; inspection limits do not implement full-store write
-admission or recovery.
+PR 46 accepted the catalog at merged source `e4ae4b3cdfe43c88bdb233afe992d82a2d3d83ca`;
+its original inspection evidence does not implement full-store admission/recovery.
+
+
+## Ownership publication capacity prerequisite
+
+The [capacity contract](../../testing/M2/ownership-capacity.md) connects complete
+catalog validation to ownership publication, reserving all old published bytes
+plus the full new temporary before creation and rechecking before rename. Unknown,
+unsafe, damaged/newer records and orphan temporaries deny writes; only the actual
+owned temporary can be excluded/cleaned. Cooperating publications serialize at the
+last slot; replacement keeps its slot but reserves both old and new bytes. Fixed
+64 MiB logical-byte/100,000-record ceilings are independent of hardware.
+Require all 234 state assertions, nineteen parents and 57 codec subtests on both
+releases, with complete preservation/teardown. Both passed at signed source
+`bf80cb9f2e1c196eae330ae0d681d86e0c466033`; see the [manifest](../../testing/M2/ownership-capacity-manifest.json).
+Maintainer review is pending.
+Runtime enrollment, mixed job-store allocation, durable admission/recovery and
+populated scale/resource qualification remain ahead.

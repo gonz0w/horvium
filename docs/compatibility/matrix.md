@@ -216,5 +216,15 @@ adds bounded ownership-only record inspection, complete namespace refusal and
 ordinary drift checks. The expanded state gate requires 202 assertions,
 seventeen parent tests and 57 codec subtests on both releases. Both targets passed all 202 at signed source `5ea125fdc815fd7c6c54aba36824e50ea876b9f6`,
 with full teardown; see the [manifest](../testing/M2/ownership-catalog-manifest.json).
-Maintainer review is pending. Inspection alone grants no write-admission, recovery,
+Accepted in PR 46. Inspection alone grants no write-admission, recovery,
 scale, hardware or client support claim.
+
+
+M2 ownership capacity: [contract/procedure](../testing/M2/ownership-capacity.md)
+connects complete catalog validation and old-plus-new logical-byte/count reservation
+to private publication. The expanded state gate requires 234 assertions, nineteen
+parents and 57 codec subtests on both existing targets. Both passed at signed source
+`bf80cb9f2e1c196eae330ae0d681d86e0c466033` with full teardown; see the
+[manifest](../testing/M2/ownership-capacity-manifest.json). Maintainer review is
+pending. Reduced fixture limits add no populated scale, commercial hardware,
+client, mixed-store admission or recovery support claim.

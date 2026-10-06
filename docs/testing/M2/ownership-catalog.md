@@ -1,6 +1,6 @@
 # M2 bounded ownership catalog
 
-Date: 2026-10-06. Status: qualified on both declared native targets; maintainer review pending.
+Date: 2026-10-06. Status: accepted in PR 46.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -43,7 +43,9 @@ is ignored. These observations detect ordinary drift. They are not an atomic
 cross-record transaction, a fence against another root actor, or a native I/O
 time deadline. Reads do not clear the existing lease publication-uncertainty latch.
 
-These are **inspection bounds**, not write-admission/store-allocation limits.
+At the qualified catalog source below, these were **inspection bounds**, not
+write-admission/store-allocation limits. The subsequent [capacity guard](ownership-capacity.md)
+connects this inspection to ownership publication; its evidence is separate.
 The accepted publisher remains a per-record primitive; future assembled store
 admission must require a valid catalog, reserve byte/count capacity including
 transition temporaries, reject unsafe state and reconcile restored metadata.

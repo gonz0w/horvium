@@ -21,7 +21,7 @@ func commitOwnershipPublication(tx ownershipPublication) error {
 			if tx.cleanup() != nil {
 				return ErrStateUncertain
 			}
-			if errors.Is(err, ErrDrift) || errors.Is(err, ErrLimit) {
+			if errors.Is(err, ErrDrift) || errors.Is(err, ErrLimit) || errors.Is(err, ErrStateUncertain) || errors.Is(err, ErrStateRecord) {
 				return err
 			}
 			return ErrStateDirectory
