@@ -158,6 +158,12 @@ func ownershipJSONValue(d *json.Decoder, shape reflect.Type) error {
 		if _, ok := v.(string); !ok {
 			return ErrStateRecord
 		}
+	// Only the reviewed-property topology shape declares a boolean. Existing
+	// ownership/job schemas still accept solely their exact declared types.
+	case reflect.Bool:
+		if _, ok := v.(bool); !ok {
+			return ErrStateRecord
+		}
 	case reflect.Uint64:
 		n, ok := v.(json.Number)
 		if !ok {

@@ -115,4 +115,6 @@
 
 - [M2 mixed state catalog](testing/M2/state-catalog.md): complete ownership/job census, shared byte and class ceilings; both targets passed all 336 assertions and complete teardown, accepted in PR 50.
 
-- [M2 durable job publication](testing/M2/job-publication.md): current predecessor and immutable history checks, shared publication capacity and uncertainty; both targets passed all 432 assertions and teardown, review pending.
+- [M2 durable job publication](testing/M2/job-publication.md): current predecessor and immutable history checks, shared publication capacity and uncertainty; both targets passed all 432 assertions and teardown; accepted in PR 51.
+
+- [M2 reviewed property intent](testing/M2/property-intent.md): immutable complete current property-review capture and strict bounded codec; portable qualification pending.
