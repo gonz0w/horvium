@@ -30,7 +30,7 @@ operator host service.
 | foundation | [shell/hooks](../../tools/bsd-foundation-smoke.sh) | Repository shell and DCO smoke |
 | research | [native spike](../../tools/research/m1-native.sh) | Narrow GEOM/ZFS/credential contracts |
 | discovery | [native product tests](../../tools/bsd-native-discovery.sh) | Reader/helper/cache/admin/foreground runtime fixtures |
-| devices | [owned virtual disks](../../tools/bsd-devices.sh) | Eight fixture, four correlation, five attachment, six system-use and six imported-pool and seven signature assertions; four executed native tests and host preservation/teardown |
+| devices | [owned virtual disks](../../tools/bsd-devices.sh) | Eight fixture, four correlation, five attachment, six system-use and six imported-pool, seven signature and fifteen combined-use assertions; four executed native tests and host preservation/teardown |
 | properties | [property tests](../../tools/bsd-properties.sh) | Complete 51-assertion observation suite and teardown |
 | continuity | [independent services](../../tools/bsd-continuity.sh) | Fixture-only Samba/NFS through management outages |
 | performance | [measurement](../../tools/bsd-performance.sh), after discovery | Separate combined-process/resource budgets |

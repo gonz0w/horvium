@@ -205,3 +205,8 @@ use, geometry policy and reservations at review/launch. Stable identity across
 virtual reattachment, physical controllers and sector variants outside this fixture
 still require evidence. Runtime stays read-only. M1's deferred manual accessibility
 gate remains pending.
+
+The [combined-use extension](device-use-review.md) adds fifteen native assertions
+for joined positive facts and immutable drift comparisons to the same four tests
+(fifty-one assertions). It introduces no new fixture writes or eligibility state;
+both marker sets and complete host preservation/teardown are mandatory.

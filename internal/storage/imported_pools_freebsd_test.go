@@ -5,6 +5,7 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
+	"errors"
 	"io"
 	"os"
 	"os/exec"
@@ -188,6 +189,19 @@ func TestNativeImportedPoolUse(t *testing.T) {
 	}
 	notSystemUsed(initialSystem)
 	path := "/dev/" + selected.Name
+	combined := func(c capture, info, serial []byte, probe *FilesystemProbeCapture) (DeviceUseReview, DeviceUseCapture) {
+		inputs := DeviceUseCapture{GEOM: c.raw, Mounts: must("/sbin/mount", "-p"), Swap: must("/usr/sbin/swapinfo", "-k"), Pools: c.list, PoolStatus: c.pools, DiskInfo: info, DiskSerial: serial, Filesystem: probe}
+		review, err := ReviewDeviceUse(inputs, inventory.DefaultLimits())
+		if err != nil {
+			t.Fatal("combined native pool-use observation unavailable", err)
+		}
+		return review, inputs
+	}
+	idleReview, _ := combined(baseline, must("/usr/sbin/diskinfo", path), must("/usr/sbin/diskinfo", "-s", path), nil)
+	idle := idleReview.Observation()
+	if len(idle.Mounts)+len(idle.Swap)+len(idle.Pools) != 0 || idle.SignatureAvailable || idle.Signature != "" {
+		t.Fatal("no positive facts manufactured clearance")
+	}
 	observation, err := inventory.ParseDiskObservation(baseline.raw, must("/usr/sbin/diskinfo", path), must("/usr/sbin/diskinfo", "-s", path), inventory.DefaultLimits())
 	attachment, attachmentErr := inventory.ParseDiskAttachments(baseline.raw, selected.Name, inventory.DefaultLimits())
 	if err != nil || attachmentErr != nil || !reflect.DeepEqual(observation.Provider, selected) || !reflect.DeepEqual(attachment.Disk, selected) {
@@ -273,7 +287,24 @@ func TestNativeImportedPoolUse(t *testing.T) {
 		}
 		return got, capture, info, serial
 	}
-	probe(actual.raw)
+	_, activeProbe, activeInfo, activeSerial := probe(actual.raw)
+	activeReview, activeInputs := combined(actual, activeInfo, activeSerial, &activeProbe)
+	joined := activeReview.Observation()
+	if len(joined.Pools) != 1 || joined.Pools[0].Name != name || joined.Pools[0].GUID != createdGUID || !reflect.DeepEqual(joined.Disk.Provider, selected) || len(joined.Mounts)+len(joined.Swap) != 0 || !joined.SignatureAvailable || joined.Signature != "zfs" {
+		t.Fatal("active imported pool/signature did not join selected disk")
+	}
+	if err := idleReview.Validate(activeInputs, inventory.DefaultLimits()); !errors.Is(err, ErrDrift) {
+		t.Fatal("new actual pool use did not invalidate baseline", err)
+	}
+	fresh, err := collect(ctx)
+	if err != nil {
+		t.Fatal("fresh imported catalogue unavailable", err)
+	}
+	_, freshProbe, freshInfo, freshSerial := probe(fresh.raw)
+	_, freshInputs := combined(fresh, freshInfo, freshSerial, &freshProbe)
+	if err := activeReview.Validate(freshInputs, inventory.DefaultLimits()); err != nil {
+		t.Fatal("unchanged actual use did not revalidate", err)
+	}
 	// Independent fixed six-column native row must identify the same pool GUID.
 	matches := 0
 	for _, line := range strings.Split(string(actual.list), "\n") {
@@ -304,6 +335,11 @@ func TestNativeImportedPoolUse(t *testing.T) {
 	if got, err := ParseImportedPoolUse(actual.raw, actual.list, missing, inventory.DefaultLimits()); err == nil || got != nil {
 		t.Fatal("missing actual pool status accepted")
 	}
+	missingInputs := activeInputs
+	missingInputs.PoolStatus = missing
+	if got, err := ReviewDeviceUse(missingInputs, inventory.DefaultLimits()); err == nil || !reflect.DeepEqual(got.Observation(), DeviceUse{}) {
+		t.Fatal("combined missing actual status escaped")
+	}
 	if !cleanup() {
 		t.Fatal("owned pool teardown failed")
 	}
@@ -318,6 +354,14 @@ func TestNativeImportedPoolUse(t *testing.T) {
 		t.Fatal("closed fixture probe hash unavailable")
 	}
 	_, probeCapture, info, serial := probe(after.raw)
+	removedReview, removedInputs := combined(after, info, serial, &probeCapture)
+	removed := removedReview.Observation()
+	if len(removed.Pools)+len(removed.Mounts)+len(removed.Swap) != 0 || !removed.SignatureAvailable || removed.Signature != "zfs" {
+		t.Fatal("residual signature disappeared from joined facts")
+	}
+	if err := activeReview.Validate(removedInputs, inventory.DefaultLimits()); !errors.Is(err, ErrDrift) {
+		t.Fatal("actual pool removal did not invalidate baseline", err)
+	}
 	if strings.TrimSpace(string(must("/sbin/sha256", "-q", path))) != probeHash {
 		t.Fatal("filesystem probe changed closed fixture bytes")
 	}
@@ -344,5 +388,6 @@ func TestNativeImportedPoolUse(t *testing.T) {
 		}
 	}
 	t.Log("DEVICE_SIGNATURE_ZFS_RESULT zfs_signature=pass removed_signature=pass probe_preservation=pass binding_denial=pass")
+	t.Log("DEVICE_USE_POOL_RESULT imported_join=pass new_pool_drift=pass unchanged=pass residual_join=pass pool_removal_drift=pass missing_capture_denial=pass no_clearance=pass")
 	t.Log("DEVICE_IMPORTED_POOL_RESULT unmounted_pool=pass catalogue_binding=pass missing_denial=pass fixture_teardown=pass foreign_preservation=pass root_preservation=pass")
 }

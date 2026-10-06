@@ -1,7 +1,9 @@
 # M2 filesystem signature observations
 
 Date: 2026-10-05. Status: all thirty-six assertions, four executed native tests
-and complete preservation/teardown passed on both targets; maintainer review pending.
+and complete preservation/teardown passed on both targets; accepted in
+[PR 35](https://github.com/gonz0w/horvium/pull/35), merged source
+`78a93f2c82620d3185311725a8afd6fe956d5cf7`.
 [Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).

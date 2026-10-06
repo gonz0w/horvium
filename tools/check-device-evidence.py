@@ -15,6 +15,9 @@ IMPORTED_POOL_CASES={'unmounted_pool','catalogue_binding','missing_denial','fixt
 SIGNATURE_UFS_CASES={'ufs_signature','probe_preservation','unsupported_denial'}
 SIGNATURE_ZFS_CASES={'zfs_signature','removed_signature','probe_preservation','binding_denial'}
 
+USE_POOL_CASES={'imported_join','new_pool_drift','unchanged','residual_join','pool_removal_drift','missing_capture_denial','no_clearance'}
+USE_SYSTEM_CASES={'mount_join','swap_join','mount_drift','swap_drift','copy_isolation','use_cleanup','mount_removal_drift','swap_removal_drift'}
+
 def validate(text, guest=False):
     if len(text)>1<<20 or re.search(r'(?m)^(?:FAIL|--- (?:FAIL|SKIP):)',text):
         raise ValueError('native device evidence failed, skipped or oversized')
@@ -58,7 +61,9 @@ def validate(text, guest=False):
     if len(fields)!=len(expected) or set(fields)!=expected:
         raise ValueError('missing, duplicate, unknown or failed imported-pool assertion')
     for marker, cases in [('DEVICE_SIGNATURE_UFS_RESULT', SIGNATURE_UFS_CASES),
-                          ('DEVICE_SIGNATURE_ZFS_RESULT', SIGNATURE_ZFS_CASES)]:
+                          ('DEVICE_SIGNATURE_ZFS_RESULT', SIGNATURE_ZFS_CASES),
+                          ('DEVICE_USE_POOL_RESULT', USE_POOL_CASES),
+                          ('DEVICE_USE_SYSTEM_RESULT', USE_SYSTEM_CASES)]:
         records=re.findall(marker+r' ([^\n]+)',text)
         if len(records)!=1:
             raise ValueError('one complete native signature result required')
