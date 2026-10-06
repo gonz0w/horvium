@@ -111,4 +111,4 @@
 
 - [M2 job lifecycle metadata](testing/M2/job-records.md): bounded lifecycle/strict codec and restart projections without replay; seven tests/119 schema subtests and focused storage race/fuzz passed, accepted in PR 48.
 
-- [M2 native job reader](testing/M2/job-read.md): private ID-selected reads, real ACL/UID gates and immutable successor guard; native qualification pending.
+- [M2 native job reader](testing/M2/job-read.md): private ID-selected reads, real ACL/UID gates and immutable successor guard; both targets passed all 275 assertions and full teardown, review pending.

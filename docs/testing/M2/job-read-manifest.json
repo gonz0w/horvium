@@ -1,0 +1,894 @@
+{
+  "record_type": "M2-native-job-reader-and-immutable-successors",
+  "date": "2026-10-06",
+  "source_commit": "5241ae7f0bccde0423613af1dfcde9aed951ac34",
+  "base_commit": "09b00a646d67702c5bd9b5ef1636c7f74e9e50ba",
+  "requirements": [
+    "M2-STATE-001 (partial)",
+    "M2-JOB-001 (partial)",
+    "M2-PRIV-001 (partial)"
+  ],
+  "native_case_groups": {
+    "CASES": [
+      "ancestor_denial",
+      "cloexec",
+      "close_release",
+      "death_inode_preservation",
+      "death_release",
+      "directory_mode_denial",
+      "directory_owner_denial",
+      "directory_symlink_denial",
+      "directory_sync",
+      "final_close",
+      "first_writer_race",
+      "fixture_teardown",
+      "foreign_preservation",
+      "kernel_uid_denial",
+      "lease_close",
+      "lock_directory_denial",
+      "lock_fifo_denial",
+      "lock_hardlink_denial",
+      "lock_mode_denial",
+      "lock_nonempty_denial",
+      "lock_owner_denial",
+      "lock_symlink_denial",
+      "mount_teardown",
+      "no_directory_creation",
+      "path_denial",
+      "private_lock",
+      "process_denial",
+      "process_kill",
+      "process_lock",
+      "process_reaped",
+      "reopen",
+      "root_directory",
+      "second_writer_denial",
+      "stable_inode",
+      "unsupported_fs_denial"
+    ],
+    "READ_CASES": [
+      "bytes_preserved",
+      "closed_denial",
+      "controls_preserved",
+      "damage_denial",
+      "directory_anchor",
+      "directory_denial",
+      "directory_drift_denial",
+      "empty_denial",
+      "fifo_denial",
+      "fixture_teardown",
+      "foreign_preservation",
+      "hardlink_denial",
+      "independent_policy",
+      "inert_denial",
+      "inode_preserved",
+      "kernel_uid_denial",
+      "lease_close",
+      "lock_drift_denial",
+      "lock_replacement_denial",
+      "missing_denial",
+      "mode_denial",
+      "newer_denial",
+      "oversize_denial",
+      "owner_denial",
+      "selector_denial",
+      "symlink_denial",
+      "valid_read",
+      "wrong_pool_denial"
+    ],
+    "ACL_CASES": [
+      "descriptor_denial",
+      "fixture_teardown",
+      "job_kernel_uid_denial",
+      "kernel_nfs4_grant",
+      "kernel_uid_denial",
+      "nfs4_ancestor_denial",
+      "nfs4_ancestor_no_creation",
+      "nfs4_baseline",
+      "nfs4_capabilities",
+      "nfs4_device_teardown",
+      "nfs4_directory_denial",
+      "nfs4_directory_no_repair",
+      "nfs4_directory_read_denial",
+      "nfs4_filesystem",
+      "nfs4_inheritance_denial",
+      "nfs4_inheritance_no_repair",
+      "nfs4_inheritance_read_denial",
+      "nfs4_job_directory_denial",
+      "nfs4_job_lock_denial",
+      "nfs4_job_record_denial",
+      "nfs4_job_record_no_repair",
+      "nfs4_job_restored_read",
+      "nfs4_lease_close",
+      "nfs4_lock_denial",
+      "nfs4_lock_no_repair",
+      "nfs4_lock_read_denial",
+      "nfs4_record_denial",
+      "nfs4_record_no_repair",
+      "nfs4_restored_read",
+      "nfs4_unmount",
+      "posix_ancestor_denial",
+      "posix_ancestor_no_creation",
+      "posix_baseline",
+      "posix_capabilities",
+      "posix_device_teardown",
+      "posix_directory_denial",
+      "posix_directory_no_repair",
+      "posix_directory_read_denial",
+      "posix_filesystem",
+      "posix_inheritance_denial",
+      "posix_inheritance_no_repair",
+      "posix_inheritance_read_denial",
+      "posix_job_directory_denial",
+      "posix_job_lock_denial",
+      "posix_job_record_denial",
+      "posix_job_record_no_repair",
+      "posix_job_restored_read",
+      "posix_lease_close",
+      "posix_lock_denial",
+      "posix_lock_no_repair",
+      "posix_lock_read_denial",
+      "posix_record_denial",
+      "posix_record_no_repair",
+      "posix_restored_read",
+      "posix_unmount",
+      "process_teardown"
+    ],
+    "PUBLISH_CASES": [
+      "canonical_bytes",
+      "capacity_denial",
+      "cleanup_uncertain",
+      "cleanup_write_blocked",
+      "close_failure",
+      "closed_denial",
+      "create",
+      "damage_denial",
+      "destination_drift",
+      "directory_anchor",
+      "directory_denial",
+      "directory_drift",
+      "directory_sync_uncertain",
+      "duplicate_denial",
+      "fifo_denial",
+      "file_sync_failure",
+      "fixture_teardown",
+      "foreign_preservation",
+      "hardlink_denial",
+      "inert_denial",
+      "invalid_denial",
+      "lease_close",
+      "lock_drift",
+      "mode_denial",
+      "new_inode",
+      "newer_denial",
+      "no_temporary",
+      "old_descriptor_preserved",
+      "owner_denial",
+      "private_file",
+      "readback",
+      "rename_failure",
+      "replace",
+      "replacement_untouched",
+      "revision_denial",
+      "serialized_revision",
+      "stable_lock",
+      "symlink_denial",
+      "uncertain_readable",
+      "uncertain_write_blocked",
+      "verify_failure",
+      "write_failure",
+      "wrong_pool_denial"
+    ],
+    "PUBLISH_FS_CASES": [
+      "acl_denial",
+      "acl_preservation",
+      "catalog_acl_denial",
+      "catalog_acl_preservation",
+      "catalog_acl_restored",
+      "filesystem_teardown",
+      "full_cleanup",
+      "full_denial",
+      "native_enospc",
+      "native_readonly",
+      "readonly_denial",
+      "readonly_preservation",
+      "ufs_publication"
+    ],
+    "CATALOG_CASES": [
+      "byte_accounting",
+      "byte_limit",
+      "closed_denial",
+      "complete_catalog",
+      "count_limit",
+      "damage_denial",
+      "directory_anchor",
+      "directory_denial",
+      "directory_drift_denial",
+      "empty_catalog",
+      "empty_denial",
+      "exact_limits",
+      "fifo_denial",
+      "fixture_teardown",
+      "foreign_preservation",
+      "hardlink_denial",
+      "independent_results",
+      "inert_denial",
+      "inode_preservation",
+      "invalid_limits",
+      "lease_close",
+      "lock_drift_denial",
+      "malformed_name_denial",
+      "mode_denial",
+      "namespace_drift_denial",
+      "newer_denial",
+      "orphan_denial",
+      "orphan_preservation",
+      "oversize_denial",
+      "owner_denial",
+      "record_drift_denial",
+      "record_preservation",
+      "repeated_catalog",
+      "sorted_records",
+      "symlink_denial",
+      "uncertainty_preserved",
+      "unknown_denial",
+      "wrong_pool_denial"
+    ],
+    "CAPACITY_CASES": [
+      "count_denial",
+      "create_byte_denial",
+      "damage_denial",
+      "denial_preservation",
+      "directory_denial",
+      "exact_create",
+      "exact_replace",
+      "fifo_denial",
+      "fixture_teardown",
+      "foreign_preservation",
+      "hardlink_denial",
+      "invalid_limits",
+      "late_bytes_denial",
+      "late_count_denial",
+      "late_orphan_denial",
+      "late_orphan_latch",
+      "late_unknown_denial",
+      "lease_close",
+      "mode_denial",
+      "newer_denial",
+      "orphan_denial",
+      "orphan_latch",
+      "orphan_preservation",
+      "replacement_readback",
+      "replacement_reservation",
+      "serialized_capacity",
+      "serialized_catalog",
+      "stable_lock",
+      "stale_denial",
+      "symlink_denial",
+      "unknown_denial",
+      "wrong_pool_denial"
+    ],
+    "JOB_READ_CASES": [
+      "bytes_preserved",
+      "closed_denial",
+      "controls_preserved",
+      "damage_denial",
+      "directory_anchor",
+      "directory_denial",
+      "directory_drift_denial",
+      "empty_denial",
+      "exact_size",
+      "fifo_denial",
+      "fixture_teardown",
+      "foreign_preservation",
+      "hardlink_denial",
+      "independent_job",
+      "inert_denial",
+      "inode_preserved",
+      "invalid_history_denial",
+      "lease_close",
+      "lock_drift_denial",
+      "lock_replacement_denial",
+      "missing_denial",
+      "mode_denial",
+      "newer_denial",
+      "oversize_denial",
+      "owner_denial",
+      "selector_denial",
+      "symlink_denial",
+      "valid_read",
+      "wrong_id_denial",
+      "wrong_kind_denial"
+    ]
+  },
+  "required_assertions": 275,
+  "required_parent_tests": [
+    "TestJobChecksumCannotGrantLifecycle",
+    "TestJobLifecycleAndRestart",
+    "TestJobLifecycleDenials",
+    "TestJobMetadataLimitsAndPrecision",
+    "TestJobRecordCanonicalAndIndependent",
+    "TestJobRecordRequiredFieldsAndTypes",
+    "TestJobRecordStrictDenials",
+    "TestJobSuccessor",
+    "TestNativeJobRead",
+    "TestNativeOwnershipCapacity",
+    "TestNativeOwnershipCatalog",
+    "TestNativeOwnershipPublish",
+    "TestNativeOwnershipPublishFilesystem",
+    "TestNativeOwnershipRead",
+    "TestNativeStateACL",
+    "TestNativeStateDirectory",
+    "TestOwnershipCatalogLimits",
+    "TestOwnershipCatalogNames",
+    "TestOwnershipChecksumDoesNotGrantInvalidScope",
+    "TestOwnershipPublicationCapacity",
+    "TestOwnershipPublicationOrderAndFailures",
+    "TestOwnershipPublicationRevision",
+    "TestOwnershipReadMetadataDrift",
+    "TestOwnershipRecordCapacityAndRevision",
+    "TestOwnershipRecordRejectsInvalidPolicies",
+    "TestOwnershipRecordRoundTripAndCanonicalBytes",
+    "TestOwnershipRecordStrictDenials",
+    "TestStateACLPolicy"
+  ],
+  "required_codec_subtests": {
+    "TestJobRecordRequiredFieldsAndTypes": 100,
+    "TestJobRecordStrictDenials": 19,
+    "TestOwnershipChecksumDoesNotGrantInvalidScope": 10,
+    "TestOwnershipRecordStrictDenials": 32,
+    "TestOwnershipRecordRejectsInvalidPolicies": 15
+  },
+  "input_sha256": {
+    "internal/storage/device_use.go": "9f958fc6afc9f2119bd154e8e31c3b79096522c99f3c624765f9a8301c87fc48",
+    "internal/storage/device_use_test.go": "a51a74c81d4534f264bc17e6f40cfa215177fd81bf793b4fccdbdc048c79ef1a",
+    "internal/storage/feature_names.go": "aac75ef72a600c30b29504b66673c86d6fa2050a24dc9f10a9a61e9737e06dd1",
+    "internal/storage/features.go": "fd4718101606afb61ec380cd6fd6b118170d32dd3dd1b8578a3c7d557c3d6512",
+    "internal/storage/features_test.go": "a2eed88f92102cae6a17f375f45142bd1cb3c0439824e734f3cc1f2509d14eef",
+    "internal/storage/identities.go": "407727cce1a4c7ed5ebd22fc901a94f77c92e9138a68cc9e635ea6ce57b0f3c8",
+    "internal/storage/identities_test.go": "a61b5ad2732b53a025360f9e7289ba3f5148eb828b739ffcb3899391fe887555",
+    "internal/storage/imported_pools.go": "a5bf82f09b696500d5f323049c65d879bbdbc9d4b7c854dedbd17f08220d833b",
+    "internal/storage/imported_pools_freebsd_test.go": "519afdab17423a9d2625dec0823304fb053a9467d7e39e916748c70d22cdbefe",
+    "internal/storage/imported_pools_test.go": "9cf5f067440fb8a42641912a425b5ab9f49c73b03ecda1e5fe824172f7476f44",
+    "internal/storage/job.go": "24f893a95ca2d5a7318e1e05a636681227b2e6ea85b02f796b70bbc32d73b2f0",
+    "internal/storage/job_read_freebsd.go": "7c9078ed13aeb2f73f81278e63c11d68798ba400079b88cea7ea8f3969cb2fdf",
+    "internal/storage/job_read_freebsd_test.go": "7ee5bc64f9a5d0f364bb0d32807d30d65c6778c6a86fed5183ce0560cd0d51e8",
+    "internal/storage/job_read_other.go": "7247109a028629194c6a4221e3e1b958a0c72d68e21a377fc57bdb6685f72979",
+    "internal/storage/job_read_other_test.go": "76fb3b80557a28610d56fa7645d1207096e7aa3db7ee985d589dd38c10ab2b1b",
+    "internal/storage/job_record.go": "5e9395ef191f69a890bed62422723728427495eab675f094e6ee71740d456f88",
+    "internal/storage/job_record_test.go": "dca1d8f13f15281cdc86bf8a11eb73de2ba46899a811e95882d7238763c87e1a",
+    "internal/storage/job_successor.go": "834e1efb6980ef8005dcc027ec23e1f4a133a8a39a3d98c349a53a8f404dd3c5",
+    "internal/storage/job_successor_test.go": "d9474baeeed7c327e36e62dece862e650b7ea00cf0413c163b5b10b9e2fc9d3c",
+    "internal/storage/labels.go": "5c4bf5b4f7f2491efba6891442360b694be8914f3024723a59e99be0be324520",
+    "internal/storage/labels_test.go": "8da6c2b661cac5b00f36b36b4132c782124981338602954201204050d5cc4c9e",
+    "internal/storage/model.go": "d78cfd6b016fec90ceb13df5a9ae4a21475b739796fc40538075a92719627a21",
+    "internal/storage/ownership_capacity.go": "5dfe1f6e470aaaf8b08d6978e65a6b85510857cfc12334cee233fa357cc7f847",
+    "internal/storage/ownership_capacity_freebsd_test.go": "f19df8fe1b390756863e78b507c54404cdd82768b0e3a0d22aaacfdcdaf709e9",
+    "internal/storage/ownership_capacity_test.go": "d9249143e215eba20bf84d15012348053ae5129f857ecde767e243c95b223389",
+    "internal/storage/ownership_catalog.go": "dd1ab40c4f2cea99eb64fd5d66ee8bcec25aa419dfd65cdc2f2b765bca324872",
+    "internal/storage/ownership_catalog_freebsd.go": "7fc15d1387194eafa3ed27b86a50771503bd6c6fbc8244eea5f818d6a0ba256c",
+    "internal/storage/ownership_catalog_freebsd_test.go": "4e8388b2f82581ab9ab4c5b53a7a58b807bbe054c7a9a79272da0567f3066bf6",
+    "internal/storage/ownership_catalog_other.go": "4a4d0e6ad46f5d56e75d488c1edf2cc7c720f647520c70e49bf6ca2efd462c84",
+    "internal/storage/ownership_catalog_other_test.go": "0c1ccb01f54fc84d34671793c67859516780c81a6f6085545f83492815708a8d",
+    "internal/storage/ownership_catalog_test.go": "9d72a070c6a969a4a26ac4ccd34a25e3eedd6e6e9a9ed5792320fdb769a31d9f",
+    "internal/storage/ownership_publish.go": "e69f2e6c74fd52d5a0054f5d5019ae08fc6f0c50d72d5f5762d2de7dfcbb4310",
+    "internal/storage/ownership_publish_freebsd.go": "4b0af82515c8c94ae1fa5b9eff66270de21a880e7c6c14fb7fd14096226e287c",
+    "internal/storage/ownership_publish_freebsd_test.go": "3b090217d5d0668f74e0c6404eab15d28137a75215203f0448c12d46ae1fbd7c",
+    "internal/storage/ownership_publish_other.go": "96fef6b846ebbbe63f6c16ba66cc137903f900bf9819446a7492bb0929b8eb1b",
+    "internal/storage/ownership_publish_other_test.go": "81a69843de456a0baebcde83a1353eceacc9cb95de31fd6ab3605529d3d5cd5d",
+    "internal/storage/ownership_publish_test.go": "673e6602b251f0f2789a9a3123a6fff93709119b017ef9af14c93b033911718c",
+    "internal/storage/ownership_read_freebsd.go": "39a8ecfffd7bc38e30f7e6cc77c49850046004761583d61c62414f4b18a01b2c",
+    "internal/storage/ownership_read_freebsd_test.go": "7b16b1cfbb957997b07965ce806066c8901e9ab430239b23b0d0846943d8beea",
+    "internal/storage/ownership_read_other.go": "ac3d1d9eaab6b97f938783440e3df8e4f6099612eada78eca2d4ebb33ebce7be",
+    "internal/storage/ownership_read_other_test.go": "328273b4c50eb4716c388b58645fe7b1abc1b4477d91471fce1722a540ed70f7",
+    "internal/storage/ownership_record.go": "82e9ed408ce7e5db9f99b1f61cbbd20ae9d76b0d7750f4027245461c648d97bb",
+    "internal/storage/ownership_record_test.go": "deb591189730491b3e4ca7a20e976d441fd20dea4b2977ae79e1ac5e6ec8347c",
+    "internal/storage/plan.go": "8303ab08a60d4a334b36f40cd231840a142b95021e0a968072f1a1daddd5f15b",
+    "internal/storage/plan_test.go": "e065f0fcb21579a1a5fe4177bcddac16bfb43e6851117e8a052ba13a95c919b7",
+    "internal/storage/pool.go": "412dd656cdef6f8975bb332083db69bd0b2214dedb629126cd66cab16cb7f6cb",
+    "internal/storage/pool_test.go": "1cb15c2086ed39856d876045f2321e7f00fe602e593835d8ebee1a6141664f86",
+    "internal/storage/properties.go": "45c4b0e44fdbccab58be889bbcf4f47f388db513ec1ff71dcc5e4272c0aa06a9",
+    "internal/storage/properties_freebsd_test.go": "d07ecf29c66cf2fd1488be60b18233e61211b449eac2f8541f0b98170a447137",
+    "internal/storage/properties_test.go": "8f61d3ae7cd575026d97d3db21ccff99cf1fe92c2e926c62f7d51c16b9e6c738",
+    "internal/storage/signatures.go": "136d2939a7bb32a8dabbac459b38651f78d796dad99ca394661cacdcd86b2e7d",
+    "internal/storage/signatures_test.go": "7b41c922d3bf322dc522f0846e09de22f1c198c60b0873cba33997b537ad7077",
+    "internal/storage/state.go": "7c6145e4ee30092a4eb57b87e70d5e7b69a619991f8b8d66b06c67ba475dc368",
+    "internal/storage/state_acl.go": "cb27728f014299a973a2305c63bf9c39815b54507b0405160690d0131fa7b2b2",
+    "internal/storage/state_acl_freebsd.go": "24e14d1d3737bfc72d67bcfa5b26b74f79ba01a506e0f24b523be0d8d06a7466",
+    "internal/storage/state_acl_freebsd_test.go": "549cdbcc7360baaf31946a6c9d04241546305f939b27d545127c64df0dcdcf45",
+    "internal/storage/state_acl_test.go": "4c30bf9e121123cedf92d441f4edc7b225de7ec483a4c98f6f7d6dcd1ec9f8e6",
+    "internal/storage/state_directory.go": "e6e7ff2ab473ad131a3c77b64fc1a5391e691d40f86c631ec6f9b69222df5dd1",
+    "internal/storage/state_directory_freebsd.go": "33ca780cf41fae83139fd3dc60a3a0cd7f0eb7b3aa6d7a2f6430d18e9d557ea2",
+    "internal/storage/state_directory_freebsd_test.go": "f7f4361e29175c307450f514ce2352c422c1f68d21f2b777a525e05e6c2c6981",
+    "internal/storage/state_directory_other.go": "2b20f62fca9968ed565c77621fc98810a01eec43a624ca6541addd5b13fbb9b9",
+    "internal/storage/state_directory_other_test.go": "23b9230feb6c65b129b3d04bb7189bd4558c4082a3e9b31e147540c9ed2aeca1",
+    "internal/storage/state_test.go": "5f1d13c56fb3cd4743899b4041932713fe93f6e0e7ee942c5295678f241549f9",
+    "internal/storage/system_devices.go": "6f08af9b2610fc7b0d9332d9f111b7576c758cfb0640f961cc4a3ef50d4faadb",
+    "internal/storage/system_devices_freebsd_test.go": "182cf512de5dc6900a607e9f45ead124c66f21dd02d9e805af8e03f21d5a4c3e",
+    "internal/storage/system_devices_test.go": "2041a6b3159a04e881697df0b34a391cc7e42ede5300fb443d7210e2764432bf",
+    "internal/storage/topology.go": "87ba9d454352b323926b81dc46cacb105e8150e84921e994ca7d288bec1b628d",
+    "internal/storage/topology_test.go": "e48bc9c9e456ad6c7658d5eb25bf2a5bc9a5bb1bea8763141776f995c8369928",
+    "internal/storage/validate.go": "25b59ae4f4d300be9d81574f230aa6bda0bdd8b8d07cba89829c09f85f8fc808",
+    "go.mod": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+    "go.sum": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+    "tools/go-pins.json": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+    "tools/bsd-state.sh": "c4111cd1d25733f7b54a2c0b394144c5b813495031826883ad7a9f7b790fbd4b",
+    "tools/bsd-state-prebuilt.sh": "18a5ad881b8b5bbb9560b9eeb17a2ab48c37226ce779d4cb42efda5f2e980d8f",
+    "tools/check-state-evidence.py": "cc5b263c70f07fd2e4a7effc8b120853cc37951b6e73c1afeda12f92e9c84a97",
+    "tools/local-qualification.py": "6d5e51b10f92db14be4c5ce7923a09c18eab1ef364c86183274633e7e0ef1073",
+    "tools/owned-process.py": "5a1be877e73dd3bfda0e96f47f728e6844090e8550819f49c4aa4abe2d4c5d3d",
+    "tools/local-vm-pins.json": "2961ca8a154f2f1fa508cfc9bcb4c68b8c5430b1e6f97ab6c8ca0ee3be648280",
+    "tools/performance-vm-pins.json": "81f0f30e4171fed38e281c644044521a0cdc9f6693cd9b988b229ef4f85d002b",
+    "tools/review-plan.py": "f20842107452a91ffaf686f959bcf83fcf78aae00377cea94928e8ea42789bf3",
+    "tools/review-gate.py": "4753c6a115eaf44047709ae19d2495a8e6763fb99b20f2f60255c31a887daa68",
+    "tools/deep-check.py": "3dc9864520964cf0226b3cc7f9dd85fe2e20ef72710c5e71374f2cc5bd9ec53b"
+  },
+  "portable_review": {
+    "source_commit": "5241ae7f0bccde0423613af1dfcde9aed951ac34",
+    "title": "feat(storage): read private job records and guard successors",
+    "command": [
+      "make",
+      "review"
+    ],
+    "plan": {
+      "mode": "full",
+      "reason": "shared tooling, policy, module or packaging change",
+      "packages": [],
+      "native_review_required": true
+    },
+    "qualified": true,
+    "deep_executed": true,
+    "tool_regressions": 89,
+    "elapsed_seconds": 113.36,
+    "checks_log_sha256": "6c19a82746a063c95e5a56b1b0ab4094bf5ea5df5e149cf87ce8f3c393da9326",
+    "deep_log_sha256": "a2488f6a751292d28503bcee418ea2bcd5e262d4e1ac7f9f985d2c6799a22fed",
+    "result": {
+      "fuzz_targets": [
+        {
+          "package": "./internal/admin",
+          "target": "FuzzConfiguration"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzRequest"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzSnapshot"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzDiskAccess"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzDiskAttachments"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzDiskObservation"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzGEOM"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzPools"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzDeviceUseReview"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemSignature"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemStates"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzIdentities"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzImportedPoolUse"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipCatalogNames"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolFeatures"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolLabels"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolState"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolTopology"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzProperties"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyPlan"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzSystemDeviceUse"
+        }
+      ],
+      "race_packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/eventlog",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/inventory",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ]
+    },
+    "supervisors": [
+      {
+        "completed": true,
+        "group_cleaned": true,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "escalated": false
+      },
+      {
+        "completed": true,
+        "group_cleaned": true,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "escalated": false
+      }
+    ]
+  },
+  "native_runs": [
+    {
+      "source_commit": "5241ae7f0bccde0423613af1dfcde9aed951ac34",
+      "release": "15.1",
+      "execution_mode": "host-cross-built",
+      "host_os": "Darwin",
+      "host_arch": "arm64",
+      "qemu_version": "QEMU emulator version 11.1.1",
+      "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+      "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "cpu_model": "qemu64",
+      "cpu_count": 2,
+      "memory_mib": 6144,
+      "accelerator": "tcg",
+      "prebuilt": {
+        "source_commit": "5241ae7f0bccde0423613af1dfcde9aed951ac34",
+        "sha256": "4a3b7b42b1d7ca616642a95be06d3117d064dc1d6218c7150dbe71090f16f9ec",
+        "bytes": 8775228,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+        "go_sum_sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "<owned-artifact>",
+          "./internal/storage"
+        ]
+      },
+      "image": {
+        "release": "15.1",
+        "builder": "2.2.8",
+        "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+        "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+        "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144
+      },
+      "guest_assertions": true,
+      "qualified": true,
+      "host_teardown": true,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "supervisor_fixture_cleanup": true,
+      "supervisor_group_cleaned": true,
+      "guest_versions": [
+        "15.1-RELEASE-p3",
+        "15.1-RELEASE-p3",
+        "15.1-RELEASE-p3",
+        "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+        "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0"
+      ],
+      "root_filesystem": "zfs",
+      "base_utility_sha256": {
+        "/sbin/mount": "c46db28eff4edb2011ad1463b5891db0fb009879c07ac26b6d11ee55e40a4c38",
+        "/sbin/umount": "33a69773f4908e75a944bc1d229c7a7180ed468c3789d72fca8d5acd44129119",
+        "/sbin/mdconfig": "4848babf6961cfb427d7a5824d6061cc300a53eb650d04fca81c8488e72b46d6",
+        "/sbin/newfs": "e0e9fd5347e33d6ff2670c4a9aa1a088a23f6dac1a2454ca7eb46566ce3b0d62"
+      },
+      "qualification_log_sha256": "bb2fbe05b80abc915238b30f409a73896018d07a2ab9b51108ca204613de71e6",
+      "elapsed_seconds": 37.161,
+      "parent_test_seconds": {
+        "TestNativeJobRead": 0.1,
+        "TestJobRecordCanonicalAndIndependent": 0.01,
+        "TestJobLifecycleAndRestart": 0.01,
+        "TestJobLifecycleDenials": 0.0,
+        "TestJobRecordRequiredFieldsAndTypes": 0.06,
+        "TestJobMetadataLimitsAndPrecision": 0.0,
+        "TestJobRecordStrictDenials": 0.01,
+        "TestJobChecksumCannotGrantLifecycle": 0.0,
+        "TestJobSuccessor": 0.0,
+        "TestNativeOwnershipCapacity": 0.17,
+        "TestOwnershipPublicationCapacity": 0.0,
+        "TestNativeOwnershipCatalog": 0.08,
+        "TestOwnershipCatalogNames": 0.0,
+        "TestOwnershipCatalogLimits": 0.0,
+        "TestNativeOwnershipPublish": 0.18,
+        "TestNativeOwnershipPublishFilesystem": 0.33,
+        "TestOwnershipPublicationOrderAndFailures": 0.0,
+        "TestOwnershipPublicationRevision": 0.0,
+        "TestNativeOwnershipRead": 0.13,
+        "TestOwnershipReadMetadataDrift": 0.0,
+        "TestOwnershipRecordRoundTripAndCanonicalBytes": 0.01,
+        "TestOwnershipChecksumDoesNotGrantInvalidScope": 0.01,
+        "TestOwnershipRecordStrictDenials": 0.01,
+        "TestOwnershipRecordRejectsInvalidPolicies": 0.02,
+        "TestOwnershipRecordCapacityAndRevision": 0.01,
+        "TestNativeStateACL": 0.32,
+        "TestStateACLPolicy": 0.0,
+        "TestNativeStateDirectory": 0.17
+      },
+      "host_artifacts_removed": true
+    },
+    {
+      "source_commit": "5241ae7f0bccde0423613af1dfcde9aed951ac34",
+      "release": "14.5",
+      "execution_mode": "host-cross-built",
+      "host_os": "Darwin",
+      "host_arch": "arm64",
+      "qemu_version": "QEMU emulator version 11.1.1",
+      "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+      "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "cpu_model": "qemu64",
+      "cpu_count": 2,
+      "memory_mib": 6144,
+      "accelerator": "tcg",
+      "prebuilt": {
+        "source_commit": "5241ae7f0bccde0423613af1dfcde9aed951ac34",
+        "sha256": "4a3b7b42b1d7ca616642a95be06d3117d064dc1d6218c7150dbe71090f16f9ec",
+        "bytes": 8775228,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+        "go_sum_sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "<owned-artifact>",
+          "./internal/storage"
+        ]
+      },
+      "image": {
+        "release": "14.5",
+        "builder": "2.2.8",
+        "compressed_sha256": "cd90489bb7d94585016e177b9e3f0084f3410454dc0af19481f44ddd5aa45257",
+        "qcow2_sha256": "6593466e8d6341eaad95755973ab594222516dd75bcd99b18239b5047e5396f4",
+        "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144
+      },
+      "guest_assertions": true,
+      "qualified": true,
+      "host_teardown": true,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "supervisor_fixture_cleanup": true,
+      "supervisor_group_cleaned": true,
+      "guest_versions": [
+        "14.5-RELEASE",
+        "14.5-RELEASE",
+        "14.5-RELEASE",
+        "zfs-2.2.9-FreeBSD_g079ba86d7",
+        "zfs-kmod-2.2.9-FreeBSD_g079ba86d7"
+      ],
+      "root_filesystem": "ufs",
+      "base_utility_sha256": {
+        "/sbin/mount": "91a17c3b3275f65dcb51966b7f33ba214735d54763d0c99a2956db0247c3f388",
+        "/sbin/umount": "8ca701e67340d68f6b58c4cbbae2f03dccca8875b54f6e65ffd870139ac35c85",
+        "/sbin/mdconfig": "380e00cde6bcbe24fc45421834a2104d98f1b2aabd1d430f4a1028e4cf7e54a4",
+        "/sbin/newfs": "22e86b07701b5485ab89549a3534957dc200302c445a5849103c4b61eb5dc3a4"
+      },
+      "qualification_log_sha256": "508f64ce9d20f056fdcda89539475f4457c3524df85cc3d69126457ab8939a9d",
+      "elapsed_seconds": 32.829,
+      "parent_test_seconds": {
+        "TestNativeJobRead": 0.1,
+        "TestJobRecordCanonicalAndIndependent": 0.01,
+        "TestJobLifecycleAndRestart": 0.01,
+        "TestJobLifecycleDenials": 0.0,
+        "TestJobRecordRequiredFieldsAndTypes": 0.05,
+        "TestJobMetadataLimitsAndPrecision": 0.0,
+        "TestJobRecordStrictDenials": 0.01,
+        "TestJobChecksumCannotGrantLifecycle": 0.0,
+        "TestJobSuccessor": 0.0,
+        "TestNativeOwnershipCapacity": 0.14,
+        "TestOwnershipPublicationCapacity": 0.0,
+        "TestNativeOwnershipCatalog": 0.06,
+        "TestOwnershipCatalogNames": 0.0,
+        "TestOwnershipCatalogLimits": 0.0,
+        "TestNativeOwnershipPublish": 0.13,
+        "TestNativeOwnershipPublishFilesystem": 0.31,
+        "TestOwnershipPublicationOrderAndFailures": 0.0,
+        "TestOwnershipPublicationRevision": 0.0,
+        "TestNativeOwnershipRead": 0.13,
+        "TestOwnershipReadMetadataDrift": 0.0,
+        "TestOwnershipRecordRoundTripAndCanonicalBytes": 0.01,
+        "TestOwnershipChecksumDoesNotGrantInvalidScope": 0.01,
+        "TestOwnershipRecordStrictDenials": 0.01,
+        "TestOwnershipRecordRejectsInvalidPolicies": 0.02,
+        "TestOwnershipRecordCapacityAndRevision": 0.01,
+        "TestNativeStateACL": 0.38,
+        "TestStateACLPolicy": 0.0,
+        "TestNativeStateDirectory": 0.21
+      },
+      "host_artifacts_removed": true
+    }
+  ],
+  "prior_m2_manifest_sha256": [
+    {
+      "path": "docs/testing/M2/dataset-state-manifest.json",
+      "sha256": "742c54282f4eb0405deea105b40ff02138ca98cb04cc09ce47f38dccff227021"
+    },
+    {
+      "path": "docs/testing/M2/device-use-review-manifest.json",
+      "sha256": "3b9a3f90aca2f3dfcc61e0b31f9af3ee2a45dcf3d452fa837da6af1c23d0ef4d"
+    },
+    {
+      "path": "docs/testing/M2/devices-local-manifest.json",
+      "sha256": "813ea84749164efb9940c3cb472d555a524729893ff85fbac8b63bd5a88ca1b8"
+    },
+    {
+      "path": "docs/testing/M2/devices-manifest.json",
+      "sha256": "93b015d90819214f9b2e837afa9a0bdbe51c0f5c0771e90608feed4348c650cd"
+    },
+    {
+      "path": "docs/testing/M2/disk-access-manifest.json",
+      "sha256": "0cda31cd37254cdd0e17e34df14029735609b5807f62e081e0ceded4ce9cbf52"
+    },
+    {
+      "path": "docs/testing/M2/disk-attachments-manifest.json",
+      "sha256": "56a4d0029603f13e504c73e4f4a0f53938888340530fb7d03d846f3936d00667"
+    },
+    {
+      "path": "docs/testing/M2/disk-correlation-manifest.json",
+      "sha256": "370984097837e061ce171cac785695ec369ef726b184b4895ca3ef69e8dd3978"
+    },
+    {
+      "path": "docs/testing/M2/features-manifest.json",
+      "sha256": "7d5c9fdd433a5aca3f8f96eb3a4f8c7153fa5aaf6e9bd72715caae3689029ae5"
+    },
+    {
+      "path": "docs/testing/M2/filesystem-signatures-manifest.json",
+      "sha256": "cc0b444f6140728306ce9b0e13362ef5474110f0c3948bce23d0838da2ac98b7"
+    },
+    {
+      "path": "docs/testing/M2/identities-manifest.json",
+      "sha256": "8dbc093fe986cb4e18ecaa8ba2097eb24746d4d5b202033a34372d05d344f5fc"
+    },
+    {
+      "path": "docs/testing/M2/imported-pool-use-manifest.json",
+      "sha256": "9c0d30872511adee7069e832fbdcb8def0fafbd9a96ccd61bf7297c073d6c174"
+    },
+    {
+      "path": "docs/testing/M2/job-records-manifest.json",
+      "sha256": "eaa0b8ccfaf50690f2165facdf9da8dbec2d6d401184a246b922be74fb37414a"
+    },
+    {
+      "path": "docs/testing/M2/ownership-capacity-manifest.json",
+      "sha256": "42554db9cf3b26071760e484569ab7fdd7d4067d217ffe815ebb7d38aee55a14"
+    },
+    {
+      "path": "docs/testing/M2/ownership-catalog-manifest.json",
+      "sha256": "928a59373eaba9d6b05d2f8f60c8d683e581ac0e7c8625ebc357892a2b16c24e"
+    },
+    {
+      "path": "docs/testing/M2/ownership-publication-manifest.json",
+      "sha256": "ce036597acde7d41d7165cdfb3d19a8e72bc82ed54d00ac3f6678449346a6b90"
+    },
+    {
+      "path": "docs/testing/M2/ownership-read-manifest.json",
+      "sha256": "0436c1e2fca5b4b771e5179820a3d54271df8352a8d25a56950fc10d159059b8"
+    },
+    {
+      "path": "docs/testing/M2/ownership-records-manifest.json",
+      "sha256": "5f25b1eb8dec8a69593aeb23cb94b9b0e5b955083878d4745365d91c202afbf8"
+    },
+    {
+      "path": "docs/testing/M2/pool-labels-manifest.json",
+      "sha256": "82f3348e58248dda08b4d9c70487147b429e304d17e8ffd40500ac1e63667b68"
+    },
+    {
+      "path": "docs/testing/M2/pool-state-manifest.json",
+      "sha256": "12be8f7c3e6358a52b5494d822fc3366a91a4ff39abb1b1ffdc3f091f2180d30"
+    },
+    {
+      "path": "docs/testing/M2/properties-manifest.json",
+      "sha256": "74da0b8025b86d12501cd93e8a648dac47aecf59898edd8d16963eaae23fb693"
+    },
+    {
+      "path": "docs/testing/M2/state-acl-manifest.json",
+      "sha256": "a558abf1753ce2cc5947f6480e48bdf2d0199e451ca3b3620faff00ecfca305a"
+    },
+    {
+      "path": "docs/testing/M2/state-directory-manifest.json",
+      "sha256": "a74b71d1fb7139890e3e6d229c7941379b8a7865cd3c3a8335b23b5f462fffa9"
+    },
+    {
+      "path": "docs/testing/M2/system-device-use-manifest.json",
+      "sha256": "fed30b8059bc52c149c19e2aec40b5db6dae375c8170e728de21a667e63ec62c"
+    },
+    {
+      "path": "docs/testing/M2/topology-manifest.json",
+      "sha256": "5e2200057bb83935053a93993c928cbfae9daa5e5c784f9ed005346b315447b6"
+    }
+  ],
+  "failing_first": {
+    "reader_successor_test_compile": "missing ReadJob and ValidateJobSuccessor; expected failure",
+    "native_evidence": "old 234-case evidence incorrectly accepted before validator expansion; expected failure"
+  },
+  "lab_status": {
+    "all_owned_sessions_stopped": true,
+    "teardown_verified": true,
+    "sessions_checked": 119
+  },
+  "limits": [
+    "Private native lifecycle metadata reader and pure immutable successor guard only; no runtime/HTTP/CLI caller or storage authority.",
+    "No job publication or complete durable native intent, mixed namespace/budget, admission, deduplication, tombstones or retention.",
+    "Ownership-only catalog and publisher still refuse all job files, including valid lifecycle records.",
+    "Successor predecessor must later be current trusted durable state under the writer lease; validation itself does not publish or acknowledge.",
+    "Reading/decoding metadata does not reset uncertainty, release reservations or prove native success/attribution/quiescence.",
+    "Ordinary drift checks do not fence a root actor or impose a native I/O deadline.",
+    "No actual job startup/recovery/restoration, abrupt-death/power-loss or controller durability claim.",
+    "Both existing release/root variants retain exact versions and executed source; no new hardware/commercial/client/scale support.",
+    "Local TCG timings are qualification observations, not NAS runtime performance.",
+    "Final prose-only head needs its own baseline/title/source report and original deep source when reused."
+  ]
+}

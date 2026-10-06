@@ -355,7 +355,9 @@ real inherited-UID denial despite effective NFSv4 access, preserved unsafe objec
 and root-filesystem anchoring. Pure successor tests refuse independently valid
 identity/intent/history rewrites and stale/skipped/truncated updates. Require all
 275 state assertions, twenty-eight parents and 176 codec/schema subtests on both
-releases with complete fixture/base/runtime/process teardown. Native qualification
-is pending. Mixed store publication/admission, complete executable intent, native
+releases with complete fixture/base/runtime/process teardown. Both passed at
+signed source `5241ae7f0bccde0423613af1dfcde9aed951ac34`; see the
+[manifest](../../testing/M2/job-read-manifest.json). Review is pending. Mixed store
+publication/admission, complete executable intent, native
 attribution/quiescence, acknowledgement cuts/restoration and M2 acceptance remain
 open; the job reader cannot grant storage authority.

@@ -1,6 +1,6 @@
 # M2 native job reader and immutable successors
 
-Date: 2026-10-06. Status: implementing; native qualification pending.
+Date: 2026-10-06. Status: qualified on both declared native targets; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -90,8 +90,8 @@ make lab-status
 
 Shared guest selectors/evidence validation conservatively require one complete
 portable review; prose-only evidence followups may reuse matching executed deep
-checks while rerunning baseline/source/title verification. Native qualification
-is pending; cross-compilation alone proves none of the native reader cases.
+checks while rerunning baseline/source/title verification. Executed qualification below retains the actual source; cross-compilation alone
+proves none of the native reader cases.
 Traceability: partial M2-STATE-001/M2-JOB-001/M2-PRIV-001 at T1/T3.
 
 ## Remaining boundaries
@@ -105,3 +105,37 @@ fixture therefore does not qualify a functioning job store or recovery anchor.
 No physical/commercial/client/scale or power-loss claim follows. Existing native
 manifests retain their original executed sources; new evidence does not relabel
 those historical records. M2 acceptance and deferred M1 accessibility remain open.
+
+
+## Executed qualification
+
+Signed functional/suite source `5241ae7f0bccde0423613af1dfcde9aed951ac34` passed all 275 state
+assertions, twenty-eight parents and 176 codec/schema subtests on both declared
+releases with no skips/failures. See the [sanitized manifest](job-read-manifest.json)
+for exact source/input/SDK/module/image/runtime/utility/log provenance. Shared
+verification changes conservatively selected one full portable review: all baseline
+checks, 89 tooling regressions, race checks across eleven packages and all
+23 compiler-listed bounded fuzz targets passed in 113.36 seconds.
+
+Actual job reads passed every private-file/size/codec/ID-binding denial, preserved
+bytes/inodes and remained anchored after directory rename. Both owned UFS ACL
+models proved job directory/lock/record denial, no repair and restored read. The
+UID-65534 child proved effective native NFSv4 access to private job bytes while the
+product refused the inherited-descriptor non-root call. Existing shared-reader
+ownership and all state/publication/capacity controls still passed. All codec and
+immutable successor tests also executed on both guests. No native qualification
+failures occurred.
+
+| Target | Root | Job reader parent | Full owned guest | Result |
+|---|---|---|---|---|
+| 15.1-RELEASE-p3 | zfs | 0.1 s | 37.161 s | all 275; complete teardown |
+| 14.5-RELEASE | ufs | 0.1 s | 32.829 s | all 275; complete teardown |
+
+Both guests verified the same cross-built executable before running it. All owned
+leases/files/mounts/memory devices/children closed or were removed; supervisor
+groups stopped; base/runtime hashes were preserved and snapshots/keys/variables/
+test executables removed. All 24 prior M2 manifests remain byte-identical. The
+final evidence-only review reruns baseline checks and retains the original deep
+source when matching execution is reused; native execution is not relabeled as
+that documentation head. Job publication, complete intent/mixed budgets, admission,
+actual recovery, M2 acceptance and deferred M1 accessibility remain pending.

@@ -85,7 +85,8 @@ and complete teardown on both targets; accepted in PR 46. The
 and complete teardown on both targets; accepted in PR 47. The
 [job lifecycle codec](docs/testing/M2/job-records.md) passed portable qualification;
 accepted in PR 48. The [native job reader](docs/testing/M2/job-read.md) and
-immutable successor guard are implementing; native qualification is pending.
+immutable successor guard passed all 275 assertions and full teardown on both
+targets; maintainer review is pending.
 Runtime enrollment and full store/recovery gates remain open.
 Other native gates, durable jobs and storage writes remain pending; the runtime is
 still read-only.

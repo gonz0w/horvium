@@ -287,4 +287,5 @@ ownership/job byte reader, job ID binding and actual private-file/ACL/UID contro
 The existing owned POSIX/NFSv4 UFS fixture includes job records and proves effective
 native job access cannot bypass the product's kernel UID guard. All added files
 are owned disposable fixtures; no persistent services or operator storage are used.
-Both declared targets and full teardown remain required; qualification is pending.
+Both targets passed at signed source `5241ae7f0bccde0423613af1dfcde9aed951ac34` with full
+teardown; see the [manifest](M2/job-read-manifest.json).
