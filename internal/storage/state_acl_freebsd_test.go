@@ -52,6 +52,37 @@ func namedFixtureACL(a stateACL, kind int, perm uint32) stateACL {
 	return a
 }
 
+// Failure diagnostics classify only this disposable VM's declared fixture path.
+// No pathname, principal ID, inode, ACL text or operator inventory is emitted.
+func diagnoseFixtureACL(t *testing.T, paths []string) {
+	t.Helper()
+	for i, path := range paths {
+		fd, e := unix.Open(path, unix.O_RDONLY|unix.O_DIRECTORY|unix.O_NOFOLLOW, 0)
+		if e != nil {
+			t.Logf("ACL diagnostic part=%d open_error", i)
+			continue
+		}
+		p, pe := unix.Fpathconf(fd, 59)
+		n, ne := unix.Fpathconf(fd, 64)
+		for _, kind := range []int{2, 3, 4} {
+			a, err := readStateACL(fd, kind)
+			named, flags, id, rights, nonownerWrite, types := false, false, false, false, false, false
+			if a.Count <= 254 {
+				for _, entry := range a.Entries[:a.Count] {
+					named = named || entry.Tag != 1 && entry.Tag != 4 && entry.Tag != 32 && entry.Tag != 64
+					flags = flags || entry.Flags != 0
+					id = id || entry.ID != ^uint32(0)
+					rights = rights || kind == 4 && entry.Perm&^uint32(0xfff9) != 0
+					types = types || kind == 4 && entry.Type != 0x100 && entry.Type != 0x200
+					nonownerWrite = nonownerWrite || kind == 4 && entry.Tag != 1 && entry.Type == 0x100 && entry.Perm&uint32(0x10|0x20|0x100|0x400|0x800|0x2000|0x4000) != 0
+				}
+			}
+			t.Logf("ACL diagnostic part=%d posix=%d/%v nfs4=%d/%v kind=%d retrieval=%v max=%d count=%d spare_zero=%t named=%t flags=%t special_id=%t unknown_rights=%t unknown_type=%t nonowner_write=%t", i, p, pe, n, ne, kind, err, a.Max, a.Count, a.Spare == [4]int32{}, named, flags, id, rights, types, nonownerWrite)
+		}
+		_ = unix.Close(fd)
+	}
+}
+
 func TestNativeStateACLProcess(t *testing.T) {
 	if os.Getenv("HORVIUM_ACL_PROCESS") != "grant" {
 		t.Skip("owned kernel credential fixture required")
@@ -190,6 +221,7 @@ func TestNativeStateACL(t *testing.T) {
 			}
 			s, err := OpenStateDirectory(statePath)
 			if err != nil {
+				diagnoseFixtureACL(t, []string{"/", "/root", anchor, mountpoint, statePath})
 				t.Fatal("baseline ACL lease refused", model.name)
 			}
 			defer s.Close()
