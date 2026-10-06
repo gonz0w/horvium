@@ -191,13 +191,21 @@ func TestPropertyIntentRequiredFields(t *testing.T) {
 	data, _ := EncodePropertyIntent(captured)
 	for _, path := range propertyIntentObjectPaths(propertyIntentJSON(data)) {
 		obj := jobTestObject(propertyIntentJSON(data), path)
+		t.Run(strings.Join(path, "/")+"/unknown", func(t *testing.T) {
+			root := propertyIntentJSON(data)
+			jobTestObject(root, path)["unexpected"] = true
+			mutated, _ := json.Marshal(root)
+			if got, err := DecodePropertyIntent(mutated); err == nil || !reflect.DeepEqual(got, PropertyIntent{}) {
+				t.Fatal("unknown field survived", err)
+			}
+		})
 		keys := make([]string, 0, len(obj))
 		for k := range obj {
 			keys = append(keys, k)
 		}
 		sort.Strings(keys)
 		for _, key := range keys {
-			for _, mutation := range []string{"missing", "null", "wrong_type", "case", "duplicate", "unknown"} {
+			for _, mutation := range []string{"missing", "null", "wrong_type", "case", "duplicate"} {
 				t.Run(strings.Join(path, "/")+"/"+key+"/"+mutation, func(t *testing.T) {
 					root := propertyIntentJSON(data)
 					object := jobTestObject(root, path)
@@ -216,8 +224,6 @@ func TestPropertyIntentRequiredFields(t *testing.T) {
 					case "case":
 						delete(object, key)
 						object[strings.ToUpper(key)] = value
-					case "unknown":
-						object["unexpected"] = value
 					case "duplicate":
 						object[key] = "horvium-duplicate-placeholder"
 					}
@@ -246,7 +252,7 @@ func propertyIntentResign(data []byte) []byte {
 	}
 	content := append(append([]byte(nil), data[:marker]...), '}')
 	digest := sha256.Sum256(append([]byte("horvium:property-intent:v1\n"), content...))
-	return append(append(append([]byte(nil), data[:marker]...), []byte(`,"checksum":"`+hex.EncodeToString(digest[:])+`"}`)...))
+	return append(append([]byte(nil), data[:marker]...), []byte(`,"checksum":"`+hex.EncodeToString(digest[:])+`"}`)...)
 }
 
 func TestPropertyIntentSemanticDenials(t *testing.T) {
