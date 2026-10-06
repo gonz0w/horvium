@@ -157,6 +157,15 @@ refusal, competing writers, successful sync, process-death release, foreign
 preservation and teardown passed all thirty-five assertions on both declared
 releases (15.1 ZFS root, 14.5 UFS root); see the
 [source-bound manifest](../testing/M2/state-directory-manifest.json). Maintainer
-review remains pending. Only default-ACL disposable fixtures are qualified. This is a
+review accepted in PR 39. Only default-ACL disposable fixtures are qualified. This is a
 partial M2-STATE-001 prerequisite, not a record store or durable job admission.
 M1 collection and the management runtime remain read-only.
+
+M2 ownership records: [strict codec](../testing/M2/ownership-records.md) implements
+version 1 ownership metadata using the existing policy model, required exact JSON
+fields, duplicate/null/version refusal, canonical checksums and 64 KiB bounds.
+Five behavioral tests and fifty-seven subtests passed without skips; complete
+portable review passed with twenty-one bounded fuzz targets. Maintainer review
+remains pending; see the [source-bound manifest](../testing/M2/ownership-records-manifest.json).
+FreeBSD/amd64 compilation alone is not native file
+qualification. No file operations, enrollment, durable jobs or runtime wiring exist.

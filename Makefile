@@ -37,6 +37,7 @@ test-go:
 go-check: lint-go test-go go-deep-check
 
 go-deep-check:
+	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzOwnershipRecord$$' -fuzztime=3s -parallel=2
 	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzPoolLabels$$' -fuzztime=3s -parallel=2
 	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzDeviceUseReview$$' -fuzztime=3s -parallel=2
 	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzFilesystemSignature$$' -fuzztime=3s -parallel=2

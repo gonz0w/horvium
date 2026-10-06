@@ -1,7 +1,7 @@
 # M2 private state directory and single-writer lease
 
-Date: 2026-10-05. Status: partial boundary qualified on both declared releases;
-maintainer review pending. [Approved EDD](../../milestones/M2/EDD.md),
+Date: 2026-10-05. Status: partial boundary accepted in
+[PR 39](https://github.com/gonz0w/horvium/pull/39). [Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
 

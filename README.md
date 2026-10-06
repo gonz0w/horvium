@@ -61,10 +61,14 @@ The accepted [disk-access subset](docs/testing/M2/disk-access.md) binds aggregat
 GEOM access counters to disk identity and invalidates review on access drift;
 all sixty-eight native assertions and full preservation/teardown passed on both
 targets; accepted in PR 38.
-The next [state-directory subset](docs/testing/M2/state-directory.md) establishes
+The accepted [state-directory subset](docs/testing/M2/state-directory.md) establishes
 the root-owned single-writer boundary for future durable metadata. All thirty-five
 native assertions and complete preservation/teardown passed on both targets;
-maintainer review remains pending.
+accepted in PR 39.
+The next [ownership record codec](docs/testing/M2/ownership-records.md) validates
+bounded versioned metadata and checksums without granting enrollment or writing
+files. Five behavioral tests, fifty-seven subtests and all twenty-one bounded fuzz
+targets passed; maintainer review remains pending.
 Other native gates, durable jobs and storage writes remain pending; the runtime is
 still read-only.
 
