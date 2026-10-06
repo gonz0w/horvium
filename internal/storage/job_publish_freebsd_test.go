@@ -135,8 +135,19 @@ func TestNativeJobPublication(t *testing.T) {
 	rewriteHistory.History = append([]JobTransition(nil), rewritten.History...)
 	rewriteHistory.History[0].At = 999
 	check("history_rewrite_denial", errors.Is(s.PublishJob(rewriteHistory, 2), ErrDrift))
-	if s.PublishJob(rewritten, 2) != nil {
-		t.Fatal("owned observation")
+	phase := "preflight"
+	observationErr := s.publishJobBounded(rewritten, 2, defaultStateCatalogLimits, func(tx ownershipPublication) ownershipPublication {
+		instrument := func(name string, f func() error) func() error { return func() error { phase = name; return f() } }
+		tx.write = instrument("write", tx.write)
+		tx.syncFile = instrument("sync-file", tx.syncFile)
+		tx.closeFile = instrument("close", tx.closeFile)
+		tx.verify = instrument("verify", tx.verify)
+		tx.rename = instrument("rename", tx.rename)
+		tx.syncDirectory = instrument("sync-directory", tx.syncDirectory)
+		return tx
+	})
+	if observationErr != nil {
+		t.Fatal("owned observation", phase, observationErr)
 	}
 	finished, e := TransitionJob(rewritten, JobSucceeded, 1003, "verified", strings.Repeat("d", 64))
 	if e != nil {
