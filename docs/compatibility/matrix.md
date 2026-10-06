@@ -205,6 +205,7 @@ storage admission or hardware/commercial support follows.
 Focused developer review: [policy and runner](../engineering/local-review.md)
 select package consumers from host/FreeBSD/test imports and retain cheap baseline
 checks on every PR. Fresh complete portable mode remains a milestone/release gate.
-The prebuilt state path needs actual execution on both declared native targets;
-see [workflow qualification](../testing/focused-review.md). This tooling change
+The prebuilt state path passed all 161 current assertions, 14 parent tests and
+57 codec subtests on both declared native targets, with identical artifact hashes
+and verified teardown; see [workflow qualification](../testing/focused-review.md). This tooling change
 adds no OS/architecture, client, hardware or runtime feature support claim.
