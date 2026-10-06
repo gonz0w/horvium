@@ -301,7 +301,7 @@ Shared evidence/selector changes select one complete portable review. Ownership-
 publication stays strict and no job admission/recovery follows.
 
 
-The [job publication extension](M2/job-publication.md) expands state to 429 named
+The [job publication extension](M2/job-publication.md) expands state to 432 named
 assertions, thirty-five parents (ten native, twenty-five unit) and 176 schema
 subtests. Both release/root candidates and full teardown remain required; native
 qualification is pending. Actual UFS ENOSPC/read-only job controls extend the shared

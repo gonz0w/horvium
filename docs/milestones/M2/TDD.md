@@ -231,7 +231,7 @@ competing first writers, successful file/directory sync, dropped kernel UID,
 actual separate-process contention/death/reacquisition, stable lock inode,
 foreign preservation and complete fixture teardown. Both declared releases and
 full host base/runtime/group teardown passed at signed functional/suite source
-`123044304e75f6df27d43eee085c23435ddbcce1`; see the
+`123044324e75f6df27d43eee085c23435ddbcce1`; see the
 [native manifest](../../testing/M2/state-directory-manifest.json). PR 39 accepted
 this partial boundary.
 No full record/durable job/recovery/power-cut/ACL/hardware claim follows.
@@ -385,7 +385,7 @@ M2-STATE-001/M2-JOB-001/M2-PRIV-001 at T1/T3: current-predecessor immutable hist
 actual private file publication and every durability/refusal phase, complete mixed
 capacity preflight/final rechecks, terminal-slot exhaustion, preserved uncertainty,
 unsafe/ACL/UID denials, concurrent duplicate/last-slot serialization and actual
-UFS ENOSPC/read-only job controls. Require 429 named assertions, thirty-five parents
+UFS ENOSPC/read-only job controls. Require 432 named assertions, thirty-five parents
 and 176 schema subtests on both releases with full owned teardown. Native
 qualification is pending. No runtime admission/native effect, executable intent,
 reservation/pruning/recovery or acknowledgement/power-loss acceptance follows.

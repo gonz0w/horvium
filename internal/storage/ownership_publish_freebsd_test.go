@@ -280,6 +280,55 @@ func TestNativeOwnershipPublish(t *testing.T) {
 	if drift.Close() != nil {
 		t.Fatal("drift close failed")
 	}
+	// Staging must not rebind a changed predecessor, even at the same revision.
+	for _, kind := range []string{"inode", "bytes"} {
+		lease, folder := newLease("staged-" + kind)
+		if lease.PublishOwnership(p, 0) != nil {
+			t.Fatal("staged predecessor baseline")
+		}
+		name := filepath.Join(folder, "ownership-100.json")
+		control := ownershipGolden()
+		if kind == "bytes" {
+			changed, e := DecodeOwnershipRecord(control)
+			if e != nil {
+				t.Fatal(e)
+			}
+			changed.Scopes[0].Properties = []Property{Compression}
+			control, e = EncodeOwnershipRecord(changed)
+			if e != nil {
+				t.Fatal(e)
+			}
+		}
+		err = lease.publishOwnership(next, 1, func(tx ownershipPublication) ownershipPublication {
+			sync := tx.syncFile
+			tx.syncFile = func() error {
+				if e := sync(); e != nil {
+					return e
+				}
+				if kind == "inode" {
+					if os.Rename(name, name+"-retained") != nil {
+						t.Fatal("owned predecessor move")
+					}
+				}
+				if os.WriteFile(name, control, 0600) != nil {
+					t.Fatal("owned predecessor change")
+				}
+				return nil
+			}
+			return tx
+		})
+		b, e = os.ReadFile(name)
+		check("staged_"+kind+"_denial", errors.Is(err, ErrDrift) && e == nil && bytes.Equal(b, control) && noTemps(folder))
+		if kind == "inode" {
+			b, e = os.ReadFile(name + "-retained")
+			if e != nil || !bytes.Equal(b, ownershipGolden()) {
+				t.Fatal("retained original damaged")
+			}
+		}
+		if lease.Close() != nil {
+			t.Fatal("staged lease close")
+		}
+	}
 	// Renaming the directory never redirects publication to a replacement path.
 	moved := filepath.Join(anchor, "moved")
 	if os.Rename(path, moved) != nil || os.Mkdir(path, 0700) != nil {

@@ -71,7 +71,7 @@ phase wrappers are package-private disposable fixture seams, not operator settin
 
 ## Qualification procedure
 
-Require **430 named state assertions**, thirty-five parents (ten native and
+Require **432 named state assertions**, thirty-five parents (ten native and
 twenty-five unit), and all **176 codec/schema subtests** on both declared targets.
 The seventy-seven native job controls cover actual creation/replacement/canonical
 private bytes, predecessor/history/intent refusal, terminal outcomes/replay denial,
@@ -86,8 +86,10 @@ publication refuses unsafe directory/lock/ownership/job/inherited ACLs, restored
 publication works, and a real UID-65534 inherited-descriptor child refuses both
 publishers despite effective native read access. Four filesystem assertions use
 owned memory-backed UFS: real job publication, independently observed ENOSPC
-refusal, native read-only refusal and preserved job bytes. Existing ownership
-phase/failure/catalog/ACL/capacity controls remain mandatory because the native
+refusal, native read-only refusal and preserved job bytes. Two staged ownership controls preserve externally changed bytes/inodes at the
+same revision and refuse rebinding; a ctime-only change after the final snapshot
+also refuses publication. Existing ownership phase/failure/catalog/ACL/capacity
+controls remain mandatory because the native
 transaction is shared. Reduced limits prove accounting/refusal, not resource scale.
 
 Portable tests first fail for missing APIs and cover exact/overflow transient
