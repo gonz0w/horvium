@@ -403,5 +403,19 @@ regressions remain mandatory. Storage-only race/all fuzz and baseline checks are
 required; FreeBSD cross-compilation proves portability only. No filesystem/syscall,
 job publication or native eligibility adapter changes. Seven parents/769 subtests,
 storage race/all 17 storage fuzz targets passed at signed source `e66d59eec2e05137a11d8533b327206c3682e423`;
-see the [manifest](../../testing/M2/property-intent-manifest.json). Review is pending. Native execution, job embedding/admission, attribution/postconditions,
+see the [manifest](../../testing/M2/property-intent-manifest.json). Accepted in PR 52. Native execution, job embedding/admission, attribution/postconditions,
 recovery/cuts and M2 acceptance remain unqualified.
+
+
+## Property job embedding prerequisite
+
+The [procedure](../../testing/M2/property-jobs.md) adds partial M2-JOB-001,
+M2-PLAN-001 and M2-STATE-001 at T1: matching target/property/policy/plan binding,
+initial timestamp against nanosecond capture and expiry, immutable owned copies,
+complete baseline/history successor refusal, canonical whole-record checksum,
+required shape checks at all levels, valid-checksum semantic denials, exact numeric
+and byte limits and hostile-input round trips. Require baseline and storage-only
+race/all compiler-listed fuzz checks. Existing metadata regressions remain required.
+Cross-compilation proves portability only. No native operations/file formats in
+accepted readers/publishers change; native persistence/admission/recovery and
+full M2 acceptance remain separate gates. Qualification is pending.

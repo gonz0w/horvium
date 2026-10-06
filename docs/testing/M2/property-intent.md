@@ -1,6 +1,6 @@
 # M2 reviewed property intent capture and codec
 
-Date: 2026-10-06. Status: portable qualification passed; maintainer review pending.
+Date: 2026-10-06. Status: accepted in PR 52; portable qualification passed.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -154,3 +154,5 @@ This qualifies bounded property-review capture and internal codec consistency.
 Complete executable intent/job embedding, native eligibility, admission/reservations,
 executor attribution/postconditions, recovery/cuts, M2 acceptance and deferred M1
 manual accessibility remain open.
+
+The capture prerequisite was accepted in [PR 52](https://github.com/gonz0w/horvium/pull/52), merged source `77d48453cfedd4ec4dfaa1da62dbcfa75e0674e9`. The [property job binding](property-jobs.md) is the separate metadata embedding prerequisite; native persistence and admission still need their own gates.

@@ -269,6 +269,14 @@ reviewed baseline and plan-scoped session/policy binding; no raw session token,
 restored plan, job embedding or execution authority. Existing job v1/native
 publication remains unchanged. Seven parents/769 subtests, storage race/all 17 fuzz
 targets passed at signed source `e66d59eec2e05137a11d8533b327206c3682e423`; see the
-[manifest](../testing/M2/property-intent-manifest.json). Review is pending.
+[manifest](../testing/M2/property-intent-manifest.json). Accepted in PR 52.
 Cross-compilation is not native proof. Prior native sources/manifests and runtime read-only scope
 remain; no new hardware/client/resource/recovery support claim follows.
+
+
+M2 property job binding: [metadata contract](../testing/M2/property-jobs.md)
+combines the current reviewed baseline with immutable lifecycle metadata under a
+single 64 KiB bound. Portable qualification is pending. Existing job/ownership
+wire versions, native readers/publishers and runtime remain unchanged; they reject
+the distinct new kind. No native persistence, execution, migration, resource,
+hardware/client, recovery or commercial support claim follows.
