@@ -155,6 +155,9 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 	// changing ctime without changing effective links/content. Synchronize the
 	// actual published inode as well; never weaken predecessor drift comparison.
 	tx.syncPublished = func() error {
+		if e := unix.Fsync(dir); e != nil {
+			return e
+		}
 		publishedFD, e := unix.Openat(dir, name, unix.O_RDONLY|unix.O_NOFOLLOW|unix.O_NONBLOCK|unix.O_CLOEXEC, 0)
 		if e != nil {
 			return e
