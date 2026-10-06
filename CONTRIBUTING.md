@@ -14,7 +14,9 @@ coverage. Keep a PR focused on one outcome and update its docs alongside code.
 Run `make tools` and `make hooks`. After signing/signing off the changes, run
 `PR_TITLE='type: actual proposed PR title' make review` from a clean checkout.
 It verifies commit signatures/DCO/title and runs `make check lint test secrets`
-plus all race/fuzz checks; see the [local review gate](docs/engineering/local-review.md).
+plus race/fuzz checks for affected packages and their consumers. Use
+`make review-full` for fresh complete portable milestone/release validation; see
+the [local review gate](docs/engineering/local-review.md).
 Report the tested source/base/title and results in the PR. GitHub Actions are
 disabled: maintainers review the evidence before merging. Native evidence still
 needs both declared release candidates and disposable fixtures; see

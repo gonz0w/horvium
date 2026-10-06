@@ -5,6 +5,8 @@ Describe the trigger, change, and operator outcome.
 ## Validation
 
 Record the exact tested source/base IDs, actual PR title and `make review` result.
+Identify the selected plan, packages/fuzz targets and original source for any
+reused evidence. Milestone/release PRs record fresh `make review-full` evidence.
 Attach sanitized native/client manifests where required; link stable test IDs.
 Record supervised teardown and `make lab-status`; explain any unverified cleanup.
 

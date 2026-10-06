@@ -30,8 +30,8 @@ PR_TITLE='ci: move qualification to local hosts' make review
 ```
 
 Attach the checked commit/base/title and results to the PR. The
-[local review gate](../engineering/local-review.md) runs all portable checks,
-race detection and bounded fuzzing; GitHub Actions are disabled. Automated
+[local review gate](../engineering/local-review.md) runs baseline checks and
+affected-package race/fuzz checks, with a fresh full milestone mode; GitHub Actions are disabled. Automated
 Firefox currently has Linux-only artifact pins and needs a local Linux lab.
 Safari uses the installed-driver procedure; manual accessibility remains pending.
 
@@ -44,7 +44,8 @@ QEMU/OVMF/zstd first. No nested virtualization is required by the current TCG
 runner.
 
 Use a clean committed checkout. The runner transfers `git archive HEAD`, never
-the host's ignored files, `.tools`, Git credentials or private configuration.
+the host's ignored files, Git credentials or private configuration. The state
+suite additionally transfers one explicitly built, checksummed test executable.
 
 ```sh
 # Describe the selected guest without downloading or starting it.
@@ -55,7 +56,7 @@ python3.14 tools/local-qualification.py properties 15.1 --run
 python3.14 tools/local-qualification.py properties 14.5 --run
 ```
 
-Supported suites: `foundation`, `research`, `discovery`, `properties`,
+Supported suites: `foundation`, `research`, `discovery`, `state`, `properties`,
 `continuity`, `performance`, `devices`. Run the two release candidates **sequentially** on
 the Mac. Each guest has two CPUs, 6,144 MiB RAM, qemu64 and snapshot storage.
 Reserve additional RAM for macOS; stop other large workloads while testing.
@@ -108,7 +109,7 @@ public listener, host NFS export or host disk attachment. OpenSSH uses `-F
 /dev/null`, a checksum-verified public builder fixture key, disabled SSH agent,
 and a private per-run known-hosts file. Fixture credentials never authorize the
 guest to log into the host. The key is deleted after execution and is never
-cached or committed. Guest package/SDK downloads still require internet access;
+cached or committed. Image/key preparation and guest source-build package/SDK downloads require internet access;
 local execution means no GitHub-hosted runner minutes, not an air-gapped test.
 
 Compressed images and the pinned upstream AnyVM artifact are cached by SHA-256
@@ -125,7 +126,7 @@ Qualification requires a successful guest command, suite-specific assertion
 validation, unchanged base/runtime and verified owned-process termination.
 Missing/skipped/failed assertions and cleanup/preservation failures remain
 unqualified. Normal teardown removes the fresh image, private key and variable
-store; logs and the known-hosts file remain for inspection. Preservation failure remains unqualified; the supervisor still removes disposable
+store and transferred host executable; logs and the known-hosts file remain for inspection. Preservation failure remains unqualified; the supervisor still removes disposable
 image/key/variable-store files after stopping the owned group.
 
 ## Teardown
@@ -148,7 +149,7 @@ controller SIGKILL all close that lease or trigger explicit cleanup. It sends
 TERM, waits a bounded grace period, escalates to KILL if needed, verifies no live
 group member remains, then reaps its child. Holding the leader unreaped reserves
 its PID while signalling, avoiding accidental kills after PID reuse. On guest
-interruption it also deletes the fixed fixture key/image/variable-store paths
+interruption it also deletes the fixed fixture key/image/variable-store/executable paths
 inside the private lab directory and marks the run unqualified. Successful
 qualification requires guest/base/runtime checks and the supervisor's verified
 teardown. Status records and socket directories are private and ignored.
@@ -231,3 +232,31 @@ UFS memory device for real ENOSPC/read-only/ACL controls; all fixtures remain
 inside the disposable guest. Phase-error seams qualify accounting separately
 from actual I/O failure or power-cut durability. Prior manifests keep their exact
 sources and case sets; the supervisor still requires full owned cleanup.
+
+## Prebuilt state tests
+
+The `state` suite defaults to a host cross-build with the checksum-pinned Go SDK,
+verified module cache, `GOOS=freebsd`, `GOARCH=amd64`, `GOAMD64=v1`, cgo disabled
+and `-trimpath`. It builds the actual storage test package from clean committed
+source, transfers its executable into the owned guest and verifies its SHA-256
+before executing. Host records identify source, compiler, module/pin hashes,
+target and artifact size/checksum; guest logs identify actual kernel/userland,
+ZFS and base utilities. Cross-compilation alone is never native qualification:
+the unchanged evidence checker requires every current assertion, parent test
+and codec subtest to execute successfully in the guest.
+
+```sh
+python3.14 tools/local-qualification.py state 15.1 --run
+python3.14 tools/local-qualification.py state 14.5 --run
+# Explicit SDK/package/native compilation qualification when needed:
+python3.14 tools/local-qualification.py state 15.1 --source-build --run
+```
+
+The default state path installs no guest package/SDK. Other suites keep their
+existing guest source-build procedures until individually qualified for prebuilt
+execution. `--source-build` is restricted to state. Each run still uses a fresh
+verified snapshot and requires complete base/runtime/fixture/process teardown.
+The host test executable is deleted after completion or interruption, including
+supervisor fallback after controller death. Caches/logs are inert. This changes
+development execution only; no NAS runtime, service or compatibility scope grows.
+See [focused workflow qualification](focused-review.md) for executed evidence.

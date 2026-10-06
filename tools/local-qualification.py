@@ -5,6 +5,7 @@ import argparse
 import importlib.util
 import json
 import platform
+import re
 import shutil
 import signal
 import socket
@@ -34,6 +35,49 @@ def load_tool(name):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+def suite_command(suite, source_build=False, artifact_digest=None):
+    if suite == 'state' and not source_build:
+        if not isinstance(artifact_digest, str) or not re.fullmatch('[a-f0-9]{64}', artifact_digest):
+            raise ValueError('prebuilt state requires an exact artifact checksum')
+        return ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_STATE_VM=1 '
+                'HORVIUM_TEST_BINARY_SHA256=' + artifact_digest + ' sh tools/bsd-state-prebuilt.sh')
+    return SUITES[suite]
+
+
+def source_identity(source):
+    if (subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip() != source
+            or subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT)):
+        raise ValueError('source changed during native qualification')
+
+
+def build_state_binary(directory, source):
+    plan = load_tool('review-plan')
+    subprocess.run([sys.executable, str(TOOLS / 'bootstrap-go.py')], check=True)
+    go = str(ROOT / '.tools/go/bin/go')
+    env = plan.go_environment(ROOT, native=True)
+    version = subprocess.check_output([go, 'version'], env=env, text=True).strip()
+    if version.split()[2] != json.loads((TOOLS / 'go-pins.json').read_text())['version']:
+        raise ValueError('unexpected host Go compiler version')
+    subprocess.run([go, 'mod', 'download'], cwd=ROOT, env=env, check=True)
+    subprocess.run([go, 'mod', 'verify'], cwd=ROOT, env=env, check=True)
+    binary = directory / 'state-native.test'
+    command = [go, 'test', '-c', '-trimpath', '-o', str(binary), './internal/storage']
+    source_identity(source)
+    subprocess.run(command, cwd=ROOT, env=env, check=True)
+    source_identity(source)
+    return {'source_commit': source, 'sha256': plan.digest(binary), 'bytes': binary.stat().st_size,
+            'go_version': version, 'compiler_sha256': plan.digest(Path(go)),
+            'go_pins_sha256': plan.digest(TOOLS / 'go-pins.json'),
+            'go_mod_sha256': plan.digest(ROOT / 'go.mod'), 'go_sum_sha256': plan.digest(ROOT / 'go.sum'),
+            'target': 'freebsd/amd64', 'goamd64': 'v1', 'cgo_enabled': False,
+            'build_arguments': ['go', 'test', '-c', '-trimpath', '-o', '<owned-artifact>', './internal/storage']}
+
+
+def validate_prebuilt(log, artifact_digest):
+    if re.findall(r'(?m)^STATE_PREBUILT_SHA256 ([a-f0-9]{64})$', log) != [artifact_digest]:
+        raise ValueError('guest did not verify the expected executable')
 
 
 def qemu_command(qemu, base, code, variables, port):
@@ -116,9 +160,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('suite', choices=SUITES)
     parser.add_argument('release', choices=['15.1', '14.5'])
+    parser.add_argument('--source-build', action='store_true', help='Compile state tests inside the guest instead of using the host cross-build')
     parser.add_argument('--owned-directory', type=Path, help=argparse.SUPPRESS)
     parser.add_argument('--run', action='store_true', help='Explicitly opt into this disposable guest')
     args = parser.parse_args()
+    if args.source_build and args.suite != 'state':
+        raise ValueError('--source-build applies only to the state suite')
     if not args.run:
         print(f'{args.suite}: FreeBSD {args.release} amd64, 2 CPUs, 6144 MiB, snapshot, TCG, loopback SSH. Add --run to execute.')
         return
@@ -146,7 +193,7 @@ def main():
         directory.chmod(0o700)
         process = supervisor.OwnedProcess(
             [sys.executable, str(Path(__file__).resolve()), args.suite, args.release,
-             '--run', '--owned-directory', str(directory)], native_fixture=directory)
+             '--run', '--owned-directory', str(directory)] + (['--source-build'] if args.source_build else []), native_fixture=directory)
         print(f'Owned lab fixture: {directory}; supervisor: {process.directory}', flush=True)
         try:
             status = process.wait()
@@ -173,13 +220,17 @@ def main():
               'firmware_code_sha256': vm.digest(code), 'firmware_vars_sha256': vm.digest(vars_template),
               'cpu_model': 'qemu64', 'cpu_count': 2, 'memory_mib': 6144,
               'accelerator': 'tcg', 'qualified': False, 'host_teardown': False,
-              'base_preserved': False}
+              'base_preserved': False,
+              'execution_mode': 'host-cross-built' if args.suite == 'state' and not args.source_build else 'guest-source-build'}
     supervisor.write_record(directory / 'result.json', record)
     base_before = None
     image, variables = directory / 'image', directory / 'vars.fd'
     devices = directory / 'devices'
     device_tool = load_tool('device-fixture') if args.suite == 'devices' else None
     try:
+        if args.suite == 'state' and not args.source_build:
+            record['prebuilt'] = build_state_binary(directory, source)
+            supervisor.write_record(directory / 'result.json', record)
         subprocess.run([sys.executable, str(TOOLS / 'prepare-performance-vm.py'), args.release,
                         str(image), '--cache', str(ROOT / '.tools/lab-cache')], check=True)
         record['image'] = json.loads((image / 'image-hashes.json').read_text())
@@ -221,12 +272,20 @@ def main():
                     raise ValueError('source archive failed')
             finally:
                 stop_guest(archive)
-            packages, command = SUITES[args.suite]
-            remote = 'cd /root/work && pkg install -y ' + packages + ' && ' + command
+            artifact_digest = record.get('prebuilt', {}).get('sha256')
+            if artifact_digest:
+                with (directory / 'state-native.test').open('rb') as binary:
+                    subprocess.run(ssh + ['umask 077; mkdir -p /root/work/.tools && cat > /root/work/.tools/state-native.test && chmod 700 /root/work/.tools/state-native.test'],
+                                   stdin=binary, check=True, timeout=180)
+            packages, command = suite_command(args.suite, args.source_build, artifact_digest)
+            remote = 'cd /root/work && ' + ('pkg install -y ' + packages + ' && ' if packages else '') + command
             print(f'Running {args.suite} on FreeBSD {args.release}; private logs: {directory}', flush=True)
             with (directory / 'qualification.log').open('w') as log:
                 subprocess.run(ssh + [remote], stdout=log, stderr=subprocess.STDOUT, check=True, timeout=7200)
             validate_result(args.suite, (directory / 'qualification.log').read_text())
+            if artifact_digest:
+                validate_prebuilt((directory / 'qualification.log').read_text(), artifact_digest)
+            source_identity(source)
             record['guest_assertions'] = True
     except BaseException as error:
         record['failure'] = type(error).__name__ + ': ' + str(error)
@@ -253,6 +312,7 @@ def main():
             if image.exists():
                 shutil.rmtree(image)
             variables.unlink(missing_ok=True)
+            (directory / 'state-native.test').unlink(missing_ok=True)
             record['host_teardown'] = True
             if device_tool and record.get('guest_assertions'):
                 if not record.get('device_backings_preserved') or not record.get('device_fixture_teardown'):
@@ -268,6 +328,7 @@ def main():
             raise
         finally:
             key.unlink(missing_ok=True)
+            (directory / 'state-native.test').unlink(missing_ok=True)
             record['completed_at'] = datetime.now(timezone.utc).isoformat()
             (directory / 'result.json').write_text(json.dumps(record, indent=2) + '\n')
             print(f'Qualification record: {directory / "result.json"}', flush=True)

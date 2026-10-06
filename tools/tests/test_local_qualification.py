@@ -14,6 +14,16 @@ class LocalQualificationTests(unittest.TestCase):
         self.module = importlib.util.module_from_spec(SPEC)
         SPEC.loader.exec_module(self.module)
 
+    def test_prebuilt_state_avoids_guest_packages_and_checks_artifact_hash(self):
+        packages,command=self.module.suite_command('state',False,'a'*64)
+        self.assertEqual(packages,'')
+        self.assertIn('bsd-state-prebuilt.sh',command)
+        self.assertIn('a'*64,command)
+        self.assertEqual(self.module.suite_command('state',True,None),self.module.SUITES['state'])
+        self.assertEqual(self.module.suite_command('properties',False,None),self.module.SUITES['properties'])
+        for digest in ['','oops','a'*63,'a'*64+';bad']:
+            with self.assertRaises(ValueError):self.module.suite_command('state',False,digest)
+
     def test_guest_has_snapshot_storage_and_only_loopback_ssh(self):
         command = self.module.qemu_command('qemu', Path('/fixture/base'), Path('/code'), Path('/fixture/vars'), 23456)
         self.assertIn('-snapshot', command)
@@ -49,6 +59,14 @@ class LocalQualificationTests(unittest.TestCase):
         self.module.validate_result('state',passed+result)
         for bad in ['',passed,result,passed+result.replace('process_reaped=pass',''),passed+result.replace('fixture_teardown=pass','fixture_teardown=fail')]:
             with self.assertRaises(ValueError):self.module.validate_result('state',bad)
+
+    def test_prebuilt_verification_rejects_missing_duplicate_or_wrong_digest(self):
+        expected = 'a' * 64
+        self.module.validate_prebuilt('STATE_PREBUILT_SHA256 ' + expected + '\n', expected)
+        for bad in ['', 'STATE_PREBUILT_SHA256 ' + 'b' * 64 + '\n',
+                    ('STATE_PREBUILT_SHA256 ' + expected + '\n') * 2]:
+            with self.assertRaises(ValueError):
+                self.module.validate_prebuilt(bad, expected)
 
     def test_cleanup_waits_for_owned_child_and_does_not_signal_arbitrary_pids(self):
         process = Mock()

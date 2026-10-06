@@ -1,4 +1,4 @@
-.PHONY: tools go-tools check lint lint-tools lint-go test test-tools test-go secrets hooks go-check go-deep-check build browser-preview review lab-status lab-stop
+.PHONY: tools go-tools check lint lint-tools lint-go test test-tools test-go secrets hooks go-check go-deep-check build browser-preview review review-full test-focus lab-status lab-stop
 
 GO := $(CURDIR)/.tools/go/bin/go
 export GOTOOLCHAIN := local
@@ -20,7 +20,7 @@ check:
 lint: lint-tools lint-go
 
 lint-tools:
-	.tools/bin/shellcheck tools/check-repo.sh tools/bsd-foundation-smoke.sh tools/bsd-native-discovery.sh tools/bsd-performance.sh tools/bsd-continuity.sh tools/bsd-properties.sh tools/bsd-devices.sh tools/research/m1-native.sh .githooks/commit-msg .githooks/pre-commit
+	.tools/bin/shellcheck tools/check-repo.sh tools/bsd-foundation-smoke.sh tools/bsd-native-discovery.sh tools/bsd-performance.sh tools/bsd-continuity.sh tools/bsd-properties.sh tools/bsd-devices.sh tools/bsd-state-prebuilt.sh tools/research/m1-native.sh .githooks/commit-msg .githooks/pre-commit
 
 lint-go:
 	@test -z "$$($(CURDIR)/.tools/go/bin/gofmt -l cmd internal tools/research/m1-geom.go)" || { echo 'Run gofmt on Go sources'; exit 1; }
@@ -37,29 +37,11 @@ test-go:
 go-check: lint-go test-go go-deep-check
 
 go-deep-check:
-	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzOwnershipRecord$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzPoolLabels$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzDeviceUseReview$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzFilesystemSignature$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzImportedPoolUse$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzSystemDeviceUse$$' -fuzztime=3s -parallel=2
-	CGO_ENABLED=1 $(GO) test -race ./...
-	$(GO) test ./internal/inventory -run '^$$' -fuzz '^FuzzPools$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/inventory -run '^$$' -fuzz '^FuzzGEOM$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/inventory -run '^$$' -fuzz '^FuzzDiskObservation$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/inventory -run '^$$' -fuzz '^FuzzDiskAccess$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/inventory -run '^$$' -fuzz '^FuzzDiskAttachments$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/helper -run '^$$' -fuzz '^FuzzRequest$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/helper -run '^$$' -fuzz '^FuzzSnapshot$$' -fuzztime=3s -parallel=2
+	.tools/venv/bin/python3 tools/deep-check.py --all
 
-	$(GO) test ./internal/admin -run '^$$' -fuzz '^FuzzConfiguration$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzPropertyPlan$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzProperties$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzIdentities$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzFilesystemStates$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzPoolState$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzPoolFeatures$$' -fuzztime=3s -parallel=2
-	$(GO) test ./internal/storage -run '^$$' -fuzz '^FuzzPoolTopology$$' -fuzztime=3s -parallel=2
+# Development-only narrow behavioral loop; PKG and TEST are validated by Python.
+test-focus:
+	.tools/venv/bin/python3 tools/owned-process.py run -- .tools/venv/bin/python3 tools/focused-tests.py
 
 secrets:
 	.tools/bin/gitleaks dir --redact --no-banner --config .gitleaks.toml .
@@ -76,9 +58,13 @@ build:
 browser-preview:
 	HORVIUM_UI_PREVIEW=1 .tools/venv/bin/python3 tools/owned-process.py run -- $(GO) test -v ./internal/console -run '^TestBrowserPreview$$' -count=1 -timeout=25m
 
-# Complete local review gate: committed source, title, DCO/signatures and evidence.
+# Proportional local review gate: committed source, title, DCO/signatures and evidence.
 review:
 	.tools/venv/bin/python3 tools/review-gate.py
+
+# Fresh complete portable milestone/release gate; never reuses deep evidence.
+review-full:
+	.tools/venv/bin/python3 tools/review-gate.py --full
 
 lab-status:
 	.tools/venv/bin/python3 tools/owned-process.py status

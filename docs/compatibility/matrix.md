@@ -201,3 +201,10 @@ The 15.1 ZFS root and 14.5 UFS root passed actual publication; new owned UFS
 fixtures passed zero-free-space ENOSPC/read-only/ACL controls. Review is pending.
 Failure seams establish error accounting/order, not actual device EIO or power-loss recovery. No runtime enrollment, full store,
 storage admission or hardware/commercial support follows.
+
+Focused developer review: [policy and runner](../engineering/local-review.md)
+select package consumers from host/FreeBSD/test imports and retain cheap baseline
+checks on every PR. Fresh complete portable mode remains a milestone/release gate.
+The prebuilt state path needs actual execution on both declared native targets;
+see [workflow qualification](../testing/focused-review.md). This tooling change
+adds no OS/architecture, client, hardware or runtime feature support claim.

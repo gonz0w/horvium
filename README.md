@@ -120,6 +120,8 @@ make tools
 make hooks
 # Commit signed changes first; use the actual proposed PR title.
 PR_TITLE='docs: describe the proposed change' make review
+# Fresh complete portable qualification at milestones/releases:
+# PR_TITLE='type: actual proposed PR title' make review-full
 make lab-status
 ```
 
@@ -127,8 +129,9 @@ Native FreeBSD checks and physical hardware tests have separate gates. Passing
 these foundation checks does not demonstrate functioning storage or file shares.
 Use the [local qualification runner](docs/testing/local-qualification.md) for
 supported disposable FreeBSD suites on the development Mac; see
-[CI cost controls](docs/engineering/ci-costs.md) for the zero Actions policy. All
-checks run locally; no persistent runner is installed. `make lab-stop` stops supervised development sessions and verifies
+[CI cost controls](docs/engineering/ci-costs.md) for the zero Actions policy. The [focused testing workflow](docs/engineering/local-review.md) keeps everyday
+review proportional and reserves fresh complete portable runs for milestones,
+releases and broad changes. All checks run locally; no persistent runner is installed. `make lab-stop` stops supervised development sessions and verifies
 teardown. Maintainers inspect source-bound evidence before merging.
 
 The Go module provides discovery, cache, administration, console and authenticated
