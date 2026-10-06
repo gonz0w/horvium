@@ -229,10 +229,14 @@ func TestNativeImportedPoolUse(t *testing.T) {
 	}
 	pending := false
 	createdGUID := ""
+	exported := false
 	cleanup := func() bool {
 		if !pending {
 			return true
 		}
+		if exported {
+			return false
+		} // Never guess/replay an import during cleanup.
 		cctx, ccancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer ccancel()
 		current, err := collect(cctx)
@@ -340,6 +344,86 @@ func TestNativeImportedPoolUse(t *testing.T) {
 	if got, err := ReviewDeviceUse(missingInputs, inventory.DefaultLimits()); err == nil || !reflect.DeepEqual(got.Observation(), DeviceUse{}) {
 		t.Fatal("combined missing actual status escaped")
 	}
+	// Read labels on the independently owned fixture, then actually export and
+	// reimport only its verified GUID without force. The product gains no import
+	// operation; failure leaves the guest unqualified and it is discarded.
+	labels := func(c capture) (PoolLabels, PoolLabelCapture) {
+		probe := PoolLabelCapture{Device: path, Output: must("/usr/sbin/zdb", "-l", path)}
+		got, err := ParsePoolLabels(c.raw, must("/usr/sbin/diskinfo", path), must("/usr/sbin/diskinfo", "-s", path), probe, inventory.DefaultLimits())
+		if err != nil || !reflect.DeepEqual(got.Disk.Provider, selected) || len(got.Configurations) == 0 {
+			t.Logf("redacted native label format: %q", poolLabelFormat(probe.Output))
+			t.Fatal("native pool labels unavailable", err)
+		}
+		for _, p := range got.Configurations {
+			if p.Name != name || p.PoolGUID != createdGUID || p.VdevGUID != p.TopGUID {
+				t.Fatal("native labels disagree with independently owned pool")
+			}
+		}
+		return got, probe
+	}
+	activeLabels, activeLabelCapture := labels(actual)
+	for _, p := range activeLabels.Configurations {
+		if p.State != "0" {
+			t.Fatal("active pool label state unavailable")
+		}
+	}
+	withLabels := activeInputs
+	withLabels.PoolLabels = &activeLabelCapture
+	labelReview, err := ReviewDeviceUse(withLabels, inventory.DefaultLimits())
+	if err != nil || !labelReview.Observation().PoolLabelsAvailable {
+		t.Fatal("active labels did not join", err)
+	}
+	must("/sbin/zpool", "export", name)
+	exported = true
+	exportCatalogue, err := collect(ctx)
+	if err != nil || !reflect.DeepEqual(exportCatalogue.use, baseline.use) {
+		t.Fatal("exported pool remained imported or foreign catalogue changed", err)
+	}
+	closedHash := strings.TrimSpace(string(must("/sbin/sha256", "-q", path)))
+	if len(closedHash) != 64 {
+		t.Fatal("exported fixture hash unavailable")
+	}
+	exportLabels, exportCapture := labels(exportCatalogue)
+	for _, p := range exportLabels.Configurations {
+		if p.State != "1" {
+			t.Fatal("exported label state unavailable")
+		}
+	}
+	_, exportProbe, exportInfo, exportSerial := probe(exportCatalogue.raw)
+	_, exportInputs := combined(exportCatalogue, exportInfo, exportSerial, &exportProbe)
+	exportInputs.PoolLabels = &exportCapture
+	exportReview, err := ReviewDeviceUse(exportInputs, inventory.DefaultLimits())
+	if err != nil || len(exportReview.Observation().Pools) != 0 || !exportReview.Observation().PoolLabelsAvailable || len(exportReview.Observation().PoolLabels) == 0 {
+		t.Fatal("exported metadata disappeared from selected observation", err)
+	}
+	if err := labelReview.Validate(exportInputs, inventory.DefaultLimits()); !errors.Is(err, ErrDrift) {
+		t.Fatal("actual export did not invalidate review", err)
+	}
+	wrong := exportCapture
+	wrong.Device = "/dev/" + boot.Name
+	if got, err := ParsePoolLabels(exportCatalogue.raw, exportInfo, exportSerial, wrong, inventory.DefaultLimits()); !errors.Is(err, ErrDrift) || !reflect.DeepEqual(got, PoolLabels{}) {
+		t.Fatal("wrong label argument accepted", err)
+	}
+	missingLabels := exportInputs
+	missingLabels.PoolLabels = nil
+	if err := exportReview.Validate(missingLabels, inventory.DefaultLimits()); !errors.Is(err, ErrDrift) {
+		t.Fatal("missing labels did not invalidate review", err)
+	}
+	if closedHash != strings.TrimSpace(string(must("/sbin/sha256", "-q", path))) {
+		t.Fatal("exported label probes modified fixture bytes")
+	}
+	must("/sbin/zpool", "import", "-N", "-d", path, createdGUID)
+	exported = false
+	reimported, err := collect(ctx)
+	if err != nil || !reflect.DeepEqual(reimported.use, actual.use) {
+		t.Fatal("fixture reimport changed native identities/membership", err)
+	}
+	reimportLabels, _ := labels(reimported)
+	for _, p := range reimportLabels.Configurations {
+		if p.State != "0" {
+			t.Fatal("reimported label state unavailable")
+		}
+	}
 	if !cleanup() {
 		t.Fatal("owned pool teardown failed")
 	}
@@ -389,5 +473,6 @@ func TestNativeImportedPoolUse(t *testing.T) {
 	}
 	t.Log("DEVICE_SIGNATURE_ZFS_RESULT zfs_signature=pass removed_signature=pass probe_preservation=pass binding_denial=pass")
 	t.Log("DEVICE_USE_POOL_RESULT imported_join=pass new_pool_drift=pass unchanged=pass residual_join=pass pool_removal_drift=pass missing_capture_denial=pass no_clearance=pass")
+	t.Log("DEVICE_POOL_LABEL_RESULT active_identity=pass exported_identity=pass imported_absence=pass export_drift=pass probe_preservation=pass binding_denial=pass reimport_identity=pass unavailable_denial=pass")
 	t.Log("DEVICE_IMPORTED_POOL_RESULT unmounted_pool=pass catalogue_binding=pass missing_denial=pass fixture_teardown=pass foreign_preservation=pass root_preservation=pass")
 }

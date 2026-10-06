@@ -1,0 +1,773 @@
+{
+  "date": "2026-10-05",
+  "status": "partial positive pool-label identity/export drift qualified; maintainer review pending",
+  "source_commit": "be438496ab6316433af60d57d13aefc2cbfb6a86",
+  "base_commit": "bdcd8ca641317f680436e57f0e7dddc3f7f72941",
+  "input_sha256": {
+    "internal/inventory/clone.go": "3573cdbcd96b52d611c36ce84527331580dae121a21aed014a3f4b2382689b3e",
+    "internal/inventory/clone_test.go": "e2ab5ea29b25a8e58229e9574250eb35086a74415013bff5ced58b788abdc016",
+    "internal/inventory/device_fixture_test.go": "be7279d8ccd4f72bf7398933b38baf46cf8c73fba52af385ea5010bbe01ccf7f",
+    "internal/inventory/devices_freebsd_test.go": "c13fc2cd2d3cec2632d08cc3dbea9315d41ee599edaf821c5d9b6ced827a0c73",
+    "internal/inventory/disk_attachments.go": "1998fba3bbfe5a0c944b1f9a5ad85556bb275cf9b72bb608a9e9a9d0f4c3ec02",
+    "internal/inventory/disk_attachments_freebsd_test.go": "1ce7f1105059b5773886ce53efffbf95d4111a8cd13d0008d51c592b644d50bd",
+    "internal/inventory/disk_attachments_test.go": "805de246fd562a8e1cae2d5a3da152f404805f6f0e4e6eddcc7c02b83422aa32",
+    "internal/inventory/disk_observation.go": "d0bd389ee15a487be015e173862e00cdc01d78d44dd34489c98eb672c0646c20",
+    "internal/inventory/disk_observation_test.go": "c5bdf8259d7e191db9fc6cc7fdd00c93e57677a579b0770d13c301270718e587",
+    "internal/inventory/model.go": "dd531a8bb6b95e0e9fcc15a6da030fcacc86ca839420db829bcc9f8c7b600617",
+    "internal/inventory/parse.go": "039e50c19003a3093dbaff98f26cdc7ac5fc0d3c46a012775bc29697b9faacc1",
+    "internal/inventory/parse_geom.go": "aed24efa5d12228c1eb47a3e0552eb16a5222993e65db8581804fa23ed6de9bf",
+    "internal/inventory/parse_test.go": "95a593626afd2b0066127c3b395d9f5184a6597105fa03c4e00f217d183872b8",
+    "internal/inventory/parse_zfs.go": "d998da649605c8c37bffcd43b2f270e54123b8d4526aaf1ddf9b96f9c6d59577",
+    "internal/inventory/validate.go": "1ade407b0dc235a36fe286d98a0841dafae274030a890efd5d3b0318d0132eb4",
+    "internal/storage/device_use.go": "454ca76635fef1e51380e3b1e3a17ee2bcaa6c37c78b8b98a6806c4df4e1aecd",
+    "internal/storage/device_use_test.go": "4400d75714e7f9ccdd14f7e49eeea4afc17f0575d5ffac21e9d4777914d0dab9",
+    "internal/storage/feature_names.go": "aac75ef72a600c30b29504b66673c86d6fa2050a24dc9f10a9a61e9737e06dd1",
+    "internal/storage/features.go": "fd4718101606afb61ec380cd6fd6b118170d32dd3dd1b8578a3c7d557c3d6512",
+    "internal/storage/features_test.go": "a2eed88f92102cae6a17f375f45142bd1cb3c0439824e734f3cc1f2509d14eef",
+    "internal/storage/identities.go": "407727cce1a4c7ed5ebd22fc901a94f77c92e9138a68cc9e635ea6ce57b0f3c8",
+    "internal/storage/identities_test.go": "a61b5ad2732b53a025360f9e7289ba3f5148eb828b739ffcb3899391fe887555",
+    "internal/storage/imported_pools.go": "a5bf82f09b696500d5f323049c65d879bbdbc9d4b7c854dedbd17f08220d833b",
+    "internal/storage/imported_pools_freebsd_test.go": "519afdab17423a9d2625dec0823304fb053a9467d7e39e916748c70d22cdbefe",
+    "internal/storage/imported_pools_test.go": "9cf5f067440fb8a42641912a425b5ab9f49c73b03ecda1e5fe824172f7476f44",
+    "internal/storage/labels.go": "5c4bf5b4f7f2491efba6891442360b694be8914f3024723a59e99be0be324520",
+    "internal/storage/labels_test.go": "8da6c2b661cac5b00f36b36b4132c782124981338602954201204050d5cc4c9e",
+    "internal/storage/model.go": "3db307ed81855476627b2d27e07ca0e7876b2727a7d4c4c4432d2957be0ed736",
+    "internal/storage/plan.go": "8303ab08a60d4a334b36f40cd231840a142b95021e0a968072f1a1daddd5f15b",
+    "internal/storage/plan_test.go": "e065f0fcb21579a1a5fe4177bcddac16bfb43e6851117e8a052ba13a95c919b7",
+    "internal/storage/pool.go": "412dd656cdef6f8975bb332083db69bd0b2214dedb629126cd66cab16cb7f6cb",
+    "internal/storage/pool_test.go": "1cb15c2086ed39856d876045f2321e7f00fe602e593835d8ebee1a6141664f86",
+    "internal/storage/properties.go": "45c4b0e44fdbccab58be889bbcf4f47f388db513ec1ff71dcc5e4272c0aa06a9",
+    "internal/storage/properties_freebsd_test.go": "d07ecf29c66cf2fd1488be60b18233e61211b449eac2f8541f0b98170a447137",
+    "internal/storage/properties_test.go": "8f61d3ae7cd575026d97d3db21ccff99cf1fe92c2e926c62f7d51c16b9e6c738",
+    "internal/storage/signatures.go": "136d2939a7bb32a8dabbac459b38651f78d796dad99ca394661cacdcd86b2e7d",
+    "internal/storage/signatures_test.go": "417959d0e58a792bfd57fa3a2a5c634afaca6f2d0e007b7588b5f35ce1fb7e3b",
+    "internal/storage/state.go": "7c6145e4ee30092a4eb57b87e70d5e7b69a619991f8b8d66b06c67ba475dc368",
+    "internal/storage/state_test.go": "5f1d13c56fb3cd4743899b4041932713fe93f6e0e7ee942c5295678f241549f9",
+    "internal/storage/system_devices.go": "6f08af9b2610fc7b0d9332d9f111b7576c758cfb0640f961cc4a3ef50d4faadb",
+    "internal/storage/system_devices_freebsd_test.go": "e99a08bd11fc7bd08e5b0d3871783ee856e4e57e7930e8f8bd20a9adf9c8ba7b",
+    "internal/storage/system_devices_test.go": "2041a6b3159a04e881697df0b34a391cc7e42ede5300fb443d7210e2764432bf",
+    "internal/storage/topology.go": "87ba9d454352b323926b81dc46cacb105e8150e84921e994ca7d288bec1b628d",
+    "internal/storage/topology_test.go": "e48bc9c9e456ad6c7658d5eb25bf2a5bc9a5bb1bea8763141776f995c8369928",
+    "internal/storage/validate.go": "25b59ae4f4d300be9d81574f230aa6bda0bdd8b8d07cba89829c09f85f8fc808",
+    "tools/check-device-evidence.py": "cddad5e9c77b4eb61918241b679739cf641a8d3b346c8fc61be6339f1b67986a",
+    "tools/bsd-devices.sh": "0064508f820235f6882afaa1c94174c979f3c39079794ecdd75a597b55321de0",
+    "tools/device-fixture.py": "0cb0e1f8d95e413788cf66d2d25222eb589dd21223a90f2a2710b29d9162451e",
+    "tools/local-qualification.py": "a741036ffd8a53fd4d80868f4b18833265d18d6c87517c6e1a3d557e1b9209da",
+    "tools/owned-process.py": "5f936837400c9180493f327e862c0bfeabeff37fde4e730b2f59749c913e4898",
+    "tools/prepare-performance-vm.py": "22bd3c4effeb94ed8d6946792443d02c8bf52c28f45b6c5de2be4af802a783f7",
+    "tools/go-pins.json": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+    "tools/local-vm-pins.json": "2961ca8a154f2f1fa508cfc9bcb4c68b8c5430b1e6f97ab6c8ca0ee3be648280",
+    "tools/performance-vm-pins.json": "81f0f30e4171fed38e281c644044521a0cdc9f6693cd9b988b229ef4f85d002b",
+    "tools/tests/test_device_evidence.py": "3c834147851d48e1f025411ac9db6a686b3532b4a922aa8a7c865150af12b567",
+    "tools/tests/test_local_qualification.py": "af6f64a5a2edcf456cfa35bd84aff33d3307a4ab54d84924fa5902424a3b3522",
+    "Makefile": "b4deb3e9650a2b79a12eda3fe5da458b8b09ec804402ff3c8df0ea46f36e1dc1",
+    "go.mod": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+    "go.sum": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+  },
+  "functional_source_portable_review": {
+    "source_commit": "be438496ab6316433af60d57d13aefc2cbfb6a86",
+    "base_commit": "bdcd8ca641317f680436e57f0e7dddc3f7f72941",
+    "title": "feat(storage): bind exported pool labels to disk review",
+    "checks": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets",
+      "go-deep-check"
+    ],
+    "tooling_tests": 66,
+    "race": "pass",
+    "bounded_fuzz_targets": 19,
+    "signed_dco_commits": 3,
+    "supervisor_group_cleaned": true
+  },
+  "guests": [
+    {
+      "suite": "devices",
+      "release": "15.1",
+      "started_at": "2026-10-06T00:59:44.596976+00:00",
+      "completed_at": "2026-10-06T01:10:15.449281+00:00",
+      "host_os": "Darwin",
+      "host_arch": "arm64",
+      "qemu_version": "QEMU emulator version 11.1.1",
+      "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+      "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "cpu_model": "qemu64",
+      "cpu_count": 2,
+      "memory_mib": 6144,
+      "accelerator": "tcg",
+      "image": {
+        "release": "15.1",
+        "builder": "2.2.8",
+        "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+        "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+        "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144
+      },
+      "device_backings": [
+        {
+          "bytes": 67108864,
+          "file": "disk-0.raw",
+          "logical": 512,
+          "physical": 4096,
+          "serial": "HVM-UNIQUE-512",
+          "sha256": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+        },
+        {
+          "bytes": 67108864,
+          "file": "disk-1.raw",
+          "logical": 4096,
+          "physical": 4096,
+          "serial": "HVM-UNIQUE-4K",
+          "sha256": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+        },
+        {
+          "bytes": 67108864,
+          "file": "disk-2.raw",
+          "logical": 512,
+          "physical": 512,
+          "serial": "HVM-DUPLICATE",
+          "sha256": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+        },
+        {
+          "bytes": 67108864,
+          "file": "disk-3.raw",
+          "logical": 512,
+          "physical": 512,
+          "serial": "HVM-DUPLICATE",
+          "sha256": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+        },
+        {
+          "bytes": 67108864,
+          "file": "disk-4.raw",
+          "logical": 512,
+          "physical": 512,
+          "serial": "",
+          "sha256": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+        }
+      ],
+      "guest_assertions": true,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "host_teardown": true,
+      "device_backings_preserved": true,
+      "device_fixture_teardown": true,
+      "qualified": true,
+      "supervisor_group_cleaned": true,
+      "supervisor_fixture_cleanup": true,
+      "freebsd_version_kru": [
+        "15.1-RELEASE-p3",
+        "15.1-RELEASE-p3",
+        "15.1-RELEASE-p3"
+      ],
+      "openzfs": [
+        "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+        "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0"
+      ],
+      "go_version": "go1.27.1 freebsd/amd64",
+      "python_version": "3.14.7",
+      "native_utility_hashes": [
+        {
+          "path": "/sbin/gpart",
+          "sha256": "404bb855367c6244c8b6a93019b223a85e1311e394dc53e8006b06b7d7323c39"
+        },
+        {
+          "path": "/sbin/mount",
+          "sha256": "c46db28eff4edb2011ad1463b5891db0fb009879c07ac26b6d11ee55e40a4c38"
+        },
+        {
+          "path": "/sbin/newfs",
+          "sha256": "e0e9fd5347e33d6ff2670c4a9aa1a088a23f6dac1a2454ca7eb46566ce3b0d62"
+        },
+        {
+          "path": "/sbin/sha256",
+          "sha256": "b49fc069216ba000bb7482785bb601177ad65eab77d7c65ff2e7d186d01c0e4f"
+        },
+        {
+          "path": "/sbin/swapoff",
+          "sha256": "7e2846cbb3b19f6070a360ec27a94f50248f626a647f386ecb61ed64ce8ab8fe"
+        },
+        {
+          "path": "/sbin/swapon",
+          "sha256": "7e2846cbb3b19f6070a360ec27a94f50248f626a647f386ecb61ed64ce8ab8fe"
+        },
+        {
+          "path": "/sbin/sysctl",
+          "sha256": "482b0e13db8d55c8de12a08c94bf4fc3a4039a254d37e157f864e08aad9ce7c7"
+        },
+        {
+          "path": "/sbin/umount",
+          "sha256": "33a69773f4908e75a944bc1d229c7a7180ed468c3789d72fca8d5acd44129119"
+        },
+        {
+          "path": "/sbin/zpool",
+          "sha256": "fdc340695bd80a88b087ee78d6051fd048b1c163cee39e345e5a559a58667c85"
+        },
+        {
+          "path": "/usr/sbin/diskinfo",
+          "sha256": "38c92c1ecbf7b6813dcd5b89743ec0c294ca2c2d9922d590faba81bda206963b"
+        },
+        {
+          "path": "/usr/sbin/fstyp",
+          "sha256": "1d2e9b180650afb488c2e3e4665616987e541642e561892162dac30dcb7d642b"
+        },
+        {
+          "path": "/usr/sbin/swapinfo",
+          "sha256": "38ea4e35a245b22b445e2411f29e52f4f2efb463c4cc1c64fea2df6aefb19e77"
+        },
+        {
+          "path": "/usr/sbin/zdb",
+          "sha256": "e8fd5bb5841e49017e0e5dbb823a7ffe1bbc5dd7383c4d5af43fdc81e0a01e80"
+        }
+      ],
+      "root_filesystem": "zfs",
+      "native_test_elapsed_seconds": {
+        "TestNativeDeviceFixtures": 43.71,
+        "TestNativeDiskAttachments": 42.18,
+        "TestNativeImportedPoolUse": 66.95,
+        "TestNativeSystemDeviceUse": 53.69
+      },
+      "assertions": {
+        "fixture": {
+          "backing_relationships": "pass",
+          "boot_exclusion": "pass",
+          "diskinfo_correlation": "pass",
+          "distinct_serial": "pass",
+          "duplicate_serial": "pass",
+          "missing_serial": "pass",
+          "read_preservation": "pass",
+          "sector_variants": "pass"
+        },
+        "correlation": {
+          "duplicate_denial": "pass",
+          "geometry_binding": "pass",
+          "missing_denial": "pass",
+          "unique_serial": "pass"
+        },
+        "attachment": {
+          "blank_table_denial": "pass",
+          "fixture_teardown": "pass",
+          "foreign_preservation": "pass",
+          "native_alias": "pass",
+          "partition_denial": "pass"
+        },
+        "system_use": {
+          "active_swap": "pass",
+          "fixture_teardown": "pass",
+          "foreign_preservation": "pass",
+          "mounted_disk": "pass",
+          "root_backing": "pass",
+          "unsupported_denial": "pass"
+        },
+        "imported_pool": {
+          "catalogue_binding": "pass",
+          "fixture_teardown": "pass",
+          "foreign_preservation": "pass",
+          "missing_denial": "pass",
+          "root_preservation": "pass",
+          "unmounted_pool": "pass"
+        },
+        "signature_ufs": {
+          "probe_preservation": "pass",
+          "ufs_signature": "pass",
+          "unsupported_denial": "pass"
+        },
+        "signature_zfs": {
+          "binding_denial": "pass",
+          "probe_preservation": "pass",
+          "removed_signature": "pass",
+          "zfs_signature": "pass"
+        },
+        "use_pool": {
+          "imported_join": "pass",
+          "missing_capture_denial": "pass",
+          "new_pool_drift": "pass",
+          "no_clearance": "pass",
+          "pool_removal_drift": "pass",
+          "residual_join": "pass",
+          "unchanged": "pass"
+        },
+        "use_system": {
+          "copy_isolation": "pass",
+          "mount_drift": "pass",
+          "mount_join": "pass",
+          "mount_removal_drift": "pass",
+          "swap_drift": "pass",
+          "swap_join": "pass",
+          "swap_removal_drift": "pass",
+          "use_cleanup": "pass"
+        },
+        "pool_labels": {
+          "active_identity": "pass",
+          "binding_denial": "pass",
+          "export_drift": "pass",
+          "exported_identity": "pass",
+          "imported_absence": "pass",
+          "probe_preservation": "pass",
+          "reimport_identity": "pass",
+          "unavailable_denial": "pass"
+        }
+      },
+      "qualification_log_sha256": "6843756039cd8163132859df7f41b7670ad6c4d3bf288e9d219a289e38633726",
+      "result_record_sha256": "4dccf84c9722f0ca73d53290ed34238676be4e17ccba35b31693cf118b239652"
+    },
+    {
+      "suite": "devices",
+      "release": "14.5",
+      "started_at": "2026-10-06T01:10:35.214163+00:00",
+      "completed_at": "2026-10-06T01:16:18.861280+00:00",
+      "host_os": "Darwin",
+      "host_arch": "arm64",
+      "qemu_version": "QEMU emulator version 11.1.1",
+      "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+      "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "cpu_model": "qemu64",
+      "cpu_count": 2,
+      "memory_mib": 6144,
+      "accelerator": "tcg",
+      "image": {
+        "release": "14.5",
+        "builder": "2.2.8",
+        "compressed_sha256": "cd90489bb7d94585016e177b9e3f0084f3410454dc0af19481f44ddd5aa45257",
+        "qcow2_sha256": "6593466e8d6341eaad95755973ab594222516dd75bcd99b18239b5047e5396f4",
+        "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144
+      },
+      "device_backings": [
+        {
+          "bytes": 67108864,
+          "file": "disk-0.raw",
+          "logical": 512,
+          "physical": 4096,
+          "serial": "HVM-UNIQUE-512",
+          "sha256": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+        },
+        {
+          "bytes": 67108864,
+          "file": "disk-1.raw",
+          "logical": 4096,
+          "physical": 4096,
+          "serial": "HVM-UNIQUE-4K",
+          "sha256": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+        },
+        {
+          "bytes": 67108864,
+          "file": "disk-2.raw",
+          "logical": 512,
+          "physical": 512,
+          "serial": "HVM-DUPLICATE",
+          "sha256": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+        },
+        {
+          "bytes": 67108864,
+          "file": "disk-3.raw",
+          "logical": 512,
+          "physical": 512,
+          "serial": "HVM-DUPLICATE",
+          "sha256": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+        },
+        {
+          "bytes": 67108864,
+          "file": "disk-4.raw",
+          "logical": 512,
+          "physical": 512,
+          "serial": "",
+          "sha256": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+        }
+      ],
+      "guest_assertions": true,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "host_teardown": true,
+      "device_backings_preserved": true,
+      "device_fixture_teardown": true,
+      "qualified": true,
+      "supervisor_group_cleaned": true,
+      "supervisor_fixture_cleanup": true,
+      "freebsd_version_kru": [
+        "14.5-RELEASE",
+        "14.5-RELEASE",
+        "14.5-RELEASE"
+      ],
+      "openzfs": [
+        "zfs-2.2.9-FreeBSD_g079ba86d7",
+        "zfs-kmod-2.2.9-FreeBSD_g079ba86d7"
+      ],
+      "go_version": "go1.27.1 freebsd/amd64",
+      "python_version": "3.14.7",
+      "native_utility_hashes": [
+        {
+          "path": "/sbin/gpart",
+          "sha256": "fe906df6c0b4db79431caeb809f635d687760ffea1dbbabd54704ac2260d7611"
+        },
+        {
+          "path": "/sbin/mount",
+          "sha256": "91a17c3b3275f65dcb51966b7f33ba214735d54763d0c99a2956db0247c3f388"
+        },
+        {
+          "path": "/sbin/newfs",
+          "sha256": "22e86b07701b5485ab89549a3534957dc200302c445a5849103c4b61eb5dc3a4"
+        },
+        {
+          "path": "/sbin/sha256",
+          "sha256": "fef0c0e6aee66e8adb7261466d3aa8cf10375e879eca68c917ff767565ad51f7"
+        },
+        {
+          "path": "/sbin/swapoff",
+          "sha256": "273c874d2c031f8c8378ceff5e8001e480dde3be729835cd94a387a670260999"
+        },
+        {
+          "path": "/sbin/swapon",
+          "sha256": "273c874d2c031f8c8378ceff5e8001e480dde3be729835cd94a387a670260999"
+        },
+        {
+          "path": "/sbin/sysctl",
+          "sha256": "7601327d63fcf4da02174b404bc54c2b2d1493e5186ea0d2e4b28e1efebfd7ae"
+        },
+        {
+          "path": "/sbin/umount",
+          "sha256": "8ca701e67340d68f6b58c4cbbae2f03dccca8875b54f6e65ffd870139ac35c85"
+        },
+        {
+          "path": "/sbin/zpool",
+          "sha256": "06c2b7f784a4e1d7a10eedbe27b7adaaeaa83c6dfec8dd7384f9e9ba1b719c47"
+        },
+        {
+          "path": "/usr/sbin/diskinfo",
+          "sha256": "50e0846108500fc6e2ff7d812eda8cfc7613ad69f6b974a273ef67cca90c3ba0"
+        },
+        {
+          "path": "/usr/sbin/fstyp",
+          "sha256": "37839a38a39526ef6d8a275dafcb7edaa07c10bc833b09f278863cdd9d77ea08"
+        },
+        {
+          "path": "/usr/sbin/swapinfo",
+          "sha256": "40d324cdd5e47125c41a42529c3f62abb88f86bafbc3931049b7e2af44fb17c5"
+        },
+        {
+          "path": "/usr/sbin/zdb",
+          "sha256": "16236dd4791ee1bbd97258dce793efd8b89dd1aba62677563b756eee57fa380c"
+        }
+      ],
+      "root_filesystem": "ufs",
+      "native_test_elapsed_seconds": {
+        "TestNativeDeviceFixtures": 25.4,
+        "TestNativeDiskAttachments": 18.75,
+        "TestNativeImportedPoolUse": 37.57,
+        "TestNativeSystemDeviceUse": 25.0
+      },
+      "assertions": {
+        "fixture": {
+          "backing_relationships": "pass",
+          "boot_exclusion": "pass",
+          "diskinfo_correlation": "pass",
+          "distinct_serial": "pass",
+          "duplicate_serial": "pass",
+          "missing_serial": "pass",
+          "read_preservation": "pass",
+          "sector_variants": "pass"
+        },
+        "correlation": {
+          "duplicate_denial": "pass",
+          "geometry_binding": "pass",
+          "missing_denial": "pass",
+          "unique_serial": "pass"
+        },
+        "attachment": {
+          "blank_table_denial": "pass",
+          "fixture_teardown": "pass",
+          "foreign_preservation": "pass",
+          "native_alias": "pass",
+          "partition_denial": "pass"
+        },
+        "system_use": {
+          "active_swap": "pass",
+          "fixture_teardown": "pass",
+          "foreign_preservation": "pass",
+          "mounted_disk": "pass",
+          "root_backing": "pass",
+          "unsupported_denial": "pass"
+        },
+        "imported_pool": {
+          "catalogue_binding": "pass",
+          "fixture_teardown": "pass",
+          "foreign_preservation": "pass",
+          "missing_denial": "pass",
+          "root_preservation": "pass",
+          "unmounted_pool": "pass"
+        },
+        "signature_ufs": {
+          "probe_preservation": "pass",
+          "ufs_signature": "pass",
+          "unsupported_denial": "pass"
+        },
+        "signature_zfs": {
+          "binding_denial": "pass",
+          "probe_preservation": "pass",
+          "removed_signature": "pass",
+          "zfs_signature": "pass"
+        },
+        "use_pool": {
+          "imported_join": "pass",
+          "missing_capture_denial": "pass",
+          "new_pool_drift": "pass",
+          "no_clearance": "pass",
+          "pool_removal_drift": "pass",
+          "residual_join": "pass",
+          "unchanged": "pass"
+        },
+        "use_system": {
+          "copy_isolation": "pass",
+          "mount_drift": "pass",
+          "mount_join": "pass",
+          "mount_removal_drift": "pass",
+          "swap_drift": "pass",
+          "swap_join": "pass",
+          "swap_removal_drift": "pass",
+          "use_cleanup": "pass"
+        },
+        "pool_labels": {
+          "active_identity": "pass",
+          "binding_denial": "pass",
+          "export_drift": "pass",
+          "exported_identity": "pass",
+          "imported_absence": "pass",
+          "probe_preservation": "pass",
+          "reimport_identity": "pass",
+          "unavailable_denial": "pass"
+        }
+      },
+      "qualification_log_sha256": "3bb9f5d7a9c5aaad39808907247726a6cc3d6f9cb8cb2e93c5ff19ace1367453",
+      "result_record_sha256": "d2610106a3c250e5cf6a7a9c0de4853820e457d316424876ad8c351347520d2d"
+    }
+  ],
+  "initial_unqualified_attempts": [
+    {
+      "source_commit": "57124972f94265fde2082e7b170b50cd9be938ab",
+      "release": "15.1",
+      "started_at": "2026-10-06T00:41:32.601127+00:00",
+      "completed_at": "2026-10-06T00:43:57.974036+00:00",
+      "qualified": false,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "host_teardown": true,
+      "device_backings_preserved": true,
+      "device_fixture_teardown": true,
+      "supervisor_group_cleaned": true,
+      "supervisor_fixture_cleanup": true,
+      "reason": "Utility hashing used /sbin/zdb; installed base utility is /usr/sbin/zdb. No native tests or fixture storage writes executed; complete owned teardown passed.",
+      "qualification_log_sha256": "e679d81e701014169e33c09f6de58dc85c238e9e683d86707652a43803016f92",
+      "result_record_sha256": "5b87cb8da8256a256253c954bdc95b3ec73d1de43a0f3721859696762845eaca"
+    },
+    {
+      "source_commit": "3904e4b15842b8e416606f9d496b6607869fcd14",
+      "release": "15.1",
+      "started_at": "2026-10-06T00:45:49.160638+00:00",
+      "completed_at": "2026-10-06T00:54:45.229635+00:00",
+      "qualified": false,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "host_teardown": true,
+      "device_backings_preserved": true,
+      "device_fixture_teardown": true,
+      "supervisor_group_cleaned": true,
+      "supervisor_fixture_cleanup": true,
+      "reason": "Identity/geometry and attachments passed, then first active-label capture refused. Pinned producers include omitted allocation/compatibility metadata. Behavioral fixture now covers those typed fields; repaired source reruns both suites. Owned pool cleanup and host teardown completed.",
+      "qualification_log_sha256": "14ea429aa67663941770d7bb17a61560cac51ef43b2014f405740f8870b879ff",
+      "result_record_sha256": "6a286ab1f9382d943737d101cb05a50431a941818b0db2c7aeefae08b7358308"
+    }
+  ],
+  "primary_source_provenance": {
+    "sources": [
+      {
+        "release": "15.1",
+        "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+        "path": "sys/contrib/openzfs/cmd/zdb/zdb.c",
+        "url": "https://raw.githubusercontent.com/freebsd/freebsd-src/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/cmd/zdb/zdb.c",
+        "sha256": "aef215232f4efb2731ed5c117d658fd3c03a648f1be0841b436e245dd2b64180"
+      },
+      {
+        "release": "15.1",
+        "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+        "path": "sys/contrib/openzfs/module/nvpair/nvpair.c",
+        "url": "https://raw.githubusercontent.com/freebsd/freebsd-src/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/module/nvpair/nvpair.c",
+        "sha256": "299dd0f6f68a543b1d3e36072eb4c06dce7b2c4bbdf969d6ec377546b379eb74"
+      },
+      {
+        "release": "14.5",
+        "revision": "231eee334c098a8398bc959202415c48058f67f0",
+        "path": "sys/contrib/openzfs/cmd/zdb/zdb.c",
+        "url": "https://raw.githubusercontent.com/freebsd/freebsd-src/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/cmd/zdb/zdb.c",
+        "sha256": "f7663bd2af3560f3bd1013a453321c9831e866b32e93d5f4d980d8518b68fc9b"
+      },
+      {
+        "release": "14.5",
+        "revision": "231eee334c098a8398bc959202415c48058f67f0",
+        "path": "sys/contrib/openzfs/module/nvpair/nvpair.c",
+        "url": "https://raw.githubusercontent.com/freebsd/freebsd-src/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/module/nvpair/nvpair.c",
+        "sha256": "69d9aefb39d26ab7307ec12a72dbd76160d99e3d918f2a9957c30fc4033d5b93"
+      },
+      {
+        "release": "15.1",
+        "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+        "path": "sys/contrib/openzfs/man/man8/zdb.8",
+        "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/man/man8/zdb.8",
+        "sha256": "2c7064318102af84f94dd9406a7e9a801891031c108ac726a4646f31c4b72035"
+      },
+      {
+        "release": "15.1",
+        "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+        "path": "sys/contrib/openzfs/lib/libzpool/util.c",
+        "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/lib/libzpool/util.c",
+        "sha256": "ba90ed953f27ee3d996783334c4ce9c802b3c6ee03056e312267942060fa88d2"
+      },
+      {
+        "release": "15.1",
+        "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+        "path": "sys/contrib/openzfs/lib/libnvpair/libnvpair.c",
+        "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/lib/libnvpair/libnvpair.c",
+        "sha256": "1267d107c67cfe9b5105aa9e5c02b52adae2cfea6f9cac7f718b5fff30814c3c"
+      },
+      {
+        "release": "15.1",
+        "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+        "path": "sys/contrib/openzfs/include/sys/fs/zfs.h",
+        "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/include/sys/fs/zfs.h",
+        "sha256": "2d685c99f4ec5b8bb72d82ad24531258a69d6717d8403096f180ddf8010ffdba"
+      },
+      {
+        "release": "14.5",
+        "revision": "231eee334c098a8398bc959202415c48058f67f0",
+        "path": "sys/contrib/openzfs/man/man8/zdb.8",
+        "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/man/man8/zdb.8",
+        "sha256": "e799328c0667381657ba712c9b758c841e8d462387dc3d2c2fcee2cf73005404"
+      },
+      {
+        "release": "14.5",
+        "revision": "231eee334c098a8398bc959202415c48058f67f0",
+        "path": "sys/contrib/openzfs/lib/libzpool/util.c",
+        "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/lib/libzpool/util.c",
+        "sha256": "04a56e96f2679127ff0c045e70cf03e67d6f41748efab6f0fe291a970ac6d264"
+      },
+      {
+        "release": "14.5",
+        "revision": "231eee334c098a8398bc959202415c48058f67f0",
+        "path": "sys/contrib/openzfs/lib/libnvpair/libnvpair.c",
+        "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/lib/libnvpair/libnvpair.c",
+        "sha256": "f943c89d198325df356c00945aba0788e6d73ffc4a83a8ae2265e7b4263adcb5"
+      },
+      {
+        "release": "14.5",
+        "revision": "231eee334c098a8398bc959202415c48058f67f0",
+        "path": "sys/contrib/openzfs/include/sys/fs/zfs.h",
+        "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/include/sys/fs/zfs.h",
+        "sha256": "b9b3537a040361e922bf3477f1c76c4effb664d09ae08ce7e9b719f7f447f975"
+      },
+      {
+        "release": "15.1",
+        "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+        "path": "sys/contrib/openzfs/module/zfs/vdev_label.c",
+        "url": "https://raw.githubusercontent.com/freebsd/freebsd-src/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/module/zfs/vdev_label.c",
+        "sha256": "78c0f228e55cd77555477e526e5ee7ae52d4af3faf3261faedc651dbdd793881"
+      },
+      {
+        "release": "14.5",
+        "revision": "231eee334c098a8398bc959202415c48058f67f0",
+        "path": "sys/contrib/openzfs/module/zfs/vdev_label.c",
+        "url": "https://raw.githubusercontent.com/freebsd/freebsd-src/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/module/zfs/vdev_label.c",
+        "sha256": "64ad6a700d34a500d3da711a7afb5a1c6f9da2f95ddf9bfae8ec93c33c405d33"
+      },
+      {
+        "release": "15.1",
+        "revision": "e38a7085f3a8ecd317c947591fe42b5ca9ab317b",
+        "path": "sys/contrib/openzfs/module/zfs/spa_config.c",
+        "url": "https://raw.githubusercontent.com/freebsd/freebsd-src/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/module/zfs/spa_config.c",
+        "sha256": "7da779316b417b98c0eee95adcac3c28efed50512b7fe14540179fa76ad1a035"
+      },
+      {
+        "release": "14.5",
+        "revision": "231eee334c098a8398bc959202415c48058f67f0",
+        "path": "sys/contrib/openzfs/module/zfs/spa_config.c",
+        "url": "https://raw.githubusercontent.com/freebsd/freebsd-src/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/module/zfs/spa_config.c",
+        "sha256": "f6d725e4e6844bd6b7461da4ba82a61548a4b3ac1e30b1bec9298f3faac81965"
+      }
+    ],
+    "unchanged_prior_manifests": [
+      {
+        "path": "docs/testing/M2/dataset-state-manifest.json",
+        "sha256": "742c54282f4eb0405deea105b40ff02138ca98cb04cc09ce47f38dccff227021"
+      },
+      {
+        "path": "docs/testing/M2/device-use-review-manifest.json",
+        "sha256": "3b9a3f90aca2f3dfcc61e0b31f9af3ee2a45dcf3d452fa837da6af1c23d0ef4d"
+      },
+      {
+        "path": "docs/testing/M2/devices-local-manifest.json",
+        "sha256": "813ea84749164efb9940c3cb472d555a524729893ff85fbac8b63bd5a88ca1b8"
+      },
+      {
+        "path": "docs/testing/M2/devices-manifest.json",
+        "sha256": "93b015d90819214f9b2e837afa9a0bdbe51c0f5c0771e90608feed4348c650cd"
+      },
+      {
+        "path": "docs/testing/M2/disk-attachments-manifest.json",
+        "sha256": "56a4d0029603f13e504c73e4f4a0f53938888340530fb7d03d846f3936d00667"
+      },
+      {
+        "path": "docs/testing/M2/disk-correlation-manifest.json",
+        "sha256": "370984097837e061ce171cac785695ec369ef726b184b4895ca3ef69e8dd3978"
+      },
+      {
+        "path": "docs/testing/M2/features-manifest.json",
+        "sha256": "7d5c9fdd433a5aca3f8f96eb3a4f8c7153fa5aaf6e9bd72715caae3689029ae5"
+      },
+      {
+        "path": "docs/testing/M2/filesystem-signatures-manifest.json",
+        "sha256": "cc0b444f6140728306ce9b0e13362ef5474110f0c3948bce23d0838da2ac98b7"
+      },
+      {
+        "path": "docs/testing/M2/identities-manifest.json",
+        "sha256": "8dbc093fe986cb4e18ecaa8ba2097eb24746d4d5b202033a34372d05d344f5fc"
+      },
+      {
+        "path": "docs/testing/M2/imported-pool-use-manifest.json",
+        "sha256": "9c0d30872511adee7069e832fbdcb8def0fafbd9a96ccd61bf7297c073d6c174"
+      },
+      {
+        "path": "docs/testing/M2/pool-state-manifest.json",
+        "sha256": "12be8f7c3e6358a52b5494d822fc3366a91a4ff39abb1b1ffdc3f091f2180d30"
+      },
+      {
+        "path": "docs/testing/M2/properties-manifest.json",
+        "sha256": "74da0b8025b86d12501cd93e8a648dac47aecf59898edd8d16963eaae23fb693"
+      },
+      {
+        "path": "docs/testing/M2/system-device-use-manifest.json",
+        "sha256": "fed30b8059bc52c149c19e2aec40b5db6dae375c8170e728de21a667e63ec62c"
+      },
+      {
+        "path": "docs/testing/M2/topology-manifest.json",
+        "sha256": "5e2200057bb83935053a93993c928cbfae9daa5e5c784f9ed005346b315447b6"
+      }
+    ],
+    "limits": "Pinned zdb manual/producer, nvlist printing and pool state sources describe inspected contracts, not installed binary build provenance. Thirteen executed utility hashes per guest identify actual binaries. All prior M2 manifests remain byte-for-byte unchanged."
+  },
+  "limits": [
+    "Five owned 64 MiB snapshot virtio fixtures and one boot-image disk; actual UFS root on 14.5 and ZFS root on 15.1. Physical/controller/multi-host/mirror or RAIDZ label qualification remains separate.",
+    "Existing random unmounted single-leaf pool on HVM-UNIQUE-4K is exported without force. Its independently recorded GUID is reimported with -N -d on that exact owned disk without force, then guarded cleanup removes only that pool. These are disposable test-only writes; product code performs no native I/O or mutation.",
+    "Active/exported labels retain independently observed pool identity and recorded state; exported pool disappears from imported catalogue while its label facts remain positive. Actual export invalidates combined review. Wrong-address/unavailable controls alter only capture copies. Reimport preserves original independently observed catalogue identity/backing and active label state.",
+    "Whole closed exported fixture bytes remain unchanged across read-only zdb/fstyp/diskinfo/hash observations and comparisons. Previous foreign/root/system/signature checks rerun; all original host backings/base/runtime are preserved, owned disks/image/key/variables removed and process groups stopped.",
+    "The qualified positive grammar is version 5000, native member states 0/1/2 and bounded scalar/container metadata. Quoted strings with embedded apostrophes or colon-plus-space delimiters refuse; destroyed-state positive handling has portable coverage only.",
+    "Default zdb -l groups identical configurations and reports checksum only for the representative label. Four-index group coverage is not all-label checksum verification or integrity, complete pool topology/membership, all signature absence or safe reuse. Positive destroyed state has portable coverage only.",
+    "Unsupported/error/partial captures refuse with no observation. Capture syntax cannot prove successful execution, freshness, completeness, provenance or atomicity. Unknown outputs never establish blank/unused/eligible state.",
+    "No runtime collector/helper/HTTP/CLI wiring, complete device-use clearance, raw-open/locality/shared-host fencing, enrollment/reservations/durable jobs or product mutation authority. Complete slice 1 and later M2 acceptance gates remain open.",
+    "Final PR-head portable review is separate; subsequent documentation/evidence updates must leave all recorded functional/test/tool input hashes unchanged."
+  ]
+}

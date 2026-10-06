@@ -16,6 +16,7 @@ SIGNATURE_UFS_CASES={'ufs_signature','probe_preservation','unsupported_denial'}
 SIGNATURE_ZFS_CASES={'zfs_signature','removed_signature','probe_preservation','binding_denial'}
 
 USE_POOL_CASES={'imported_join','new_pool_drift','unchanged','residual_join','pool_removal_drift','missing_capture_denial','no_clearance'}
+POOL_LABEL_CASES={'active_identity','exported_identity','imported_absence','export_drift','probe_preservation','binding_denial','reimport_identity','unavailable_denial'}
 USE_SYSTEM_CASES={'mount_join','swap_join','mount_drift','swap_drift','copy_isolation','use_cleanup','mount_removal_drift','swap_removal_drift'}
 
 def validate(text, guest=False):
@@ -63,7 +64,8 @@ def validate(text, guest=False):
     for marker, cases in [('DEVICE_SIGNATURE_UFS_RESULT', SIGNATURE_UFS_CASES),
                           ('DEVICE_SIGNATURE_ZFS_RESULT', SIGNATURE_ZFS_CASES),
                           ('DEVICE_USE_POOL_RESULT', USE_POOL_CASES),
-                          ('DEVICE_USE_SYSTEM_RESULT', USE_SYSTEM_CASES)]:
+                          ('DEVICE_USE_SYSTEM_RESULT', USE_SYSTEM_CASES),
+                          ('DEVICE_POOL_LABEL_RESULT', POOL_LABEL_CASES)]:
         records=re.findall(marker+r' ([^\n]+)',text)
         if len(records)!=1:
             raise ValueError('one complete native signature result required')

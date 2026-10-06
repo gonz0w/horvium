@@ -20,18 +20,21 @@ type DeviceUseCapture struct {
 	GEOM, Mounts, Swap, Pools, DiskInfo, DiskSerial []byte
 	PoolStatus                                      []PoolUseCapture
 	Filesystem                                      *FilesystemProbeCapture
+	PoolLabels                                      *PoolLabelCapture
 }
 
 // DeviceUse retains positive selected-disk facts, including the full backing
 // of a matching mount/swap/pool. Empty sets are not complete device clearance.
 // No eligible/unused/enrolled state or write authority is produced.
 type DeviceUse struct {
-	Disk               inventory.DiskObservation
-	Mounts             []MountUse
-	Swap               []SwapUse
-	Pools              []ImportedPoolUse
-	Signature          string
-	SignatureAvailable bool
+	Disk                inventory.DiskObservation
+	Mounts              []MountUse
+	Swap                []SwapUse
+	Pools               []ImportedPoolUse
+	Signature           string
+	SignatureAvailable  bool
+	PoolLabels          []PoolLabelConfiguration
+	PoolLabelsAvailable bool
 }
 
 // DeviceUseReview owns an immutable observation baseline. It is not an operation
@@ -75,6 +78,12 @@ func ReviewDeviceUse(c DeviceUseCapture, limits inventory.Limits) (DeviceUseRevi
 	if c.Filesystem != nil {
 		stages++
 		if !take(len(c.Filesystem.Device)) || !take(len(c.Filesystem.Output)) {
+			return zero, ErrLimit
+		}
+	}
+	if c.PoolLabels != nil {
+		stages++
+		if !take(len(c.PoolLabels.Device)) || !take(len(c.PoolLabels.Output)) {
 			return zero, ErrLimit
 		}
 	}
@@ -158,6 +167,16 @@ func ReviewDeviceUse(c DeviceUseCapture, limits inventory.Limits) (DeviceUseRevi
 		}
 		use.Signature, use.SignatureAvailable = sig.Type, true
 	}
+	if c.PoolLabels != nil {
+		labels, err := ParsePoolLabels(c.GEOM, c.DiskInfo, c.DiskSerial, *c.PoolLabels, perStage)
+		if err != nil {
+			return zero, err
+		}
+		if !reflect.DeepEqual(labels.Disk, disk) {
+			return zero, ErrDrift
+		}
+		use.PoolLabels, use.PoolLabelsAvailable = labels.Configurations, true
+	}
 	return DeviceUseReview{use: use, initialized: true}, nil
 }
 
@@ -211,6 +230,10 @@ func cloneDeviceUse(u DeviceUse) DeviceUse {
 	u.Pools = append([]ImportedPoolUse(nil), u.Pools...)
 	for i := range u.Pools {
 		u.Pools[i].Disks = cloneDisks(u.Pools[i].Disks)
+	}
+	u.PoolLabels = append([]PoolLabelConfiguration(nil), u.PoolLabels...)
+	for i := range u.PoolLabels {
+		u.PoolLabels[i].Labels = append([]int(nil), u.PoolLabels[i].Labels...)
 	}
 	return u
 }
