@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Package storage validates prospective management scope and property reviews.
-// It has no executor, persistence, transport or connection to the M1 inventory.
+// It has no executor, file store, transport or connection to the M1 inventory.
 package storage
 
 import (
@@ -134,7 +134,8 @@ type Observation struct {
 // Policy is trusted local enrollment, never request-supplied authority. GUIDs
 // identify resources; names/parents are the explicitly reviewed drift baseline.
 // Each scope grants only its listed properties, never implicit child ownership.
-// File ownership/schema/enrollment and persistence are later slice gates.
+// The ownership codec is separate; trusted file provenance, enrollment and
+// persistence remain later slice gates.
 type Policy struct {
 	Revision           uint64
 	PoolGUID, PoolName string

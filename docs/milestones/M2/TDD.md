@@ -232,6 +232,16 @@ actual separate-process contention/death/reacquisition, stable lock inode,
 foreign preservation and complete fixture teardown. Both declared releases and
 full host base/runtime/group teardown passed at signed functional/suite source
 `123044304e75f6df27d43eee085c23435ddbcce1`; see the
-[native manifest](../../testing/M2/state-directory-manifest.json). Maintainer
-review remains pending.
+[native manifest](../../testing/M2/state-directory-manifest.json). PR 39 accepted
+this partial boundary.
 No full record/durable job/recovery/power-cut/ACL/hardware claim follows.
+
+## Ownership record prerequisite
+
+The [strict ownership codec](../../testing/M2/ownership-records.md) covers partial
+M2-OWN-001/M2-STATE-001 at T1: required exact fields/types/version, duplicate/null/
+unknown refusal, identity/parent/property consistency, canonical damage checksums,
+byte/capacity limits, immutable round trips and no implicit scope. Independently
+recomputed checksums on invalid policies must still refuse; fuzzing cannot return
+authority on denial. No filesystem operations or admission are implemented here.
+Portable qualification is pending; actual file/store/recovery gates remain open.
