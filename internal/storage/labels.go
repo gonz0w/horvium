@@ -152,11 +152,11 @@ func ParsePoolLabels(geom, info, serial []byte, c PoolLabelCapture, l inventory.
 					if !container {
 						return zero, ErrUnavailable
 					}
-				case "version", "state", "txg", "pool_guid", "top_guid", "guid", "vdev_children", "errata", "hostid":
+				case "version", "state", "txg", "pool_guid", "top_guid", "guid", "vdev_children", "errata", "hostid", "min_alloc", "max_alloc", "create_txg":
 					if container || !labelNumber(value, true) {
 						return zero, ErrUnavailable
 					}
-				case "name", "hostname":
+				case "name", "hostname", "comment", "compatibility":
 					if container || !labelString(value) {
 						return zero, ErrUnavailable
 					}

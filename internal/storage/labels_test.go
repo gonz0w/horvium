@@ -10,7 +10,7 @@ import (
 	"github.com/gonz0w/horvium/internal/inventory"
 )
 
-const labelOutput = "------------------------------------\nLABEL 0 \n------------------------------------\n    version: 5000\n    name: 'fixture'\n    state: 1\n    txg: 8\n    pool_guid: 100\n    top_guid: 101\n    guid: 101\n    vdev_children: 1\n    vdev_tree:\n        type: 'disk'\n        id: 0\n        guid: 101\n        path: '/dev/ada1'\n        whole_disk: 0\n    features_for_read:\n    labels = 0 1 2 3 \n"
+const labelOutput = "------------------------------------\nLABEL 0 \n------------------------------------\n    version: 5000\n    name: 'fixture'\n    state: 1\n    txg: 8\n    min_alloc: 0\n    max_alloc: 0\n    compatibility: 'legacy'\n    pool_guid: 100\n    top_guid: 101\n    guid: 101\n    vdev_children: 1\n    vdev_tree:\n        type: 'disk'\n        id: 0\n        guid: 101\n        path: '/dev/ada1'\n        whole_disk: 0\n    features_for_read:\n    labels = 0 1 2 3 \n"
 
 func labelFixture() PoolLabelCapture {
 	return PoolLabelCapture{Device: "/dev/ada1", Output: []byte(labelOutput)}
@@ -138,4 +138,77 @@ func FuzzPoolLabels(f *testing.F) {
 			t.Fatal("unbound labels")
 		}
 	})
+}
+
+func TestPoolLabelsRejectUnknownProducerFieldsAndWrongOptionalTypes(t *testing.T) {
+	for _, output := range []string{
+		strings.Replace(labelOutput, "min_alloc: 0", "min_alloc: 'zero'", 1),
+		strings.Replace(labelOutput, "compatibility: 'legacy'", "compatibility: 0", 1),
+		strings.Replace(labelOutput, "min_alloc: 0", "invented: 0", 1),
+	} {
+		c := labelFixture()
+		c.Output = []byte(output)
+		if got, err := ParsePoolLabels([]byte(signatureGEOM), []byte(signatureInfo), []byte(signatureSerial), c, inventory.DefaultLimits()); err == nil || !reflect.DeepEqual(got, PoolLabels{}) {
+			t.Fatal("unknown or incorrectly typed producer field accepted")
+		}
+	}
+}
+
+// Report only public field names and value kinds on a native fixture refusal.
+// Never print pool/host names, GUIDs, paths, captured values or arbitrary text.
+func poolLabelFormat(output []byte) []string {
+	var result []string
+	for _, line := range strings.Split(string(output), "\n") {
+		if len(result) == 128 {
+			return append(result, "format truncated")
+		}
+		text := strings.TrimSpace(line)
+		switch {
+		case text == labelSeparator:
+			result = append(result, "separator")
+		case strings.HasPrefix(text, "LABEL "):
+			result = append(result, "label header")
+		case strings.HasPrefix(text, "labels = "):
+			result = append(result, "label group")
+		case text == "":
+			result = append(result, "empty row")
+		default:
+			key, value, kind := text, "", "container"
+			if !strings.HasSuffix(text, ":") {
+				cut := strings.LastIndex(text, ": ")
+				if cut < 1 {
+					result = append(result, "unsupported row")
+					continue
+				}
+				key, value = text[:cut], text[cut+2:]
+				kind = "unsupported value"
+				if labelString(value) {
+					kind = "string"
+				} else if labelNumber(value, true) {
+					kind = "number"
+				}
+			} else {
+				key = strings.TrimSuffix(text, ":")
+			}
+			if len(key) > 128 || !labelKey.MatchString(key) || !strings.Contains("|version|name|state|txg|pool_guid|top_guid|guid|vdev_children|errata|hostid|hostname|min_alloc|max_alloc|create_txg|compatibility|comment|vdev_tree|features_for_read|type|id|path|whole_disk|metaslab_array|metaslab_shift|ashift|asize|is_log|", "|"+key+"|") {
+				result = append(result, "unsupported key")
+				continue
+			}
+			result = append(result, key+" ("+kind+")")
+		}
+	}
+	return result
+}
+
+func TestNativeLabelFormatDiagnosticRedactsCapturedValues(t *testing.T) {
+	output := []byte("    name: 'private-name'\n    hostname: 'private-host'\n    guid: 123456789\n        path: '/dev/private-disk'\nprivate-token-invalid-row\n    private_key: 123\n")
+	got := strings.Join(poolLabelFormat(output), "\n")
+	for _, private := range []string{"private-name", "private-host", "123456789", "private-disk", "private-token", "private_key"} {
+		if strings.Contains(got, private) {
+			t.Fatal("native format diagnostic leaked captured values")
+		}
+	}
+	if !strings.Contains(got, "name (string)") || !strings.Contains(got, "guid (number)") {
+		t.Fatal("redacted format lost useful structure")
+	}
 }

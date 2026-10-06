@@ -351,6 +351,7 @@ func TestNativeImportedPoolUse(t *testing.T) {
 		probe := PoolLabelCapture{Device: path, Output: must("/usr/sbin/zdb", "-l", path)}
 		got, err := ParsePoolLabels(c.raw, must("/usr/sbin/diskinfo", path), must("/usr/sbin/diskinfo", "-s", path), probe, inventory.DefaultLimits())
 		if err != nil || !reflect.DeepEqual(got.Disk.Provider, selected) || len(got.Configurations) == 0 {
+			t.Logf("redacted native label format: %q", poolLabelFormat(probe.Output))
 			t.Fatal("native pool labels unavailable", err)
 		}
 		for _, p := range got.Configurations {

@@ -21,6 +21,9 @@ unknown top-level fields/version/state, controls, malformed indentation, duplica
 keys, overflow and contradictory pool/leaf/top identities or states. Retain each
 configuration's pool name/GUID, top/leaf GUID, transaction group, native state,
 label indices and SHA-256 of its complete body, including opaque nested metadata.
+Known optional numeric allocation/creation fields and quoted compatibility/comment/
+host fields are admitted by their inspected producer types; unknown fields still
+refuse. These fields convey no feature/profile, policy or capacity authority.
 Nested rows are syntax-bounded; they do not establish complete vdev topology or
 validate historical embedded device paths. Never execute an embedded path.
 
@@ -92,6 +95,15 @@ stopped during utility hashing because the fixture used `/sbin/zdb` instead of
 the installed `/usr/sbin/zdb`. No native tests or fixture storage writes executed.
 Host backings/base/runtime were preserved, all owned files removed and the group
 stopped. This attempt remains unqualified; the repaired fixture is rerun fully.
+
+The next 15.1 attempt at source `3904e4b15842b8e416606f9d496b6607869fcd14`
+passed identity/geometry and attachments, then refused the first active label
+capture. Producer inspection identified omitted optional allocation and compatibility
+fields. A failing behavioral fixture now includes those fields; the parser admits
+only their inspected numeric/string types. Unknown/wrong types remain refused.
+A bounded value-redacted field/type diagnostic helps any further native refusal.
+Owned pool cleanup and full host preservation/teardown passed; the attempt remains
+unqualified and both release suites must rerun.
 
 Run sequentially from clean signed source through the Mac supervisor:
 
