@@ -103,4 +103,4 @@
 
 - [M2 state ACL validation](testing/M2/state-acl.md): descriptor-based permission checks and disposable POSIX/NFSv4 controls; both native targets qualified; accepted in PR 42.
 
-- [M2 ownership publication](testing/M2/ownership-publication.md): ordered private metadata publication, revision checks and uncertainty; native qualification pending.
+- [M2 ownership publication](testing/M2/ownership-publication.md): ordered private metadata publication, revision checks and uncertainty; both native targets passed 161 assertions and complete teardown, review pending.

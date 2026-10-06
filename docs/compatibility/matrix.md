@@ -189,15 +189,15 @@ releases; all passed at signed source `33f4d91bc57adb71f27ce80bbe0552fb1e7685d2`
 with complete teardown. See the [manifest](../testing/M2/state-acl-manifest.json)
 for 15.1-RELEASE-p3/ZFS-root and 14.5-RELEASE/UFS-root observations, including
 owned UFS POSIX/NFSv4 controls and retained initial failure/repair. Maintainer
-review accepted in PR 42. No publisher, runtime
-state provisioning or storage writes follow.
-
+review accepted in PR 42. That accepted source provides no publisher, runtime
+state provisioning or storage writes. The later publisher has separate evidence below.
 
 M2 ownership publication: [contract/procedure](../testing/M2/ownership-publication.md)
 adds descriptor-anchored bounded ownership metadata publication only. The expanded
 state suite requires 161 assertions, fourteen parent tests and 57 codec subtests.
-Native qualification is pending. UFS/ZFS root publication, owned UFS ENOSPC/
-read-only/ACL controls and complete teardown must pass on both releases before
-recording native support. Failure seams establish error accounting/order, not
-actual device EIO or power-loss recovery. No runtime enrollment, full store,
+All passed on both targets at signed source `eabf4691fc55b825db74ba73501d758126fda4e7`,
+with complete teardown; see the [manifest](../testing/M2/ownership-publication-manifest.json).
+The 15.1 ZFS root and 14.5 UFS root passed actual publication; new owned UFS
+fixtures passed zero-free-space ENOSPC/read-only/ACL controls. Review is pending.
+Failure seams establish error accounting/order, not actual device EIO or power-loss recovery. No runtime enrollment, full store,
 storage admission or hardware/commercial support follows.

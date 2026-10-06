@@ -290,5 +290,7 @@ read-only mounts, ACL preservation and complete teardown. Package-private seams
 inject phase errors around native operations to qualify ordering/accounting only;
 they do not qualify real device EIO, abrupt process/reboot/power-cut durability.
 Require all 161 named assertions, fourteen parent tests and 57 codec subtests on
-both releases. Native qualification is pending. Full store budgets, temporary
+both releases. Both targets passed at signed source `eabf4691fc55b825db74ba73501d758126fda4e7`
+with complete teardown; see the [manifest](../../testing/M2/ownership-publication-manifest.json).
+Review is pending. Full store budgets, temporary
 record discovery after death, durable admission and recovery remain open.

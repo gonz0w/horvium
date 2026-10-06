@@ -224,7 +224,9 @@ process teardown before qualification.
 
 The [ownership publication extension](M2/ownership-publication.md) expands `state`
 to 161 mandatory assertions, five native tests, nine unit tests and fifty-seven
-codec subtests. Native qualification is pending. It adds one new owned 32 MiB
+codec subtests. Both targets passed at signed source `eabf4691fc55b825db74ba73501d758126fda4e7`
+with complete teardown; see its [manifest](M2/ownership-publication-manifest.json).
+Maintainer review is pending. It adds one new owned 32 MiB
 UFS memory device for real ENOSPC/read-only/ACL controls; all fixtures remain
 inside the disposable guest. Phase-error seams qualify accounting separately
 from actual I/O failure or power-cut durability. Prior manifests keep their exact

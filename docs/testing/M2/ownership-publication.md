@@ -1,6 +1,6 @@
 # M2 private ownership record publication
 
-Date: 2026-10-06. Status: implementing; native qualification pending.
+Date: 2026-10-06. Status: partial metadata publication qualified on both targets; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -119,9 +119,26 @@ free space before denial; no passing threshold was relaxed. The failed run stays
 unqualified, with unchanged base/runtime and complete host teardown. No
 publication code changed for this fixture repair.
 
-Native qualification and its sanitized manifest are pending. Source inputs and
-previous accepted manifests must retain exact provenance; full host supervisor
-teardown, image/key/variable removal and base/runtime preservation are required.
+## Executed evidence
+
+Signed functional/suite source `eabf4691fc55b825db74ba73501d758126fda4e7` passed all 161 assertions,
+fourteen parent tests and 57 codec subtests on both targets. The complete local
+review passed 71 tooling tests, Go unit/race checks and all 21 bounded fuzz
+targets. See the [source-bound manifest](ownership-publication-manifest.json)
+for all input/version/utility/image/runtime/log hashes and preserved prior proof.
+
+| Target | Actual root | Native publisher | Owned filesystem controls | Result |
+| --- | --- | --- | --- | --- |
+| 15.1-RELEASE-p3 | zfs | 0.21 s | 0.3 s | all 161; full teardown |
+| 14.5-RELEASE | ufs | 0.13 s | 0.25 s | all 161; full teardown |
+
+The repaired quick cross-built native diagnostic passed the two new fixtures
+before complete qualification; it remains explicitly separate from the full
+suite. Its copied executable was verified absent. Each complete guest also
+closed owned descriptors and removed mounts, memory devices and fixtures; the host
+supervisor verified stopped groups, absent image/key/variables and unchanged
+base/runtime. The first unqualified source and fixture repair remain in the
+manifest. No publication product code changed for that fixture correction.
 
 ## Primary evidence and remaining gates
 

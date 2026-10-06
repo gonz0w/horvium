@@ -127,7 +127,7 @@ deliberately stopped after diagnosis; both unqualified attempts retain exact
 sources, reasons, hashes and complete teardown. A cross-built test at repaired
 source passed all 45 ACL controls in that owned diagnostic VM; it is recorded as
 a diagnostic, not complete qualification. Only the later complete source-bound
-native runs above qualify this subset. Maintainer review remains pending.
+native runs above qualify this subset. Maintainer review accepted this subset in PR 42.
 
 ## Primary evidence and remaining gates
 
@@ -144,7 +144,7 @@ provenance or a substitute for actual native execution.
 Partial M2-STATE-001/M2-OWN-001 only. Complete state provisioning, store/enumeration
 budgets, atomic publication, job schemas/admission/reservations/history,
 coordinated races and syscall failures, read-only/full-store/sync/rename faults,
-acknowledgement/reboot/power-loss/restore recovery remain ahead. There is no
+acknowledgement/reboot/power-loss/restore recovery remain ahead. That accepted source contains no
 publisher, enrollment or runtime storage writer. No external client/share ACL,
 hardware/controller/commercial support claim follows. Prior manifests retain
 their original sources and scopes. M2 acceptance and maintainer-deferred M1
