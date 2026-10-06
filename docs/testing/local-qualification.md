@@ -303,7 +303,7 @@ publication stays strict and no job admission/recovery follows.
 
 The [job publication extension](M2/job-publication.md) expands state to 432 named
 assertions, thirty-five parents (ten native, twenty-five unit) and 176 schema
-subtests. Both release/root candidates and full teardown remain required; native
-qualification is pending. Actual UFS ENOSPC/read-only job controls extend the shared
+subtests. Both candidates passed at signed source `dc789c4e3672f61e670e6c4352e1eae89b3fb13a` with
+full teardown; see the [manifest](M2/job-publication-manifest.json). Actual UFS ENOSPC/read-only job controls extend the shared
 pipeline/ACL/capacity suite. Shared evidence/selector changes require a complete
 portable review; evidence-only followups may reuse exact matching deep execution.

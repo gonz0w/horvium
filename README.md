@@ -89,7 +89,8 @@ immutable successor guard passed all 275 assertions and full teardown on both
 targets; accepted in PR 49. The [mixed state catalog](docs/testing/M2/state-catalog.md)
 passed all 336 state assertions and complete teardown on both targets;
 accepted in PR 50. The [durable job publisher](docs/testing/M2/job-publication.md)
-is implementing with shared ownership/job capacity guards.
+passed all 432 state assertions and full teardown on both targets; maintainer review
+is pending. Runtime admission remains disabled.
 Runtime enrollment and full store/recovery gates remain open.
 Other native gates, durable jobs and storage writes remain pending; the runtime is
 still read-only.

@@ -1,6 +1,6 @@
 # M2 durable job metadata and shared publication budgets
 
-Date: 2026-10-06. Status: implementing; native qualification pending.
+Date: 2026-10-06. Status: qualified on both declared native targets; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -121,3 +121,42 @@ assembled native storage mutation remain open. No running NAS/release,
 commercial resource/scale, physical controller durability or client compatibility
 claim follows. Preserve prior manifests and tested sources. Deferred M1 manual
 accessibility and M2 acceptance remain pending.
+
+
+## Executed qualification
+
+Signed functional/suite source `dc789c4e3672f61e670e6c4352e1eae89b3fb13a` passed all 432 state
+assertions, thirty-five parents and 176 codec/schema subtests on both releases
+without skips/failures. See the [sanitized manifest](job-publication-manifest.json)
+for exact source/input/SDK/module/image/runtime/utility/artifact/log provenance.
+Shared verification changes selected complete portable review: baseline checks,
+92 tooling regressions, race checks across eleven packages and all
+24 compiler-listed fuzz targets passed in 116.029 seconds.
+
+Actual job creation/replacement, immutable intent/history, mixed ownership writes,
+transient bytes/class slots, late census checks, concurrency and shared uncertainty
+passed. POSIX/NFSv4 ACL/kernel UID and real UFS ENOSPC/read-only controls passed.
+Initial UFS diagnostic runs and verified teardown retain their actual source/log
+provenance in the manifest; they are not relabeled as qualified final runs.
+Only predecessor ctime changed during staging sync. Deferred soft-update removal
+sets `IN_CHANGE` in the [FreeBSD implementation](https://github.com/freebsd/freebsd-src/blob/releng/14.5/sys/ufs/ffs/ffs_softdep.c);
+that is an inferred explanation consistent with the observed fields. Additional
+post-rename inode/directory sync attempts did not solve the refusal and were removed.
+The final pipeline preserves the original inode/exact bytes across staging,
+then binds/revalidates full metadata after staging sync/close. Strict ctime
+comparison remains active during final verification; no retry or global sync.
+Real staged inode/same-revision byte mutation and final ctime-only controls
+independently prove refusal and preservation.
+
+| Target | Root | Job publication parent | Full owned guest | Result |
+|---|---|---|---|---|
+| 15.1-RELEASE-p3 | zfs | 0.5 s | 38.803 s | all 432; complete teardown |
+| 14.5-RELEASE | ufs | 0.37 s | 29.403 s | all 432; complete teardown |
+
+Both guests verified the same cross-built executable. Owned leases/files/mounts/
+memory devices/children closed or were removed; supervisor groups stopped;
+base/runtime hashes preserved; snapshots/keys/variables/test executables removed.
+All 26 prior M2 manifests remain byte-identical. Final evidence-only review reruns
+baseline checks and retains the original executed deep source when reused.
+Complete intent, admission/recovery, M2 acceptance and deferred M1 accessibility
+remain open.

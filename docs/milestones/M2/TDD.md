@@ -386,6 +386,7 @@ actual private file publication and every durability/refusal phase, complete mix
 capacity preflight/final rechecks, terminal-slot exhaustion, preserved uncertainty,
 unsafe/ACL/UID denials, concurrent duplicate/last-slot serialization and actual
 UFS ENOSPC/read-only job controls. Require 432 named assertions, thirty-five parents
-and 176 schema subtests on both releases with full owned teardown. Native
-qualification is pending. No runtime admission/native effect, executable intent,
+and 176 schema subtests on both releases with full owned teardown. Both passed
+at signed source `dc789c4e3672f61e670e6c4352e1eae89b3fb13a`; see the
+[manifest](../../testing/M2/job-publication-manifest.json). Review is pending. No runtime admission/native effect, executable intent,
 reservation/pruning/recovery or acknowledgement/power-loss acceptance follows.

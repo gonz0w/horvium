@@ -258,5 +258,6 @@ resources/scale, mixed publication, admission or recovery; runtime remains read-
 M2 durable job metadata: [contract/procedure](../testing/M2/job-publication.md)
 requires 432 assertions, thirty-five parents and 176 schema subtests on both
 existing release/root candidates. Shared publication capacity and immutable
-predecessor/history; native qualification is pending. No new hardware/client,
+predecessor/history; both passed at signed source `dc789c4e3672f61e670e6c4352e1eae89b3fb13a` with full
+teardown; see the [manifest](../testing/M2/job-publication-manifest.json). Review is pending. No new hardware/client,
 commercial resource/scale, admission/recovery or controller durability claim.
