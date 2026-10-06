@@ -143,10 +143,10 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 		}
 		catalog, e := s.inspectStateLocked(limits, nil, temporary)
 		if e != nil {
-			return e
+			return fmt.Errorf("catalog verification: %w", e)
 		}
 		if e = validate(catalog); e != nil {
-			return e
+			return fmt.Errorf("capacity verification: %w", e)
 		}
 		return verifyObjects()
 	}

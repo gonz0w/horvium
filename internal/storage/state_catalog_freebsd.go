@@ -2,6 +2,7 @@
 package storage
 
 import (
+	"fmt"
 	"io"
 	"os"
 
@@ -48,7 +49,7 @@ func (s *StateDirectory) inspectStateLocked(limits stateCatalogLimits, afterRead
 	defer scan.Close()
 	var opened unix.Stat_t
 	if unix.Fstat(fd, &opened) != nil || !sameOwnershipMetadata(before, opened) {
-		return StateCatalog{}, ErrDrift
+		return StateCatalog{}, fmt.Errorf("state census metadata: %w", ErrDrift)
 	}
 	var names []string
 	nameLimit := limits.ownership + limits.nonterminal + limits.terminal + 1
@@ -77,7 +78,7 @@ func (s *StateDirectory) inspectStateLocked(limits stateCatalogLimits, afterRead
 		for _, name := range names {
 			if name == ownTemporary {
 				if found {
-					return StateCatalog{}, ErrDrift
+					return StateCatalog{}, fmt.Errorf("state census metadata: %w", ErrDrift)
 				}
 				found = true
 			} else {
@@ -85,7 +86,7 @@ func (s *StateDirectory) inspectStateLocked(limits stateCatalogLimits, afterRead
 			}
 		}
 		if !found {
-			return StateCatalog{}, ErrDrift
+			return StateCatalog{}, fmt.Errorf("state census metadata: %w", ErrDrift)
 		}
 		names = filtered
 	}
@@ -112,7 +113,7 @@ func (s *StateDirectory) inspectStateLocked(limits stateCatalogLimits, afterRead
 			return StateCatalog{}, e
 		}
 		if unix.Fstatat(dir, entry.name, &after, unix.AT_SYMLINK_NOFOLLOW) != nil || !sameOwnershipMetadata(prior, after) {
-			return StateCatalog{}, ErrDrift
+			return StateCatalog{}, fmt.Errorf("state census metadata: %w", ErrDrift)
 		}
 		metadata = append(metadata, after)
 	}
@@ -122,7 +123,7 @@ func (s *StateDirectory) inspectStateLocked(limits stateCatalogLimits, afterRead
 	for i, entry := range entries {
 		var current unix.Stat_t
 		if unix.Fstatat(dir, entry.name, &current, unix.AT_SYMLINK_NOFOLLOW) != nil || !sameOwnershipMetadata(metadata[i], current) {
-			return StateCatalog{}, ErrDrift
+			return StateCatalog{}, fmt.Errorf("state census metadata: %w", ErrDrift)
 		}
 	}
 	if _, err = s.ownershipDirectoryLocked(); err != nil {
@@ -130,7 +131,7 @@ func (s *StateDirectory) inspectStateLocked(limits stateCatalogLimits, afterRead
 	}
 	var after unix.Stat_t
 	if unix.Fstat(dir, &after) != nil || !sameOwnershipMetadata(before, after) {
-		return StateCatalog{}, ErrDrift
+		return StateCatalog{}, fmt.Errorf("state census namespace: %w", ErrDrift)
 	}
 	return b.catalog, nil
 }
