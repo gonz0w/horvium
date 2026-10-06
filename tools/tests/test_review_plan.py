@@ -3,6 +3,7 @@ import importlib.util
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[2]
 
 class ReviewPlanTests(unittest.TestCase):
@@ -73,3 +74,15 @@ class ReviewPlanTests(unittest.TestCase):
         self.assertTrue(m.documentation_path('docs/testing/state.md'))
         for name in ['AGENTS.md', 'CONTRIBUTING.md', 'docs/engineering/local-review.md', 'docs/testing/strategy.md', 'internal/a/probe.go', 'tools/review-plan.py']:
             self.assertFalse(m.documentation_path(name), name)
+
+    def test_environment_ignores_derived_scratch_but_tracks_build_flags(self):
+        m = self.module()
+        def fingerprint(scratch, experiment=''):
+            import json
+            settings = {'CC': 'cc', 'GOGCCFLAGS': '-fdebug-prefix-map=' + scratch,
+                        'GOARM64': 'v8.0', 'GOEXPERIMENT': experiment}
+            with patch.object(m.subprocess, 'check_output', side_effect=[json.dumps(settings), b'compiler version']):
+                with patch.object(m, 'digest', return_value='compiler-sha'):
+                    return m.environment_fingerprint(ROOT)
+        self.assertEqual(fingerprint('/tmp/build-1'), fingerprint('/tmp/build-2'))
+        self.assertNotEqual(fingerprint('/tmp/build-1'), fingerprint('/tmp/build-1', 'experiment'))

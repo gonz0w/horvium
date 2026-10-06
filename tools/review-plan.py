@@ -123,6 +123,9 @@ def environment_fingerprint(root):
     go = str(root / '.tools/go/bin/go')
     env = go_environment(root)
     settings = json.loads(subprocess.check_output([go, 'env', '-json'], cwd=root, env=env, text=True))
+    # Go synthesizes GOGCCFLAGS with a fresh compiler scratch directory on every
+    # query. Its inputs (CC/CGO flags/target/SDK) remain covered by this digest.
+    settings.pop('GOGCCFLAGS', None)
     compiler = subprocess.check_output(shlex.split(settings['CC']) + ['--version'], env=env)
     # Hash compiler settings/output; never retain arbitrary host environment dumps.
     fields = {'host': platform.system(), 'arch': platform.machine(), 'release': platform.release(), 'go_binary_sha256': digest(Path(go)), 'go_settings_sha256': hashlib.sha256(json.dumps(settings, sort_keys=True).encode()).hexdigest(), 'compiler_version_sha256': hashlib.sha256(compiler).hexdigest(),
