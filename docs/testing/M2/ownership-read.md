@@ -1,6 +1,6 @@
 # M2 bounded native ownership record reads
 
-Date: 2026-10-05. Status: implementing; native qualification and review pending.
+Date: 2026-10-05. Status: partial native read boundary qualified; review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -94,6 +94,31 @@ image/key/variable removal and supervised process teardown. No extra raw disk,
 host service or persistent runner is introduced. The twenty-one portable fuzz
 targets remain unchanged; untrusted record bytes use the already fuzzed codec.
 Earlier manifests retain their original tested sources and are not relabeled.
+
+## Executed evidence
+
+The [source-bound manifest](ownership-read-manifest.json) records signed/DCO
+functional and suite source `94cf66e9c3a34184c76b84858cb7ef998e4bd2dc`, based on
+`52a583b4a83ab44fc51fab85f36e48efc18601d4`. All eighty-eight recorded source/tool
+inputs remain identical to that tested source. All eighteen previous M2 manifests
+remain unchanged and retain their original tested sources.
+
+Local review passed `make check lint test secrets go-deep-check`: seventy-one
+tooling tests, Go unit/race checks and all twenty-one bounded fuzz targets.
+Both disposable native runs passed all sixty-three named assertions, eight parent
+tests and fifty-seven codec subtests, without failures or skips.
+
+| Native fixture | Ownership read test | State-directory test | Result |
+| --- | --- | --- | --- |
+| FreeBSD 15.1-RELEASE-p3, ZFS root | 0.20 s | 0.20 s | All required cases passed |
+| FreeBSD 14.5-RELEASE, UFS root | 0.14 s | 0.20 s | All required cases passed |
+
+These durations describe the tests, not a performance guarantee. Both runs
+preserved pinned base/runtime artifacts and foreign/control bytes, removed owned
+guest fixtures, images, keys and firmware variables, and completed supervised
+process-group teardown. Ten pinned primary source records, actual utility hashes
+and qualification/result log hashes are retained in the manifest. No initial
+unqualified native attempt occurred. Maintainer review is still required.
 
 ## Primary sources and remaining gates
 

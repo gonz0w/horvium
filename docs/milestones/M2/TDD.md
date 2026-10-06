@@ -258,6 +258,8 @@ mode/link/type/byte/version/checksum/identity refusal, kernel-dropped UID with
 inherited descriptors, unchanged valid/control/foreign bytes, stable anchoring
 after directory rename, directory/lock drift denial and complete teardown. The
 state suite requires all sixty-three lease/read assertions, two native tests, six
-unit tests and fifty-seven codec subtests on both targets. Qualification is pending;
+unit tests and fifty-seven codec subtests on both targets. Both targets passed at
+signed source `94cf66e9c3a34184c76b84858cb7ef998e4bd2dc` with complete teardown; see
+the [manifest](../../testing/M2/ownership-read-manifest.json). Review is pending;
 ACL provisioning, coordinated races, full store/publication/admission/recovery and
 M2 acceptance remain open.

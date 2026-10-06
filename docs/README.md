@@ -99,4 +99,4 @@
 
 - [M2 state directory](testing/M2/state-directory.md): private directory and stable single-writer lock prerequisite; thirty-five native assertions and full teardown passed on both targets; accepted in PR 39.
 - [M2 ownership records](testing/M2/ownership-records.md): strict bounded metadata codec; accepted in PR 40; no file store or durable admission.
-- [M2 native ownership reads](testing/M2/ownership-read.md): bounded descriptor reads, object/identity refusal and unchanged bytes; native qualification pending.
+- [M2 native ownership reads](testing/M2/ownership-read.md): bounded descriptor reads, object/identity refusal and unchanged bytes; both native targets qualified, review pending.

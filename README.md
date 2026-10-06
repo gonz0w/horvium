@@ -69,9 +69,10 @@ The accepted [ownership record codec](docs/testing/M2/ownership-records.md) vali
 bounded versioned metadata and checksums without granting enrollment or writing
 files. Five behavioral tests, fifty-seven subtests and all twenty-one bounded fuzz
 targets passed; accepted in PR 40.
-The next [native ownership reader](docs/testing/M2/ownership-read.md) binds those
-records to safe opened file objects and the held state directory. Native
-qualification and review remain pending.
+The [native ownership reader](docs/testing/M2/ownership-read.md) binds those
+records to safe opened file objects and the held state directory. All sixty-three
+lease/read assertions and complete teardown passed on both targets; review remains
+pending. Default-ACL disposable fixtures define the qualified scope.
 Other native gates, durable jobs and storage writes remain pending; the runtime is
 still read-only.
 
