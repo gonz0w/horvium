@@ -28,7 +28,8 @@ extension fields. A directory's POSIX default ACL must be empty. Named entries,
 masks and any inheritable default are refused, including currently masked grants.
 
 NFSv4 ACLs may contain only owner/group/everyone entries, known allow/deny types,
-known rights, undefined special-entry identifiers and no flags. Every special
+known rights (excluding POSIX-only read/write bits), undefined special-entry
+identifiers and no flags. Every special
 principal must have an allow entry. Root-owner entries may use known rights.
 Group/everyone allow entries can grant data reads or search only when the mode
 permits them, plus FreeBSD's normal ancillary read-named-attributes, status,

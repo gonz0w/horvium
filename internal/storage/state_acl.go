@@ -44,7 +44,7 @@ func safeStateACLValue(a stateACL, kind int, mode uint32, directory bool) bool {
 	}
 	var seen uint32
 	for _, e := range a.Entries[:a.Count] {
-		if e.ID != ^uint32(0) || e.Flags != 0 || e.Perm&^uint32(0xffff) != 0 || e.Type != 0x100 && e.Type != 0x200 {
+		if e.ID != ^uint32(0) || e.Flags != 0 || e.Perm&^uint32(0xfff9) != 0 || e.Type != 0x100 && e.Type != 0x200 {
 			return false
 		}
 		var bits uint32
@@ -64,7 +64,7 @@ func safeStateACLValue(a stateACL, kind int, mode uint32, directory bool) bool {
 		seen |= e.Tag
 		allowed := uint32(0x80 | 0x200 | 0x1000 | 0x8000) // read named attrs, status, ACL, synchronize
 		if e.Tag == 1 {
-			allowed = 0xffff
+			allowed = 0xfff9
 		} else {
 			if bits&4 != 0 {
 				allowed |= 8

@@ -91,4 +91,11 @@ func TestStateACLPolicy(t *testing.T) {
 	if safeStateACLValue(testModeACL(4, 0700), 99, 0700, false) {
 		t.Fatal("unknown ACL type accepted")
 	}
+	for _, unknown := range []uint32{2, 4, 1 << 16} {
+		a = testModeACL(4, 0700)
+		a.Entries[0].Perm |= unknown
+		if safeStateACLValue(a, 4, 0700, false) {
+			t.Fatal("unknown NFSv4 permission accepted")
+		}
+	}
 }
