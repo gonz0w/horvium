@@ -231,6 +231,8 @@ client, mixed-store admission or recovery support claim.
 
 M2 job lifecycle codec: [contract/procedure](../testing/M2/job-records.md) adds
 bounded in-memory property-intent lifecycle metadata and strict checksums/schema,
-with no native/file/runtime wiring. Portable qualification is pending. Existing
+with no native/file/runtime wiring. Signed source `a3791513f6423fe5860064e93f89399c21dc1445`
+passed seven tests/119 schema subtests and focused storage race/all 15 fuzz checks;
+see the [manifest](../testing/M2/job-records-manifest.json). Review is pending. Existing
 FreeBSD support candidates and their immutable native sources are unchanged;
 compilation alone grants no native durable job/admission/recovery or scale claim.

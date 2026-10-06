@@ -338,6 +338,9 @@ all required fields at each object level, checksummed invalid lifecycle refusal,
 full uint64 precision, no terminal replay/post-launch cancellation, retained
 uncertainty and restart projections with no execution. Fuzz every accepted hostile
 input for exact semantic round trips and zero metadata on denial. Portable
-qualification is pending; no native file/acknowledgement/recovery claim follows.
+qualification passed at signed source `a3791513f6423fe5860064e93f89399c21dc1445`: seven tests,
+119 schema subtests, baseline and focused storage race/all 15 fuzz checks; see the
+[manifest](../../testing/M2/job-records-manifest.json). Review is pending; no native
+file/acknowledgement/recovery claim follows.
 Full durable baseline/attribution data, mixed store/admission/retention, actual
 restarts/restoration/quiescence and complete M2 acceptance remain open.

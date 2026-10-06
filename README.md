@@ -83,8 +83,8 @@ The [bounded ownership catalog](docs/testing/M2/ownership-catalog.md) passed all
 and complete teardown on both targets; accepted in PR 46. The
 [ownership capacity guard](docs/testing/M2/ownership-capacity.md) passed all 234 assertions
 and complete teardown on both targets; accepted in PR 47. The
-[job lifecycle codec](docs/testing/M2/job-records.md) is implementing; portable
-qualification is pending. Runtime enrollment and full store/recovery gates remain open.
+[job lifecycle codec](docs/testing/M2/job-records.md) passed portable qualification;
+maintainer review is pending. Runtime enrollment and full store/recovery gates remain open.
 Other native gates, durable jobs and storage writes remain pending; the runtime is
 still read-only.
 

@@ -109,4 +109,4 @@
 
 - [M2 ownership publication capacity](testing/M2/ownership-capacity.md): complete namespace validation, transient-byte/count reservation and final rechecks; both targets passed all 234 assertions and complete teardown, accepted in PR 47.
 
-- [M2 job lifecycle metadata](testing/M2/job-records.md): bounded lifecycle/strict codec and restart projections without replay; portable qualification pending.
+- [M2 job lifecycle metadata](testing/M2/job-records.md): bounded lifecycle/strict codec and restart projections without replay; seven tests/119 schema subtests and focused storage race/fuzz passed, review pending.

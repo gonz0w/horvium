@@ -1,6 +1,6 @@
 # M2 job lifecycle metadata and strict codec
 
-Date: 2026-10-06. Status: implementing; portable qualification pending.
+Date: 2026-10-06. Status: portable qualification complete; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -44,7 +44,7 @@ the conservative metadata ceiling; the current graph needs at most four.
 
 After applying/observing, reconciliation reasons are restricted to
 `ambiguous-effect`, `storage-unavailable`, `executor-unverified` and
-`state-io-failure`. Missing storage cannot be labeled verified success. No
+`state-io-failure`. `storage-unavailable` is accepted only as a reconciliation reason. No
 post-launch generic cancellation is represented. Reconciliation cannot erase
 the previous observation reference or become terminal to make room. `Terminal()`
 returns false for invalid records; classification never authorizes eviction or
@@ -125,5 +125,28 @@ make lab-status
 The package-only change selects storage race checks and its complete compiler-listed
 fuzz inventory. It does not change shared verification tooling or require a fresh
 complete portable milestone run. Evidence-only prose followups may reuse matching
-executed deep checks while rerunning baseline/source/title checks. Qualification
-records will be appended after actual execution.
+executed deep checks while rerunning baseline/source/title checks. Executed records below retain their actual source; no native execution is implied.
+
+
+## Executed qualification
+
+Signed functional/test source `a3791513f6423fe5860064e93f89399c21dc1445` passed all seven job
+parent tests and 119 named schema subtests, with no failures/skips. See the
+[sanitized manifest](job-records-manifest.json) for exact source/inputs/toolchain,
+executed case inventory and log hashes. Local `make review` passed all required
+baseline checks (87 tooling regressions), storage-only race checks and all
+15 compiler-listed storage fuzz targets, including `FuzzJobRecord`, in
+76.449 seconds. No complete portable milestone suite or unrelated native
+suite ran. The conservative native-review marker is retained; source assessment
+found only in-memory metadata logic using the unchanged fixed-shape token parser.
+
+A supervised cgo-free FreeBSD/amd64 test binary compiled at the same source and
+was removed; it was not executed and proves only target portability. All owned
+supervisor groups stopped and teardown was verified. All 23 prior M2 manifests
+remain byte-identical. Documentation-only final review reruns baseline checks
+and identifies the original deep source when reusing matching executed evidence.
+
+This qualifies the codec and lifecycle consistency only. Native job-file storage,
+complete durable intent, admission/deduplication, mixed budgets/retention,
+quiescence, actual restart/restoration and acknowledgment cuts remain pending.
+M2 acceptance and deferred M1 manual accessibility are still open.
