@@ -21,7 +21,9 @@
 8. Test storage changes only on disposable fixtures. Do not use an operator's
    live disks, datasets, or backup history as development fixtures.
 9. Update behavior documentation and the compatibility matrix in the same PR.
-   Run make check lint test secrets before reporting completion.
+   Run make check lint test secrets before reporting completion. Use make review
+   for affected-package race/fuzz checks; make review-full at milestones/releases.
+   Relevant native safety/recovery gates remain required for behavior changes.
 10. Keep commits coherent, Conventional-Commit-style, signed, and DCO signed off.
     Never silently downgrade signatures if signing is unavailable.
 11. Do not commit secrets, private keys, customer data, host inventory dumps, or

@@ -117,6 +117,7 @@ class OwnedProcessTests(unittest.TestCase):
         lab.mkdir(parents=True, mode=0o700)
         (lab / 'fixture-key').write_text('synthetic fixture credential')
         (lab / 'vars.fd').write_text('synthetic variables')
+        (lab / 'state-native.test').write_text('synthetic executable')
         (lab / 'image').mkdir()
         (lab / 'image/base').write_text('disposable image')
         (lab / 'result.json').write_text(json.dumps({'qualified': True}))
@@ -126,7 +127,7 @@ class OwnedProcessTests(unittest.TestCase):
         result = json.loads((lab / 'result.json').read_text())
         self.assertFalse(result['qualified'])
         self.assertTrue(result['supervisor_fixture_cleanup'])
-        for name in ('fixture-key', 'vars.fd', 'image'):
+        for name in ('fixture-key', 'vars.fd', 'image', 'state-native.test'):
             self.assertFalse((lab / name).exists())
         self.assertEqual(sentinel.read_text(), 'preserve')
         with self.assertRaises(ValueError):

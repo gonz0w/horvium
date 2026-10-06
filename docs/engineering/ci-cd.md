@@ -4,7 +4,7 @@
 
 All repository checks run locally. GitHub Actions are disabled and runnable
 workflow files are removed. Use the [local review gate](local-review.md) for
-signed-commit/DCO/title checks and complete portable validation with source-bound
+signed-commit/DCO/title checks and proportional portable validation with source-bound
 reports and verified process teardown. [Cost controls](ci-costs.md) explain the
 change and the live protection record is in [bootstrap status](bootstrap-status.md).
 The local content checker rejects reintroduced Actions workflows, required hosted
@@ -31,6 +31,7 @@ operator host service.
 | research | [native spike](../../tools/research/m1-native.sh) | Narrow GEOM/ZFS/credential contracts |
 | discovery | [native product tests](../../tools/bsd-native-discovery.sh) | Reader/helper/cache/admin/foreground runtime fixtures |
 | devices | [owned virtual disks](../../tools/bsd-devices.sh) | Eight fixture, four correlation, five attachment, six system-use and six imported-pool, seven signature and fifteen combined-use assertions; four executed native tests and host preservation/teardown |
+| state | [prebuilt native tests](../../tools/bsd-state-prebuilt.sh), or [guest source build](../../tools/bsd-state.sh) | Complete current state/ownership/ACL assertion suite on fresh disposable filesystems |
 | properties | [property tests](../../tools/bsd-properties.sh) | Complete 51-assertion observation suite and teardown |
 | continuity | [independent services](../../tools/bsd-continuity.sh) | Fixture-only Samba/NFS through management outages |
 | performance | [measurement](../../tools/bsd-performance.sh), after discovery | Separate combined-process/resource budgets |
