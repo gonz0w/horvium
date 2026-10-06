@@ -52,7 +52,8 @@ native qualification passed all thirty-six assertions and complete teardown on
 both targets and was accepted in [PR 35](https://github.com/gonz0w/horvium/pull/35).
 The next [combined device-use subset](docs/testing/M2/device-use-review.md) retains
 selected positive use facts in an immutable baseline and requires new review on
-identity/geometry/mount/swap/pool/signature drift; native qualification is pending.
+identity/geometry/mount/swap/pool/signature drift. All fifty-one assertions and full
+teardown passed on both targets, with maintainer review pending.
 Other native gates, durable jobs and storage writes remain pending; the runtime is
 still read-only.
 

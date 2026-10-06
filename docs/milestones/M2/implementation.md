@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset in progress; Actions disabled.
+Date: 2026-10-05. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset qualified; review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -141,8 +141,11 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
 - Slice 1 next subset: [combined device-use review](../../testing/M2/device-use-review.md)
   joins selected independent disk correspondence, full mount/swap/imported-pool
   backing and optional positive signature facts into a private immutable baseline.
-  Fifteen added assertions extend the existing four tests to fifty-one cases; native
-  qualification is pending. Missing signature evidence remains unavailable and
+  Fifteen added assertions extend the existing four tests to fifty-one cases. Signed
+  source `9dd27d946cb726da1b0a5215b6392b1524aaff76` passed all fifty-one
+  assertions, four executed tests and complete preservation/teardown on both
+  targets; see the [native manifest](../../testing/M2/device-use-review-manifest.json).
+  Maintainer review is pending. Missing signature evidence remains unavailable and
   unchanged positive facts never grant launch or unused-device authority.
 - Slice 1 remains incomplete: assembled native eligibility/provider proofs, full
   status/scan interpretation, complete-impact collection and device-use drift gates

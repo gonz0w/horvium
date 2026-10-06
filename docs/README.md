@@ -91,3 +91,4 @@
 - [M2 filesystem signature observations](testing/M2/filesystem-signatures.md)
 - [M2 filesystem signature native execution manifest](testing/M2/filesystem-signatures-manifest.json)
 - [M2 combined device-use review](testing/M2/device-use-review.md)
+- [M2 combined device-use native execution manifest](testing/M2/device-use-review-manifest.json)

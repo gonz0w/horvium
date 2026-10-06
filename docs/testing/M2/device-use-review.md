@@ -1,7 +1,8 @@
 # M2 combined device-use review
 
-Date: 2026-10-05. Status: portable tests and FreeBSD cross-build pass; native
-qualification pending. [Approved EDD](../../milestones/M2/EDD.md),
+Date: 2026-10-05. Status: all fifty-one assertions, four executed native tests
+and complete preservation/teardown passed on both targets; maintainer review pending.
+[Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
 ## Observation and comparison contract
@@ -120,6 +121,29 @@ Capture the existing twelve utility hashes and actual versions. Export only
 sanitized hashes/assertions, never raw inventories or credentials. GitHub Actions
 remain disabled, with no persistent runner or host service.
 
+## Executed evidence
+
+Signed source `9dd27d946cb726da1b0a5215b6392b1524aaff76` passed all fifty-one
+assertions and four native tests on FreeBSD 15.1-RELEASE-p3 and 14.5-RELEASE
+through Mac arm64 / QEMU 11.1.1 TCG (two CPUs, 6144 MiB). Actual roots were ZFS
+and UFS, respectively. Independently recollected unchanged imported-pool facts
+revalidated; new and removed owned pool/mount/swap use invalidated their baselines.
+Residual ZFS metadata remained positive after owned-pool removal. Selected UFS
+mount/signature and swap joined exact independently identified disks; no-probe
+facts remained unavailable, missing status refused and returned nested arrays
+could not alter retained observations. Existing read/foreign/root/catalogue/
+geometry preservation controls and complete teardown passed on both releases.
+
+All five original host backings, base images and runtime inputs were preserved;
+owned disks/image/key/variables were removed and groups stopped. The
+[sanitized execution manifest](device-use-review-manifest.json) binds source/input
+hashes, actual versions, twelve utility hashes per guest, reused primary-source
+manifest hashes and outcomes. Functional-source review passed 65 tooling tests,
+Go unit/race checks and eighteen bounded fuzz targets. Final PR-head review is
+reported separately; any recorded input change requires fresh qualification.
+All prior manifests and controller-death evidence retain their original sources
+and case sets. This is partial M2 observation/drift evidence, not device clearance.
+
 ## Provenance and acceptance limits
 
 The unchanged accepted disk/system/imported/signature manifests retain inspected
@@ -128,7 +152,8 @@ new native source contract. Record their file hashes as reused provenance alongs
 new exact functional/test/tool inputs, executed utility hashes and native outcomes.
 Source inspection does not prove installed binary build provenance.
 
-Native results and exact tested input hashes are pending. This is partial
+The native manifest records actual outcomes and exact tested input hashes. This
+is partial
 M2-DEVICE-001/M2-DRIFT-001/M2-PLAN-001/M2-NATIVE-001 evidence only. Complete device
 eligibility, slice 1, later mutation/recovery slices and M2 acceptance remain open.
 The maintainer-deferred M1 Safari/manual accessibility gate remains pending.

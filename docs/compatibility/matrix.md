@@ -128,6 +128,7 @@ M2 combined device use: [contract and procedure](../testing/M2/device-use-review
 retains selected disk correspondence, positive mount/swap/imported-pool backing and
 optional signature recognition in an immutable baseline. Portable tests and a
 FreeBSD cross-build pass; actual joined facts, fresh unchanged pool comparison,
-new/removed-use drift and complete teardown are pending on both targets. No
-collector/planner integration, complete signature absence, unused flag, locality,
+new/removed-use drift and complete teardown passed all fifty-one assertions and
+four tests on both targets; see the [native manifest](../testing/M2/device-use-review-manifest.json).
+Maintainer review is pending. No collector/planner integration, complete signature absence, unused flag, locality,
 reservation, enrollment or mutation authority follows.
