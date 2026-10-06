@@ -57,6 +57,7 @@ class LocalQualificationTests(unittest.TestCase):
         result+='OWNERSHIP_CATALOG_RESULT '+' '.join(c+'=pass' for c in sorted(checker.CATALOG_CASES))+'\n'
         result+='OWNERSHIP_CAPACITY_RESULT '+' '.join(c+'=pass' for c in sorted(checker.CAPACITY_CASES))+'\n'
         result+='JOB_READ_RESULT '+' '.join(c+'=pass' for c in sorted(checker.JOB_READ_CASES))+'\n'
+        result+='STATE_CATALOG_RESULT '+' '.join(c+'=pass' for c in sorted(checker.STATE_CATALOG_CASES))+'\n'
         passed=''.join('--- PASS: '+name+' (1.0s)\n' for name in checker.TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in checker.CODEC_SUBTEST_COUNTS.items() for i in range(count))
         self.assertIn('HORVIUM_STATE_VM=1',self.module.SUITES['state'][1])
         self.module.validate_result('state',passed+result)

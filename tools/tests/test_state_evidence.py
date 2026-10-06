@@ -21,6 +21,12 @@ CAPACITY_CASES=['create_byte_denial', 'exact_create', 'count_denial', 'replaceme
 RESULT+='OWNERSHIP_CAPACITY_RESULT '+' '.join(c+'=pass' for c in CAPACITY_CASES)+'\n'
 JOB_READ_CASES=['missing_denial', 'selector_denial', 'valid_read', 'bytes_preserved', 'inode_preserved', 'independent_job', 'exact_size', 'mode_denial', 'owner_denial', 'symlink_denial', 'hardlink_denial', 'fifo_denial', 'directory_denial', 'empty_denial', 'oversize_denial', 'damage_denial', 'newer_denial', 'wrong_id_denial', 'wrong_kind_denial', 'invalid_history_denial', 'controls_preserved', 'directory_anchor', 'directory_drift_denial', 'lock_drift_denial', 'lock_replacement_denial', 'lease_close', 'closed_denial', 'inert_denial', 'foreign_preservation', 'fixture_teardown']
 RESULT+='JOB_READ_RESULT '+' '.join(c+'=pass' for c in JOB_READ_CASES)+'\n'
+STATE_CATALOG_CASES=['byte_accounting', 'byte_limit', 'class_counts', 'closed_denial', 'directory_anchor', 'directory_drift_denial', 'empty_catalog', 'exact_limits', 'fixture_teardown', 'foreign_preservation', 'independent_results', 'inert_denial', 'inode_preservation', 'invalid_limits', 'job_', 'job_damage_denial', 'job_directory_denial', 'job_empty_denial', 'job_fifo_denial', 'job_hardlink_denial', 'job_mode_denial', 'job_newer_denial', 'job_oversize_denial', 'job_owner_denial', 'job_record_drift', 'job_symlink_denial', 'job_wrong_id_denial', 'job_wrong_kind_denial', 'lease_close', 'lock_drift_denial', 'mixed_catalog', 'namespace_drift_denial', 'nonterminal_ceiling', 'nonterminal_exhaustion', 'nonterminal_limit', 'orphan_denial', 'orphan_preservation', 'ownership_damage_denial', 'ownership_limit', 'ownership_record_drift', 'record_preservation', 'repeated_catalog', 'sorted_records', 'submission_collision', 'terminal_ceiling', 'terminal_exhaustion', 'terminal_limit', 'uncertainty_preserved', 'unknown_denial']
+ACL_CASES += ['posix_catalog_directory_denial', 'posix_catalog_lock_denial', 'posix_catalog_ownership_denial', 'posix_catalog_job_denial', 'posix_catalog_inheritance_denial', 'posix_catalog_restored', 'nfs4_catalog_directory_denial', 'nfs4_catalog_lock_denial', 'nfs4_catalog_ownership_denial', 'nfs4_catalog_job_denial', 'nfs4_catalog_inheritance_denial', 'nfs4_catalog_restored', 'catalog_kernel_uid_denial']
+RESULT += 'STATE_CATALOG_RESULT '+' '.join(c+'=pass' for c in STATE_CATALOG_CASES)+'\n'
+# Append new ACL cases to their existing result, not a second marker.
+RESULT=RESULT.replace('STATE_ACL_RESULT ','STATE_ACL_RESULT '+' '.join(c+'=pass' for c in ['posix_catalog_directory_denial', 'posix_catalog_lock_denial', 'posix_catalog_ownership_denial', 'posix_catalog_job_denial', 'posix_catalog_inheritance_denial', 'posix_catalog_restored', 'nfs4_catalog_directory_denial', 'nfs4_catalog_lock_denial', 'nfs4_catalog_ownership_denial', 'nfs4_catalog_job_denial', 'nfs4_catalog_inheritance_denial', 'nfs4_catalog_restored', 'catalog_kernel_uid_denial'])+' ',1)
+TESTS += ['TestNativeStateCatalog', 'TestStateCatalogNames', 'TestStateCatalogRecords', 'TestStateCatalogLimits']
 PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
 
 class StateEvidenceTests(unittest.TestCase):
@@ -34,7 +40,7 @@ class StateEvidenceTests(unittest.TestCase):
 
     def test_missing_duplicate_unknown_failed_or_oversized_cases_denied(self):
         m=self.module()
-        for case in set(CASES+READ_CASES+ACL_CASES+PUBLISH_CASES+PUBLISH_FS_CASES+CATALOG_CASES+CAPACITY_CASES+JOB_READ_CASES):
+        for case in set(CASES+READ_CASES+ACL_CASES+PUBLISH_CASES+PUBLISH_FS_CASES+CATALOG_CASES+CAPACITY_CASES+JOB_READ_CASES+STATE_CATALOG_CASES):
             for bad in [RESULT.replace(case+'=pass',''),RESULT.replace(case+'=pass',case+'=fail'),RESULT.rstrip()+' '+case+'=pass\n']:
                 with self.subTest(case=case),self.assertRaises(ValueError):m.validate(PASS+bad)
         for bad in [RESULT.rstrip()+' invented=pass\n',RESULT+'x'*(1<<20)]:
@@ -80,3 +86,15 @@ class JobReaderEvidenceTests(unittest.TestCase):
             child='    --- PASS: '+name+'/case_0 (0.0s)\n'
             for bad in [PASS.replace(child,''),PASS+child,PASS.replace(child,'    --- SKIP: '+name+'/case_0 (0.0s)\n')]:
                 with self.subTest(name=name),self.assertRaises(ValueError):m.validate(bad+RESULT)
+
+
+class MixedCatalogEvidenceTests(unittest.TestCase):
+    def test_old_275_assertion_evidence_cannot_qualify_mixed_catalog(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
+        old_result=RESULT.split('STATE_CATALOG_RESULT ')[0]
+        for prefix in ['posix_','nfs4_']:
+            for name in ['directory_denial','lock_denial','ownership_denial','job_denial','inheritance_denial','restored']:
+                old_result=old_result.replace(' '+prefix+'catalog_'+name+'=pass','')
+        old_result=old_result.replace(' catalog_kernel_uid_denial=pass','')
+        old_pass='\n'.join(line for line in PASS.splitlines() if 'TestStateCatalog' not in line and 'TestNativeStateCatalog' not in line)+'\n'
+        with self.assertRaises(ValueError):m.validate(old_pass+old_result)

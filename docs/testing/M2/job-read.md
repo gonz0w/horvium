@@ -1,6 +1,7 @@
 # M2 native job reader and immutable successors
 
-Date: 2026-10-06. Status: qualified on both declared native targets; maintainer review pending.
+Date: 2026-10-06. Status: accepted in [PR 49](https://github.com/gonz0w/horvium/pull/49),
+merged source `68ec24eb1dba9c8d2ee0a41ede3a0fd58a176dae`.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).

@@ -242,6 +242,13 @@ M2 native job reader: [contract/procedure](../testing/M2/job-read.md) adds priva
 ID-selected native metadata reads and immutable successor validation. Require all
 275 state assertions, twenty-eight parents and 176 codec/schema subtests on both
 existing targets. Both passed at signed source `5241ae7f0bccde0423613af1dfcde9aed951ac34` with
-full teardown; see the [manifest](../testing/M2/job-read-manifest.json). Review is
-pending. No runtime job publication/admission,
+full teardown; see the [manifest](../testing/M2/job-read-manifest.json). Accepted in
+PR 49. No runtime job publication/admission,
 actual recovery, commercial scale or new hardware/client support follows.
+
+
+M2 mixed state catalog: [contract/procedure](../testing/M2/state-catalog.md) requires
+337 assertions, thirty-two parents and 176 codec/schema subtests on both existing
+targets. Complete private ownership/job census and shared byte/class ceilings;
+native qualification is pending. Actual record counts do not qualify commercial
+resources/scale, mixed publication, admission or recovery; runtime remains read-only.
