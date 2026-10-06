@@ -1,6 +1,7 @@
 # M2 durable job metadata and shared publication budgets
 
-Date: 2026-10-06. Status: qualified on both declared native targets; maintainer review pending.
+Date: 2026-10-06. Status: accepted in [PR 51](https://github.com/gonz0w/horvium/pull/51),
+merged source `bcc5086648b74eacefad350db8c3bebd56d2db23`.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -160,3 +161,6 @@ All 26 prior M2 manifests remain byte-identical. Final evidence-only review reru
 baseline checks and retains the original executed deep source when reused.
 Complete intent, admission/recovery, M2 acceptance and deferred M1 accessibility
 remain open.
+
+The next [property intent capture](property-intent.md) retains the current reviewed
+baseline without changing job v1 publication or granting executable intent.

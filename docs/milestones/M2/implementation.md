@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation accepted in PR 42; ownership publication accepted in PR 43; bounded ownership catalog accepted in PR 46; ownership capacity accepted in PR 47; job lifecycle metadata accepted in PR 48; native job reader accepted in PR 49; mixed state census accepted in PR 50; durable job metadata qualified, review pending; Actions disabled.
+Date: 2026-10-06. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation accepted in PR 42; ownership publication accepted in PR 43; bounded ownership catalog accepted in PR 46; ownership capacity accepted in PR 47; job lifecycle metadata accepted in PR 48; native job reader accepted in PR 49; mixed state census accepted in PR 50; durable job metadata accepted in PR 51; reviewed property intent qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -323,6 +323,23 @@ sync/rename pipeline. Both publishers require a complete mixed census and reserv
 old plus new bytes and job class slots before temp creation and before rename.
 Require 432 state assertions, thirty-five parents and 176 schema subtests on both
 releases with full teardown. Both passed at signed source `dc789c4e3672f61e670e6c4352e1eae89b3fb13a`;
-see the [manifest](../../testing/M2/job-publication-manifest.json). Review is pending. This metadata-only
+see the [manifest](../../testing/M2/job-publication-manifest.json). Accepted in PR 51
+at merged source `bcc5086648b74eacefad350db8c3bebd56d2db23`. This metadata-only
 boundary admits/executes no job; complete intent, admission/reservations, retention
 and actual recovery/acknowledgement cuts remain later gates.
+
+
+## Reviewed property intent capture prerequisite
+
+The [capture/codec](../../testing/M2/property-intent.md) retains the complete current
+property review and full policy binding after fresh plan/session/expiry validation.
+It captures original values/sources/received values, affected and protected context,
+version/state identities, pool/import policy, features and topology. Nanosecond UTC
+metadata and a plan-scoped session digest retain binding without raw credentials.
+Strict decoding checks internal consistency and canonical damage checksums; it
+cannot restore a plan or provide native/root authority. Existing job v1/native
+publication behavior remains unchanged. Seven parents/769 subtests, storage race
+and all 17 storage fuzz targets passed at signed source `e66d59eec2e05137a11d8533b327206c3682e423`;
+see the [manifest](../../testing/M2/property-intent-manifest.json). Review is pending.
+Job embedding/complete intent, admission/reservations, attribution/recovery and
+native eligibility assembly remain later gates; runtime stays read-only.

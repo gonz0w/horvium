@@ -28,8 +28,10 @@ snapshot, paginated inventory or client-supplied object into this authority.
 
 The policy and observation must be exclusively owned during a call. A plan
 retains private scalar state and owned review slices; every review accessor
-returns independent slices. Plans are volatile and have no serialization or
-restore path. Internal JSON is used only for deterministic policy hashing and
+returns independent slices. Plans are volatile and have no restore path. The explicit
+[property-intent capture](property-intent.md) retains the current reviewed baseline
+as non-executable metadata; it cannot serialize/restore the private session-bound
+`Plan` or supply native eligibility. Internal JSON is used only for deterministic policy hashing and
 review sizing, not an adopted wire or persistent schema.
 
 ## Property reviews and refusal behavior
