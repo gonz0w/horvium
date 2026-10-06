@@ -294,3 +294,19 @@ both releases. Both targets passed at signed source `eabf4691fc55b825db74ba73501
 with complete teardown; see the [manifest](../../testing/M2/ownership-publication-manifest.json).
 Review is pending. Full store budgets, temporary
 record discovery after death, durable admission and recovery remain open.
+
+
+## Bounded ownership inspection prerequisite
+
+The [catalog contract/procedure](../../testing/M2/ownership-catalog.md) covers a
+further partial M2-STATE-001/M2-OWN-001 at T1/T3: complete descriptor-anchored
+namespace enumeration, independent sorted summaries, strict record checks,
+orphan/unknown refusal, bounded accounting, repeated offset independence and
+ordinary final drift checks. Three catalog ACL controls extend the existing
+owned UFS fixture; inherited kernel-UID denial also covers inspection. Require
+all 202 named assertions, seventeen parents and 57 codec subtests on both
+releases, with full preservation/teardown. Reduced-limit native fixtures are
+budget-code proof, not full populated large-workload/resource qualification.
+Inspection never repairs/deletes state, clears publication uncertainty or grants
+write authority. Native qualification remains pending. Job/admission/recovery,
+full store allocation and complete M2 acceptance remain open.

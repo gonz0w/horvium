@@ -260,3 +260,11 @@ The host test executable is deleted after completion or interruption, including
 supervisor fallback after controller death. Caches/logs are inert. This changes
 development execution only; no NAS runtime, service or compatibility scope grows.
 See [focused workflow qualification](focused-review.md) for executed evidence.
+
+
+The [bounded catalog extension](M2/ownership-catalog.md) expands state to 202
+assertions and seventeen parent tests, with the same 57 codec subtests. It adds
+complete ownership namespace/record inspection and actual reduced-budget/drift
+controls; existing owned UFS ACL and inherited-UID fixtures also test inspection.
+No additional disks, mounts or runtime services are introduced. Both declared
+native targets and full teardown remain required; qualification is pending.

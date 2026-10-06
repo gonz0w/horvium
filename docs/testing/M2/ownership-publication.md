@@ -1,6 +1,6 @@
 # M2 private ownership record publication
 
-Date: 2026-10-06. Status: partial metadata publication qualified on both targets; maintainer review pending.
+Date: 2026-10-06. Status: partial metadata publication accepted in [PR 43](https://github.com/gonz0w/horvium/pull/43), merged source `d5c3c987f6363923a839904e87f080026d964c60`; original execution provenance retained.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).

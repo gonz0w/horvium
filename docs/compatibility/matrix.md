@@ -209,3 +209,10 @@ The prebuilt state path passed all 161 current assertions, 14 parent tests and
 57 codec subtests on both declared native targets, with identical artifact hashes
 and verified teardown; see [workflow qualification](../testing/focused-review.md). This tooling change
 adds no OS/architecture, client, hardware or runtime feature support claim.
+
+
+M2 ownership catalog: [contract/procedure](../testing/M2/ownership-catalog.md)
+adds bounded ownership-only record inspection, complete namespace refusal and
+ordinary drift checks. The expanded state gate requires 202 assertions,
+seventeen parent tests and 57 codec subtests on both releases. Native execution
+is pending; no new compatibility, write-admission, recovery or scale claim follows.
