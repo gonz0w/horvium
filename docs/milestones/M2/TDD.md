@@ -340,7 +340,22 @@ uncertainty and restart projections with no execution. Fuzz every accepted hosti
 input for exact semantic round trips and zero metadata on denial. Portable
 qualification passed at signed source `a3791513f6423fe5860064e93f89399c21dc1445`: seven tests,
 119 schema subtests, baseline and focused storage race/all 15 fuzz checks; see the
-[manifest](../../testing/M2/job-records-manifest.json). Review is pending; no native
+[manifest](../../testing/M2/job-records-manifest.json). Accepted in PR 48; no native
 file/acknowledgement/recovery claim follows.
 Full durable baseline/attribution data, mixed store/admission/retention, actual
 restarts/restoration/quiescence and complete M2 acceptance remain open.
+
+
+## Native job reader and successor prerequisite
+
+The [reader procedure](../../testing/M2/job-read.md) adds partial M2-STATE-001/
+M2-JOB-001/M2-PRIV-001 at T1/T3: actual ID-selected descriptor reads, strict private
+file/ACL/size/schema/history validation, filename binding, zero metadata on error,
+real inherited-UID denial despite effective NFSv4 access, preserved unsafe objects
+and root-filesystem anchoring. Pure successor tests refuse independently valid
+identity/intent/history rewrites and stale/skipped/truncated updates. Require all
+275 state assertions, twenty-eight parents and 176 codec/schema subtests on both
+releases with complete fixture/base/runtime/process teardown. Native qualification
+is pending. Mixed store publication/admission, complete executable intent, native
+attribution/quiescence, acknowledgement cuts/restoration and M2 acceptance remain
+open; the job reader cannot grant storage authority.

@@ -107,6 +107,10 @@ func TestNativeStateACLProcess(t *testing.T) {
 	if p, err := s.ReadOwnership("100"); err != ErrStateDirectory || p.PoolGUID != "" {
 		t.Fatal("ACL grant bypassed product kernel UID guard")
 	}
+	job := jobFixture()
+	if j, err := s.ReadJob(job.ID); err != ErrStateDirectory || j.ID != "" {
+		t.Fatal("ACL grant bypassed job reader kernel UID guard")
+	}
 	var st unix.Stat_t
 	if unix.Fstat(3, &st) != nil || st.Uid != 0 || st.Mode&07777 != 0700 {
 		t.Fatal("private mode/UID not retained")
@@ -123,6 +127,20 @@ func TestNativeStateACLProcess(t *testing.T) {
 	data, err := io.ReadAll(io.LimitReader(f, 65537))
 	if err != nil || !bytes.Equal(data, ownershipGolden()) {
 		t.Fatal("kernel ACL grant did not read fixture bytes")
+	}
+	jobFD, err := unix.Openat(3, "job-"+job.ID+".json", unix.O_RDONLY|unix.O_NOFOLLOW, 0)
+	if err != nil {
+		t.Fatal("native job grant was not effective")
+	}
+	jobFile := os.NewFile(uintptr(jobFD), "acl-job-record")
+	defer jobFile.Close()
+	if unix.Fstat(jobFD, &st) != nil || st.Uid != 0 || st.Mode&07777 != 0600 {
+		t.Fatal("private job mode/UID not retained")
+	}
+	jobBytes, err := EncodeJobRecord(job)
+	data, readErr := io.ReadAll(io.LimitReader(jobFile, 65537))
+	if err != nil || readErr != nil || !bytes.Equal(data, jobBytes) {
+		t.Fatal("kernel job grant did not read fixture bytes")
 	}
 }
 
@@ -234,6 +252,18 @@ func TestNativeStateACL(t *testing.T) {
 				t.Fatal("owned record descriptor unavailable")
 			}
 			defer record.Close()
+			job := jobFixture()
+			jobBytes, err := EncodeJobRecord(job)
+			jobPath := filepath.Join(statePath, "job-"+job.ID+".json")
+			if err != nil || os.WriteFile(jobPath, jobBytes, 0600) != nil {
+				t.Fatal("owned job record unavailable")
+			}
+			jobRecord, err := os.OpenFile(jobPath, os.O_RDWR, 0)
+			if err != nil {
+				t.Fatal("owned job descriptor unavailable")
+			}
+			defer jobRecord.Close()
+			jobFD := int(jobRecord.Fd())
 			dirFD, lockFD, recordFD := int(s.directory.Fd()), int(s.writer.Fd()), int(record.Fd())
 			posix, e1 := unix.Fpathconf(dirFD, 59)
 			nfs4, e2 := unix.Fpathconf(dirFD, 64)
@@ -246,6 +276,11 @@ func TestNativeStateACL(t *testing.T) {
 				return a
 			}
 			dirACL, lockACL, recordACL := original(dirFD), original(lockFD), original(recordFD)
+			jobACL := original(jobFD)
+			validJob := func() bool { j, e := s.ReadJob(job.ID); return e == nil && j.ID == job.ID }
+			if !validJob() {
+				t.Fatal("baseline job ACL read refused")
+			}
 			valid := func() bool { p, e := s.ReadOwnership("100"); return e == nil && p.PoolGUID == "100" }
 			check(prefix+"baseline", valid())
 			deniedOpen := func(path string) bool {
@@ -256,16 +291,18 @@ func TestNativeStateACL(t *testing.T) {
 				return handle == nil && e == ErrStateDirectory
 			}
 			deniedRead := func() bool { p, e := s.ReadOwnership("100"); return e == ErrStateDirectory && p.PoolGUID == "" }
+			deniedJob := func() bool { j, e := s.ReadJob(job.ID); return e == ErrStateDirectory && j.ID == "" }
 			preserved := func(fd int, mode uint16, want stateACL) bool {
 				var st, named unix.Stat_t
 				a, e := readStateACL(fd, model.kind)
-				path := map[int]string{dirFD: statePath, lockFD: filepath.Join(statePath, stateWriterName), recordFD: recordPath}[fd]
+				path := map[int]string{dirFD: statePath, lockFD: filepath.Join(statePath, stateWriterName), recordFD: recordPath, jobFD: jobPath}[fd]
 				return unix.Fstat(fd, &st) == nil && unix.Lstat(path, &named) == nil && named.Dev == st.Dev && named.Ino == st.Ino && st.Uid == 0 && st.Mode&07777 == mode && e == nil && a == want
 			}
 			bad := namedFixtureACL(dirACL, model.kind, 0)
 			setFixtureACL(t, dirFD, model.kind, bad)
 			check(prefix+"directory_denial", deniedOpen(statePath))
 			check(prefix+"directory_read_denial", deniedRead())
+			check(prefix+"job_directory_denial", deniedJob())
 			check(prefix+"directory_no_repair", preserved(dirFD, 0700, bad))
 			setFixtureACL(t, dirFD, model.kind, dirACL)
 			parent := filepath.Join(mountpoint, "ancestor")
@@ -288,6 +325,7 @@ func TestNativeStateACL(t *testing.T) {
 			setFixtureACL(t, lockFD, model.kind, bad)
 			check(prefix+"lock_denial", deniedOpen(statePath))
 			check(prefix+"lock_read_denial", deniedRead())
+			check(prefix+"job_lock_denial", deniedJob())
 			check(prefix+"lock_no_repair", preserved(lockFD, 0600, bad))
 			setFixtureACL(t, lockFD, model.kind, lockACL)
 			bad = namedFixtureACL(recordACL, model.kind, 0)
@@ -296,6 +334,12 @@ func TestNativeStateACL(t *testing.T) {
 			data, e := os.ReadFile(recordPath)
 			check(prefix+"record_no_repair", preserved(recordFD, 0600, bad) && e == nil && bytes.Equal(data, ownershipGolden()))
 			setFixtureACL(t, recordFD, model.kind, recordACL)
+			bad = namedFixtureACL(jobACL, model.kind, 0)
+			setFixtureACL(t, jobFD, model.kind, bad)
+			check(prefix+"job_record_denial", deniedJob())
+			data, e = os.ReadFile(jobPath)
+			check(prefix+"job_record_no_repair", preserved(jobFD, 0600, bad) && e == nil && bytes.Equal(data, jobBytes))
+			setFixtureACL(t, jobFD, model.kind, jobACL)
 			if model.kind == 2 {
 				setFixtureACL(t, dirFD, 3, testModeACL(2, 0700))
 			} else {
@@ -316,6 +360,7 @@ func TestNativeStateACL(t *testing.T) {
 			if model.kind == 4 {
 				setFixtureACL(t, dirFD, 4, namedFixtureACL(dirACL, 4, 1))
 				setFixtureACL(t, recordFD, 4, namedFixtureACL(recordACL, 4, 8))
+				setFixtureACL(t, jobFD, 4, namedFixtureACL(jobACL, 4, 8))
 				processPath, e := os.MkdirTemp("/tmp", "horvium-acl-process-")
 				if e != nil {
 					t.Fatal("process fixture unavailable")
@@ -352,6 +397,7 @@ func TestNativeStateACL(t *testing.T) {
 				childErr := cmd.Run()
 				check("kernel_nfs4_grant", childErr == nil)
 				check("kernel_uid_denial", childErr == nil)
+				check("job_kernel_uid_denial", childErr == nil)
 				if os.RemoveAll(processPath) != nil {
 					t.Fatal("process fixture removal failed")
 				}
@@ -359,10 +405,12 @@ func TestNativeStateACL(t *testing.T) {
 				check("process_teardown", os.IsNotExist(e))
 				setFixtureACL(t, dirFD, 4, dirACL)
 				setFixtureACL(t, recordFD, 4, recordACL)
+				setFixtureACL(t, jobFD, 4, jobACL)
 			}
 			check(prefix+"restored_read", valid())
+			check(prefix+"job_restored_read", validJob())
 			check(prefix+"lease_close", s.Close() == nil)
-			if record.Close() != nil || pf.Close() != nil {
+			if record.Close() != nil || jobRecord.Close() != nil || pf.Close() != nil {
 				t.Fatal("owned fixture descriptor close failed")
 			}
 			check(prefix+"unmount", cleanup() && !mounted)
