@@ -197,4 +197,7 @@ The [pool-label extension](M2/pool-labels.md) adds eight required cases to the
 same four native tests, for fifty-nine assertions. It exports and reimports only
 the verified owned fixture GUID without force, checks unchanged exported disk
 bytes across probes and preserves prior foreign/root/host teardown controls.
-Both-target execution is pending; prior fifty-one-case evidence remains separate.
+Both targets passed all fifty-nine assertions and complete preservation/teardown;
+see the [native manifest](M2/pool-labels-manifest.json). The initial utility-path
+and native-format failures remain unqualified with verified cleanup. Prior
+fifty-one-case evidence remains separate.

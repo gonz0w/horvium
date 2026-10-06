@@ -1,7 +1,8 @@
 # M2 positive pool-label identity
 
 Date: 2026-10-05. Status: implementation and portable behavioral tests complete;
-new native export/reimport qualification pending. [Approved EDD](../../milestones/M2/EDD.md),
+all fifty-nine assertions and four native tests, preservation and complete teardown
+passed on both targets; maintainer review pending. [Approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
 ## Observation contract
@@ -15,7 +16,7 @@ observation contract, not a transport, persisted schema or write policy.
 Default `-l` groups identical configurations. Each printed block must have the
 exact separator/header/body/group format, a valid representative label, bounded
 indented native scalar/container rows and a complete final newline. The union of
-all groups must represent indices 0 through 3 once, in producer order. Refuse
+all groups must represent indices 0 through 3 once, in reported order. Refuse
 reported bad representative checksums, read/unpack diagnostics, missing groups,
 unknown top-level fields/version/state, controls, malformed indentation, duplicate
 keys, overflow and contradictory pool/leaf/top identities or states. Retain each
@@ -24,10 +25,12 @@ label indices and SHA-256 of its complete body, including opaque nested metadata
 Known optional numeric allocation/creation fields and quoted compatibility/comment/
 host fields are admitted by their inspected producer types; unknown fields still
 refuse. These fields convey no feature/profile, policy or capacity authority.
+Quoted strings containing apostrophes or the colon-plus-space delimiter are
+unsupported; this subset refuses those captures rather than guessing escaping.
 Nested rows are syntax-bounded; they do not establish complete vdev topology or
 validate historical embedded device paths. Never execute an embedded path.
 
-The qualified native pool states are active (0), exported (1) and destroyed (2),
+The admitted native pool states are active (0), exported (1) and destroyed (2),
 for positive member metadata only. They describe recorded label state, not current
 import status, ownership, usability or health. Empty, failed, unavailable and
 unsupported captures return no observation; they never establish absence. Changed
@@ -121,8 +124,36 @@ GitHub Actions remain disabled; no persistent runner or host service is installe
 ## Source provenance and acceptance
 
 Pinned FreeBSD producer/manual/nvlist-printing/native-state sources are inspected
-for both bundled release revisions. Hash records are recorded with executed
-qualification; source inspection does not establish installed binary provenance.
+for both bundled release revisions. The [execution manifest](pool-labels-manifest.json)
+records source hashes and actual executed outcomes; source inspection does not establish installed binary provenance.
 This subset is partial M2-DEVICE-001/M2-DRIFT-001/M2-NATIVE-001 evidence. Complete
 slice 1 eligibility, later mutation/recovery slices and M2 acceptance remain open.
 The maintainer-deferred M1 Safari/manual accessibility gate remains pending.
+
+## Executed qualification
+
+Signed functional source `be438496ab6316433af60d57d13aefc2cbfb6a86` passed all fifty-nine
+assertions and four native tests on FreeBSD 15.1-RELEASE-p3 and 14.5-RELEASE,
+through Mac arm64 / QEMU 11.1.1 TCG, two CPUs and 6144 MiB. Actual roots were
+ZFS and UFS respectively. Both runs bound active/exported/reimported labels to the
+independently observed fixture GUID, retained exported metadata with no imported
+membership, rejected export/unavailable drift and wrong capture addresses, and
+preserved whole closed exported disk bytes across all probes. Native reimport
+restored the same GUID and single-leaf backing with active label state; no force,
+label-clear or cleanup replay was used.
+
+Previous foreign/root/system/signature checks reran. Both guests preserved all five
+original host backings and base/runtime inputs, removed owned disks/image/key/
+variables and stopped their process groups. The execution manifest binds exact
+functional/test/tool inputs, both release strings, thirteen executed utility hashes
+per guest and inspected primary sources. All prior M2 manifests remain byte-for-byte
+unchanged. The initial utility-path and native-format failures retain their actual
+unqualified sources and verified teardown.
+
+The complete functional-source portable review passed 66 tooling tests, Go
+unit/race checks and nineteen bounded fuzz targets. Final PR-head review is
+reported separately; any recorded functional input change requires requalification.
+These fixture results qualify positive single-leaf label observation and drift,
+not complete signature/device clearance, native product writes, physical/controller
+or commercial deployment behavior. Full M2 and deferred manual UI acceptance remain
+pending.

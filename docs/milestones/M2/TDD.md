@@ -95,7 +95,9 @@ preservation/teardown passed on both targets; see the
 [native manifest](../../testing/M2/device-use-review-manifest.json). PR 36 accepted this subset. These partial results do not
 satisfy the complete device-safety row. The [pool-label extension](../../testing/M2/pool-labels.md) adds eight required
 assertions for actual export/reimport identity, missing imported membership, drift,
-probe preservation and denial, for fifty-nine assertions in four tests; qualification
+probe preservation and denial, for fifty-nine assertions in four tests. Both
+targets and complete preservation/teardown passed; see the
+[native manifest](../../testing/M2/pool-labels-manifest.json). Maintainer review
 is pending. Further fault control and complete device safety still
 need implementation and qualification. Never accept an arbitrary host device supplied to a test.
 

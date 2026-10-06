@@ -7,7 +7,7 @@ validation are separate. Refresh exact versions in each active research manifest
 |---|---|---|
 | Runtime | Approved M1 FreeBSD 15.1 primary / 14.5 compatibility | Native reader/helper/cache/admin fixture tests passed; foreground runtime/console/CLI owned-fixture tests passed on both releases; full NAS runtime pending |
 | Architecture | amd64 first candidate; other FreeBSD architectures as validated | Hardware-neutral design, no universal support claim |
-| Storage | ZFS pools/datasets on supported direct-access devices | Observed by M1; M2 ownership/creation/property/maintenance contracts approved in PR 20; no M2 native mutation evidence |
+| Storage | ZFS pools/datasets on supported direct-access devices | Observed by M1; M2 ownership/creation/property/maintenance contracts approved in PR 20; no M2 product mutation evidence |
 | File clients | macOS and Linux/BSD first; SMB/NFS/SFTP as designed in M3 | Priorities confirmed; version/permission matrix and actual tests pending |
 | Backup peer | Compatible ZFS receiver over authenticated SSH | Planned; feature negotiation and restoration pending |
 | Management | Go 1.27.1 / HTMX 2.0.11; Safari/macOS and Firefox/Linux first | Read-only semantic console and authenticated CLI implemented in accepted slice 5; Firefox fixture evidence below; Safari/manual acceptance pending |
@@ -136,5 +136,7 @@ reservation, enrollment or mutation authority follows.
 M2 positive pool labels: [contract and procedure](../testing/M2/pool-labels.md)
 binds complete default zdb -l configurations to independently correlated disks,
 retaining native pool state and requiring review on export/label drift. Portable
-tests/cross-build pass; both-target native export/reimport and teardown are pending.
+tests/cross-build pass; all fifty-nine assertions, four tests, actual export/reimport
+and full preservation/teardown passed on both targets; see the
+[native manifest](../testing/M2/pool-labels-manifest.json). Review remains pending.
 No all-label checksum integrity, signature absence, collector or write authority follows.

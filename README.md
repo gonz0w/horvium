@@ -55,7 +55,8 @@ selected positive use facts in an immutable baseline and requires new review on
 identity/geometry/mount/swap/pool/signature drift. All fifty-one assertions and full
 teardown passed on both targets; PR 36 accepted this subset.
 The next [pool-label subset](docs/testing/M2/pool-labels.md) binds positive exported
-pool identities and recorded state to the same disk; native qualification is pending.
+pool identities and recorded state to the same disk; all fifty-nine assertions
+and full teardown passed on both targets, with maintainer review pending.
 Other native gates, durable jobs and storage writes remain pending; the runtime is
 still read-only.
 
