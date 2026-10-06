@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation accepted in PR 42; ownership publication accepted in PR 43; bounded ownership catalog accepted in PR 46; ownership capacity accepted in PR 47; job lifecycle metadata qualified, review pending; Actions disabled.
+Date: 2026-10-06. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation accepted in PR 42; ownership publication accepted in PR 43; bounded ownership catalog accepted in PR 46; ownership capacity accepted in PR 47; job lifecycle metadata accepted in PR 48; native job reader qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -286,4 +286,18 @@ This is in-memory metadata only, not complete durable native intent, admission,
 job-file storage or recovery. The ownership catalog continues to refuse job files.
 Signed source `a3791513f6423fe5860064e93f89399c21dc1445` passed seven tests/119 schema
 subtests, baseline and focused storage race/all 15 fuzz checks; see the
-[manifest](../../testing/M2/job-records-manifest.json). Maintainer review is pending; no changed filesystem/native fixture or support claim follows.
+[manifest](../../testing/M2/job-records-manifest.json). PR 48 accepted this at merged
+source `09b00a646d67702c5bd9b5ef1636c7f74e9e50ba`; no changed filesystem/native fixture or support claim follows.
+
+
+## Native job reader and successor prerequisite
+
+The [reader/successor contract](../../testing/M2/job-read.md) adds root-only canonical
+job-ID-selected native reads using shared ownership descriptor validation and a
+pure append-only successor guard. Identity, intent and historical events cannot
+change. The expanded state gate requires 275 assertions, twenty-eight parents and
+176 codec/schema subtests. Both releases passed with full teardown at signed source `5241ae7f0bccde0423613af1dfcde9aed951ac34`; see the
+[manifest](../../testing/M2/job-read-manifest.json). Review is pending. Job-file
+publication, complete durable
+intent, mixed namespaces/budgets, admission/deduplication and actual recovery remain
+open. Ownership publication still refuses all job files; no runtime caller exists.

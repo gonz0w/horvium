@@ -233,6 +233,15 @@ M2 job lifecycle codec: [contract/procedure](../testing/M2/job-records.md) adds
 bounded in-memory property-intent lifecycle metadata and strict checksums/schema,
 with no native/file/runtime wiring. Signed source `a3791513f6423fe5860064e93f89399c21dc1445`
 passed seven tests/119 schema subtests and focused storage race/all 15 fuzz checks;
-see the [manifest](../testing/M2/job-records-manifest.json). Review is pending. Existing
+see the [manifest](../testing/M2/job-records-manifest.json). Accepted in PR 48. Existing
 FreeBSD support candidates and their immutable native sources are unchanged;
 compilation alone grants no native durable job/admission/recovery or scale claim.
+
+
+M2 native job reader: [contract/procedure](../testing/M2/job-read.md) adds private
+ID-selected native metadata reads and immutable successor validation. Require all
+275 state assertions, twenty-eight parents and 176 codec/schema subtests on both
+existing targets. Both passed at signed source `5241ae7f0bccde0423613af1dfcde9aed951ac34` with
+full teardown; see the [manifest](../testing/M2/job-read-manifest.json). Review is
+pending. No runtime job publication/admission,
+actual recovery, commercial scale or new hardware/client support follows.

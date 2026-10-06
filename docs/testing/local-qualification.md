@@ -279,3 +279,13 @@ uncertainty, real pre-rename namespace changes and concurrent last-slot refusal.
 There are no extra host services or live storage fixtures. Both targets and complete
 owned guest/host teardown passed at signed source `bf80cb9f2e1c196eae330ae0d681d86e0c466033`;
 see the [manifest](M2/ownership-capacity-manifest.json).
+
+
+The [native job-reader extension](M2/job-read.md) expands state to 275 assertions,
+twenty-eight parents and 176 codec/schema subtests. It requalifies the shared native
+ownership/job byte reader, job ID binding and actual private-file/ACL/UID controls.
+The existing owned POSIX/NFSv4 UFS fixture includes job records and proves effective
+native job access cannot bypass the product's kernel UID guard. All added files
+are owned disposable fixtures; no persistent services or operator storage are used.
+Both targets passed at signed source `5241ae7f0bccde0423613af1dfcde9aed951ac34` with full
+teardown; see the [manifest](M2/job-read-manifest.json).

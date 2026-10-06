@@ -26,46 +26,9 @@ func (s *StateDirectory) ReadOwnership(poolGUID string) (Policy, error) {
 
 // Caller holds s.mu and has checked the kernel UID and selector.
 func (s *StateDirectory) readOwnershipLocked(poolGUID string) (Policy, error) {
-	dir, err := s.ownershipDirectoryLocked()
+	data, err := s.readStateBytesLocked("ownership-" + poolGUID + ".json")
 	if err != nil {
 		return Policy{}, err
-	}
-	name := "ownership-" + poolGUID + ".json"
-	var prior unix.Stat_t
-	if unix.Fstatat(dir, name, &prior, unix.AT_SYMLINK_NOFOLLOW) != nil || !privateOwnershipFile(prior) {
-		return Policy{}, ErrStateDirectory
-	}
-	if prior.Size > maxStateRecordBytes {
-		return Policy{}, ErrLimit
-	}
-	fd, err := unix.Openat(dir, name, unix.O_RDONLY|unix.O_NOFOLLOW|unix.O_NONBLOCK|unix.O_CLOEXEC, 0)
-	if err != nil {
-		return Policy{}, ErrStateDirectory
-	}
-	f := os.NewFile(uintptr(fd), "storage-ownership-record")
-	defer f.Close()
-	var before, after, current unix.Stat_t
-	if unix.Fstat(fd, &before) != nil || !privateOwnershipFile(before) || !safeStateACL(fd, uint32(before.Mode), false) {
-		return Policy{}, ErrStateDirectory
-	}
-	if before.Size > maxStateRecordBytes {
-		return Policy{}, ErrLimit
-	}
-	if !sameOwnershipMetadata(prior, before) {
-		return Policy{}, ErrDrift
-	}
-	data, err := io.ReadAll(io.LimitReader(f, maxStateRecordBytes+1))
-	if err != nil {
-		return Policy{}, ErrStateDirectory
-	}
-	if len(data) > maxStateRecordBytes {
-		return Policy{}, ErrLimit
-	}
-	if int64(len(data)) != before.Size || unix.Fstat(fd, &after) != nil || !sameOwnershipMetadata(before, after) || unix.Fstatat(dir, name, &current, unix.AT_SYMLINK_NOFOLLOW) != nil || !sameOwnershipMetadata(after, current) {
-		return Policy{}, ErrDrift
-	}
-	if f.Close() != nil {
-		return Policy{}, ErrStateDirectory
 	}
 	p, err := DecodeOwnershipRecord(data)
 	if err != nil {
@@ -75,6 +38,53 @@ func (s *StateDirectory) readOwnershipLocked(poolGUID string) (Policy, error) {
 		return Policy{}, ErrDrift
 	}
 	return p, nil
+}
+
+// Caller holds mu and has validated the kernel UID and typed selector. Only
+// ownership/job wrappers construct names; requests cannot supply a file path.
+// Shared descriptor validation retains the accepted reader's native semantics.
+func (s *StateDirectory) readStateBytesLocked(name string) ([]byte, error) {
+	dir, err := s.ownershipDirectoryLocked()
+	if err != nil {
+		return nil, err
+	}
+	var prior unix.Stat_t
+	if unix.Fstatat(dir, name, &prior, unix.AT_SYMLINK_NOFOLLOW) != nil || !privateOwnershipFile(prior) {
+		return nil, ErrStateDirectory
+	}
+	if prior.Size > maxStateRecordBytes {
+		return nil, ErrLimit
+	}
+	fd, err := unix.Openat(dir, name, unix.O_RDONLY|unix.O_NOFOLLOW|unix.O_NONBLOCK|unix.O_CLOEXEC, 0)
+	if err != nil {
+		return nil, ErrStateDirectory
+	}
+	f := os.NewFile(uintptr(fd), "storage-state-record")
+	defer f.Close()
+	var before, after, current unix.Stat_t
+	if unix.Fstat(fd, &before) != nil || !privateOwnershipFile(before) || !safeStateACL(fd, uint32(before.Mode), false) {
+		return nil, ErrStateDirectory
+	}
+	if before.Size > maxStateRecordBytes {
+		return nil, ErrLimit
+	}
+	if !sameOwnershipMetadata(prior, before) {
+		return nil, ErrDrift
+	}
+	data, err := io.ReadAll(io.LimitReader(f, maxStateRecordBytes+1))
+	if err != nil {
+		return nil, ErrStateDirectory
+	}
+	if len(data) > maxStateRecordBytes {
+		return nil, ErrLimit
+	}
+	if int64(len(data)) != before.Size || unix.Fstat(fd, &after) != nil || !sameOwnershipMetadata(before, after) || unix.Fstatat(dir, name, &current, unix.AT_SYMLINK_NOFOLLOW) != nil || !sameOwnershipMetadata(after, current) {
+		return nil, ErrDrift
+	}
+	if f.Close() != nil {
+		return nil, ErrStateDirectory
+	}
+	return data, nil
 }
 
 func privateOwnershipFile(st unix.Stat_t) bool {
