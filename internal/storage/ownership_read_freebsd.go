@@ -29,6 +29,9 @@ func (s *StateDirectory) ReadOwnership(poolGUID string) (Policy, error) {
 	if unix.Fstat(dir, &dst) != nil || dst.Mode&unix.S_IFMT != unix.S_IFDIR || dst.Uid != 0 || dst.Mode&07777 != 0700 || unix.Fstat(writer, &wst) != nil || !validStateLock(wst) || unix.Fstatat(dir, stateWriterName, &named, unix.AT_SYMLINK_NOFOLLOW) != nil || !validStateLock(named) || named.Dev != wst.Dev || named.Ino != wst.Ino {
 		return Policy{}, ErrStateDirectory
 	}
+	if !safeStateACL(dir, uint32(dst.Mode), true) || !safeStateACL(writer, uint32(wst.Mode), false) {
+		return Policy{}, ErrStateDirectory
+	}
 	name := "ownership-" + poolGUID + ".json"
 	var prior unix.Stat_t
 	if unix.Fstatat(dir, name, &prior, unix.AT_SYMLINK_NOFOLLOW) != nil || !privateOwnershipFile(prior) {
@@ -44,7 +47,7 @@ func (s *StateDirectory) ReadOwnership(poolGUID string) (Policy, error) {
 	f := os.NewFile(uintptr(fd), "storage-ownership-record")
 	defer f.Close()
 	var before, after, current unix.Stat_t
-	if unix.Fstat(fd, &before) != nil || !privateOwnershipFile(before) {
+	if unix.Fstat(fd, &before) != nil || !privateOwnershipFile(before) || !safeStateACL(fd, uint32(before.Mode), false) {
 		return Policy{}, ErrStateDirectory
 	}
 	if before.Size > maxStateRecordBytes {

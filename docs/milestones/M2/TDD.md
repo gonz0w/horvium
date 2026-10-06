@@ -260,6 +260,20 @@ after directory rename, directory/lock drift denial and complete teardown. The
 state suite requires all sixty-three lease/read assertions, two native tests, six
 unit tests and fifty-seven codec subtests on both targets. Both targets passed at
 signed source `94cf66e9c3a34184c76b84858cb7ef998e4bd2dc` with complete teardown; see
-the [manifest](../../testing/M2/ownership-read-manifest.json). Review is pending;
+the [manifest](../../testing/M2/ownership-read-manifest.json). PR 41 accepted this subset;
 ACL provisioning, coordinated races, full store/publication/admission/recovery and
 M2 acceptance remain open.
+
+## State ACL validation prerequisite
+
+The [ACL validation](../../testing/M2/state-acl.md) covers partial M2-STATE-001/
+M2-OWN-001 at T1/T3: actual-descriptor capability queries and bounded ACL reads,
+mode-only versus ACL-enabled distinction, conservative permission refusal,
+ancestor denial before lock creation, retained private modes/UIDs/inodes/ACLs/bytes,
+real NFSv4 named-user access and kernel UID denial, and owned mount/device/child
+teardown. Require all 108 lease/read/ACL assertions, ten parent tests and 57
+codec subtests on both releases. Both targets passed at signed source
+`33f4d91bc57adb71f27ce80bbe0552fb1e7685d2`, including complete teardown; see the
+[manifest](../../testing/M2/state-acl-manifest.json). Review is pending; complete
+provisioning, coordinated races, publication/admission/recovery and M2 acceptance
+remain open.

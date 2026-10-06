@@ -7,7 +7,8 @@ import sys
 CASES={'ancestor_denial', 'lock_owner_denial', 'lock_fifo_denial', 'mount_teardown', 'lease_close', 'directory_mode_denial', 'process_denial', 'close_release', 'final_close', 'fixture_teardown', 'directory_symlink_denial', 'second_writer_denial', 'lock_directory_denial', 'process_reaped', 'directory_owner_denial', 'lock_hardlink_denial', 'reopen', 'private_lock', 'root_directory', 'directory_sync', 'process_kill', 'death_release', 'path_denial', 'process_lock', 'death_inode_preservation', 'no_directory_creation', 'stable_inode', 'first_writer_race', 'cloexec', 'unsupported_fs_denial', 'lock_nonempty_denial', 'lock_symlink_denial', 'kernel_uid_denial', 'foreign_preservation', 'lock_mode_denial'}
 
 READ_CASES={'missing_denial','selector_denial','valid_read','bytes_preserved','independent_policy','inode_preserved','kernel_uid_denial','mode_denial','owner_denial','hardlink_denial','symlink_denial','fifo_denial','directory_denial','empty_denial','oversize_denial','damage_denial','newer_denial','wrong_pool_denial','controls_preserved','directory_anchor','directory_drift_denial','lock_drift_denial','lock_replacement_denial','lease_close','closed_denial','inert_denial','foreign_preservation','fixture_teardown'}
-TESTS={'TestNativeStateDirectory','TestNativeOwnershipRead','TestOwnershipRecordRoundTripAndCanonicalBytes','TestOwnershipChecksumDoesNotGrantInvalidScope','TestOwnershipRecordStrictDenials','TestOwnershipRecordRejectsInvalidPolicies','TestOwnershipRecordCapacityAndRevision','TestOwnershipReadMetadataDrift'}
+ACL_CASES={'descriptor_denial','posix_directory_no_repair', 'posix_baseline', 'nfs4_capabilities', 'kernel_uid_denial', 'nfs4_lock_read_denial', 'nfs4_directory_no_repair', 'posix_inheritance_denial', 'nfs4_lock_denial', 'nfs4_lock_no_repair', 'nfs4_inheritance_read_denial', 'posix_directory_denial', 'nfs4_restored_read', 'posix_ancestor_no_creation', 'nfs4_directory_read_denial', 'nfs4_baseline', 'posix_inheritance_no_repair', 'nfs4_inheritance_no_repair', 'process_teardown', 'nfs4_directory_denial', 'posix_lock_read_denial', 'posix_record_no_repair', 'posix_restored_read', 'posix_lock_denial', 'nfs4_record_no_repair', 'posix_capabilities', 'nfs4_ancestor_denial', 'posix_unmount', 'posix_lease_close', 'posix_record_denial', 'kernel_nfs4_grant', 'nfs4_filesystem', 'posix_directory_read_denial', 'nfs4_inheritance_denial', 'nfs4_lease_close', 'fixture_teardown', 'nfs4_ancestor_no_creation', 'posix_ancestor_denial', 'nfs4_unmount', 'nfs4_record_denial', 'posix_filesystem', 'posix_inheritance_read_denial', 'posix_lock_no_repair', 'posix_device_teardown', 'nfs4_device_teardown'}
+TESTS={'TestNativeStateACL','TestStateACLPolicy', 'TestNativeStateDirectory','TestNativeOwnershipRead','TestOwnershipRecordRoundTripAndCanonicalBytes','TestOwnershipChecksumDoesNotGrantInvalidScope','TestOwnershipRecordStrictDenials','TestOwnershipRecordRejectsInvalidPolicies','TestOwnershipRecordCapacityAndRevision','TestOwnershipReadMetadataDrift'}
 CODEC_SUBTEST_COUNTS={'TestOwnershipChecksumDoesNotGrantInvalidScope':10,'TestOwnershipRecordStrictDenials':32,'TestOwnershipRecordRejectsInvalidPolicies':15}
 
 def validate(text):
@@ -15,8 +16,8 @@ def validate(text):
         raise ValueError('state native evidence failed, skipped or oversized')
     passed=re.findall(r'(?m)^--- PASS: (Test\w+) \([0-9.]+s\)$',text)
     if len(passed)!=len(TESTS) or set(passed)!=TESTS:
-        raise ValueError('complete executed lease/reader/codec tests required')
-    for marker,cases in [('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES)]:
+        raise ValueError('complete executed lease/reader/ACL/codec tests required')
+    for marker,cases in [('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES),('STATE_ACL_RESULT',ACL_CASES)]:
         records=re.findall(marker+r' ([^\n]+)',text)
         if len(records)!=1:raise ValueError('one native result per boundary required')
         fields=records[0].split();expected={case+'=pass' for case in cases}

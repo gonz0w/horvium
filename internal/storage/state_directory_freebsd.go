@@ -40,7 +40,7 @@ func OpenStateDirectory(path string) (*StateDirectory, error) {
 			}
 		}
 		var st unix.Stat_t
-		if unix.Fstat(dir, &st) != nil || st.Mode&unix.S_IFMT != unix.S_IFDIR || st.Uid != 0 || st.Mode&07022 != 0 || i == len(parts)-1 && st.Mode&07777 != 0700 {
+		if unix.Fstat(dir, &st) != nil || st.Mode&unix.S_IFMT != unix.S_IFDIR || st.Uid != 0 || st.Mode&07022 != 0 || i == len(parts)-1 && st.Mode&07777 != 0700 || !safeStateACL(dir, uint32(st.Mode), true) {
 			return fail()
 		}
 	}
@@ -74,7 +74,7 @@ func OpenStateDirectory(path string) (*StateDirectory, error) {
 	}
 	badLock := func() (*StateDirectory, error) { _ = unix.Close(fd); return fail() }
 	var st, current unix.Stat_t
-	if unix.Fstat(fd, &st) != nil || !validStateLock(st) {
+	if unix.Fstat(fd, &st) != nil || !validStateLock(st) || !safeStateACL(fd, uint32(st.Mode), false) {
 		return badLock()
 	}
 	if err := unix.Flock(fd, unix.LOCK_EX|unix.LOCK_NB); err != nil {

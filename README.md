@@ -71,8 +71,11 @@ files. Five behavioral tests, fifty-seven subtests and all twenty-one bounded fu
 targets passed; accepted in PR 40.
 The [native ownership reader](docs/testing/M2/ownership-read.md) binds those
 records to safe opened file objects and the held state directory. All sixty-three
-lease/read assertions and complete teardown passed on both targets; review remains
-pending. Default-ACL disposable fixtures define the qualified scope.
+lease/read assertions and complete teardown passed on both targets; accepted in
+PR 41. Default-ACL disposable fixtures define the qualified scope.
+The next [state ACL validation](docs/testing/M2/state-acl.md) checks actual opened
+objects before trusting mode bits. All 108 expanded assertions and complete
+teardown passed on both targets; maintainer review is pending.
 Other native gates, durable jobs and storage writes remain pending; the runtime is
 still read-only.
 

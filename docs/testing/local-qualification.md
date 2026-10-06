@@ -210,11 +210,12 @@ fixtures start; no bytes are written through them. Both declared releases and
 full preservation/teardown must pass before qualification is recorded.
 
 The M2 [state-directory prerequisite](M2/state-directory.md) uses the `state`
-suite on disposable system-storage fixtures under `/root`, with a separately
-owned copied test executable and temporary filesystem mount. It attaches no
-extra disks and creates no persistent runner/service. The
-[ownership-read extension](M2/ownership-read.md) requires all sixty-three lease/read
-assertions, two executed native tests, six unit tests and fifty-seven codec
-subtests; missing/skipped/incomplete
-records fail. The ordinary supervisor still verifies base/runtime preservation,
-image/key/variable removal and process teardown before qualification.
+suite on disposable system-storage fixtures under `/root`, with owned copied
+executables and temporary mounts. The [ownership-read](M2/ownership-read.md) and
+[ACL validation](M2/state-acl.md) extensions require all 108 named assertions,
+three executed native tests, seven unit tests and fifty-seven codec subtests;
+missing/skipped/incomplete records fail. ACL controls format only new owned 32 MiB
+memory devices and mount them as UFS with POSIX or NFSv4 ACLs inside the guest.
+No operator disk, host mount or persistent runner/service is used. The ordinary
+supervisor verifies base/runtime preservation, image/key/variable removal and
+process teardown before qualification.
