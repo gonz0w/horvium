@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/gonz0w/horvium/internal/storage"
@@ -18,7 +19,14 @@ func safetyCaptures() map[systemProbe]string {
 	rows := systemCaptures()
 	rows[systemGEOM] = `<mesh><class id="d"><name>DISK</name>`
 	for _, entry := range []struct{ id, name string }{{"0", "boot0"}, {"1", "ada0"}, {"2", "ada1"}} {
-		rows[systemGEOM] += `<geom id="g` + entry.id + `"><name>` + entry.name + `</name><provider id="p` + entry.id + `"><name>` + entry.name + `</name><mediasize>67108864</mediasize><sectorsize>512</sectorsize></provider></geom>`
+		serial := ""
+		if entry.name == "ada0" {
+			serial = "SERIAL-A"
+		}
+		if entry.name == "ada1" {
+			serial = "SERIAL-B"
+		}
+		rows[systemGEOM] += `<geom id="g` + entry.id + `"><name>` + entry.name + `</name><config><ident>` + serial + `</ident></config><provider id="p` + entry.id + `"><name>` + entry.name + `</name><mediasize>67108864</mediasize><sectorsize>512</sectorsize></provider></geom>`
 	}
 	rows[systemGEOM] += `</class></mesh>` + "\n"
 	rows[systemPools] = "tank\t100\t67108864\t0\t67108864\tONLINE\n"
@@ -76,7 +84,7 @@ func TestPropertySafetyCollectionJoinsExclusionsWithoutAuthority(t *testing.T) {
 	if err != nil || !o.Complete || o.Eligible || p.Revision != 1 {
 		t.Fatal("incomplete or authoritative join", err)
 	}
-	for _, mode := range []string{"root", "system-mount", "swap", "native-failure", "topology-drift"} {
+	for _, mode := range []string{"root", "system-mount", "swap", "native-failure", "topology-drift", "system-identity-drift"} {
 		t.Run(mode, func(t *testing.T) {
 			rows = safetyCaptures()
 			switch mode {
@@ -88,6 +96,8 @@ func TestPropertySafetyCollectionJoinsExclusionsWithoutAuthority(t *testing.T) {
 				rows[systemSwap] += "/dev/ada1 65532 0 65532 0%\n"
 			case "topology-drift":
 				rows[systemPoolTopologyGUID] = propertyCaptures()[poolTopologyGUID] + "unknown\n"
+			case "system-identity-drift":
+				rows[systemGEOM] = strings.ReplaceAll(rows[systemGEOM], "SERIAL-A", "OTHER")
 			case "native-failure":
 				rows[systemPools] = "invalid\n"
 			}

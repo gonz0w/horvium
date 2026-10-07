@@ -4,7 +4,8 @@
 validation are separate. Refresh exact versions in each active research manifest.
 
 M2 [native provider binding](../testing/M2/property-provider-binding.md) adds
-independent direct-DISK serial/geometry and attachment checks for every pool leaf.
+independent direct-DISK serial/geometry and existing-pool attachment checks for every pool leaf.
+The unused-device classifier still refuses ZFS consumers.
 The composed safety path requires them and keeps eligibility false. Both native
 release qualifications are pending; no root enrollment or runtime writes follow.
 

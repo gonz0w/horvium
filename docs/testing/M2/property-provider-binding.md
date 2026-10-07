@@ -6,7 +6,7 @@ Authority: [approved EDD](../../milestones/M2/EDD.md),
 
 `PoolProviderSource` binds every leaf of a complete supported native pool topology
 to an independent direct DISK provider, unique correlated serial, geometry and
-qualified DEV/disk-ident attachment graph. Names are current native addresses,
+qualified DEV/disk-ident and terminal ZFS::VDEV attachment graph. Names are current native addresses,
 never enrolled identities. Nested partition/label addresses, missing or duplicate
 identities, foreign serial/geometry, repeated disks, unsupported attachments and
 uncertain graphs return no provider results. Root/system exclusions remain the
@@ -24,7 +24,14 @@ The accepted disk correlation and attachment parsers check the entire graph,
 including duplicate identities on unselected devices. Every leaf is required;
 failed or truncated projections discard the whole result.
 
-Normalized provider observations and exact release lines must match across the
+`ParsePoolDiskAttachments` is a separate existing-pool classifier. It requires
+exact `ZFS::VDEV` / `zfs::vdev` terminal consumers, one input per backing provider
+and no output providers; the shared geom can include other pools' members. It
+never attributes those inputs to a pool. The unused-device classifier remains
+strict and rejects every ZFS consumer. Complete native topology/system-use checks
+remain necessary. Unsupported/partition attachments still refuse this path.
+
+Normalized provider and alias attachment observations and exact release lines must match across the
 two passes. Even changed transient GEOM IDs conservatively refuse reuse. The
 result retains serial provenance, native media/logical-sector and stripe fields;
 zero stripe observations remain zero and imply no physical-sector proof. Returned
@@ -39,7 +46,9 @@ never truncates the member set. Commands have ten seconds and collection 45
 seconds. These are initial capability ceilings, not commercial performance claims.
 
 `PropertySafetySource` now requires provider collection between its private
-policy/property binding and complete system-use collection. A final canonical
+policy/property binding and complete system-use collection. Complete selected provider identity, provenance and
+geometry must also match that later graph; graph-local IDs are excluded from this
+cross-graph comparison. A final canonical
 root policy read covers all three stages; missing or changed policy discards the
 result. The composed context is 135 seconds, with separate bounded budgets for
 its three collectors. Every failure returns zero policy/observation. Success
@@ -81,3 +90,18 @@ make lab-status
 The evidence checker change requires one complete portable deep review. The
 unrelated metadata publication suite remains outside this focused native run.
 GitHub Actions stay disabled; no persistent runner or service is installed.
+
+
+## Source finding
+
+The original native attempt refused an imported mirror because the unused-disk
+attachment classifier correctly rejects ZFS use. A diagnostic-only repeat confirmed
+`ErrDiskAttachments`. Both attempts remain unqualified and preserved all snapshot,
+base and runtime backings with complete teardown. A superseded portable review was
+stopped through its supervisor before edits and remains unqualified.
+
+Pinned native source defines one shared terminal geom and one consumer per
+provider: [FreeBSD 15.1 vdev_geom.c](https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/module/os/freebsd/zfs/vdev_geom.c),
+[FreeBSD 14.5 vdev_geom.c](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/module/os/freebsd/zfs/vdev_geom.c).
+Source inspection guides the separate classifier; actual native success is still
+required and is not implied by source inspection. No unused-device rule is widened.

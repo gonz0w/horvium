@@ -88,10 +88,19 @@ func (s *PoolProviderSource) Collect(ctx context.Context, o storage.Observation)
 	if release != next || !reflect.DeepEqual(before, after) {
 		return nil, storage.ErrDrift
 	}
-	return after, nil
+	result := make([]inventory.DiskObservation, len(after))
+	for i, d := range after {
+		result[i] = d.disk
+	}
+	return result, nil
 }
 
-func providerPass(ctx context.Context, c *systemCycle, o storage.Observation, names []string) ([]inventory.DiskObservation, string, error) {
+type providerDisk struct {
+	disk        inventory.DiskObservation
+	attachments inventory.DiskAttachments
+}
+
+func providerPass(ctx context.Context, c *systemCycle, o storage.Observation, names []string) ([]providerDisk, string, error) {
 	rows := map[systemProbe][]byte{}
 	for _, p := range []systemProbe{systemVersions, systemPoolTopologyGUID, systemPoolTopologyPath, systemGEOM} {
 		data, err := c.capture(ctx, p, o.PoolName)
@@ -139,7 +148,7 @@ func providerPass(ctx context.Context, c *systemCycle, o storage.Observation, na
 		}
 		providers[p.Name] = p
 	}
-	result := make([]inventory.DiskObservation, 0, len(names))
+	result := make([]providerDisk, 0, len(names))
 	seen := map[string]bool{}
 	for _, name := range names {
 		p, ok := providers[name]
@@ -162,14 +171,14 @@ func providerPass(ctx context.Context, c *systemCycle, o storage.Observation, na
 		if !reflect.DeepEqual(disk.Provider, p) {
 			return nil, "", inventory.ErrDiskCorrelation
 		}
-		attachments, e := inventory.ParseDiskAttachments(rows[systemGEOM], name, limits)
+		attachments, e := inventory.ParsePoolDiskAttachments(rows[systemGEOM], name, limits)
 		if e != nil {
 			return nil, "", e
 		}
 		if !reflect.DeepEqual(attachments.Disk, p) {
 			return nil, "", inventory.ErrDiskAttachments
 		}
-		result = append(result, disk)
+		result = append(result, providerDisk{disk: disk, attachments: attachments})
 	}
 	return result, string(rows[systemVersions]), nil
 }

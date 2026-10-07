@@ -22,7 +22,7 @@ func providerCaptures() map[systemProbe]string {
 	for _, name := range []string{"ada0", "ada1"} {
 		r[systemGEOM] += `<geom id="dev` + name + `"><name>` + name + `</name><consumer id="c` + name + `"><provider ref="p` + name + `"/></consumer></geom>`
 	}
-	r[systemGEOM] += `</class></mesh>` + "\n"
+	r[systemGEOM] += `</class><class id="z"><name>ZFS::VDEV</name><geom id="zg"><name>zfs::vdev</name><consumer id="zc0"><provider ref="pada0"/></consumer><consumer id="zc1"><provider ref="pada1"/></consumer></geom></class></mesh>` + "\n"
 	return r
 }
 func providerTestReader(rows map[systemProbe]string) systemReader {
