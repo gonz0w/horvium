@@ -228,19 +228,25 @@ func syncPublishedState(dir int, name string, data []byte, written unix.Stat_t) 
 	defer f.Close()
 	var before, after, named unix.Stat_t
 	if unix.Fstat(fd, &before) != nil || !privateOwnershipFile(before) || !safeStateACL(fd, uint32(before.Mode), false) || before.Dev != written.Dev || before.Ino != written.Ino || before.Size != int64(len(data)) || before.Mtim != written.Mtim || before.Gid != written.Gid || before.Flags != written.Flags || before.Gen != written.Gen || before.Btim != written.Btim {
-		return ErrDrift
+		return fmt.Errorf("published opened metadata: %w", ErrDrift)
 	}
 	if err := f.Sync(); err != nil {
-		return ErrStateDirectory
+		return fmt.Errorf("published inode sync: %w", ErrStateDirectory)
 	}
 	// This is the authoritative post-flush window; no timestamp exception or
 	// retry is made for later reads or the complete reservation/state census.
 	if unix.Fstat(fd, &before) != nil || !privateOwnershipFile(before) || before.Size != int64(len(data)) || !safeStateACL(fd, uint32(before.Mode), false) {
-		return ErrDrift
+		return fmt.Errorf("published synced metadata: %w", ErrDrift)
 	}
 	current, err := io.ReadAll(io.LimitReader(f, int64(len(data))+1))
-	if err != nil || !bytes.Equal(current, data) || unix.Fstat(fd, &after) != nil || !sameOwnershipMetadata(before, after) || unix.Fstatat(dir, name, &named, unix.AT_SYMLINK_NOFOLLOW) != nil || !sameOwnershipMetadata(after, named) {
-		return ErrDrift
+	if err != nil || !bytes.Equal(current, data) {
+		return fmt.Errorf("published bytes: %w", ErrDrift)
+	}
+	if unix.Fstat(fd, &after) != nil || !sameOwnershipMetadata(before, after) {
+		return fmt.Errorf("published read metadata (ctime %t, mtime %t): %w", before.Ctim != after.Ctim, before.Mtim != after.Mtim, ErrDrift)
+	}
+	if unix.Fstatat(dir, name, &named, unix.AT_SYMLINK_NOFOLLOW) != nil || !sameOwnershipMetadata(after, named) {
+		return fmt.Errorf("published named metadata (ctime %t, mtime %t): %w", after.Ctim != named.Ctim, after.Mtim != named.Mtim, ErrDrift)
 	}
 	if f.Close() != nil {
 		return ErrStateDirectory

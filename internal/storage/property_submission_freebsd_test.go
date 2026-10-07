@@ -114,8 +114,19 @@ func TestNativePropertySubmission(t *testing.T) {
 	got, duplicate, err = s.PublishPropertySubmission(retry)
 	check("independent_result", err == nil && duplicate && reflect.DeepEqual(got, p))
 	applying, err := TransitionPropertyJob(p, JobApplying, p.job.History[0].At+1, "launch-intent", "")
-	if err != nil || s.PublishPropertyJob(applying, 1) != nil {
-		t.Fatal("lifecycle fixture", err)
+	publishErr := s.publishPropertyJobBounded(applying, 1, defaultStateCatalogLimits, func(tx ownershipPublication) ownershipPublication {
+		original := tx.syncDirectory
+		tx.syncDirectory = func() error {
+			err := original()
+			if err != nil {
+				t.Log("post-rename barrier", err)
+			}
+			return err
+		}
+		return tx
+	})
+	if err != nil || publishErr != nil {
+		t.Fatal("lifecycle fixture", err, publishErr)
 	}
 	got, duplicate, err = s.PublishPropertySubmission(retry)
 	check("current_history", err == nil && duplicate && reflect.DeepEqual(got, applying))
