@@ -3,6 +3,12 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [native system exclusions](../testing/M2/property-system-exclusions.md) collect
+fixed all-pool/mount/swap/GEOM projections and reject system backing or conflicts
+in the property safety path. Eligibility stays false. The expanded 32-assertion
+direct-disk/md fixture and required portable review are pending; no provider
+enrollment, runtime mutation or production/hardware support follows.
+
 M2 [root policy/native binding](../testing/M2/property-policy-binding.md) connects
 the held private ownership reader to the bounded native collector, refusing
 policy/native scope drift while keeping eligibility false. Signed source

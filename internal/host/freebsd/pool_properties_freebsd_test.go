@@ -28,7 +28,7 @@ func TestNativePoolPropertyCollection(t *testing.T) {
 	if os.Geteuid() != 0 {
 		t.Fatal("requires disposable guest root")
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 	command := func(ctx context.Context, path string, args ...string) (string, error) {
 		out, err := execute(ctx, path, args, 1<<20)
@@ -100,6 +100,7 @@ func TestNativePoolPropertyCollection(t *testing.T) {
 		}
 		passed["teardown"] = true
 		cases := []string{"complete", "pool_identity", "dataset_identity", "property_values", "inheritance", "snapshot_owner", "features", "topology", "eligibility_denied", "wrong_guid_denied", "rename_fresh", "readonly_denied", "volume_denied", "preservation", "backing_preserved", "teardown", "policy_bound", "policy_missing_denied", "policy_change_denied", "policy_scope_denied", "policy_rename_denied", "policy_closed_denied"}
+		cases = append(cases, "system_root_backing", "system_pool_backing", "safety_bound", "safety_system_mount_denied", "safety_fresh_restored", "system_swap_observed", "safety_swap_disjoint", "system_mount_preserved", "system_fixture_teardown", "unsupported_md_denied")
 		if len(passed) != len(cases) {
 			t.Error("incomplete native assertions")
 			return
@@ -114,6 +115,7 @@ func TestNativePoolPropertyCollection(t *testing.T) {
 		}
 		t.Log("POOL_PROPERTY_COLLECTION_RESULT " + strings.Join(fields, " "))
 	})
+	nativePropertySystemFixture(t, ctx, check)
 	for n := 0; n < 2; n++ {
 		path := filepath.Join(dir, "disk-"+strconv.Itoa(n)+".img")
 		f, err := os.OpenFile(path, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
@@ -211,6 +213,12 @@ func TestNativePoolPropertyCollection(t *testing.T) {
 	boundP, boundO, boundErr := bound.Collect(ctx, guid)
 	_, planErr := storage.Build(time.Now(), "fixture-session", boundP, boundO, storage.Intent{FilesystemGUID: childGUID, Property: storage.RefQuota, Value: "1"})
 	check("policy_bound", boundErr == nil && reflect.DeepEqual(boundP, p) && reflect.DeepEqual(boundO, o) && errors.Is(planErr, storage.ErrUnavailable))
+	systemSource, err := NewSystemUseSource()
+	if err != nil {
+		t.Fatal(err)
+	}
+	unsupportedUse, unsupportedErr := systemSource.Collect(ctx)
+	check("unsupported_md_denied", errors.Is(unsupportedErr, storage.ErrUnavailable) && reflect.DeepEqual(unsupportedUse, storage.PoolSystemUse{}))
 	// Introduce an actual fixture-owned policy change between the native passes
 	// and the second root read, using the package-private collection seam.
 	reads := 0

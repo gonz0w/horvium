@@ -15,6 +15,19 @@ class LocalQualificationTests(unittest.TestCase):
         self.module = importlib.util.module_from_spec(SPEC)
         SPEC.loader.exec_module(self.module)
 
+    def test_focused_property_suite_uses_owned_snapshot_device_fixture(self):
+        for suite in ['devices','pool-properties']:
+            self.assertTrue(self.module.uses_device_fixture(suite))
+        for suite in ['state','properties','foundation']:
+            self.assertFalse(self.module.uses_device_fixture(suite))
+
+    def test_focused_property_completion_requires_device_teardown(self):
+        checker=self.module.load_tool('check-pool-properties-evidence')
+        log='--- PASS: TestNativePoolPropertyCollection (1.0s)\nPOOL_PROPERTY_COLLECTION_RESULT '+' '.join(c+'=pass' for c in sorted(checker.CASES))+'\n'
+        for bad in [log,log+'DEVICE_FIXTURE_CLEANUP fail\n',log+('DEVICE_FIXTURE_CLEANUP pass\n'*2)]:
+            with self.assertRaises(ValueError):self.module.validate_result('pool-properties',bad,complete=True)
+        self.module.validate_result('pool-properties',log+'DEVICE_FIXTURE_CLEANUP pass\n',complete=True)
+
     def test_prebuilt_state_avoids_guest_packages_and_checks_artifact_hash(self):
         packages,command=self.module.suite_command('state',False,'a'*64)
         self.assertEqual(packages,'')

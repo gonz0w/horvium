@@ -53,6 +53,10 @@ def suite_command(suite, source_build=False, artifact_digest=None):
     return SUITES[suite]
 
 
+def uses_device_fixture(suite):
+    return suite in ('devices', 'pool-properties')
+
+
 def source_identity(source):
     if (subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip() != source
             or subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT)):
@@ -130,6 +134,8 @@ def validate_result(suite, log, complete=False):
         return
     if suite == 'pool-properties':
         load_tool('check-pool-properties-evidence').validate(log)
+        if complete and log.count('DEVICE_FIXTURE_CLEANUP pass\n') != 1:
+            raise ValueError('focused property device fixture teardown required')
         return
     if suite == 'devices':
         load_tool('check-device-evidence').validate(log, guest=not complete)
@@ -238,7 +244,7 @@ def main():
     base_before = None
     image, variables = directory / 'image', directory / 'vars.fd'
     devices = directory / 'devices'
-    device_tool = load_tool('device-fixture') if args.suite == 'devices' else None
+    device_tool = load_tool('device-fixture') if uses_device_fixture(args.suite) else None
     try:
         if args.suite in PREBUILT and not args.source_build:
             record['prebuilt'] = build_native_binary(directory, source, args.suite)

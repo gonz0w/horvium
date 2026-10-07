@@ -139,6 +139,11 @@ successful binding still grants no write eligibility.
 
 ## Agreed direction
 
+The [native system exclusions](docs/testing/M2/property-system-exclusions.md)
+join policy/property observations with full imported-pool, mount and swap backing.
+The new safety path rejects system mounts and physical-disk conflicts while
+retaining false write eligibility. Focused native qualification is pending.
+
 - FreeBSD and ZFS; BSD-3-Clause license.
 - SMB, NFS, and SFTP file serving; local users/groups initially.
 - Snapshots, backup-peer registration, incremental replication, retention, and
