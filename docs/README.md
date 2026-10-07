@@ -164,3 +164,4 @@
 
 - [M2 property-job assessment runbook](operations/M2-property-assessment.md).
 - [M2 property-job assessment diagnostic qualification](testing/M2/property-assessment-diagnostic.md).
+- [M2 pool health and scan observation qualification](testing/M2/pool-health.md).

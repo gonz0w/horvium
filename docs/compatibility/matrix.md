@@ -3,6 +3,12 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [pool health and scan observation](../testing/M2/pool-health.md) adds bounded
+read-only pool/import/release binding, paired topology/error facts and typed
+legacy scrub/resilver status. Portable behavioral tests pass; native qualification
+is pending. Full scan formats, actual progress/pause/cancellation/error injection,
+attributed jobs and commercial/hardware support remain unqualified.
+
 M2 [foreground property-job assessment](../testing/M2/property-assessment-diagnostic.md)
 connects the accepted source to OS-root command selection and bounded output with
 explicit retained holds and false executor/recovery verification. Focused portable

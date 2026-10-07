@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 75; foreground native assessment qualified, review pending; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 76; read-only health/scan observation in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -758,7 +758,17 @@ independently rebuilt binaries matched exactly. See the
 [manifest](../../testing/M2/property-assessment-diagnostic-manifest.json). The
 initial timestamp fixture failure remains unqualified; its portable
 failing-first regression and corrected constructor passed without changing
-product code or time limits. Maintainer review remains pending.
+product code or time limits. Accepted in [PR 76](https://github.com/gonz0w/horvium/pull/76)
+at merged source `14c7c7201a987c5c239b5587e29e50f448bd7234`.
 The new isolated mirror/provider subgroup retains the existing job-status parent
 and its 21 original assertions. Native eligibility/execution, recovery resolution,
 restored-state validation, authenticated UI/CLI parity and full M2 remain open.
+
+## Read-only pool health and scan observations
+
+The [contract](../../testing/M2/pool-health.md) binds complete paired status to
+fresh permanent/import identity and supported release. Report unhealthy facts
+and typed legacy scans without write eligibility or job attribution. Failing-first
+portable tests pass; both native releases and focused review remain pending.
+This progresses slice 4 observation independently of unqualified mutation gates;
+attributed start/stop/recovery and complete health/scan acceptance remain open.

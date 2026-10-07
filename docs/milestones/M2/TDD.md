@@ -899,6 +899,17 @@ mandatory cases with complete preservation/teardown at signed source
 baseline checks, 122 tooling tests and command-package race checks. See the
 [manifest](../../testing/M2/property-assessment-diagnostic-manifest.json),
 including the earlier unqualified timing fixture and actual failing-first
-regression. All 51 historical M2 manifests remain byte-identical. Maintainer
-review, execution attribution, recovered-state clearance,
+regression. All 51 historical M2 manifests remain byte-identical. Accepted in
+[PR 76](https://github.com/gonz0w/horvium/pull/76). Execution attribution, recovered-state clearance,
 resolution/replay/release and full M2 acceptance remain open.
+
+## Read-only pool health and scan observations
+
+The [contract](../../testing/M2/pool-health.md) adds partial M2-HEALTH-001,
+M2-SCRUB-001, M2-DRIFT-001 and M2-NATIVE-001 observation evidence. Require
+failing-first typed scan/state/denial/bounds/drift tests and focused race/fuzz
+review. Both disposable release suites must retain 21 status assertions, fifteen
+assessment children and six new native health children with full preservation
+and verified teardown. Native progress/pause/cancellation/error injection and
+attributed lifecycle are not inferred from source-format/portable tests. Native
+qualification remains pending; all 52 prior manifests retain their actual scope.
