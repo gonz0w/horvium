@@ -54,6 +54,9 @@ python3.14 tools/local-qualification.py properties 15.1
 # Explicitly start one disposable guest and run only the selected suite.
 python3.14 tools/local-qualification.py properties 15.1 --run
 python3.14 tools/local-qualification.py properties 14.5 --run
+# Focused native property collector, host cross-build; no guest packages required.
+python3.14 tools/local-qualification.py pool-properties 15.1 --run
+python3.14 tools/local-qualification.py pool-properties 14.5 --run
 ```
 
 Supported suites: `foundation`, `research`, `discovery`, `state`, `properties`,

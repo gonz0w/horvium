@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 59; portable review/submission integration in progress; Actions disabled.
+Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 60; native property observation integration in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -484,7 +484,18 @@ restart cannot restore plans. Signed source
 `a8868fa61bb60b80d3b83378a4f0e964e13e8028` passed the baseline, nine behavioral
 parents, storage race/all 21 fuzz targets and an unexecuted FreeBSD cross-build;
 see the [execution manifest](../../testing/M2/property-coordinator-manifest.json).
-Maintainer review is pending. No native
+Accepted in PR 60 at merged source `1ae83a781ebaad932d4d7126cbebaf01e34b3cdf`. No native
 policy/eligibility backend, kernel-authorized mutation transport, persistent retry
 lookup, executor, native recovery or runtime writes are enabled. Those are the
 remaining integration gates before an actual operator storage workflow.
+
+## Native property observation integration
+
+The [collector contract](../../testing/M2/native-property-collection.md) joins the
+accepted pool/type/property/state/feature/topology parsers to fixed actual FreeBSD
+reads. Two complete passes share bounded capture/record budgets and reject
+ordinary native drift. Complete results keep eligibility false; root/system/device
+exclusions, live policy/store binding, the full coordinator backend and mutation
+transport remain open. Qualification is pending. A focused native fixture and
+checksum-bound prebuilt suite qualify only collection/preservation/teardown; shared
+runner and cleanup changes require complete portable review.

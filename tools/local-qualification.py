@@ -25,8 +25,14 @@ SUITES = {
     'devices': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_DEVICE_VM=1 sh tools/bsd-devices.sh'),
     'state': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_STATE_VM=1 sh tools/bsd-state.sh'),
     'properties': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_PROPERTY_VM=1 sh tools/bsd-properties.sh'),
+    'pool-properties': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_PROPERTY_VM=1 sh tools/bsd-pool-properties-prebuilt.sh'),
     'continuity': ('python314 samba423', 'env HORVIUM_NATIVE_VM=1 HORVIUM_CONTINUITY_VM=1 sh tools/bsd-continuity.sh'),
     'performance': ('python314', 'env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh && env HORVIUM_NATIVE_VM=1 HORVIUM_PERF_VM=1 sh tools/bsd-performance.sh'),
+}
+
+PREBUILT = {
+    'state': ('state-native.test', './internal/storage', 'STATE_PREBUILT_SHA256', 'HORVIUM_STATE_VM=1', 'bsd-state-prebuilt.sh'),
+    'pool-properties': ('pool-properties-native.test', './internal/host/freebsd', 'POOL_PROPERTIES_PREBUILT_SHA256', 'HORVIUM_PROPERTY_VM=1', 'bsd-pool-properties-prebuilt.sh'),
 }
 
 
@@ -38,11 +44,12 @@ def load_tool(name):
 
 
 def suite_command(suite, source_build=False, artifact_digest=None):
-    if suite == 'state' and not source_build:
+    if suite in PREBUILT and not source_build:
         if not isinstance(artifact_digest, str) or not re.fullmatch('[a-f0-9]{64}', artifact_digest):
-            raise ValueError('prebuilt state requires an exact artifact checksum')
-        return ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_STATE_VM=1 '
-                'HORVIUM_TEST_BINARY_SHA256=' + artifact_digest + ' sh tools/bsd-state-prebuilt.sh')
+            raise ValueError('prebuilt suite requires an exact artifact checksum')
+        _, _, _, optin, script = PREBUILT[suite]
+        return ('', 'env HORVIUM_NATIVE_VM=1 ' + optin + ' '
+                'HORVIUM_TEST_BINARY_SHA256=' + artifact_digest + ' sh tools/' + script)
     return SUITES[suite]
 
 
@@ -52,7 +59,7 @@ def source_identity(source):
         raise ValueError('source changed during native qualification')
 
 
-def build_state_binary(directory, source):
+def build_native_binary(directory, source, suite):
     plan = load_tool('review-plan')
     subprocess.run([sys.executable, str(TOOLS / 'bootstrap-go.py')], check=True)
     go = str(ROOT / '.tools/go/bin/go')
@@ -62,8 +69,9 @@ def build_state_binary(directory, source):
         raise ValueError('unexpected host Go compiler version')
     subprocess.run([go, 'mod', 'download'], cwd=ROOT, env=env, check=True)
     subprocess.run([go, 'mod', 'verify'], cwd=ROOT, env=env, check=True)
-    binary = directory / 'state-native.test'
-    command = [go, 'test', '-c', '-trimpath', '-o', str(binary), './internal/storage']
+    filename, package, _, _, _ = PREBUILT[suite]
+    binary = directory / filename
+    command = [go, 'test', '-c', '-trimpath', '-o', str(binary), package]
     source_identity(source)
     subprocess.run(command, cwd=ROOT, env=env, check=True)
     source_identity(source)
@@ -72,11 +80,12 @@ def build_state_binary(directory, source):
             'go_pins_sha256': plan.digest(TOOLS / 'go-pins.json'),
             'go_mod_sha256': plan.digest(ROOT / 'go.mod'), 'go_sum_sha256': plan.digest(ROOT / 'go.sum'),
             'target': 'freebsd/amd64', 'goamd64': 'v1', 'cgo_enabled': False,
-            'build_arguments': ['go', 'test', '-c', '-trimpath', '-o', '<owned-artifact>', './internal/storage']}
+            'build_arguments': ['go', 'test', '-c', '-trimpath', '-o', '<owned-artifact>', package]}
 
 
-def validate_prebuilt(log, artifact_digest):
-    if re.findall(r'(?m)^STATE_PREBUILT_SHA256 ([a-f0-9]{64})$', log) != [artifact_digest]:
+def validate_prebuilt(log, artifact_digest, suite='state'):
+    marker = PREBUILT[suite][2]
+    if re.findall(r'(?m)^' + marker + r' ([a-f0-9]{64})$', log) != [artifact_digest]:
         raise ValueError('guest did not verify the expected executable')
 
 
@@ -118,6 +127,9 @@ def validate_result(suite, log, complete=False):
         raise ValueError('guest test failure')
     if suite == 'state':
         load_tool('check-state-evidence').validate(log)
+        return
+    if suite == 'pool-properties':
+        load_tool('check-pool-properties-evidence').validate(log)
         return
     if suite == 'devices':
         load_tool('check-device-evidence').validate(log, guest=not complete)
@@ -221,15 +233,15 @@ def main():
               'cpu_model': 'qemu64', 'cpu_count': 2, 'memory_mib': 6144,
               'accelerator': 'tcg', 'qualified': False, 'host_teardown': False,
               'base_preserved': False,
-              'execution_mode': 'host-cross-built' if args.suite == 'state' and not args.source_build else 'guest-source-build'}
+              'execution_mode': 'host-cross-built' if args.suite in PREBUILT and not args.source_build else 'guest-source-build'}
     supervisor.write_record(directory / 'result.json', record)
     base_before = None
     image, variables = directory / 'image', directory / 'vars.fd'
     devices = directory / 'devices'
     device_tool = load_tool('device-fixture') if args.suite == 'devices' else None
     try:
-        if args.suite == 'state' and not args.source_build:
-            record['prebuilt'] = build_state_binary(directory, source)
+        if args.suite in PREBUILT and not args.source_build:
+            record['prebuilt'] = build_native_binary(directory, source, args.suite)
             supervisor.write_record(directory / 'result.json', record)
         subprocess.run([sys.executable, str(TOOLS / 'prepare-performance-vm.py'), args.release,
                         str(image), '--cache', str(ROOT / '.tools/lab-cache')], check=True)
@@ -274,8 +286,9 @@ def main():
                 stop_guest(archive)
             artifact_digest = record.get('prebuilt', {}).get('sha256')
             if artifact_digest:
-                with (directory / 'state-native.test').open('rb') as binary:
-                    subprocess.run(ssh + ['umask 077; mkdir -p /root/work/.tools && cat > /root/work/.tools/state-native.test && chmod 700 /root/work/.tools/state-native.test'],
+                filename = PREBUILT[args.suite][0]
+                with (directory / filename).open('rb') as binary:
+                    subprocess.run(ssh + ['umask 077; mkdir -p /root/work/.tools && cat > /root/work/.tools/' + filename + ' && chmod 700 /root/work/.tools/' + filename],
                                    stdin=binary, check=True, timeout=180)
             packages, command = suite_command(args.suite, args.source_build, artifact_digest)
             remote = 'cd /root/work && ' + ('pkg install -y ' + packages + ' && ' if packages else '') + command
@@ -284,7 +297,7 @@ def main():
                 subprocess.run(ssh + [remote], stdout=log, stderr=subprocess.STDOUT, check=True, timeout=7200)
             validate_result(args.suite, (directory / 'qualification.log').read_text())
             if artifact_digest:
-                validate_prebuilt((directory / 'qualification.log').read_text(), artifact_digest)
+                validate_prebuilt((directory / 'qualification.log').read_text(), artifact_digest, args.suite)
             source_identity(source)
             record['guest_assertions'] = True
     except BaseException as error:
@@ -313,6 +326,7 @@ def main():
                 shutil.rmtree(image)
             variables.unlink(missing_ok=True)
             (directory / 'state-native.test').unlink(missing_ok=True)
+            (directory / 'pool-properties-native.test').unlink(missing_ok=True)
             record['host_teardown'] = True
             if device_tool and record.get('guest_assertions'):
                 if not record.get('device_backings_preserved') or not record.get('device_fixture_teardown'):
@@ -329,6 +343,7 @@ def main():
         finally:
             key.unlink(missing_ok=True)
             (directory / 'state-native.test').unlink(missing_ok=True)
+            (directory / 'pool-properties-native.test').unlink(missing_ok=True)
             record['completed_at'] = datetime.now(timezone.utc).isoformat()
             (directory / 'result.json').write_text(json.dumps(record, indent=2) + '\n')
             print(f'Qualification record: {directory / "result.json"}', flush=True)

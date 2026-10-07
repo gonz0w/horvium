@@ -13,4 +13,7 @@ func TestUnsupportedHostFailsExplicitly(t *testing.T) {
 	if _, err := New(inventory.DefaultLimits()); !errors.Is(err, ErrUnsupported) {
 		t.Fatalf("host discovery pretended to support this OS: %v", err)
 	}
+	if _, err := NewPoolPropertySource(); !errors.Is(err, ErrUnsupported) {
+		t.Fatalf("pool property collection pretended to support this OS: %v", err)
+	}
 }

@@ -3,6 +3,12 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [native property observation collection](../testing/M2/native-property-collection.md)
+joins fixed guarded FreeBSD projections and rejects ordinary drift across two
+complete passes. Qualification is pending. Successful observation retains zero
+write eligibility; hardware/root/system/device/policy and runtime mutation gates
+remain open. The focused lab fixture uses owned md mirror devices only.
+
 M2 [property review/submission integration](../testing/M2/property-coordinator.md)
 adds portable bounded plan ownership and one metadata publication attempt through
 a trusted backend interface. Portable baseline/storage race/all 21 fuzz targets

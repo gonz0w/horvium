@@ -25,6 +25,25 @@ class LocalQualificationTests(unittest.TestCase):
         for digest in ['','oops','a'*63,'a'*64+';bad']:
             with self.assertRaises(ValueError):self.module.suite_command('state',False,digest)
 
+    def test_pool_properties_use_focused_checksum_bound_prebuilt(self):
+        packages,command=self.module.suite_command('pool-properties',False,'a'*64)
+        self.assertEqual(packages,'')
+        self.assertIn('bsd-pool-properties-prebuilt.sh',command)
+        self.assertIn('HORVIUM_PROPERTY_VM=1',command)
+        self.assertIn('a'*64,command)
+        for digest in [None,'oops','a'*63,'a'*64+';bad']:
+            with self.assertRaises(ValueError):self.module.suite_command('pool-properties',False,digest)
+        self.module.validate_prebuilt('POOL_PROPERTIES_PREBUILT_SHA256 '+'a'*64+'\n','a'*64,'pool-properties')
+        for log in ['',('POOL_PROPERTIES_PREBUILT_SHA256 '+'a'*64+'\n')*2,'STATE_PREBUILT_SHA256 '+'a'*64+'\n']:
+            with self.assertRaises(ValueError):self.module.validate_prebuilt(log,'a'*64,'pool-properties')
+
+    def test_pool_properties_require_native_assertions_and_teardown(self):
+        checker=self.module.load_tool('check-pool-properties-evidence')
+        log='--- PASS: TestNativePoolPropertyCollection (1.0s)\nPOOL_PROPERTY_COLLECTION_RESULT '+' '.join(c+'=pass' for c in sorted(checker.CASES))+'\n'
+        self.module.validate_result('pool-properties',log)
+        for bad in ['',log.replace('teardown=pass','teardown=fail'),log.replace('eligibility_denied=pass',''),log.replace('--- PASS:','--- SKIP:')]:
+            with self.assertRaises(ValueError):self.module.validate_result('pool-properties',bad)
+
     def test_guest_has_snapshot_storage_and_only_loopback_ssh(self):
         command = self.module.qemu_command('qemu', Path('/fixture/base'), Path('/code'), Path('/fixture/vars'), 23456)
         self.assertIn('-snapshot', command)

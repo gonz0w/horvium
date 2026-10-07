@@ -560,3 +560,23 @@ cross-build; see the [execution manifest](../../testing/M2/property-coordinator-
 Mocks and FreeBSD cross-compilation do not qualify a native
 backend, kernel caller/session authorization, durable retry lookup, storage launch,
 native recovery/release or the assembled workflow.
+
+## Native property observation integration
+
+M2-PLAN-001, M2-DRIFT-001 and M2-SCALE-001 at T1/T3 (partial): require fixed typed
+pool selection, bounded success/failure accounting, actual format selection,
+complete dataset/type/property/state agreement and two full independent passes.
+Any malformed/unavailable/mixed/drifting projection exposes zero observation.
+Require cancellation, record/byte ceilings and unsupported-host/format denials;
+fuzz hostile captures and selectors. Complete output must still fail eligibility.
+
+On both native targets, the actual reader must match independently read pool and
+dataset identities, properties, inherited state, snapshot ownership, complete
+features and mirror topology. Verify wrong-GUID, readonly and volume denials,
+fresh rename with stable GUID, unchanged properties/sentinel and complete owned
+provider/backing/pool teardown. Require all 16 assertions, one executed test and
+the exact cross-built executable checksum; reject missing/duplicate/skipped/failed
+evidence. Supervisor interruption must remove the new owned artifact. See the
+[collector procedure](../../testing/M2/native-property-collection.md). Qualification
+pending; no native root/policy eligibility, mutation/executor/recovery or complete
+M2 acceptance follows.
