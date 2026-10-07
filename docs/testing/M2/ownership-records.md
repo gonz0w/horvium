@@ -114,3 +114,12 @@ metadata export/restore and helper/runtime wiring remain ahead. M2 slice 2 and
 assembled acceptance are incomplete. The management runtime remains read-only;
 M1 Safari/manual accessibility stays maintainer-deferred. No installation/service,
 dependency, physical-controller or commercial support claim follows.
+
+## Version 2 extension
+
+The [explicit member contract](property-member-enrollment.md) adds a second strict
+schema with required nonempty member baselines. This document and its manifest
+retain the original version 1 qualification. Version 1 canonical bytes, checksum
+domain and readable policy semantics remain unchanged; no member identity is
+invented. A legacy policy cannot pass the complete property safety enrollment
+gate. Version 2 uses its own checksum domain and preserves existing scope checks.

@@ -14,6 +14,7 @@ import (
 
 	"github.com/gonz0w/horvium/internal/inventory"
 	"github.com/gonz0w/horvium/internal/storage"
+	"golang.org/x/sys/unix"
 )
 
 // Called only by the explicitly opted-in disposable native collector test.
@@ -119,6 +120,7 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 	}
 	sort.Slice(extras, func(i, j int) bool { return extras[i].Name < extras[j].Name })
 	swapDisk := extras[0]
+	fixtureGeometry := map[string]inventory.DiskObservation{}
 	for _, d := range []inventory.Provider{first, second, extras[0], extras[1], missing} {
 		for _, m := range baseline.Mounts {
 			for _, used := range m.Disks {
@@ -152,6 +154,7 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 			if err != nil || info.Provider.Name != d.Name || info.Provider.MediaSize != 64<<20 {
 				t.Fatal("fixture address/geometry", err)
 			}
+			fixtureGeometry[d.Name] = info
 		}
 	}
 	private, err := os.MkdirTemp("/root", "horvium-property-system-")
@@ -232,6 +235,31 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 		t.Fatal(err)
 	}
 	policy := storage.Policy{Revision: 1, PoolGUID: guid, PoolName: pool, Scopes: []storage.Scope{{GUID: rootGUID, Name: pool, Properties: []storage.Property{storage.Quota}}}}
+	observer, err := NewPoolPropertySource()
+	if err != nil {
+		t.Fatal(err)
+	}
+	enrolledObservation, err := observer.Collect(ctx, guid, pool)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, v := range enrolledObservation.Topology.Nodes {
+		if v.Kind != "leaf" {
+			continue
+		}
+		disk, ok := fixtureGeometry[strings.TrimPrefix(v.Address, "/dev/")]
+		if !ok {
+			t.Fatal("fixture member address")
+		}
+		serial, source := "", ""
+		for _, id := range disk.Provider.Identifiers {
+			if id.Kind == "serial" {
+				serial, source = id.Value, id.Source
+				break
+			}
+		}
+		policy.Members = append(policy.Members, storage.PoolMember{VdevGUID: v.GUID, Serial: serial, SerialSource: source, MediaSize: disk.Provider.MediaSize, SectorSize: disk.Provider.SectorSize, StripeSize: disk.StripeSize, StripeOffset: disk.StripeOffset})
+	}
 	data, err := storage.EncodeOwnershipRecord(policy)
 	if err != nil {
 		t.Fatal(err)
@@ -239,6 +267,44 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 	if err = os.WriteFile(filepath.Join(statePath, "ownership-"+guid+".json"), data, 0600); err != nil {
 		t.Fatal(err)
 	}
+	legacyRecord := storage.Policy{Revision: 1, PoolGUID: "999", PoolName: "legacy_fixture"}
+	legacyBytes, err := storage.EncodeOwnershipRecord(legacyRecord)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = os.WriteFile(filepath.Join(statePath, "ownership-999.json"), legacyBytes, 0600); err != nil {
+		t.Fatal(err)
+	}
+	legacyRead, err := state.ReadOwnership("999")
+	check("enrollment_legacy_read", err == nil && len(legacyRead.Members) == 0 && legacyRead.PoolGUID == "999")
+	catalog, err := state.InspectState()
+	check("enrollment_catalog", err == nil && len(catalog.Ownership) == 2 && len(catalog.Jobs) == 0 && catalog.Bytes == uint64(len(data)+len(legacyBytes)))
+	// Exercise the actual accepted metadata publisher. Its kernel-observed
+	// backing gate must still refuse UFS softupdates without altering records.
+	var backing unix.Statfs_t
+	if err = unix.Statfs(statePath, &backing); err != nil {
+		t.Fatal(err)
+	}
+	fs := strings.TrimRight(string(backing.Fstypename[:]), "\x00")
+	next := policy
+	next.Revision++
+	publishErr := state.PublishOwnership(next, policy.Revision)
+	t.Logf("MEMBER_ENROLLMENT_BACKING filesystem=%s softupdates=%t publication_denied=%t", fs, backing.Flags&unix.MNT_SOFTDEP != 0, publishErr != nil)
+	if fs == "ufs" && backing.Flags&unix.MNT_SOFTDEP != 0 {
+		check("enrollment_publication", errors.Is(publishErr, storage.ErrStateDirectory))
+	} else {
+		if publishErr != nil {
+			t.Fatal("enrolled metadata publication", publishErr)
+		}
+		check("enrollment_publication", fs == "zfs" || fs == "ufs")
+		policy = next
+		data, err = storage.EncodeOwnershipRecord(policy)
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	actualRecord, err := os.ReadFile(filepath.Join(statePath, "ownership-"+guid+".json"))
+	check("enrollment_publication_preserved", err == nil && reflect.DeepEqual(actualRecord, data))
 	source, err := NewSystemUseSource()
 	if err != nil {
 		t.Fatal(err)
@@ -283,6 +349,37 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 	}
 	_, planErr := storage.Build(time.Now(), "fixture-session", p, o, storage.Intent{FilesystemGUID: rootGUID, Property: storage.Quota, Value: "1"})
 	check("safety_bound", e == nil && o.Complete && !o.Eligible && p.PoolGUID == guid && errors.Is(planErr, storage.ErrUnavailable))
+	check("enrollment_bound", e == nil && len(p.Members) == 2 && !o.Eligible)
+	recordPath := filepath.Join(statePath, "ownership-"+guid+".json")
+	writePolicy := func(candidate storage.Policy) {
+		b, e := storage.EncodeOwnershipRecord(candidate)
+		if e != nil {
+			t.Fatal(e)
+		}
+		if e = os.WriteFile(recordPath, b, 0600); e != nil {
+			t.Fatal(e)
+		}
+	}
+	noMembers := policy
+	noMembers.Members = nil
+	writePolicy(noMembers)
+	deniedPolicy, deniedObservation, deniedErr := safety.Collect(ctx, guid)
+	check("enrollment_legacy_denied", errors.Is(deniedErr, storage.ErrDenied) && reflect.DeepEqual(deniedPolicy, storage.Policy{}) && reflect.DeepEqual(deniedObservation, storage.Observation{}))
+	drifted := policy
+	drifted.Members = append([]storage.PoolMember(nil), policy.Members...)
+	drifted.Members[0].Serial = "CHANGED-FIXTURE-SERIAL"
+	writePolicy(drifted)
+	deniedPolicy, deniedObservation, deniedErr = safety.Collect(ctx, guid)
+	check("enrollment_member_drift_denied", errors.Is(deniedErr, storage.ErrDrift) && reflect.DeepEqual(deniedPolicy, storage.Policy{}) && reflect.DeepEqual(deniedObservation, storage.Observation{}))
+	if err = os.WriteFile(recordPath, []byte(strings.Replace(string(data), `"version":2`, `"version":3`, 1)), 0600); err != nil {
+		t.Fatal(err)
+	}
+	deniedPolicy, deniedObservation, deniedErr = safety.Collect(ctx, guid)
+	check("enrollment_newer_denied", errors.Is(deniedErr, storage.ErrStateRecord) && reflect.DeepEqual(deniedPolicy, storage.Policy{}) && reflect.DeepEqual(deniedObservation, storage.Observation{}))
+	writePolicy(policy)
+	restoredPolicy, restoredObservation, restoredErr := safety.Collect(ctx, guid)
+	check("enrollment_restored", restoredErr == nil && len(restoredPolicy.Members) == 2 && !restoredObservation.Eligible)
+
 	providers, err := NewPoolProviderSource()
 	if err != nil {
 		t.Fatal(err)

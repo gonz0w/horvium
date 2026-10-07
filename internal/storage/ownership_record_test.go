@@ -214,6 +214,11 @@ func TestOwnershipRecordCapacityAndRevision(t *testing.T) {
 
 func FuzzOwnershipRecord(f *testing.F) {
 	f.Add(ownershipGolden())
+	if b, err := EncodeOwnershipRecord(enrolledPolicy()); err == nil {
+		f.Add(b)
+	} else {
+		f.Fatal(err)
+	}
 	f.Add([]byte(`{"version":2}`))
 	f.Add([]byte("null"))
 	f.Fuzz(func(t *testing.T, data []byte) {

@@ -414,3 +414,11 @@ requires all 37 focused assertions, including actual duplicate/missing serial po
 refusal and extra GUID-checked pool teardown. See the
 [provider qualification](M2/property-provider-binding.md). No additional guest,
 background service or metadata publication run is needed.
+
+The [member enrollment extension](M2/property-member-enrollment.md) requires all
+46 focused cases on the same declared disks. It tests version 1/2 private reads,
+mixed catalog accounting, exact member matching, legacy/drift/newer-version
+refusal and restoration. Kernel statfs selects actual version 2 publication or
+unchanged-record softupdates UFS denial on system backing; no mount settings or
+extra services change. Historical state-suite evidence retains its original
+source; this focused run does not requalify unrelated metadata crash cuts.

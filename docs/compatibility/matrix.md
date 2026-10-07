@@ -3,6 +3,17 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [explicit member enrollment](../testing/M2/property-member-enrollment.md) adds
+version 2 ownership member baselines and requires exact native correspondence.
+Version 1 bytes and reads remain compatible, but legacy records fail complete
+property safety enrollment; older code refuses version 2. Native reader/catalog
+and backing-gated publication passed all 46 assertions on both declared targets
+at signed source `b95f60c873020f632674a2302acb1a4a3a6ca646`, with full portable
+review and teardown. Actual ZFS publication and softupdates UFS unchanged-record
+denial passed; see the
+[manifest](../testing/M2/property-member-enrollment-manifest.json). No runtime enrollment
+provisioner, eligibility, production or hardware support follows.
+
 M2 [native provider binding](../testing/M2/property-provider-binding.md) adds
 independent direct-DISK serial/geometry and existing-pool attachment checks for every pool leaf.
 The unused-device classifier still refuses ZFS consumers.

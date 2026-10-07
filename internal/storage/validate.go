@@ -364,6 +364,18 @@ func indexPolicy(p Policy, o Observation, files map[string]Filesystem) (map[stri
 			return nil, zero, ErrInvalid
 		}
 	}
+	members, err := normalizeMembers(p.Members)
+	if err != nil {
+		return nil, zero, err
+	}
+	if len(members) > 0 {
+		_, _ = h.Write([]byte("horvium:members:v2\n"))
+		for _, m := range members {
+			if err := encoder.Encode(m); err != nil {
+				return nil, zero, ErrInvalid
+			}
+		}
+	}
 	var digest [32]byte
 	copy(digest[:], h.Sum(nil))
 	return scopes, digest, nil
