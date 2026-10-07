@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 77; native scrub-state observation qualification in progress; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 77; native scrub-state observations qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -785,5 +785,10 @@ The [fixture contract](../../testing/M2/scan-lifecycle-observations.md) exercise
 actual running/paused/resumed/cancelled/completed scrub observations using a
 restored, disposable-guest-only kernel progress control. Preserve existing
 product code/gates, all old status/assessment/health cases and deadlines. Native
-qualification and focused review remain pending. Advancing progress, faults,
+qualification and focused review passed at signed source
+`728e980a8b21755c9b87f33e48405f096bb03b24`: baseline/122 tooling tests, command-package
+race checks and eight new scan cases plus all old status/assessment/health checks
+on both releases, with identical binaries and complete verified teardown; see the
+[manifest](../../testing/M2/scan-lifecycle-observations-manifest.json). Maintainer
+review is pending. Advancing progress, faults,
 attribution, executor/recovery and full M2 acceptance remain open.

@@ -929,5 +929,10 @@ children on each release, retaining all old status/assessment/health checks and
 deadlines. A pinned disposable-guest-only progress control holds actual kernel
 scanning; independently restore/reread it on every exit. No synthetic output
 or job attribution qualifies a native state. Existing product code needs no new
-implementation; native qualification and focused review remain pending. Advancing
+implementation. Signed source `728e980a8b21755c9b87f33e48405f096bb03b24` passed
+baseline/122 tooling tests and command-package race checks; both releases passed
+all eight new cases, six health/fifteen assessment children and 21 status assertions
+with identical binaries and verified control/storage/process/base/runtime teardown.
+See the [manifest](../../testing/M2/scan-lifecycle-observations-manifest.json).
+Maintainer review is pending. Advancing
 progress, injected errors, attributed lifecycle and full M2 remain open.

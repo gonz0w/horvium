@@ -228,8 +228,9 @@ no write eligibility or job outcome.
 
 The [native scrub-state fixture](docs/testing/M2/scan-lifecycle-observations.md)
 adds running, paused, resumed and cancelled observations under an explicitly
-restored disposable-guest control. Qualification is pending; product code and
-write eligibility remain unchanged.
+restored disposable-guest control. Both FreeBSD targets passed all eight new
+cases and existing checks with verified teardown; product code and write
+eligibility remain unchanged.
 
 ## Agreed direction
 

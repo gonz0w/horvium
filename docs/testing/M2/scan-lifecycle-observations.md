@@ -1,6 +1,6 @@
 # M2 native scrub-state observation qualification
 
-Date: 2026-10-07. Status: implementation; native qualification pending.
+Date: 2026-10-07. Status: qualified subset; maintainer review pending.
 Authority: [approved PRD](../../milestones/M2/PRD.md),
 [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -88,3 +88,27 @@ Focused review selects the command package; there is no compiler-listed portable
 fuzz target in that package. Full milestone/release, attributed lifecycle,
 management UI/CLI, native executor/recovery and hardware/client/scale acceptance
 remain separate gates. GitHub Actions and persistent services remain disabled.
+
+## Source-bound results
+
+Signed source `728e980a8b21755c9b87f33e48405f096bb03b24` passed focused portable review: `make check lint test secrets`,
+122 tooling tests and command-package race checks. That selected package has no
+compiler-listed portable fuzz target; unrelated prior fuzz evidence is not rerun
+or relabeled. Both releases independently rebuilt the identical binary
+`1ebf41b3ae1f0c0e805f04d7c8ae8e990bd31f0298ca1b43f5176c630179991c`
+and passed all eight mandatory scan children/group, six existing health children,
+fifteen assessment children and 21 original status assertions.
+
+- FreeBSD 15.1: native parent 29.51 seconds; new scan group 8.77 seconds.
+- FreeBSD 14.5: native parent 24.87 seconds; new scan group 7.55 seconds.
+
+The [manifest](scan-lifecycle-observations-manifest.json) records actual source,
+control provenance, binary/tool/image/report/log hashes and preservation/teardown.
+The guest kernel control was restored/reread before fresh completion and verified
+again by independent cleanup. All owned storage/metadata/executable/VM files and
+process groups were removed; base/runtime preservation and host teardown passed.
+No active or unverified owned session remains. Product/source code, all 53 prior
+M2 manifests, existing health fixture and shared tools remain byte-identical.
+Every original assertion/deadline is preserved. No Actions, persistent service or
+operator scrub capability was enabled. Advancing progress, injected errors, full
+formats, attributed jobs/executor/recovery and complete M2 acceptance remain open.
