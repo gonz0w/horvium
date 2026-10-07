@@ -1,6 +1,6 @@
 # M2 reviewed property postcondition comparison
 
-Date: 2026-10-07. Status: qualified subset; maintainer review pending.
+Date: 2026-10-07. Status: qualified subset; accepted in [PR 73](https://github.com/gonz0w/horvium/pull/73).
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).

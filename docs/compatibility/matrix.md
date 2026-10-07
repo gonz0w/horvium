@@ -3,6 +3,19 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [retained property-job assessment](../testing/M2/property-assessment.md) joins
+fresh baseline/expected-effect comparisons to unchanged durable history and restart
+status. Focused portable review passed at signed source
+`2ddc0bb971af47ac6d21f0898deb374cf94ef0d5`; both releases passed all eight mandatory
+assessment cases, eleven postcondition subtests and 88 existing assertions with
+complete teardown. Original 15.1 source `81517c35a7ad68125ebd2241c6ec89e932d6e7e8`
+and corrected 14.5 source ran the exact same independently rebuilt binary; the
+portable-only naming/fixture correction leaves product/native fixture bytes intact.
+See the [manifest](../testing/M2/property-assessment-manifest.json). Encoded histories
+are test metadata, not native execution/persistence/recovery qualification. It adds
+no schema, command, executor attribution, recovery clearance, durable outcome,
+hardware/scale support or runtime write authority.
+
 M2 [reviewed enrollment publication](../testing/M2/enrollment-publication.md) adds
 one-attempt root metadata publication through the original lease and unchanged
 sync/rename engine. Both releases passed

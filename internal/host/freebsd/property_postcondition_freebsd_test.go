@@ -99,6 +99,14 @@ func nativePropertyPostconditions(t *testing.T, ctx context.Context, source *Poo
 		}
 		return o
 	}
+	t.Run("job-baseline", func(t *testing.T) {
+		i := capture(t, target, storage.Quota, "2097152")
+		nativePropertyJobAssessment(t, i, policy, collect(t), true, false)
+	})
+	t.Run("job-already-matching", func(t *testing.T) {
+		i := capture(t, target, storage.Compression, "lz4")
+		nativePropertyJobAssessment(t, i, policy, collect(t), true, true)
+	})
 	for _, tc := range []struct {
 		name     string
 		property storage.Property
@@ -109,7 +117,10 @@ func nativePropertyPostconditions(t *testing.T, ctx context.Context, source *Poo
 		t.Run(tc.name, func(t *testing.T) {
 			i := capture(t, target, tc.property, tc.value)
 			must(t, "/sbin/zfs", "set", string(tc.property)+"="+tc.value, target)
-			match(t, i)
+			after := match(t, i)
+			t.Run("job-postcondition", func(t *testing.T) {
+				nativePropertyJobAssessment(t, i, policy, after, false, true)
+			})
 			// Parsable native quota columns encode no-limit as numeric zero;
 			// only the accepted model parser presents that value as "none".
 			raw := tc.value
@@ -141,6 +152,9 @@ func nativePropertyPostconditions(t *testing.T, ctx context.Context, source *Poo
 	}
 	must(t, "/sbin/zfs", "set", "compression=off", target)
 	after := match(t, i)
+	t.Run("job-inherited", func(t *testing.T) {
+		nativePropertyJobAssessment(t, i, policy, after, false, true)
+	})
 	t.Run("compression", func(t *testing.T) {
 		v := find(t, after, target).Properties.Compression
 		if v.Effective != "off" || v.Source != storage.Local {
@@ -167,6 +181,9 @@ func nativePropertyPostconditions(t *testing.T, ctx context.Context, source *Poo
 		if i.ComparePostcondition(policy, collect(t)) == nil {
 			t.Fatal("identical local child accepted instead of inheritance")
 		}
+		t.Run("job-neither", func(t *testing.T) {
+			nativePropertyJobAssessment(t, i, policy, collect(t), false, false)
+		})
 		must(t, "/sbin/zfs", "inherit", "compression", owned[0])
 		match(t, i)
 	})
@@ -198,7 +215,11 @@ func nativePropertyPostconditions(t *testing.T, ctx context.Context, source *Poo
 			t.Fatal("received fixture baseline")
 		}
 		must(t, "/sbin/zfs", "set", "quota=2097152", owned[2])
-		after := find(t, match(t, i), owned[2]).Properties.Quota
+		o := match(t, i)
+		t.Run("job-received", func(t *testing.T) {
+			nativePropertyJobAssessment(t, i, policy, o, false, true)
+		})
+		after := find(t, o, owned[2]).Properties.Quota
 		got := strings.TrimSpace(must(t, "/sbin/zfs", "get", "-H", "-p", "-o", "value,received,source", "quota", owned[2]))
 		if after.Source != storage.Local || after.ReceivedValue != before.ReceivedValue || got != "2097152\t1048576\tlocal" {
 			t.Fatal("shadowed received value changed")
@@ -213,4 +234,69 @@ func nativePropertyPostconditions(t *testing.T, ctx context.Context, source *Poo
 			t.Fatal("original property/state/identity rows changed")
 		}
 	})
+}
+
+// Fresh graphs are native, but the encoded histories below are fixture metadata,
+// not acknowledged native jobs or executor evidence. Assess every retained state
+// without restoring expiry/session authority or changing conservative holds.
+func nativePropertyJobAssessment(t *testing.T, i storage.PropertyIntent, policy storage.Policy, o storage.Observation, baseline, postcondition bool) {
+	t.Helper()
+	r := i.Review()
+	at := uint64(r.CreatedAt.Add(time.Millisecond).UnixMilli())
+	j := storage.Job{ID: strings.Repeat("a", 64), Intent: storage.JobIntent{PlanID: r.ID, SubmissionID: strings.Repeat("c", 64), PolicyRevision: r.PolicyRevision, PoolGUID: r.PoolGUID, Change: r.Intent}, History: []storage.JobTransition{{Revision: 1, At: at, State: storage.JobQueued, Reason: "admitted"}}}
+	p, err := storage.BindPropertyJob(j, i)
+	if err != nil {
+		t.Fatal("native assessment fixture binding", err)
+	}
+	jobs := []storage.PropertyJob{p}
+	next := func(from storage.PropertyJob, state storage.JobState, reason, digest string) storage.PropertyJob {
+		t.Helper()
+		result, err := storage.TransitionPropertyJob(from, state, uint64(r.ExpiresAt.Add(time.Hour).UnixMilli()), reason, digest)
+		if err != nil {
+			t.Fatal("native assessment retained history", err)
+		}
+		jobs = append(jobs, result)
+		return result
+	}
+	next(p, storage.JobCancelled, "operator-cancelled", "")
+	next(p, storage.JobReconcileRequired, "review-expired", "")
+	a := next(p, storage.JobApplying, "launch-intent", "")
+	next(a, storage.JobReconcileRequired, "ambiguous-effect", "")
+	b := next(a, storage.JobObserving, "native-observation", strings.Repeat("e", 64))
+	next(b, storage.JobReconcileRequired, "state-io-failure", strings.Repeat("e", 64))
+	next(b, storage.JobSucceeded, "verified", strings.Repeat("f", 64))
+	next(b, storage.JobFailed, "verified-failure", strings.Repeat("f", 64))
+	for _, job := range jobs {
+		encoded, err := storage.EncodePropertyJob(job)
+		if err != nil {
+			t.Fatal(err)
+		}
+		decoded, err := storage.DecodePropertyJob(encoded)
+		if err != nil {
+			t.Fatal(err)
+		}
+		view, err := storage.BuildJobReservations([][]byte{encoded})
+		if err != nil {
+			t.Fatal(err)
+		}
+		page, err := view.RestartPage("", 1)
+		if err != nil || len(page) != 1 {
+			t.Fatal("retained assessment restart page", err)
+		}
+		holds := view.Pools()
+		got, err := decoded.AssessObservation(policy, o)
+		if err != nil || got.BaselineMatches != baseline || got.PostconditionMatches != postcondition || got.Restart != page[0] || o.Eligible {
+			t.Fatal("native assessment changed facts/restart authority", got, err)
+		}
+		again, err := storage.EncodePropertyJob(decoded)
+		if err != nil || !bytes.Equal(encoded, again) || !reflect.DeepEqual(holds, view.Pools()) || len(holds) != 1 || len(holds[0].Jobs) != 1 {
+			t.Fatal("native assessment changed record or released hold", err)
+		}
+		invalid := o
+		invalid.Complete = false
+		got, err = decoded.AssessObservation(policy, invalid)
+		if err == nil || got != (storage.PropertyJobAssessment{}) {
+			t.Fatal("incomplete graph exposed partial assessment", got, err)
+		}
+	}
 }

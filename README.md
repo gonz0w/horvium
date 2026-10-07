@@ -201,6 +201,12 @@ subtests and 88 existing assertions, with focused portable review and verified
 teardown. Matching does not authorize writes, attribute an executor or
 acknowledge durable job success.
 
+The [retained property-job assessment](docs/testing/M2/property-assessment.md)
+compares fresh observed baseline and expected-effect facts separately from unchanged
+durable history and conservative restart status. Eight new native assessment cases
+passed on both FreeBSD releases, with focused portable review and verified teardown.
+No reconciliation resolution, replay, write or reservation release is enabled.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

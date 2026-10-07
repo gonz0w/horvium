@@ -1,0 +1,548 @@
+{
+  "record_type": "M2-retained-property-job-observation-assessment",
+  "date": "2026-10-07",
+  "source_commit": "2ddc0bb971af47ac6d21f0898deb374cf94ef0d5",
+  "source_tree": "add72ee06855da98b745710ed06865af3ff83f73",
+  "base_commit": "37343f66e3c3a95ebc7dfbb0eb965581ed20231b",
+  "requirements": [
+    "M2-RECOVERY-001 (partial)",
+    "M2-JOB-001 (partial)",
+    "M2-PROPERTY-001 (partial)",
+    "M2-DRIFT-001 (partial)"
+  ],
+  "scope": "Independent baseline/expected-effect observed facts with unchanged durable history and conservative restart projection; neither/both explicit, no causal attribution or resolution/replay/release",
+  "input_sha256": [
+    {
+      "path": "internal/host/freebsd/property_postcondition_freebsd_test.go",
+      "sha256": "c0e4888cab09e2ab85b069568860887ff868429e744f7d41b73f19ed4b99ffcd"
+    },
+    {
+      "path": "internal/storage/property_assessment.go",
+      "sha256": "882af418409d477a249110e329685f7de07ad5638824d8fc53f5dec971d9d5d0"
+    },
+    {
+      "path": "internal/storage/property_assessment_test.go",
+      "sha256": "77baacde0e9276c9e9eb7749e67b6c49fd0ce9ce6259da4ffa83540214badf6b"
+    },
+    {
+      "path": "internal/storage/property_postcondition.go",
+      "sha256": "65496ea3ba3fb048f436d0762aca241738f076c1537c4d772423a95e2eab63bd"
+    }
+  ],
+  "failing_first": "New behavioral tests failed to compile before the public assessment method/result existed; test fixture field names corrected before that red run. No retained red-log hash claimed.",
+  "portable_review": {
+    "source_commit": "2ddc0bb971af47ac6d21f0898deb374cf94ef0d5",
+    "session": "ewt_87eg",
+    "qualified": true,
+    "mode": "focused",
+    "baseline": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "tooling_tests": 122,
+    "duration_seconds": 189.059,
+    "race_packages": [
+      "./cmd/horvium",
+      "./internal/admin",
+      "./internal/client",
+      "./internal/console",
+      "./internal/helper",
+      "./internal/host/freebsd",
+      "./internal/observation",
+      "./internal/service",
+      "./internal/storage"
+    ],
+    "fuzz_targets": [
+      {
+        "package": "./internal/admin",
+        "target": "FuzzConfiguration"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzRequest"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzSnapshot"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPoolPropertyCollection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPoolProviderCollection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPropertyPolicyCollection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzSystemUseCollection"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzDeviceUseReview"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzFilesystemSignature"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzFilesystemStates"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzIdentities"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzImportedPoolUse"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzJobRecord"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzJobReservations"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzJobRestartPage"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzOwnershipCatalogNames"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzOwnershipRecord"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolFeatures"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolLabels"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolState"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolSystemUse"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolTopology"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzProperties"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyCoordinatorActions"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyIntent"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyJob"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyJobAssessment"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyPlan"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyPostcondition"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzStateCatalogNames"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzSystemDeviceUse"
+      }
+    ],
+    "report_sha256": "780980a919fe64a3acaaff6d4ee162ed85a5dd4aabc717695fa8103dd0cd2c25",
+    "checks_log_sha256": "06b7d7ae8ca3a37d1aebeb36f524530c865da67b895d577b40107c3b53a761cb",
+    "deep_log_sha256": "19cd116aa54544c9d0179f30c3124618cbbf618260b1b257affa46bebb61cf34",
+    "completed_clean_supervisors": 2
+  },
+  "native_runs": [
+    {
+      "release": "15.1",
+      "source_commit": "81517c35a7ad68125ebd2241c6ec89e932d6e7e8",
+      "session": "pool-properties-15.1-orewwom3",
+      "qualified": true,
+      "existing_pool_assertions": 88,
+      "mandatory_postcondition_subtests": [
+        "quota",
+        "refquota",
+        "no-limit",
+        "compression",
+        "inherited",
+        "overrides",
+        "wrong-source",
+        "context-drift",
+        "baseline-retained",
+        "received",
+        "restored"
+      ],
+      "mandatory_assessment_subtests": [
+        "job-baseline",
+        "job-already-matching",
+        "quota/job-postcondition",
+        "refquota/job-postcondition",
+        "no-limit/job-postcondition",
+        "job-inherited",
+        "wrong-source/job-neither",
+        "received/job-received"
+      ],
+      "fixture_histories_per_assessment": 9,
+      "native_test_seconds": 159.99,
+      "postcondition_subtests_seconds": 54.04,
+      "qualification_seconds": 192.27,
+      "guest_versions": {
+        "freebsd": [
+          "15.1-RELEASE-p3",
+          "15.1-RELEASE-p3",
+          "15.1-RELEASE-p3"
+        ],
+        "zfs": [
+          "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+          "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0"
+        ]
+      },
+      "prebuilt": {
+        "source_commit": "81517c35a7ad68125ebd2241c6ec89e932d6e7e8",
+        "sha256": "9a17c740b829691635e8b89e4c9dd92697b90b65a579397ea9054c6a3a6fbf2e",
+        "bytes": 10809306,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+        "go_sum_sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "<owned-artifact>",
+          "./internal/host/freebsd"
+        ]
+      },
+      "image": {
+        "release": "15.1",
+        "builder": "2.2.8",
+        "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+        "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+        "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144
+      },
+      "runtime": {
+        "qemu_version": "QEMU emulator version 11.1.1",
+        "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+        "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+        "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+        "accelerator": "tcg",
+        "cpu_count": 2,
+        "cpu_model": "qemu64",
+        "memory_mib": 6144,
+        "host_os": "Darwin",
+        "host_arch": "arm64"
+      },
+      "base_tools": [
+        {
+          "path": "/sbin/zfs",
+          "sha256": "ad02488cbfbc489be74b4e8674c85d1d856758756b2a0b9a477abbf6f7c6398a"
+        },
+        {
+          "path": "/sbin/zpool",
+          "sha256": "fdc340695bd80a88b087ee78d6051fd048b1c163cee39e345e5a559a58667c85"
+        },
+        {
+          "path": "/sbin/mdconfig",
+          "sha256": "4848babf6961cfb427d7a5824d6061cc300a53eb650d04fca81c8488e72b46d6"
+        },
+        {
+          "path": "/usr/bin/timeout",
+          "sha256": "099b29836a7efe1270842ffe093c971c7883e646293b8906b38652901ef1673d"
+        },
+        {
+          "path": "/usr/sbin/diskinfo",
+          "sha256": "38c92c1ecbf7b6813dcd5b89743ec0c294ca2c2d9922d590faba81bda206963b"
+        },
+        {
+          "path": "/sbin/sysctl",
+          "sha256": "482b0e13db8d55c8de12a08c94bf4fc3a4039a254d37e157f864e08aad9ce7c7"
+        },
+        {
+          "path": "/sbin/mount",
+          "sha256": "c46db28eff4edb2011ad1463b5891db0fb009879c07ac26b6d11ee55e40a4c38"
+        },
+        {
+          "path": "/usr/sbin/swapinfo",
+          "sha256": "38ea4e35a245b22b445e2411f29e52f4f2efb463c4cc1c64fea2df6aefb19e77"
+        },
+        {
+          "path": "/sbin/swapon",
+          "sha256": "7e2846cbb3b19f6070a360ec27a94f50248f626a647f386ecb61ed64ce8ab8fe"
+        },
+        {
+          "path": "/sbin/swapoff",
+          "sha256": "7e2846cbb3b19f6070a360ec27a94f50248f626a647f386ecb61ed64ce8ab8fe"
+        },
+        {
+          "path": "/bin/freebsd-version",
+          "sha256": "99e61d407fd6d5d037c2334b0b6668e4a1bdb0ceda79d011777f5f60b864d571"
+        }
+      ],
+      "preservation_teardown": {
+        "guest_assertions": true,
+        "host_teardown": true,
+        "base_preserved": true,
+        "runtime_preserved": true,
+        "device_backings_preserved": true,
+        "device_fixture_teardown": true,
+        "supervisor_fixture_cleanup": true,
+        "supervisor_group_cleaned": true
+      },
+      "supervisor": {
+        "completed": true,
+        "group_cleaned": true,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "escalated": false,
+        "command_sha256": "b951e202b2577b07aab21cd8b32a1de714119fadc0d2e5e201d9f32894c99d1d"
+      },
+      "supervisor_session": "19v2750x",
+      "report_sha256": "98a99f55ae785e9f0e5ed8a22d5f6f18c20871c3eb003de0a10822062f2f5e68",
+      "guest_log_sha256": "65c1ef3971e6f03312e5dfbe49d52cb2f77d0827554e87e75a9517534fa5a2d2",
+      "serial_log_sha256": "3acbbe9641a2e6ba0955f318bfbec9e720cfc76d7b4a0a6c8d930d3c2b060870"
+    },
+    {
+      "release": "14.5",
+      "source_commit": "2ddc0bb971af47ac6d21f0898deb374cf94ef0d5",
+      "session": "pool-properties-14.5-6xosnkmj",
+      "qualified": true,
+      "existing_pool_assertions": 88,
+      "mandatory_postcondition_subtests": [
+        "quota",
+        "refquota",
+        "no-limit",
+        "compression",
+        "inherited",
+        "overrides",
+        "wrong-source",
+        "context-drift",
+        "baseline-retained",
+        "received",
+        "restored"
+      ],
+      "mandatory_assessment_subtests": [
+        "job-baseline",
+        "job-already-matching",
+        "quota/job-postcondition",
+        "refquota/job-postcondition",
+        "no-limit/job-postcondition",
+        "job-inherited",
+        "wrong-source/job-neither",
+        "received/job-received"
+      ],
+      "fixture_histories_per_assessment": 9,
+      "native_test_seconds": 228.55,
+      "postcondition_subtests_seconds": 87.3,
+      "qualification_seconds": 276.599,
+      "guest_versions": {
+        "freebsd": [
+          "14.5-RELEASE",
+          "14.5-RELEASE",
+          "14.5-RELEASE"
+        ],
+        "zfs": [
+          "zfs-2.2.9-FreeBSD_g079ba86d7",
+          "zfs-kmod-2.2.9-FreeBSD_g079ba86d7"
+        ]
+      },
+      "prebuilt": {
+        "source_commit": "2ddc0bb971af47ac6d21f0898deb374cf94ef0d5",
+        "sha256": "9a17c740b829691635e8b89e4c9dd92697b90b65a579397ea9054c6a3a6fbf2e",
+        "bytes": 10809306,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+        "go_sum_sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "<owned-artifact>",
+          "./internal/host/freebsd"
+        ]
+      },
+      "image": {
+        "release": "14.5",
+        "builder": "2.2.8",
+        "compressed_sha256": "cd90489bb7d94585016e177b9e3f0084f3410454dc0af19481f44ddd5aa45257",
+        "qcow2_sha256": "6593466e8d6341eaad95755973ab594222516dd75bcd99b18239b5047e5396f4",
+        "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144
+      },
+      "runtime": {
+        "qemu_version": "QEMU emulator version 11.1.1",
+        "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+        "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+        "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+        "accelerator": "tcg",
+        "cpu_count": 2,
+        "cpu_model": "qemu64",
+        "memory_mib": 6144,
+        "host_os": "Darwin",
+        "host_arch": "arm64"
+      },
+      "base_tools": [
+        {
+          "path": "/sbin/zfs",
+          "sha256": "56272b887f21fc31c3da98a9240c5c24ce817b9477fe160972c578cfce1a1f12"
+        },
+        {
+          "path": "/sbin/zpool",
+          "sha256": "06c2b7f784a4e1d7a10eedbe27b7adaaeaa83c6dfec8dd7384f9e9ba1b719c47"
+        },
+        {
+          "path": "/sbin/mdconfig",
+          "sha256": "380e00cde6bcbe24fc45421834a2104d98f1b2aabd1d430f4a1028e4cf7e54a4"
+        },
+        {
+          "path": "/usr/bin/timeout",
+          "sha256": "1dadc6aaf707f8e4f7a08ea28bfa0d53bf6890ca9ea7873a72e4a051e5f9aa10"
+        },
+        {
+          "path": "/usr/sbin/diskinfo",
+          "sha256": "50e0846108500fc6e2ff7d812eda8cfc7613ad69f6b974a273ef67cca90c3ba0"
+        },
+        {
+          "path": "/sbin/sysctl",
+          "sha256": "7601327d63fcf4da02174b404bc54c2b2d1493e5186ea0d2e4b28e1efebfd7ae"
+        },
+        {
+          "path": "/sbin/mount",
+          "sha256": "91a17c3b3275f65dcb51966b7f33ba214735d54763d0c99a2956db0247c3f388"
+        },
+        {
+          "path": "/usr/sbin/swapinfo",
+          "sha256": "40d324cdd5e47125c41a42529c3f62abb88f86bafbc3931049b7e2af44fb17c5"
+        },
+        {
+          "path": "/sbin/swapon",
+          "sha256": "273c874d2c031f8c8378ceff5e8001e480dde3be729835cd94a387a670260999"
+        },
+        {
+          "path": "/sbin/swapoff",
+          "sha256": "273c874d2c031f8c8378ceff5e8001e480dde3be729835cd94a387a670260999"
+        },
+        {
+          "path": "/bin/freebsd-version",
+          "sha256": "b50e37e31036f6f13c248cee0ea63914bc25fd41c653c42e2b177aed8e2a80ca"
+        }
+      ],
+      "preservation_teardown": {
+        "guest_assertions": true,
+        "host_teardown": true,
+        "base_preserved": true,
+        "runtime_preserved": true,
+        "device_backings_preserved": true,
+        "device_fixture_teardown": true,
+        "supervisor_fixture_cleanup": true,
+        "supervisor_group_cleaned": true
+      },
+      "supervisor": {
+        "completed": true,
+        "group_cleaned": true,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "escalated": false,
+        "command_sha256": "db500fa498d5f20b543494c847027454a47e55711ea0676d058b7f033d4b6f25"
+      },
+      "supervisor_session": "s9nxg88s",
+      "report_sha256": "2f9d8cd8bb989bbc028979cd74477db7f3d4abc4fc294bb2341387d6e542f2e0",
+      "guest_log_sha256": "4bcc930bc5d8a741a4aa55ff179bf54f542d3d8a2c505f2577c12b5615b30c36",
+      "serial_log_sha256": "994eca536a8a32f9e26e45db6d5d08c0fdebcfe6bda77071cd31922f78a8490f"
+    }
+  ],
+  "native_source_equivalence": {
+    "original_source": "81517c35a7ad68125ebd2241c6ec89e932d6e7e8",
+    "current_source": "2ddc0bb971af47ac6d21f0898deb374cf94ef0d5",
+    "same_exact_cross_built_binary_sha256": "9a17c740b829691635e8b89e4c9dd92697b90b65a579397ea9054c6a3a6fbf2e",
+    "changes_after_15_1_run": [
+      "docs/testing/M2/property-assessment.md",
+      "internal/storage/property_assessment_test.go"
+    ],
+    "product_and_native_fixture_bytes_unchanged": true,
+    "reason": "Only the separate portable tests and documentation changed to avoid widening the existing metadata-suite selector. The independently rebuilt final-source host/freebsd test binary run on 14.5 exactly matches the executed 15.1 binary. Original native source is retained; no rerun or relabel."
+  },
+  "superseded_unqualified_portable_review": {
+    "source_commit": "81517c35a7ad68125ebd2241c6ec89e932d6e7e8",
+    "session": "5khwg2wa",
+    "qualified": false,
+    "reason": "Portable test names collided with the retained metadata-suite selector. Rename portable tests and improve the complete missing-target case; shared selector/checker/inventory unchanged. Original native run independently passed at its actual source.",
+    "report_sha256": "b98ee9049b11174a0909ab1ef18bfc25bb0bd9be9a7631efe90e2fffd3f14cfd",
+    "checks_log_sha256": "0f2e57688403f395b718b8e792d6c9f727283e15438971a78fd4f3e788103316",
+    "complete_group_teardown": true
+  },
+  "preservation": {
+    "historical_M2_manifests": 49,
+    "paths_verified_byte_identical": 265,
+    "canonical_path_digest_list_sha256": "734fc9ec9e21792e5efed6853f41332e846dedc94b6f5754bdb2912280c6925a",
+    "postcondition_go_change": "Extract the existing exact expected projection into one private shared helper; all prior public behavior and native assertions retained.",
+    "native_metadata_implementations_tests_and_codecs_unchanged": true,
+    "all_shared_tools_checkers_selectors_cli_and_makefile_unchanged": true,
+    "prior_819_case_state_evidence_rerun": false,
+    "prior_evidence_relabeled": false
+  },
+  "teardown": {
+    "lab_status_log_sha256": "58bd0a7f934c8ceea6731f3d35d4674f82cc1393318ab72ebfdcc68cbde00e9b",
+    "owned_active": 0,
+    "unverified": 0,
+    "actions_or_persistent_services_enabled": false
+  },
+  "remaining_gates": [
+    "root-leased native retained-job assessment backend and operator presentation",
+    "native eligibility/admission/transport/executor",
+    "executor attribution/containment and uncertain-write resolution",
+    "restored-state validation and durable outcome acknowledgement",
+    "runtime provisioning and full lifecycle/UI/CLI/M2/client/hardware acceptance"
+  ]
+}

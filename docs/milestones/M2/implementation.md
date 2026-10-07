@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 72; reviewed property postconditions in progress; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 73; retained property-job assessment in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -699,7 +699,25 @@ and 30 selected bounded fuzz targets, with full owned teardown; see the
 [manifest](../../testing/M2/property-postconditions-manifest.json). Both superseded
 fixture failures remain unqualified; the corrections change only fixture reset
 semantics/raw-column expectations. The existing pool-source checker/selector and
-all 48 historical metadata manifests retain their actual scope. Maintainer review
-remains pending. No runtime native
+all 48 historical metadata manifests retain their actual scope. Accepted in [PR 73](https://github.com/gonz0w/horvium/pull/73) at merged source
+`37343f66e3c3a95ebc7dfbb0eb965581ed20231b`. No runtime native
 writer, job-success publication, attribution, recovered-state clearance or
 management mutation transport is added.
+
+## Retained property-job observation assessment
+
+The [contract](../../testing/M2/property-assessment.md) joins independently fresh
+baseline/expected-effect facts to immutable retained job history and conservative
+restart status. Both/neither matches are explicit and supply no causation or
+recovery clearance. Focused review passed at signed source
+`2ddc0bb971af47ac6d21f0898deb374cf94ef0d5`: 122 tooling tests, nine affected race
+packages and all 31 selected bounded fuzz targets. Both releases passed the 88
+existing native assertions, eleven postcondition subtests and eight mandatory
+assessment subtests with complete owned teardown. Original 15.1 and corrected 14.5
+sources ran the exact same independently rebuilt binary after a portable-only
+selector/fixture correction. The failed portable review remains unqualified; see
+the [manifest](../../testing/M2/property-assessment-manifest.json). Metadata
+codecs/publication, shared runner/checker/selector and all 49 prior manifests are unchanged.
+Maintainer review remains pending.
+Actual executor/reconciliation/restoration, durable outcomes, runtime transport/
+eligibility/writes and operator workflows remain pending.
