@@ -70,7 +70,7 @@ owned fixture-only changes, received stream, independent source checks and origi
 projection restoration from the accepted postcondition procedure.
 
 ```sh
-make test-focus PKG=./internal/storage TEST='^TestProperty(JobAssessment|Postcondition)'
+make test-focus PKG=./internal/storage TEST='^Test(RetainedPropertyAssessment|PropertyPostcondition)'
 PR_TITLE='feat(storage): assess retained property jobs against observations' make review
 .tools/venv/bin/python3 tools/local-qualification.py pool-properties 15.1 --run
 .tools/venv/bin/python3 tools/local-qualification.py pool-properties 14.5 --run
@@ -81,3 +81,14 @@ Native writer/eligibility/admission, executor attribution/containment, actual
 reconciliation and restored-state clearance, durable outcomes, management parity
 and complete M2 acceptance remain open. Existing shared runners/selectors/checkers,
 metadata implementations/codecs and historical manifests retain their actual scope.
+
+## Portable selector correction
+
+The first local review refused the portable test names because they also matched
+the existing native metadata-suite selector. Rename these tests to preserve that
+suite's exact inventory; do not widen the selector or checker or relabel prior
+metadata evidence. The corrected missing-target case also uses an actually
+complete surviving graph rather than a corrupted captured binding. These changes
+affect only the separately compiled storage tests and documentation. The product
+library and native fixture remain byte-identical; require exact independently
+rebuilt native binary equality before reusing the original 15.1 result.

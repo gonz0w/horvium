@@ -49,7 +49,7 @@ func assessmentStates(t testing.TB, p PropertyJob) []PropertyJob {
 	return result
 }
 
-func TestPropertyJobAssessmentSeparatesFactsFromHistory(t *testing.T) {
+func TestRetainedPropertyAssessmentSeparatesFactsFromHistory(t *testing.T) {
 	i, _, policy, baseline := propertyIntentFixture(t)
 	for _, p := range assessmentStates(t, assessmentJob(t, i)) {
 		j := p.Job()
@@ -98,7 +98,7 @@ func TestPropertyJobAssessmentSeparatesFactsFromHistory(t *testing.T) {
 	}
 }
 
-func TestPropertyJobAssessmentAlreadyMatchingIsAmbiguous(t *testing.T) {
+func TestRetainedPropertyAssessmentAlreadyMatchingIsAmbiguous(t *testing.T) {
 	policy, o, change := fixture()
 	change.Property, change.Value = Compression, "lz4"
 	i := postconditionIntent(t, policy, o, change)
@@ -110,7 +110,7 @@ func TestPropertyJobAssessmentAlreadyMatchingIsAmbiguous(t *testing.T) {
 	}
 }
 
-func TestPropertyJobAssessmentInvalidInputsReturnNoPartialFacts(t *testing.T) {
+func TestRetainedPropertyAssessmentInvalidInputsReturnNoPartialFacts(t *testing.T) {
 	for _, mode := range []string{"zero-job", "binding", "history", "incomplete", "identity", "missing-state", "invalid-value", "oversized", "policy-invalid", "target-missing"} {
 		t.Run(mode, func(t *testing.T) {
 			i, _, policy, o := propertyIntentFixture(t)
@@ -136,10 +136,17 @@ func TestPropertyJobAssessmentInvalidInputsReturnNoPartialFacts(t *testing.T) {
 			case "policy-invalid":
 				policy.Scopes[0].GUID = "999"
 			case "target-missing":
-				// A complete, internally consistent but different pool graph
-				// cannot yield a property assessment for the missing target.
-				i.review.Intent.FilesystemGUID = "999"
-				p.intent = i
+				// Capture the child, then supply a complete graph and current
+				// policy containing only the surviving root. A missing target
+				// cannot yield a partial assessment or restore old scope.
+				capture := o
+				capture.Eligible = true // Test-only capture; actual comparison stays ineligible.
+				i = postconditionIntent(t, policy, capture, Intent{FilesystemGUID: "102", Property: Compression, Value: "off"})
+				p = assessmentJob(t, i)
+				o.Filesystems = o.Filesystems[:1]
+				o.States = o.States[:1]
+				o.Identities = o.Identities[:1]
+				policy.Scopes = policy.Scopes[:1]
 			}
 			got, err := p.AssessObservation(policy, o)
 			if err == nil || got != (PropertyJobAssessment{}) {
@@ -149,7 +156,7 @@ func TestPropertyJobAssessmentInvalidInputsReturnNoPartialFacts(t *testing.T) {
 	}
 }
 
-func TestPropertyJobAssessmentContextDriftAndOwnership(t *testing.T) {
+func TestRetainedPropertyAssessmentContextDriftAndOwnership(t *testing.T) {
 	for _, mode := range []string{"policy", "members", "pool", "topology", "state", "versions", "received", "other-property"} {
 		t.Run(mode, func(t *testing.T) {
 			i, _, policy, o := propertyIntentFixture(t)
