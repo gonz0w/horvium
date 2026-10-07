@@ -5,7 +5,7 @@ from pathlib import Path
 import re
 import sys
 
-CASES={'built_process','empty','mixed_complete','queued_held','applying_held','observing_held','terminal_retained','private_baseline_hidden','repeat_preserved','lease_released','active_writer_denied','kernel_uid_denied','unknown_denied','newer_denied','unsafe_file_denied','orphan_denied','cancelled_denied','native_unavailable_not_consulted','lock_preserved','fixtures_teardown'}
+CASES={'built_process','empty','mixed_complete','queued_held','applying_held','observing_held','terminal_retained','private_baseline_hidden','repeat_preserved','lease_released','active_writer_denied','kernel_uid_denied','unknown_denied','newer_denied','unsafe_file_denied','orphan_denied','cancelled_denied','output_cancelled','native_unavailable_not_consulted','lock_preserved','fixtures_teardown'}
 
 def validate(text):
     if len(text)>1<<20 or re.search(r'(?m)^(?:FAIL|\s*--- (?:FAIL|SKIP):)',text):

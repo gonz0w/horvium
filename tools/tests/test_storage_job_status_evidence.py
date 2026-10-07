@@ -14,7 +14,7 @@ class StorageJobStatusEvidenceTests(unittest.TestCase):
         self.log='--- PASS: TestNativeStorageJobStatus (1.0s)\nSTORAGE_JOB_STATUS_RESULT '+' '.join(c+'=pass' for c in sorted(self.module.CASES))+'\nSTORAGE_JOB_STATUS_BACKING filesystem=zfs softupdates=off teardown=pass\n'
 
     def test_complete_fixed_inventory(self):
-        self.assertEqual(self.module.CASES,{'built_process','empty','mixed_complete','queued_held','applying_held','observing_held','terminal_retained','private_baseline_hidden','repeat_preserved','lease_released','active_writer_denied','kernel_uid_denied','unknown_denied','newer_denied','unsafe_file_denied','orphan_denied','cancelled_denied','native_unavailable_not_consulted','lock_preserved','fixtures_teardown'})
+        self.assertEqual(self.module.CASES,{'built_process','empty','mixed_complete','queued_held','applying_held','observing_held','terminal_retained','private_baseline_hidden','repeat_preserved','lease_released','active_writer_denied','kernel_uid_denied','unknown_denied','newer_denied','unsafe_file_denied','orphan_denied','cancelled_denied','output_cancelled','native_unavailable_not_consulted','lock_preserved','fixtures_teardown'})
         self.module.validate(self.log)
 
     def test_missing_duplicate_failed_or_extra_assertions(self):

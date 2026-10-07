@@ -12,6 +12,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/gonz0w/horvium/internal/storage"
 )
@@ -198,5 +199,41 @@ func (statusShortWriter) Write(b []byte) (int, error) { return len(b) - 1, nil }
 func TestStorageJobStatusShortOutputFails(t *testing.T) {
 	if err := writeStorageJobStatus(context.Background(), statusViewFixture(t, 1), statusShortWriter{}); err == nil {
 		t.Fatal("partial delivery reported success")
+	}
+}
+
+func TestStorageJobStatusCommandLifetimeCancelsBlockedOutput(t *testing.T) {
+	parent, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	exited := make(chan int, 1)
+	ctx, stop := storageJobCommandContext(parent, []string{"storage-jobs"}, func(code int) { exited <- code })
+	defer stop()
+	deadline, ok := ctx.Deadline()
+	if !ok || time.Until(deadline) > 45*time.Second {
+		t.Fatal("status process has no lifetime bound")
+	}
+	cancel()
+	select {
+	case code := <-exited:
+		if code != 1 {
+			t.Fatal("cancellation exit", code)
+		}
+	case <-time.After(time.Second):
+		t.Fatal("cancelled blocked output survives")
+	}
+}
+
+func TestStorageJobStatusCommandLifetimeDisarmsAfterCompletion(t *testing.T) {
+	for _, args := range [][]string{{"storage-jobs"}, {"inventory"}, {}} {
+		parent, cancel := context.WithCancel(context.Background())
+		exited := make(chan int, 1)
+		_, stop := storageJobCommandContext(parent, args, func(code int) { exited <- code })
+		stop()
+		cancel()
+		select {
+		case <-exited:
+			t.Fatal("finished/other command terminated")
+		case <-time.After(10 * time.Millisecond):
+		}
 	}
 }

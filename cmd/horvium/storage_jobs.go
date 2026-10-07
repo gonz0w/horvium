@@ -13,6 +13,19 @@ import (
 
 const maxStorageStatusBytes = 1 << 20
 const maxStorageStatusJobs = 1064 // Accepted 64 nonterminal + 1,000 terminal store bounds.
+const storageStatusTimeout = 45 * time.Second
+
+// Stdout may be a blocking descriptor. Terminate this foreground diagnostic on
+// cancellation even if delivery cannot return; the kernel releases its handles.
+// Other command lifetimes remain unchanged. Disarm before cancelling the timer.
+func storageJobCommandContext(parent context.Context, args []string, exit func(int)) (context.Context, func()) {
+	if len(args) == 0 || args[0] != "storage-jobs" {
+		return parent, func() {}
+	}
+	ctx, cancel := context.WithTimeout(parent, storageStatusTimeout)
+	stop := context.AfterFunc(ctx, func() { exit(1) })
+	return ctx, func() { stop(); cancel() }
+}
 
 // This diagnostic envelope is not an executable job, transport capability or
 // verification of current native effects. Never expose a full stored intent.
@@ -47,7 +60,7 @@ func runStorageJobs(ctx context.Context, path string, out io.Writer) error {
 	if err := ctx.Err(); err != nil {
 		return err
 	}
-	ctx, cancel := context.WithTimeout(ctx, 45*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, storageStatusTimeout)
 	defer cancel()
 	// Actual FreeBSD effective UID/ancestor/ACL/lock checks stay in the existing
 	// root lease opener. No store is provisioned, repaired or held after this call.

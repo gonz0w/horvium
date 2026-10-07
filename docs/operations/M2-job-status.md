@@ -26,8 +26,10 @@ first use. It provisions no directory and changes no job/policy record. Successf
 inspection checks the complete bounded ownership/job namespace, reads one immutable
 view, and closes the lease before writing one JSON document to standard output.
 Normal completion, failure and cancellation close owned descriptors. The command
-has a 45-second context bound; kernel filesystem calls are not preemptible by that
-context, and a blocked output writer has no artificial asynchronous timeout.
+has a 45-second process lifetime bound. SIGINT, SIGTERM or deadline cancellation
+exits nonzero even with blocked output; the kernel closes process descriptors.
+This does not promise preemption of kernel filesystem calls or rollback of bytes
+already delivered. Normal completion disarms the cancellation exit.
 
 ## Interpret the result
 

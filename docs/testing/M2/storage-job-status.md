@@ -44,13 +44,15 @@ records cross the internal page boundary, retaining queued/applying/observing an
 terminal states. GUID 100 is independently verified absent from imported pools;
 status must still show its retained jobs without native collection.
 
-Require all twenty exact assertions: `built_process`, `empty`, `mixed_complete`,
+Require all twenty-one exact assertions: `built_process`, `empty`, `mixed_complete`,
 `queued_held`, `applying_held`, `observing_held`, `terminal_retained`,
 `private_baseline_hidden`, `repeat_preserved`, `lease_released`,
 `active_writer_denied`, `kernel_uid_denied`, `unknown_denied`, `newer_denied`,
-`unsafe_file_denied`, `orphan_denied`, `cancelled_denied`,
+`unsafe_file_denied`, `orphan_denied`, `cancelled_denied`, `output_cancelled`,
 `native_unavailable_not_consulted`, `lock_preserved` and `fixtures_teardown`.
-Actual kernel UID 65534 must refuse the command with no status output. Repeat
+An owned full output pipe and SIGTERM must produce exit 1 within three seconds;
+a supervisor kill cannot satisfy this assertion. Portable tests prove the
+45-second lifetime bound and disarming after completion. Actual kernel UID 65534 must refuse the command with no status output. Repeat
 queries preserve every record byte and the lock inode; releasing the query lease
 permits the independently opened writer. Refused unsafe/unknown/newer/orphan
 objects remain unchanged. Record actual ZFS/UFS/softupdates backing separately;

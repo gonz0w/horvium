@@ -144,5 +144,8 @@ func run(ctx context.Context, args []string, input io.Reader, out, errout io.Wri
 func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
-	os.Exit(run(ctx, os.Args[1:], os.Stdin, os.Stdout, os.Stderr))
+	ctx, stop := storageJobCommandContext(ctx, os.Args[1:], os.Exit)
+	code := run(ctx, os.Args[1:], os.Stdin, os.Stdout, os.Stderr)
+	stop()
+	os.Exit(code)
 }

@@ -101,7 +101,7 @@ func TestNativeStorageJobStatus(t *testing.T) {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
-	cases := []string{"built_process", "empty", "mixed_complete", "queued_held", "applying_held", "observing_held", "terminal_retained", "private_baseline_hidden", "repeat_preserved", "lease_released", "active_writer_denied", "kernel_uid_denied", "unknown_denied", "newer_denied", "unsafe_file_denied", "orphan_denied", "cancelled_denied", "native_unavailable_not_consulted", "lock_preserved", "fixtures_teardown"}
+	cases := []string{"built_process", "empty", "mixed_complete", "queued_held", "applying_held", "observing_held", "terminal_retained", "private_baseline_hidden", "repeat_preserved", "lease_released", "active_writer_denied", "kernel_uid_denied", "unknown_denied", "newer_denied", "unsafe_file_denied", "orphan_denied", "cancelled_denied", "output_cancelled", "native_unavailable_not_consulted", "lock_preserved", "fixtures_teardown"}
 	passed := make(map[string]bool)
 	check := func(name string, ok bool) {
 		t.Helper()
@@ -197,6 +197,60 @@ func TestNativeStorageJobStatus(t *testing.T) {
 		preserved = preserved && e == nil && bytes.Equal(got, b)
 	}
 	check("repeat_preserved", preserved)
+	// Fill an owned pipe, retaining its unread end. Public main must exit on
+	// SIGTERM even when its stdout cannot deliver the complete status document.
+	reader, writer, e := os.Pipe()
+	if e != nil {
+		t.Fatal(e)
+	}
+	t.Cleanup(func() { _ = reader.Close(); _ = writer.Close() })
+	fd := int(writer.Fd())
+	if unix.SetNonblock(fd, true) != nil {
+		t.Fatal("pipe nonblocking setup")
+	}
+	for {
+		_, e = unix.Write(fd, make([]byte, 4096))
+		if errors.Is(e, unix.EAGAIN) {
+			break
+		}
+		if e != nil {
+			t.Fatal("fill owned output pipe")
+		}
+	}
+	if unix.SetNonblock(fd, false) != nil {
+		t.Fatal("pipe blocking setup")
+	}
+	args, _ := json.Marshal([]string{"storage-jobs", "-state-dir", path})
+	blocked := exec.CommandContext(ctx, binary, "-test.run=^TestStorageJobStatusCommandProcess$")
+	blocked.Env = append(os.Environ(), "HORVIUM_STATUS_COMMAND_PROCESS=1", "HORVIUM_STATUS_COMMAND_ARGS="+string(args))
+	blocked.Stdout = writer
+	var blockedErrors bytes.Buffer
+	blocked.Stderr = &blockedErrors
+	if blocked.Start() != nil {
+		t.Fatal("start owned blocked-output command")
+	}
+	finished := make(chan error, 1)
+	go func() { finished <- blocked.Wait() }()
+	select {
+	case <-finished:
+		t.Fatal("full output pipe unexpectedly completed")
+	case <-time.After(500 * time.Millisecond):
+	}
+	if blocked.Process.Signal(syscall.SIGTERM) != nil {
+		_ = blocked.Process.Kill()
+		<-finished
+		t.Fatal("signal owned command")
+	}
+	select {
+	case e = <-finished:
+		check("output_cancelled", e != nil && blocked.ProcessState.ExitCode() == 1 && ctx.Err() == nil)
+	case <-time.After(3 * time.Second):
+		_ = blocked.Process.Kill()
+		<-finished
+		t.Fatal("cancelled stdout command survived")
+	}
+	_ = reader.Close()
+	_ = writer.Close()
 	// Independently prove that the stored fixture GUID has no imported native
 	// pool. The product query does not need native collection to show the job.
 	poolGUIDs, poolErr := exec.CommandContext(ctx, "/sbin/zpool", "list", "-H", "-o", "guid").Output()

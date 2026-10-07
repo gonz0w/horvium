@@ -809,7 +809,7 @@ The [procedure](../../testing/M2/storage-job-status.md) adds partial M2-STATE-00
 M2-JOB-001, M2-RECOVERY-001, M2-PRIV-001 and M2-NATIVE-001 diagnostic coverage.
 Portable tests must cover complete multi-page and mixed-format summaries without
 private intent, conservative restart state, validation/argument/cancellation and
-output failure. Both releases must pass the twenty exact compiled public-main
+output failure. Both releases must pass the twenty-one exact compiled public-main
 command, actual UID, full-record/preservation/lease/backing and teardown assertions.
 Use only owned private metadata and a checksummed child test executable; no disk
 or storage mutation fixture. Shared runner/supervisor changes require fresh full
