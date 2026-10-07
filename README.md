@@ -151,7 +151,8 @@ complete portable review and verified teardown; write eligibility remains false.
 The [explicit property member baseline](docs/testing/M2/property-member-enrollment.md)
 extends ownership records to version 2 and requires every leaf's enrolled identity
 and geometry to match fresh native reads. Version 1 remains readable but cannot
-satisfy this gate. Qualification is pending; runtime writes remain disabled.
+satisfy this gate. Both targets passed all 46 focused assertions, complete portable
+review and verified teardown; runtime writes remain disabled.
 
 ## Agreed direction
 

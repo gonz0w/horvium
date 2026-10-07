@@ -1,6 +1,6 @@
 # M2 explicit property member enrollment
 
-Date: 2026-10-07. Status: qualification pending; runtime stays read-only.
+Date: 2026-10-07. Status: both native targets and complete portable review passed; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
@@ -97,10 +97,38 @@ qualification is limited to these 46 focused cases: unchanged metadata file
 engines and their historical crash/capacity/ACL evidence keep their original
 sources. GitHub Actions stay disabled; no runner or host service is installed.
 No throughput, physical hardware, populated commercial scale or M2 acceptance
-claim follows. Qualification results will be recorded after actual execution.
+claim follows.
 
 The initial complete portable review refused the new tests because their broad
 ownership names also matched the historical state-suite selector. Enrollment-specific
 test names keep its exact inventory unchanged; the tests still run in ordinary
 portable/race review. The earlier focused native run passed all 46 cases, but
 remains evidence only for its original source. Qualify the corrected source afresh.
+
+## Executed qualification
+
+Signed source `b95f60c873020f632674a2302acb1a4a3a6ca646`, based on PR 64 merge
+`759c7de96ed03afa633b688b3d1f462a8e40f5b6`, passed all 46 exact assertions on
+FreeBSD 15.1-RELEASE-p3 and 14.5-RELEASE with the same checksum-bound executable.
+Kernel statfs observed actual ZFS state backing/publication success on 15.1 and
+UFS with soft updates/publication denial on 14.5. Both retained expected record
+bytes. Guest workloads including setup/teardown took 84.813/70.110 seconds;
+actual tests took 52.38/38.25 seconds. These are Mac/QEMU fixture measurements,
+not NAS throughput or hardware qualification. See the
+[sanitized execution manifest](property-member-enrollment-manifest.json).
+
+Complete portable review passed `make check lint test secrets`, 112 tooling tests,
+all 11 race packages and all 35 compiler-listed bounded fuzz targets in 186.500
+seconds. Version 1 golden bytes and all 40 historical M2 manifests remain unchanged.
+Native metadata file engines also remain byte-identical; the previous 777-case
+state/crash/capacity evidence is historical and was not rerun or relabeled.
+All owned pools/mounts/swap/md/private records and guest/image/key/variables/
+executable/device fixtures were removed. Base/snapshot/runtime inputs were
+preserved, and `make lab-status` verified all 332 owned sessions stopped at this
+checkpoint. No Actions, runner or host service was enabled.
+
+The initial failed portable review and earlier successful native source remain
+recorded separately. Documentation followups rerun the full cheap baseline and
+may reuse only exact successful deep inputs. Enrollment provisioning/adoption,
+store/recovery eligibility, runtime admission/execution, operator workflows and
+M2 acceptance remain pending. Successful member matching grants no write authority.

@@ -672,5 +672,9 @@ Observe actual state backing via kernel statfs: qualify version 2 publication on
 accepted backing and unchanged-record denial on softupdates UFS. No mount/tunefs
 changes or additional devices. The shared checker requires complete portable
 review; unchanged metadata durability/cut behavior retains historical evidence.
-See the [procedure](../../testing/M2/property-member-enrollment.md). Qualification
-is pending; full runtime enrollment/admission/recovery and acceptance remain open.
+See the [procedure](../../testing/M2/property-member-enrollment.md). Signed source
+`b95f60c873020f632674a2302acb1a4a3a6ca646` passed all 46 cases on both targets,
+the baseline/112 tooling tests, all 11 race packages and 35 fuzz targets with full
+teardown; see the
+[execution manifest](../../testing/M2/property-member-enrollment-manifest.json).
+Full runtime enrollment/admission/recovery and acceptance remain open.
