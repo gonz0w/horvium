@@ -1,6 +1,6 @@
 # M2 native property observation collection
 
-Date: 2026-10-06. Status: implementation; qualification pending.
+Date: 2026-10-06. Status: both native targets and full portable review passed; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
@@ -91,4 +91,29 @@ Prior accepted manifests retain their actual tested sources.
 
 ## Executed qualification
 
-Pending signed-source portable and both native target records.
+Signed source `57ac9dde8c87db90d6cda26c28e0f3ee55ea408e`, based on PR 60 merge
+`1ae83a781ebaad932d4d7126cbebaf01e34b3cdf`, passed all 16 native assertions on
+FreeBSD 15.1-RELEASE-p3 and 14.5-RELEASE using the same checksum-bound executable.
+The actual collector fixtures took 7.92/8.15 seconds; complete guest workloads
+took 43.432/43.554 seconds including setup/verification/teardown. These are lab
+durations, not NAS performance results. See the
+[sanitized execution manifest](native-property-collection-manifest.json).
+
+The required complete portable review passed the baseline (109 tooling tests),
+race checks for all 11 portable packages and all 30 compiler-listed fuzz targets
+in 170.446 seconds. The new binary's normal and interrupted cleanup is covered.
+Both native supervisors and portable workers completed with verified teardown;
+all guest/image/key/variable/executable artifacts were removed and base/runtime
+hashes preserved. `make lab-status` verified all 257 owned sessions stopped.
+No host services were enabled. All 36 prior M2 manifests and native storage
+metadata sources remain byte-identical to the base.
+
+The first 15.1 attempt at signed source `7de7e43ee52669f87a03de182f4ce31c794a0d8c`
+failed a fixture assertion that assumed traversal order for GUID-sorted topology.
+It remained unqualified with complete host/guest cleanup. A failing-first
+regression plus identity/parent matching repaired only tests; product reader
+code did not change. Its superseded portable review was stopped through the owned
+supervisor before the correction and remains unqualified. Original failed logs,
+hashes and source IDs are retained separately, not relabeled as successful runs.
+Documentation-only followups rerun the baseline/current-source checks and may
+reuse the exact successful deep evidence; they add no native authority.

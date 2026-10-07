@@ -133,4 +133,4 @@
 
 - [M2 metadata process-death cuts](testing/M2/property-publication-cuts.md): eight real writer SIGKILL boundaries, preserved uncertain state and native restart pages; both targets passed all 777 state/backing assertions and full teardown; accepted in PR 59; no native mutation/replay.
 - [M2 property review/submission coordinator](testing/M2/property-coordinator.md): bounded volatile reviews, fresh baseline checks and one metadata publication attempt; portable baseline/storage race/all 21 fuzz targets passed; accepted in PR 60; no native backend/runtime writes.
-- [M2 native property observation collection](testing/M2/native-property-collection.md): fixed FreeBSD projections, complete dual-pass drift checks and zero write eligibility; qualification pending.
+- [M2 native property observation collection](testing/M2/native-property-collection.md): fixed FreeBSD projections, complete dual-pass drift checks and zero write eligibility; both targets passed all 16 assertions, full portable review and teardown; maintainer review pending.

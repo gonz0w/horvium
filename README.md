@@ -127,7 +127,8 @@ or runtime storage writer is enabled.
 
 The [native property observer](docs/testing/M2/native-property-collection.md)
 assembles fixed FreeBSD projections in two bounded passes and refuses ordinary
-drift. Qualification is pending; successful collection still grants no write
+drift. All 16 collector assertions passed on both native targets, with complete
+portable review and teardown; successful collection still grants no write
 eligibility or runtime submission authority.
 
 ## Agreed direction

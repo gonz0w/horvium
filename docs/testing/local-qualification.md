@@ -45,7 +45,8 @@ runner.
 
 Use a clean committed checkout. The runner transfers `git archive HEAD`, never
 the host's ignored files, Git credentials or private configuration. The state
-suite additionally transfers one explicitly built, checksummed test executable.
+and focused pool-property suites additionally transfer one explicitly built,
+checksummed test executable.
 
 ```sh
 # Describe the selected guest without downloading or starting it.
@@ -59,11 +60,19 @@ python3.14 tools/local-qualification.py pool-properties 15.1 --run
 python3.14 tools/local-qualification.py pool-properties 14.5 --run
 ```
 
-Supported suites: `foundation`, `research`, `discovery`, `state`, `properties`,
+Supported suites: `foundation`, `research`, `discovery`, `state`, `properties`, `pool-properties`,
 `continuity`, `performance`, `devices`. Run the two release candidates **sequentially** on
 the Mac. Each guest has two CPUs, 6,144 MiB RAM, qemu64 and snapshot storage.
 Reserve additional RAM for macOS; stop other large workloads while testing.
 These are lab allocations, not Horvium runtime hardware requirements.
+
+The [focused pool-property collector](M2/native-property-collection.md) passed all
+16 assertions on both native targets at signed source
+`57ac9dde8c87db90d6cda26c28e0f3ee55ea408e`, with complete owned artifact/guest
+teardown and base/runtime preservation. It requires no guest package installation
+and transfers the same exact cross-built binary to each guest. Qualification took
+43.432/43.554 seconds per guest; these lab timings do not establish NAS performance.
+Actual root/system/device-use eligibility, policy binding and writes remain open.
 
 Foundation/15.1, properties/15.1/14.5 and devices/15.1/14.5 have actual execution evidence
 through this runner. The other selectable suites and Linux host remain unqualified

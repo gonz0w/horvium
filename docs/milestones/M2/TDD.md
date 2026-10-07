@@ -577,6 +577,9 @@ fresh rename with stable GUID, unchanged properties/sentinel and complete owned
 provider/backing/pool teardown. Require all 16 assertions, one executed test and
 the exact cross-built executable checksum; reject missing/duplicate/skipped/failed
 evidence. Supervisor interruption must remove the new owned artifact. See the
-[collector procedure](../../testing/M2/native-property-collection.md). Qualification
-pending; no native root/policy eligibility, mutation/executor/recovery or complete
+[collector procedure](../../testing/M2/native-property-collection.md). Signed source
+`57ac9dde8c87db90d6cda26c28e0f3ee55ea408e` passed all 16 assertions on both targets,
+the baseline/109 tooling tests, all 11 race packages and 30 fuzz targets with full
+teardown; see the [execution manifest](../../testing/M2/native-property-collection-manifest.json).
+No native root/policy eligibility, mutation/executor/recovery or complete
 M2 acceptance follows.

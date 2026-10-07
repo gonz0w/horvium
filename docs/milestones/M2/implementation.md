@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 60; native property observation integration in progress; Actions disabled.
+Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 60; native property collection qualified, maintainer review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -496,6 +496,11 @@ accepted pool/type/property/state/feature/topology parsers to fixed actual FreeB
 reads. Two complete passes share bounded capture/record budgets and reject
 ordinary native drift. Complete results keep eligibility false; root/system/device
 exclusions, live policy/store binding, the full coordinator backend and mutation
-transport remain open. Qualification is pending. A focused native fixture and
+transport remain open. Signed source
+`57ac9dde8c87db90d6cda26c28e0f3ee55ea408e` passed all 16 assertions on both native
+targets, the baseline/109 tooling tests, all 11 portable race packages and 30 fuzz
+targets with complete teardown; see the
+[execution manifest](../../testing/M2/native-property-collection-manifest.json).
+Maintainer review is pending. A focused native fixture and
 checksum-bound prebuilt suite qualify only collection/preservation/teardown; shared
 runner and cleanup changes require complete portable review.
