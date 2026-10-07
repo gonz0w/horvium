@@ -402,3 +402,15 @@ including terminal labels on a differing graph. Neither match supplies attributi
 quiescence, restored-state validity, replay, resolution, durable success or release.
 False eligibility remains false; no clock/session/review authority is restored.
 This is a read-only prerequisite for actual recovery, not a recovery coordinator.
+
+## Root-leased native property-job assessment amendment
+
+The [source contract](../../testing/M2/native-property-assessment.md) selects an
+opaque job ID and joins two complete protected ledger reads to independent native
+policy/property collection through the original root lease. The census fingerprint
+binds every sorted record name and actual bytes with length framing; selected
+canonical job bytes must also match. Existing budgets, strict root/ACL/object/
+namespace checks and held jobs stay intact. Ordinary drift/cancellation discards
+the entire result; equivalent restored bytes cannot supply root fencing or restored
+state validity. This read-only source permits no caller-supplied native observations,
+publication, replay, resolution, release, write eligibility or durable success.

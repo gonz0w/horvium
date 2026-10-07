@@ -3,6 +3,12 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [root-leased native assessment](../testing/M2/native-property-assessment.md) joins
+complete protected ledger reads to independently collected current root policy and
+native property facts. Portable/native qualification is pending. No schema, runtime
+command, write eligibility, executor attribution, recovery resolution, reservation
+release, durable outcome or hardware support is added.
+
 M2 [retained property-job assessment](../testing/M2/property-assessment.md) joins
 fresh baseline/expected-effect comparisons to unchanged durable history and restart
 status. Focused portable review passed at signed source

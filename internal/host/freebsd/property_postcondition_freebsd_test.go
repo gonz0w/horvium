@@ -99,6 +99,10 @@ func nativePropertyPostconditions(t *testing.T, ctx context.Context, source *Poo
 		}
 		return o
 	}
+	t.Run("native-job-source", func(t *testing.T) {
+		i := capture(t, target, storage.Quota, "2097152")
+		nativePropertyJobSource(t, ctx, source, policy, i, must)
+	})
 	t.Run("job-baseline", func(t *testing.T) {
 		i := capture(t, target, storage.Quota, "2097152")
 		nativePropertyJobAssessment(t, i, policy, collect(t), true, false)

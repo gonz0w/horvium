@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 73; retained property-job assessment in progress; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 74; root-leased native assessment in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -718,6 +718,20 @@ sources ran the exact same independently rebuilt binary after a portable-only
 selector/fixture correction. The failed portable review remains unqualified; see
 the [manifest](../../testing/M2/property-assessment-manifest.json). Metadata
 codecs/publication, shared runner/checker/selector and all 49 prior manifests are unchanged.
-Maintainer review remains pending.
+Accepted in [PR 74](https://github.com/gonz0w/horvium/pull/74) at merged source
+`4fe812eed9c1ecf4265f9b3c72c9e5c2f0d2a4e0`.
 Actual executor/reconciliation/restoration, durable outcomes, runtime transport/
 eligibility/writes and operator workflows remain pending.
+
+## Root-leased native property-job assessment
+
+The [source contract](../../testing/M2/native-property-assessment.md) joins an opaque
+retained job ID to complete root-leased before/after census fingerprints and
+independently collected current policy/native facts. Unsafe/incomplete/drifting
+metadata or collection returns zero; history/holds/false eligibility remain intact.
+Qualification is pending. Require focused review and both release candidates with
+88 existing pool assertions, eleven postcondition cases, eight retained-assessment
+cases and all seventeen mandatory native-source cases, plus full owned teardown.
+No metadata codec/mutation engine or shared runner/selector/checker changes are
+needed. Actual executor/reconciliation/restoration, durable outcomes, authorized
+runtime transport/writes and operator workflows remain pending.

@@ -863,3 +863,17 @@ original source and 14.5 independently rebuilt the exact same binary at correcte
 source. The portable selector failure remains unqualified. See the
 [manifest](../../testing/M2/property-assessment-manifest.json). All 49 prior M2
 manifests and native metadata/shared tooling retain their existing scope.
+
+## Root-leased native property-job assessment
+
+The [contract](../../testing/M2/native-property-assessment.md) adds partial
+M2-RECOVERY-001, M2-STATE-001, M2-JOB-001, M2-DRIFT-001 and M2-PROPERTY-001 evidence.
+Require failing-first source denial/binding tests, unsupported-host refusal, focused
+review and both actual native pool suites: 88 existing assertions, eleven
+postcondition cases, eight retained-assessment cases and all seventeen mandatory
+native-source cases. Test actual private root records and wrong UID, complete ledger
+and raw presentation drift, missing/legacy/unsafe/oversized/duplicate state, retained
+applying history/holds and original lock/bytes/native/fixture preservation/teardown.
+Metadata are directly provisioned test fixtures; no publication/acknowledgement,
+executor/restoration/resolution/replay/release or full M2 acceptance follows.
+Qualification is pending.
