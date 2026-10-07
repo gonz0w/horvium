@@ -338,3 +338,16 @@ native operation before exposing it to UI/CLI. Native failures block that operat
 do not widen commands, force flags or unknown output handling to make a test green.
 The ADRs and scope were approved in PR 20. Native implementation findings
 that change a contract require a reviewed amendment to all affected documents.
+
+
+## Reviewed root enrollment metadata publication amendment
+
+A sealed root-state binding may explicitly publish its reviewed ownership record
+with independently fresh trusted native inputs. The plan's shared volatile claim
+permits one attempt across copies/rebindings; native publication repeats actual
+kernel UID 0, complete baseline/predecessor/backing/hold/capacity checks under the
+original lease and actual clock/context guards around staging and rename. Use the
+accepted unchanged sync/rename engine. Every attempt is consumed, uncertainty
+blocks the lease, and actual successful late acknowledgements are reported without
+replay. No format migration, native eligibility, runtime adapter or restored-state
+clearance follows; see the [contract](../../testing/M2/enrollment-publication.md).

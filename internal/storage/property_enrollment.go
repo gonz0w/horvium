@@ -26,12 +26,13 @@ type PropertyEnrollmentReview struct {
 }
 
 // PropertyEnrollmentPlan owns a volatile read-only review. No implemented caller
-// provisions policy from it. Root authorization, predecessor/recovery checks,
-// single claims and atomic durable publication remain separate future gates.
+// provisions policy from it. Its shared one-attempt claim can be used only by a separately root-bound
+// metadata publisher. Runtime authorization and full recovery remain future gates.
 type PropertyEnrollmentPlan struct {
 	review      PropertyEnrollmentReview
 	rootContext string
 	baseline    [32]byte
+	claim       *enrollmentPublicationClaim
 }
 
 // BuildPropertyEnrollment requires a fully explicit proposal from a future
@@ -58,7 +59,7 @@ func BuildPropertyEnrollment(at time.Time, rootContext string, proposed Policy, 
 	if len(data) > maxPlanBytes {
 		return PropertyEnrollmentPlan{}, ErrLimit
 	}
-	return PropertyEnrollmentPlan{review: r, rootContext: rootContext, baseline: baseline}, nil
+	return PropertyEnrollmentPlan{review: r, rootContext: rootContext, baseline: baseline, claim: &enrollmentPublicationClaim{}}, nil
 }
 
 func (p PropertyEnrollmentPlan) Review() PropertyEnrollmentReview {

@@ -91,6 +91,32 @@ RESULT += 'PROPERTY_PUBLICATION_CUTS_RESULT '+' '.join(c+'=pass' for c in CUT_CA
 RESULT += 'STATE_BACKING_RESULT TestNativePropertyPublicationCuts filesystem=zfs softupdates=off teardown=pass\n'
 PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
 
+OLD_ENROLLMENT_FREE_PASS=PASS
+OLD_ENROLLMENT_FREE_RESULT=RESULT
+ENROLLMENT_CASES=['first', 'exact_bytes', 'private_file', 'copies_denied', 'successor', 'old_inode', 'stable_lock', 'no_temporary', 'legacy', 'serialized_reviews', 'record_drift', 'unrelated_drift', 'unknown', 'orphan', 'queued_hold', 'terminal_hold', 'late_policy', 'late_policy_before_rename', 'late_unrelated', 'late_job', 'late_unknown', 'late_orphan', 'file_sync', 'rename', 'cleanup', 'directory_sync', 'capacity', 'expired_after_sync', 'cancelled_after_sync', 'backwards_before_rename', 'expired_before_rename', 'late_success', 'closed', 'orphan_latched', 'cleanup_blocks', 'uncertain_blocks', 'uncertain_visible', 'zero_denied', 'fixture_teardown', 'kernel_uid_denied', 'rebound_review_denied']
+TESTS += ['TestNativeEnrollmentPublication']
+BACKING_TESTS += ['TestNativeEnrollmentPublication']
+RESULT += 'ENROLLMENT_PUBLICATION_RESULT '+' '.join(c+'=pass' for c in ENROLLMENT_CASES)+'\n'
+RESULT += 'STATE_BACKING_RESULT TestNativeEnrollmentPublication filesystem=zfs softupdates=off teardown=pass\n'
+PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
+
+class EnrollmentPublicationEvidenceTests(unittest.TestCase):
+    def module(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m);return m
+
+    def test_previous_state_evidence_cannot_qualify_enrollment(self):
+        with self.assertRaises(ValueError):self.module().validate(OLD_ENROLLMENT_FREE_PASS+OLD_ENROLLMENT_FREE_RESULT)
+        self.assertEqual(self.module().ENROLLMENT_CASES,set(ENROLLMENT_CASES))
+        self.module().validate(PASS+RESULT)
+
+    def test_all_enrollment_controls_are_required(self):
+        m=self.module()
+        line='ENROLLMENT_PUBLICATION_RESULT '+' '.join(c+'=pass' for c in ENROLLMENT_CASES)
+        for case in ENROLLMENT_CASES:
+            for value in ['',case+'=fail',case+'=pass '+case+'=pass']:
+                bad='ENROLLMENT_PUBLICATION_RESULT '+' '.join(value if c==case else c+'=pass' for c in ENROLLMENT_CASES)
+                with self.subTest(case=case),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(line,bad))
+
 class PublicationCutEvidenceTests(unittest.TestCase):
     def module(self):
         m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m);return m

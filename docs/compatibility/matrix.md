@@ -3,6 +3,11 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [reviewed enrollment publication](../testing/M2/enrollment-publication.md) adds
+one-attempt root metadata publication through the original lease and unchanged
+sync/rename engine. Native/portable qualification pending. No native execution,
+runtime enrollment command, recovery clearance or write eligibility follows.
+
 M2 [native enrollment source](../testing/M2/native-enrollment-source.md) composes
 explicit root selections, fixed pool/provider/system collectors and sealed root
 state checks. Signed source

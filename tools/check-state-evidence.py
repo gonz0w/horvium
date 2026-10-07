@@ -51,13 +51,17 @@ TESTS.update({'TestNativePropertyPublicationCuts','TestRestartPageCeilingAndTrav
 BACKING_TESTS.add('TestNativePropertyPublicationCuts')
 CODEC_SUBTEST_COUNTS.update({'TestRestartPageStates':30,'TestRestartPageDenials':9})
 
+ENROLLMENT_CASES=set(['first', 'exact_bytes', 'private_file', 'copies_denied', 'successor', 'old_inode', 'stable_lock', 'no_temporary', 'legacy', 'serialized_reviews', 'record_drift', 'unrelated_drift', 'unknown', 'orphan', 'queued_hold', 'terminal_hold', 'late_policy', 'late_policy_before_rename', 'late_unrelated', 'late_job', 'late_unknown', 'late_orphan', 'file_sync', 'rename', 'cleanup', 'directory_sync', 'capacity', 'expired_after_sync', 'cancelled_after_sync', 'backwards_before_rename', 'expired_before_rename', 'late_success', 'closed', 'orphan_latched', 'cleanup_blocks', 'uncertain_blocks', 'uncertain_visible', 'zero_denied', 'fixture_teardown', 'kernel_uid_denied', 'rebound_review_denied'])
+TESTS.add("TestNativeEnrollmentPublication")
+BACKING_TESTS.add("TestNativeEnrollmentPublication")
+
 def validate(text):
     if len(text)>1<<20 or re.search(r'(?m)^(?:FAIL|[ \t]*--- (?:FAIL|SKIP):)',text):
         raise ValueError('state native evidence failed, skipped or oversized')
     passed=re.findall(r'(?m)^--- PASS: (Test\w+) \([0-9.]+s\)$',text)
     if len(passed)!=len(TESTS) or set(passed)!=TESTS:
         raise ValueError('complete executed lease/reader/ACL/publication/codec tests required')
-    for marker,cases in [('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES),('STATE_ACL_RESULT',ACL_CASES),('OWNERSHIP_PUBLISH_RESULT',PUBLISH_CASES),('OWNERSHIP_PUBLISH_FS_RESULT',PUBLISH_FS_CASES),('OWNERSHIP_CATALOG_RESULT',CATALOG_CASES),('OWNERSHIP_CAPACITY_RESULT',CAPACITY_CASES),('JOB_READ_RESULT',JOB_READ_CASES),('STATE_CATALOG_RESULT',STATE_CATALOG_CASES),('JOB_PUBLICATION_RESULT',JOB_PUBLICATION_CASES),('PROPERTY_JOB_STORAGE_RESULT',PROPERTY_JOB_STORAGE_CASES),('JOB_RESERVATIONS_RESULT',RESERVATION_CASES),('PROPERTY_SUBMISSION_RESULT',SUBMISSION_CASES),('STATE_SOFTUPDATES_RESULT',SOFTUPDATES_CASES),('PROPERTY_PUBLICATION_CUTS_RESULT',CUT_CASES)]:
+    for marker,cases in [('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES),('STATE_ACL_RESULT',ACL_CASES),('OWNERSHIP_PUBLISH_RESULT',PUBLISH_CASES),('OWNERSHIP_PUBLISH_FS_RESULT',PUBLISH_FS_CASES),('OWNERSHIP_CATALOG_RESULT',CATALOG_CASES),('OWNERSHIP_CAPACITY_RESULT',CAPACITY_CASES),('JOB_READ_RESULT',JOB_READ_CASES),('STATE_CATALOG_RESULT',STATE_CATALOG_CASES),('JOB_PUBLICATION_RESULT',JOB_PUBLICATION_CASES),('PROPERTY_JOB_STORAGE_RESULT',PROPERTY_JOB_STORAGE_CASES),('JOB_RESERVATIONS_RESULT',RESERVATION_CASES),('PROPERTY_SUBMISSION_RESULT',SUBMISSION_CASES),('STATE_SOFTUPDATES_RESULT',SOFTUPDATES_CASES),('PROPERTY_PUBLICATION_CUTS_RESULT',CUT_CASES),('ENROLLMENT_PUBLICATION_RESULT',ENROLLMENT_CASES)]:
         records=re.findall(marker+r' ([^\n]+)',text)
         if len(records)!=1:raise ValueError('one native result per boundary required')
         fields=records[0].split();expected={case+'=pass' for case in cases}

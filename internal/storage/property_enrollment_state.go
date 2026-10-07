@@ -9,13 +9,15 @@ import (
 )
 
 // PropertyEnrollmentState binds a volatile review to one held root lease and
-// complete inspected metadata. It is read-only evidence, never publication,
-// recovered-state authority, a reservation or a transferable admission token.
+// complete inspected metadata. Review/validation remain read-only; a separate
+// explicit one-attempt method can publish root metadata. It grants no native
+// write eligibility, recovered-state authority or transferable admission token.
 type PropertyEnrollmentState struct {
 	lease    *StateDirectory
 	plan     PropertyEnrollmentPlan
 	previous Policy
 	digest   [32]byte
+	claim    *enrollmentPublicationClaim
 }
 
 // BindPropertyEnrollment requires fresh native inputs and an explicit exact
@@ -33,7 +35,7 @@ func (s *StateDirectory) BindPropertyEnrollment(at time.Time, rootContext string
 	if err != nil {
 		return PropertyEnrollmentState{}, err
 	}
-	return PropertyEnrollmentState{lease: s, plan: plan, previous: canonical, digest: digest}, nil
+	return PropertyEnrollmentState{lease: s, plan: plan, previous: canonical, digest: digest, claim: plan.claim}, nil
 }
 
 func (p PropertyEnrollmentState) Review() PropertyEnrollmentReview { return p.plan.Review() }

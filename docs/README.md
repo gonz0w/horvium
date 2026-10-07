@@ -147,4 +147,6 @@
 
 - [M2 root enrollment state binding](testing/M2/property-enrollment-state.md): explicit first/exact predecessor, complete metadata/backing baseline, projected capacity and retained holds; both targets passed all 76 assertions, complete portable review and teardown; accepted in PR 68; no publication or write eligibility.
 
-- [M2 native enrollment source](testing/M2/native-enrollment-source.md): owned explicit selections, fresh pool/provider/system collection and original-lease revalidation; both targets passed all 84 assertions, complete portable review and teardown; maintainer review pending; no publication or write eligibility.
+- [M2 native enrollment source](testing/M2/native-enrollment-source.md): owned explicit selections, fresh pool/provider/system collection and original-lease revalidation; both targets passed all 84 assertions, complete portable review and teardown; accepted in PR 69; no publication or write eligibility.
+
+- [M2 reviewed enrollment metadata publication](testing/M2/enrollment-publication.md): shared one-attempt claims, complete original-lease rechecks and actual clock/context guards around atomic metadata publication; qualification pending; runtime writes disabled.
