@@ -5,8 +5,15 @@ validation are separate. Refresh exact versions in each active research manifest
 
 M2 [native enrollment source](../testing/M2/native-enrollment-source.md) composes
 explicit root selections, fixed pool/provider/system collectors and sealed root
-state checks. Native/portable qualification is pending; success remains read-only
-and ineligible. No runtime publication or hardware/scale support follows.
+state checks. Signed source
+`d13f4ba489cd659b87f81f2746830aaa3a94bfef` passed all 84 focused assertions on
+FreeBSD 15.1 and 14.5, complete portable review and teardown. Root ZFS permitted
+successor review/independent fresh revalidation; softupdates UFS refused with zero
+review and preserved records. Zero-binding refresh is a denial control, not a
+successful native refresh. See the
+[manifest](../testing/M2/native-enrollment-source-manifest.json). First enrollment
+through this source, separate system mounts/non-softupdates UFS success, runtime
+publication and hardware/scale remain unqualified; success stays ineligible.
 
 M2 [root enrollment state binding](../testing/M2/property-enrollment-state.md)
 requires the held root lease, explicit first/exact predecessor, complete metadata/

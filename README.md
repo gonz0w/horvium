@@ -174,7 +174,8 @@ and teardown; accepted in PR 68. Runtime publication remains disabled.
 
 The [native enrollment source](docs/testing/M2/native-enrollment-source.md) connects
 explicit root proposals to fresh native collectors and sealed state checks.
-Qualification is pending; runtime publication remains disabled.
+Both targets passed all 84 focused assertions, complete portable review and
+verified teardown; runtime publication remains disabled.
 
 ## Agreed direction
 

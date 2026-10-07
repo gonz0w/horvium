@@ -1,6 +1,6 @@
 # M2 native enrollment source
 
-Date: 2026-10-07. Status: implementation; qualification pending.
+Date: 2026-10-07. Status: both native targets and complete portable review passed; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0006](../../adr/0006-storage-ownership-and-plans.md),
 [ADR 0007](../../adr/0007-durable-storage-jobs.md),
@@ -83,3 +83,34 @@ checker changes require complete portable review. The historical 777-case state
 suite is not rerun: existing native metadata engines and historical manifests
 must remain byte-identical to the accepted base. No hardware/client/scale, reboot,
 power-cut, restored-state or milestone acceptance follows.
+
+## Executed evidence
+
+Signed behavioral source `d13f4ba489cd659b87f81f2746830aaa3a94bfef`, against accepted
+base `52195cf5135f04d09422dd85c337e84329bf6cf9`, passed all 84 exact assertions on
+both disposable targets with the same cross-built binary
+`cdb1dab097fb4f8834df2c6a835740a38b1f9602c49e1d2cb2c9e534b5570474`.
+The [sanitized manifest](native-enrollment-source-manifest.json) binds source,
+inputs, tools, actual release/backing results, logs and teardown evidence.
+
+| Fixture | Native test | Guest qualification | Observed source result |
+| --- | --- | --- | --- |
+| FreeBSD 15.1, root ZFS | 80.40 s | 112.522 s | Successor review and independent native/metadata revalidation passed; unrelated-record drift refused |
+| FreeBSD 14.5, root softupdates UFS | 64.33 s | 96.166 s | Zero-review `ErrStateDirectory` refusal and zero-binding `ErrInvalid` revalidation refusal; records preserved |
+
+The full portable review took 187.219 seconds: `make check lint test secrets`,
+112 tooling tests, all 11 race packages and all 35 compiler-listed fuzz targets
+passed. Initial missing-source compile failure also included a fixture helper typo;
+it was corrected before green. The explicit evidence inventory failed before
+checker implementation, then passed. Their original log hashes remain recorded.
+All 44 prior manifests and every existing native storage metadata source remained
+byte-identical to the accepted base. No historical state-suite results are relabeled.
+
+The evidence checkpoint verified all 371 then-owned sessions stopped with complete
+teardown. Guest fixtures, snapshot disks, image/firmware overlays, keys, binaries
+and host process groups were removed; the standalone cross-compile binary was
+removed separately. No host service, persistent runner or Actions job was enabled.
+The documentation/evidence followup still requires a clean final-head baseline
+review and exact behavioral-input match; it may reuse only this executed deep run.
+Separate system mounts/non-softupdates UFS success, first enrollment through the
+new source, production hardware/scale and runtime publication remain unqualified.

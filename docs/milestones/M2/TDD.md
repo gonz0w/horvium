@@ -751,3 +751,10 @@ root-backed ZFS success and softupdates UFS zero-result denial must remain disti
 Require all 84 exact assertions, actual PASS on both targets, complete portable
 review and full teardown. Historical metadata engines/manifests stay unchanged;
 no 777-case state rerun or runtime enrollment/publication/recovery acceptance.
+
+Both targets passed all 84 assertions at signed source
+`d13f4ba489cd659b87f81f2746830aaa3a94bfef`, including actual successor review/fresh
+revalidation on root ZFS and preserved-record softupdates UFS denial. Complete
+portable review and teardown passed; see the
+[manifest](../../testing/M2/native-enrollment-source-manifest.json). Maintainer review
+pending; first enrollment through this source and full M2 acceptance stay open.

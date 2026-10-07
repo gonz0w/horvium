@@ -628,6 +628,8 @@ The [source contract](../../testing/M2/native-enrollment-source.md) joins root-e
 owned selections with independent pool/provider/system collectors and the sealed
 root-state binding. Fresh validation uses the original lease; all denials return
 zero and success remains ineligible. Require all 84 focused assertions on both
-releases, complete portable review and verified owned teardown. Qualification
-pending. Authorized runtime provisioning, final fresh publication checks, full
+releases, complete portable review and verified owned teardown. Both targets passed all 84 assertions at signed source
+`d13f4ba489cd659b87f81f2746830aaa3a94bfef` with complete portable review and teardown;
+see the [manifest](../../testing/M2/native-enrollment-source-manifest.json).
+Maintainer review pending. Authorized runtime provisioning, final fresh publication checks, full
 restored-state/executor reconciliation and the remaining M2 lifecycle remain open.
