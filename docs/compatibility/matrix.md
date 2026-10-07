@@ -3,6 +3,22 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [private native property control](../testing/M2/property-control.md) adds a
+fixed typed property-set prerequisite with fresh applying/GUID binding and
+conservative guard acknowledgement. Signed source `6ef01cb5fbd3f3015a6fc8c9a5a8ccc4302031aa`
+passed focused portable review (122 tooling tests, eight affected race packages,
+all nine selected fuzz targets) and both native releases. Each retained all 88
+assertions and old subgroups and passed eleven control children plus both guard
+children. Actual quota/refquota/no-limit/compression effects retained applying
+metadata; drift/expiry/kernel UID denials and same-group/escaped descendant
+waiting passed. Both use an owned mounted ZFS child for metadata, independent
+of the guest root filesystem; UFS softupdates publication remains refused.
+All property/source/GUID/metadata/mountpoint/pool/provider/sentinel/process/base/
+runtime teardown passed; see the [manifest](../testing/M2/property-control-manifest.json).
+The operator-stopped initial attempt remains unqualified with separate cleanup
+evidence. No root backend, runtime eligibility, operator writes or recovery
+authority is added.
+
 M2 [property execution sequence](../testing/M2/property-execution.md) adds a
 one-attempt trusted-worker contract with exact durability acknowledgements and
 conservative reconciliation holds. Signed source `cceb615b82aedc98d4e93fb1cdb90545b05916ea`

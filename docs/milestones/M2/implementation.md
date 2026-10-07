@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 79; property execution sequence qualified, review pending; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 80; private native property-control subset qualified for review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -821,6 +821,26 @@ retain nonterminal reconciliation holds. Signed source
 behavioral groups, nine affected race packages and all 34 selected fuzz targets.
 FreeBSD tests cross-compiled without execution, the artifact was removed and all
 owned processes stopped; see the [manifest](../../testing/M2/property-execution-manifest.json).
-Maintainer review is pending.
+Accepted in [PR 80](https://github.com/gonz0w/horvium/pull/80) at merged source
+`252e07e3cd2412a698b3b0c6c4651ca47db1331f`.
 No native backend, runtime launch, authority restoration, scheduler or hold
 release is added; these require separate native gates before operator writes.
+
+## Private native property control
+
+The [contract](../../testing/M2/property-control.md) validates one allowlisted
+property set against exact applying metadata, immutable selection and fresh GUID
+context. Its private callback still needs original live root authority; no runtime
+consumer exists. Eleven actual control/denial/restoration cases, including both
+normal-exit descendant guard cases, are required on both disposable releases.
+Signed source `6ef01cb5fbd3f3015a6fc8c9a5a8ccc4302031aa` passed baseline/122 tooling tests,
+eight affected race packages and all nine selected fuzz targets. Both native
+releases retained all 88 assertions and old subgroups and passed every new case
+in 201.42/193.37 seconds, within the original five-minute deadline.
+Actual effects retained applying metadata; kernel UID denial, fresh drift refusal
+and descendant waiting passed. All metadata used an explicitly owned mounted ZFS
+child; the guest root and softupdates refusal remain independent. Complete
+preservation/teardown passed, and the operator-stopped initial attempt stays
+unqualified; see the [manifest](../../testing/M2/property-control-manifest.json).
+Maintainer review is pending. Native backend/eligibility, crash/recovery/scheduling
+and operator workflows remain separate gates.

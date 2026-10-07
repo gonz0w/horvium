@@ -1,6 +1,6 @@
 # M2 one-attempt property execution sequence
 
-Date: 2026-10-07. Status: portable subset qualified; maintainer review pending.
+Date: 2026-10-07. Status: portable subset qualified; accepted in [PR 80](https://github.com/gonz0w/horvium/pull/80).
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [ADR 0007](../../adr/0007-durable-storage-jobs.md),

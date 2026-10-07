@@ -273,6 +273,9 @@ func TestNativePoolPropertyCollection(t *testing.T) {
 	t.Run("property-postconditions", func(t *testing.T) {
 		nativePropertyPostconditions(t, ctx, source, guid, pool)
 	})
+	t.Run("native-control", func(t *testing.T) {
+		nativePropertyControl(t, ctx, source, guid, pool)
+	})
 	for _, d := range devices {
 		actual := strings.TrimSpace(must("/sbin/mdconfig", "-l", "-n", "-f", d.path))
 		if actual != strings.TrimPrefix(d.unit, "md") {
