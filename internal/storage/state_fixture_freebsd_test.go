@@ -62,6 +62,7 @@ func nativeUFSStateAnchor(t *testing.T, prefix string, soft bool) (string, error
 	}
 	device := ""
 	mounted := false
+	capabilityVerified := false
 	run := func(path string, args ...string) ([]byte, error) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer cancel()
@@ -84,6 +85,10 @@ func nativeUFSStateAnchor(t *testing.T, prefix string, soft bool) (string, error
 		if _, err := os.Lstat(container); !os.IsNotExist(err) {
 			t.Fatal("owned state backing remains")
 		}
+		if !capabilityVerified {
+			t.Log("STATE_BACKING_UNQUALIFIED teardown=pass")
+			return
+		}
 		value := "off"
 		if soft {
 			value = "on"
@@ -94,13 +99,16 @@ func nativeUFSStateAnchor(t *testing.T, prefix string, soft bool) (string, error
 	if err != nil {
 		t.Fatal("owned state backing allocation")
 	}
-	device = strings.TrimSpace(string(output))
-	if !regexp.MustCompile(`^md[0-9]+$`).MatchString(device) {
+	candidate := strings.TrimSpace(string(output))
+	if !regexp.MustCompile(`^md[0-9]+$`).MatchString(candidate) {
 		t.Fatal("owned state backing identity")
 	}
+	device = candidate
 	args := []string{"-O", "2", "-m", "0"}
 	if soft {
 		args = append(args, "-U")
+	} else {
+		args = append(args, "-u")
 	}
 	args = append(args, "/dev/"+device)
 	if _, err := run("/sbin/newfs", args...); err != nil {
@@ -117,6 +125,7 @@ func nativeUFSStateAnchor(t *testing.T, prefix string, soft bool) (string, error
 	if unix.Statfs(container, &fs) != nil || unix.ByteSliceToString(fs.Fstypename[:]) != "ufs" || (fs.Flags&unix.MNT_SOFTDEP != 0) != soft {
 		t.Fatal("owned state backing capability mismatch")
 	}
+	capabilityVerified = true
 	return os.MkdirTemp(container, prefix)
 }
 

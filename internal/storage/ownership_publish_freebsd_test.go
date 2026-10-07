@@ -427,7 +427,7 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 			t.Error("owned filesystem cleanup failed")
 		}
 	}()
-	run("/sbin/newfs", "-U", "/dev/"+device)
+	run("/sbin/newfs", "-u", "/dev/"+device)
 	run("/sbin/mount", "-t", "ufs", "-o", "acls", "/dev/"+device, mountpoint)
 	mounted = true
 	if os.Chmod(mountpoint, 0700) != nil {

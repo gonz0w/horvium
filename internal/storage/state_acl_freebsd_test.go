@@ -262,7 +262,7 @@ func TestNativeStateACL(t *testing.T) {
 					t.Error("owned ACL filesystem teardown failed")
 				}
 			}()
-			run("/sbin/newfs", "-U", "/dev/"+device)
+			run("/sbin/newfs", "-u", "/dev/"+device)
 			run("/sbin/mount", "-t", "ufs", "-o", model.option, "/dev/"+device, mountpoint)
 			mounted = true
 			active++

@@ -79,7 +79,9 @@ Primary inspected source: FreeBSD 14.5 revision
 [ffs_softdep.c](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/ufs/ffs/ffs_softdep.c)
 (`handle_workitem_remove`, `softdep_sync_metadata`, `softdep_fsync`) and
 [ufs_vnops.c](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/ufs/ufs/ufs_vnops.c)
-(`ufs_itimes_locked`). This finding adopts a conservative tested capability
+(`ufs_itimes_locked`). The same pinned
+[newfs manual](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sbin/newfs/newfs.8)
+defines explicit `-u`/`-U`; omitting both enables soft updates for UFS2. This finding adopts a conservative tested capability
 restriction through the EDD/compatibility amendment in this PR, not a new storage
 architecture or a claim to fence other root writers.
 
@@ -89,10 +91,12 @@ Require all 710 state/backing assertions, 60 parents and 1,837 distinct codec/mo
 children without skips/failures on FreeBSD 15.1/14.5 amd64. Twelve exact backing
 markers require actual filesystem/softupdates capability and complete backing
 teardown. Core metadata tests use owned root ZFS directories or independently
-allocated UFS memory fixtures with soft updates disabled. A separate owned
+allocated UFS memory fixtures with soft updates explicitly disabled by
+base `newfs -u`; the negative fixture uses `newfs -U`. A separate owned
 softupdates UFS fixture on each target must prove publication/retry refusals,
 read visibility and unchanged files. Existing POSIX/NFSv4, ENOSPC and read-only
-fixtures retain their actual UFS controls and complete teardown. Root filesystem
+fixtures use explicit `newfs -u` and retain their ACL/failure controls and
+complete teardown. Root filesystem
 identity is recorded separately from metadata fixture backing.
 
 New tests require canonical private publication, duplicate inode/byte preservation,
