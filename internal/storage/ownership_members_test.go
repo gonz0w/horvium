@@ -18,7 +18,7 @@ func enrolledPolicy() Policy {
 	p.Members = []PoolMember{{VdevGUID: "901", Serial: "SERIAL-A", SerialSource: "geom.config.ident", MediaSize: 67108864, SectorSize: 512}, {VdevGUID: "902", Serial: "SERIAL-B", SerialSource: "provider.config.ident", MediaSize: 67108864, SectorSize: 4096, StripeSize: 4096}}
 	return p
 }
-func TestOwnershipMembersVersionedCanonicalRoundTrip(t *testing.T) {
+func TestPropertyEnrollmentVersionedCanonicalRoundTrip(t *testing.T) {
 	p := enrolledPolicy()
 	before, _ := json.Marshal(p)
 	b, err := EncodeOwnershipRecord(p)
@@ -61,7 +61,7 @@ func TestOwnershipMembersVersionedCanonicalRoundTrip(t *testing.T) {
 		t.Fatal("invented legacy enrollment", err)
 	}
 }
-func TestOwnershipMembersRefuseInvalidSchemaAndFacts(t *testing.T) {
+func TestPropertyEnrollmentRefuseInvalidSchemaAndFacts(t *testing.T) {
 	for _, mode := range []string{"duplicate-guid", "duplicate-serial", "empty-serial", "unknown-source", "control", "spaces", "geometry", "sector", "overflow", "count"} {
 		t.Run(mode, func(t *testing.T) {
 			p := enrolledPolicy()
@@ -108,7 +108,7 @@ func TestOwnershipMembersRefuseInvalidSchemaAndFacts(t *testing.T) {
 		}
 	}
 }
-func TestOwnershipMemberChangeInvalidatesExistingPlan(t *testing.T) {
+func TestPropertyEnrollmentChangeInvalidatesExistingPlan(t *testing.T) {
 	p := enrolledPolicy()
 	_, o, i := fixture()
 	at := time.Now()
@@ -122,7 +122,7 @@ func TestOwnershipMemberChangeInvalidatesExistingPlan(t *testing.T) {
 	}
 }
 
-func TestOwnershipMembersChecksummedSemanticRefusal(t *testing.T) {
+func TestPropertyEnrollmentChecksummedSemanticRefusal(t *testing.T) {
 	for _, mode := range []string{"empty", "serial", "source", "guid", "geometry", "duplicate"} {
 		t.Run(mode, func(t *testing.T) {
 			wire := ownershipWireV2(enrolledPolicy())
@@ -150,7 +150,7 @@ func TestOwnershipMembersChecksummedSemanticRefusal(t *testing.T) {
 		})
 	}
 }
-func TestOwnershipMembersPersistedIntentDrift(t *testing.T) {
+func TestPropertyEnrollmentPersistedIntentDrift(t *testing.T) {
 	p := enrolledPolicy()
 	_, o, change := fixture()
 	plan, err := Build(instant, "session", p, o, change)

@@ -84,7 +84,7 @@ settings change. Existing GUID-checked pool/swap/private-file cleanup removes ev
 owned fixture; guest/host/device/key/image/process teardown remains mandatory.
 
 ```sh
-make test-focus PKG=./internal/storage TEST='^Test(OwnershipMembers|OwnershipMember|PropertyMembers)'
+make test-focus PKG=./internal/storage TEST='^Test(PropertyEnrollment|PropertyMembers)'
 make test-focus PKG=./internal/host/freebsd TEST='^TestPropertySafety'
 PR_TITLE='feat(storage): require explicit property member enrollment' make review
 .tools/venv/bin/python3 tools/local-qualification.py pool-properties 15.1 --run
@@ -98,3 +98,9 @@ engines and their historical crash/capacity/ACL evidence keep their original
 sources. GitHub Actions stay disabled; no runner or host service is installed.
 No throughput, physical hardware, populated commercial scale or M2 acceptance
 claim follows. Qualification results will be recorded after actual execution.
+
+The initial complete portable review refused the new tests because their broad
+ownership names also matched the historical state-suite selector. Enrollment-specific
+test names keep its exact inventory unchanged; the tests still run in ordinary
+portable/race review. The earlier focused native run passed all 46 cases, but
+remains evidence only for its original source. Qualify the corrected source afresh.
