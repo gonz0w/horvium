@@ -149,4 +149,4 @@
 
 - [M2 native enrollment source](testing/M2/native-enrollment-source.md): owned explicit selections, fresh pool/provider/system collection and original-lease revalidation; both targets passed all 84 assertions, complete portable review and teardown; accepted in PR 69; no publication or write eligibility.
 
-- [M2 reviewed enrollment metadata publication](testing/M2/enrollment-publication.md): shared one-attempt claims, complete original-lease rechecks and actual clock/context guards around atomic metadata publication; qualification pending; runtime writes disabled.
+- [M2 reviewed enrollment metadata publication](testing/M2/enrollment-publication.md): shared one-attempt claims, complete original-lease rechecks and actual clock/context guards around atomic metadata publication; both targets passed 819 state/backing and 88 native pool assertions with complete portable review and teardown; maintainer review pending; runtime writes disabled.

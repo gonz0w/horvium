@@ -768,3 +768,11 @@ single-attempt/typed-denial/late-acknowledgement tests, all 819 native state ass
 controls and complete owned teardown. Root ZFS real-input publication, synthetic
 metadata-input non-softupdates UFS publication and actual softupdates UFS refusal
 are distinct claims. Unchanged historical manifests retain their original sources.
+
+Corrected source `0a1f4041fc4cf18ae0919428e303dd2140e63d48` passed complete portable
+review and both 88-case native pool suites. Both 819-assertion/67-parent/1,876-child
+state runs passed at original source `656e4220a4040669c09bce29311e2fdd74d62992`;
+a corrected-source cross-build exactly matched the executed state binary. Native
+results remain bound to those actual sources; see the
+[manifest](../../testing/M2/enrollment-publication-manifest.json). All teardown
+passed. Maintainer review and runtime/M2 acceptance remain pending.

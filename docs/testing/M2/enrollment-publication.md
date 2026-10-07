@@ -1,6 +1,6 @@
 # M2 reviewed enrollment metadata publication
 
-Date: 2026-10-07. Status: implementation; qualification pending.
+Date: 2026-10-07. Status: native and complete portable qualification passed; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0006](../../adr/0006-storage-ownership-and-plans.md),
 [ADR 0007](../../adr/0007-durable-storage-jobs.md),
@@ -97,3 +97,52 @@ make lab-status
 Shared checker/selector changes require complete portable review. All 45 historical
 manifests and the shared descriptor-relative publication engine must remain
 byte-identical. No Actions, persistent runner or host service is installed.
+
+## Executed qualification
+
+Corrected signed source `0a1f4041fc4cf18ae0919428e303dd2140e63d48`, against accepted
+base `1b74c3f5e3d15d7049ccd2099f8efd86f1771548`, passed the complete portable
+review in 165.088 seconds: baseline `make check lint test secrets`, 114 tooling
+tests, all 11 race packages and all 35 fuzz targets. Both releases passed all
+88 exact real-input pool controls with the same corrected binary
+`755ba4ea858c414e5f070ae055223121c9e1b3960af39595878a3236447c64a5`.
+See the [sanitized manifest](enrollment-publication-manifest.json) for exact
+sources, input/report/log hashes, actual backing claims and verified teardown.
+
+| Suite | FreeBSD | Guest qualification | Observed result |
+| --- | --- | --- | --- |
+| State metadata | 15.1 | 69.700 s | All 819 state/backing assertions, 67 parents and 1,876 codec children; root ZFS publication controls passed |
+| State metadata | 14.5 | 63.642 s | Same exact inventory; owned non-softupdates UFS metadata publication controls passed |
+| Actual native pool | 15.1 | 121.196 s | All 88 assertions; first/successor publication and consumed-review denial passed on root ZFS |
+| Actual native pool | 14.5 | 107.017 s | All 88 assertions; first remained absent, explicit predecessor remained byte-identical after softupdates UFS refusal |
+
+State execution remains bound to original signed source
+`656e4220a4040669c09bce29311e2fdd74d62992`, using binary
+`5d5fe4430349d7efcc8cece45615d892eefd553bc6bdd1defe543d9d09ba4f18`.
+The corrected source cross-built an exactly byte-identical state executable;
+only the host pool fixture and prose changed between those sources. These actual
+state results are retained at their original source, not relabeled as new runs.
+Actual enrollment metadata tests took 0.97/1.01 seconds; pool tests took
+89.00/75.99 seconds. These Mac/QEMU times are not NAS throughput qualification.
+
+The initial 14.5 pool fixture failed its successor control because correctly
+denied first enrollment left no predecessor. The corrected fixture first proves
+absence, independently provisions an explicit previous record, then requires exact
+zero-binding softupdates refusal and preservation. Product gates were unchanged.
+The failed report remains unqualified with verified device/host teardown. The
+initial prose count 818 omitted the new backing check; actual inventory is 805
+record/control assertions plus 14 backing assertions, totaling 819. No checker
+was weakened to accept old or incomplete evidence.
+
+All 45 historical manifests, ownership golden bytes and the shared publication
+engine remain unchanged. The historical state safety suite was rerun as required.
+The evidence checkpoint verified all 385 then-owned sessions stopped and torn down;
+guest/device/mount/image/key/binary/process cleanup passed, including the failed
+fixture. Standalone cross-build artifacts were removed separately. No Actions,
+runner or host service was enabled. The documentation followup must still pass a
+clean final-head baseline and exact behavioral-input match; deep reuse can refer
+only to the executed corrected-source portable review.
+
+Metadata success does not qualify MD device operations, restored-state safety,
+operator authorization/transport or a native executor. Runtime writes and full M2
+acceptance remain pending.

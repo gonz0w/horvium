@@ -641,6 +641,12 @@ The [contract](../../testing/M2/enrollment-publication.md) adds one attempt acro
 copies/rebindings, complete census/predecessor/hold/backing/capacity checks under
 the original root lease and clock/context guards around the unchanged sync/rename
 engine. Require all 819 state assertions and 88 actual native pool assertions on
-both releases, complete portable review and teardown. Qualification pending.
+both releases, complete portable review and teardown. Corrected source
+`0a1f4041fc4cf18ae0919428e303dd2140e63d48` passed complete portable review and both
+88-case pool suites. Original source `656e4220a4040669c09bce29311e2fdd74d62992`
+passed both 819-assertion state suites; the corrected source state binary is
+byte-identical. See the [manifest](../../testing/M2/enrollment-publication-manifest.json).
+The superseded 14.5 predecessor fixture failure remains unqualified; all teardown
+passed. Maintainer review pending.
 Runtime provisioning/adoption, native eligibility/recovery, authorized transport,
 backend/executor and remaining M2 lifecycle/operator workflows stay open.
