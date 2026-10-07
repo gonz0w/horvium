@@ -554,6 +554,9 @@ Existing duplicate history and a successful acknowledgement after the publicatio
 deadline must survive without a second sync claim. Fuzz bounded action sequences.
 
 See the [coordinator procedure](../../testing/M2/property-coordinator.md).
-Qualification pending. Mocks and FreeBSD cross-compilation do not qualify a native
+Signed source `a8868fa61bb60b80d3b83378a4f0e964e13e8028` passed the required baseline,
+nine behavioral parents, storage race/all 21 fuzz targets and an unexecuted FreeBSD
+cross-build; see the [execution manifest](../../testing/M2/property-coordinator-manifest.json).
+Mocks and FreeBSD cross-compilation do not qualify a native
 backend, kernel caller/session authorization, durable retry lookup, storage launch,
 native recovery/release or the assembled workflow.

@@ -132,4 +132,4 @@
 - [M2 bounded job restart projections](testing/M2/job-restart.md): immutable mixed-job pages, conservative interrupted-work presentation and unchanged holds; portable baseline/storage race/all twenty storage fuzz targets passed; accepted in PR 58; no startup replay/recovery consumer.
 
 - [M2 metadata process-death cuts](testing/M2/property-publication-cuts.md): eight real writer SIGKILL boundaries, preserved uncertain state and native restart pages; both targets passed all 777 state/backing assertions and full teardown; accepted in PR 59; no native mutation/replay.
-- [M2 property review/submission coordinator](testing/M2/property-coordinator.md): bounded volatile reviews, fresh baseline checks and one metadata publication attempt; portable qualification pending; no native backend/runtime writes.
+- [M2 property review/submission coordinator](testing/M2/property-coordinator.md): bounded volatile reviews, fresh baseline checks and one metadata publication attempt; portable baseline/storage race/all 21 fuzz targets passed; no native backend/runtime writes.

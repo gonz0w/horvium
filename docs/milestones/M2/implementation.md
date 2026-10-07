@@ -480,7 +480,11 @@ accepted plan, capture, binding and publication interfaces. It owns 64 bounded
 volatile plans, refreshes trusted policy/observations before submission, claims
 each plan once and retains immutable admission acknowledgements for concurrent
 confirms. Clock rollback and uncertain publication refuse further submissions;
-restart cannot restore plans. Portable qualification is pending. No native
+restart cannot restore plans. Signed source
+`a8868fa61bb60b80d3b83378a4f0e964e13e8028` passed the baseline, nine behavioral
+parents, storage race/all 21 fuzz targets and an unexecuted FreeBSD cross-build;
+see the [execution manifest](../../testing/M2/property-coordinator-manifest.json).
+Maintainer review is pending. No native
 policy/eligibility backend, kernel-authorized mutation transport, persistent retry
 lookup, executor, native recovery or runtime writes are enabled. Those are the
 remaining integration gates before an actual operator storage workflow.

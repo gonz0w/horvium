@@ -1,6 +1,6 @@
 # M2 property review and submission coordinator
 
-Date: 2026-10-06. Status: implementation; qualification pending.
+Date: 2026-10-06. Status: portable qualification passed; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [ADR 0007](../../adr/0007-durable-storage-jobs.md),
@@ -86,4 +86,18 @@ postconditions/recovery/release and assembled M2 workflow qualification remain o
 
 ## Executed qualification
 
-Pending signed-source review and sanitized execution record.
+Signed source `a8868fa61bb60b80d3b83378a4f0e964e13e8028`, based on PR 59 merge
+`62f4e7b79233fb945d1fe44010e27a8f2f7fde8b`, passed all nine behavioral parents,
+the mandatory baseline (103 tooling tests), storage race and all 21 compiler-listed
+storage fuzz targets. The focused review took 114.935 seconds and both supervised
+workers completed with verified process-group teardown. See the
+[sanitized execution manifest](property-coordinator-manifest.json) for exact
+source/input/log hashes, commands, inventory and preservation controls.
+
+The same source cross-compiled the test package for `freebsd/amd64`, cgo disabled;
+the binary was not executed and was removed. All 35 prior M2 manifests and all
+native storage implementation/test sources are byte-identical to the base.
+`make lab-status` verified all 244 owned sessions stopped. No guests or services
+were started. Documentation-only followups rerun the baseline/current-source
+checks and may reuse this exact executed deep evidence under the accepted gate;
+they do not relabel the original source or claim native qualification.

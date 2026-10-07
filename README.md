@@ -121,8 +121,9 @@ publication and conservative restart metadata on disposable fixtures; runtime wr
 
 The [property review/submission coordinator](docs/testing/M2/property-coordinator.md)
 connects volatile reviews, fresh baseline checks, single claims and immutable
-metadata acknowledgements through a trusted backend contract. Portable qualification
-is pending; no native backend or runtime storage writer is enabled.
+metadata acknowledgements through a trusted backend contract. Portable baseline,
+storage race/all 21 fuzz checks and a FreeBSD cross-build passed; no native backend
+or runtime storage writer is enabled.
 
 ## Agreed direction
 

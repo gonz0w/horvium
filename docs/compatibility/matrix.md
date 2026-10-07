@@ -5,7 +5,10 @@ validation are separate. Refresh exact versions in each active research manifest
 
 M2 [property review/submission integration](../testing/M2/property-coordinator.md)
 adds portable bounded plan ownership and one metadata publication attempt through
-a trusted backend interface. Qualification is pending. No implemented native
+a trusted backend interface. Portable baseline/storage race/all 21 fuzz targets
+and an unexecuted FreeBSD cross-build passed at signed source
+`a8868fa61bb60b80d3b83378a4f0e964e13e8028`; see the
+[execution manifest](../testing/M2/property-coordinator-manifest.json). No implemented native
 policy/eligibility backend, kernel-authorized mutation transport or runtime writer
 consumes it; prior native manifests remain bound to their actual sources.
 
@@ -392,7 +395,7 @@ Require all 777 state/backing assertions, 66 parents and 1,876 codec/model child
 on both targets, including native restart-page execution and complete backing/
 child/host teardown. Both targets passed at signed source
 `a3a33d5929f7fba32fd9ab6364320984b49d9162` with full teardown; maintainer
-review is pending. Shared evidence/selector changes required one complete portable
+review was accepted in PR 59. Shared evidence/selector changes required one complete portable
 review. Reboot/power-cut and actual native
 executor/reconciliation/restoration/release gates remain open.
 
