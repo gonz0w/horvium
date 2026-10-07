@@ -68,7 +68,7 @@ rebound/distinct-review claims, exact/unrelated policy drift, queued/terminal ho
 unknown/orphan state, whole-temporary capacity, late staging and before-rename
 drift, cancellation/expiry/backwards clocks, file-sync/rename/cleanup/directory-sync
 failures, visible uncertainty and write blocks, closed/zero bindings, actual
-nonroot kernel UID denial and fixture teardown. Require all 818 assertions, 67
+nonroot kernel UID denial and fixture teardown. Require all 819 assertions, 67
 parents, unchanged 1,876 children and complete backing/guest/process/host teardown
 on both releases. Re-run the historical safety suite because the census was
 refactored for caller-held publication inspection. Do not relabel prior evidence.
@@ -81,7 +81,7 @@ The focused pool suite separately retains all 84 assertions and adds four actual
 native first/successor/repeat-denial/preservation controls. Root ZFS must publish
 reviews built with independently collected real mirror/provider/system inputs;
 softupdates UFS must return zero-review refusal, zero-binding publication refusal
-and absent records. Its repeat control is continued zero-binding denial, not a
+and absent first/preserved explicit predecessor records. Its repeat control is continued zero-binding denial, not a
 successful claim/publication. Require all 88 cases on both releases.
 
 ```sh

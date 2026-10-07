@@ -763,7 +763,7 @@ portable review and teardown passed; see the
 
 The [contract/procedure](../../testing/M2/enrollment-publication.md) qualifies partial
 M2-OWN-001/M2-PLAN-001/M2-STATE-001/M2-DRIFT-001 behavior. Require portable concurrent
-single-attempt/typed-denial/late-acknowledgement tests, all 818 native state assertions,
+single-attempt/typed-denial/late-acknowledgement tests, all 819 native state assertions,
 67 parents and 1,876 codec children on both releases, plus all 88 actual native pool
 controls and complete owned teardown. Root ZFS real-input publication, synthetic
 metadata-input non-softupdates UFS publication and actual softupdates UFS refusal

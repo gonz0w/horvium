@@ -640,7 +640,7 @@ restored-state/executor reconciliation and the remaining M2 lifecycle remain ope
 The [contract](../../testing/M2/enrollment-publication.md) adds one attempt across
 copies/rebindings, complete census/predecessor/hold/backing/capacity checks under
 the original root lease and clock/context guards around the unchanged sync/rename
-engine. Require all 818 state assertions and 88 actual native pool assertions on
+engine. Require all 819 state assertions and 88 actual native pool assertions on
 both releases, complete portable review and teardown. Qualification pending.
 Runtime provisioning/adoption, native eligibility/recovery, authorized transport,
 backend/executor and remaining M2 lifecycle/operator workflows stay open.

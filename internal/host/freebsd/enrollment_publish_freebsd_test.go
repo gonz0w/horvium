@@ -54,6 +54,7 @@ func nativeEnrollmentPublicationFixture(t *testing.T, ctx context.Context, check
 	unsupported := unix.ByteSliceToString(fs.Fstypename[:]) == "ufs" && fs.Flags&unix.MNT_SOFTDEP != 0
 	p.Revision = 1
 	var previous storage.Policy
+	var deniedPrevious []byte
 	for _, kind := range []string{"first", "successor"} {
 		bound, e := source.Review(ctx, "root-publish-fixture", p, previous)
 		if unsupported {
@@ -71,6 +72,20 @@ func nativeEnrollmentPublicationFixture(t *testing.T, ctx context.Context, check
 				check("enrollment_publish_native_repeat_denied", errors.Is(bound.Publish(ctx, "root-publish-fixture", o, d, u), storage.ErrDenied))
 			}
 		}
+		if unsupported && kind == "first" {
+			// First publication was refused: prove absence before independently
+			// provisioning the explicit predecessor for the successor control.
+			if _, e := os.Lstat(filepath.Join(path, "ownership-"+p.PoolGUID+".json")); !errors.Is(e, os.ErrNotExist) {
+				t.Fatal("denied first enrollment created a record", e)
+			}
+			deniedPrevious, e = storage.EncodeOwnershipRecord(p)
+			if e != nil {
+				t.Fatal(e)
+			}
+			if e = os.WriteFile(filepath.Join(path, "ownership-"+p.PoolGUID+".json"), deniedPrevious, 0600); e != nil {
+				t.Fatal(e)
+			}
+		}
 		previous = p
 		p.Revision++
 	}
@@ -79,6 +94,6 @@ func nativeEnrollmentPublicationFixture(t *testing.T, ctx context.Context, check
 	}
 	got, e := os.ReadFile(filepath.Join(path, "ownership-"+p.PoolGUID+".json"))
 	expected, encodeErr := storage.EncodeOwnershipRecord(previous)
-	preserved := unsupported && errors.Is(e, os.ErrNotExist) || !unsupported && e == nil && encodeErr == nil && bytes.Equal(got, expected)
+	preserved := unsupported && e == nil && bytes.Equal(got, deniedPrevious) || !unsupported && e == nil && encodeErr == nil && bytes.Equal(got, expected)
 	check("enrollment_publish_native_preserved", preserved && cleanup())
 }
