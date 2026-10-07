@@ -1,6 +1,6 @@
 # M2 root policy and native property binding
 
-Date: 2026-10-06. Status: both native targets and complete portable review passed; maintainer review pending.
+Date: 2026-10-06. Status: accepted in [PR 62](https://github.com/gonz0w/horvium/pull/62).
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [issue 19](https://github.com/gonz0w/horvium/issues/19).
 

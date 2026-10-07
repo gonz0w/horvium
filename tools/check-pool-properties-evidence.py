@@ -9,7 +9,9 @@ CASES={'complete','pool_identity','dataset_identity','property_values','inherita
        'snapshot_owner','features','topology','eligibility_denied','wrong_guid_denied',
        'rename_fresh','readonly_denied','volume_denied','preservation','backing_preserved','teardown',
        'policy_bound','policy_missing_denied','policy_change_denied','policy_scope_denied',
-       'policy_rename_denied','policy_closed_denied'}
+       'policy_rename_denied','policy_closed_denied','system_root_backing','system_pool_backing',
+       'safety_bound','safety_system_mount_denied','safety_fresh_restored','system_swap_observed',
+       'safety_swap_disjoint','system_mount_preserved','system_fixture_teardown','unsupported_md_denied'}
 
 def validate(text):
     if len(text)>1<<20 or re.search(r'(?m)^(?:FAIL|--- (?:FAIL|SKIP):)',text):

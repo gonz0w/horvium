@@ -605,3 +605,28 @@ See the [procedure](../../testing/M2/property-policy-binding.md). Signed source
 targets, the baseline/109 tooling tests, all 11 race packages and 31 fuzz targets
 with full teardown; see the [execution manifest](../../testing/M2/property-policy-binding-manifest.json).
 System/device eligibility, native admission and M2 acceptance remain open.
+
+## Native property system-use exclusions
+
+M2-DEVICE-001, M2-OWN-001 and M2-DRIFT-001 at T1/T3 (partial): require fixed bounded
+all-imported-pool/mount/swap/GEOM reads, qualified formats, safe enumerated pool
+addresses and two equal normalized full views. Bind selected topology exactly;
+refuse root/system mounts, other mount/swap/pool backing overlap, unsupported
+backing, failures/partial data and ordinary drift. Permit own ordinary data mounts
+while preserving the planner eligibility refusal. Check private proof/copy/record
+budgets and fuzz hostile collector/joined captures.
+
+On both targets extend the focused suite to all 32 mandatory assertions using
+the existing five declared snapshot disks. Require actual root/pool backing,
+policy/property/safety binding, owned mount relocation beneath `/root` and refusal,
+fresh restoration, active disjoint swap, sentinel preservation, direct fixture
+teardown and md backing refusal. Verify exact binary and executed test, unchanged
+base/runtime/device backing and complete guest/host cleanup. Require one appended
+host device-cleanup marker; zero or duplicate markers deny qualification. Shared
+runner/checker changes require one complete portable review. See the
+[procedure](../../testing/M2/property-system-exclusions.md). Signed source
+`c0f26eeef6e09e955f1edeb8d6fe15c59481b3cb` passed all 32 assertions on both targets,
+the baseline/111 tooling tests, all 11 race packages and 33 fuzz targets with full
+teardown and unchanged snapshot backing; see the
+[execution manifest](../../testing/M2/property-system-exclusions-manifest.json).
+Full eligibility, admission/execution/recovery and M2 acceptance remain open.

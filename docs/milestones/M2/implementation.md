@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 61; root policy/native binding qualified, maintainer review pending; Actions disabled.
+Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 62; native property system exclusions qualified, maintainer review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -522,6 +522,28 @@ Signed source `cd1991c6a1cb36375f0fca7e7dd90228338390cc` passed all 22 assertion
 on both native targets, the required baseline/109 tooling tests, all 11 race
 packages and 31 fuzz targets with complete owned teardown; see the
 [execution manifest](../../testing/M2/property-policy-binding-manifest.json).
-Maintainer review is pending. The first writable-ancestor fixture failure and
+Accepted in PR 62 at merged source `aebae03ab68dfe49490a1fc68537bb319e5b70ef`. The first writable-ancestor fixture failure and
 superseded interrupted portable review retain unqualified original evidence;
 the correction changes test setup only.
+
+## Native property system-use exclusions
+
+The [system-use contract](../../testing/M2/property-system-exclusions.md) joins
+the accepted private policy/property observation to an actual bounded dual-pass
+all-imported-pool/mount/swap/GEOM collection. Complete normalized views retain
+native topology and positive physical backing; selection must agree with that
+topology and remain disjoint from system/other mount/swap/pool backing. Own data
+mounts are allowed. Every failure returns zero, and success stays ineligible.
+The focused native fixture adds ten assertions using the accepted five snapshot
+disks, including owned mount relocation, active disjoint swap, data preservation
+and md refusal. Full provider/enrollment,
+store/recovery/admission, transport and execution remain open. Runtime is read-only.
+
+Signed source `c0f26eeef6e09e955f1edeb8d6fe15c59481b3cb` passed all 32 assertions
+on both targets, the baseline/111 tooling tests, all 11 race packages and 33 fuzz
+targets with complete teardown and unchanged snapshot disks; see the
+[execution manifest](../../testing/M2/property-system-exclusions-manifest.json).
+The initial UFS-only fixture assumption and stopped superseded review retain
+unqualified evidence. The correction resolves actual mounted root pools without
+changing product gates; a separate failing-first fix rechecks root policy after
+the entire system collection. Maintainer review is pending.

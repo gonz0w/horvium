@@ -13,7 +13,7 @@ class PoolPropertiesEvidenceTests(unittest.TestCase):
         self.log='--- PASS: TestNativePoolPropertyCollection (1.0s)\nPOOL_PROPERTY_COLLECTION_RESULT '+' '.join(c+'=pass' for c in sorted(self.module.CASES))+'\n'
 
     def test_complete_fixed_inventory_accepted(self):
-        self.assertEqual(self.module.CASES,{'complete','pool_identity','dataset_identity','property_values','inheritance','snapshot_owner','features','topology','eligibility_denied','wrong_guid_denied','rename_fresh','readonly_denied','volume_denied','preservation','backing_preserved','teardown','policy_bound','policy_missing_denied','policy_change_denied','policy_scope_denied','policy_rename_denied','policy_closed_denied'})
+        self.assertEqual(self.module.CASES,{'complete','pool_identity','dataset_identity','property_values','inheritance','snapshot_owner','features','topology','eligibility_denied','wrong_guid_denied','rename_fresh','readonly_denied','volume_denied','preservation','backing_preserved','teardown','policy_bound','policy_missing_denied','policy_change_denied','policy_scope_denied','policy_rename_denied','policy_closed_denied','system_root_backing','system_pool_backing','safety_bound','safety_system_mount_denied','safety_fresh_restored','system_swap_observed','safety_swap_disjoint','system_mount_preserved','system_fixture_teardown','unsupported_md_denied'})
         self.module.validate(self.log)
 
     def test_missing_duplicate_failed_or_extra_case_refused(self):
