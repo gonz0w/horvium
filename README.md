@@ -246,7 +246,10 @@ operator write workflow is enabled.
 
 The [private native property control](docs/testing/M2/property-control.md) binds
 fixed allowlisted arguments to applying metadata and fresh GUID context.
-Qualification is pending; no root backend or operator writer is installed.
+Both disposable FreeBSD targets passed the actual controls, denials, retained
+applying records, descendant waiting and full teardown; see the
+[manifest](docs/testing/M2/property-control-manifest.json). No root backend or
+operator writer is installed.
 
 ## Agreed direction
 

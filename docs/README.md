@@ -167,5 +167,6 @@
 - [M2 pool health and scan observation qualification](testing/M2/pool-health.md).
 - [M2 native scrub-state observation qualification](testing/M2/scan-lifecycle-observations.md).
 - [M2 private native property control](testing/M2/property-control.md)
+- [M2 native property-control execution manifest](testing/M2/property-control-manifest.json)
 - [M2 property execution sequence](testing/M2/property-execution.md)
 - [M2 native repaired-checksum finding qualification](testing/M2/checksum-findings.md).

@@ -1,6 +1,6 @@
 # M2 private fixed native property control
 
-Date: 2026-10-07. Status: implementation; qualification pending.
+Date: 2026-10-07. Status: native prerequisite qualified; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0006](../../adr/0006-storage-ownership-and-plans.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -16,7 +16,8 @@ stored record, matching observation or reconstructed control supplies none of
 that authority. Only explicitly owned disposable fixtures bind it in this slice.
 The existing native sources keep false eligibility; no flag is promoted.
 
-Each control consumes one attempt, including authorization denial. Validate the
+After adapter, context and root checks, a control consumes one attempt, including
+authorization denial. Validate the
 immutable intent, independently obtain the exact two-event applying job, compare
 the entire intent binding and fresh baseline/policy, then recheck cancellation,
 clock rollback, recorded time and original review expiry. Read-only observations
@@ -58,6 +59,40 @@ Pinned primary sources describe the base guard and ZFS argument handling:
   and [14.5 timeout](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/bin/timeout/timeout.c).
 - [15.1 ZFS command](https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/cmd/zfs/zfs_main.c)
   and [14.5 ZFS command](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/cmd/zfs/zfs_main.c).
+
+## Executed qualification
+
+Signed source `6ef01cb5fbd3f3015a6fc8c9a5a8ccc4302031aa`, based on merged PR 80
+`252e07e3cd2412a698b3b0c6c4651ca47db1331f`, passed `make review` baseline checks,
+122 tooling tests, eight affected race packages and all nine selected fuzz targets,
+including `FuzzPropertyControlSelection`. The fixture correction changes only
+disposable setup/cleanup; product control and guard behavior are unchanged.
+
+Both FreeBSD 15.1 and 14.5 passed all 88 original pool assertions, all earlier
+postcondition/retained-assessment/native-source subgroups, all eleven new control
+children/group and both guard children, without FAIL/SKIP. Parent timings were
+201.42/193.37 seconds; new control groups took 37.14/45.63 seconds.
+Both used the same independently rebuilt binary:
+`6d8c7e8735f18b547bc19d5ff5d85d597efb6af8fea16a88cea92444c323b02e`.
+These fixture timings are not NAS throughput or scale evidence.
+
+Actual native effects, fresh postconditions, retained applying records, repeat
+refusal, ledger/native/expiry denial, kernel EUID denial and normal guard descendant
+waiting all passed. Both guests used an explicitly mounted ZFS metadata child,
+with actual backing/mount checks. Complete storage/source/GUID/metadata/anchor/
+pool/provider/sentinel/base/runtime/process preservation and teardown passed;
+`make lab-status` verified no active or unverified owned sessions. Historical
+56 M2 manifests and 334 retained paths were byte-identical.
+See the [sanitized execution manifest](property-control-manifest.json) for exact
+source, primary-source, input, runtime, review/log and teardown hashes.
+
+The initial 15.1 attempt at `924ce12dc77c883d36e89679d8aafb2c8bc5593c`
+was operator-stopped before control qualification when source review identified
+that a private directory on 14.5's UFS softupdates root could not support actual
+publication. It remains unqualified with successful owned teardown recorded
+separately. The corrected fixture declares a GUID-bound mounted ZFS metadata
+child on both guests; the accepted product UFS softupdates refusal is unchanged.
+No earlier evidence is relabeled or gate relaxed.
 
 ## Failing-first and native fixture gates
 

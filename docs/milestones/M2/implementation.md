@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 80; native property-control qualification in progress; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 80; private native property-control subset qualified for review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -833,5 +833,14 @@ property set against exact applying metadata, immutable selection and fresh GUID
 context. Its private callback still needs original live root authority; no runtime
 consumer exists. Eleven actual control/denial/restoration cases, including both
 normal-exit descendant guard cases, are required on both disposable releases.
-Qualification is pending; native backend/eligibility, crash/recovery/scheduling
+Signed source `6ef01cb5fbd3f3015a6fc8c9a5a8ccc4302031aa` passed baseline/122 tooling tests,
+eight affected race packages and all nine selected fuzz targets. Both native
+releases retained all 88 assertions and old subgroups and passed every new case
+in 201.42/193.37 seconds, within the original five-minute deadline.
+Actual effects retained applying metadata; kernel UID denial, fresh drift refusal
+and descendant waiting passed. All metadata used an explicitly owned mounted ZFS
+child; the guest root and softupdates refusal remain independent. Complete
+preservation/teardown passed, and the operator-stopped initial attempt stays
+unqualified; see the [manifest](../../testing/M2/property-control-manifest.json).
+Maintainer review is pending. Native backend/eligibility, crash/recovery/scheduling
 and operator workflows remain separate gates.

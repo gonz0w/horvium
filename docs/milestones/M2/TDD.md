@@ -968,8 +968,8 @@ Signed source `cceb615b82aedc98d4e93fb1cdb90545b05916ea` passed baseline/122 too
 tests, all ten behavioral groups, nine affected race packages and all 34 selected
 fuzz targets, including cut-point fuzzing. FreeBSD tests compiled without execution
 and the artifact was removed; complete owned-process teardown passed. See the
-[manifest](../../testing/M2/property-execution-manifest.json). Maintainer review
-is pending. Native live-claim/root/eligibility/transport,
+[manifest](../../testing/M2/property-execution-manifest.json). Accepted in
+[PR 80](https://github.com/gonz0w/horvium/pull/80). Native live-claim/root/eligibility/transport,
 global/pool serialization, actual commands/child containment, interrupted effect/
 metadata/reboot/recovery and complete acceptance are separate required gates.
 
@@ -983,5 +983,12 @@ all eleven new control children/group plus same-group/escaped guard children and
 actual dropped-UID denial. Actual property effects and fresh postconditions must
 retain applying metadata; denied controls change no storage. Exact properties/
 sources/child/metadata/pool/provider/sentinel/base/runtime/process teardown and all
-original deadlines remain mandatory. Qualification is pending; native root
-backend/live eligibility and crash/recovery/assembled acceptance remain open.
+original deadlines remain mandatory. Signed source `6ef01cb5fbd3f3015a6fc8c9a5a8ccc4302031aa`
+passed baseline/122 tooling tests, eight affected race packages and all nine
+selected fuzz targets. Both releases passed every required new case, all retained
+assertions/subgroups and full teardown. Metadata publication uses an actual owned
+mounted ZFS child, preserving the UFS softupdates refusal; the operator-stopped
+initial attempt remains unqualified. See the
+[manifest](../../testing/M2/property-control-manifest.json). Maintainer review is
+pending; native root backend/live eligibility and crash/recovery/assembled
+acceptance remain open.
