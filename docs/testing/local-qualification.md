@@ -83,6 +83,16 @@ actual root lease's writable-ancestor refusal. The same checksummed binary ran
 on both targets without guest packages. System/device clearance, actual enrollment,
 atomic admission and runtime writes remain open.
 
+The subsequent [native system exclusion](M2/property-system-exclusions.md) suite
+attaches the existing five declared snapshot disks and requires all 32 assertions,
+plus the mandatory host device-cleanup marker. Both native targets passed at
+signed source `c0f26eeef6e09e955f1edeb8d6fe15c59481b3cb`, using the same executable;
+see the [manifest](M2/property-system-exclusions-manifest.json). Complete workloads
+took 73.607/71.764 seconds. Actual root backing, own data/system mount checks,
+active disjoint swap, md refusal and full preservation/cleanup passed. The initial
+ZFS-root fixture omission remains unqualified. Broader provider/enrollment and
+runtime write eligibility remain open.
+
 Foundation/15.1, properties/15.1/14.5 and devices/15.1/14.5 have actual execution evidence
 through this runner. The other selectable suites and Linux host remain unqualified
 through this runner until executed and reviewed; existing hosted evidence is

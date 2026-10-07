@@ -624,5 +624,9 @@ teardown and md backing refusal. Verify exact binary and executed test, unchange
 base/runtime/device backing and complete guest/host cleanup. Require one appended
 host device-cleanup marker; zero or duplicate markers deny qualification. Shared
 runner/checker changes require one complete portable review. See the
-[procedure](../../testing/M2/property-system-exclusions.md). Qualification is pending;
-full eligibility, admission/execution/recovery and M2 acceptance remain open.
+[procedure](../../testing/M2/property-system-exclusions.md). Signed source
+`c0f26eeef6e09e955f1edeb8d6fe15c59481b3cb` passed all 32 assertions on both targets,
+the baseline/111 tooling tests, all 11 race packages and 33 fuzz targets with full
+teardown and unchanged snapshot backing; see the
+[execution manifest](../../testing/M2/property-system-exclusions-manifest.json).
+Full eligibility, admission/execution/recovery and M2 acceptance remain open.

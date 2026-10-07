@@ -1,6 +1,6 @@
 # M2 native system-use exclusions for property review
 
-Date: 2026-10-06. Status: implementing; qualification pending.
+Date: 2026-10-06. Status: both native targets and complete portable review passed; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
@@ -92,3 +92,34 @@ make lab-status
 Shared runner/evidence changes require one complete portable deep review. Daily
 native qualification remains the focused collector fixture, without rerunning
 the unrelated 777-assertion metadata publication suite.
+
+## Executed qualification
+
+Signed source `c0f26eeef6e09e955f1edeb8d6fe15c59481b3cb`, based on PR 62 merge
+`aebae03ab68dfe49490a1fc68537bb319e5b70ef`, passed all 32 assertions on
+FreeBSD 15.1-RELEASE-p3 (ZFS system backing) and 14.5-RELEASE (UFS system backing),
+with the same checksum-bound executable. Complete guest workloads took
+73.607/71.764 seconds including setup/verification/teardown; these are lab times,
+not NAS performance results. See the [sanitized execution manifest](property-system-exclusions-manifest.json).
+
+The complete portable review passed `make check lint test secrets`, 111 tooling
+tests, all 11 race packages and all 33 compiler-listed portable fuzz targets in
+178.335 seconds. Both actual fixtures destroyed their declared pools, detached md
+providers, removed the owned mounts/swap, closed root leases and removed private
+metadata. Guest/image/key/variables/executable cleanup and process-group teardown
+passed. All five snapshot backing files remained byte-identical and were removed
+after guest stop. `make lab-status` verified all 288 owned sessions stopped at
+this checkpoint; no services or Actions jobs were enabled. All 38 prior M2
+manifests and native storage metadata sources remain byte-identical to the base.
+
+The first 15.1 attempt at signed source `656ca0babab4a58f96884b51f372c8432c5918f6`
+failed before fixture storage mutation: its independent root capture incorrectly
+assumed UFS-only mounts, omitting the guest's mounted ZFS pool. It remains
+unqualified with complete guest/host/device teardown and unchanged backing files.
+A test-only correction resolves the actual mounted pools. Its superseded portable
+review was stopped through the owned supervisor before editing and remains
+unqualified. A separate failing-first regression then closed the policy window
+introduced by the system phase with a final private policy read. Original failures
+retain their source IDs and log/report hashes. Documentation followups rerun the
+baseline and may reuse the exact successful deep evidence; runtime eligibility
+and admission remain disabled.

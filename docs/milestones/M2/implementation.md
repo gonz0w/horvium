@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 62; native property system exclusions qualification pending; Actions disabled.
+Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 62; native property system exclusions qualified, maintainer review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -536,5 +536,14 @@ topology and remain disjoint from system/other mount/swap/pool backing. Own data
 mounts are allowed. Every failure returns zero, and success stays ineligible.
 The focused native fixture adds ten assertions using the accepted five snapshot
 disks, including owned mount relocation, active disjoint swap, data preservation
-and md refusal. Portable/native qualification is pending. Full provider/enrollment,
+and md refusal. Full provider/enrollment,
 store/recovery/admission, transport and execution remain open. Runtime is read-only.
+
+Signed source `c0f26eeef6e09e955f1edeb8d6fe15c59481b3cb` passed all 32 assertions
+on both targets, the baseline/111 tooling tests, all 11 race packages and 33 fuzz
+targets with complete teardown and unchanged snapshot disks; see the
+[execution manifest](../../testing/M2/property-system-exclusions-manifest.json).
+The initial UFS-only fixture assumption and stopped superseded review retain
+unqualified evidence. The correction resolves actual mounted root pools without
+changing product gates; a separate failing-first fix rechecks root policy after
+the entire system collection. Maintainer review is pending.

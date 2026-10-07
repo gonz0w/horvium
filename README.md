@@ -137,12 +137,13 @@ and checks every explicit scope against fresh native observations. Both native
 targets passed all 22 assertions, complete portable review and teardown;
 successful binding still grants no write eligibility.
 
-## Agreed direction
-
 The [native system exclusions](docs/testing/M2/property-system-exclusions.md)
 join policy/property observations with full imported-pool, mount and swap backing.
 The new safety path rejects system mounts and physical-disk conflicts while
-retaining false write eligibility. Focused native qualification is pending.
+retaining false write eligibility. Both targets passed all 32 focused assertions,
+complete portable review and verified teardown.
+
+## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.
 - SMB, NFS, and SFTP file serving; local users/groups initially.
