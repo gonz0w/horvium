@@ -382,6 +382,9 @@ the supplied complete job-record set, retains full property baselines, indexes
 unique submission/plan identities and projects all whole-pool holders. Matching
 property retries return the existing current record; conflicting meaning, reused
 plans, pool holds and exhaustion deny new metadata. Terminal labels cannot release
-holds. Concurrent checks do not atomically claim/admit work. Qualification is
-pending. Full native namespace/provenance, authorization/eligibility assembly,
+holds. Concurrent checks do not atomically claim/admit work. Portable qualification passed. Full native namespace/provenance, authorization/eligibility assembly,
 durable admission, executor/recovery/release and M2 acceptance remain open.
+
+Reservation qualification: signed source `eec1ad7c34485bc2b548f8a1c88f68cdaaaae647`, six parents/thirty
+subtests, required baseline, storage race/all nineteen fuzz targets and FreeBSD
+cross-compilation; see the [manifest](../../testing/M2/job-reservations-manifest.json). Maintainer review is pending; no native admission/release claim follows.

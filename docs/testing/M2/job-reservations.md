@@ -1,6 +1,6 @@
 # M2 job reservation metadata checks
 
-Date: 2026-10-06. Status: implementation under review; portable qualification pending.
+Date: 2026-10-06. Status: portable qualification passed; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -83,3 +83,22 @@ Native facilities/fixtures are unchanged, so no new QEMU run is needed for this
 pure model. Prior native evidence stays bound to its original signed sources.
 Complete M2 admission/recovery, resource/performance, hardware/client and manual
 browser acceptance remain separate gates.
+
+
+## Executed qualification
+
+Signed source `eec1ad7c34485bc2b548f8a1c88f68cdaaaae647` passed all six parent tests and
+thirty subtests without skips/failures. The [sanitized manifest](job-reservations-manifest.json)
+records exact source/base/input/toolchain/log hashes, case inventory, prior evidence
+preservation and owned teardown. All baseline checks (95
+tooling regressions), storage race and all nineteen compiler-listed storage fuzz
+targets passed in 99.829 seconds. The review selected only
+`./internal/storage`; no fresh full milestone run or native QEMU suite ran.
+
+The same source cross-compiled its test binary for `freebsd/amd64` with cgo
+disabled; it was not executed and the owned artifact was removed. All thirty
+prior M2 manifests remain byte-identical to the base. `make lab-status` verified
+all 196 owned sessions stopped. A final documentation/evidence-only
+head must rerun baseline/title/signature/DCO/source checks and explicitly cite this
+original source if deep checks are reused. Runtime admission/release and complete
+M2 acceptance remain unqualified.

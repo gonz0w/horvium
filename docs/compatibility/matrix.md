@@ -303,6 +303,10 @@ pure complete-record-set validation, exact property retry binding and conservati
 whole-pool holds for both accepted job formats. Every retained lifecycle state
 continues to hold; no terminal label releases reservations. New work can pass on
 an unrelated pool, but checks claim/admit nothing and ownership/transient capacity
-needs the existing native boundary. Qualification is pending. No native reader,
+needs the existing native boundary. Portable qualification passed. No native reader,
 publisher, file schema, runtime/transport or deployment changes; native admission/
 recovery/release and M2 acceptance remain unqualified.
+
+Reservation qualification: signed source `eec1ad7c34485bc2b548f8a1c88f68cdaaaae647`, six parents/thirty
+subtests, required baseline, storage race/all nineteen fuzz targets and FreeBSD
+cross-compilation; see the [manifest](../testing/M2/job-reservations-manifest.json). Maintainer review is pending; no native admission/release claim follows.

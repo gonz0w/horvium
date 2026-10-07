@@ -450,5 +450,9 @@ tests, exact retry binding/current history, every lifecycle pool hold, unrelated
 pools, actual 64/1,000 class ceilings, byte preflight/exhaustion, copy isolation,
 concurrent read-only checks and bounded hostile-input fuzzing. Require baseline
 and storage-only race/all compiler-listed fuzz checks; cross-compilation is
-portability only. Qualification is pending. Actual native admission, root caller/
+portability only. Portable qualification passed. Actual native admission, root caller/
 policy/eligibility provenance, recovery/release/cuts and M2 acceptance remain open.
+
+Reservation qualification: signed source `eec1ad7c34485bc2b548f8a1c88f68cdaaaae647`, six parents/thirty
+subtests, required baseline, storage race/all nineteen fuzz targets and FreeBSD
+cross-compilation; see the [manifest](../../testing/M2/job-reservations-manifest.json). Maintainer review is pending; no native admission/release claim follows.
