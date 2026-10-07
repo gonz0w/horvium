@@ -159,7 +159,7 @@ func TestNativePropertySubmission(t *testing.T) {
 	// All goroutines use one real writer lease; exactly one new publication.
 	for _, kind := range []string{"same_submission", "same_pool", "last_slot", "distinct_pools"} {
 		fixture, folder := lease("race-" + kind)
-		count := 8
+		count := 32
 		var wg sync.WaitGroup
 		var mu sync.Mutex
 		created, duplicates, denied := 0, 0, 0

@@ -56,7 +56,7 @@ func (s *StateDirectory) inspectStateRecordsLocked(limits stateCatalogLimits, af
 	defer scan.Close()
 	var opened unix.Stat_t
 	if unix.Fstat(fd, &opened) != nil || !sameOwnershipMetadata(before, opened) {
-		return StateCatalog{}, fmt.Errorf("state census metadata: %w", ErrDrift)
+		return StateCatalog{}, fmt.Errorf("state census directory open: %w", ErrDrift)
 	}
 	var names []string
 	nameLimit := limits.ownership + limits.nonterminal + limits.terminal + 1
@@ -120,7 +120,7 @@ func (s *StateDirectory) inspectStateRecordsLocked(limits stateCatalogLimits, af
 			return StateCatalog{}, e
 		}
 		if unix.Fstatat(dir, entry.name, &after, unix.AT_SYMLINK_NOFOLLOW) != nil || !sameOwnershipMetadata(prior, after) {
-			return StateCatalog{}, fmt.Errorf("state census metadata: %w", ErrDrift)
+			return StateCatalog{}, fmt.Errorf("state census record read: %w", ErrDrift)
 		}
 		metadata = append(metadata, after)
 		if consume != nil {
@@ -135,7 +135,7 @@ func (s *StateDirectory) inspectStateRecordsLocked(limits stateCatalogLimits, af
 	for i, entry := range entries {
 		var current unix.Stat_t
 		if unix.Fstatat(dir, entry.name, &current, unix.AT_SYMLINK_NOFOLLOW) != nil || !sameOwnershipMetadata(metadata[i], current) {
-			return StateCatalog{}, fmt.Errorf("state census metadata: %w", ErrDrift)
+			return StateCatalog{}, fmt.Errorf("state census record final: %w", ErrDrift)
 		}
 	}
 	if _, err = s.ownershipDirectoryLocked(); err != nil {
