@@ -170,7 +170,11 @@ The [root-leased enrollment binding](docs/testing/M2/property-enrollment-state.m
 checks explicit first/exact predecessors, complete private state, backing and
 projected capacity. Fresh validation keeps job holds and detects metadata drift;
 both native targets passed all 76 focused assertions, complete portable review
-and teardown. Runtime publication remains disabled.
+and teardown; accepted in PR 68. Runtime publication remains disabled.
+
+The [native enrollment source](docs/testing/M2/native-enrollment-source.md) connects
+explicit root proposals to fresh native collectors and sealed state checks.
+Qualification is pending; runtime publication remains disabled.
 
 ## Agreed direction
 

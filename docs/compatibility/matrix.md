@@ -3,6 +3,11 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [native enrollment source](../testing/M2/native-enrollment-source.md) composes
+explicit root selections, fixed pool/provider/system collectors and sealed root
+state checks. Native/portable qualification is pending; success remains read-only
+and ineligible. No runtime publication or hardware/scale support follows.
+
 M2 [root enrollment state binding](../testing/M2/property-enrollment-state.md)
 requires the held root lease, explicit first/exact predecessor, complete metadata/
 backing baseline, projected capacity and retained job holds. Fresh validation is

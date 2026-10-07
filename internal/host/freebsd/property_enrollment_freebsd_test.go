@@ -53,7 +53,7 @@ func nativePropertyEnrollmentReviewFixture(t *testing.T, ctx context.Context, ch
 	}
 	r := plan.Review()
 	fresh, freshDisks, freshUse := collect()
-	nativeEnrollmentStateFixture(t, check, p, fresh, freshDisks, freshUse, filepath.Dir(statePath))
+	nativeEnrollmentStateFixture(t, ctx, check, p, fresh, freshDisks, freshUse, filepath.Dir(statePath))
 	check("enrollment_review_bound", plan.Validate(at, "root-fixture", p, fresh, freshDisks, freshUse) == nil && !r.Observation.Eligible && len(r.Policy.Scopes) == len(p.Scopes) && len(r.Policy.Members) == 2)
 	check("enrollment_review_expired", errors.Is(plan.Validate(at.Add(5*time.Minute), "root-fixture", p, fresh, freshDisks, freshUse), storage.ErrExpired))
 	check("enrollment_review_context_denied", errors.Is(plan.Validate(at, "other-fixture", p, fresh, freshDisks, freshUse), storage.ErrDenied))

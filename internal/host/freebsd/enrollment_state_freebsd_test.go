@@ -2,6 +2,7 @@
 package freebsd
 
 import (
+	"context"
 	"errors"
 	"os"
 	"path/filepath"
@@ -17,7 +18,7 @@ import (
 
 // Use only a new owned private directory on the parent fixture's root backing.
 // It is independent of the earlier fixture's intentionally latched uncertainty.
-func nativeEnrollmentStateFixture(t *testing.T, check func(string, bool), previous storage.Policy, o storage.Observation, disks []inventory.DiskObservation, u storage.PoolSystemUse, parent string) {
+func nativeEnrollmentStateFixture(t *testing.T, ctx context.Context, check func(string, bool), previous storage.Policy, o storage.Observation, disks []inventory.DiskObservation, u storage.PoolSystemUse, parent string) {
 	t.Helper()
 	path, err := os.MkdirTemp(parent, "enrollment-state-")
 	if err != nil {
@@ -93,6 +94,29 @@ func nativeEnrollmentStateFixture(t *testing.T, check func(string, bool), previo
 	}
 	check("enrollment_state_bound", !unsupported && err == nil && immutable && bound.Validate(at, "root-fixture", o, disks, u) == nil || unsupported && errors.Is(err, storage.ErrStateDirectory) && reflect.DeepEqual(bound, storage.PropertyEnrollmentState{}))
 	t.Logf("ENROLLMENT_STATE_BACKING filesystem=%s softupdates=%t binding_denied=%t", unix.ByteSliceToString(fs.Fstypename[:]), fs.Flags&unix.MNT_SOFTDEP != 0, err != nil)
+	source, err := NewPropertyEnrollmentSource(state)
+	if err != nil {
+		t.Fatal(err)
+	}
+	freshBound, err := source.Review(ctx, "root-fixture", next, previous)
+	check("enrollment_source_review", !unsupported && err == nil && !freshBound.Review().Observation.Eligible || unsupported && errors.Is(err, storage.ErrStateDirectory) && reflect.DeepEqual(freshBound, storage.PropertyEnrollmentState{}))
+	err = source.Validate(ctx, "root-fixture", freshBound)
+	check("enrollment_source_revalidate", !unsupported && err == nil || unsupported && errors.Is(err, storage.ErrInvalid))
+	badPrevious := plan.Review().Policy
+	badPrevious.Revision = previous.Revision
+	badPrevious.Scopes[0].Properties = []storage.Property{storage.RefQuota}
+	sourceZero, sourceErr := source.Review(ctx, "root-fixture", next, badPrevious)
+	check("enrollment_source_policy_denied", errors.Is(sourceErr, storage.ErrDrift) && reflect.DeepEqual(sourceZero, storage.PropertyEnrollmentState{}))
+	badMember := plan.Review().Policy
+	badMember.Members[0].Serial = "changed"
+	sourceZero, sourceErr = source.Review(ctx, "root-fixture", badMember, previous)
+	check("enrollment_source_member_denied", sourceErr != nil && reflect.DeepEqual(sourceZero, storage.PropertyEnrollmentState{}))
+	cancelled, cancel := context.WithCancel(ctx)
+	cancel()
+	sourceZero, sourceErr = source.Review(cancelled, "root-fixture", next, previous)
+	check("enrollment_source_cancelled", errors.Is(sourceErr, context.Canceled) && reflect.DeepEqual(sourceZero, storage.PropertyEnrollmentState{}))
+	sourceZero, sourceErr = source.Review(ctx, "invalid root context", next, previous)
+	check("enrollment_source_context_denied", errors.Is(sourceErr, storage.ErrInvalid) && reflect.DeepEqual(sourceZero, storage.PropertyEnrollmentState{}))
 	changed := plan.Review().Policy
 	changed.Revision = previous.Revision
 	changed.Scopes[0].Properties = []storage.Property{storage.RefQuota}
@@ -109,7 +133,8 @@ func nativeEnrollmentStateFixture(t *testing.T, check func(string, bool), previo
 	} else {
 		err = bound.Validate(at, "root-fixture", o, disks, u)
 	}
-	check("enrollment_state_unrelated_drift", !unsupported && errors.Is(err, storage.ErrDrift) || unsupported && errors.Is(err, storage.ErrStateDirectory) && reflect.DeepEqual(zero, storage.PropertyEnrollmentState{}))
+	sourceErr = source.Validate(ctx, "root-fixture", freshBound)
+	check("enrollment_state_unrelated_drift", (!unsupported && errors.Is(err, storage.ErrDrift) || unsupported && errors.Is(err, storage.ErrStateDirectory) && reflect.DeepEqual(zero, storage.PropertyEnrollmentState{})) && (!unsupported && errors.Is(sourceErr, storage.ErrDrift) || unsupported && errors.Is(sourceErr, storage.ErrInvalid)))
 	legacy.Revision--
 	write("ownership-999.json", legacy)
 	marker := []byte("owned enrollment fixture marker")
@@ -163,8 +188,11 @@ func nativeEnrollmentStateFixture(t *testing.T, check func(string, bool), previo
 	}
 	_, latched := state.BindPropertyEnrollment(at, "root-fixture", plan, previous, o, disks, u)
 	check("enrollment_state_orphan_denied", errors.Is(err, storage.ErrStateUncertain) && errors.Is(latched, storage.ErrStateUncertain) && reflect.DeepEqual(zero, storage.PropertyEnrollmentState{}) && readErr == nil && reflect.DeepEqual(got, marker))
+	sourceZero, sourceErr = source.Review(ctx, "root-fixture", next, previous)
+	check("enrollment_source_store_uncertain", errors.Is(sourceErr, storage.ErrStateUncertain) && reflect.DeepEqual(sourceZero, storage.PropertyEnrollmentState{}))
 	got, readErr = os.ReadFile(filepath.Join(path, record))
 	legacyGot, e := os.ReadFile(filepath.Join(path, "ownership-999.json"))
 	check("enrollment_state_preserved", readErr == nil && e == nil && reflect.DeepEqual(got, expected) && reflect.DeepEqual(legacyGot, legacyBytes) && !o.Eligible)
+	check("enrollment_source_preserved", readErr == nil && e == nil && reflect.DeepEqual(got, expected) && reflect.DeepEqual(legacyGot, legacyBytes) && (!unsupported && !freshBound.Review().Observation.Eligible || unsupported && reflect.DeepEqual(freshBound, storage.PropertyEnrollmentState{})))
 	check("enrollment_state_fixture_teardown", cleanup())
 }

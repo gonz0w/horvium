@@ -734,6 +734,20 @@ records. Require all 76 assertions, actual PASS on both releases, complete porta
 review and full owned teardown. No metadata engine/schema change or historical
 777-case state-suite rerun. Both targets passed all 76 assertions at signed source
 `9329f795185df1a823247d8cba917357d7e614fe` with complete portable review and teardown; see the
-[manifest](../../testing/M2/property-enrollment-state-manifest.json). Maintainer
-review pending. Runtime provisioning/publication,
+[manifest](../../testing/M2/property-enrollment-state-manifest.json). Accepted
+in PR 68. Runtime provisioning/publication,
 restored-state/executor validation and complete M2 acceptance remain open.
+
+
+## Native enrollment source prerequisite
+
+The [contract/procedure](../../testing/M2/native-enrollment-source.md) adds partial
+M2-OWN-001/M2-PLAN-001/M2-STATE-001/M2-DRIFT-001 proof. Test owned explicit proposal
+and predecessor copies, denial before native I/O, cancellation/final expiry and
+backwards clocks, native/system drift and zero/hydrated binding refusal. Retain all
+76 focused native cases and add eight successor review/fresh revalidation,
+predecessor/member/context/cancellation/uncertainty/preservation controls. Actual
+root-backed ZFS success and softupdates UFS zero-result denial must remain distinct.
+Require all 84 exact assertions, actual PASS on both targets, complete portable
+review and full teardown. Historical metadata engines/manifests stay unchanged;
+no 777-case state rerun or runtime enrollment/publication/recovery acceptance.
