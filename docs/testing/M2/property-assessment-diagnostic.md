@@ -70,3 +70,14 @@ manifests remain byte-identical. Their tested revisions/scopes are preserved;
 the old 819-state and 88-pool suites are not rerun or relabeled. Qualification of
 this command adds no write eligibility, executor attribution, recovery resolution,
 reservation release, durable outcome or hardware/client support.
+
+## Fixture timestamp correction
+
+The first 15.1 run failed before command assessment cases: a directly provisioned
+queued event rounded the nanosecond capture time down to milliseconds, violating
+the existing rule that admission cannot precede capture. The pool/providers and
+all host artifacts were cleaned; this failed run is not qualification. Move the
+test-only constructor into portable tests and reproduce the failure with a fixed
+fractional capture timestamp. Queue at the following millisecond and append the
+applying/cancelled event one millisecond later. Product/source validation, native
+assertions and every time limit remain unchanged. Preserve the failed record.

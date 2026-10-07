@@ -166,31 +166,7 @@ func nativeStorageAssessmentCommand(t *testing.T, ctx context.Context, binary st
 	capture := observed
 	capture.Eligible = true // Test-only immutable capture; native product observations stay false.
 	jobFor := func(id string, property storage.Property, value string, terminal bool) storage.PropertyJob {
-		t.Helper()
-		at := time.Now()
-		plan, e := storage.Build(at, "command-fixture", p, capture, storage.Intent{FilesystemGUID: targetGUID, Property: property, Value: value})
-		if e != nil {
-			t.Fatal(e)
-		}
-		intent, e := plan.CapturePropertyIntent(at, "command-fixture", p, capture)
-		if e != nil {
-			t.Fatal(e)
-		}
-		r := intent.Review()
-		j := storage.Job{ID: id, Intent: storage.JobIntent{PlanID: r.ID, SubmissionID: id, PolicyRevision: p.Revision, PoolGUID: guid, Change: r.Intent}, History: []storage.JobTransition{{Revision: 1, At: uint64(at.UnixMilli()), State: storage.JobQueued, Reason: "admitted"}}}
-		bound, e := storage.BindPropertyJob(j, intent)
-		if e != nil {
-			t.Fatal(e)
-		}
-		state, reason := storage.JobApplying, "launch-intent"
-		if terminal {
-			state, reason = storage.JobCancelled, "operator-cancelled"
-		}
-		bound, e = storage.TransitionPropertyJob(bound, state, uint64(at.Add(time.Millisecond).UnixMilli()), reason, "")
-		if e != nil {
-			t.Fatal(e)
-		}
-		return bound
+		return assessmentCommandJobFixture(t, time.Now(), p, capture, targetGUID, id, property, value, terminal)
 	}
 	id := strings.Repeat("a", 64)
 	job := jobFor(id, storage.Quota, "2097152", false)
@@ -311,8 +287,7 @@ func nativeStorageAssessmentCommand(t *testing.T, ctx context.Context, binary st
 	})
 	t.Run("wrong-uid", func(t *testing.T) { denied(t, id, 65534) })
 	t.Run("native-missing", func(t *testing.T) {
-		wrong := p
-		wrong.PoolName = "absent_" + hex.EncodeToString(nonce[:])
+		wrong := assessmentMissingPoolFixture(p, "absent_"+hex.EncodeToString(nonce[:]))
 		data, e := storage.EncodeOwnershipRecord(wrong)
 		if e != nil {
 			t.Fatal(e)

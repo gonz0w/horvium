@@ -170,3 +170,91 @@ func TestStoragePropertyAssessmentCancellationExitAndDisarm(t *testing.T) {
 		stop()
 	}
 }
+
+func assessmentCommandJobFixture(t testing.TB, at time.Time, p storage.Policy, capture storage.Observation, targetGUID, id string, property storage.Property, value string, terminal bool) storage.PropertyJob {
+	t.Helper()
+	plan, e := storage.Build(at, "command-fixture", p, capture, storage.Intent{FilesystemGUID: targetGUID, Property: property, Value: value})
+	if e != nil {
+		t.Fatal(e)
+	}
+	intent, e := plan.CapturePropertyIntent(at, "command-fixture", p, capture)
+	if e != nil {
+		t.Fatal(e)
+	}
+	r := intent.Review()
+	j := storage.Job{ID: id, Intent: storage.JobIntent{PlanID: r.ID, SubmissionID: id, PolicyRevision: p.Revision, PoolGUID: r.PoolGUID, Change: r.Intent}, History: []storage.JobTransition{{Revision: 1, At: uint64(at.Add(time.Millisecond).UnixMilli()), State: storage.JobQueued, Reason: "admitted"}}}
+	bound, e := storage.BindPropertyJob(j, intent)
+	if e != nil {
+		t.Fatal(e)
+	}
+	state, reason := storage.JobApplying, "launch-intent"
+	if terminal {
+		state, reason = storage.JobCancelled, "operator-cancelled"
+	}
+	bound, e = storage.TransitionPropertyJob(bound, state, uint64(at.Add(2*time.Millisecond).UnixMilli()), reason, "")
+	if e != nil {
+		t.Fatal(e)
+	}
+	return bound
+}
+
+func TestStoragePropertyAssessmentFixtureAdmissionAfterFractionalCapture(t *testing.T) {
+	retained, err := storage.DecodePropertyJob(statusPropertyFixture)
+	if err != nil {
+		t.Fatal(err)
+	}
+	r := retained.Intent().Review()
+	p := storage.Policy{Revision: r.PolicyRevision, PoolGUID: r.PoolGUID, PoolName: r.PoolName}
+	o := storage.Observation{Complete: true, Eligible: true, PoolGUID: r.PoolGUID, PoolName: r.PoolName, Filesystems: r.Context, States: r.States, Pool: r.Pool, Features: r.Features, Topology: r.Topology}
+	for _, f := range r.Context {
+		o.Identities = append(o.Identities, storage.DatasetIdentity{GUID: f.GUID, Name: f.Name, Type: storage.FilesystemType})
+		p.Scopes = append(p.Scopes, storage.Scope{GUID: f.GUID, Name: f.Name, ParentGUID: f.ParentGUID, Properties: []storage.Property{storage.Quota, storage.RefQuota, storage.Compression}})
+	}
+	o.Identities = append(o.Identities, r.Versions...)
+	at := time.Unix(1791400000, 123456789).UTC()
+	for _, terminal := range []bool{false, true} {
+		job := assessmentCommandJobFixture(t, at, p, o, r.Intent.FilesystemGUID, strings.Repeat("a", 64), r.Intent.Property, r.Intent.Value, terminal)
+		queued := time.UnixMilli(int64(job.Job().History[0].At))
+		if queued.Before(at) || !queued.Before(at.Add(5*time.Minute)) {
+			t.Fatal("fixture admission precedes captured review")
+		}
+		if _, err := storage.EncodePropertyJob(job); err != nil {
+			t.Fatal(err)
+		}
+	}
+}
+
+// Preserve a valid root policy namespace while selecting an absent native name.
+func assessmentMissingPoolFixture(p storage.Policy, name string) storage.Policy {
+	result := p
+	result.PoolName = name
+	result.Scopes = append([]storage.Scope(nil), p.Scopes...)
+	for n := range result.Scopes {
+		result.Scopes[n].Name = name + strings.TrimPrefix(result.Scopes[n].Name, p.PoolName)
+	}
+	return result
+}
+
+func TestStoragePropertyAssessmentMissingPoolPolicyFixture(t *testing.T) {
+	job, err := storage.DecodePropertyJob(statusPropertyFixture)
+	if err != nil {
+		t.Fatal(err)
+	}
+	r := job.Intent().Review()
+	p := storage.Policy{Revision: r.PolicyRevision, PoolGUID: r.PoolGUID, PoolName: r.PoolName}
+	for _, f := range r.Context {
+		p.Scopes = append(p.Scopes, storage.Scope{GUID: f.GUID, Name: f.Name, ParentGUID: f.ParentGUID, Properties: []storage.Property{r.Intent.Property}})
+	}
+	before, err := storage.EncodeOwnershipRecord(p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	missing := assessmentMissingPoolFixture(p, "absent_fixture")
+	if _, err := storage.EncodeOwnershipRecord(missing); err != nil {
+		t.Fatal("missing-native fixture contains invalid policy", err)
+	}
+	after, err := storage.EncodeOwnershipRecord(p)
+	if err != nil || !bytes.Equal(before, after) {
+		t.Fatal("missing-native setup mutated policy")
+	}
+}
