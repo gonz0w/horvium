@@ -108,6 +108,15 @@ also caught the existing observing publisher. Keep those runs unqualified at the
 actual source. Flush the exact newly renamed inode and independently compare
 canonical bytes before the final directory barrier, including identity/ACL checks.
 Failure after rename stays uncertain and preserves the visible destination. This
-settles publication's own pending inode bookkeeping before the next observation;
+binds the strict post-publication metadata window after its own flush and
+canonical readback, settling pending inode bookkeeping before the next observation;
 strict census timestamp/identity checks remain unchanged, without retry or a
 timestamp exemption. Qualification must pass both guests at the repaired source.
+
+The next diagnostic identified a ctime change, with unchanged mtime, during the
+first owned readback after inode sync. Compare exact canonical bytes first, then
+bind and verify the strict metadata window through a second bounded read of the
+same opened owned inode. This fixed preparation sequence never retries a failed
+census or exempts a retained record from drift checks; all identity/ACL/content
+checks and uncertain-outcome handling remain. These diagnostic attempts are not
+qualification evidence for the final source.

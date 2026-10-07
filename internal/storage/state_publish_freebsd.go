@@ -233,9 +233,18 @@ func syncPublishedState(dir int, name string, data []byte, written unix.Stat_t) 
 	if err := f.Sync(); err != nil {
 		return fmt.Errorf("published inode sync: %w", ErrStateDirectory)
 	}
-	// This is the authoritative post-flush window; no timestamp exception or
-	// retry is made for later reads or the complete reservation/state census.
-	if unix.Fstat(fd, &before) != nil || !privateOwnershipFile(before) || before.Size != int64(len(data)) || !safeStateACL(fd, uint32(before.Mode), false) {
+	// UFS may finish the controlled rename/sync bookkeeping on this first
+	// owned readback. Verify exact bytes, then bind the authoritative metadata
+	// window after that I/O, as for the staged predecessor above. This is not a
+	// retry after failed drift validation or an exception in any state census.
+	settled, err := io.ReadAll(io.LimitReader(f, int64(len(data))+1))
+	if err != nil || !bytes.Equal(settled, data) {
+		return fmt.Errorf("published settling bytes: %w", ErrDrift)
+	}
+	if _, err := f.Seek(0, io.SeekStart); err != nil {
+		return ErrStateDirectory
+	}
+	if unix.Fstat(fd, &before) != nil || !privateOwnershipFile(before) || before.Size != int64(len(data)) || before.Dev != written.Dev || before.Ino != written.Ino || before.Mtim != written.Mtim || before.Gid != written.Gid || before.Flags != written.Flags || before.Gen != written.Gen || before.Btim != written.Btim || !safeStateACL(fd, uint32(before.Mode), false) {
 		return fmt.Errorf("published synced metadata: %w", ErrDrift)
 	}
 	current, err := io.ReadAll(io.LimitReader(f, int64(len(data))+1))
