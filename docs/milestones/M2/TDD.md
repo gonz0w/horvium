@@ -717,5 +717,23 @@ require complete portable review. Prior native metadata engines and historical
 manifests retain their sources; do not rerun or relabel the 777-case state suite.
 Both targets passed all 64 cases at signed source `8f6f0cef7f4321b56f37ae99f05c50696c8cc319`, with complete
 portable review and teardown; see the
-[manifest](../../testing/M2/property-enrollment-review-manifest.json). Maintainer
-review pending; no runtime enrollment/admission/recovery or M2 acceptance.
+[manifest](../../testing/M2/property-enrollment-review-manifest.json). Accepted in PR 67; no runtime enrollment/admission/recovery or M2 acceptance.
+
+
+## Root-leased enrollment state binding prerequisite
+
+The [contract/procedure](../../testing/M2/property-enrollment-state.md) adds partial
+M2-OWN-001/M2-PLAN-001/M2-STATE-001/M2-DRIFT-001 proof. Test explicit first/legacy
+predecessors, exact successors, partial-zero/overflow/same-revision drift, projected
+whole-temporary capacity, proposed-owner backing exclusions, retained holds, zero
+bindings and unsupported hosts. Retain the 64 native cases and add twelve actual
+first/successor/backing/policy/unrelated-record/namespace/job/orphan/expiry/context/
+preservation/teardown controls on a separate owned private lease. Actual ZFS permits
+binding and revalidation; softupdates UFS must refuse with zero binding and unchanged
+records. Require all 76 assertions, actual PASS on both releases, complete portable
+review and full owned teardown. No metadata engine/schema change or historical
+777-case state-suite rerun. Both targets passed all 76 assertions at signed source
+`9329f795185df1a823247d8cba917357d7e614fe` with complete portable review and teardown; see the
+[manifest](../../testing/M2/property-enrollment-state-manifest.json). Maintainer
+review pending. Runtime provisioning/publication,
+restored-state/executor validation and complete M2 acceptance remain open.

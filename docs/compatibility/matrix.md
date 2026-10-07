@@ -3,6 +3,18 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [root enrollment state binding](../testing/M2/property-enrollment-state.md)
+requires the held root lease, explicit first/exact predecessor, complete metadata/
+backing baseline, projected capacity and retained job holds. Fresh validation is
+read-only. Actual ZFS/non-softupdates UFS backing is required. Signed source
+`9329f795185df1a823247d8cba917357d7e614fe` passed all 76 focused assertions on both targets,
+complete portable review and teardown. Actual root-backed ZFS permitted first/
+successor binding and unrelated-record drift checks; softupdates UFS returned zero
+binding and preserved-record denial. Separate system mounts/non-softupdates UFS
+success remain unqualified here; see the
+[manifest](../testing/M2/property-enrollment-state-manifest.json). No runtime publication,
+restored-state/executor or hardware/scale support follows.
+
 M2 [explicit enrollment review](../testing/M2/property-enrollment-review.md)
 requires individually selected root scopes/members and complete fresh native/system
 correspondence in a bounded immutable five-minute review. No schema migration,
