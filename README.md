@@ -207,6 +207,13 @@ durable history and conservative restart status. Eight new native assessment cas
 passed on both FreeBSD releases, with focused portable review and verified teardown.
 No reconciliation resolution, replay, write or reservation release is enabled.
 
+The [root-leased native assessment](docs/testing/M2/native-property-assessment.md)
+connects retained property jobs to independently collected root policy/native facts
+and complete before/after ledger checks. Both FreeBSD targets passed all seventeen
+new source cases, eleven postcondition cases, eight retained-assessment cases and
+88 existing assertions, with focused portable review and verified teardown. Runtime
+writes, job resolution and operator workflows remain disabled.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

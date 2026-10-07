@@ -71,9 +71,8 @@ func nativePropertyPostconditions(t *testing.T, ctx context.Context, source *Poo
 		t.Fatal("owned postcondition filesystem missing")
 		return storage.Filesystem{}
 	}
-	capture := func(t testing.TB, name string, property storage.Property, value string) storage.PropertyIntent {
+	captureObservation := func(t testing.TB, o storage.Observation, name string, property storage.Property, value string) storage.PropertyIntent {
 		t.Helper()
-		o := collect(t)
 		// Only this test baseline uses a synthetic eligibility label. Matching an
 		// actual collected graph is not permission to construct a runtime plan.
 		o.Eligible = true
@@ -88,6 +87,16 @@ func nativePropertyPostconditions(t *testing.T, ctx context.Context, source *Poo
 		}
 		return i
 	}
+	captureObserved := func(t testing.TB, name string, property storage.Property, value string) (storage.PropertyIntent, storage.Observation) {
+		t.Helper()
+		o := collect(t)
+		return captureObservation(t, o, name, property, value), o
+	}
+	capture := func(t testing.TB, name string, property storage.Property, value string) storage.PropertyIntent {
+		t.Helper()
+		i, _ := captureObserved(t, name, property, value)
+		return i
+	}
 	match := func(t testing.TB, i storage.PropertyIntent) storage.Observation {
 		t.Helper()
 		o := collect(t)
@@ -99,13 +108,18 @@ func nativePropertyPostconditions(t *testing.T, ctx context.Context, source *Poo
 		}
 		return o
 	}
+	t.Run("native-job-source", func(t *testing.T) {
+		// Only pure policy construction occurred after this actual collection.
+		i := captureObservation(t, baseline, target, storage.Quota, "2097152")
+		nativePropertyJobSource(t, ctx, policy, i, must)
+	})
 	t.Run("job-baseline", func(t *testing.T) {
-		i := capture(t, target, storage.Quota, "2097152")
-		nativePropertyJobAssessment(t, i, policy, collect(t), true, false)
+		i, o := captureObserved(t, target, storage.Quota, "2097152")
+		nativePropertyJobAssessment(t, i, policy, o, true, false)
 	})
 	t.Run("job-already-matching", func(t *testing.T) {
-		i := capture(t, target, storage.Compression, "lz4")
-		nativePropertyJobAssessment(t, i, policy, collect(t), true, true)
+		i, o := captureObserved(t, target, storage.Compression, "lz4")
+		nativePropertyJobAssessment(t, i, policy, o, true, true)
 	})
 	for _, tc := range []struct {
 		name     string
@@ -178,11 +192,12 @@ func nativePropertyPostconditions(t *testing.T, ctx context.Context, source *Poo
 	})
 	t.Run("wrong-source", func(t *testing.T) {
 		must(t, "/sbin/zfs", "set", "compression=off", owned[0])
-		if i.ComparePostcondition(policy, collect(t)) == nil {
+		drift := collect(t)
+		if i.ComparePostcondition(policy, drift) == nil {
 			t.Fatal("identical local child accepted instead of inheritance")
 		}
 		t.Run("job-neither", func(t *testing.T) {
-			nativePropertyJobAssessment(t, i, policy, collect(t), false, false)
+			nativePropertyJobAssessment(t, i, policy, drift, false, false)
 		})
 		must(t, "/sbin/zfs", "inherit", "compression", owned[0])
 		match(t, i)

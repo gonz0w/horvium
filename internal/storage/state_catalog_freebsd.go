@@ -37,7 +37,7 @@ func (s *StateDirectory) inspectStateLocked(limits stateCatalogLimits, afterRead
 
 // Consume only independently validated complete bytes, while retaining all
 // existing final object/namespace checks. A consumer error discards the census.
-// The reservation inspector alone uses consume; publication keeps it nil.
+// Lease-bound readers use consume; publication keeps it nil.
 func (s *StateDirectory) inspectStateRecordsLocked(limits stateCatalogLimits, afterRead func(), ownTemporary string, consume func(stateRecordName, []byte) error) (StateCatalog, error) {
 	dir, err := s.ownershipDirectoryLocked()
 	if err != nil {
