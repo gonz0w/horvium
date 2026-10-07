@@ -486,6 +486,12 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 	jobNext, _ := TransitionJob(job, JobApplying, 1001, "launch-intent", "")
 	jobPath := filepath.Join(path, "job-"+job.ID+".json")
 	check("ufs_job_publication", lease.PublishJob(job, 0) == nil)
+	property := nativePropertyJobFixture(t)
+	propertyBytes, _ := EncodePropertyJob(property)
+	propertyNext, _ := TransitionPropertyJob(property, JobApplying, property.job.History[0].At+1, "launch-intent", "")
+	propertyPath := filepath.Join(path, "job-"+property.job.ID+".json")
+	check("ufs_property_publication", lease.PublishPropertyJob(property, 0) == nil)
+
 	// Fill only this new 32 MiB memory filesystem, observing real ENOSPC.
 	filler := filepath.Join(mountpoint, "filler")
 	out, e := os.OpenFile(filler, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
@@ -527,6 +533,9 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 	}
 	var fullFS unix.Statfs_t
 	check("native_enospc", full && unix.Fstatfs(int(lease.directory.Fd()), &fullFS) == nil && fullFS.Bfree == 0)
+	propertyErr := lease.PublishPropertyJob(propertyNext, 1)
+	pb, pe := os.ReadFile(propertyPath)
+	check("property_full_denial", propertyErr != nil && pe == nil && bytes.Equal(pb, propertyBytes))
 	jobErr := lease.PublishJob(jobNext, 1)
 	jb, je := os.ReadFile(jobPath)
 	check("job_full_denial", jobErr != nil && je == nil && bytes.Equal(jb, jobBytes))
@@ -570,6 +579,9 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 	check("native_readonly", unix.Fstatfs(int(dir.Fd()), &fs) == nil && fs.Flags&unix.MNT_RDONLY != 0)
 	check("readonly_denial", errors.Is(ro.PublishOwnership(next, 1), ErrStateDirectory))
 	check("job_readonly_denial", errors.Is(ro.PublishJob(jobNext, 1), ErrStateDirectory))
+	check("property_readonly_denial", errors.Is(ro.PublishPropertyJob(propertyNext, 1), ErrStateDirectory))
+	pb, pe = os.ReadFile(propertyPath)
+	check("property_readonly_preservation", pe == nil && bytes.Equal(pb, propertyBytes))
 	jb, je = os.ReadFile(jobPath)
 	check("job_readonly_preservation", je == nil && bytes.Equal(jb, jobBytes))
 	b, e = os.ReadFile(record)

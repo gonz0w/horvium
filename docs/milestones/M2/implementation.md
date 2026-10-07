@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation accepted in PR 42; ownership publication accepted in PR 43; bounded ownership catalog accepted in PR 46; ownership capacity accepted in PR 47; job lifecycle metadata accepted in PR 48; native job reader accepted in PR 49; mixed state census accepted in PR 50; durable job metadata accepted in PR 51; reviewed property intent accepted in PR 52; property job binding qualified, review pending; Actions disabled.
+Date: 2026-10-06. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation accepted in PR 42; ownership publication accepted in PR 43; bounded ownership catalog accepted in PR 46; ownership capacity accepted in PR 47; job lifecycle metadata accepted in PR 48; native job reader accepted in PR 49; mixed state census accepted in PR 50; durable job metadata accepted in PR 51; reviewed property intent accepted in PR 52; property job binding accepted in PR 53; native property-job store qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -355,5 +355,21 @@ record kind leaves accepted ownership/job readers and publishers unchanged and
 fail-closed. Portable qualification passed at signed source `ddec32450bfc533eca98c2e39d6a68ce09951404`:
 six parents/859 subtests, required baseline, storage race/all 18 fuzz targets and
 FreeBSD cross-compilation; see the [manifest](../../testing/M2/property-jobs-manifest.json).
-Review is pending. Native persistence, admission,
+Accepted in PR 53 at merged source `417afe1c965cd13ccde53934babaf67875f07635`. Native persistence, admission,
 reservations, eligibility assembly, executor/recovery and M2 acceptance remain open.
+
+
+## Native property-job store prerequisite
+
+The [store contract](../../testing/M2/property-job-storage.md) retains complete
+baseline/lifecycle bytes through typed root-only reads and publication using the
+existing descriptor-relative sync/rename transaction. Mixed census and all three
+publishers count both job formats against shared bytes/classes/submission IDs.
+Typed predecessor checks refuse conversion, rewrites and stale history. The state
+gate requires 555 assertions, fifty parents and 1,804 codec subtests on both
+releases with full owned teardown. Both targets passed at signed source
+ `5a0e67cd7f469cf398b1cd831284d8a44a3b67ce`
+with full teardown; see the [manifest](../../testing/M2/property-job-storage-manifest.json).
+Review is pending. Runtime admission,
+eligibility/executable attribution, reservations/recovery/cuts and M2 acceptance
+remain open.

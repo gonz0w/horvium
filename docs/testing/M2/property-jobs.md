@@ -1,6 +1,6 @@
 # M2 property job binding and record
 
-Date: 2026-10-06. Status: portable qualification passed; maintainer review pending.
+Date: 2026-10-06. Status: accepted in PR 53; portable qualification passed.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -67,7 +67,7 @@ exhaust the combined record even when the standalone baseline fits; it is never
 truncated. Numeric capacity/property values remain literal strings where required.
 
 This new kind is deliberately distinct from `job` v1 and `property-intent` v1.
-Accepted native readers/catalogs/publishers continue rejecting it as unsupported,
+At this portable prerequisite, native readers/catalogs/publishers rejected it as unsupported,
 preserving unknown files and blocking unsafe namespaces. No existing file is
 rewritten, upgraded or dropped. No product schema migration or native file support
 is claimed. Future native integration must qualify safe files, mixed budgets,
@@ -122,3 +122,5 @@ This qualifies bounded metadata binding/encoding/immutable successors. Native
 persistence, full executable eligibility/intent, admission/reservations, attribution/
 postconditions, recovery/acknowledgement cuts, M2 acceptance and the deferred M1
 manual accessibility gate remain open.
+
+Accepted in [PR 53](https://github.com/gonz0w/horvium/pull/53), merged source `417afe1c965cd13ccde53934babaf67875f07635`. The separate [native store extension](property-job-storage.md) qualifies descriptor access, publication and mixed census for this format.
