@@ -163,7 +163,8 @@ no write eligibility.
 The [explicit property enrollment review](docs/testing/M2/property-enrollment-review.md)
 retains individually selected scopes, member identities and complete native context
 in an immutable five-minute plan. Fresh validation detects proposal/native/system
-drift without publishing or granting write authority; qualification is pending.
+drift without publishing or granting write authority. Both native targets passed
+all 64 focused assertions, complete portable review and teardown.
 
 ## Agreed direction
 

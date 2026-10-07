@@ -602,5 +602,7 @@ context and normalized full system-use baseline. Fresh typed validation refuses
 proposal/native/system drift; no scope is inferred and eligibility stays false.
 No runtime provisioning/publication workflow is added. Require all 64 focused
 native cases on both targets, complete portable review and owned teardown;
-qualification pending. Root authorization, current predecessor/backing/capacity/
+both targets passed at signed source `8f6f0cef7f4321b56f37ae99f05c50696c8cc319` with complete portable review and teardown;
+see the [manifest](../../testing/M2/property-enrollment-review-manifest.json).
+Maintainer review is pending. Root authorization, current predecessor/backing/capacity/
 recovery and atomic publication gates remain open.

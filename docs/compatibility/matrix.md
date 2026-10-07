@@ -6,8 +6,11 @@ validation are separate. Refresh exact versions in each active research manifest
 M2 [explicit enrollment review](../testing/M2/property-enrollment-review.md)
 requires individually selected root scopes/members and complete fresh native/system
 correspondence in a bounded immutable five-minute review. No schema migration,
-provisioner or write eligibility is added. Both native targets and complete portable
-qualification remain pending; hardware/populated scale support is unclaimed.
+provisioner or write eligibility is added. Signed source `8f6f0cef7f4321b56f37ae99f05c50696c8cc319`
+passed all 64 focused assertions on both native targets, complete portable review
+and full owned teardown; see the
+[manifest](../testing/M2/property-enrollment-review-manifest.json). Hardware/populated
+scale support and full runtime enrollment/recovery remain unclaimed.
 
 M2 [property store readiness](../testing/M2/property-store-readiness.md) requires
 complete private policy/job records, actual qualified system backing and retained

@@ -715,4 +715,7 @@ owned mirror. Require all 64 assertions and actual PASS on both targets, exact
 policy/content/native preservation and full teardown. Shared checker changes
 require complete portable review. Prior native metadata engines and historical
 manifests retain their sources; do not rerun or relabel the 777-case state suite.
-Qualification pending; no runtime enrollment/admission/recovery or M2 acceptance.
+Both targets passed all 64 cases at signed source `8f6f0cef7f4321b56f37ae99f05c50696c8cc319`, with complete
+portable review and teardown; see the
+[manifest](../../testing/M2/property-enrollment-review-manifest.json). Maintainer
+review pending; no runtime enrollment/admission/recovery or M2 acceptance.
