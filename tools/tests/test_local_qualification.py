@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 import importlib.util
+import re
 import subprocess
 import unittest
 from pathlib import Path
@@ -65,6 +66,20 @@ class LocalQualificationTests(unittest.TestCase):
         self.module.validate_result('state',passed+result)
         for bad in ['',passed,result,passed+result.replace('process_reaped=pass',''),passed+result.replace('fixture_teardown=pass','fixture_teardown=fail'),passed+result.replace('PROPERTY_JOB_STORAGE_RESULT','MISSING_PROPERTY_RESULT')]:
             with self.assertRaises(ValueError):self.module.validate_result('state',bad)
+
+    def test_state_selectors_match_the_required_freebsd_test_inventory(self):
+        checker=self.module.load_tool('check-state-evidence')
+        available=set()
+        for path in (ROOT/'internal/storage').glob('*_test.go'):
+            if path.name.endswith('_other_test.go'):
+                continue
+            available.update(re.findall(r'func (Test\w+)\(',path.read_text()))
+        for name in ['bsd-state.sh','bsd-state-prebuilt.sh']:
+            source=(ROOT/'tools'/name).read_text()
+            selectors=re.findall(r"(?:-test.run=|-run )'([^']+)'",source)
+            self.assertEqual(len(selectors),1)
+            selected={test for test in available if re.search(selectors[0],test)}
+            with self.subTest(script=name):self.assertEqual(selected,checker.TESTS)
 
     def test_prebuilt_verification_rejects_missing_duplicate_or_wrong_digest(self):
         expected = 'a' * 64
