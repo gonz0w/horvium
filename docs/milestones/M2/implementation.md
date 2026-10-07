@@ -579,3 +579,16 @@ complete portable review and verified teardown; see the
 Actual ZFS publication and softupdates UFS unchanged-record denial both passed.
 Enrollment provisioning/adoption, system-store eligibility, full recovery, atomic
 admission, transport and execution remain required before operator workflows.
+
+## Read-only property state checks
+
+The [store contract](../../testing/M2/property-store-readiness.md) adds a separate
+composed observer requiring complete private policy/job inspection, exact actual
+system backing and retained job holds. The existing safety observer remains
+read-only with its accepted scope. All observations keep false eligibility.
+Signed source `231b8f0f2c250fcbfc900d95d17ed94de6a24cbb` passed all 56 focused
+assertions on both targets, complete portable review and teardown. Actual ZFS
+success and softupdates UFS denial passed; see the
+[execution manifest](../../testing/M2/property-store-readiness-manifest.json).
+Provisioning/adoption, full restored-state/executor
+validation, atomic admission, transport and execution remain open.

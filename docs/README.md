@@ -139,4 +139,6 @@
 
 - [M2 native provider binding](testing/M2/property-provider-binding.md): complete leaf serial/geometry and qualified attachment correspondence; both targets passed all 37 assertions, complete portable review and teardown; accepted in PR 64; no enrollment or write eligibility.
 
-- [M2 explicit property member enrollment](testing/M2/property-member-enrollment.md): version 2 member baselines, legacy read compatibility and exact native matching; both targets passed all 46 assertions, complete portable review and teardown; maintainer review pending; eligibility remains false.
+- [M2 explicit property member enrollment](testing/M2/property-member-enrollment.md): version 2 member baselines, legacy read compatibility and exact native matching; both targets passed all 46 assertions, complete portable review and teardown; accepted in PR 65; eligibility remains false.
+
+- [M2 property store readiness](testing/M2/property-store-readiness.md): complete private policy/job census, actual system backing and retained recovery holds; both targets passed all 56 assertions, complete portable review and teardown; maintainer review pending; no write eligibility.

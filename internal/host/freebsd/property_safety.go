@@ -37,6 +37,12 @@ func NewPropertySafetySource(state *storage.StateDirectory) (*PropertySafetySour
 	return &PropertySafetySource{policy: policy, system: system, providers: providers}, nil
 }
 func (s *PropertySafetySource) Collect(ctx context.Context, guid string) (storage.Policy, storage.Observation, error) {
+	return s.collect(ctx, guid, nil)
+}
+
+// A trusted store source can add its lease-bound check within the same final
+// policy window. The public safety observer keeps its accepted read-only scope.
+func (s *PropertySafetySource) collect(ctx context.Context, guid string, check func(storage.Policy, storage.PoolSystemUse) error) (storage.Policy, storage.Observation, error) {
 	if ctx == nil {
 		return storage.Policy{}, storage.Observation{}, storage.ErrInvalid
 	}
@@ -71,6 +77,14 @@ func (s *PropertySafetySource) Collect(ctx context.Context, guid string) (storag
 	}
 	if err = ctx.Err(); err != nil {
 		return storage.Policy{}, storage.Observation{}, err
+	}
+	if check != nil {
+		if err = check(p, u); err != nil {
+			return storage.Policy{}, storage.Observation{}, err
+		}
+		if err = ctx.Err(); err != nil {
+			return storage.Policy{}, storage.Observation{}, err
+		}
 	}
 	// The provider/system phases must not extend the earlier policy baseline window
 	// without a final independent read through the same held root lease.

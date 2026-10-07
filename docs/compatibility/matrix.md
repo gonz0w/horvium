@@ -3,6 +3,17 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [property store readiness](../testing/M2/property-store-readiness.md) requires
+complete private policy/job records, actual qualified system backing and retained
+recovery holds in a separate composed observer. ZFS or non-softupdates UFS system
+mounts are the initial capability policy; arbitrary separate data mounts refuse.
+Signed source `231b8f0f2c250fcbfc900d95d17ed94de6a24cbb` passed all 56 focused
+assertions on both declared native targets, complete portable review and teardown.
+Actual root-backed ZFS success and softupdates UFS denial passed; separate
+system mounts/non-softupdates UFS success were not exercised here. See the
+[manifest](../testing/M2/property-store-readiness-manifest.json). No restored-state,
+executor or write eligibility claim follows.
+
 M2 [explicit member enrollment](../testing/M2/property-member-enrollment.md) adds
 version 2 ownership member baselines and requires exact native correspondence.
 Version 1 bytes and reads remain compatible, but legacy records fail complete

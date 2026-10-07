@@ -189,6 +189,22 @@ owned disposable fixtures; root filesystem alone is not evidence of the backing.
 See [the contract and finding](../../testing/M2/property-submission.md). This gate
 must reach runtime write eligibility before executable admission.
 
+Property-state inspection amendment: a separate read-only composed observer checks
+complete private records and the selected canonical policy under the held writer
+lease. Kernel statfs backing must match the fresh complete system mount/provider
+view and be ZFS or UFS without soft updates/read-only flags. Initially qualify
+backing mounted at `/`, `/boot`, `/etc`, `/usr`, `/var`, `/root` or descendants
+of those non-root system namespaces; arbitrary separate data mounts are denied.
+Refuse backing on or sharing physical disks with any enrolled imported pool.
+Every nonterminal retained job suspends this check until executor/recovery
+validation; every retained job on the selected pool, including terminal labels,
+keeps its hold. Do not repair, evict, release or replay anything. Orphan uncertainty
+latches the lease's existing publication block even if a root actor removes the
+orphan. Compare bounded mount identity/capability fields again before success;
+sequential views are not an atomic fence. This is not restored-state or executor
+quiescence validation; runtime eligibility remains false. See the
+[property state contract](../../testing/M2/property-store-readiness.md).
+
 One helper holds a lifetime nonblocking advisory lock on a stable root-owned lock
 file. A second writer fails; do not unlink/recreate the lock inode. Strictly parse
 each bounded record before using it. Write a unique same-directory temporary

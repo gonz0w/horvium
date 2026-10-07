@@ -678,3 +678,25 @@ the baseline/112 tooling tests, all 11 race packages and 35 fuzz targets with fu
 teardown; see the
 [execution manifest](../../testing/M2/property-member-enrollment-manifest.json).
 Full runtime enrollment/admission/recovery and acceptance remain open.
+
+## Read-only property store readiness prerequisite
+
+Partial M2-STATE-001, M2-RECOVERY-001, M2-OWN-001 and M2-DRIFT-001 at T1/T3:
+check the complete mixed private namespace and selected canonical policy under
+one held lease/mutex. Require kernel-observed supported writable/non-softupdates
+system backing matched to complete fresh mount/provider facts; refuse enrolled
+pool or shared physical backing. Retain all selected-pool terminal/nonterminal
+holds and deny global nonterminal work. Orphans latch uncertainty without repair.
+Require final backing identity/capability and root policy/context checks, zero
+composed results on failures and false eligibility on success. Preserve every
+record/hold. Non-FreeBSD stays unavailable. The focused native fixture retains
+46 cases and adds ten store/backing/policy/namespace/hold/uncertainty/preservation
+cases: all 56 assertions and actual PASS/teardown on both targets are required.
+Observe actual ZFS success and softupdates UFS denial; no filesystem settings or
+additional disks/services change. Complete portable review is required for the
+shared checker. See the [procedure](../../testing/M2/property-store-readiness.md).
+Signed source `231b8f0f2c250fcbfc900d95d17ed94de6a24cbb` passed all 56 assertions
+on both targets, the baseline/112 tooling tests, all 11 race packages and 35 fuzz
+targets with full teardown; see the
+[execution manifest](../../testing/M2/property-store-readiness-manifest.json).
+Full recovery/admission/execution and acceptance remain open.

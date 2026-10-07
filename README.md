@@ -154,6 +154,12 @@ and geometry to match fresh native reads. Version 1 remains readable but cannot
 satisfy this gate. Both targets passed all 46 focused assertions, complete portable
 review and verified teardown; runtime writes remain disabled.
 
+The [property state check](docs/testing/M2/property-store-readiness.md) adds
+complete private policy/job inspection, actual system-backing capability and
+conservative recovery holds to a separate read-only native source. Both targets
+passed all 56 focused assertions, complete portable review and teardown; it grants
+no write eligibility.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.
