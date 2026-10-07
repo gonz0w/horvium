@@ -422,3 +422,10 @@ refusal and restoration. Kernel statfs selects actual version 2 publication or
 unchanged-record softupdates UFS denial on system backing; no mount settings or
 extra services change. Historical state-suite evidence retains its original
 source; this focused run does not requalify unrelated metadata crash cuts.
+
+The [property store readiness extension](M2/property-store-readiness.md) requires
+all 56 focused cases on the same declared disks. It adds complete private-record
+and canonical-policy checks, actual system-backing capability, retained job holds,
+orphan uncertainty and unchanged-record assertions. No backing settings, services
+or extra devices change; historical metadata crash/ACL/capacity evidence retains
+its original source.

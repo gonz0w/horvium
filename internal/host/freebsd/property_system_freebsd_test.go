@@ -380,6 +380,8 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 	restoredPolicy, restoredObservation, restoredErr := safety.Collect(ctx, guid)
 	check("enrollment_restored", restoredErr == nil && len(restoredPolicy.Members) == 2 && !restoredObservation.Eligible)
 
+	nativePropertyStateFixture(t, ctx, check, state, statePath, policy, u, data, legacyBytes, fs, backing.Flags&unix.MNT_SOFTDEP != 0)
+
 	providers, err := NewPoolProviderSource()
 	if err != nil {
 		t.Fatal(err)
