@@ -99,7 +99,8 @@ passed all 555 state assertions and complete teardown on both targets; accepted
 in PR 54. The [job reservation checks](docs/testing/M2/job-reservations.md) add
 bounded duplicate/plan/pool metadata checks; accepted in PR 55. The
 [native reservation inspector](docs/testing/M2/native-job-reservations.md) connects
-that view to the held root state lease; qualification is pending. Runtime admission
+that view to the held root state lease; both targets passed all 622 assertions
+and full teardown; maintainer review is pending. Runtime admission
 remains disabled.
 Runtime enrollment and full store/recovery gates remain open.
 Other native gates, runtime job admission and storage writes remain pending; the runtime is

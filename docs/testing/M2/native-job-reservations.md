@@ -1,6 +1,6 @@
 # M2 native job reservation inspection
 
-Date: 2026-10-06. Status: implementing; native qualification pending.
+Date: 2026-10-06. Status: qualified on both declared native targets; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -80,8 +80,40 @@ source during qualification. Verify guest fixtures, overlays, keys, test artifac
 and process groups are removed; base images/runtime caches remain inert and
 unchanged. Every prior manifest retains its actual historical source/bytes.
 
-Native qualification is pending. Complete fresh storage eligibility/root-policy/
-caller authorization, live-session/clock checks, atomic durable admission, old
-executor/boot attribution, recovery/release, acknowledgement cuts and M2 acceptance
-remain unqualified. No runtime/helper/HTTP/CLI/startup consumer or storage mutation,
-metadata format migration, service installation or deployment is added.
+Executed qualification below preserves exact source/input/log records. Complete
+fresh storage eligibility/root-policy/ caller authorization, live-session/clock
+checks, atomic durable admission, old executor/boot attribution, recovery/release,
+acknowledgement cuts and M2 acceptance remain unqualified. No
+runtime/helper/HTTP/CLI/startup consumer or storage mutation, metadata format
+migration, service installation or deployment is added.
+
+ ## Executed qualification
+
+Signed functional/native-test source `cca3a07eed591ed3bab757fc530eada0a40686be`
+passed all 622 state assertions, 58 parents and 1,837 distinct codec/model
+children on both releases without skips/failures. The [sanitized
+manifest](native-job-reservations-manifest.json) records exact
+source/base/inputs/compiler/guest/runtime/utility/artifact/log hashes, complete
+case inventory, preserved prior evidence and guest/host teardown.
+
+The first cross-build caught a test-only nonexistent publisher wrapper before a
+guest booted; the fixture now uses the accepted bounded wrapper. Production
+inspection remained unchanged. That attempt is unqualified, recorded at its actual
+source and fully torn down. Qualification uses the corrected signed source above.
+
+Shared evidence changes selected one complete portable review: baseline checks (97
+tooling regressions), race checks across eleven packages and all 27
+compiler-listed fuzz targets passed in 138.248 seconds.
+
+| Target | Root | Reservation inspection parent | Full owned guest | Result |
+|---|---|---|---|---|
+| FreeBSD 15.1 amd64 | zfs | 3.06 s | 49.907 s | All 622 + 58/1,837 passed; full teardown |
+| FreeBSD 14.5 amd64 | ufs | 1.86 s | 37.547 s | All 622 + 58/1,837 passed; full teardown |
+
+Both native runs used the same compiler-verified cross-built artifact. Guest
+fixtures, images, copied executables, keys, firmware variables and owned process
+groups were removed; base images/runtime caches were preserved. All 31 prior M2
+manifests are byte-identical to the base. `make lab-status` verified all 205 owned
+sessions stopped. Evidence-only followups rerun baseline validation and must cite
+this actual source if they reuse deep checks. Complete native
+admission/recovery/release/cut gates and M2 acceptance remain open.

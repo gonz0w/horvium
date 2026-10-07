@@ -399,7 +399,12 @@ complete property baselines without another whole encoded-record set. Candidate
 capacity includes ownership bytes; final ordinary object/namespace drift or any
 unsafe record discards the entire view. Root/ACL guards, orphan/uncertainty
 preservation and conservative terminal holds remain. Require 622 state assertions,
-58 parents and 1,837 codec/model children on both native targets with full teardown.
-Qualification is pending. No runtime admission/recovery/release or native effect
-is authorized by the result; caller/policy/eligibility/session/clock and executor
-gates remain open.
+58 parents and 1,837 codec/model children on both native targets with full
+teardown. Both targets passed at signed source
+`cca3a07eed591ed3bab757fc530eada0a40686be` with full teardown. No runtime
+admission/recovery/release or native effect is authorized by the result;
+caller/policy/eligibility/session/clock and executor gates remain open.
+
+Native reservation qualification: `cca3a07eed591ed3bab757fc530eada0a40686be`; see
+the [manifest](../../testing/M2/native-job-reservations-manifest.json). Maintainer
+review is pending; no runtime admission/release follows.

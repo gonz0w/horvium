@@ -324,6 +324,8 @@ It streams the complete private ownership/job census into an immutable full job
 view, includes ownership bytes in candidate capacity checks and preserves all
 terminal/uncertain holds. Both accepted job formats use the existing root/UFS/ACL
 fixtures; the new API must also deny the actual inherited-descriptor UID-65534
-child. Qualification is pending. Prior 555-case evidence remains bound to its
-original source and cannot qualify this extension. The same prebuilt execution
-and complete guest/host teardown rules apply; no runtime admission is enabled.
+child. Both targets passed at signed source
+`cca3a07eed591ed3bab757fc530eada0a40686be` with full teardown. Prior 555-case
+evidence remains bound to its original source and cannot qualify this extension.
+The same prebuilt execution and complete guest/host teardown rules apply; no
+runtime admission is enabled.
