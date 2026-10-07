@@ -934,5 +934,18 @@ baseline/122 tooling tests and command-package race checks; both releases passed
 all eight new cases, six health/fifteen assessment children and 21 status assertions
 with identical binaries and verified control/storage/process/base/runtime teardown.
 See the [manifest](../../testing/M2/scan-lifecycle-observations-manifest.json).
-Maintainer review is pending. Advancing
+Accepted in [PR 78](https://github.com/gonz0w/horvium/pull/78). Advancing
 progress, injected errors, attributed lifecycle and full M2 remain open.
+
+## Native repaired-checksum finding fixture
+
+The [contract](../../testing/M2/checksum-findings.md) adds partial M2-HEALTH-001,
+M2-SCRUB-001, M2-DRIFT-001 and M2-NATIVE-001 evidence. Require eight actual
+GUID-bound injection/scrub/finding/content/restoration cases on both releases,
+retaining all old status/assessment/health/scan checks and deadlines. A native
+read-buffer bit flip on one mirror leaf must produce nonzero member checksum
+findings while repaired scan completion/error count remain separate; independently
+verify content and clear only the owned acknowledged handler. Missing/unknown
+acknowledgement cannot broaden cleanup. No new product implementation; native
+qualification and focused review are pending. Unrecoverable errors, advancing
+progress, attribution/executor/recovery and full acceptance remain open.

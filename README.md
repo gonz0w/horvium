@@ -232,6 +232,11 @@ restored disposable-guest control. Both FreeBSD targets passed all eight new
 cases and existing checks with verified teardown; product code and write
 eligibility remain unchanged.
 
+The [checksum-finding fixture](docs/testing/M2/checksum-findings.md) checks real
+member checksum findings, separate completed-scan facts and preserved mirror
+content with the base fault-injection tool. Qualification is pending; product
+code and write eligibility remain unchanged.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

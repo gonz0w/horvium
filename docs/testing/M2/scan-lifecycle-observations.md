@@ -1,6 +1,6 @@
 # M2 native scrub-state observation qualification
 
-Date: 2026-10-07. Status: qualified subset; maintainer review pending.
+Date: 2026-10-07. Status: accepted subset in [PR 78](https://github.com/gonz0w/horvium/pull/78).
 Authority: [approved PRD](../../milestones/M2/PRD.md),
 [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).

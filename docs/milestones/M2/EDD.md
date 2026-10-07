@@ -447,3 +447,13 @@ GUID-bound owned pool commands and restoration/reread on every exit. Actual
 status, pause/resume/stop and completion are never replaced with synthetic
 results. This changes no product reader, authority, executor or write workflow.
 Held progress is not advancing-progress or attribution evidence.
+
+## Native repaired-checksum fixture amendment
+
+The [fixture contract](../../testing/M2/checksum-findings.md) adopts base zinject
+read-buffer corruption solely inside an opted-in disposable guest on one bound
+leaf GUID. Independently collect actual checksum counters, scan completion and
+error counts; preserve the healthy replica and generated content. Arm cleanup
+before effect, clear only the acknowledged ID, verify absence and child/pool
+GUIDs before fixture destruction. Unknown acknowledgements require discarding
+the guest. This adds no product fault injector, write authority or job outcome.

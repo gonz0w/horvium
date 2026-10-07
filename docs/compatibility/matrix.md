@@ -3,6 +3,12 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [repaired-checksum findings](../testing/M2/checksum-findings.md) add a
+GUID-targeted disposable mirror read-corruption fixture with actual member
+counters, distinct scan completion/error facts, content checks and exact handler/
+storage teardown. Native qualification is pending; unrecoverable errors, native
+executor/recovery, protocol continuity and hardware/client support remain open.
+
 M2 [native scrub-state observations](../testing/M2/scan-lifecycle-observations.md)
 add an eight-case fixture for real running/pause/resume/cancel/completion facts
 with restored disposable-guest kernel control and unchanged product code/gates.
