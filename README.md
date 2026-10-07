@@ -194,6 +194,13 @@ from conservative restart status. Both disposable FreeBSD targets passed all 21
 assertions with verified teardown; full portable review passed. No write or
 recovery authority is added.
 
+The [reviewed property postcondition comparison](docs/testing/M2/property-postconditions.md)
+checks selected local effects and retained inheritance/received context from fresh
+observations. Both FreeBSD targets passed the eleven native postcondition
+subtests and 88 existing assertions, with focused portable review and verified
+teardown. Matching does not authorize writes, attribute an executor or
+acknowledge durable job success.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

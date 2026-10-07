@@ -378,3 +378,15 @@ records/lock identity on refusal. Initial empty-lock creation/sync remains the
 existing opener contract. No native collection/write, policy/job publication,
 management transport, repair/replay or service is added. See the
 [contract](../../testing/M2/storage-job-status.md).
+
+
+## Reviewed property postcondition amendment
+
+Compare one immutable property intent with independently fresh complete collected
+observations and unchanged trusted policy without requiring or supplying native
+write eligibility. Require exact selected local value/source/supplier, retained
+received columns, compression inheritance and protected overrides, and unchanged
+relevant review/policy context. Preserve the original precondition gates. A match
+is an observed fact and cannot attribute execution, grant admission, release
+holds, clear recovery or acknowledge durable job success; even an already-matching
+value may match. See the [contract](../../testing/M2/property-postconditions.md).

@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 71; foreground storage job-status integration in progress; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 72; reviewed property postconditions in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -681,6 +681,25 @@ signal cancellation, record/lock preservation, backing and complete teardown.
 Full portable review passed 122 tooling tests, 11 race packages and 35 bounded
 fuzz targets. See the [manifest](../../testing/M2/storage-job-status-manifest.json).
 All 47 historical M2 manifests and native metadata code/tests/codecs are unchanged;
-the state-directory public comment now names inspection wiring. Maintainer review,
-management UI/CLI parity, native reconciliation/transport/execution and the
+the state-directory public comment now names inspection wiring. Accepted in
+[PR 72](https://github.com/gonz0w/horvium/pull/72) at merged source
+`d3ca26e03b0f40be38d39dfa226d2da4bc29991c`. Management UI/CLI parity, native reconciliation/transport/execution and the
 remaining M2 lifecycle remain open.
+
+
+## Reviewed property postcondition comparison
+
+The [contract](../../testing/M2/property-postconditions.md) checks exact local
+property effects and relevant retained context against independently fresh native
+observations, preserving false eligibility and all existing precondition gates.
+Both native targets passed all 88 existing assertions plus eleven mandatory
+postcondition subtests at signed source `0b828eb38be56708abca17dbfc200fb49d1ddd62`.
+Focused portable review passed 122 tooling tests, nine affected race packages
+and 30 selected bounded fuzz targets, with full owned teardown; see the
+[manifest](../../testing/M2/property-postconditions-manifest.json). Both superseded
+fixture failures remain unqualified; the corrections change only fixture reset
+semantics/raw-column expectations. The existing pool-source checker/selector and
+all 48 historical metadata manifests retain their actual scope. Maintainer review
+remains pending. No runtime native
+writer, job-success publication, attribution, recovered-state clearance or
+management mutation transport is added.
