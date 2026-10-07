@@ -16,4 +16,7 @@ func TestUnsupportedHostFailsExplicitly(t *testing.T) {
 	if _, err := NewPoolPropertySource(); !errors.Is(err, ErrUnsupported) {
 		t.Fatalf("pool property collection pretended to support this OS: %v", err)
 	}
+	if _, err := NewPropertyPolicySource(nil); !errors.Is(err, ErrUnsupported) {
+		t.Fatalf("policy collection pretended to support this OS: %v", err)
+	}
 }

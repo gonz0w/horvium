@@ -131,6 +131,12 @@ drift. All 16 collector assertions passed on both native targets, with complete
 portable review and teardown; successful collection still grants no write
 eligibility or runtime submission authority.
 
+The [root policy/native binding](docs/testing/M2/property-policy-binding.md)
+derives pool addresses from the held root metadata reader, refuses policy drift
+and checks every explicit scope against fresh native observations. Both native
+targets passed all 22 assertions, complete portable review and teardown;
+successful binding still grants no write eligibility.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

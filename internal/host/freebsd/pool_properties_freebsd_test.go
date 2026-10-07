@@ -99,7 +99,7 @@ func TestNativePoolPropertyCollection(t *testing.T) {
 			return
 		}
 		passed["teardown"] = true
-		cases := []string{"complete", "pool_identity", "dataset_identity", "property_values", "inheritance", "snapshot_owner", "features", "topology", "eligibility_denied", "wrong_guid_denied", "rename_fresh", "readonly_denied", "volume_denied", "preservation", "backing_preserved", "teardown"}
+		cases := []string{"complete", "pool_identity", "dataset_identity", "property_values", "inheritance", "snapshot_owner", "features", "topology", "eligibility_denied", "wrong_guid_denied", "rename_fresh", "readonly_denied", "volume_denied", "preservation", "backing_preserved", "teardown", "policy_bound", "policy_missing_denied", "policy_change_denied", "policy_scope_denied", "policy_rename_denied", "policy_closed_denied"}
 		if len(passed) != len(cases) {
 			t.Error("incomplete native assertions")
 			return
@@ -164,6 +164,74 @@ func TestNativePoolPropertyCollection(t *testing.T) {
 	p := storage.Policy{Revision: 1, PoolGUID: guid, PoolName: pool, Scopes: []storage.Scope{{GUID: childGUID, Name: pool + "/data", ParentGUID: rootGUID, Properties: []storage.Property{storage.RefQuota}}}}
 	_, err = storage.Build(time.Now(), "fixture-session", p, o, storage.Intent{FilesystemGUID: childGUID, Property: storage.RefQuota, Value: "1"})
 	check("eligibility_denied", errors.Is(err, storage.ErrUnavailable))
+	// Test-only metadata provisioning: these bytes are not product enrollment or
+	// a publication/durability test. The actual source reads through the root lease.
+	// The state lease refuses writable ancestors, including sticky /tmp.
+	// Provision this test-owned private directory under the guest's trusted root.
+	statePath, err := os.MkdirTemp("/root", "horvium-property-policy-")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		if err := os.RemoveAll(statePath); err != nil {
+			t.Error("owned policy fixture cleanup", err)
+		}
+		if _, err := os.Lstat(statePath); !errors.Is(err, os.ErrNotExist) {
+			t.Error("owned policy fixture remains")
+		}
+	})
+	state, err := storage.OpenStateDirectory(statePath)
+	if err != nil {
+		t.Fatal("fixture state lease", err)
+	}
+	t.Cleanup(func() {
+		if err := state.Close(); err != nil {
+			t.Error("state lease cleanup", err)
+		}
+	})
+	bound, err := NewPropertyPolicySource(state)
+	if err != nil {
+		t.Fatal(err)
+	}
+	zero := func(p storage.Policy, o storage.Observation, err error) bool {
+		return err != nil && reflect.DeepEqual(p, storage.Policy{}) && reflect.DeepEqual(o, storage.Observation{})
+	}
+	missingP, missingO, missingErr := bound.Collect(ctx, guid)
+	check("policy_missing_denied", zero(missingP, missingO, missingErr))
+	writePolicy := func(policy storage.Policy) {
+		data, err := storage.EncodeOwnershipRecord(policy)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err = os.WriteFile(filepath.Join(statePath, "ownership-"+guid+".json"), data, 0600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	writePolicy(p)
+	boundP, boundO, boundErr := bound.Collect(ctx, guid)
+	_, planErr := storage.Build(time.Now(), "fixture-session", boundP, boundO, storage.Intent{FilesystemGUID: childGUID, Property: storage.RefQuota, Value: "1"})
+	check("policy_bound", boundErr == nil && reflect.DeepEqual(boundP, p) && reflect.DeepEqual(boundO, o) && errors.Is(planErr, storage.ErrUnavailable))
+	// Introduce an actual fixture-owned policy change between the native passes
+	// and the second root read, using the package-private collection seam.
+	reads := 0
+	changing := &PropertyPolicySource{pool: source, ownership: func(g string) (storage.Policy, error) {
+		reads++
+		if reads == 2 {
+			changed := p
+			changed.Revision++
+			writePolicy(changed)
+		}
+		return state.ReadOwnership(g)
+	}}
+	badP, badO, badErr := changing.Collect(ctx, guid)
+	check("policy_change_denied", zero(badP, badO, badErr) && errors.Is(badErr, storage.ErrDrift))
+	badPolicy := p
+	badPolicy.Scopes = append([]storage.Scope(nil), p.Scopes...)
+	badPolicy.Scopes[0].GUID = "1"
+	writePolicy(badPolicy)
+	badP, badO, badErr = bound.Collect(ctx, guid)
+	check("policy_scope_denied", zero(badP, badO, badErr) && errors.Is(badErr, storage.ErrDenied))
+	writePolicy(p)
 	denied, e := source.Collect(ctx, "1", pool)
 	check("wrong_guid_denied", errors.Is(e, storage.ErrDrift) && reflect.DeepEqual(denied, storage.Observation{}))
 	after := must("/sbin/zfs", "list", "-H", "-p", "-r", "-t", "filesystem", "-o", "name,guid,quota,refquota,compression,mountpoint,canmount,readonly,mounted,encryption", pool)
@@ -172,6 +240,13 @@ func TestNativePoolPropertyCollection(t *testing.T) {
 	must("/sbin/zfs", "rename", pool+"/data", pool+"/renamed")
 	renamed, e := source.Collect(ctx, guid, pool)
 	check("rename_fresh", e == nil && renamed.Filesystems[1].GUID == childGUID && renamed.Filesystems[1].Name == pool+"/renamed" && o.Filesystems[1].Name == pool+"/data")
+	badP, badO, badErr = bound.Collect(ctx, guid)
+	check("policy_rename_denied", zero(badP, badO, badErr) && errors.Is(badErr, storage.ErrDenied))
+	if err = state.Close(); err != nil {
+		t.Fatal(err)
+	}
+	badP, badO, badErr = bound.Collect(ctx, guid)
+	check("policy_closed_denied", zero(badP, badO, badErr) && errors.Is(badErr, storage.ErrStateDirectory))
 	must("/sbin/zfs", "set", "readonly=on", pool+"/renamed")
 	denied, e = source.Collect(ctx, guid, pool)
 	check("readonly_denied", e != nil && reflect.DeepEqual(denied, storage.Observation{}))
