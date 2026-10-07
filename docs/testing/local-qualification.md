@@ -343,8 +343,8 @@ admission, caller/policy/eligibility/session/clock, executor/recovery/release an
 M2 acceptance stay open. Require 710 state assertions, 60 parents and 1,837
 codec/model children on both releases with full owned teardown. Both native
 targets passed at signed source
-`1dc80019f5d68430ad49845ecdb666192922806f` with full teardown; maintainer
-review is pending. Shared pipeline/evidence/supervisor changes required one
+`1dc80019f5d68430ad49845ecdb666192922806f` with full teardown; accepted in PR 57 at merged source
+`d79a55779f713e1209a930343fdb482d403c85ef`. Shared pipeline/evidence/supervisor changes required one
 complete portable review; startup failure before worker creation must remain a
 failure and clean prepared owned fixtures without inventing/signalling a PID.
 
