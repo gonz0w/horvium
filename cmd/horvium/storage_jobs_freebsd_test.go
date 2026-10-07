@@ -197,6 +197,7 @@ func TestNativeStorageJobStatus(t *testing.T) {
 		preserved = preserved && e == nil && bytes.Equal(got, b)
 	}
 	check("repeat_preserved", preserved)
+	querySucceeded := e == nil
 	// Fill an owned pipe, retaining its unread end. Public main must exit on
 	// SIGTERM even when its stdout cannot deliver the complete status document.
 	reader, writer, e := os.Pipe()
@@ -258,7 +259,7 @@ func TestNativeStorageJobStatus(t *testing.T) {
 	for _, guid := range strings.Fields(string(poolGUIDs)) {
 		missing = missing && guid != "100"
 	}
-	check("native_unavailable_not_consulted", missing && result.Jobs[0].PoolGUID == "100" && e == nil)
+	check("native_unavailable_not_consulted", missing && result.Jobs[0].PoolGUID == "100" && querySucceeded)
 	held, e = storage.OpenStateDirectory(path)
 	check("lease_released", e == nil)
 	out, _, e = command(0)
