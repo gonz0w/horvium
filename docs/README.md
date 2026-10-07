@@ -143,4 +143,6 @@
 
 - [M2 property store readiness](testing/M2/property-store-readiness.md): complete private policy/job census, actual system backing and retained recovery holds; both targets passed all 56 assertions, complete portable review and teardown; accepted in PR 66; no write eligibility.
 
-- [M2 explicit enrollment review](testing/M2/property-enrollment-review.md): immutable expiring explicit root proposal and fresh native/system drift checks; both targets passed all 64 assertions, complete portable review and teardown; maintainer review pending; no publication or write eligibility.
+- [M2 explicit enrollment review](testing/M2/property-enrollment-review.md): immutable expiring explicit root proposal and fresh native/system drift checks; both targets passed all 64 assertions, complete portable review and teardown; accepted in PR 67; no publication or write eligibility.
+
+- [M2 root enrollment state binding](testing/M2/property-enrollment-state.md): explicit first/exact predecessor, complete metadata/backing baseline, projected capacity and retained holds; qualification pending; no publication or write eligibility.

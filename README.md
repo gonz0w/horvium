@@ -166,6 +166,11 @@ in an immutable five-minute plan. Fresh validation detects proposal/native/syste
 drift without publishing or granting write authority. Both native targets passed
 all 64 focused assertions, complete portable review and teardown.
 
+The [root-leased enrollment binding](docs/testing/M2/property-enrollment-state.md)
+checks explicit first/exact predecessors, complete private state, backing and
+projected capacity. Fresh validation keeps job holds and detects metadata drift;
+qualification is pending and runtime publication remains disabled.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

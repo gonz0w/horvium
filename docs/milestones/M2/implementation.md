@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 66; explicit enrollment review in progress; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 67; root enrollment state binding in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -604,5 +604,17 @@ No runtime provisioning/publication workflow is added. Require all 64 focused
 native cases on both targets, complete portable review and owned teardown;
 both targets passed at signed source `8f6f0cef7f4321b56f37ae99f05c50696c8cc319` with complete portable review and teardown;
 see the [manifest](../../testing/M2/property-enrollment-review-manifest.json).
-Maintainer review is pending. Root authorization, current predecessor/backing/capacity/
+Accepted in PR 67. Root authorization, current predecessor/backing/capacity/
 recovery and atomic publication gates remain open.
+
+
+## Root-leased enrollment state binding
+
+The [contract](../../testing/M2/property-enrollment-state.md) connects the volatile
+proposal review to one held root lease and explicit first/exact predecessor,
+complete private record/backing baseline, projected capacity and retained job holds.
+Fresh native/context/expiry and full metadata validation remain read-only; no
+publication, claims, recovered-state authority or write eligibility is added.
+Require all 76 focused native assertions on both releases, complete portable review
+and owned teardown; qualification pending. Actual provisioning/atomic publication,
+restored-state/executor validation and authorized runtime workflows remain open.

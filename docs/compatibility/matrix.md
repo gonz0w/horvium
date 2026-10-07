@@ -3,6 +3,13 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [root enrollment state binding](../testing/M2/property-enrollment-state.md)
+requires the held root lease, explicit first/exact predecessor, complete metadata/
+backing baseline, projected capacity and retained job holds. Fresh validation is
+read-only. Actual ZFS/non-softupdates UFS backing is required; both native targets
+and complete portable qualification remain pending. No runtime publication,
+restored-state/executor or hardware/scale support follows.
+
 M2 [explicit enrollment review](../testing/M2/property-enrollment-review.md)
 requires individually selected root scopes/members and complete fresh native/system
 correspondence in a bounded immutable five-minute review. No schema migration,

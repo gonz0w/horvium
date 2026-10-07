@@ -1,6 +1,6 @@
 # M2 explicit property enrollment review
 
-Date: 2026-10-07. Status: both native targets and complete portable review passed; maintainer review pending.
+Date: 2026-10-07. Status: both native targets and complete portable review passed; accepted in [PR 67](https://github.com/gonz0w/horvium/pull/67).
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0006](../../adr/0006-storage-ownership-and-plans.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).

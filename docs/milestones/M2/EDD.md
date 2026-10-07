@@ -93,6 +93,16 @@ predecessor/backing/capacity/recovery checks and atomic single-claim durability.
 No new durable schema or public transport is added. See the
 [contract](../../testing/M2/property-enrollment-review.md).
 
+Root-state enrollment amendment: bind the volatile proposal review to one held
+root lease and a complete inspected record/backing baseline. An entirely zero
+predecessor explicitly requests absence/revision one; otherwise compare the exact
+canonical predecessor and next revision. Project whole-temporary capacity, retain
+all job holds, include the proposed owner in system-backing exclusions and latch
+orphan uncertainty. Fresh validation repeats native/expiry/context and complete
+metadata/backing checks through the original lease. No publication, claims,
+recovered-state authority, runtime workflow or eligibility is added. See the
+[contract](../../testing/M2/property-enrollment-state.md).
+
 ## Plans and application contract
 
 1. Authenticated UI/CLI submits a typed operation and resource selection. The
