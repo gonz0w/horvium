@@ -226,6 +226,11 @@ Both pinned FreeBSD releases passed six native health cases, all existing status
 assessment checks and verified teardown, with focused portable review. It supplies
 no write eligibility or job outcome.
 
+The [native scrub-state fixture](docs/testing/M2/scan-lifecycle-observations.md)
+adds running, paused, resumed and cancelled observations under an explicitly
+restored disposable-guest control. Qualification is pending; product code and
+write eligibility remain unchanged.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

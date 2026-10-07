@@ -437,3 +437,13 @@ drifting output returns zero. Preserve mutation eligibility checks; this observe
 contains no authority or durable outcome. Rounded native values remain display
 text, and terminal scan labels provide no executor attribution. Full scan formats,
 attributed jobs and authenticated management integration remain separate gates.
+
+## Native scan-state fixture amendment
+
+The [fixture contract](../../testing/M2/scan-lifecycle-observations.md) adopts the
+pinned native scan-progress debug switch solely for disposable qualification.
+Require explicit guest/root opt-ins, expected zero baseline, no other active scan,
+GUID-bound owned pool commands and restoration/reread on every exit. Actual
+status, pause/resume/stop and completion are never replaced with synthetic
+results. This changes no product reader, authority, executor or write workflow.
+Held progress is not advancing-progress or attribution evidence.

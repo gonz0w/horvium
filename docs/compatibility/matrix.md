@@ -3,6 +3,12 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [native scrub-state observations](../testing/M2/scan-lifecycle-observations.md)
+add an eight-case fixture for real running/pause/resume/cancel/completion facts
+with restored disposable-guest kernel control and unchanged product code/gates.
+Native qualification is pending. Advancing progress, faults, attributed lifecycle
+and hardware/client/scale acceptance remain open.
+
 M2 [pool health and scan observation](../testing/M2/pool-health.md) adds bounded
 read-only pool/import/release binding, paired topology/error facts and typed
 legacy scrub/resilver status. Signed source `ab2685cdffcb6aa06d14b356b1df6f2787143300` passed
