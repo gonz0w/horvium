@@ -351,3 +351,16 @@ accepted unchanged sync/rename engine. Every attempt is consumed, uncertainty
 blocks the lease, and actual successful late acknowledgements are reported without
 replay. No format migration, native eligibility, runtime adapter or restored-state
 clearance follows; see the [contract](../../testing/M2/enrollment-publication.md).
+
+
+## Independently collected enrollment publication amendment
+
+The internal native enrollment source accepts only a sealed root-state binding
+and its context for confirmation. Derive the explicit selection from owned review
+copies, independently repeat all fixed pool/provider/system collectors and apply
+a 135-second parent deadline with clock/context checks before and after collection.
+Finish only through the accepted original-lease, one-attempt metadata publisher;
+return its actual acknowledgement unchanged even after cancellation/expiry. No
+caller-supplied observations, renewed claim, storage operation, restored-state
+clearance or runtime authority is added. See the
+[contract](../../testing/M2/native-enrollment-publication.md).

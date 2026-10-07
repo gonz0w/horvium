@@ -505,3 +505,14 @@ review. Reboot/power-cut and actual native
 executor/reconciliation/restoration/release gates remain open.
 
 See the [execution manifest](../testing/M2/property-publication-cuts-manifest.json); no native executor/recovery authority follows.
+
+
+## Independently collected enrollment publication
+
+The [native source confirmation contract](../testing/M2/native-enrollment-publication.md)
+uses independent bounded native inputs and the original sealed root lease. No
+metadata schema/engine, unsupported-host behavior, native write eligibility or
+runtime command changes. Both disposable release candidates and complete teardown
+remain required; root ZFS success and softupdates UFS denial are distinct outcomes.
+Qualification is pending. Historical 819-case metadata evidence stays at its actual
+PR 70 sources; physical hardware/commercial/client/recovery claims remain open.

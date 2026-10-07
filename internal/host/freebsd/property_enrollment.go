@@ -12,7 +12,8 @@ import (
 
 // PropertyEnrollmentSource collects fresh native evidence for an explicit root
 // proposal, then binds a volatile review to a borrowed root state lease. It does
-// not infer selections, publish records, grant eligibility or own/close the lease.
+// not infer selections, grant eligibility or own/close the lease. Explicit
+// publication independently recollects native facts before using the sealed binding.
 type PropertyEnrollmentSource struct {
 	pool      *PoolPropertySource
 	providers *PoolProviderSource
@@ -130,6 +131,46 @@ func (s *PropertyEnrollmentSource) Validate(ctx context.Context, rootContext str
 		return err
 	}
 	return ctx.Err()
+}
+
+// Publish confirms only the sealed review through its original root lease. It
+// independently recollects every native input; callers cannot supply observations
+// or substitute a proposal/predecessor. No storage operation or runtime workflow
+// is enabled. A native attempt consumes the binding even when its outcome fails.
+func (s *PropertyEnrollmentSource) Publish(ctx context.Context, rootContext string, bound storage.PropertyEnrollmentState) error {
+	return s.publishReview(ctx, rootContext, bound.Review(), bound.Predecessor(), func(ctx context.Context, o storage.Observation, d []inventory.DiskObservation, u storage.PoolSystemUse) error {
+		return bound.Publish(ctx, rootContext, o, d, u)
+	})
+}
+
+// This private orchestration seam conveys no authority. Public publication can
+// finish only through the sealed binding's actual clock and root metadata checks.
+func (s *PropertyEnrollmentSource) publishReview(ctx context.Context, rootContext string, r storage.PropertyEnrollmentReview, previous storage.Policy, publish func(context.Context, storage.Observation, []inventory.DiskObservation, storage.PoolSystemUse) error) error {
+	if r.ID == "" || publish == nil {
+		return storage.ErrInvalid
+	}
+	if err := s.preflight(ctx, rootContext, r.Policy, previous); err != nil {
+		return err
+	}
+	if err := enrollmentTime(s.now(), r); err != nil {
+		return err
+	}
+	ctx, cancel := context.WithTimeout(ctx, 135*time.Second)
+	defer cancel()
+	o, d, u, err := s.collect(ctx, r.Policy)
+	if err != nil {
+		return err
+	}
+	if err = enrollmentTime(s.now(), r); err != nil {
+		return err
+	}
+	if err = ctx.Err(); err != nil {
+		return err
+	}
+	// The publisher repeats context/clock/baseline checks under its one-attempt
+	// claim and complete original-lease census. Return its actual acknowledgement;
+	// a later cancellation or expiry must not replace a successfully durable result.
+	return publish(ctx, o, d, u)
 }
 
 func (s *PropertyEnrollmentSource) preflight(ctx context.Context, rootContext string, p, previous storage.Policy) error {

@@ -14,6 +14,9 @@ OS-root workflow. No HTTP handler, CLI command, transport schema or runtime
 consumer is added. A root-context string binds the review but authenticates no
 actor; actual effective UID 0 remains enforced by native metadata inspection.
 
+The separately qualified [publication integration](native-enrollment-publication.md)
+extends this original read-only source contract with explicit confirmation.
+
 ## Contract
 
 Before native I/O, reject a nil/cancelled context, malformed context token,
