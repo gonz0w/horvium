@@ -10,11 +10,12 @@ import (
 )
 
 // PropertySafetySource joins private policy/native properties with a complete
-// system-use collection. It borrows the root lease and remains read-only and
-// ineligible: provider enrollment and store/admission/recovery gates are absent.
+// provider and system-use collections. It borrows the root lease and remains
+// read-only and ineligible: provider enrollment and store/admission/recovery gates are absent.
 type PropertySafetySource struct {
-	policy *PropertyPolicySource
-	system *SystemUseSource
+	policy    *PropertyPolicySource
+	system    *SystemUseSource
+	providers *PoolProviderSource
 }
 
 func NewPropertySafetySource(state *storage.StateDirectory) (*PropertySafetySource, error) {
@@ -26,19 +27,26 @@ func NewPropertySafetySource(state *storage.StateDirectory) (*PropertySafetySour
 	if err != nil {
 		return nil, err
 	}
-	return &PropertySafetySource{policy: policy, system: system}, nil
+	providers, err := NewPoolProviderSource()
+	if err != nil {
+		return nil, err
+	}
+	return &PropertySafetySource{policy: policy, system: system, providers: providers}, nil
 }
 func (s *PropertySafetySource) Collect(ctx context.Context, guid string) (storage.Policy, storage.Observation, error) {
 	if ctx == nil {
 		return storage.Policy{}, storage.Observation{}, storage.ErrInvalid
 	}
-	if s == nil || s.policy == nil || s.system == nil {
+	if s == nil || s.policy == nil || s.system == nil || s.providers == nil {
 		return storage.Policy{}, storage.Observation{}, ErrUnavailable
 	}
-	ctx, cancel := context.WithTimeout(ctx, 90*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 135*time.Second)
 	defer cancel()
 	p, o, err := s.policy.Collect(ctx, guid)
 	if err != nil {
+		return storage.Policy{}, storage.Observation{}, err
+	}
+	if _, err = s.providers.Collect(ctx, o); err != nil {
 		return storage.Policy{}, storage.Observation{}, err
 	}
 	u, err := s.system.Collect(ctx)

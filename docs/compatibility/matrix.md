@@ -3,6 +3,11 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [native provider binding](../testing/M2/property-provider-binding.md) adds
+independent direct-DISK serial/geometry and attachment checks for every pool leaf.
+The composed safety path requires them and keeps eligibility false. Both native
+release qualifications are pending; no root enrollment or runtime writes follow.
+
 M2 [native system exclusions](../testing/M2/property-system-exclusions.md) collect
 fixed all-pool/mount/swap/GEOM projections and reject system backing or conflicts
 in the property safety path. Eligibility stays false. Signed source

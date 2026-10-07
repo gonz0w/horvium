@@ -143,6 +143,11 @@ The new safety path rejects system mounts and physical-disk conflicts while
 retaining false write eligibility. Both targets passed all 32 focused assertions,
 complete portable review and verified teardown.
 
+The [native provider binding](docs/testing/M2/property-provider-binding.md)
+requires fresh direct-DISK serial/geometry and attachment proof for every pool
+leaf in the safety path. Native qualification is pending; write eligibility
+remains false.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

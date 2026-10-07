@@ -22,6 +22,8 @@ const (
 	systemPoolGUID         systemProbe = "pool-guid"
 	systemPoolTopologyGUID systemProbe = "topology-guid"
 	systemPoolTopologyPath systemProbe = "topology-path"
+	systemDiskInfo         systemProbe = "disk-info"
+	systemDiskSerial       systemProbe = "disk-serial"
 )
 
 type systemReader func(context.Context, systemProbe, string, int) (readOutput, error)

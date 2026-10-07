@@ -630,3 +630,24 @@ the baseline/111 tooling tests, all 11 race packages and 33 fuzz targets with fu
 teardown and unchanged snapshot backing; see the
 [execution manifest](../../testing/M2/property-system-exclusions-manifest.json).
 Full eligibility, admission/execution/recovery and M2 acceptance remain open.
+
+
+## Native pool-provider binding
+
+M2-DEVICE-001, M2-OWN-001 and M2-DRIFT-001 at T1/T3 (partial): require every native
+leaf to bind a direct uniquely identified DISK, independent serial/geometry and
+qualified attachment graph. Validate before disk commands; refuse partitions,
+unsupported attachments, missing/duplicate identities, mismatches, partial reads,
+limits/cancellation and ordinary drift. Re-read topology in both passes and compare
+against the property observation. Require provider evidence in the composed path,
+zero results on failure and false eligibility on success, with a final root policy
+read after all collectors. Fuzz bounded hostile projections. See the
+[procedure](../../testing/M2/property-provider-binding.md).
+
+On both targets retain all 32 previous assertions and require five additional
+actual native checks: two unique mirror leaves/geometry, duplicate-serial mirror
+refusal, missing-serial pool refusal and GUID-verified teardown of both additional
+fixtures. Require exact executable/source, all 37 assertions, actual executed PASS,
+unchanged snapshot/base/runtime backings and all owned guest/host cleanup. Shared
+evidence-checker changes require complete portable review. Qualification is pending;
+root enrollment, admission, execution/recovery and M2 acceptance remain open.

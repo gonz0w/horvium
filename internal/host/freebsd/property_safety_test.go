@@ -10,6 +10,10 @@ import (
 	"github.com/gonz0w/horvium/internal/storage"
 )
 
+func safetyProvider() *PoolProviderSource {
+	return providersForTest(providerTestReader(providerCaptures()))
+}
+
 func safetyCaptures() map[systemProbe]string {
 	rows := systemCaptures()
 	rows[systemGEOM] = `<mesh><class id="d"><name>DISK</name>`
@@ -45,7 +49,7 @@ func TestPropertySafetyCollectionRechecksPolicyAfterSystemReads(t *testing.T) {
 					}
 				}
 				return p, nil
-			}), system: useSource(func(_ context.Context, p systemProbe, _ string, _ int) (readOutput, error) {
+			}), providers: safetyProvider(), system: useSource(func(_ context.Context, p systemProbe, _ string, _ int) (readOutput, error) {
 				changed = true
 				return testOutput(rows[p]), nil
 			})}
@@ -62,7 +66,7 @@ func TestPropertySafetyCollectionRechecksPolicyAfterSystemReads(t *testing.T) {
 
 func TestPropertySafetyCollectionJoinsExclusionsWithoutAuthority(t *testing.T) {
 	rows := safetyCaptures()
-	s := &PropertySafetySource{policy: policySource(func(string) (storage.Policy, error) { return collectionPolicy(), nil }), system: useSource(func(_ context.Context, p systemProbe, name string, _ int) (readOutput, error) {
+	s := &PropertySafetySource{policy: policySource(func(string) (storage.Policy, error) { return collectionPolicy(), nil }), providers: safetyProvider(), system: useSource(func(_ context.Context, p systemProbe, name string, _ int) (readOutput, error) {
 		if (p == systemPoolGUID || p == systemPoolTopologyGUID || p == systemPoolTopologyPath) && name != "tank" {
 			t.Fatal("unvalidated pool")
 		}
@@ -90,6 +94,43 @@ func TestPropertySafetyCollectionJoinsExclusionsWithoutAuthority(t *testing.T) {
 			p, o, err = s.Collect(context.Background(), "100")
 			if err == nil || !reflect.DeepEqual(p, storage.Policy{}) || !reflect.DeepEqual(o, storage.Observation{}) {
 				t.Fatal("partial safety result", err)
+			}
+		})
+	}
+}
+
+func TestPropertySafetyRequiresProviderProofAndFinalPolicy(t *testing.T) {
+	for _, mode := range []string{"missing", "failed", "policy-drift"} {
+		t.Run(mode, func(t *testing.T) {
+			changed := false
+			s := &PropertySafetySource{policy: policySource(func(string) (storage.Policy, error) {
+				p := collectionPolicy()
+				if changed {
+					p.Revision++
+				}
+				return p, nil
+			}), providers: safetyProvider(), system: useSource(func(_ context.Context, p systemProbe, _ string, _ int) (readOutput, error) {
+				return testOutput(safetyCaptures()[p]), nil
+			})}
+			read := s.providers.source.read
+			s.providers.source.read = func(ctx context.Context, p systemProbe, n string, b int) (readOutput, error) {
+				if mode == "failed" {
+					return readOutput{}, ErrExit
+				}
+				if mode == "policy-drift" {
+					changed = true
+				}
+				return read(ctx, p, n, b)
+			}
+			if mode == "missing" {
+				s.providers = nil
+			}
+			p, o, err := s.Collect(context.Background(), "100")
+			if err == nil || !reflect.DeepEqual(p, storage.Policy{}) || !reflect.DeepEqual(o, storage.Observation{}) {
+				t.Fatal("provider/policy gate bypass", err)
+			}
+			if mode == "policy-drift" && !errors.Is(err, storage.ErrDrift) {
+				t.Fatal("policy drift", err)
 			}
 		})
 	}
