@@ -1,6 +1,6 @@
 # M2 job reservation metadata checks
 
-Date: 2026-10-06. Status: portable qualification passed; maintainer review pending.
+Date: 2026-10-06. Status: portable qualification passed; accepted in PR 55.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -102,3 +102,12 @@ all 196 owned sessions stopped. A final documentation/evidence-only
 head must rerun baseline/title/signature/DCO/source checks and explicitly cite this
 original source if deep checks are reused. Runtime admission/release and complete
 M2 acceptance remain unqualified.
+
+
+## Native inspection extension
+
+PR 55 accepted this pure model at merged source
+`1b9e5ac4707ac83978f82f3e2300391b01d7eab5`. The subsequent
+[native inspector](native-job-reservations.md) binds the complete record set to
+the held root state lease and includes ownership bytes in candidate capacity
+checks. Its qualification is separate; this original manifest stays unchanged.

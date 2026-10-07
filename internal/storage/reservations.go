@@ -57,46 +57,89 @@ func buildJobReservations(records [][]byte, limits stateCatalogLimits) (JobReser
 		}
 		size += uint64(len(data))
 	}
-	view := JobReservations{ready: true, limits: limits, bytes: size,
-		records:     make(map[string]reservationRecord, len(records)),
-		submissions: make(map[string]string, len(records)),
-		plans:       make(map[string]string, len(records)), pools: []PoolReservation{}}
-	pools := make(map[string][]JobSummary)
-	terminal := 0
+	b, err := newReservationBuilder(limits)
+	if err != nil {
+		return JobReservations{}, err
+	}
 	for _, data := range records {
-		j, err := DecodeJobRecord(data)
-		record := reservationRecord{job: j}
+		if err := b.add(data); err != nil {
+			return JobReservations{}, err
+		}
+	}
+	return b.finish(), nil
+}
+
+// Stream native records without retaining a second whole set of encoded bytes.
+// An addition commits only after all validation; finish transfers ownership and
+// seals the builder before the immutable view can escape.
+type reservationBuilder struct {
+	view     JobReservations
+	terminal int
+	pools    map[string][]JobSummary
+}
+
+func newReservationBuilder(limits stateCatalogLimits) (*reservationBuilder, error) {
+	if !limits.valid() {
+		return nil, ErrLimit
+	}
+	return &reservationBuilder{view: JobReservations{ready: true, limits: limits,
+		records:     make(map[string]reservationRecord),
+		submissions: make(map[string]string), plans: make(map[string]string)},
+		pools: make(map[string][]JobSummary)}, nil
+}
+
+func (b *reservationBuilder) add(data []byte) error {
+	if b == nil || !b.view.ready {
+		return ErrInvalid
+	}
+	if len(b.view.records) >= b.view.limits.nonterminal+b.view.limits.terminal || len(data) > maxStateRecordBytes || uint64(len(data)) > b.view.limits.bytes-b.view.bytes {
+		return ErrLimit
+	}
+	j, err := DecodeJobRecord(data)
+	record := reservationRecord{job: j}
+	if err != nil {
+		p, err := DecodePropertyJob(data)
 		if err != nil {
-			p, err := DecodePropertyJob(data)
-			if err != nil {
-				return JobReservations{}, err
-			}
-			record = reservationRecord{job: p.Job(), property: p}
-			j = record.job
+			return err
 		}
-		if _, exists := view.records[j.ID]; exists || view.submissions[j.Intent.SubmissionID] != "" || view.plans[j.Intent.PlanID] != "" {
-			return JobReservations{}, ErrDrift
-		}
-		if j.Terminal() {
-			terminal++
-		} else {
-			view.nonterminal++
-		}
-		if terminal > limits.terminal || view.nonterminal > limits.nonterminal {
-			return JobReservations{}, ErrLimit
-		}
-		view.records[j.ID] = record
-		view.submissions[j.Intent.SubmissionID] = j.ID
-		view.plans[j.Intent.PlanID] = j.ID
-		last := j.History[len(j.History)-1]
-		pools[j.Intent.PoolGUID] = append(pools[j.Intent.PoolGUID], JobSummary{ID: j.ID, SubmissionID: j.Intent.SubmissionID, Revision: last.Revision, State: last.State, Bytes: uint64(len(data))})
+		record = reservationRecord{job: p.Job(), property: p}
+		j = record.job
 	}
-	for guid, jobs := range pools {
-		sort.Slice(jobs, func(a, b int) bool { return jobs[a].ID < jobs[b].ID })
-		view.pools = append(view.pools, PoolReservation{PoolGUID: guid, Jobs: jobs})
+	if _, exists := b.view.records[j.ID]; exists || b.view.submissions[j.Intent.SubmissionID] != "" || b.view.plans[j.Intent.PlanID] != "" {
+		return ErrDrift
 	}
-	sort.Slice(view.pools, func(a, b int) bool { return view.pools[a].PoolGUID < view.pools[b].PoolGUID })
-	return view, nil
+	terminal := j.Terminal()
+	if terminal && b.terminal >= b.view.limits.terminal || !terminal && b.view.nonterminal >= b.view.limits.nonterminal {
+		return ErrLimit
+	}
+	b.view.bytes += uint64(len(data))
+	b.view.records[j.ID] = record
+	b.view.submissions[j.Intent.SubmissionID] = j.ID
+	b.view.plans[j.Intent.PlanID] = j.ID
+	if terminal {
+		b.terminal++
+	} else {
+		b.view.nonterminal++
+	}
+	last := j.History[len(j.History)-1]
+	b.pools[j.Intent.PoolGUID] = append(b.pools[j.Intent.PoolGUID], JobSummary{ID: j.ID, SubmissionID: j.Intent.SubmissionID, Revision: last.Revision, State: last.State, Bytes: uint64(len(data))})
+	return nil
+}
+
+func (b *reservationBuilder) finish() JobReservations {
+	if b == nil || !b.view.ready {
+		return JobReservations{}
+	}
+	b.view.pools = make([]PoolReservation, 0, len(b.pools))
+	for guid, jobs := range b.pools {
+		sort.Slice(jobs, func(a, c int) bool { return jobs[a].ID < jobs[c].ID })
+		b.view.pools = append(b.view.pools, PoolReservation{PoolGUID: guid, Jobs: jobs})
+	}
+	sort.Slice(b.view.pools, func(a, c int) bool { return b.view.pools[a].PoolGUID < b.view.pools[c].PoolGUID })
+	view := b.view
+	b.view = JobReservations{}
+	b.pools = nil
+	return view
 }
 
 // Pools returns independent, lexically sorted holder metadata. Multiple existing

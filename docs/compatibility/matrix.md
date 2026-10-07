@@ -309,4 +309,21 @@ recovery/release and M2 acceptance remain unqualified.
 
 Reservation qualification: signed source `eec1ad7c34485bc2b548f8a1c88f68cdaaaae647`, six parents/thirty
 subtests, required baseline, storage race/all nineteen fuzz targets and FreeBSD
-cross-compilation; see the [manifest](../testing/M2/job-reservations-manifest.json). Maintainer review is pending; no native admission/release claim follows.
+cross-compilation; see the [manifest](../testing/M2/job-reservations-manifest.json). Accepted in PR 55; no native admission/release claim follows.
+
+
+M2 native job reservation inspection:
+[contract](../testing/M2/native-job-reservations.md) adds complete root-leased
+mixed namespace validation before a full immutable job view escapes. Native
+candidate capacity includes ownership bytes; both accepted job formats hold their
+pools, and terminal labels/inspection clear no uncertainty or grant
+admission/release. Non-FreeBSD returns unavailable without filesystem work.
+Require 622 assertions, 58 parents and 1,837 codec/model children on both pinned
+native targets with full teardown. Both targets passed at signed source
+`cca3a07eed591ed3bab757fc530eada0a40686be` with full teardown. Metadata
+formats/publishers and runtime read-only scope remain; no resource/performance,
+hardware/client/commercial, recovery/cut or M2 acceptance claim follows.
+
+Native reservation qualification: `cca3a07eed591ed3bab757fc530eada0a40686be`; see
+the [manifest](../testing/M2/native-job-reservations-manifest.json). Maintainer
+review is pending; no runtime admission/release follows.

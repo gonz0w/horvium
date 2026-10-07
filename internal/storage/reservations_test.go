@@ -386,3 +386,56 @@ func FuzzJobReservations(f *testing.F) {
 		}
 	})
 }
+
+func TestReservationStreamingBuilder(t *testing.T) {
+	p := propertyJobFixture(t)
+	j := reservationJob(1, false)
+	data := [][]byte{reservationBytes(t, p), reservationBytes(t, j)}
+	b, err := newReservationBuilder(defaultStateCatalogLimits)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, record := range data {
+		if err := b.add(record); err != nil {
+			t.Fatal(err)
+		}
+	}
+	before := b.view.bytes
+	for _, tc := range []struct {
+		name string
+		data []byte
+		want error
+	}{
+		{"invalid", []byte("{"), ErrStateRecord},
+		{"duplicate", data[0], ErrDrift},
+		{"oversized", bytes.Repeat([]byte("x"), maxStateRecordBytes+1), ErrLimit},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			if err := b.add(tc.data); !errors.Is(err, tc.want) || b.view.bytes != before || len(b.view.records) != 2 {
+				t.Fatal("failed addition altered builder", err)
+			}
+		})
+	}
+	got := b.finish()
+	want, err := BuildJobReservations(data)
+	if err != nil || !reflect.DeepEqual(got, want) {
+		t.Fatal("streaming lost complete view", err)
+	}
+	if err := b.add(data[0]); !errors.Is(err, ErrInvalid) {
+		t.Fatal("finished builder changed published view", err)
+	}
+	if !reflect.DeepEqual(b.finish(), JobReservations{}) || !reflect.DeepEqual(got, want) {
+		t.Fatal("finish aliased a mutable builder")
+	}
+	if _, err := newReservationBuilder(stateCatalogLimits{}); !errors.Is(err, ErrLimit) {
+		t.Fatal("invalid builder limits", err)
+	}
+	limits := stateCatalogLimits{1, 1, 1, uint64(len(data[0]))}
+	b, err = newReservationBuilder(limits)
+	if err != nil || b.add(data[0]) != nil {
+		t.Fatal("reduced exact builder bound", err)
+	}
+	if err := b.add(data[1]); !errors.Is(err, ErrLimit) || b.view.bytes != uint64(len(data[0])) || len(b.view.records) != 1 {
+		t.Fatal("overflow altered builder", err)
+	}
+}

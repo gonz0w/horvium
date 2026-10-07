@@ -45,6 +45,17 @@ RESULT += 'PROPERTY_JOB_STORAGE_RESULT '+' '.join(c+'=pass' for c in PROPERTY_JO
 RESULT=RESULT.replace('STATE_ACL_RESULT ','STATE_ACL_RESULT '+' '.join(c+'=pass' for c in ['nfs4_property_baseline', 'nfs4_property_publish_directory_denial', 'nfs4_property_publish_inheritance_denial', 'nfs4_property_publish_job_denial', 'nfs4_property_publish_lock_denial', 'nfs4_property_publish_ownership_denial', 'nfs4_property_publish_record_denial', 'nfs4_property_publish_restored', 'nfs4_property_read_directory_denial', 'nfs4_property_read_inheritance_denial', 'nfs4_property_read_lock_denial', 'nfs4_property_read_record_denial', 'nfs4_property_read_restored', 'nfs4_property_record_preserved', 'posix_property_baseline', 'posix_property_publish_directory_denial', 'posix_property_publish_inheritance_denial', 'posix_property_publish_job_denial', 'posix_property_publish_lock_denial', 'posix_property_publish_ownership_denial', 'posix_property_publish_record_denial', 'posix_property_publish_restored', 'posix_property_read_directory_denial', 'posix_property_read_inheritance_denial', 'posix_property_read_lock_denial', 'posix_property_read_record_denial', 'posix_property_read_restored', 'posix_property_record_preserved', 'property_kernel_grant', 'property_publish_kernel_uid_denial', 'property_read_kernel_uid_denial'])+' ',1)
 RESULT=RESULT.replace('OWNERSHIP_PUBLISH_FS_RESULT ','OWNERSHIP_PUBLISH_FS_RESULT '+' '.join(c+'=pass' for c in ['ufs_property_publication', 'property_full_denial', 'property_readonly_denial', 'property_readonly_preservation'])+' ',1)
 PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
+OLD_RESERVATIONS_FREE_PASS=PASS
+OLD_RESERVATIONS_FREE_RESULT=RESULT
+
+RESERVATION_CASES=['byte_limit', 'closed_denial', 'complete_duplicate', 'directory_anchor', 'directory_denial', 'empty_view', 'exact_limits', 'fixture_teardown', 'foreign_preservation', 'independent_results', 'inert_denial', 'invalid_limits', 'lease_close', 'legacy_damage_denial', 'lock_denial', 'mixed_byte_accounting', 'mixed_holders', 'namespace_drift', 'no_admission', 'nonterminal_ceiling', 'nonterminal_exhaustion', 'nonterminal_limit', 'orphan_denial', 'orphan_preservation', 'ownership_budget', 'ownership_damage_denial', 'ownership_drift', 'plan_collision', 'pool_hold_denial', 'presentation_bytes', 'property_drift', 'record_damage_denial', 'record_directory_denial', 'record_empty_denial', 'record_fifo_denial', 'record_hardlink_denial', 'record_mode_denial', 'record_newer_denial', 'record_oversize_denial', 'record_owner_denial', 'record_symlink_denial', 'record_wrong_id_denial', 'record_wrong_kind_denial', 'repeated_view', 'submission_collision', 'terminal_ceiling', 'terminal_exhaustion', 'uncertainty_preserved', 'unknown_denial', 'unrelated_pool_check']
+RESERVATION_ACL_CASES=['reservation_kernel_uid_denial', 'posix_reservation_baseline', 'posix_reservation_directory_denial', 'posix_reservation_lock_denial', 'posix_reservation_ownership_denial', 'posix_reservation_job_denial', 'posix_reservation_property_denial', 'posix_reservation_inheritance_denial', 'posix_reservation_restored', 'nfs4_reservation_baseline', 'nfs4_reservation_directory_denial', 'nfs4_reservation_lock_denial', 'nfs4_reservation_ownership_denial', 'nfs4_reservation_job_denial', 'nfs4_reservation_property_denial', 'nfs4_reservation_inheritance_denial', 'nfs4_reservation_restored']
+TESTS += ['TestReservationBounds', 'TestReservationChecksAreReadOnly', 'TestReservationPoolHolds', 'TestReservationSubmissionChecks', 'TestReservationViewAndIsolation', 'TestReservationViewDenials', 'TestReservationStreamingBuilder', 'TestNativeJobReservations']
+SUBTESTS.update({'TestReservationBounds': 2, 'TestReservationPoolHolds': 7, 'TestReservationSubmissionChecks': 13, 'TestReservationViewDenials': 8, 'TestReservationStreamingBuilder': 3})
+ACL_CASES += RESERVATION_ACL_CASES
+RESULT += 'JOB_RESERVATIONS_RESULT '+' '.join(c+'=pass' for c in RESERVATION_CASES)+'\n'
+RESULT=RESULT.replace('STATE_ACL_RESULT ','STATE_ACL_RESULT '+' '.join(c+'=pass' for c in RESERVATION_ACL_CASES)+' ',1)
+PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
 
 class StateEvidenceTests(unittest.TestCase):
     def module(self):
@@ -57,7 +68,7 @@ class StateEvidenceTests(unittest.TestCase):
 
     def test_missing_duplicate_unknown_failed_or_oversized_cases_denied(self):
         m=self.module()
-        for case in set(CASES+READ_CASES+ACL_CASES+PUBLISH_CASES+PUBLISH_FS_CASES+CATALOG_CASES+CAPACITY_CASES+JOB_READ_CASES+STATE_CATALOG_CASES+JOB_PUBLICATION_CASES+PROPERTY_JOB_STORAGE_CASES):
+        for case in set(CASES+READ_CASES+ACL_CASES+PUBLISH_CASES+PUBLISH_FS_CASES+CATALOG_CASES+CAPACITY_CASES+JOB_READ_CASES+STATE_CATALOG_CASES+JOB_PUBLICATION_CASES+PROPERTY_JOB_STORAGE_CASES+RESERVATION_CASES):
             for bad in [RESULT.replace(case+'=pass',''),RESULT.replace(case+'=pass',case+'=fail'),RESULT.rstrip()+' '+case+'=pass\n']:
                 with self.subTest(case=case),self.assertRaises(ValueError):m.validate(PASS+bad)
         for bad in [RESULT.rstrip()+' invented=pass\n',RESULT+'x'*(1<<20)]:
@@ -147,3 +158,21 @@ class PropertyJobStorageEvidenceTests(unittest.TestCase):
             with self.subTest(name=name),self.assertRaises(ValueError):m.validate(PASS.replace('--- PASS: '+name+' (1.0s)\n','')+RESULT)
         for name in [p for p in SUBTESTS if p.startswith('TestProperty')]:
             with self.subTest(name=name),self.assertRaises(ValueError):m.validate(PASS.replace('    --- PASS: '+name+'/case_0 (0.0s)\n','')+RESULT)
+
+
+class ReservationEvidenceTests(unittest.TestCase):
+    def test_old_reservation_free_evidence_is_denied(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
+        with self.assertRaises(ValueError):m.validate(OLD_RESERVATIONS_FREE_PASS+OLD_RESERVATIONS_FREE_RESULT)
+
+    def test_every_reservation_assertion_and_family_is_required(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
+        for name in ['TestReservationBounds', 'TestReservationChecksAreReadOnly', 'TestReservationPoolHolds', 'TestReservationSubmissionChecks', 'TestReservationViewAndIsolation', 'TestReservationViewDenials', 'TestReservationStreamingBuilder', 'TestNativeJobReservations']:
+            with self.subTest(name=name),self.assertRaises(ValueError):m.validate(PASS.replace('--- PASS: '+name+' (1.0s)\n','')+RESULT)
+        for case in RESERVATION_CASES:
+            for value in ['',case+'=fail',case+'=pass '+case+'=pass']:
+                bad=RESULT.replace('JOB_RESERVATIONS_RESULT '+' '.join(c+'=pass' for c in RESERVATION_CASES),
+                                   'JOB_RESERVATIONS_RESULT '+' '.join(value if c==case else c+'=pass' for c in RESERVATION_CASES))
+                with self.subTest(case=case,value=value),self.assertRaises(ValueError):m.validate(PASS+bad)
+        for case in RESERVATION_ACL_CASES:
+            with self.subTest(case=case),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(case+'=pass',''))

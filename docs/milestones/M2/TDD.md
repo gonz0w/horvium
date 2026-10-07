@@ -455,4 +455,24 @@ policy/eligibility provenance, recovery/release/cuts and M2 acceptance remain op
 
 Reservation qualification: signed source `eec1ad7c34485bc2b548f8a1c88f68cdaaaae647`, six parents/thirty
 subtests, required baseline, storage race/all nineteen fuzz targets and FreeBSD
-cross-compilation; see the [manifest](../../testing/M2/job-reservations-manifest.json). Maintainer review is pending; no native admission/release claim follows.
+cross-compilation; see the [manifest](../../testing/M2/job-reservations-manifest.json). Accepted in PR 55; no native admission/release claim follows.
+
+
+## Native job reservation inspection prerequisite
+
+The [procedure](../../testing/M2/native-job-reservations.md) adds partial
+M2-STATE-001, M2-JOB-001, M2-PRIV-001 and M2-SCALE-001 at T1/T3. Require complete
+private mixed inspection with actual UID/ACL/name/object binding, full property
+duplicate/current history, ownership/presentation/capacity accounting, actual
+class ceilings, unsafe/ unknown/orphan preservation, late record/namespace drift,
+uncertainty retained and complete owned teardown. A sealed portable streaming
+builder must not change its prior state on failure or mutate a returned view.
+Require all 622 named assertions, 58 parents and 1,837 distinct codec/model
+children on both releases. Shared evidence changes require a complete portable
+review. Both targets passed at signed source
+`cca3a07eed591ed3bab757fc530eada0a40686be` with full teardown. No admission,
+recovery/release/cuts, execution or M2 acceptance follows from this inspection.
+
+Native reservation qualification: `cca3a07eed591ed3bab757fc530eada0a40686be`; see
+the [manifest](../../testing/M2/native-job-reservations-manifest.json). Maintainer
+review is pending; no runtime admission/release follows.

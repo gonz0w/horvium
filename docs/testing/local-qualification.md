@@ -316,3 +316,16 @@ prebuilt execution and complete teardown rules apply; both passed at signed sour
  `5a0e67cd7f469cf398b1cd831284d8a44a3b67ce`
 with full teardown; see the [manifest](M2/property-job-storage-manifest.json).
 Review is pending.
+
+
+The [native job reservation extension](M2/native-job-reservations.md) raises the
+current state gate to 622 assertions, 58 parents and 1,837 codec/model children.
+It streams the complete private ownership/job census into an immutable full job
+view, includes ownership bytes in candidate capacity checks and preserves all
+terminal/uncertain holds. Both accepted job formats use the existing root/UFS/ACL
+fixtures; the new API must also deny the actual inherited-descriptor UID-65534
+child. Both targets passed at signed source
+`cca3a07eed591ed3bab757fc530eada0a40686be` with full teardown. Prior 555-case
+evidence remains bound to its original source and cannot qualify this extension.
+The same prebuilt execution and complete guest/host teardown rules apply; no
+runtime admission is enabled.

@@ -387,4 +387,24 @@ durable admission, executor/recovery/release and M2 acceptance remain open.
 
 Reservation qualification: signed source `eec1ad7c34485bc2b548f8a1c88f68cdaaaae647`, six parents/thirty
 subtests, required baseline, storage race/all nineteen fuzz targets and FreeBSD
-cross-compilation; see the [manifest](../../testing/M2/job-reservations-manifest.json). Maintainer review is pending; no native admission/release claim follows.
+cross-compilation; see the [manifest](../../testing/M2/job-reservations-manifest.json). Accepted in PR 55; no native admission/release claim follows.
+
+
+## Native job reservation inspection prerequisite
+
+The [native inspector](../../testing/M2/native-job-reservations.md) binds the
+complete immutable job view to the held root lease's independently enumerated,
+strictly validated ownership/job namespace. The sealed streaming builder retains
+complete property baselines without another whole encoded-record set. Candidate
+capacity includes ownership bytes; final ordinary object/namespace drift or any
+unsafe record discards the entire view. Root/ACL guards, orphan/uncertainty
+preservation and conservative terminal holds remain. Require 622 state assertions,
+58 parents and 1,837 codec/model children on both native targets with full
+teardown. Both targets passed at signed source
+`cca3a07eed591ed3bab757fc530eada0a40686be` with full teardown. No runtime
+admission/recovery/release or native effect is authorized by the result;
+caller/policy/eligibility/session/clock and executor gates remain open.
+
+Native reservation qualification: `cca3a07eed591ed3bab757fc530eada0a40686be`; see
+the [manifest](../../testing/M2/native-job-reservations-manifest.json). Maintainer
+review is pending; no runtime admission/release follows.
