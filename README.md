@@ -111,9 +111,13 @@ combines complete retry/pool checks and initial record publication under one
 writer lock. Both targets passed all 710 assertions and teardown; accepted in
 [PR 57](https://github.com/gonz0w/horvium/pull/57). Executable admission remains disabled.
 
-The [bounded restart projection](docs/testing/M2/job-restart.md) passed portable qualification;
-it presents interrupted work as requiring reconciliation while retaining durable
+The [bounded restart projection](docs/testing/M2/job-restart.md) passed portable qualification and was accepted in
+[PR 58](https://github.com/gonz0w/horvium/pull/58); it presents interrupted work as requiring reconciliation while retaining durable
 history and pool holds. Actual native recovery remains pending.
+
+The [metadata process-death qualification](docs/testing/M2/property-publication-cuts.md)
+passed all 777 state/backing assertions on both native targets. It tests interrupted
+publication and conservative restart metadata on disposable fixtures; runtime writes remain disabled.
 
 ## Agreed direction
 

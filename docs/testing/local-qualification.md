@@ -357,3 +357,22 @@ metadata fixture backing are recorded separately. Strict census timestamps remai
 no product mount/tunefs change or root-fencing claim is added.
 
 See the [execution manifest](M2/property-submission-manifest.json); no runtime admission/release follows.
+
+
+## Property metadata process-death qualification
+
+The [process-cut contract](M2/property-publication-cuts.md) kills/reaps the actual built metadata writer
+at eight synchronized transaction boundaries, then reacquires the same lock and
+independently verifies unchanged objects. Orphan temporaries remain preserved and
+block publication; visible queued jobs project reconciliation and retain pool
+holds. Matching retries are metadata readback without fresh sync/durability claims.
+No native storage command, startup consumer or product behavior/schema changes.
+Require all 777 state/backing assertions, 66 parents and 1,876 codec/model children
+on both targets, including native restart-page execution and complete backing/
+child/host teardown. Both targets passed at signed source
+`a3a33d5929f7fba32fd9ab6364320984b49d9162` with full teardown; maintainer
+review is pending. Shared evidence/selector changes required one complete portable
+review. Reboot/power-cut and actual native
+executor/reconciliation/restoration/release gates remain open.
+
+See the [execution manifest](M2/property-publication-cuts-manifest.json); no native executor/recovery authority follows.
