@@ -81,6 +81,18 @@ assumes an exclusive local writer; operators pause Horvium writes before externa
 changes. Observe drift before/after each operation and suspend affected scopes.
 Never describe an advisory file lock as ZFS/GEOM fencing.
 
+Enrollment-review prerequisite: a volatile immutable review of an explicitly
+selected member-bearing root proposal retains complete unselected native context
+and normalized full system/imported-pool facts. Require fresh member/system
+correspondence, false eligibility, random context-bound ID, five-minute expiry,
+owned copies, pre-copy working bounds and an exact 64 KiB complete review ceiling.
+Fresh validation detects proposal/native/system drift without deriving scopes,
+claiming a plan, publishing policy or changing storage. The context string is not
+root authentication. Runtime provisioning still needs kernel authorization,
+predecessor/backing/capacity/recovery checks and atomic single-claim durability.
+No new durable schema or public transport is added. See the
+[contract](../../testing/M2/property-enrollment-review.md).
+
 ## Plans and application contract
 
 1. Authenticated UI/CLI submits a typed operation and resource selection. The

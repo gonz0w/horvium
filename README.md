@@ -160,6 +160,11 @@ conservative recovery holds to a separate read-only native source. Both targets
 passed all 56 focused assertions, complete portable review and teardown; it grants
 no write eligibility.
 
+The [explicit property enrollment review](docs/testing/M2/property-enrollment-review.md)
+retains individually selected scopes, member identities and complete native context
+in an immutable five-minute plan. Fresh validation detects proposal/native/system
+drift without publishing or granting write authority; qualification is pending.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

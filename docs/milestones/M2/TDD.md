@@ -700,3 +700,19 @@ on both targets, the baseline/112 tooling tests, all 11 race packages and 35 fuz
 targets with full teardown; see the
 [execution manifest](../../testing/M2/property-store-readiness-manifest.json).
 Full recovery/admission/execution and acceptance remain open.
+
+
+## Explicit property enrollment review prerequisite
+
+The [contract/procedure](../../testing/M2/property-enrollment-review.md) adds partial
+M2-OWN-001/M2-PLAN-001/M2-DRIFT-001 proof. Test explicit child-only selection,
+complete unselected context, member/property scope denials, input/accessor
+isolation, random IDs, context/expiry, fresh graph/property/member/system drift,
+canonical ordering and hostile size/count bounds. Success must remain ineligible.
+Retain the focused 56 native cases and add eight review/refusal/preservation cases,
+using two independent native property/provider/system collections on the same
+owned mirror. Require all 64 assertions and actual PASS on both targets, exact
+policy/content/native preservation and full teardown. Shared checker changes
+require complete portable review. Prior native metadata engines and historical
+manifests retain their sources; do not rerun or relabel the 777-case state suite.
+Qualification pending; no runtime enrollment/admission/recovery or M2 acceptance.

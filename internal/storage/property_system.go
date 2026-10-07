@@ -174,3 +174,46 @@ func CheckPropertySystemExclusions(o Observation, u PoolSystemUse) error {
 	}
 	return nil
 }
+
+// CheckPropertySystemProviders requires correspondence between independently
+// collected selected providers and the later complete system-use graph. Graph
+// IDs are local to each capture; identity/provenance/geometry must match exactly.
+// It grants no eligibility and complements, rather than replaces, exclusions.
+func CheckPropertySystemProviders(guid string, u PoolSystemUse, disks []inventory.DiskObservation) error {
+	if !u.initialized {
+		return ErrUnavailable
+	}
+	if !validGUID(guid) {
+		return ErrInvalid
+	}
+	if len(disks) > maxVdevs {
+		return ErrLimit
+	}
+	for _, pool := range u.pools {
+		if pool.GUID != guid {
+			continue
+		}
+		if len(pool.Disks) != len(disks) || len(disks) == 0 {
+			return ErrDrift
+		}
+		seen := map[string]bool{}
+		byName := map[string]inventory.Provider{}
+		for _, p := range pool.Disks {
+			if _, ok := byName[p.Name]; ok {
+				return ErrDrift
+			}
+			byName[p.Name] = p
+		}
+		for _, d := range disks {
+			p, ok := byName[d.Provider.Name]
+			expected := d.Provider
+			expected.ID, expected.GeomID, p.ID, p.GeomID = "", "", "", ""
+			if !ok || seen[expected.Name] || !reflect.DeepEqual(expected, p) {
+				return ErrDrift
+			}
+			seen[expected.Name] = true
+		}
+		return nil
+	}
+	return ErrUnavailable
+}

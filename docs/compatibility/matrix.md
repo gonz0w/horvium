@@ -3,6 +3,12 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [explicit enrollment review](../testing/M2/property-enrollment-review.md)
+requires individually selected root scopes/members and complete fresh native/system
+correspondence in a bounded immutable five-minute review. No schema migration,
+provisioner or write eligibility is added. Both native targets and complete portable
+qualification remain pending; hardware/populated scale support is unclaimed.
+
 M2 [property store readiness](../testing/M2/property-store-readiness.md) requires
 complete private policy/job records, actual qualified system backing and retained
 recovery holds in a separate composed observer. ZFS or non-softupdates UFS system
