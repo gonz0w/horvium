@@ -220,6 +220,12 @@ from history and recovery status. Both FreeBSD releases passed the 21 existing
 status assertions and fifteen new assessment cases, with focused portable review
 and verified teardown. No writes or recovery resolution are enabled.
 
+The [pool health/scan observer](docs/testing/M2/pool-health.md) binds fresh pool
+identity to paired status and reports unhealthy facts and typed legacy scans.
+Both pinned FreeBSD releases passed six native health cases, all existing status/
+assessment checks and verified teardown, with focused portable review. It supplies
+no write eligibility or job outcome.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

@@ -1,6 +1,6 @@
 # M2 foreground property-job assessment
 
-Date: 2026-10-07. Status: qualified subset; maintainer review pending.
+Date: 2026-10-07. Status: accepted subset in [PR 76](https://github.com/gonz0w/horvium/pull/76).
 Authority: [approved M2 design](../milestones/M2/EDD.md),
 [qualification contract](../testing/M2/property-assessment-diagnostic.md).
 

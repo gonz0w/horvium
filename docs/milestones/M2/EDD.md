@@ -426,3 +426,14 @@ from historical events and conservative restart labels; state false executor/
 recovery verification and retained holds. Validate selection before access, use
 fixed errors and bound collection/output cancellation. No command replay, native
 write, publication, reconciliation resolution or management transport is added.
+
+## Read-only pool health and scan amendment
+
+The [observation contract](../../testing/M2/pool-health.md) adopts the pinned
+common legacy scan formatter and binds complete GUID/path status to fresh pool
+identity/import and release brackets. Return unhealthy facts, owned topology and
+reported typed scan state with finite shared capture/time limits. Unknown or
+drifting output returns zero. Preserve mutation eligibility checks; this observer
+contains no authority or durable outcome. Rounded native values remain display
+text, and terminal scan labels provide no executor attribution. Full scan formats,
+attributed jobs and authenticated management integration remain separate gates.
