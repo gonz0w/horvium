@@ -61,10 +61,11 @@ class LocalQualificationTests(unittest.TestCase):
         result+='STATE_CATALOG_RESULT '+' '.join(c+'=pass' for c in sorted(checker.STATE_CATALOG_CASES))+'\n'
         result+='JOB_PUBLICATION_RESULT '+' '.join(c+'=pass' for c in sorted(checker.JOB_PUBLICATION_CASES))+'\n'
         result+='PROPERTY_JOB_STORAGE_RESULT '+' '.join(c+'=pass' for c in sorted(checker.PROPERTY_JOB_STORAGE_CASES))+'\n'
+        result+='JOB_RESERVATIONS_RESULT '+' '.join(c+'=pass' for c in sorted(checker.RESERVATION_CASES))+'\n'
         passed=''.join('--- PASS: '+name+' (1.0s)\n' for name in checker.TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in checker.CODEC_SUBTEST_COUNTS.items() for i in range(count))
         self.assertIn('HORVIUM_STATE_VM=1',self.module.SUITES['state'][1])
         self.module.validate_result('state',passed+result)
-        for bad in ['',passed,result,passed+result.replace('process_reaped=pass',''),passed+result.replace('fixture_teardown=pass','fixture_teardown=fail'),passed+result.replace('PROPERTY_JOB_STORAGE_RESULT','MISSING_PROPERTY_RESULT')]:
+        for bad in ['',passed,result,passed+result.replace('process_reaped=pass',''),passed+result.replace('fixture_teardown=pass','fixture_teardown=fail'),passed+result.replace('PROPERTY_JOB_STORAGE_RESULT','MISSING_PROPERTY_RESULT'),passed+result.replace('JOB_RESERVATIONS_RESULT','MISSING_RESERVATIONS_RESULT')]:
             with self.assertRaises(ValueError):self.module.validate_result('state',bad)
 
     def test_state_selectors_match_the_required_freebsd_test_inventory(self):

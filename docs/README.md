@@ -123,4 +123,6 @@
 
 - [M2 native property-job store](testing/M2/property-job-storage.md): full baseline reads/publication, mixed capacity and format-preserving successors; both targets passed all 555 assertions and teardown; accepted in PR 54.
 
-- [M2 job reservation checks](testing/M2/job-reservations.md): immutable complete job-record view, exact retry meaning, reused-plan refusal and conservative whole-pool holds; portable qualification passed.
+- [M2 job reservation checks](testing/M2/job-reservations.md): immutable complete job-record view, exact retry meaning, reused-plan refusal and conservative whole-pool holds; portable qualification passed, accepted in PR 55.
+
+- [M2 native job reservations](testing/M2/native-job-reservations.md): complete root-leased mixed census and bound property retry/reservation views; native qualification pending.

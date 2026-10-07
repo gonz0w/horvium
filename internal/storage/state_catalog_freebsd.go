@@ -32,6 +32,13 @@ func (s *StateDirectory) inspectState(limits stateCatalogLimits, afterRead func(
 
 // Caller holds mu; only publication may exclude its exact inode-validated temp.
 func (s *StateDirectory) inspectStateLocked(limits stateCatalogLimits, afterRead func(), ownTemporary string) (StateCatalog, error) {
+	return s.inspectStateRecordsLocked(limits, afterRead, ownTemporary, nil)
+}
+
+// Consume only independently validated complete bytes, while retaining all
+// existing final object/namespace checks. A consumer error discards the census.
+// The reservation inspector alone uses consume; publication keeps it nil.
+func (s *StateDirectory) inspectStateRecordsLocked(limits stateCatalogLimits, afterRead func(), ownTemporary string, consume func(stateRecordName, []byte) error) (StateCatalog, error) {
 	dir, err := s.ownershipDirectoryLocked()
 	if err != nil {
 		return StateCatalog{}, err
@@ -116,6 +123,11 @@ func (s *StateDirectory) inspectStateLocked(limits stateCatalogLimits, afterRead
 			return StateCatalog{}, fmt.Errorf("state census metadata: %w", ErrDrift)
 		}
 		metadata = append(metadata, after)
+		if consume != nil {
+			if e = consume(entry, data); e != nil {
+				return StateCatalog{}, e
+			}
+		}
 	}
 	if afterRead != nil {
 		afterRead()
