@@ -1,0 +1,259 @@
+{
+  "record_type": "M2-one-attempt-property-execution",
+  "date": "2026-10-07",
+  "source_commit": "cceb615b82aedc98d4e93fb1cdb90545b05916ea",
+  "source_tree": "3f48df26a8c092d344dd1836e106e2bd77e5f413",
+  "base_commit": "ef66dcfb6992ce5d898e0598dded86fca5cfdabd",
+  "requirements": [
+    "M2-JOB-001 (portable partial)",
+    "M2-PROPERTY-001 (portable partial)",
+    "M2-DRIFT-001 (portable partial)",
+    "M2-RECOVERY-001 (ordering/ambiguity model only)"
+  ],
+  "scope": "Portable one-attempt trusted root-worker contract; no native backend, global scheduler, storage write, authority restoration, runtime/transport or reservation release",
+  "input_sha256": [
+    {
+      "path": "internal/storage/property_execution.go",
+      "sha256": "43c39df8497a573d89d446152732f878658c05ba5d3b92076024b7cc8d4903d9"
+    },
+    {
+      "path": "internal/storage/property_execution_test.go",
+      "sha256": "46fa080bfec00aa5922d2043ac2599f698656271bfe9aff890739c8d0f69855c"
+    }
+  ],
+  "failing_first": {
+    "log_sha256": "4302b1a8b8d33bc198af0898ec0452f478b41c6413fc32fd59b4ccffb6aceaa9",
+    "result": "expected compile failure before implementation: absent PropertyExecution/NewPropertyExecution",
+    "initial_uncommitted_tests_then_expanded": true
+  },
+  "focused_behavior": {
+    "command": "make test-focus PKG=./internal/storage TEST='^TestPropertyExecution'",
+    "log_sha256": "072fb8ad364feb28f6bcee80677d67f035a47c22b31407f69ef402facda65809",
+    "parent_tests": [
+      "TestPropertyExecutionDurableOrdering",
+      "TestPropertyExecutionPublicationCuts",
+      "TestPropertyExecutionLostDurableAcknowledgement",
+      "TestPropertyExecutionNativeAmbiguity",
+      "TestPropertyExecutionLaunchDenials",
+      "TestPropertyExecutionAcknowledgementBinding",
+      "TestPropertyExecutionSingleAttemptConcurrent",
+      "TestPropertyExecutionRefusesRestoredRecords",
+      "TestPropertyExecutionWorkerContextAndLateCompletion",
+      "TestPropertyExecutionInvalidInputs"
+    ],
+    "qualified": true,
+    "all_backend_authority_and_effects": "synthetic fixtures only"
+  },
+  "portable_review": {
+    "title": "feat(storage): sequence durable property execution",
+    "qualified": true,
+    "mode": "focused",
+    "packages": [
+      "./cmd/horvium",
+      "./internal/admin",
+      "./internal/client",
+      "./internal/console",
+      "./internal/helper",
+      "./internal/host/freebsd",
+      "./internal/observation",
+      "./internal/service",
+      "./internal/storage"
+    ],
+    "command": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "tooling_tests": 122,
+    "race_packages": [
+      "./cmd/horvium",
+      "./internal/admin",
+      "./internal/client",
+      "./internal/console",
+      "./internal/helper",
+      "./internal/host/freebsd",
+      "./internal/observation",
+      "./internal/service",
+      "./internal/storage"
+    ],
+    "fuzz_targets": [
+      {
+        "package": "./internal/admin",
+        "target": "FuzzConfiguration"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzRequest"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzSnapshot"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPoolPropertyCollection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPoolProviderCollection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPropertyJobSource"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPropertyPolicyCollection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzSystemUseCollection"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzDeviceUseReview"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzFilesystemSignature"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzFilesystemStates"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzIdentities"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzImportedPoolUse"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzJobRecord"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzJobReservations"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzJobRestartPage"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzOwnershipCatalogNames"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzOwnershipRecord"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolFeatures"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolLabels"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolScan"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolState"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolSystemUse"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolTopology"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzProperties"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyCoordinatorActions"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyExecutionCut"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyIntent"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyJob"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyJobAssessment"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyPlan"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyPostcondition"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzStateCatalogNames"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzSystemDeviceUse"
+      }
+    ],
+    "duration_seconds": 192.379,
+    "report_sha256": "6b0bab8bf2e489e34f42d5cc422e9725013da106e1cbf31df02a18acd5ec43ef",
+    "checks_log_sha256": "9bdc1d643f728c3ec02584fdee1cd4d5c13e4ee2e428956ede679bed40daed87",
+    "deep_log_sha256": "a0dc6047d271e87a7c982662efd38e637c9760ad4e262e538e06842c2978fa1b",
+    "completed_clean_supervisors": 2
+  },
+  "freebsd_cross_build": {
+    "source_commit": "cceb615b82aedc98d4e93fb1cdb90545b05916ea",
+    "target": "freebsd/amd64",
+    "cgo": false,
+    "compiled": true,
+    "executed": false,
+    "artifact_sha256": "9da62ee04e7dc7012e71fcf67354683ca637c4e31c30bc9797e426cc2fb04561",
+    "artifact_removed": true,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "preservation": {
+    "historical_M2_manifests": 55,
+    "old_code_tools_and_manifest_paths_verified_byte_identical": 397,
+    "canonical_path_digest_list_sha256": "bb670d45d99f4533f60e38eb8e8806f241ce432e56d36eff6952e3a5177176d4",
+    "all_prior_native_implementations_fixtures_selectors_supervisors_unchanged": true,
+    "prior_native_evidence_rerun_or_relabeled": false,
+    "durable_schemas_changed": false
+  },
+  "teardown": {
+    "lab_status_log_sha256": "dbd8952446899b70c971ab6ac50267df3cad03dfbbda48a26d5773fb70716718",
+    "owned_active": 0,
+    "unverified": 0,
+    "cross_artifact_removed": true,
+    "native_guests_started": false,
+    "actions_or_services_enabled": false
+  },
+  "remaining_gates": [
+    "original live-plan/session root claim and current eligible native backend",
+    "global launch/pool serialization and complete recovered-state safety",
+    "typed fixed native arguments and actual child/guard quiescence",
+    "real metadata/effect/death/reboot/power-cut failure matrix",
+    "native durable result attribution/recovery/reservation release",
+    "operator UI/CLI/authenticated transport and complete M2"
+  ]
+}

@@ -166,4 +166,5 @@
 - [M2 property-job assessment diagnostic qualification](testing/M2/property-assessment-diagnostic.md).
 - [M2 pool health and scan observation qualification](testing/M2/pool-health.md).
 - [M2 native scrub-state observation qualification](testing/M2/scan-lifecycle-observations.md).
+- [M2 property execution sequence](testing/M2/property-execution.md)
 - [M2 native repaired-checksum finding qualification](testing/M2/checksum-findings.md).
