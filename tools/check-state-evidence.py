@@ -44,13 +44,20 @@ SOFTUPDATES_CASES=set(['enabled', 'ownership_denial', 'job_denial', 'property_de
 BACKING_TESTS=set(['TestNativeStateDirectory', 'TestNativeOwnershipRead', 'TestNativeOwnershipCatalog', 'TestNativeOwnershipCapacity', 'TestNativeJobRead', 'TestNativeJobPublication', 'TestNativePropertyJobStorage', 'TestNativeJobReservations', 'TestNativeStateCatalog', 'TestNativeOwnershipPublish', 'TestNativePropertySubmission', 'TestNativeStateSoftUpdates'])
 TESTS.add('TestNativeStateSoftUpdates')
 
+
+CUT_PHASES=('before_publish','staged_before_write','after_write','after_file_sync','before_rename','after_rename','after_directory_sync','after_return')
+CUT_CASES={phase+'_'+case for phase in CUT_PHASES for case in ('barrier','writer_denial','sigkill_reaped','lock_reacquired','objects_preserved','restart_safe','retry_safe','lock_close')} | {'foreign_preservation','fixture_teardown'}
+TESTS.update({'TestNativePropertyPublicationCuts','TestRestartPageCeilingAndTraversal','TestRestartPageConcurrentReaders','TestRestartPageDenials','TestRestartPageMixedOrderAndIsolation','TestRestartPageStates'})
+BACKING_TESTS.add('TestNativePropertyPublicationCuts')
+CODEC_SUBTEST_COUNTS.update({'TestRestartPageStates':30,'TestRestartPageDenials':9})
+
 def validate(text):
     if len(text)>1<<20 or re.search(r'(?m)^(?:FAIL|[ \t]*--- (?:FAIL|SKIP):)',text):
         raise ValueError('state native evidence failed, skipped or oversized')
     passed=re.findall(r'(?m)^--- PASS: (Test\w+) \([0-9.]+s\)$',text)
     if len(passed)!=len(TESTS) or set(passed)!=TESTS:
         raise ValueError('complete executed lease/reader/ACL/publication/codec tests required')
-    for marker,cases in [('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES),('STATE_ACL_RESULT',ACL_CASES),('OWNERSHIP_PUBLISH_RESULT',PUBLISH_CASES),('OWNERSHIP_PUBLISH_FS_RESULT',PUBLISH_FS_CASES),('OWNERSHIP_CATALOG_RESULT',CATALOG_CASES),('OWNERSHIP_CAPACITY_RESULT',CAPACITY_CASES),('JOB_READ_RESULT',JOB_READ_CASES),('STATE_CATALOG_RESULT',STATE_CATALOG_CASES),('JOB_PUBLICATION_RESULT',JOB_PUBLICATION_CASES),('PROPERTY_JOB_STORAGE_RESULT',PROPERTY_JOB_STORAGE_CASES),('JOB_RESERVATIONS_RESULT',RESERVATION_CASES),('PROPERTY_SUBMISSION_RESULT',SUBMISSION_CASES),('STATE_SOFTUPDATES_RESULT',SOFTUPDATES_CASES)]:
+    for marker,cases in [('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES),('STATE_ACL_RESULT',ACL_CASES),('OWNERSHIP_PUBLISH_RESULT',PUBLISH_CASES),('OWNERSHIP_PUBLISH_FS_RESULT',PUBLISH_FS_CASES),('OWNERSHIP_CATALOG_RESULT',CATALOG_CASES),('OWNERSHIP_CAPACITY_RESULT',CAPACITY_CASES),('JOB_READ_RESULT',JOB_READ_CASES),('STATE_CATALOG_RESULT',STATE_CATALOG_CASES),('JOB_PUBLICATION_RESULT',JOB_PUBLICATION_CASES),('PROPERTY_JOB_STORAGE_RESULT',PROPERTY_JOB_STORAGE_CASES),('JOB_RESERVATIONS_RESULT',RESERVATION_CASES),('PROPERTY_SUBMISSION_RESULT',SUBMISSION_CASES),('STATE_SOFTUPDATES_RESULT',SOFTUPDATES_CASES),('PROPERTY_PUBLICATION_CUTS_RESULT',CUT_CASES)]:
         records=re.findall(marker+r' ([^\n]+)',text)
         if len(records)!=1:raise ValueError('one native result per boundary required')
         fields=records[0].split();expected={case+'=pass' for case in cases}
@@ -67,7 +74,7 @@ def validate(text):
             if (filesystem,soft)!=('ufs','on'):raise ValueError('actual softupdates refusal fixture required')
         elif soft!='off':raise ValueError('qualified state backing must have softupdates disabled')
     if len(set(names))!=len(names) or set(names)!=BACKING_TESTS:raise ValueError('distinct complete native backing tests required')
-    children=re.findall(r'(?m)^[ \t]+--- PASS: (Test(?:Ownership|Job|Property|Reservation)\w+)/(\S+) \([0-9.]+s\)$',text)
+    children=re.findall(r'(?m)^[ \t]+--- PASS: (Test(?:Ownership|Job|Property|Reservation|RestartPage)\w+)/(\S+) \([0-9.]+s\)$',text)
     if len(children)!=sum(CODEC_SUBTEST_COUNTS.values()) or len(set(children))!=len(children):
         raise ValueError('complete distinct codec subtests required')
     for name,count in CODEC_SUBTEST_COUNTS.items():

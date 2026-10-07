@@ -367,7 +367,23 @@ holds and full retry history remain retained. Unavailable/malformed cursors and
 invalid page bounds expose no partial page; cursors require the same retained
 view. No native observation, publication, startup consumer, replay or release is
 added. Portable behavioral/race/fuzz and FreeBSD cross-compilation passed at signed
-source `60db363d5b0f615dbdb7fd2f247b01e8ab12b788`; maintainer review is pending.
+source `60db363d5b0f615dbdb7fd2f247b01e8ab12b788`; accepted in PR 58 at merged source
+`caf21958b3d89dc0cde3f2ca0ad05787d63d5247`.
 Native executor attribution/recovery and complete M2 gates remain open.
 
 See the [execution manifest](../testing/M2/job-restart-manifest.json); no native recovery/admission follows.
+
+
+## Property metadata process-death qualification
+
+The [process-cut contract](../testing/M2/property-publication-cuts.md) kills/reaps the actual built metadata writer
+at eight synchronized transaction boundaries, then reacquires the same lock and
+independently verifies unchanged objects. Orphan temporaries remain preserved and
+block publication; visible queued jobs project reconciliation and retain pool
+holds. Matching retries are metadata readback without fresh sync/durability claims.
+No native storage command, startup consumer or product behavior/schema changes.
+Require all 777 state/backing assertions, 66 parents and 1,876 codec/model children
+on both targets, including native restart-page execution and complete backing/
+child/host teardown. Native qualification is pending. Shared evidence/selector
+changes require one complete portable review. Reboot/power-cut and actual native
+executor/reconciliation/restoration/release gates remain open.

@@ -1,0 +1,246 @@
+// SPDX-License-Identifier: BSD-3-Clause
+package storage
+
+import (
+	"bufio"
+	"bytes"
+	"context"
+	"errors"
+	"fmt"
+	"io"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"reflect"
+	"slices"
+	"strings"
+	"syscall"
+	"testing"
+	"time"
+)
+
+// A reexec of this exact test binary calls the real metadata transaction. The
+// fixture seam only blocks at named boundaries; it replaces no filesystem call.
+// This is not the product helper/executor, a native ZFS write or a power cut.
+func TestPropertyPublicationCutProcess(t *testing.T) {
+	phase := os.Getenv("HORVIUM_PUBLICATION_CUT")
+	if phase == "" {
+		t.Skip("owned reexec only")
+	}
+	if os.Getenv("HORVIUM_NATIVE_VM") != "1" || os.Getenv("HORVIUM_STATE_VM") != "1" || os.Geteuid() != 0 {
+		t.Fatal("disposable root state VM required")
+	}
+	data, err := os.ReadFile(os.Getenv("HORVIUM_CUT_INPUT"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	p, err := DecodePropertyJob(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	s, err := OpenStateDirectory(os.Getenv("HORVIUM_CUT_DIRECTORY"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer s.Close()
+	barrier := func() {
+		fmt.Fprintln(os.Stdout, "PUBLICATION_CUT_REACHED "+phase)
+		// Parent keeps this pipe open, then kills and reaps this actual process.
+		_, _ = io.Copy(io.Discard, os.Stdin)
+		t.Fatal("publication cut unexpectedly resumed")
+	}
+	if phase == "before_publish" {
+		barrier()
+	}
+	wrap := func(tx ownershipPublication) ownershipPublication {
+		around := func(original func() error, before bool) func() error {
+			return func() error {
+				if before {
+					barrier()
+				}
+				if err := original(); err != nil {
+					return err
+				}
+				if !before {
+					barrier()
+				}
+				return nil
+			}
+		}
+		switch phase {
+		case "staged_before_write":
+			tx.write = around(tx.write, true)
+		case "after_write":
+			tx.write = around(tx.write, false)
+		case "after_file_sync":
+			tx.syncFile = around(tx.syncFile, false)
+		case "before_rename":
+			tx.rename = around(tx.rename, true)
+		case "after_rename":
+			tx.rename = around(tx.rename, false)
+		case "after_directory_sync":
+			tx.syncDirectory = around(tx.syncDirectory, false)
+		case "after_return":
+		default:
+			t.Fatal("unknown publication cut")
+		}
+		return tx
+	}
+	got, duplicate, err := s.publishPropertySubmissionBounded(p, defaultStateCatalogLimits, wrap)
+	if err != nil || duplicate || !reflect.DeepEqual(got, p) {
+		t.Fatal("publication did not return actual new success", err)
+	}
+	if phase != "after_return" {
+		t.Fatal("unreached cut")
+	}
+	barrier()
+}
+
+func TestNativePropertyPublicationCuts(t *testing.T) {
+	if os.Getenv("HORVIUM_NATIVE_VM") != "1" || os.Getenv("HORVIUM_STATE_VM") != "1" {
+		t.Skip("disposable state VM required")
+	}
+	anchor, err := nativeStateAnchor(t, "horvium-publication-cuts-")
+	if err != nil {
+		t.Fatal(err)
+	}
+	p := nativePropertyJobFixture(t)
+	data := reservationBytes(t, p)
+	input := filepath.Join(anchor, "candidate")
+	foreign := filepath.Join(anchor, "foreign")
+	if os.WriteFile(input, data, 0600) != nil || os.WriteFile(foreign, []byte("foreign-cut-sentinel"), 0600) != nil {
+		t.Fatal("owned input/sentinel")
+	}
+	var results []string
+	check := func(name string, ok bool) {
+		t.Helper()
+		if !ok {
+			t.Fatal("publication cut assertion", name)
+		}
+		results = append(results, name+"=pass")
+	}
+	// Snapshot independently opened regular objects, including the stable lock
+	// and any partial temporary. Ignore access time changed by our own reads.
+	type object struct {
+		stat syscall.Stat_t
+		data []byte
+	}
+	snapshot := func(path string) map[string]object {
+		t.Helper()
+		entries, err := os.ReadDir(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		got := make(map[string]object, len(entries))
+		for _, entry := range entries {
+			name := filepath.Join(path, entry.Name())
+			info, err := os.Lstat(name)
+			if err != nil || !info.Mode().IsRegular() || info.Mode().Perm() != 0600 {
+				t.Fatal("unsafe owned object", err)
+			}
+			st := *info.Sys().(*syscall.Stat_t)
+			if st.Uid != 0 || st.Nlink != 1 {
+				t.Fatal("unsafe owned identity")
+			}
+			value, err := os.ReadFile(name)
+			if err != nil {
+				t.Fatal(err)
+			}
+			st.Atimespec = syscall.Timespec{}
+			got[entry.Name()] = object{st, value}
+		}
+		return got
+	}
+	for _, phase := range []string{"before_publish", "staged_before_write", "after_write", "after_file_sync", "before_rename", "after_rename", "after_directory_sync", "after_return"} {
+		func() {
+			path := filepath.Join(anchor, phase)
+			if os.Mkdir(path, 0700) != nil {
+				t.Fatal("owned cut directory")
+			}
+			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+			defer cancel()
+			cmd := exec.CommandContext(ctx, os.Args[0], "-test.run=^TestPropertyPublicationCutProcess$")
+			cmd.Env = append(os.Environ(), "HORVIUM_PUBLICATION_CUT="+phase, "HORVIUM_CUT_INPUT="+input, "HORVIUM_CUT_DIRECTORY="+path)
+			stdin, err := cmd.StdinPipe()
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer stdin.Close()
+			stdout, err := cmd.StdoutPipe()
+			if err != nil {
+				t.Fatal(err)
+			}
+			cmd.Stderr = io.Discard
+			if cmd.Start() != nil {
+				t.Fatal("owned child start")
+			}
+			waited := false
+			defer func() {
+				if !waited {
+					_ = cmd.Process.Kill()
+					_ = cmd.Wait()
+				}
+			}()
+			line, err := bufio.NewReader(io.LimitReader(stdout, 256)).ReadString('\n')
+			check(phase+"_barrier", err == nil && line == "PUBLICATION_CUT_REACHED "+phase+"\n")
+			before := snapshot(path)
+			other, err := OpenStateDirectory(path)
+			if other != nil {
+				_ = other.Close()
+			}
+			check(phase+"_writer_denial", other == nil && errors.Is(err, ErrStateLocked))
+			if cmd.Process.Kill() != nil {
+				t.Fatal("owned child kill")
+			}
+			waitErr := cmd.Wait()
+			waited = true
+			var exit *exec.ExitError
+			check(phase+"_sigkill_reaped", errors.As(waitErr, &exit) && exit.Sys().(syscall.WaitStatus).Signal() == syscall.SIGKILL)
+			s, err := OpenStateDirectory(path)
+			check(phase+"_lock_reacquired", err == nil && s != nil)
+			defer s.Close()
+			after := snapshot(path)
+			check(phase+"_objects_preserved", reflect.DeepEqual(before, after))
+			view, inspectErr := s.InspectJobReservations()
+			published := phase == "after_rename" || phase == "after_directory_sync" || phase == "after_return"
+			switch {
+			case published:
+				target := "job-" + p.job.ID + ".json"
+				check(phase+"_restart_safe", inspectErr == nil && len(after) == 2 && bytes.Equal(after[target].data, data) && func() bool {
+					page, e := view.RestartPage("", 64)
+					return e == nil && len(page) == 1 && page[0].Last == p.job.History[0] && page[0].State == JobReconcileRequired && page[0].Reason == "review-expired" && len(view.Pools()) == 1
+				}())
+				got, duplicate, e := s.PublishPropertySubmission(p)
+				check(phase+"_retry_safe", e == nil && duplicate && reflect.DeepEqual(got, p) && reflect.DeepEqual(after, snapshot(path)))
+			case phase == "before_publish":
+				page, e := view.RestartPage("", 64)
+				check(phase+"_restart_safe", inspectErr == nil && e == nil && page != nil && len(page) == 0 && len(after) == 1)
+				got, duplicate, e := view.CheckPropertySubmission(p)
+				check(phase+"_retry_safe", e == nil && !duplicate && reflect.DeepEqual(got, PropertyJob{}) && reflect.DeepEqual(after, snapshot(path)))
+			default:
+				temporary := ""
+				for name := range after {
+					if strings.HasPrefix(name, ".job-") {
+						temporary = name
+					}
+				}
+				want := data
+				if phase == "staged_before_write" {
+					want = nil
+				}
+				check(phase+"_restart_safe", errors.Is(inspectErr, ErrStateUncertain) && reflect.DeepEqual(view, JobReservations{}) && len(after) == 2 && temporary != "" && bytes.Equal(after[temporary].data, want))
+				got, duplicate, e := s.PublishPropertySubmission(p)
+				check(phase+"_retry_safe", errors.Is(e, ErrStateUncertain) && !duplicate && reflect.DeepEqual(got, PropertyJob{}) && reflect.DeepEqual(after, snapshot(path)))
+			}
+			check(phase+"_lock_close", s.Close() == nil)
+		}()
+	}
+	current, err := os.ReadFile(foreign)
+	check("foreign_preservation", err == nil && slices.Equal(current, []byte("foreign-cut-sentinel")))
+	if os.RemoveAll(anchor) != nil {
+		t.Fatal("owned fixture cleanup")
+	}
+	_, err = os.Lstat(anchor)
+	check("fixture_teardown", os.IsNotExist(err))
+	t.Log("PROPERTY_PUBLICATION_CUTS_RESULT " + strings.Join(results, " "))
+}

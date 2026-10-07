@@ -79,6 +79,36 @@ RESULT += 'STATE_SOFTUPDATES_RESULT '+' '.join(c+'=pass' for c in SOFTUPDATES_CA
 RESULT += ''.join('STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=zfs softupdates=off')+' teardown=pass\n' for name in BACKING_TESTS)
 PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
 
+
+OLD_CUT_FREE_PASS=PASS
+OLD_CUT_FREE_RESULT=RESULT
+CUT_PHASES=['before_publish','staged_before_write','after_write','after_file_sync','before_rename','after_rename','after_directory_sync','after_return']
+CUT_CASES=[phase+'_'+case for phase in CUT_PHASES for case in ['barrier','writer_denial','sigkill_reaped','lock_reacquired','objects_preserved','restart_safe','retry_safe','lock_close']]+['foreign_preservation','fixture_teardown']
+TESTS += ['TestNativePropertyPublicationCuts','TestRestartPageCeilingAndTraversal','TestRestartPageConcurrentReaders','TestRestartPageDenials','TestRestartPageMixedOrderAndIsolation','TestRestartPageStates']
+SUBTESTS.update({'TestRestartPageStates':30,'TestRestartPageDenials':9})
+BACKING_TESTS += ['TestNativePropertyPublicationCuts']
+RESULT += 'PROPERTY_PUBLICATION_CUTS_RESULT '+' '.join(c+'=pass' for c in CUT_CASES)+'\n'
+RESULT += 'STATE_BACKING_RESULT TestNativePropertyPublicationCuts filesystem=zfs softupdates=off teardown=pass\n'
+PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
+
+class PublicationCutEvidenceTests(unittest.TestCase):
+    def module(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m);return m
+
+    def test_old_publication_evidence_cannot_qualify_process_cuts(self):
+        with self.assertRaises(ValueError):self.module().validate(OLD_CUT_FREE_PASS+OLD_CUT_FREE_RESULT)
+
+    def test_every_process_cut_control_and_parent_is_required(self):
+        m=self.module()
+        old='PROPERTY_PUBLICATION_CUTS_RESULT '+' '.join(c+'=pass' for c in CUT_CASES)
+        for case in CUT_CASES:
+            for value in ['',case+'=fail',case+'=pass '+case+'=pass']:
+                bad='PROPERTY_PUBLICATION_CUTS_RESULT '+' '.join(value if c==case else c+'=pass' for c in CUT_CASES)
+                with self.subTest(case=case,value=value),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(old,bad))
+        for parent in ['TestNativePropertyPublicationCuts','TestRestartPageStates']:
+            with self.subTest(parent=parent),self.assertRaises(ValueError):m.validate(PASS.replace('--- PASS: '+parent+' (1.0s)\n','')+RESULT)
+
+
 class SubmissionEvidenceTests(unittest.TestCase):
     def test_old_inspection_evidence_cannot_qualify_submission_publication(self):
         m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)

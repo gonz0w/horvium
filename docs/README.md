@@ -129,4 +129,6 @@
 
 - [M2 reserved property submissions](testing/M2/property-submission.md): one lease/mutex across complete retry/pool checks and synced initial publication; both targets passed all 710 assertions and teardown; accepted in PR 57; runtime writes disabled.
 
-- [M2 bounded job restart projections](testing/M2/job-restart.md): immutable mixed-job pages, conservative interrupted-work presentation and unchanged holds; portable baseline/storage race/all twenty storage fuzz targets passed; maintainer review pending; no startup replay/recovery consumer.
+- [M2 bounded job restart projections](testing/M2/job-restart.md): immutable mixed-job pages, conservative interrupted-work presentation and unchanged holds; portable baseline/storage race/all twenty storage fuzz targets passed; accepted in PR 58; no startup replay/recovery consumer.
+
+- [M2 metadata process-death cuts](testing/M2/property-publication-cuts.md): eight real writer SIGKILL boundaries, preserved uncertain state and native restart pages; qualification pending; no native mutation/replay.
