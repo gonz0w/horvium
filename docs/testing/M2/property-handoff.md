@@ -1,6 +1,6 @@
 # M2 original property admission execution handoff
 
-Date: 2026-10-07. Status: implementation; portable qualification pending.
+Date: 2026-10-07. Status: portable subset qualified; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [ADR 0006](../../adr/0006-storage-ownership-and-plans.md),
@@ -90,3 +90,24 @@ selectors/supervisors and prior manifests are unchanged; no native rerun or supp
 claim follows from an unexecuted cross-build. Complete root backend, native
 eligibility/scheduling, real interruption/reboot/recovery, transport and assembled
 M2 acceptance remain separate gates.
+
+## Source-bound results
+
+Signed source `01af1c83f2deb4e1c492aaee1098344b3def8dcc`, based on PR 81 merge
+`e16e130aa502f66202386e3578095d607947b0ba`, passed all eight new behavioral
+parents, the final-clock regression and the mandatory `make check lint test secrets`
+baseline with 122 tooling tests. Focused review ran 9 affected race packages and
+all 36 compiler-listed selected fuzz targets, including `FuzzPropertyExecutionHandoff`,
+in 206.880 seconds. Both review workers completed with verified group teardown.
+See the [sanitized manifest](property-handoff-manifest.json) for actual source/input/
+report/log hashes, failing-first records, compiler/binary hashes and inventory.
+
+The same source cross-compiled the storage tests for `freebsd/amd64`, cgo disabled;
+the binary was not executed and was removed. All 57 historical M2 manifests and
+418 existing implementation/fixture/tool/policy paths were byte-identical to the
+base. Every native implementation/fixture, shared selector/supervisor, CLI,
+module and packaging source is unchanged. No native suite was rerun or prior
+source relabeled. `make lab-status` found no active or unverified owned sessions;
+no guest, daemon, service or GitHub Action was started. This is portable live
+handoff evidence only; root/native backend, eligibility, global launch/pool
+scheduling, actual interruption/recovery and assembled operator gates remain open.

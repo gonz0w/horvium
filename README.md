@@ -253,8 +253,9 @@ operator writer is installed.
 
 The [original admission execution handoff](docs/testing/M2/property-handoff.md)
 binds one worker to the same coordinator/backend and exact acknowledged queued
-record. Portable qualification is pending; full native backend and runtime
-execution remain open.
+record. Eight behavioral groups and affected race/fuzz checks passed; see the
+[manifest](docs/testing/M2/property-handoff-manifest.json). Full native backend
+and runtime execution remain open.
 
 ## Agreed direction
 

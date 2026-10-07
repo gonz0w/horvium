@@ -6,8 +6,15 @@ validation are separate. Refresh exact versions in each active research manifest
 M2 [original admission execution handoff](../testing/M2/property-handoff.md)
 transfers one freshly acknowledged volatile admission through its original
 coordinator/backend and checks the exact fresh queued record before applying.
-Portable qualification is pending. No native adapter, eligibility promotion,
-operator writer, scheduling/recovery authority or support claim is added.
+Signed source `01af1c83f2deb4e1c492aaee1098344b3def8dcc` passed the mandatory baseline,
+122 tooling tests, eight new behavioral parents, 9 affected race packages and
+all 36 selected fuzz targets, including handoff action fuzzing. FreeBSD tests
+cross-compiled without execution; the artifact was removed. All 57 historical
+M2 manifests and 418 retained implementation/tool/fixture paths were byte-identical,
+and complete owned-process teardown passed. See the
+[manifest](../testing/M2/property-handoff-manifest.json). No native adapter,
+eligibility promotion, operator writer, scheduling/recovery authority or support
+claim is added.
 
 M2 [private native property control](../testing/M2/property-control.md) adds a
 fixed typed property-set prerequisite with fresh applying/GUID binding and

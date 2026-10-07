@@ -1002,7 +1002,12 @@ admission binding, exact whole current queued record, identifier-only handoff,
 unsubmitted/missing-adapter/input denials, final clock/context refusal, original
 coordinator uncertainty/rollback propagation, retained acknowledgement ownership,
 late outcomes and lost applying/observing/success acknowledgement cuts. Bounded
-action fuzzing must refuse a second publication, handoff or effect. Qualification
-is pending; no root lease, native backend/eligibility/scheduling, actual durable
+action fuzzing must refuse a second publication, handoff or effect. Signed source
+`01af1c83f2deb4e1c492aaee1098344b3def8dcc` passed baseline/122 tooling tests, all eight
+new groups, 9 affected race packages and all 36 selected fuzz targets.
+FreeBSD tests cross-compiled without execution and the artifact was removed;
+complete preservation and owned-process teardown passed. See the
+[manifest](../../testing/M2/property-handoff-manifest.json). Maintainer review is
+pending; no root lease, native backend/eligibility/scheduling, actual durable
 interruption/recovery, transport or assembled acceptance follows from synthetic
 adapters or an unexecuted FreeBSD cross-build.
