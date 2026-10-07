@@ -1,6 +1,6 @@
 # M2 bounded job restart projection
 
-Date: 2026-10-06. Status: implementing; portable qualification pending.
+Date: 2026-10-06. Status: portable qualification passed; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [ADR 0007](../../adr/0007-durable-storage-jobs.md),
@@ -32,8 +32,8 @@ complete property baseline and session/policy digests stay out of this summary.
 Original records, duplicate retry history and all pool holders remain unchanged.
 No projected event is appended or durably acknowledged.
 
-Pages contain 1..64 summaries in lexical job-ID order. An empty cursor begins
-enumeration; the last returned ID is an exclusive cursor on the same immutable
+Each request selects a page limit of 1..64 summaries, ordered by lexical job ID.
+An empty cursor begins enumeration; the last returned ID is an exclusive cursor on the same immutable
 view. Nonempty cursors must be canonical IDs present in that view. Unknown,
 malformed or absent cursors fail; cursors do not authenticate a transport request
 or identify a newly collected snapshot. Consumers must retain one view throughout
@@ -70,5 +70,24 @@ fuzz targets. Cross-compile the package/tests for the FreeBSD runtime target.
 No FreeBSD syscall, native store, publisher, test selector or fixture changes in
 this slice; fresh guest runs would not exercise this unconnected portable API.
 Prior native manifests retain their actual sources, and are not relabeled as
-qualification of this projection or actual restart recovery. No complete-suite,
-performance, physical hardware/client or M2 acceptance claim follows.
+qualification of this projection or actual restart recovery. No fresh full
+milestone race/fuzz, performance, physical hardware/client or M2 acceptance claim
+follows.
+
+## Executed qualification
+
+Signed source `60db363d5b0f615dbdb7fd2f247b01e8ab12b788` passed all five parent tests and
+thirty-nine named subcases without skips/failures. The [sanitized manifest](job-restart-manifest.json)
+records exact source/base/input/log hashes, parent/case inventory, cross-build,
+prior evidence preservation and supervised teardown. All baseline checks
+(101 tooling regressions), storage race and all twenty compiler-listed
+storage fuzz targets passed in 113.215 seconds. Only
+`./internal/storage` was selected; no fresh full milestone or native guest run.
+
+The same source cross-compiled its test binary for `freebsd/amd64`, cgo disabled.
+It was not executed; the owned artifact and temporary directory were removed.
+All 33 prior M2 manifests are byte-identical to the base. `make lab-status`
+verified all 231 owned sessions stopped. Documentation/evidence-only followups
+must rerun baseline/title/signature/DCO/source checks and cite this original
+source if deep evidence is reused. Actual native restart recovery and complete
+M2 acceptance remain open.

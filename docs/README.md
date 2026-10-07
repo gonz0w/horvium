@@ -129,4 +129,4 @@
 
 - [M2 reserved property submissions](testing/M2/property-submission.md): one lease/mutex across complete retry/pool checks and synced initial publication; both targets passed all 710 assertions and teardown; accepted in PR 57; runtime writes disabled.
 
-- [M2 bounded job restart projections](testing/M2/job-restart.md): immutable mixed-job pages, conservative interrupted-work presentation and unchanged holds; portable qualification pending; no startup replay/recovery consumer.
+- [M2 bounded job restart projections](testing/M2/job-restart.md): immutable mixed-job pages, conservative interrupted-work presentation and unchanged holds; portable baseline/storage race/all twenty storage fuzz targets passed; maintainer review pending; no startup replay/recovery consumer.

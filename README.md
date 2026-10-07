@@ -111,7 +111,7 @@ combines complete retry/pool checks and initial record publication under one
 writer lock. Both targets passed all 710 assertions and teardown; accepted in
 [PR 57](https://github.com/gonz0w/horvium/pull/57). Executable admission remains disabled.
 
-The [bounded restart projection](docs/testing/M2/job-restart.md) is being qualified:
+The [bounded restart projection](docs/testing/M2/job-restart.md) passed portable qualification;
 it presents interrupted work as requiring reconciliation while retaining durable
 history and pool holds. Actual native recovery remains pending.
 

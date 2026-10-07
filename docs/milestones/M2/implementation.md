@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 57; bounded restart projections implementing; Actions disabled.
+Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 57; bounded restart projections qualified, maintainer review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -447,5 +447,8 @@ from the unchanged last durable event. Both record formats, all terminal/uncerta
 holds and full retry history remain retained. Unavailable/malformed cursors and
 invalid page bounds expose no partial page; cursors require the same retained
 view. No native observation, publication, startup consumer, replay or release is
-added. Portable behavioral/race/fuzz and FreeBSD cross-compilation qualification
-is pending; native executor attribution/recovery and complete M2 gates remain open.
+added. Portable behavioral/race/fuzz and FreeBSD cross-compilation passed at signed
+source `60db363d5b0f615dbdb7fd2f247b01e8ab12b788`; maintainer review is pending.
+Native executor attribution/recovery and complete M2 gates remain open.
+
+See the [execution manifest](../../testing/M2/job-restart-manifest.json); no native recovery/admission follows.
