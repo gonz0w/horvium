@@ -89,7 +89,7 @@ def native_cleanup(directory, interrupted):
                 module.remove(devices)
     except Exception as error:
         device_error = str(error)
-    for name in ('fixture-key', 'vars.fd', 'state-native.test'):
+    for name in ('fixture-key', 'vars.fd', 'state-native.test', 'pool-properties-native.test'):
         (directory / name).unlink(missing_ok=True)
     image = directory / 'image'
     if image.is_symlink():

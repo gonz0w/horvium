@@ -20,6 +20,15 @@ func validGUID(s string) bool {
 	n, err := strconv.ParseUint(s, 10, 64)
 	return err == nil && n > 0 && strconv.FormatUint(n, 10) == s
 }
+
+// ValidatePoolSelection checks only the internal GUID/name address subset before
+// a fixed read-only native projection. It grants no enrollment or eligibility.
+func ValidatePoolSelection(guid, name string) error {
+	if !validGUID(guid) || !validName(name) || strings.Contains(name, "/") {
+		return ErrInvalid
+	}
+	return nil
+}
 func validProperty(p Property) bool { return p == Quota || p == RefQuota || p == Compression }
 func validLimit(s string) bool      { return s == "none" || validGUID(s) }
 func validIntent(i Intent) bool {

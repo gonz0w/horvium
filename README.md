@@ -125,6 +125,12 @@ metadata acknowledgements through a trusted backend contract. Portable baseline,
 storage race/all 21 fuzz checks and a FreeBSD cross-build passed; no native backend
 or runtime storage writer is enabled.
 
+The [native property observer](docs/testing/M2/native-property-collection.md)
+assembles fixed FreeBSD projections in two bounded passes and refuses ordinary
+drift. All 16 collector assertions passed on both native targets, with complete
+portable review and teardown; successful collection still grants no write
+eligibility or runtime submission authority.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.
