@@ -1,6 +1,6 @@
 # M2 property metadata publication process-death cuts
 
-Date: 2026-10-06. Status: both native targets qualified; maintainer review pending.
+Date: 2026-10-06. Status: both native targets qualified; accepted in PR 59.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [ADR 0007](../../adr/0007-durable-storage-jobs.md),

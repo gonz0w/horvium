@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 58; metadata process-death cuts qualified, maintainer review pending; Actions disabled.
+Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 59; portable review/submission integration in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -466,9 +466,25 @@ No native storage command, startup consumer or product behavior/schema changes.
 Require all 777 state/backing assertions, 66 parents and 1,876 codec/model children
 on both targets, including native restart-page execution and complete backing/
 child/host teardown. Both targets passed at signed source
-`a3a33d5929f7fba32fd9ab6364320984b49d9162` with full teardown; maintainer
-review is pending. Shared evidence/selector changes required one complete portable
+`a3a33d5929f7fba32fd9ab6364320984b49d9162` with full teardown; accepted in
+PR 59 at merged source `62f4e7b79233fb945d1fe44010e27a8f2f7fde8b`. Shared evidence/selector changes required one complete portable
 review. Reboot/power-cut and actual native
 executor/reconciliation/restoration/release gates remain open.
 
 See the [execution manifest](../../testing/M2/property-publication-cuts-manifest.json); no native executor/recovery authority follows.
+
+## Property review and submission integration
+
+The [coordinator contract](../../testing/M2/property-coordinator.md) connects the
+accepted plan, capture, binding and publication interfaces. It owns 64 bounded
+volatile plans, refreshes trusted policy/observations before submission, claims
+each plan once and retains immutable admission acknowledgements for concurrent
+confirms. Clock rollback and uncertain publication refuse further submissions;
+restart cannot restore plans. Signed source
+`a8868fa61bb60b80d3b83378a4f0e964e13e8028` passed the baseline, nine behavioral
+parents, storage race/all 21 fuzz targets and an unexecuted FreeBSD cross-build;
+see the [execution manifest](../../testing/M2/property-coordinator-manifest.json).
+Maintainer review is pending. No native
+policy/eligibility backend, kernel-authorized mutation transport, persistent retry
+lookup, executor, native recovery or runtime writes are enabled. Those are the
+remaining integration gates before an actual operator storage workflow.

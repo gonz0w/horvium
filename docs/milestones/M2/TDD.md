@@ -535,8 +535,28 @@ Require all 777 state/backing assertions, 66 parents and 1,876 codec/model child
 on both targets, including native restart-page execution and complete backing/
 child/host teardown. Both targets passed at signed source
 `a3a33d5929f7fba32fd9ab6364320984b49d9162` with full teardown; maintainer
-review is pending. Shared evidence/selector changes required one complete portable
+review was accepted in PR 59. Shared evidence/selector changes required one complete portable
 review. Reboot/power-cut and actual native
 executor/reconciliation/restoration/release gates remain open.
 
 See the [execution manifest](../../testing/M2/property-publication-cuts-manifest.json); no native executor/recovery authority follows.
+
+## Property review and submission integration
+
+M2-PLAN-001, M2-DRIFT-001, M2-STATE-001 and M2-SCALE-001 at T1 (partial):
+require independently collected policy/observations for review and submission,
+owned immutable baseline/output, 64-plan exhaustion before collection, conservative
+five-minute expiry, civil clock rollback, actual cancellation before publication,
+restart invalidation and exact session/submission binding. Thirty-two concurrent
+confirms must invoke the publisher once. Require zero results and no replay after
+publication failure or invalid/foreign acknowledgement, preserving review access.
+Existing duplicate history and a successful acknowledgement after the publication
+deadline must survive without a second sync claim. Fuzz bounded action sequences.
+
+See the [coordinator procedure](../../testing/M2/property-coordinator.md).
+Signed source `a8868fa61bb60b80d3b83378a4f0e964e13e8028` passed the required baseline,
+nine behavioral parents, storage race/all 21 fuzz targets and an unexecuted FreeBSD
+cross-build; see the [execution manifest](../../testing/M2/property-coordinator-manifest.json).
+Mocks and FreeBSD cross-compilation do not qualify a native
+backend, kernel caller/session authorization, durable retry lookup, storage launch,
+native recovery/release or the assembled workflow.

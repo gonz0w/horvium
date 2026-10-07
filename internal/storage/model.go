@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Package storage validates prospective management scope and property reviews.
-// It has no executor, file store, transport or connection to the M1 inventory.
+// Native metadata uses a root-owned lease; portable coordination has no native
+// policy/eligibility backend, executor, transport or connection to M1 inventory.
 package storage
 
 import (
