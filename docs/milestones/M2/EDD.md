@@ -457,3 +457,17 @@ error counts; preserve the healthy replica and generated content. Arm cleanup
 before effect, clear only the acknowledged ID, verify absence and child/pool
 GUIDs before fixture destruction. Unknown acknowledgements require discarding
 the guest. This adds no product fault injector, write authority or job outcome.
+
+## Property execution sequence amendment
+
+The [contract](../../testing/M2/property-execution.md) adopts a portable one-attempt
+worker sequence under the existing root/native authority boundary. Independently
+obtain a queued job and its original live plan/session claim, compare fresh
+eligible facts, require exact durable applying acknowledgement, refresh through
+the same claim/lease, invoke one typed property step and verify actual quiescence.
+Independent complete postconditions and exact observing/outcome acknowledgements
+precede success. Lost/foreign publication acknowledgement stops work; ambiguous
+control/facts retain reconciliation holds and no automatic replay. This composes
+existing codecs without changing durable schema. No product native adapter or
+scheduler implements the trusted contract; false native eligibility, root/live
+claim, process containment, restored-state and real interruption gates remain.

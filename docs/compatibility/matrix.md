@@ -3,6 +3,11 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [property execution sequence](../testing/M2/property-execution.md) adds a
+one-attempt trusted-worker contract with exact durability acknowledgements and
+conservative reconciliation holds. Portable qualification is pending. No native
+backend, global scheduler, restored authority or operator writes are supplied.
+
 M2 [repaired-checksum findings](../testing/M2/checksum-findings.md) add a
 GUID-targeted disposable mirror read-corruption fixture with actual member
 counters, distinct scan completion/error facts, content checks and exact handler/

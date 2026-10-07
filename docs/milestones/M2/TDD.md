@@ -954,3 +954,16 @@ with identical binaries and verified handler/storage/process/base/runtime
 teardown; see the [manifest](../../testing/M2/checksum-findings-manifest.json).
 Maintainer review is pending. Unrecoverable errors, advancing
 progress, attribution/executor/recovery and full acceptance remain open.
+
+## Property execution ordering subset
+
+The [contract](../../testing/M2/property-execution.md) adds partial M2-JOB-001,
+M2-PROPERTY-001, M2-DRIFT-001 and M2-RECOVERY-001 behavioral evidence. Require
+failing-first durable ordering/owned result, publication/lost-ack cuts, fresh
+pre/post-applying launch denials, quiescence/observation ambiguity, exact whole
+record acknowledgement, concurrent single attempt, retained-state refusal,
+clock/context/late-outcome and invalid-input cases. Bounded cut-point fuzzing
+refuses duplicate control and success without all independent durable gates.
+Portable qualification is pending. Native live-claim/root/eligibility/transport,
+global/pool serialization, actual commands/child containment, interrupted effect/
+metadata/reboot/recovery and complete acceptance are separate required gates.

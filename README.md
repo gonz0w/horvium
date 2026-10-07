@@ -238,6 +238,11 @@ content with the base fault-injection tool. Both FreeBSD targets passed all eigh
 new cases and existing checks with verified teardown; product code and write
 eligibility remain unchanged.
 
+The [property execution sequence](docs/testing/M2/property-execution.md) connects
+queued jobs to durable applying intent, one control attempt, independent facts
+and durable outcomes through a trusted worker contract. Portable qualification
+is pending; no native executor or operator write workflow is enabled.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.
