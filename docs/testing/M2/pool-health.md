@@ -39,7 +39,8 @@ paused scrub, cancelled and completed. Preserve reported hundredths of percent
 only for running/paused scans. Completed scans carry the native error count;
 unreported/none/cancelled/running/paused do not invent a final error count. Completed/cancelled
 scans do not invent progress. Native sizes and rates remain rounded display
-strings, not exact byte counters. Dates retain canonical native labels without
+strings, not exact byte counters; only the bundled B/K/M/G/T/P/E units are
+accepted. Dates retain canonical native labels without
 inventing timezone, boot identity, process identity or executor attribution.
 Estimates are native labels only; paused scans cannot report rates/estimates.
 Error scrubs, sequential rebuilds, unsupported status sections, malformed dates,

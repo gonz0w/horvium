@@ -23,7 +23,7 @@ type PoolScan struct {
 	ProgressHundredths                                                 uint16
 }
 
-const scanSize = `(?:0|[1-9][0-9]*)(?:\.[0-9]{1,2})?[BKMGTPEZ]`
+const scanSize = `(?:0|[1-9][0-9]*)(?:\.[0-9]{1,2})?[BKMGTPE]`
 const scanDuration = `(?:[1-9][0-9]* days )?(?:[01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]`
 
 var scanDone = regexp.MustCompile(`^(scrub repaired|resilvered) (` + scanSize + `) in (` + scanDuration + `) with (0|[1-9][0-9]*) errors on (.+)$`)
