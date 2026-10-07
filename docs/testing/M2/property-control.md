@@ -74,8 +74,11 @@ children and group once, without FAIL/SKIP: `preflight`, `quota`, `refquota`,
 `guard-quiescence`, `preserved`. Require both guard children `same-group` and
 `escaped` and the actual dropped-UID child PASS inside the parent's assertion.
 
-Declare one exclusive unmounted child filesystem with its recorded GUID and one
-private root metadata directory/lease. Only test capture uses synthetic eligibility
+Declare one exclusive unmounted child filesystem with its recorded GUID and a
+second GUID-bound ZFS child mounted at an exclusive private `/root` anchor for
+the metadata directory/lease. Verify the actual ZFS backing and mount; neither
+guest root filesystem nor UFS softupdates publication is assumed supported.
+Only test capture uses synthetic eligibility
 to create intents. Actually publish/read queued/applying records and ownership
 through the root store; the fixture claim intentionally does not establish full
 runtime eligibility/admission. Execute the private fixed control on that child,
@@ -85,7 +88,8 @@ ledger and native context drift must leave storage unchanged. Actual EUID 65534
 must be denied before native invocation. No durable success is inferred here.
 
 Cleanup independently closes/removes only declared metadata and verifies absence;
-verify child GUID before destroy, verify absence and original complete raw pool
+verify both child GUIDs before destroy, verify absence, then remove only the empty
+unmounted anchor and verify the original complete raw pool
 projection. Parent pool/provider/backing, base/runtime/guest/host/process cleanup
 remains mandatory. No live operator fixtures, daemon or persistent service runs.
 

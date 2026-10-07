@@ -18,6 +18,7 @@ import (
 	"time"
 
 	"github.com/gonz0w/horvium/internal/storage"
+	"golang.org/x/sys/unix"
 )
 
 func TestNativePropertyControlUIDChild(t *testing.T) {
@@ -94,6 +95,10 @@ func nativePropertyControl(t *testing.T, ctx context.Context, source *PoolProper
 	targetGUID := ""
 	created := false
 	path := ""
+	anchor := ""
+	metadata := pool + "/control_metadata"
+	metadataGUID := ""
+	metadataCreated := false
 	var state *storage.StateDirectory
 	cleanup := func() bool {
 		c, stop := context.WithTimeout(context.Background(), 30*time.Second)
@@ -126,6 +131,29 @@ func nativePropertyControl(t *testing.T, ctx context.Context, source *PoolProper
 			}
 			created = false
 		}
+		if metadataCreated {
+			out, err := execute(c, "/sbin/zfs", []string{"get", "-H", "-p", "-o", "value", "guid", metadata}, 4096)
+			if err != nil || metadataGUID == "" || strings.TrimSpace(string(out.data)) != metadataGUID {
+				return false
+			}
+			if _, err = execute(c, "/sbin/zfs", []string{"destroy", metadata}, 4096); err != nil {
+				return false
+			}
+			if _, err = execute(c, "/sbin/zfs", []string{"list", "-H", metadata}, 4096); err == nil {
+				return false
+			}
+			metadataCreated = false
+		}
+		if anchor != "" {
+			// Remove only the empty owned mountpoint after ZFS has unmounted it.
+			if os.Remove(anchor) != nil {
+				return false
+			}
+			if _, err := os.Lstat(anchor); !errors.Is(err, os.ErrNotExist) {
+				return false
+			}
+			anchor = ""
+		}
 		return true
 	}
 	t.Cleanup(func() {
@@ -149,13 +177,27 @@ func nativePropertyControl(t *testing.T, ctx context.Context, source *PoolProper
 		must(t, "/sbin/zfs", "create", "-o", "mountpoint=none", "-o", "compression=lz4", "-o", "quota=1048576", target)
 		created = true
 		targetGUID = strings.TrimSpace(must(t, "/sbin/zfs", "get", "-H", "-p", "-o", "value", "guid", target))
+		// Actual publication requires a qualified backing. Keep the guest's UFS
+		// softupdates refusal intact; both guests use this explicitly owned ZFS
+		// child, independent of their root filesystem.
+		var err error
+		anchor, err = os.MkdirTemp("/root", "horvium-control-backing-")
+		if err != nil {
+			t.Fatal(err)
+		}
+		must(t, "/sbin/zfs", "create", "-o", "mountpoint="+anchor, metadata)
+		metadataCreated = true
+		metadataGUID = strings.TrimSpace(must(t, "/sbin/zfs", "get", "-H", "-p", "-o", "value", "guid", metadata))
+		var fs unix.Statfs_t
+		if os.Chmod(anchor, 0700) != nil || unix.Statfs(anchor, &fs) != nil || unix.ByteSliceToString(fs.Fstypename[:]) != "zfs" || strings.TrimSpace(must(t, "/sbin/zfs", "get", "-H", "-p", "-o", "value", "mounted", metadata)) != "yes" {
+			t.Fatal("owned ZFS metadata backing")
+		}
 		o := collect(t)
 		policy = storage.Policy{Revision: 1, PoolGUID: guid, PoolName: pool}
 		for _, f := range o.Filesystems {
 			policy.Scopes = append(policy.Scopes, storage.Scope{GUID: f.GUID, Name: f.Name, ParentGUID: f.ParentGUID, Properties: []storage.Property{storage.Quota, storage.RefQuota, storage.Compression}})
 		}
-		var err error
-		path, err = os.MkdirTemp("/root", "horvium-control-")
+		path, err = os.MkdirTemp(anchor, "state-")
 		if err != nil {
 			t.Fatal(err)
 		}
