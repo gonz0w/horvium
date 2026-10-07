@@ -84,3 +84,15 @@ make lab-status
 Runtime provisioning, mutation eligibility/backend/transport, durable applying
 and observed outcomes, executor/recovery/restoration and UI/CLI operation flows
 remain pending. Matching a postcondition alone cannot count as M2 acceptance.
+
+## Fixture reset correction
+
+The initial FreeBSD 15.1 attempt passed quota matching and reached reference-quota
+cleanup, then refused plain `inherit refquota`. Reference quotas are non-inheritable;
+the documented `inherit -S` reset returns a received value or, when none exists,
+the default ([OpenZFS 2.2 manual](https://openzfs.github.io/openzfs-docs/man/v2.2/8/zfs-inherit.8.html)).
+Use this only for test-fixture restoration. The native reference-quota subtest
+must prove plain inheritance is denied without changing the matched local row,
+then independently verify the explicit reset returns `none / - / default`.
+No product command, comparator rule or privilege boundary is widened. Retain the
+unqualified attempt and its complete owned teardown at the actual tested source.

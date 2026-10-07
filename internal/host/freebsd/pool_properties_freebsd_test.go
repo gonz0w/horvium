@@ -271,7 +271,7 @@ func TestNativePoolPropertyCollection(t *testing.T) {
 	check("volume_denied", e != nil && reflect.DeepEqual(denied, storage.Observation{}))
 	must("/sbin/zfs", "destroy", pool+"/volume")
 	t.Run("property-postconditions", func(t *testing.T) {
-		nativePropertyPostconditions(t, ctx, source, guid, pool, must)
+		nativePropertyPostconditions(t, ctx, source, guid, pool)
 	})
 	for _, d := range devices {
 		actual := strings.TrimSpace(must("/sbin/mdconfig", "-l", "-n", "-f", d.path))
