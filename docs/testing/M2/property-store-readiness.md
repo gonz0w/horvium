@@ -1,6 +1,6 @@
 # M2 read-only property store readiness
 
-Date: 2026-10-07. Status: qualification pending; runtime stays read-only.
+Date: 2026-10-07. Status: both native targets and complete portable review passed; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -31,7 +31,7 @@ Kernel descriptor `fstatfs` captures bounded filesystem/source/mountpoint names,
 filesystem ID and mount flags before and after a successful check. Ignore volatile
 free-block counters. Require writable ZFS or UFS without soft updates. Match the
 actual backing exactly to the fresh complete system mount/provider view, with
-nonempty physical backing. Initial qualified mountpoints are `/`, `/boot`, `/etc`,
+nonempty physical backing. Initial accepted mountpoint policy covers `/`, `/boot`, `/etc`,
 `/usr`, `/var`, `/root`, and descendants of the non-root system namespaces.
 A directory on the root filesystem can live elsewhere; its actual mountpoint is
 still `/`. Separate arbitrary data mounts refuse this prerequisite. Any enrolled
@@ -94,4 +94,33 @@ releases. The shared checker requires one complete portable race/fuzz review.
 Unchanged metadata file engines/crash/ACL/capacity evidence retain their original
 sources; this focused run does not requalify the historical 777-case state suite.
 GitHub Actions stay disabled. No production, hardware, populated commercial scale,
-throughput, full recovery or M2 acceptance follows. Execution evidence is pending.
+throughput, full recovery or M2 acceptance follows.
+
+## Executed qualification
+
+Signed source `231b8f0f2c250fcbfc900d95d17ed94de6a24cbb`, based on PR 65 merge
+`e31bbfbff94c083756ba8cf7974dd3b66c2bbf2a`, passed all 56 exact focused assertions
+on FreeBSD 15.1-RELEASE-p3 and 14.5-RELEASE with the same checksum-bound executable.
+Kernel statfs observed actual root-backed ZFS store-check success on 15.1 and
+root-backed softupdates UFS refusal on 14.5. Separate system mountpoints and
+non-softupdates UFS success are policy targets with no new native pass here. Both verified the selected-policy/namespace/retained-job/orphan
+refusals, uncertainty latch and unchanged metadata. Guest workloads including
+setup/teardown took 81.846/79.402 seconds; actual tests took 49.88/47.01 seconds.
+These are Mac/QEMU fixture measurements, not NAS throughput or hardware qualification.
+See the [sanitized execution manifest](property-store-readiness-manifest.json).
+
+Complete portable review passed `make check lint test secrets`, 112 tooling tests,
+all 11 race packages and all 35 compiler-listed bounded fuzz targets in 184.021
+seconds. All 41 historical M2 manifests and pre-existing native metadata file
+engines remain byte-identical to the base. The earlier 777-case state-suite proof
+retains its original source and was not rerun or relabeled. New state checks are
+qualified by the focused fixture; existing durability/ACL/capacity behavior is
+unchanged.
+
+Every owned pool/mount/swap/md/private record and guest/image/key/variables/
+executable/device fixture was removed. Snapshot/base/runtime inputs were preserved;
+`make lab-status` verified all 343 owned sessions stopped at this checkpoint.
+No Actions, runner or host service was enabled. Documentation followups rerun the
+complete cheap baseline and may reuse only exact successful deep inputs.
+Provisioning/adoption, full restored-state/executor validation, atomic admission,
+authorized transport/execution, operator workflows and M2 acceptance remain open.

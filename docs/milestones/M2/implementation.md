@@ -586,5 +586,9 @@ The [store contract](../../testing/M2/property-store-readiness.md) adds a separa
 composed observer requiring complete private policy/job inspection, exact actual
 system backing and retained job holds. The existing safety observer remains
 read-only with its accepted scope. All observations keep false eligibility.
-Qualification is pending. Provisioning/adoption, full restored-state/executor
+Signed source `231b8f0f2c250fcbfc900d95d17ed94de6a24cbb` passed all 56 focused
+assertions on both targets, complete portable review and teardown. Actual ZFS
+success and softupdates UFS denial passed; see the
+[execution manifest](../../testing/M2/property-store-readiness-manifest.json).
+Provisioning/adoption, full restored-state/executor
 validation, atomic admission, transport and execution remain open.

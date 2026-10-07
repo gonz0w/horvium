@@ -695,4 +695,8 @@ cases: all 56 assertions and actual PASS/teardown on both targets are required.
 Observe actual ZFS success and softupdates UFS denial; no filesystem settings or
 additional disks/services change. Complete portable review is required for the
 shared checker. See the [procedure](../../testing/M2/property-store-readiness.md).
-Qualification is pending; full recovery/admission/execution and acceptance remain open.
+Signed source `231b8f0f2c250fcbfc900d95d17ed94de6a24cbb` passed all 56 assertions
+on both targets, the baseline/112 tooling tests, all 11 race packages and 35 fuzz
+targets with full teardown; see the
+[execution manifest](../../testing/M2/property-store-readiness-manifest.json).
+Full recovery/admission/execution and acceptance remain open.

@@ -156,8 +156,9 @@ review and verified teardown; runtime writes remain disabled.
 
 The [property state check](docs/testing/M2/property-store-readiness.md) adds
 complete private policy/job inspection, actual system-backing capability and
-conservative recovery holds to a separate read-only native source. Qualification
-is pending; it grants no write eligibility.
+conservative recovery holds to a separate read-only native source. Both targets
+passed all 56 focused assertions, complete portable review and teardown; it grants
+no write eligibility.
 
 ## Agreed direction
 
