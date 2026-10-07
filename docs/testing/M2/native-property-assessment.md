@@ -1,6 +1,6 @@
 # M2 root-leased native property-job assessment
 
-Date: 2026-10-07. Status: qualified subset; maintainer review pending.
+Date: 2026-10-07. Status: qualified subset; accepted in [PR 75](https://github.com/gonz0w/horvium/pull/75).
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).

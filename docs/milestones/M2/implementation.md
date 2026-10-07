@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 74; root-leased native assessment qualified, review pending; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 75; foreground native assessment qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -738,7 +738,27 @@ preservation/teardown. Independently rebuilt binaries matched exactly; see the
 [manifest](../../testing/M2/native-property-assessment-manifest.json). Two
 earlier deadline attempts remain unqualified; the correction removes duplicate
 unchanged fixture observations while retaining every assertion and time limit.
-Maintainer review is pending; all 50 prior M2 manifests remain unchanged.
+Accepted in [PR 75](https://github.com/gonz0w/horvium/pull/75) at merged source
+`aa65f5a269a5f3dafd1ae4d64226b5f3bef46768`; all 50 prior M2 manifests remain unchanged.
 No metadata codec/mutation engine or shared runner/selector/checker changes are
 needed. Actual executor/reconciliation/restoration, durable outcomes, authorized
 runtime transport/writes and operator workflows remain pending.
+
+## Foreground native property-job assessment
+
+The [diagnostic contract](../../testing/M2/property-assessment-diagnostic.md)
+connects the accepted independent source to an OS-root foreground command with
+explicit protected ledger/job selection and bounded output/lifetime. It presents
+fresh match facts separately from unchanged durable/restart labels, false recovery/
+executor verification and retained holds. Focused portable review passed at
+signed source `b8d078d0097ae47f2e9d5f9b035fccbd2f144e9c`: baseline checks, 122
+tooling tests and command-package race checks. Both native command fixtures
+passed all 21 old and fifteen new cases with complete preservation/teardown;
+independently rebuilt binaries matched exactly. See the
+[manifest](../../testing/M2/property-assessment-diagnostic-manifest.json). The
+initial timestamp fixture failure remains unqualified; its portable
+failing-first regression and corrected constructor passed without changing
+product code or time limits. Maintainer review remains pending.
+The new isolated mirror/provider subgroup retains the existing job-status parent
+and its 21 original assertions. Native eligibility/execution, recovery resolution,
+restored-state validation, authenticated UI/CLI parity and full M2 remain open.

@@ -19,10 +19,19 @@ const storageStatusTimeout = 45 * time.Second
 // cancellation even if delivery cannot return; the kernel releases its handles.
 // Other command lifetimes remain unchanged. Disarm before cancelling the timer.
 func storageJobCommandContext(parent context.Context, args []string, exit func(int)) (context.Context, func()) {
-	if len(args) == 0 || args[0] != "storage-jobs" {
+	if len(args) == 0 {
 		return parent, func() {}
 	}
-	ctx, cancel := context.WithTimeout(parent, storageStatusTimeout)
+	var timeout time.Duration
+	switch args[0] {
+	case "storage-jobs":
+		timeout = storageStatusTimeout
+	case "storage-assess":
+		timeout = storageAssessmentTimeout
+	default:
+		return parent, func() {}
+	}
+	ctx, cancel := context.WithTimeout(parent, timeout)
 	stop := context.AfterFunc(ctx, func() { exit(1) })
 	return ctx, func() { stop(); cancel() }
 }

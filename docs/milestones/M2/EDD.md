@@ -414,3 +414,15 @@ namespace checks and held jobs stay intact. Ordinary drift/cancellation discards
 the entire result; equivalent restored bytes cannot supply root fencing or restored
 state validity. This read-only source permits no caller-supplied native observations,
 publication, replay, resolution, release, write eligibility or durable success.
+
+## Foreground native property-job assessment amendment
+
+The [diagnostic contract](../../testing/M2/property-assessment-diagnostic.md)
+exposes the accepted root-leased source to OS-root operators through one explicit
+ledger path and canonical retained job ID. Independently collect all native facts
+through that source, preserve complete ledger drift checks and close the original
+lease before staged bounded output. Separate fresh baseline/expected-effect facts
+from historical events and conservative restart labels; state false executor/
+recovery verification and retained holds. Validate selection before access, use
+fixed errors and bound collection/output cancellation. No command replay, native
+write, publication, reconciliation resolution or management transport is added.

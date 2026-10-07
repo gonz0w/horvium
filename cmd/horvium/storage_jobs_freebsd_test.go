@@ -40,7 +40,8 @@ func TestNativeStorageJobStatus(t *testing.T) {
 	if os.Geteuid() != 0 {
 		t.Fatal("native parent requires actual root")
 	}
-	// The selected status suite owns no disk, pool, mount, daemon or listener.
+	// The retained-status portion owns no disk, pool, mount, daemon or listener.
+	// The separate assessment subgroup owns its disposable pool/providers.
 	path, err := os.MkdirTemp("/root", "storage-status-")
 	if err != nil {
 		t.Fatal(err)
@@ -313,6 +314,7 @@ func TestNativeStorageJobStatus(t *testing.T) {
 	if backing.Flags&unix.MNT_SOFTDEP != 0 {
 		soft = "on"
 	}
+	t.Run("native-property-assessment", func(t *testing.T) { nativeStorageAssessmentCommand(t, ctx, binary) })
 	check("fixtures_teardown", cleanup())
 	if len(passed) != len(cases) {
 		t.Fatal("missing assertion")

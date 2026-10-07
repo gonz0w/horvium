@@ -884,3 +884,21 @@ exact source/binary/check hashes and both earlier unqualified deadline attempts.
 Only redundant unchanged fixture observations were removed; all assertions and
 time limits remain unchanged. All 50 prior M2 manifests are preserved.
 Maintainer review and complete recovery/runtime/M2 acceptance remain pending.
+
+## Foreground native property-job assessment
+
+The [contract](../../testing/M2/property-assessment-diagnostic.md) adds partial
+M2-STATE-001, M2-JOB-001, M2-RECOVERY-001, M2-PROPERTY-001 and M2-DRIFT-001
+operator evidence. Require failing-first projection/denial/lifetime tests, focused
+review and both disposable native job-status suites, retaining all 21 old
+assertions and fifteen new actual command/UID/native/preservation/teardown cases.
+Copied public main re-exec is test-only; native root records/intents are synthetic
+fixtures, not executed jobs. Both native releases passed all original and new
+mandatory cases with complete preservation/teardown at signed source
+`b8d078d0097ae47f2e9d5f9b035fccbd2f144e9c`. Focused portable review passed
+baseline checks, 122 tooling tests and command-package race checks. See the
+[manifest](../../testing/M2/property-assessment-diagnostic-manifest.json),
+including the earlier unqualified timing fixture and actual failing-first
+regression. All 51 historical M2 manifests remain byte-identical. Maintainer
+review, execution attribution, recovered-state clearance,
+resolution/replay/release and full M2 acceptance remain open.
