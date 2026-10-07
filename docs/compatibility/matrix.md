@@ -514,5 +514,9 @@ uses independent bounded native inputs and the original sealed root lease. No
 metadata schema/engine, unsupported-host behavior, native write eligibility or
 runtime command changes. Both disposable release candidates and complete teardown
 remain required; root ZFS success and softupdates UFS denial are distinct outcomes.
-Qualification is pending. Historical 819-case metadata evidence stays at its actual
-PR 70 sources; physical hardware/commercial/client/recovery claims remain open.
+Both targets passed all 88 native assertions at signed source
+`d6fc9eb9dfee6cda75de7ed727db11bcaf00cb8d`, with focused portable review and verified
+teardown. Root ZFS also passed all six refusal/absence subtests; actual softupdates
+UFS remained denied. See the [manifest](../testing/M2/native-enrollment-publication-manifest.json).
+Historical 819-case metadata evidence stays at its actual PR 70 sources; physical
+hardware/commercial/client/recovery claims remain open.

@@ -1,6 +1,6 @@
 # M2 independently collected enrollment publication
 
-Date: 2026-10-07. Status: implementing; qualification pending.
+Date: 2026-10-07. Status: native and focused portable qualification passed; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -75,3 +75,45 @@ manifests must remain byte-identical to accepted PR 70. Its 819-case state/backi
 suite is retained at its actual sources rather than rerun or relabeled. This
 focused host integration does not qualify physical hardware, resources, clients,
 power loss, restoration or M2 acceptance.
+
+## Executed evidence
+
+Corrected signed source `d6fc9eb9dfee6cda75de7ed727db11bcaf00cb8d`, against
+accepted PR 70 source `1562334b09f3492b81a540459368efc2911a1309`, passed both
+88-assertion suites with the same cross-built executable
+`2c8af31a8fd17b2e2a4b7a20bf81e31f648ac5f818baefce48ca1c7443bc4464`.
+The [sanitized manifest](native-enrollment-publication-manifest.json) binds
+actual sources, native/portable logs, compiler/images/tools, preservation and
+complete supervisor teardown.
+
+| Fixture | Native test | Guest qualification | Observed result |
+| --- | --- | --- | --- |
+| FreeBSD 15.1, root ZFS | 127.21 s | 169.077 s | First/successor publication, consumed-review denial and all six pre-attempt refusal/absence subtests passed |
+| FreeBSD 14.5, root softupdates UFS | 68.19 s | 93.759 s | Zero-review/source-publication denial, independently provisioned predecessor unchanged and complete teardown passed |
+
+The focused portable review took 71.243 seconds: `make check lint test secrets`,
+114 tooling tests, eight affected/transitive race packages and all seven selected
+compiler-listed fuzz targets passed. The five new portable publication parents
+cover orchestration and valid projection drift. The fixture correction changes
+no production code; its portable regression failed before correction and passed
+afterward.
+
+The initial 15.1 run at signed source
+`28dbba14e1bdfa76007296fc3fa643b144106c73` remains unqualified. Its drift fixture
+changed a default quota value without changing the native source, so the parser
+correctly rejected it before sealed validation. Correcting the fixture to a valid
+local quota and adding the failing-first portable regression resolved that error.
+All failed-run fixtures and process groups were also torn down.
+
+All 46 historical M2 manifests, the entire storage package and metadata/native
+selectors/checkers remained byte-identical to PR 70; 190 retained paths were
+verified. The prior 819-case state/backing evidence keeps its actual source and
+was not rerun or relabeled. Owned guests, snapshot devices, temporary images,
+firmware variables, fixture keys, binaries and process groups were removed; the
+standalone cross-build was removed separately. No Actions job, host service or
+persistent runner was enabled.
+
+The final prose/evidence followup still requires a clean final-head baseline
+review; only exact-input deep evidence may be reused. Operator provisioning,
+restored-state/executor recovery, native mutation authority, hardware/client/scale
+and full milestone acceptance remain pending.

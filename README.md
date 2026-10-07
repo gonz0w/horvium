@@ -185,7 +185,8 @@ remain disabled; accepted in PR 70.
 
 The [independently collected enrollment publisher](docs/testing/M2/native-enrollment-publication.md)
 connects that sealed review to fresh native evidence without caller-supplied
-observations. Qualification is pending; operator workflows remain disabled.
+observations. Both targets passed all 88 native assertions with verified teardown;
+focused portable review passed. Operator workflows remain disabled.
 
 ## Agreed direction
 

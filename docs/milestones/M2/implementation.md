@@ -658,6 +658,11 @@ backend/executor and remaining M2 lifecycle/operator workflows stay open.
 The [contract](../../testing/M2/native-enrollment-publication.md) connects sealed
 root-state reviews to independent final native collection and the accepted
 one-attempt publisher. Callers cannot provide observations or substitute selections;
-actual metadata acknowledgements survive later cancellation/expiry. Qualification
-is pending. Runtime provisioning, eligibility/recovery, authorized transport and
-operator workflows remain open.
+actual metadata acknowledgements survive later cancellation/expiry. Both targets
+passed all 88 assertions at signed source `d6fc9eb9dfee6cda75de7ed727db11bcaf00cb8d`,
+with focused portable review and verified teardown; see the
+[manifest](../../testing/M2/native-enrollment-publication-manifest.json). The initial
+invalid drift projection remains unqualified; a failing-first fixture regression
+and source-consistent correction passed. Maintainer review pending. Runtime
+provisioning, eligibility/recovery, authorized transport and operator workflows
+remain open.

@@ -792,3 +792,12 @@ independently provisioned predecessor preservation. No shared evidence/selector
 or storage-package behavior changes; retain PR 70's actual 819-case state/backing
 evidence without relabeling it. Require focused portable review and complete
 teardown; runtime provisioning/recovery/transport and M2 acceptance remain open.
+
+
+Both releases passed all 88 assertions at signed source
+`d6fc9eb9dfee6cda75de7ed727db11bcaf00cb8d`, with the six supported-backing refusal
+subtests, required softupdates denial, focused portable review and full teardown.
+See the [manifest](../../testing/M2/native-enrollment-publication-manifest.json).
+The superseded invalid default-quota projection remains unqualified at its original
+source; its portable regression failed first and the source-consistent local-quota
+fixture passed. No historical metadata evidence was rewritten.
