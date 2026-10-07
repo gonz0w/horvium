@@ -34,7 +34,8 @@ validation or authority to execute after restart. Publication uncertainty on the
 current lease denies even matched retries; inspection/read APIs remain available.
 
 A new record uses the existing exclusive temporary/file-sync/close/rename/
-directory-sync pipeline. Return the bound record with `duplicate=false` only
+directory-sync pipeline, adding a flush/strict readback of the exact renamed
+inode before the final directory barrier. Return the bound record with `duplicate=false` only
 following successful final directory sync. Its complete reservation census and
 capacity accounting run again before staging and before rename, excluding only
 the transaction's independently verified temporary. A holder or duplicate that
@@ -61,7 +62,7 @@ checksums supply no such authority. Runtime storage writes remain disabled.
 
 Write failing behavioral API/evidence tests before implementation. Use owned root
 UFS/ZFS and POSIX/NFSv4 UFS fixtures on the two pinned FreeBSD amd64 guests.
-Require all 686 state assertions, 59 parents and 1,837 distinct codec/model
+Require all 688 state assertions, 59 parents and 1,837 distinct codec/model
 children without skips/failures. Prior 622-case inspection evidence cannot qualify
 this publication extension. Extend both exact selectors and the strict evidence
 checker, including independent missing/failed/duplicate assertion regressions.
@@ -70,7 +71,8 @@ New tests require canonical private publication, duplicate inode/byte preservati
 owned returned baselines, current history and reopened metadata readback, typed
 and contradictory reuse denials, terminal/legacy holds, unrelated pools, concurrent
 same-submission/same-pool/last-slot/distinct-pool outcomes, full-store retries and
-ownership-byte capacity, each publication phase and uncertainty blocking, late
+ownership-byte capacity, 32 competing callers per concurrency scenario, each
+publication phase and uncertainty blocking, post-rename inode/content denial, late
 pool/plan/submission/unknown/orphan/byte drift and complete fixture teardown.
 Actual ACL/inherited-UID denials and real UFS ENOSPC/read-only controls cover the
 new API. Injected phases are ordering/failure-accounting proof; they do not qualify
@@ -96,3 +98,16 @@ The supervisor also needs to record failed pre-worker startup as failed with no
 worker group, and clean any prepared native fixture. A control-socket bind error
 must never fabricate a PID, report success or strand development resources.
 Native qualification is pending; complete M2 acceptance remains open.
+
+
+## UFS publication bookkeeping finding
+
+The first 14.5 run safely refused a distinct-pool submission with metadata drift.
+A stronger 32-caller diagnostic localized a refusal to final record metadata and
+also caught the existing observing publisher. Keep those runs unqualified at their
+actual source. Flush the exact newly renamed inode and independently compare
+canonical bytes before the final directory barrier, including identity/ACL checks.
+Failure after rename stays uncertain and preserves the visible destination. This
+settles publication's own pending inode bookkeeping before the next observation;
+strict census timestamp/identity checks remain unchanged, without retry or a
+timestamp exemption. Qualification must pass both guests at the repaired source.

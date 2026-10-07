@@ -338,8 +338,12 @@ new success follows final directory sync, while retries return existing current
 metadata without rewriting or a fresh durability acknowledgement. Uncertain
 publication denies even duplicate returns. Terminal holds remain; runtime native
 admission, caller/policy/eligibility/session/clock, executor/recovery/release and
-M2 acceptance stay open. Require 686 state assertions, 59 parents and 1,837
+M2 acceptance stay open. Require 688 state assertions, 59 parents and 1,837
 codec/model children on both releases with full owned teardown. Native
 qualification is pending. Shared pipeline/evidence/supervisor changes require one
 complete portable review; startup failure before worker creation must remain a
 failure and clean prepared owned fixtures without inventing/signalling a PID.
+
+Publication now flushes and validates its exact renamed inode before final
+directory sync. Native concurrency uses 32 callers per scenario; changed inode
+or bytes after rename remain uncertain. Strict census timestamp checks remain.

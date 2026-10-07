@@ -236,6 +236,31 @@ func TestNativePropertySubmission(t *testing.T) {
 			check(kind+"_capacity_denial", zero(got, duplicate, err) && errors.Is(err, ErrLimit) && noTemps(folder))
 		}
 	}
+	// A successful rename still requires the exact newly published inode/bytes.
+	for _, kind := range []string{"bytes", "inode"} {
+		fixture, folder := lease("published-" + kind)
+		name := filepath.Join(folder, "job-"+p.job.ID+".json")
+		wrap := func(tx ownershipPublication) ownershipPublication {
+			original := tx.rename
+			tx.rename = func() error {
+				if err := original(); err != nil {
+					return err
+				}
+				if kind == "inode" {
+					if err := os.Rename(name, filepath.Join(folder, "preserved")); err != nil {
+						return err
+					}
+					write(name, reservationBytes(t, p))
+				} else {
+					write(name, []byte("damaged"))
+				}
+				return nil
+			}
+			return tx
+		}
+		got, duplicate, err := fixture.publishPropertySubmissionBounded(p, defaultStateCatalogLimits, wrap)
+		check("published_"+kind+"_denial", zero(got, duplicate, err) && errors.Is(err, ErrStateUncertain))
+	}
 	for _, phase := range []string{"write", "syncFile", "closeFile", "verify", "rename", "syncDirectory", "cleanup"} {
 		fixture, folder := lease("phase-" + phase)
 		wrap := func(tx ownershipPublication) ownershipPublication {

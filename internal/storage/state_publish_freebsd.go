@@ -197,7 +197,15 @@ func (s *StateDirectory) publishStateInspectedLocked(name, prefix string, data [
 		return verifyObjects()
 	}
 	tx.rename = func() error { return unix.Renameat(dir, temporary, dir, name) }
-	tx.syncDirectory = func() error { return unix.Fsync(dir) }
+	tx.syncDirectory = func() error {
+		// UFS can defer the renamed inode's ctime bookkeeping until later I/O.
+		// Flush our exact published inode before the final directory barrier so
+		// the next strict census need not ignore timestamps or retry drift.
+		if err := syncPublishedState(dir, name, data, written); err != nil {
+			return err
+		}
+		return unix.Fsync(dir)
+	}
 	if wrap != nil {
 		tx = wrap(tx)
 	}
@@ -206,4 +214,36 @@ func (s *StateDirectory) publishStateInspectedLocked(name, prefix string, data [
 		s.publicationBlocked = true
 	}
 	return err
+}
+
+// Rename already occurred. Any failure is uncertain, never rollback/cleanup of
+// the destination. Only the exact owned inode may be synchronized; verify its
+// canonical bytes and strict metadata again after the expected rename flush.
+func syncPublishedState(dir int, name string, data []byte, written unix.Stat_t) error {
+	fd, err := unix.Openat(dir, name, unix.O_RDONLY|unix.O_NOFOLLOW|unix.O_NONBLOCK|unix.O_CLOEXEC, 0)
+	if err != nil {
+		return ErrStateDirectory
+	}
+	f := os.NewFile(uintptr(fd), "storage-state-published")
+	defer f.Close()
+	var before, after, named unix.Stat_t
+	if unix.Fstat(fd, &before) != nil || !privateOwnershipFile(before) || !safeStateACL(fd, uint32(before.Mode), false) || before.Dev != written.Dev || before.Ino != written.Ino || before.Size != int64(len(data)) || before.Mtim != written.Mtim || before.Gid != written.Gid || before.Flags != written.Flags || before.Gen != written.Gen || before.Btim != written.Btim {
+		return ErrDrift
+	}
+	if err := f.Sync(); err != nil {
+		return ErrStateDirectory
+	}
+	// This is the authoritative post-flush window; no timestamp exception or
+	// retry is made for later reads or the complete reservation/state census.
+	if unix.Fstat(fd, &before) != nil || !privateOwnershipFile(before) || before.Size != int64(len(data)) || !safeStateACL(fd, uint32(before.Mode), false) {
+		return ErrDrift
+	}
+	current, err := io.ReadAll(io.LimitReader(f, int64(len(data))+1))
+	if err != nil || !bytes.Equal(current, data) || unix.Fstat(fd, &after) != nil || !sameOwnershipMetadata(before, after) || unix.Fstatat(dir, name, &named, unix.AT_SYMLINK_NOFOLLOW) != nil || !sameOwnershipMetadata(after, named) {
+		return ErrDrift
+	}
+	if f.Close() != nil {
+		return ErrStateDirectory
+	}
+	return nil
 }
