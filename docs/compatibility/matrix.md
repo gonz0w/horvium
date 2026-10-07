@@ -3,6 +3,12 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [original admission execution handoff](../testing/M2/property-handoff.md)
+transfers one freshly acknowledged volatile admission through its original
+coordinator/backend and checks the exact fresh queued record before applying.
+Portable qualification is pending. No native adapter, eligibility promotion,
+operator writer, scheduling/recovery authority or support claim is added.
+
 M2 [private native property control](../testing/M2/property-control.md) adds a
 fixed typed property-set prerequisite with fresh applying/GUID binding and
 conservative guard acknowledgement. Signed source `6ef01cb5fbd3f3015a6fc8c9a5a8ccc4302031aa`

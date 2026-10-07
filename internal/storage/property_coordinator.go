@@ -26,6 +26,9 @@ type propertyReviewEntry struct {
 	plan       Plan
 	ack        PropertyJob
 	submission string
+	// An existing-store retry is not this coordinator's fresh admission. A
+	// successful new admission can hand off its original live claim only once.
+	duplicateAdmission, executionClaimed bool
 }
 
 // PropertyCoordinator connects volatile review to metadata submission. It owns
@@ -225,6 +228,7 @@ func (c *PropertyCoordinator) Submit(ctx context.Context, session, planID, submi
 		return PropertyJob{}, false, ErrStateUncertain
 	}
 	entry.ack = clonePropertyJob(ack)
+	entry.duplicateAdmission = duplicate
 	c.reviews[planID] = entry
 	return clonePropertyJob(ack), duplicate, nil
 }

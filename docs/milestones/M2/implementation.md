@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 80; private native property-control subset qualified for review; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 81; original admission execution handoff in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -842,5 +842,15 @@ and descendant waiting passed. All metadata used an explicitly owned mounted ZFS
 child; the guest root and softupdates refusal remain independent. Complete
 preservation/teardown passed, and the operator-stopped initial attempt stays
 unqualified; see the [manifest](../../testing/M2/property-control-manifest.json).
-Maintainer review is pending. Native backend/eligibility, crash/recovery/scheduling
+Accepted in [PR 81](https://github.com/gonz0w/horvium/pull/81) at merged source
+`e16e130aa502f66202386e3578095d607947b0ba`. Native backend/eligibility, crash/recovery/scheduling
 and operator workflows remain separate gates.
+
+## Original admission execution handoff
+
+The [contract](../../testing/M2/property-handoff.md) transfers one fresh admission
+from its original coordinator to the accepted execution sequence. It retains the
+same combined backend, exact queued acknowledgement and original civil-clock
+lineage. Stored bytes, duplicate backend acknowledgements and reconstruction
+cannot create the handoff. Portable qualification is pending; a complete original
+root backend and all actual native eligibility/interruption/recovery gates remain.

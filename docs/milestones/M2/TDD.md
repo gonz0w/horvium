@@ -989,6 +989,20 @@ selected fuzz targets. Both releases passed every required new case, all retaine
 assertions/subgroups and full teardown. Metadata publication uses an actual owned
 mounted ZFS child, preserving the UFS softupdates refusal; the operator-stopped
 initial attempt remains unqualified. See the
-[manifest](../../testing/M2/property-control-manifest.json). Maintainer review is
-pending; native root backend/live eligibility and crash/recovery/assembled
+[manifest](../../testing/M2/property-control-manifest.json). Accepted in
+[PR 81](https://github.com/gonz0w/horvium/pull/81); native root backend/live eligibility and crash/recovery/assembled
 acceptance remain open.
+
+## Original admission execution handoff subset
+
+The [contract](../../testing/M2/property-handoff.md) adds partial M2-PLAN-001,
+M2-JOB-001, M2-DRIFT-001 and M2-RECOVERY-001 evidence. Require original backend/
+admission binding, exact whole current queued record, identifier-only handoff,
+32 concurrent handoffs and 32 calls through the issued object, duplicate/restored/
+unsubmitted/missing-adapter/input denials, final clock/context refusal, original
+coordinator uncertainty/rollback propagation, retained acknowledgement ownership,
+late outcomes and lost applying/observing/success acknowledgement cuts. Bounded
+action fuzzing must refuse a second publication, handoff or effect. Qualification
+is pending; no root lease, native backend/eligibility/scheduling, actual durable
+interruption/recovery, transport or assembled acceptance follows from synthetic
+adapters or an unexecuted FreeBSD cross-build.
