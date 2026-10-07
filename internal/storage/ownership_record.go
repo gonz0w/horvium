@@ -54,6 +54,9 @@ func EncodeOwnershipRecord(p Policy) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	if len(canonical.Members) > 0 {
+		return encodeOwnershipV2(canonical)
+	}
 	wire := ownershipWire(canonical)
 	r := ownershipRecord{Version: 1, Kind: "ownership", Policy: wire, Checksum: ownershipChecksum(wire)}
 	b, err := json.Marshal(r)
@@ -77,13 +80,8 @@ func DecodeOwnershipRecord(data []byte) (Policy, error) {
 	if !utf8.Valid(data) {
 		return Policy{}, ErrStateRecord
 	}
-	d := json.NewDecoder(bytes.NewReader(data))
-	d.UseNumber()
-	if ownershipJSONValue(d, reflect.TypeFor[ownershipRecord]()) != nil {
-		return Policy{}, ErrStateRecord
-	}
-	if _, err := d.Token(); err != io.EOF {
-		return Policy{}, ErrStateRecord
+	if !ownershipShape(data, ownershipRecord{}) {
+		return decodeOwnershipV2(data)
 	}
 	var r ownershipRecord
 	if json.Unmarshal(data, &r) != nil || r.Version != 1 || r.Kind != "ownership" {
@@ -101,6 +99,18 @@ func DecodeOwnershipRecord(data []byte) (Policy, error) {
 		return Policy{}, ErrStateRecord
 	}
 	return canonical, nil
+}
+
+// Both supported schemas are fixed-depth strict walks. Dispatch never probes
+// arbitrary JSON or guesses missing members; each walk rejects unknown shapes.
+func ownershipShape(data []byte, record any) bool {
+	d := json.NewDecoder(bytes.NewReader(data))
+	d.UseNumber()
+	if ownershipJSONValue(d, reflect.TypeOf(record)) != nil {
+		return false
+	}
+	_, err := d.Token()
+	return err == io.EOF
 }
 
 // Shape-directed token traversal never descends into arbitrary JSON: unknown
@@ -208,10 +218,23 @@ func normalizeOwnership(p Policy) (Policy, error) {
 			return Policy{}, ErrLimit
 		}
 	}
+	if len(p.Members) > maxVdevs {
+		return Policy{}, ErrLimit
+	}
+	for _, m := range p.Members {
+		if !debit(m.VdevGUID, m.Serial, m.SerialSource) || remaining < 128 {
+			return Policy{}, ErrLimit
+		}
+		remaining -= 128
+	}
+	members, err := normalizeMembers(p.Members)
+	if err != nil {
+		return Policy{}, err
+	}
 	if p.Revision == 0 || !validGUID(p.PoolGUID) || !validName(p.PoolName) || strings.Contains(p.PoolName, "/") {
 		return Policy{}, ErrStateRecord
 	}
-	canonical := Policy{Revision: p.Revision, PoolGUID: p.PoolGUID, PoolName: p.PoolName, Scopes: make([]Scope, len(p.Scopes))}
+	canonical := Policy{Revision: p.Revision, PoolGUID: p.PoolGUID, PoolName: p.PoolName, Scopes: make([]Scope, len(p.Scopes)), Members: members}
 	guids, names := make(map[string]Scope, len(p.Scopes)), make(map[string]bool, len(p.Scopes))
 	for i, s := range p.Scopes {
 		if !validGUID(s.GUID) || !validName(s.Name) || names[s.Name] || len(s.Properties) == 0 {

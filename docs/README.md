@@ -137,4 +137,6 @@
 - [M2 root policy/native binding](testing/M2/property-policy-binding.md): GUID-only collection through the held ownership reader, repeated canonical policy checks and complete scope binding; both targets passed all 22 assertions, complete portable review and teardown; accepted in PR 62; eligibility remains false.
 - [M2 native property system exclusions](testing/M2/property-system-exclusions.md): complete imported-pool/mount/swap backing and property topology binding, with system/conflict denials; both targets passed all 32 assertions, complete portable review and snapshot-disk teardown; accepted in PR 63; eligibility remains false.
 
-- [M2 native provider binding](testing/M2/property-provider-binding.md): complete leaf serial/geometry and qualified attachment correspondence; both targets passed all 37 assertions, complete portable review and teardown; maintainer review pending; no enrollment or write eligibility.
+- [M2 native provider binding](testing/M2/property-provider-binding.md): complete leaf serial/geometry and qualified attachment correspondence; both targets passed all 37 assertions, complete portable review and teardown; accepted in PR 64; no enrollment or write eligibility.
+
+- [M2 explicit property member enrollment](testing/M2/property-member-enrollment.md): version 2 member baselines, legacy read compatibility and exact native matching; qualification pending; eligibility remains false.

@@ -45,7 +45,7 @@ func TestPropertySafetyCollectionRechecksPolicyAfterSystemReads(t *testing.T) {
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
 			s := &PropertySafetySource{policy: policySource(func(string) (storage.Policy, error) {
-				p := collectionPolicy()
+				p := safetyPolicy()
 				if changed {
 					switch mode {
 					case "revision":
@@ -74,7 +74,7 @@ func TestPropertySafetyCollectionRechecksPolicyAfterSystemReads(t *testing.T) {
 
 func TestPropertySafetyCollectionJoinsExclusionsWithoutAuthority(t *testing.T) {
 	rows := safetyCaptures()
-	s := &PropertySafetySource{policy: policySource(func(string) (storage.Policy, error) { return collectionPolicy(), nil }), providers: safetyProvider(), system: useSource(func(_ context.Context, p systemProbe, name string, _ int) (readOutput, error) {
+	s := &PropertySafetySource{policy: policySource(func(string) (storage.Policy, error) { return safetyPolicy(), nil }), providers: safetyProvider(), system: useSource(func(_ context.Context, p systemProbe, name string, _ int) (readOutput, error) {
 		if (p == systemPoolGUID || p == systemPoolTopologyGUID || p == systemPoolTopologyPath) && name != "tank" {
 			t.Fatal("unvalidated pool")
 		}
@@ -114,7 +114,7 @@ func TestPropertySafetyRequiresProviderProofAndFinalPolicy(t *testing.T) {
 		t.Run(mode, func(t *testing.T) {
 			changed := false
 			s := &PropertySafetySource{policy: policySource(func(string) (storage.Policy, error) {
-				p := collectionPolicy()
+				p := safetyPolicy()
 				if changed {
 					p.Revision++
 				}
@@ -141,6 +141,46 @@ func TestPropertySafetyRequiresProviderProofAndFinalPolicy(t *testing.T) {
 			}
 			if mode == "policy-drift" && !errors.Is(err, storage.ErrDrift) {
 				t.Fatal("policy drift", err)
+			}
+		})
+	}
+}
+
+func safetyPolicy() storage.Policy {
+	p := collectionPolicy()
+	p.Members = []storage.PoolMember{{VdevGUID: "901", Serial: "SERIAL-A", SerialSource: "geom.config.ident", MediaSize: 67108864, SectorSize: 512}, {VdevGUID: "902", Serial: "SERIAL-B", SerialSource: "geom.config.ident", MediaSize: 67108864, SectorSize: 512}}
+	return p
+}
+func TestPropertySafetyRequiresExactMemberEnrollment(t *testing.T) {
+	for _, mode := range []string{"legacy", "partial", "serial", "geometry", "source", "member-policy-drift"} {
+		t.Run(mode, func(t *testing.T) {
+			changed := false
+			s := &PropertySafetySource{policy: policySource(func(string) (storage.Policy, error) {
+				p := safetyPolicy()
+				switch mode {
+				case "legacy":
+					p.Members = nil
+				case "partial":
+					p.Members = p.Members[:1]
+				case "serial":
+					p.Members[0].Serial = "OTHER"
+				case "geometry":
+					p.Members[0].MediaSize *= 2
+				case "source":
+					p.Members[0].SerialSource = "provider.config.ident"
+				case "member-policy-drift":
+					if changed {
+						p.Members[0].Serial = "OTHER"
+					}
+				}
+				return p, nil
+			}), providers: safetyProvider(), system: useSource(func(_ context.Context, p systemProbe, _ string, _ int) (readOutput, error) {
+				changed = true
+				return testOutput(safetyCaptures()[p]), nil
+			})}
+			p, o, err := s.Collect(context.Background(), "100")
+			if err == nil || !reflect.DeepEqual(p, storage.Policy{}) || !reflect.DeepEqual(o, storage.Observation{}) {
+				t.Fatal("unenrolled or drifting member accepted", err)
 			}
 		})
 	}

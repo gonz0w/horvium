@@ -141,6 +141,16 @@ type Policy struct {
 	Revision           uint64
 	PoolGUID, PoolName string
 	Scopes             []Scope
+	Members            []PoolMember
+}
+
+// PoolMember is an explicit root-controlled property enrollment baseline.
+// Addresses/GEOM IDs are not persisted; vdev GUID, serial provenance and native
+// geometry must independently match fresh observations. This is not locality,
+// unused-device clearance, a replacement request or execution authority.
+type PoolMember struct {
+	VdevGUID, Serial, SerialSource                  string
+	MediaSize, SectorSize, StripeSize, StripeOffset uint64
 }
 type Scope struct {
 	GUID, Name, ParentGUID string

@@ -562,6 +562,16 @@ on both native targets, the baseline/112 tooling tests, all 11 race packages and
 [execution manifest](../../testing/M2/property-provider-binding-manifest.json).
 The exact imported ZFS consumer classifier preserves unused-device refusal;
 provider identity/geometry must agree with the later fresh system graph. Failed
-fixture/evidence attempts remain unqualified at their original sources. Maintainer
-review is pending. Runtime enrollment, store/recovery/admission, transport and
+fixture/evidence attempts remain unqualified at their original sources. Accepted
+in PR 64. Runtime enrollment, store/recovery/admission, transport and
 execution still precede an operator storage workflow.
+
+## Explicit property member baseline
+
+The [version 2 contract](../../testing/M2/property-member-enrollment.md) adds exact
+root-recorded member GUID, serial/provenance and observed geometry. Complete native
+matching is required by the composed safety path; legacy records stay readable
+but fail this gate. Member facts bind the existing plan/intent policy hash even
+without a revision change. Portable and focused native qualification are pending.
+Enrollment provisioning/adoption, system-store eligibility, full recovery, atomic
+admission, transport and execution remain required before operator workflows.

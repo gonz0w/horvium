@@ -656,3 +656,21 @@ targets, the baseline/112 tooling tests, all 11 race packages and 35 fuzz target
 with full teardown; see the
 [execution manifest](../../testing/M2/property-provider-binding-manifest.json).
 Root enrollment, admission, execution/recovery and M2 acceptance remain open.
+
+## Explicit property member enrollment prerequisite
+
+Partial M2-OWN-001, M2-DEVICE-001, M2-DRIFT-001 and M2-STATE-001 at T1/T3:
+require unchanged version 1 canonical bytes/read semantics, strict required version
+2 members, unique GUID/serial/provenance and bounded valid observed geometry.
+Reject checksummed semantic damage and unknown/missing/null/duplicate fields.
+Require complete exact native correspondence and final root policy reread, with
+zero results on legacy/partial/member drift and false eligibility on success.
+Persisted property intents must reject same-revision member drift. Retain all 37
+native cases and add nine enrollment/read/catalog/publication/denial/restoration
+cases: all 46 exact assertions and complete owned teardown on both targets.
+Observe actual state backing via kernel statfs: qualify version 2 publication on
+accepted backing and unchanged-record denial on softupdates UFS. No mount/tunefs
+changes or additional devices. The shared checker requires complete portable
+review; unchanged metadata durability/cut behavior retains historical evidence.
+See the [procedure](../../testing/M2/property-member-enrollment.md). Qualification
+is pending; full runtime enrollment/admission/recovery and acceptance remain open.

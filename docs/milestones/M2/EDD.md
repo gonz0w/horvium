@@ -165,6 +165,20 @@ authenticated projections. Reject symlinks, unsafe ancestors, unexpected ownersh
 unknown versions/fields, duplicate keys, oversized records and checksum mismatch.
 Checksums detect damage, not malicious root modification.
 
+Member-baseline amendment: version 2 ownership records retain the version 1
+scope contract and add explicit nonempty members, sorted by vdev GUID. Each member
+records a unique canonical GUID, unique serial with exact native provenance,
+media/logical-sector size and observed stripe size/offset. Do not persist device
+paths or GEOM IDs, infer physical sectors, or infer locality from serials. Both
+closed schemas are strict and share the 64 KiB ceiling; version 1 bytes remain
+unchanged and readable. No automatic migration or enrollment occurs. The complete
+property safety path requires every member to match fresh correlated native
+observations; legacy/partial/mismatched records refuse with no result. Include
+member facts in the immutable policy hash. This is an enrollment prerequisite,
+not provisioning or write authority; runtime eligibility remains false. Older
+code refuses version 2 rather than rewriting it. See the
+[member contract](../../testing/M2/property-member-enrollment.md).
+
 Native capability amendment in the reserved-submission PR: metadata publication
 requires ZFS or UFS without soft updates. Actual softupdates UFS ctime drift and
 pinned deferred-removal source prevent qualifying its strict metadata windows;

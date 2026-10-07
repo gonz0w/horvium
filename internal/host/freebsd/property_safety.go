@@ -13,7 +13,8 @@ import (
 
 // PropertySafetySource joins private policy/native properties with complete
 // provider and system-use collections. It borrows the root lease and remains
-// read-only and ineligible: provider enrollment and store/admission/recovery gates are absent.
+// read-only and ineligible: enrollment provisioning and store/admission/recovery
+// gates are absent. Explicit root member facts must match fresh native providers.
 type PropertySafetySource struct {
 	policy    *PropertyPolicySource
 	system    *SystemUseSource
@@ -48,8 +49,14 @@ func (s *PropertySafetySource) Collect(ctx context.Context, guid string) (storag
 	if err != nil {
 		return storage.Policy{}, storage.Observation{}, err
 	}
+	if len(p.Members) == 0 {
+		return storage.Policy{}, storage.Observation{}, storage.ErrDenied
+	}
 	providers, err := s.providers.Collect(ctx, o)
 	if err != nil {
+		return storage.Policy{}, storage.Observation{}, err
+	}
+	if err = storage.ValidatePropertyMembers(p, o, providers); err != nil {
 		return storage.Policy{}, storage.Observation{}, err
 	}
 	u, err := s.system.Collect(ctx)
