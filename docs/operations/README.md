@@ -1,7 +1,10 @@
 # Operational runbook plan
 
 Runbooks become executable guidance as the relevant feature is implemented and
-tested. M0 supplies topics only; there are no product commands to run yet.
+tested. See [M1 foreground development](M1-development.md) and the
+[M2 retained job-status diagnostic](M2-job-status.md) for implemented development
+interfaces and their qualification limits. Installation and full recovery remain
+later gates.
 
 Required before first release: install/first login; storage discovery/adoption;
 share/identity setup; disk replacement and scrub failures; capacity exhaustion;

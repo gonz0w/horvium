@@ -14,8 +14,9 @@ var (
 
 // StateDirectory holds a descriptor-anchored directory and its stable advisory
 // writer lock. It is not a record store, enrollment, native executor or ZFS fence.
-// Do not copy it; close the owned handle when its lifetime ends. No runtime wiring
-// creates or opens state directories yet. Only the FreeBSD implementation opens.
+// Do not copy it; close the owned handle when its lifetime ends. The foreground
+// storage-jobs diagnostic opens only for inspection; no native executor or storage
+// writer is enabled. Only the FreeBSD implementation opens.
 type StateDirectory struct {
 	mu                 sync.Mutex
 	directory, writer  *os.File

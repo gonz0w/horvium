@@ -801,3 +801,19 @@ See the [manifest](../../testing/M2/native-enrollment-publication-manifest.json)
 The superseded invalid default-quota projection remains unqualified at its original
 source; its portable regression failed first and the source-consistent local-quota
 fixture passed. No historical metadata evidence was rewritten.
+
+
+## Foreground retained job-status integration
+
+The [procedure](../../testing/M2/storage-job-status.md) adds partial M2-STATE-001,
+M2-JOB-001, M2-RECOVERY-001, M2-PRIV-001 and M2-NATIVE-001 diagnostic coverage.
+Portable tests must cover complete multi-page and mixed-format summaries without
+private intent, conservative restart state, validation/argument/cancellation and
+output failure. Both releases must pass the twenty exact compiled public-main
+command, actual UID, full-record/preservation/lease/backing and teardown assertions.
+Use only owned private metadata and a checksummed child test executable; no disk
+or storage mutation fixture. Shared runner/supervisor changes require fresh full
+portable review and exact new-artifact cleanup after interruption. No native
+metadata implementation/codec or prior manifest changes; full state evidence keeps
+its actual sources. Management transport/browser parity, native reconciliation,
+restoration, execution and complete M2 acceptance remain open.

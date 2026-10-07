@@ -1,6 +1,6 @@
 # M2 independently collected enrollment publication
 
-Date: 2026-10-07. Status: native and focused portable qualification passed; maintainer review pending.
+Date: 2026-10-07. Status: native and focused portable qualification passed; accepted in PR 71.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).

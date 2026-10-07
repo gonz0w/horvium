@@ -25,12 +25,14 @@ SUITES = {
     'devices': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_DEVICE_VM=1 sh tools/bsd-devices.sh'),
     'state': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_STATE_VM=1 sh tools/bsd-state.sh'),
     'properties': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_PROPERTY_VM=1 sh tools/bsd-properties.sh'),
+    'job-status': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_STATUS_VM=1 sh tools/bsd-storage-job-status-prebuilt.sh'),
     'pool-properties': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_PROPERTY_VM=1 sh tools/bsd-pool-properties-prebuilt.sh'),
     'continuity': ('python314 samba423', 'env HORVIUM_NATIVE_VM=1 HORVIUM_CONTINUITY_VM=1 sh tools/bsd-continuity.sh'),
     'performance': ('python314', 'env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh && env HORVIUM_NATIVE_VM=1 HORVIUM_PERF_VM=1 sh tools/bsd-performance.sh'),
 }
 
 PREBUILT = {
+    'job-status': ('storage-job-status-native.test', './cmd/horvium', 'STORAGE_JOB_STATUS_PREBUILT_SHA256', 'HORVIUM_STATUS_VM=1', 'bsd-storage-job-status-prebuilt.sh'),
     'state': ('state-native.test', './internal/storage', 'STATE_PREBUILT_SHA256', 'HORVIUM_STATE_VM=1', 'bsd-state-prebuilt.sh'),
     'pool-properties': ('pool-properties-native.test', './internal/host/freebsd', 'POOL_PROPERTIES_PREBUILT_SHA256', 'HORVIUM_PROPERTY_VM=1', 'bsd-pool-properties-prebuilt.sh'),
 }
@@ -129,6 +131,9 @@ def stop_guest(process):
 def validate_result(suite, log, complete=False):
     if '--- FAIL:' in log or '\nFAIL\n' in log:
         raise ValueError('guest test failure')
+    if suite == 'job-status':
+        load_tool('check-storage-job-status-evidence').validate(log)
+        return
     if suite == 'state':
         load_tool('check-state-evidence').validate(log)
         return
@@ -333,6 +338,7 @@ def main():
             variables.unlink(missing_ok=True)
             (directory / 'state-native.test').unlink(missing_ok=True)
             (directory / 'pool-properties-native.test').unlink(missing_ok=True)
+            (directory / 'storage-job-status-native.test').unlink(missing_ok=True)
             record['host_teardown'] = True
             if device_tool and record.get('guest_assertions'):
                 if not record.get('device_backings_preserved') or not record.get('device_fixture_teardown'):
@@ -350,6 +356,7 @@ def main():
             key.unlink(missing_ok=True)
             (directory / 'state-native.test').unlink(missing_ok=True)
             (directory / 'pool-properties-native.test').unlink(missing_ok=True)
+            (directory / 'storage-job-status-native.test').unlink(missing_ok=True)
             record['completed_at'] = datetime.now(timezone.utc).isoformat()
             (directory / 'result.json').write_text(json.dumps(record, indent=2) + '\n')
             print(f'Qualification record: {directory / "result.json"}', flush=True)

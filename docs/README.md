@@ -151,4 +151,6 @@
 
 - [M2 reviewed enrollment metadata publication](testing/M2/enrollment-publication.md): shared one-attempt claims, complete original-lease rechecks and actual clock/context guards around atomic metadata publication; both targets passed 819 state/backing and 88 native pool assertions with complete portable review and teardown; accepted in PR 70; runtime writes disabled.
 
-- [M2 independently collected enrollment publication](testing/M2/native-enrollment-publication.md): sealed root reviews, independent final native inputs and unchanged metadata acknowledgements; both targets passed all 88 assertions, focused portable review and teardown; maintainer review pending.
+- [M2 independently collected enrollment publication](testing/M2/native-enrollment-publication.md): sealed root reviews, independent final native inputs and unchanged metadata acknowledgements; both targets passed all 88 assertions, focused portable review and teardown; accepted in PR 71.
+
+- [M2 foreground storage job status](testing/M2/storage-job-status.md): root-leased complete retained summaries, conservative restart status and explicit unverified recovery; qualification pending. [Runbook](operations/M2-job-status.md).

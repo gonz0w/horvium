@@ -61,7 +61,7 @@ python3.14 tools/local-qualification.py pool-properties 14.5 --run
 ```
 
 Supported suites: `foundation`, `research`, `discovery`, `state`, `properties`, `pool-properties`,
-`continuity`, `performance`, `devices`. Run the two release candidates **sequentially** on
+`continuity`, `performance`, `devices`, `job-status`. Run the two release candidates **sequentially** on
 the Mac. Each guest has two CPUs, 6,144 MiB RAM, qemu64 and snapshot storage.
 Reserve additional RAM for macOS; stop other large workloads while testing.
 These are lab allocations, not Horvium runtime hardware requirements.
@@ -429,3 +429,22 @@ and canonical-policy checks, actual system-backing capability, retained job hold
 orphan uncertainty and unchanged-record assertions. No backing settings, services
 or extra devices change; historical metadata crash/ACL/capacity evidence retains
 its original source.
+
+
+## Focused retained job-status suite
+
+`job-status` cross-builds a checksum-bound `cmd/horvium` test executable and runs
+only `TestNativeStorageJobStatus` on the selected disposable guest. It re-executes
+the compiled public command path for root/actual wrong-UID controls. No guest SDK,
+package, disk attachment, pool, mount or service is required. Both worker and
+supervisor fallback remove `storage-job-status-native.test` on every exit; children
+are waited/reaped and owned metadata/executable directories removed. See the
+[contract](M2/storage-job-status.md) and [runbook](../operations/M2-job-status.md).
+
+```sh
+.tools/venv/bin/python3 tools/local-qualification.py job-status 15.1 --run
+.tools/venv/bin/python3 tools/local-qualification.py job-status 14.5 --run
+```
+
+Qualification is pending. This suite covers retained metadata presentation, not
+native recovery, actual storage operations, resources/hardware or M2 acceptance.
