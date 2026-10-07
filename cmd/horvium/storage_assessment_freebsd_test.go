@@ -391,6 +391,9 @@ func nativeStorageAssessmentCommand(t *testing.T, ctx context.Context, binary st
 	t.Run("native-scan-lifecycle", func(t *testing.T) {
 		nativePoolScanLifecycle(t, ctx, pool, guid, raw, originalNative)
 	})
+	t.Run("native-checksum", func(t *testing.T) {
+		nativePoolChecksum(t, ctx, pool, guid, "/dev/"+devices[0].unit, path, raw, originalNative)
+	})
 	t.Run("fixture-teardown", func(t *testing.T) {
 		if !cleanup() {
 			t.Fatal("owned pool/provider/ledger remains")

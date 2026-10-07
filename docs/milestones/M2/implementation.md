@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 77; native scrub-state observations qualified, review pending; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 78; native checksum findings qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -789,6 +789,22 @@ qualification and focused review passed at signed source
 `728e980a8b21755c9b87f33e48405f096bb03b24`: baseline/122 tooling tests, command-package
 race checks and eight new scan cases plus all old status/assessment/health checks
 on both releases, with identical binaries and complete verified teardown; see the
-[manifest](../../testing/M2/scan-lifecycle-observations-manifest.json). Maintainer
-review is pending. Advancing progress, faults,
+[manifest](../../testing/M2/scan-lifecycle-observations-manifest.json). Accepted in
+[PR 78](https://github.com/gonz0w/horvium/pull/78) at merged source
+`0ffc5f4771bb3c5640e4ce04f53deffc8d36d71b`. Advancing progress, faults,
 attribution, executor/recovery and full M2 acceptance remain open.
+
+## Native repaired-checksum findings
+
+The [fixture contract](../../testing/M2/checksum-findings.md) targets one owned
+mirror leaf with the base kernel read-corruption facility and verifies member
+findings separately from scan completion/error count. Preserve content, remove
+only the acknowledged injector, restore original properties and retain all old
+native checks/deadlines. Product code/gates remain unchanged. Native qualification
+and focused review passed at signed source
+`8078e1d0c694a0384b5183ae33ea95fddc6a45fb`: baseline/122 tooling tests, command-package
+race checks and eight new checksum cases plus all original checks on both
+releases, with identical binaries and verified handler/storage/process/base/
+runtime teardown; see the [manifest](../../testing/M2/checksum-findings-manifest.json).
+Maintainer review is pending; unrecoverable errors, attribution/executor/
+recovery and complete M2 acceptance remain open.
