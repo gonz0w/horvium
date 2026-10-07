@@ -3,6 +3,12 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [property review/submission integration](../testing/M2/property-coordinator.md)
+adds portable bounded plan ownership and one metadata publication attempt through
+a trusted backend interface. Qualification is pending. No implemented native
+policy/eligibility backend, kernel-authorized mutation transport or runtime writer
+consumes it; prior native manifests remain bound to their actual sources.
+
 | Area | Target | Evidence/status |
 |---|---|---|
 | Runtime | Approved M1 FreeBSD 15.1 primary / 14.5 compatibility | Native reader/helper/cache/admin fixture tests passed; foreground runtime/console/CLI owned-fixture tests passed on both releases; full NAS runtime pending |

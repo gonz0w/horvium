@@ -119,6 +119,11 @@ The [metadata process-death qualification](docs/testing/M2/property-publication-
 passed all 777 state/backing assertions on both native targets. It tests interrupted
 publication and conservative restart metadata on disposable fixtures; runtime writes remain disabled.
 
+The [property review/submission coordinator](docs/testing/M2/property-coordinator.md)
+connects volatile reviews, fresh baseline checks, single claims and immutable
+metadata acknowledgements through a trusted backend contract. Portable qualification
+is pending; no native backend or runtime storage writer is enabled.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.
