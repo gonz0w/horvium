@@ -108,7 +108,8 @@ still read-only.
 
 The [reserved submission publisher](docs/testing/M2/property-submission.md)
 combines complete retry/pool checks and initial record publication under one
-writer lock. Native qualification is pending; executable admission remains disabled.
+writer lock. Both targets passed all 710 assertions and teardown; maintainer
+review is pending. Executable admission remains disabled.
 
 ## Agreed direction
 

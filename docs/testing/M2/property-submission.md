@@ -1,6 +1,6 @@
 # M2 reserved property-submission publication
 
-Date: 2026-10-06. Status: implementing; native qualification pending.
+Date: 2026-10-06. Status: qualified on both declared native targets; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [ADR 0007](../../adr/0007-durable-storage-jobs.md),
@@ -81,7 +81,8 @@ Primary inspected source: FreeBSD 14.5 revision
 [ufs_vnops.c](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/ufs/ufs/ufs_vnops.c)
 (`ufs_itimes_locked`). The same pinned
 [newfs manual](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sbin/newfs/newfs.8)
-defines explicit `-u`/`-U`; omitting both enables soft updates for UFS2. This finding adopts a conservative tested capability
+defines explicit `-u`/`-U`; omitting both enables soft updates for UFS2. This
+finding adopts a conservative tested capability
 restriction through the EDD/compatibility amendment in this PR, not a new storage
 architecture or a claim to fence other root writers.
 
@@ -96,8 +97,7 @@ base `newfs -u`; the negative fixture uses `newfs -U`. A separate owned
 softupdates UFS fixture on each target must prove publication/retry refusals,
 read visibility and unchanged files. Existing POSIX/NFSv4, ENOSPC and read-only
 fixtures use explicit `newfs -u` and retain their ACL/failure controls and
-complete teardown. Root filesystem
-identity is recorded separately from metadata fixture backing.
+complete teardown. Root filesystem identity is recorded separately from metadata fixture backing.
 
 New tests require canonical private publication, duplicate inode/byte preservation,
 owned results/current history, reopened metadata readback, contradictory typed
@@ -125,4 +125,39 @@ signature/DCO checks rerun and the original source retained. Failed pre-worker
 supervisor startup remains failed, with no invented group and prepared native
 resources cleaned. Phase injection does not qualify real device EIO, abrupt
 process/reboot/power-cut durability, restoration or physical controller behavior.
-Native qualification is pending; complete M2 acceptance remains open.
+Executed evidence follows; complete M2 acceptance remains open.
+
+## Executed qualification
+
+Signed functional/native-test source `1dc80019f5d68430ad49845ecdb666192922806f` passed all
+710 state assertions, 60 parents and 1,837 distinct codec/model children on both
+releases without skips/failures. The [sanitized manifest](property-submission-manifest.json)
+records exact source/base/inputs/compiler/guest/runtime/utility/artifact/log hashes,
+all case inventories, preserved prior evidence and complete teardown.
+
+Shared publication/evidence/supervisor changes selected one complete portable
+review: baseline checks (101 tooling regressions), race checks across eleven
+packages and all 27 compiler-listed fuzz targets passed in
+140.788 seconds. Development used focused tests; documentation-only
+followups may reuse these exact deep inputs with baseline validation rerun.
+
+| Target | Root | Metadata backing | Submission parent | Full owned guest | Result |
+|---|---|---|---|---|---|
+| FreeBSD 15.1 amd64 | zfs | zfs | 24.46 s | 88.682 s | All 710 + 60/1,837 passed; full teardown |
+| FreeBSD 14.5 amd64 | ufs | ufs (soft updates off) | 33.14 s | 106.19 s | All 710 + 60/1,837 passed; full teardown |
+
+Both guests used the same verified cross-built artifact. Owned fixtures, images,
+executables, keys, firmware variables and process groups were removed; base/runtime
+caches stayed unchanged and inert. All 32 prior M2 manifests are byte-identical
+to the base. `make lab-status` verified all 224 owned sessions stopped.
+
+The development supervisor's first sandbox socket bind failed before worker
+creation. That attempt remains failed, with an audited absent group and no native
+fixture started; it was not behavioral/native qualification. The failing-first
+supervisor regression and repair cover absent workers and prepared native cleanup.
+Original 14.5 refusals and the interrupted portable review remain unqualified
+at their actual source. The final publisher refuses softupdates UFS and verifies
+the exact renamed inode/bytes. Positive UFS fixtures explicitly use `newfs -u`; negative
+controls use `newfs -U`. The 32-caller and post-rename identity/content controls passed with
+strict census timestamp checks retained. No executable admission, storage effect,
+recovery/release or M2 acceptance follows.
