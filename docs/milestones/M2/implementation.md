@@ -692,7 +692,14 @@ remaining M2 lifecycle remain open.
 The [contract](../../testing/M2/property-postconditions.md) checks exact local
 property effects and relevant retained context against independently fresh native
 observations, preserving false eligibility and all existing precondition gates.
-Portable/native qualification is pending. The existing pool-source checker/selector
-and historical metadata evidence retain their actual scope. No runtime native
+Both native targets passed all 88 existing assertions plus eleven mandatory
+postcondition subtests at signed source `0b828eb38be56708abca17dbfc200fb49d1ddd62`.
+Focused portable review passed 122 tooling tests, nine affected race packages
+and 30 selected bounded fuzz targets, with full owned teardown; see the
+[manifest](../../testing/M2/property-postconditions-manifest.json). Both superseded
+fixture failures remain unqualified; the corrections change only fixture reset
+semantics/raw-column expectations. The existing pool-source checker/selector and
+all 48 historical metadata manifests retain their actual scope. Maintainer review
+remains pending. No runtime native
 writer, job-success publication, attribution, recovered-state clearance or
 management mutation transport is added.

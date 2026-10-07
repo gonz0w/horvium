@@ -545,5 +545,10 @@ The [comparison contract](../testing/M2/property-postconditions.md) requires a
 complete collected graph and unchanged trusted policy, exact local target values,
 received-column preservation, expected inherited compression and protected
 overrides. It preserves native false eligibility and the existing precondition
-checks. Both-release native effect/subtest and focused portable qualification are
-pending; no runtime write, recovery, attribution or durable-success claim is added.
+checks. Both targets passed all 88 existing pool-source assertions and eleven
+mandatory postcondition subtests at signed source
+`0b828eb38be56708abca17dbfc200fb49d1ddd62`. Focused portable review passed 122 tooling
+tests, nine affected race packages and 30 selected bounded fuzz targets; full
+owned teardown passed. See the [manifest](../testing/M2/property-postconditions-manifest.json).
+The two superseded fixture failures retain their actual unqualified sources. No
+runtime write, recovery, attribution or durable-success claim is added.

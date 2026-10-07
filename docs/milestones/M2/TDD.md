@@ -836,3 +836,9 @@ property-postcondition subtests, with independent native columns and original
 projection restoration plus full owned teardown. Native eligibility remains
 false; comparison is not attribution, durable success, admission or recovery.
 Runtime native writes, assembled workflows and complete M2 acceptance stay open.
+
+Both targets passed the 88 existing assertions and eleven mandatory subtests at
+signed source `0b828eb38be56708abca17dbfc200fb49d1ddd62`, with 122 tooling tests,
+nine affected race packages, 30 bounded fuzz targets and full owned teardown.
+See the [manifest](../../testing/M2/property-postconditions-manifest.json); both
+superseded fixture failures remain unqualified and historical evidence unchanged.

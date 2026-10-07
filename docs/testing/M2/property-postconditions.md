@@ -1,6 +1,6 @@
 # M2 reviewed property postcondition comparison
 
-Date: 2026-10-07. Status: implementing; qualification pending.
+Date: 2026-10-07. Status: qualified subset; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -105,3 +105,17 @@ numeric `0`, which the accepted parser already normalizes to `none`. That assert
 failure interrupted quota restoration and caused the final projection mismatch.
 Correct only the test expectations, retaining exact raw source/received checks
 and original projection restoration. No model/parser/matcher rule changes.
+
+## Source-bound results
+
+Signed source `0b828eb38be56708abca17dbfc200fb49d1ddd62` passed focused portable review:
+`make check lint test secrets`, 122 tooling tests, nine affected race packages and
+all 30 selected bounded fuzz targets, including postconditions. Both disposable
+releases passed all 88 existing assertions plus all eleven mandatory subtests:
+FreeBSD 15.1 native parent 181.70 seconds (postcondition group 47.53 seconds), and
+14.5 parent 106.13 seconds (group 35.98 seconds). All declared fixtures, devices,
+children, host sessions and the standalone cross-build artifact were torn down.
+See the [manifest](property-postconditions-manifest.json) for actual source/tool/
+image/binary/log hashes and both superseded unqualified fixture records. All 48
+historical M2 manifests, shared tools/CLI, native metadata implementations/tests
+and codecs are unchanged; prior 819-case evidence is not rerun or relabeled.

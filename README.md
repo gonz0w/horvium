@@ -196,8 +196,10 @@ recovery authority is added.
 
 The [reviewed property postcondition comparison](docs/testing/M2/property-postconditions.md)
 checks selected local effects and retained inheritance/received context from fresh
-observations. Qualification is pending; matching does not authorize writes,
-attribute an executor or acknowledge durable job success.
+observations. Both FreeBSD targets passed the eleven native postcondition
+subtests and 88 existing assertions, with focused portable review and verified
+teardown. Matching does not authorize writes, attribute an executor or
+acknowledge durable job success.
 
 ## Agreed direction
 
