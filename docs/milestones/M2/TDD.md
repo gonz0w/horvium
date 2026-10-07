@@ -912,4 +912,10 @@ review. Both disposable release suites must retain 21 status assertions, fifteen
 assessment children and six new native health children with full preservation
 and verified teardown. Native progress/pause/cancellation/error injection and
 attributed lifecycle are not inferred from source-format/portable tests. Native
-qualification remains pending; all 52 prior manifests retain their actual scope.
+qualification passed at signed source `ab2685cdffcb6aa06d14b356b1df6f2787143300`: six mandatory
+health children, fifteen assessment cases and all 21 original status assertions
+on both releases, with identical binaries and complete teardown. Focused review
+passed baseline/122 tooling tests, 9 race packages and 33 fuzz targets; see the
+[manifest](../../testing/M2/pool-health-manifest.json). Maintainer review and
+complete health/scan lifecycle acceptance remain pending; all 52 prior manifests
+retain their actual scope.

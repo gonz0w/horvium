@@ -222,7 +222,9 @@ and verified teardown. No writes or recovery resolution are enabled.
 
 The [pool health/scan observer](docs/testing/M2/pool-health.md) binds fresh pool
 identity to paired status and reports unhealthy facts and typed legacy scans.
-Native qualification is pending; it supplies no write eligibility or job outcome.
+Both pinned FreeBSD releases passed six native health cases, all existing status/
+assessment checks and verified teardown, with focused portable review. It supplies
+no write eligibility or job outcome.
 
 ## Agreed direction
 

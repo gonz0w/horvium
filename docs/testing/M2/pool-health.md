@@ -1,6 +1,6 @@
 # M2 read-only pool health and scan observations
 
-Date: 2026-10-07. Status: implementation; native qualification pending.
+Date: 2026-10-07. Status: qualified subset; maintainer review pending.
 Authority: [approved PRD](../../milestones/M2/PRD.md),
 [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -95,3 +95,26 @@ Preserve all 52 prior M2 manifests, existing storage/native-source code/tests an
 shared tools. Historical 819-state and 88-pool evidence retains its original scope.
 These targeted observations do not qualify a native writer, attributed scrub job,
 recovery coordinator, complete M2 or hardware/client/commercial scale support.
+
+## Source-bound results
+
+Signed source `ab2685cdffcb6aa06d14b356b1df6f2787143300` passed `make check lint test secrets`, 122 tooling
+tests, 9 affected-package race checks and all 33 selected bounded fuzz targets.
+The decoder regression restricts units to the actual pinned formatter; its
+failing-first behavioral record is retained. Both releases independently rebuilt
+the identical binary `3c484d10bc653eb00a4fed71ea046698c4c63465946601b6dc108bde43abe46f`
+and passed all 21 original status assertions, fifteen existing assessment cases
+and six mandatory native health children plus their group.
+
+- FreeBSD 15.1: native parent 28.88 seconds; health group 7.52 seconds.
+- FreeBSD 14.5: native parent 20.57 seconds; health group 4.92 seconds.
+
+The [manifest](pool-health-manifest.json) binds source, formatter, tool, binary,
+report and actual log hashes. All owned pool/providers/files, copied executable,
+VM/key/variables and process groups were removed. Base/runtime preservation and
+host teardown passed; no active or unverified owned session remains. All 52
+historical M2 manifests, existing storage/native-source code/tests and shared
+tools remain byte-identical. Every original assertion and deadline is preserved.
+No GitHub Actions, persistent service or runtime storage writer was enabled.
+Native progress/pause/cancellation/error injection, full format coverage,
+attributed jobs, recovery and complete M2/hardware/client acceptance remain open.

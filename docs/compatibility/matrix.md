@@ -5,8 +5,12 @@ validation are separate. Refresh exact versions in each active research manifest
 
 M2 [pool health and scan observation](../testing/M2/pool-health.md) adds bounded
 read-only pool/import/release binding, paired topology/error facts and typed
-legacy scrub/resilver status. Portable behavioral tests pass; native qualification
-is pending. Full scan formats, actual progress/pause/cancellation/error injection,
+legacy scrub/resilver status. Signed source `ab2685cdffcb6aa06d14b356b1df6f2787143300` passed
+122 tooling tests, 9 affected race packages and 33 bounded fuzz targets. Both
+pinned releases passed six health children, fifteen assessment cases and all 21
+original status assertions with identical binaries and verified teardown; see the
+[manifest](../testing/M2/pool-health-manifest.json). Full scan formats, actual
+progress/pause/cancellation/error injection,
 attributed jobs and commercial/hardware support remain unqualified.
 
 M2 [foreground property-job assessment](../testing/M2/property-assessment-diagnostic.md)

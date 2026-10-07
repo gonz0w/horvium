@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 76; read-only health/scan observation in progress; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 76; read-only health/scan observation qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -769,6 +769,10 @@ restored-state validation, authenticated UI/CLI parity and full M2 remain open.
 The [contract](../../testing/M2/pool-health.md) binds complete paired status to
 fresh permanent/import identity and supported release. Report unhealthy facts
 and typed legacy scans without write eligibility or job attribution. Failing-first
-portable tests pass; both native releases and focused review remain pending.
+portable tests and focused review passed at signed source
+`ab2685cdffcb6aa06d14b356b1df6f2787143300` (122 tooling tests, 9 race packages, 33 fuzz targets).
+Both pinned releases passed six new health cases and all old status/assessment
+checks with identical binaries and complete owned teardown; see the
+[manifest](../../testing/M2/pool-health-manifest.json). Maintainer review is pending.
 This progresses slice 4 observation independently of unqualified mutation gates;
 attributed start/stop/recovery and complete health/scan acceptance remain open.
