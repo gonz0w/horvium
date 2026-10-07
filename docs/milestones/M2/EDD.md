@@ -165,6 +165,16 @@ authenticated projections. Reject symlinks, unsafe ancestors, unexpected ownersh
 unknown versions/fields, duplicate keys, oversized records and checksum mismatch.
 Checksums detect damage, not malicious root modification.
 
+Native capability amendment in the reserved-submission PR: metadata publication
+requires ZFS or UFS without soft updates. Actual softupdates UFS ctime drift and
+pinned deferred-removal source prevent qualifying its strict metadata windows;
+refuse publication and submission retry acknowledgement on that backing. Keep
+read/inspection drift checks, and never change mount/tunefs settings automatically.
+Qualify supported backing and actual softupdates denials on both releases using
+owned disposable fixtures; root filesystem alone is not evidence of the backing.
+See [the contract and finding](../../testing/M2/property-submission.md). This gate
+must reach runtime write eligibility before executable admission.
+
 One helper holds a lifetime nonblocking advisory lock on a stable root-owned lock
 file. A second writer fails; do not unlink/recreate the lock inode. Strictly parse
 each bounded record before using it. Write a unique same-directory temporary

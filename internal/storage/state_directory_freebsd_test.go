@@ -54,7 +54,7 @@ func TestNativeStateDirectory(t *testing.T) {
 	}
 	// /root is the trusted root-owned anchor; world-writable /tmp is deliberately
 	// outside this directory contract. No operator path is accepted by the fixture.
-	anchor, err := os.MkdirTemp("/root", "horvium-state-")
+	anchor, err := nativeStateAnchor(t, "horvium-state-")
 	if err != nil {
 		t.Fatal("owned anchor unavailable")
 	}

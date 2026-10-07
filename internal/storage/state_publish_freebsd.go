@@ -37,7 +37,7 @@ func (s *StateDirectory) publishStateInspectedLocked(name, prefix string, data [
 		return ErrStateDirectory
 	}
 	kind := unix.ByteSliceToString(fs.Fstypename[:])
-	if kind != "ufs" && kind != "zfs" {
+	if kind != "ufs" && kind != "zfs" || kind == "ufs" && fs.Flags&unix.MNT_SOFTDEP != 0 {
 		return ErrStateDirectory
 	}
 	catalog, err := inspect("")
@@ -198,10 +198,8 @@ func (s *StateDirectory) publishStateInspectedLocked(name, prefix string, data [
 	}
 	tx.rename = func() error { return unix.Renameat(dir, temporary, dir, name) }
 	tx.syncDirectory = func() error {
-		// UFS can defer the renamed inode's ctime bookkeeping until later I/O.
-		// Flush our exact published inode before the final directory barrier so
-		// the next strict census need not ignore timestamps or retry drift.
-		if err := syncPublishedState(dir, name, data, written); err != nil {
+		// A changed destination after rename is uncertain, never acknowledged.
+		if err := verifyPublishedState(dir, name, data, written); err != nil {
 			return err
 		}
 		return unix.Fsync(dir)
@@ -217,9 +215,9 @@ func (s *StateDirectory) publishStateInspectedLocked(name, prefix string, data [
 }
 
 // Rename already occurred. Any failure is uncertain, never rollback/cleanup of
-// the destination. Only the exact owned inode may be synchronized; verify its
-// canonical bytes and strict metadata again after the expected rename flush.
-func syncPublishedState(dir int, name string, data []byte, written unix.Stat_t) error {
+// the destination. Only the exact owned inode may be read back; verify its
+// canonical bytes and strict metadata again after rename.
+func verifyPublishedState(dir int, name string, data []byte, written unix.Stat_t) error {
 	fd, err := unix.Openat(dir, name, unix.O_RDONLY|unix.O_NOFOLLOW|unix.O_NONBLOCK|unix.O_CLOEXEC, 0)
 	if err != nil {
 		return ErrStateDirectory
@@ -229,23 +227,6 @@ func syncPublishedState(dir int, name string, data []byte, written unix.Stat_t) 
 	var before, after, named unix.Stat_t
 	if unix.Fstat(fd, &before) != nil || !privateOwnershipFile(before) || !safeStateACL(fd, uint32(before.Mode), false) || before.Dev != written.Dev || before.Ino != written.Ino || before.Size != int64(len(data)) || before.Mtim != written.Mtim || before.Gid != written.Gid || before.Flags != written.Flags || before.Gen != written.Gen || before.Btim != written.Btim {
 		return fmt.Errorf("published opened metadata: %w", ErrDrift)
-	}
-	if err := f.Sync(); err != nil {
-		return fmt.Errorf("published inode sync: %w", ErrStateDirectory)
-	}
-	// UFS may finish the controlled rename/sync bookkeeping on this first
-	// owned readback. Verify exact bytes, then bind the authoritative metadata
-	// window after that I/O, as for the staged predecessor above. This is not a
-	// retry after failed drift validation or an exception in any state census.
-	settled, err := io.ReadAll(io.LimitReader(f, int64(len(data))+1))
-	if err != nil || !bytes.Equal(settled, data) {
-		return fmt.Errorf("published settling bytes: %w", ErrDrift)
-	}
-	if _, err := f.Seek(0, io.SeekStart); err != nil {
-		return ErrStateDirectory
-	}
-	if unix.Fstat(fd, &before) != nil || !privateOwnershipFile(before) || before.Size != int64(len(data)) || before.Dev != written.Dev || before.Ino != written.Ino || before.Mtim != written.Mtim || before.Gid != written.Gid || before.Flags != written.Flags || before.Gen != written.Gen || before.Btim != written.Btim || !safeStateACL(fd, uint32(before.Mode), false) {
-		return fmt.Errorf("published synced metadata: %w", ErrDrift)
 	}
 	current, err := io.ReadAll(io.LimitReader(f, int64(len(data))+1))
 	if err != nil || !bytes.Equal(current, data) {

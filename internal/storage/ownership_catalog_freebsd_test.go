@@ -20,7 +20,7 @@ func TestNativeOwnershipCatalog(t *testing.T) {
 	if os.Geteuid() != 0 {
 		t.Fatal("owned root required")
 	}
-	anchor, err := os.MkdirTemp("/root", "horvium-catalog-")
+	anchor, err := nativeStateAnchor(t, "horvium-catalog-")
 	if err != nil {
 		t.Fatal("owned anchor unavailable", err)
 	}

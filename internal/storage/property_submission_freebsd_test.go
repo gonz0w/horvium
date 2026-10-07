@@ -35,7 +35,7 @@ func TestNativePropertySubmission(t *testing.T) {
 	if os.Geteuid() != 0 {
 		t.Fatal("owned root required")
 	}
-	anchor, err := os.MkdirTemp("/root", "horvium-submission-")
+	anchor, err := nativeStateAnchor(t, "horvium-submission-")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -10,77 +10,102 @@ Authority: [approved EDD](../../milestones/M2/EDD.md),
 
 `StateDirectory.PublishPropertySubmission` combines complete retained
 plan/submission/pool checks with initial queued property-record publication under
-one held root writer lease and mutex. Separate inspection and publication calls
-could allow two cooperating callers to pass the same empty reservation view.
-Here only one new same-pool or same-submission record can be published; distinct
-pools proceed serially through the bounded metadata transaction. This does not
-schedule or launch native commands.
+one root writer lease and mutex. Separate inspection/publication calls could let
+two cooperating callers pass the same empty reservation view. Here exactly one
+new same-pool or same-submission record can publish; distinct pools proceed
+through the bounded metadata transaction. No native storage command is launched.
 
-Require a complete strictly valid initial queued property job, the effective
-kernel UID 0, validated directory/lock identity and safe opened files/ACLs. Inspect
-the full mixed namespace, including ownership bytes and both accepted job formats.
-Retain all terminal/uncertain pool holds. Exact submission retry identity follows
-[the reservation contract](job-reservations.md): full selection/review/policy/
-session binding, allowing a newly generated job identifier and capture time only.
-A legacy job cannot establish a complete property retry binding. A reused plan,
-contradictory submission, occupied candidate identifier or held pool denies a new
-record. Unknown, orphan, unsafe or damaged state is preserved.
+Require a complete strictly valid initial queued property job, effective kernel
+UID 0, validated directory/lock identity and safe opened files/ACLs. Inspect the
+full mixed namespace, including ownership bytes and both accepted job formats.
+Retain all terminal/uncertain pool holds. Exact retry identity follows the
+[reservation contract](job-reservations.md): full selection/review/policy/session
+binding, allowing a newly generated job identifier and capture time only. Legacy
+jobs cannot establish that full binding. Reused plans, contradictory submissions,
+occupied candidate identifiers and held pools deny new records. Unknown, orphan,
+unsafe and damaged state is preserved.
 
-A matched retry returns an independent existing complete job and its current
-history, with `duplicate=true`, before candidate capacity checks. It creates no
-file, changes no inode/history and does not re-sync existing state. This is a
-metadata readback, not a fresh durability acknowledgement, restored-state
-validation or authority to execute after restart. Publication uncertainty on the
-current lease denies even matched retries; inspection/read APIs remain available.
+A matched retry returns independent existing complete metadata/current history,
+with `duplicate=true`, before candidate capacity checks. It creates no file,
+changes no inode/history and does not re-sync existing state. This is metadata
+readback, not a fresh durability acknowledgement, restored-state validation or
+authority to execute after restart. Current-lease publication uncertainty denies
+even matched retries; existing read/inspection APIs remain available.
 
-A new record uses the existing exclusive temporary/file-sync/close/rename/
-directory-sync pipeline, adding a flush/strict readback of the exact renamed
-inode before the final directory barrier. Return the bound record with `duplicate=false` only
-following successful final directory sync. Its complete reservation census and
-capacity accounting run again before staging and before rename, excluding only
-the transaction's independently verified temporary. A holder or duplicate that
-appears after the initial check is drift, never overwrite permission. Mixed
-ownership/job presentation bytes and the new temporary must fit fixed bounds.
-Each census binds its full record view and catalog together; it is not an atomic
-snapshot or fencing against a competing OS-root actor.
+New records use exclusive temporary creation, file sync/close, rename, exact
+published-inode/content verification and directory sync. Return the bound record
+with `duplicate=false` only following final directory sync. Repeat the full
+reservation/capacity census before staging and before rename, excluding only the
+transaction's independently verified temporary. A newly appearing holder/retry is
+drift, never overwrite permission. Mixed presentation bytes plus the temporary
+must fit fixed limits. Each complete record view and catalog share one census;
+this is neither an atomic snapshot nor fencing against another OS-root actor.
 
-Every error returns zero job and `duplicate=false`. Known pre-rename failures
-clean only this transaction's verified temporary. Failed cleanup or final sync
-latches `ErrStateUncertain`; a possibly visible record is never acknowledged as
-successful. No rollback, repair, pruning or terminal release is added. The existing
-revision-based metadata publishers remain available for their accepted contracts;
-they do not become admission APIs. Non-FreeBSD platforms return `ErrUnavailable`
+Every error returns zero/false. Known pre-rename failures clean only the verified
+owned temporary. Failed cleanup or any post-rename verification/final-sync failure
+latches `ErrStateUncertain`, preserving a possibly visible destination without
+acknowledging success. No rollback, repair, pruning or terminal release is added.
+Existing revision-based metadata publishers keep their accepted contracts; they
+do not become executable admission APIs. Non-FreeBSD returns `ErrUnavailable`
 without filesystem work. Reduced limits/phase injection remain private fixtures.
 
-This prerequisite has no helper/HTTP/CLI/startup consumer. Kernel-authenticated
-caller and root policy, fresh native eligibility/session/clock checks, volatile
-plan claims, executor/boot attribution, recovery/release and an executable
-admission coordinator remain separate gates. Stored model eligibility flags and
-checksums supply no such authority. Runtime storage writes remain disabled.
+No helper/HTTP/CLI/startup consumer is added. Caller/root policy, fresh native
+eligibility/session/clock checks, volatile plan claims, executor/boot attribution,
+recovery/release and an executable admission coordinator remain separate gates.
+Stored model flags/checksums grant none of that authority. Runtime remains read-only.
+
+## State filesystem capability restriction
+
+All native metadata publishers now refuse UFS with `MNT_SOFTDEP` enabled, before
+staging; submission publication also refuses matched retries on that backing.
+Use ZFS or UFS without soft updates for this prerequisite. No product code changes
+mount options, tunes a filesystem, disables soft updates or reformats storage.
+Read/inspection contracts remain available, including their existing strict drift
+refusals. This is a state-directory restriction, not a restriction on NAS data pools.
+Runtime write eligibility must carry this capability gate before admission.
+
+The initial 14.5 softupdates-root runs safely refused metadata drift under
+contention. Diagnostics confirmed changing ctime and unchanged mtime; extra
+inode sync/readback did not eliminate later changes. The pinned FreeBSD source
+explains why: rename removal work can later decrement on-disk link accounting and
+set `IN_CHANGE`, and `ufs_itimes_locked` updates ctime from that flag. Ordinary
+fsync flushes do not establish that all deferred removals have finished. Keep
+strict retained-record timestamp/identity checks; do not guess that a ctime-only
+change is harmless or retry a failed census. The failed/superseded runs retain
+their original source and teardown records.
+
+Primary inspected source: FreeBSD 14.5 revision
+`231eee334c098a8398bc959202415c48058f67f0`,
+[ffs_softdep.c](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/ufs/ffs/ffs_softdep.c)
+(`handle_workitem_remove`, `softdep_sync_metadata`, `softdep_fsync`) and
+[ufs_vnops.c](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/ufs/ufs/ufs_vnops.c)
+(`ufs_itimes_locked`). This finding adopts a conservative tested capability
+restriction through the EDD/compatibility amendment in this PR, not a new storage
+architecture or a claim to fence other root writers.
 
 ## Qualification procedure
 
-Write failing behavioral API/evidence tests before implementation. Use owned root
-UFS/ZFS and POSIX/NFSv4 UFS fixtures on the two pinned FreeBSD amd64 guests.
-Require all 688 state assertions, 59 parents and 1,837 distinct codec/model
-children without skips/failures. Prior 622-case inspection evidence cannot qualify
-this publication extension. Extend both exact selectors and the strict evidence
-checker, including independent missing/failed/duplicate assertion regressions.
+Require all 710 state/backing assertions, 60 parents and 1,837 distinct codec/model
+children without skips/failures on FreeBSD 15.1/14.5 amd64. Twelve exact backing
+markers require actual filesystem/softupdates capability and complete backing
+teardown. Core metadata tests use owned root ZFS directories or independently
+allocated UFS memory fixtures with soft updates disabled. A separate owned
+softupdates UFS fixture on each target must prove publication/retry refusals,
+read visibility and unchanged files. Existing POSIX/NFSv4, ENOSPC and read-only
+fixtures retain their actual UFS controls and complete teardown. Root filesystem
+identity is recorded separately from metadata fixture backing.
 
 New tests require canonical private publication, duplicate inode/byte preservation,
-owned returned baselines, current history and reopened metadata readback, typed
-and contradictory reuse denials, terminal/legacy holds, unrelated pools, concurrent
-same-submission/same-pool/last-slot/distinct-pool outcomes, full-store retries and
-ownership-byte capacity, 32 competing callers per concurrency scenario, each
-publication phase and uncertainty blocking, post-rename inode/content denial, late
-pool/plan/submission/unknown/orphan/byte drift and complete fixture teardown.
-Actual ACL/inherited-UID denials and real UFS ENOSPC/read-only controls cover the
-new API. Injected phases are ordering/failure-accounting proof; they do not qualify
-real device EIO, abrupt helper death, power loss or physical controller durability.
+owned results/current history, reopened metadata readback, contradictory typed
+reuse denials, terminal/legacy holds, unrelated pools, 32 concurrent callers in
+same-submission/same-pool/last-slot/distinct-pool scenarios, full-store retries,
+ownership-byte capacity, every phase/uncertainty block, post-rename inode/content
+refusal, late pool/plan/submission/unknown/orphan/byte drift and complete teardown.
+Prior 622-case inspection evidence cannot qualify this extension. Strict evidence
+validation must refuse missing/failed/duplicate assertions or backing markers.
 
 ```sh
 make test-focus PKG=./internal/storage TEST='^Test(PropertySubmission|Reservation|PropertyJob|OwnershipPublication|MixedOwnershipPublication|JobPublication)'
-# Clean signed source, actual proposed title:
 PR_TITLE='feat(storage): publish reserved property submissions' make review
 .tools/venv/bin/python3 tools/local-qualification.py state 15.1 --run
 .tools/venv/bin/python3 tools/local-qualification.py state 14.5 --run
@@ -88,35 +113,12 @@ make lab-status
 ```
 
 Shared publication/evidence/supervisor changes require one complete portable
-review. Run guests sequentially on the same clean signed source and preserve
-all prior manifest bytes. Remove owned fixtures, overlays, copied executables,
-keys, firmware variables and process groups while preserving inert base/runtime
-caches. Successful evidence-only followups may reuse exact matching deep checks,
-with baseline/title/signature/DCO checks rerun and the original source retained.
-
-The supervisor also needs to record failed pre-worker startup as failed with no
-worker group, and clean any prepared native fixture. A control-socket bind error
-must never fabricate a PID, report success or strand development resources.
+review. Run guests sequentially on identical clean signed source; preserve all
+prior manifest bytes. Remove owned fixtures/devices/mounts, overlays, executables,
+keys, firmware variables and process groups, preserving inert base/runtime caches.
+Evidence-only followups may reuse exact matching deep checks with baseline/title/
+signature/DCO checks rerun and the original source retained. Failed pre-worker
+supervisor startup remains failed, with no invented group and prepared native
+resources cleaned. Phase injection does not qualify real device EIO, abrupt
+process/reboot/power-cut durability, restoration or physical controller behavior.
 Native qualification is pending; complete M2 acceptance remains open.
-
-
-## UFS publication bookkeeping finding
-
-The first 14.5 run safely refused a distinct-pool submission with metadata drift.
-A stronger 32-caller diagnostic localized a refusal to final record metadata and
-also caught the existing observing publisher. Keep those runs unqualified at their
-actual source. Flush the exact newly renamed inode and independently compare
-canonical bytes before the final directory barrier, including identity/ACL checks.
-Failure after rename stays uncertain and preserves the visible destination. This
-binds the strict post-publication metadata window after its own flush and
-canonical readback, settling pending inode bookkeeping before the next observation;
-strict census timestamp/identity checks remain unchanged, without retry or a
-timestamp exemption. Qualification must pass both guests at the repaired source.
-
-The next diagnostic identified a ctime change, with unchanged mtime, during the
-first owned readback after inode sync. Compare exact canonical bytes first, then
-bind and verify the strict metadata window through a second bounded read of the
-same opened owned inode. This fixed preparation sequence never retries a failed
-census or exempts a retained record from drift checks; all identity/ACL/content
-checks and uncertain-outcome handling remain. These diagnostic attempts are not
-qualification evidence for the final source.

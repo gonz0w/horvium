@@ -4,6 +4,8 @@ package storage
 import (
 	"errors"
 	"os"
+
+	"golang.org/x/sys/unix"
 )
 
 // PublishPropertySubmission checks complete retained plan/submission/pool holds
@@ -43,6 +45,14 @@ func (s *StateDirectory) publishPropertySubmissionBounded(p PropertyJob, limits 
 	defer s.mu.Unlock()
 	if s.publicationBlocked {
 		return PropertyJob{}, false, ErrStateUncertain
+	}
+	dir, err := s.ownershipDirectoryLocked()
+	if err != nil {
+		return PropertyJob{}, false, err
+	}
+	var fs unix.Statfs_t
+	if unix.Fstatfs(dir, &fs) != nil || unix.ByteSliceToString(fs.Fstypename[:]) == "ufs" && fs.Flags&unix.MNT_SOFTDEP != 0 {
+		return PropertyJob{}, false, ErrStateDirectory
 	}
 	view, _, err := s.inspectJobReservationsLocked(limits, nil, "")
 	if errors.Is(err, ErrStateUncertain) {

@@ -27,7 +27,7 @@ func TestNativeOwnershipPublish(t *testing.T) {
 	if os.Geteuid() != 0 {
 		t.Fatal("owned root fixture required")
 	}
-	anchor, err := os.MkdirTemp("/root", "horvium-publish-")
+	anchor, err := nativeStateAnchor(t, "horvium-publish-")
 	if err != nil {
 		t.Fatal("owned anchor unavailable")
 	}

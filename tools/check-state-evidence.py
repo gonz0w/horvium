@@ -40,18 +40,33 @@ ACL_CASES.update(['submission_kernel_uid_denial', 'posix_submission_baseline', '
 PUBLISH_FS_CASES.update(['ufs_submission_publication', 'submission_full_denial', 'submission_readonly_denial'])
 TESTS.add('TestNativePropertySubmission')
 
+SOFTUPDATES_CASES=set(['enabled', 'ownership_denial', 'job_denial', 'property_denial', 'submission_denial', 'retry_denial', 'read_available', 'bytes_preserved', 'no_temporary', 'records_teardown'])
+BACKING_TESTS=set(['TestNativeStateDirectory', 'TestNativeOwnershipRead', 'TestNativeOwnershipCatalog', 'TestNativeOwnershipCapacity', 'TestNativeJobRead', 'TestNativeJobPublication', 'TestNativePropertyJobStorage', 'TestNativeJobReservations', 'TestNativeStateCatalog', 'TestNativeOwnershipPublish', 'TestNativePropertySubmission', 'TestNativeStateSoftUpdates'])
+TESTS.add('TestNativeStateSoftUpdates')
+
 def validate(text):
     if len(text)>1<<20 or re.search(r'(?m)^(?:FAIL|[ \t]*--- (?:FAIL|SKIP):)',text):
         raise ValueError('state native evidence failed, skipped or oversized')
     passed=re.findall(r'(?m)^--- PASS: (Test\w+) \([0-9.]+s\)$',text)
     if len(passed)!=len(TESTS) or set(passed)!=TESTS:
         raise ValueError('complete executed lease/reader/ACL/publication/codec tests required')
-    for marker,cases in [('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES),('STATE_ACL_RESULT',ACL_CASES),('OWNERSHIP_PUBLISH_RESULT',PUBLISH_CASES),('OWNERSHIP_PUBLISH_FS_RESULT',PUBLISH_FS_CASES),('OWNERSHIP_CATALOG_RESULT',CATALOG_CASES),('OWNERSHIP_CAPACITY_RESULT',CAPACITY_CASES),('JOB_READ_RESULT',JOB_READ_CASES),('STATE_CATALOG_RESULT',STATE_CATALOG_CASES),('JOB_PUBLICATION_RESULT',JOB_PUBLICATION_CASES),('PROPERTY_JOB_STORAGE_RESULT',PROPERTY_JOB_STORAGE_CASES),('JOB_RESERVATIONS_RESULT',RESERVATION_CASES),('PROPERTY_SUBMISSION_RESULT',SUBMISSION_CASES)]:
+    for marker,cases in [('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES),('STATE_ACL_RESULT',ACL_CASES),('OWNERSHIP_PUBLISH_RESULT',PUBLISH_CASES),('OWNERSHIP_PUBLISH_FS_RESULT',PUBLISH_FS_CASES),('OWNERSHIP_CATALOG_RESULT',CATALOG_CASES),('OWNERSHIP_CAPACITY_RESULT',CAPACITY_CASES),('JOB_READ_RESULT',JOB_READ_CASES),('STATE_CATALOG_RESULT',STATE_CATALOG_CASES),('JOB_PUBLICATION_RESULT',JOB_PUBLICATION_CASES),('PROPERTY_JOB_STORAGE_RESULT',PROPERTY_JOB_STORAGE_CASES),('JOB_RESERVATIONS_RESULT',RESERVATION_CASES),('PROPERTY_SUBMISSION_RESULT',SUBMISSION_CASES),('STATE_SOFTUPDATES_RESULT',SOFTUPDATES_CASES)]:
         records=re.findall(marker+r' ([^\n]+)',text)
         if len(records)!=1:raise ValueError('one native result per boundary required')
         fields=records[0].split();expected={case+'=pass' for case in cases}
         if len(fields)!=len(expected) or set(fields)!=expected:
             raise ValueError('missing, duplicate, unknown or failed state assertion')
+    backings=re.findall(r'STATE_BACKING_RESULT ([^\n]+)',text)
+    if len(backings)!=len(BACKING_TESTS):raise ValueError('complete native backing/teardown evidence required')
+    names=[]
+    for record in backings:
+        match=re.fullmatch(r'(Test\w+) filesystem=(ufs|zfs) softupdates=(off|on) teardown=pass',record)
+        if not match:raise ValueError('invalid native backing evidence')
+        name,filesystem,soft=match.groups();names.append(name)
+        if name=='TestNativeStateSoftUpdates':
+            if (filesystem,soft)!=('ufs','on'):raise ValueError('actual softupdates refusal fixture required')
+        elif soft!='off':raise ValueError('qualified state backing must have softupdates disabled')
+    if len(set(names))!=len(names) or set(names)!=BACKING_TESTS:raise ValueError('distinct complete native backing tests required')
     children=re.findall(r'(?m)^[ \t]+--- PASS: (Test(?:Ownership|Job|Property|Reservation)\w+)/(\S+) \([0-9.]+s\)$',text)
     if len(children)!=sum(CODEC_SUBTEST_COUNTS.values()) or len(set(children))!=len(children):
         raise ValueError('complete distinct codec subtests required')

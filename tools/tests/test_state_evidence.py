@@ -72,6 +72,13 @@ RESULT=RESULT.replace('STATE_ACL_RESULT ','STATE_ACL_RESULT '+' '.join(c+'=pass'
 RESULT=RESULT.replace('OWNERSHIP_PUBLISH_FS_RESULT ','OWNERSHIP_PUBLISH_FS_RESULT '+' '.join(c+'=pass' for c in SUBMISSION_FS_CASES)+' ',1)
 PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
 
+SOFTUPDATES_CASES=['enabled', 'ownership_denial', 'job_denial', 'property_denial', 'submission_denial', 'retry_denial', 'read_available', 'bytes_preserved', 'no_temporary', 'records_teardown']
+BACKING_TESTS=['TestNativeStateDirectory', 'TestNativeOwnershipRead', 'TestNativeOwnershipCatalog', 'TestNativeOwnershipCapacity', 'TestNativeJobRead', 'TestNativeJobPublication', 'TestNativePropertyJobStorage', 'TestNativeJobReservations', 'TestNativeStateCatalog', 'TestNativeOwnershipPublish', 'TestNativePropertySubmission', 'TestNativeStateSoftUpdates']
+TESTS += ['TestNativeStateSoftUpdates']
+RESULT += 'STATE_SOFTUPDATES_RESULT '+' '.join(c+'=pass' for c in SOFTUPDATES_CASES)+'\n'
+RESULT += ''.join('STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=zfs softupdates=off')+' teardown=pass\n' for name in BACKING_TESTS)
+PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
+
 class SubmissionEvidenceTests(unittest.TestCase):
     def test_old_inspection_evidence_cannot_qualify_submission_publication(self):
         m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
@@ -89,6 +96,19 @@ class SubmissionEvidenceTests(unittest.TestCase):
             with self.subTest(case=case),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(case+'=pass',''))
 
 
+    def test_exact_backing_capabilities_and_teardown_are_required(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
+        for name in BACKING_TESTS:
+            record='STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=zfs softupdates=off')+' teardown=pass\n'
+            for replacement in ['',record+record,record.replace('teardown=pass','teardown=fail'),record.replace('softupdates=off','softupdates=on') if name!='TestNativeStateSoftUpdates' else record.replace('filesystem=ufs','filesystem=zfs')]:
+                with self.subTest(name=name,replacement=replacement),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(record,replacement))
+        for case in SOFTUPDATES_CASES:
+            old='STATE_SOFTUPDATES_RESULT '+' '.join(c+'=pass' for c in SOFTUPDATES_CASES)
+            for replacement in ['',case+'=fail',case+'=pass '+case+'=pass']:
+                bad='STATE_SOFTUPDATES_RESULT '+' '.join(replacement if c==case else c+'=pass' for c in SOFTUPDATES_CASES)
+                with self.subTest(case=case),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(old,bad))
+
+
 class StateEvidenceTests(unittest.TestCase):
     def module(self):
         m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m);return m
@@ -100,7 +120,7 @@ class StateEvidenceTests(unittest.TestCase):
 
     def test_missing_duplicate_unknown_failed_or_oversized_cases_denied(self):
         m=self.module()
-        for case in set(CASES+READ_CASES+ACL_CASES+PUBLISH_CASES+PUBLISH_FS_CASES+CATALOG_CASES+CAPACITY_CASES+JOB_READ_CASES+STATE_CATALOG_CASES+JOB_PUBLICATION_CASES+PROPERTY_JOB_STORAGE_CASES+RESERVATION_CASES+SUBMISSION_CASES):
+        for case in set(CASES+READ_CASES+ACL_CASES+PUBLISH_CASES+PUBLISH_FS_CASES+CATALOG_CASES+CAPACITY_CASES+JOB_READ_CASES+STATE_CATALOG_CASES+JOB_PUBLICATION_CASES+PROPERTY_JOB_STORAGE_CASES+RESERVATION_CASES+SUBMISSION_CASES+SOFTUPDATES_CASES):
             for bad in [RESULT.replace(case+'=pass',''),RESULT.replace(case+'=pass',case+'=fail'),RESULT.rstrip()+' '+case+'=pass\n']:
                 with self.subTest(case=case),self.assertRaises(ValueError):m.validate(PASS+bad)
         for bad in [RESULT.rstrip()+' invented=pass\n',RESULT+'x'*(1<<20)]:

@@ -30,7 +30,7 @@ func TestNativePropertyJobStorage(t *testing.T) {
 	if os.Geteuid() != 0 {
 		t.Fatal("owned root required")
 	}
-	anchor, e := os.MkdirTemp("/root", "horvium-property-state-")
+	anchor, e := nativeStateAnchor(t, "horvium-property-state-")
 	if e != nil {
 		t.Fatal(e)
 	}

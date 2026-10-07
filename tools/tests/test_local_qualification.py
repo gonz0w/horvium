@@ -63,6 +63,8 @@ class LocalQualificationTests(unittest.TestCase):
         result+='PROPERTY_JOB_STORAGE_RESULT '+' '.join(c+'=pass' for c in sorted(checker.PROPERTY_JOB_STORAGE_CASES))+'\n'
         result+='JOB_RESERVATIONS_RESULT '+' '.join(c+'=pass' for c in sorted(checker.RESERVATION_CASES))+'\n'
         result+='PROPERTY_SUBMISSION_RESULT '+' '.join(c+'=pass' for c in sorted(checker.SUBMISSION_CASES))+'\n'
+        result+='STATE_SOFTUPDATES_RESULT '+' '.join(c+'=pass' for c in sorted(checker.SOFTUPDATES_CASES))+'\n'
+        result+=''.join('STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=zfs softupdates=off')+' teardown=pass\n' for name in sorted(checker.BACKING_TESTS))
         passed=''.join('--- PASS: '+name+' (1.0s)\n' for name in checker.TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in checker.CODEC_SUBTEST_COUNTS.items() for i in range(count))
         self.assertIn('HORVIUM_STATE_VM=1',self.module.SUITES['state'][1])
         self.module.validate_result('state',passed+result)
