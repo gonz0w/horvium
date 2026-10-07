@@ -876,4 +876,11 @@ and raw presentation drift, missing/legacy/unsafe/oversized/duplicate state, ret
 applying history/holds and original lock/bytes/native/fixture preservation/teardown.
 Metadata are directly provisioned test fixtures; no publication/acknowledgement,
 executor/restoration/resolution/replay/release or full M2 acceptance follows.
-Qualification is pending.
+Focused portable review and both native release candidates passed at signed source
+`b3e5007efbf0c134f149a21538c0b186c8c9d1e6`; all mandatory old/new cases and
+preservation/teardown gates passed. The
+[manifest](../../testing/M2/native-property-assessment-manifest.json) retains
+exact source/binary/check hashes and both earlier unqualified deadline attempts.
+Only redundant unchanged fixture observations were removed; all assertions and
+time limits remain unchanged. All 50 prior M2 manifests are preserved.
+Maintainer review and complete recovery/runtime/M2 acceptance remain pending.

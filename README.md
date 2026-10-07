@@ -209,8 +209,10 @@ No reconciliation resolution, replay, write or reservation release is enabled.
 
 The [root-leased native assessment](docs/testing/M2/native-property-assessment.md)
 connects retained property jobs to independently collected root policy/native facts
-and complete before/after ledger checks. Qualification is pending; runtime writes,
-job resolution and operator workflows remain disabled.
+and complete before/after ledger checks. Both FreeBSD targets passed all seventeen
+new source cases, eleven postcondition cases, eight retained-assessment cases and
+88 existing assertions, with focused portable review and verified teardown. Runtime
+writes, job resolution and operator workflows remain disabled.
 
 ## Agreed direction
 

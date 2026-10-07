@@ -1,6 +1,6 @@
 # M2 root-leased native property-job assessment
 
-Date: 2026-10-07. Status: implemented; qualification pending.
+Date: 2026-10-07. Status: qualified subset; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -110,3 +110,30 @@ its native evidence; no caller graph is accepted. Its restoration control now
 checks exact quota/refquota raw value/received/source columns, while the parent
 retains full original projection verification. All old/new assertions and product/
 fixture timeouts remain unchanged; no skipped case or longer deadline qualifies.
+
+## Source-bound results
+
+Focused portable review passed at signed source
+`b3e5007efbf0c134f149a21538c0b186c8c9d1e6`: `make check lint test secrets`, 122
+tooling tests, nine affected/consumer race packages and all 32 selected fuzz
+targets, including the new source target.
+Both disposable FreeBSD releases independently built the same test binary
+`dfa6aa816e6038d481530575a6378dadf2eb405043fb3f967cc9a464c2e6a991` and passed
+all 88 existing assertions, eleven postcondition cases, eight
+retained-assessment cases and all seventeen new native-source cases.
+
+- FreeBSD 15.1: full native fixture 258.82 seconds; new source group 15.91 seconds.
+- FreeBSD 14.5: full native fixture 214.33 seconds; new source group 15.47 seconds.
+
+The original five-minute fixture limit and every assertion remain unchanged.
+Both complete runs verified base/runtime/device backing preservation, owned fixture
+removal and supervisor/process teardown. No active or unverified owned session
+remained. The [manifest](native-property-assessment-manifest.json) records actual
+source/binary/tool/log/report hashes, all mandatory PASS checks and the two earlier
+unqualified deadline attempts with verified cleanup. All 50 prior M2 manifests
+remain byte-identical; shared tooling, CLI and existing metadata behavior remain
+unchanged. Prior 819-case metadata evidence was neither rerun nor relabeled.
+
+This is partial source-binding evidence. Executor attribution, containment, restored
+state, durable resolution, runtime admission/writes and operator workflows remain
+open, as do full M2/client/hardware acceptance.

@@ -5,9 +5,15 @@ validation are separate. Refresh exact versions in each active research manifest
 
 M2 [root-leased native assessment](../testing/M2/native-property-assessment.md) joins
 complete protected ledger reads to independently collected current root policy and
-native property facts. Portable/native qualification is pending. No schema, runtime
-command, write eligibility, executor attribution, recovery resolution, reservation
-release, durable outcome or hardware support is added.
+native property facts. Focused portable review passed at signed source
+`b3e5007efbf0c134f149a21538c0b186c8c9d1e6`. Both FreeBSD 15.1 and 14.5 passed
+all seventeen source cases, eleven postcondition cases, eight
+retained-assessment cases and 88 existing assertions with complete preservation
+and teardown; independently rebuilt test binaries matched exactly.
+See the [manifest](../testing/M2/native-property-assessment-manifest.json), which
+retains the two earlier unqualified deadline attempts and fixture correction. No
+schema, runtime command, write eligibility, executor attribution, recovery
+resolution, reservation release, durable outcome or hardware support is added.
 
 M2 [retained property-job assessment](../testing/M2/property-assessment.md) joins
 fresh baseline/expected-effect comparisons to unchanged durable history and restart
