@@ -972,3 +972,16 @@ and the artifact was removed; complete owned-process teardown passed. See the
 is pending. Native live-claim/root/eligibility/transport,
 global/pool serialization, actual commands/child containment, interrupted effect/
 metadata/reboot/recovery and complete acceptance are separate required gates.
+
+## Private native property-control subset
+
+The [contract](../../testing/M2/property-control.md) adds partial M2-PROPERTY-001,
+M2-PRIV-001, M2-DRIFT-001 and M2-NATIVE-001 evidence. Require failing-first binding/
+argument/denial/error/ownership/concurrency tests and bounded selection fuzzing.
+Both opted-in releases must retain all 88 assertions and old subgroups and pass
+all eleven new control children/group plus same-group/escaped guard children and
+actual dropped-UID denial. Actual property effects and fresh postconditions must
+retain applying metadata; denied controls change no storage. Exact properties/
+sources/child/metadata/pool/provider/sentinel/base/runtime/process teardown and all
+original deadlines remain mandatory. Qualification is pending; native root
+backend/live eligibility and crash/recovery/assembled acceptance remain open.

@@ -244,6 +244,10 @@ and durable outcomes through a trusted worker contract. Ten behavioral groups,
 affected race/fuzz checks and FreeBSD compilation passed; no native executor or
 operator write workflow is enabled.
 
+The [private native property control](docs/testing/M2/property-control.md) binds
+fixed allowlisted arguments to applying metadata and fresh GUID context.
+Qualification is pending; no root backend or operator writer is installed.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

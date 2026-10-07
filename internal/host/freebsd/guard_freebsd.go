@@ -10,8 +10,9 @@ import (
 	"time"
 )
 
-// executeNative accepts only projections supplied by readNative. Tests may use
-// their own reexecuted binary; requests never supply an executable or argument.
+// executeNative accepts fixed projections or the private validated property-set
+// control. Tests may use their own reexecuted binary; requests never supply an
+// executable or argument. Control errors do not establish executor quiescence.
 func executeNative(ctx context.Context, path string, args []string, limit int) (readOutput, error) {
 	return executePrepared(ctx, path, args, limit, func(cmd *exec.Cmd) func(error) error {
 		// The base reaper stays outside the probe subtree. On helper death,

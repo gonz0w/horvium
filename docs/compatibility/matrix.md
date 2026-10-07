@@ -3,6 +3,11 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [private native property control](../testing/M2/property-control.md) adds a
+fixed typed property-set prerequisite with fresh applying/GUID binding and
+conservative guard acknowledgement. Qualification is pending; no root backend,
+runtime eligibility, operator writes or recovery authority is added.
+
 M2 [property execution sequence](../testing/M2/property-execution.md) adds a
 one-attempt trusted-worker contract with exact durability acknowledgements and
 conservative reconciliation holds. Signed source `cceb615b82aedc98d4e93fb1cdb90545b05916ea`

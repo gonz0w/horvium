@@ -471,3 +471,16 @@ control/facts retain reconciliation holds and no automatic replay. This composes
 existing codecs without changing durable schema. No product native adapter or
 scheduler implements the trusted contract; false native eligibility, root/live
 claim, process containment, restored-state and real interruption gates remain.
+
+## Private native property-control amendment
+
+The [contract](../../testing/M2/property-control.md) adopts a private one-attempt
+control prerequisite without a public constructor or runtime consumer. Require
+the original live root claim, exact durable applying predecessor, whole captured
+intent/fresh baseline match and final expiry/clock/context checks before one fixed
+`/sbin/zfs set` invocation. Bind only quota/refquota/compression and one GUID-selected
+address; no flags, shell or arbitrary property channel. Actual kernel EUID and
+ten-second/4 KiB base guard bounds remain enforced. Normal guarded acknowledgement
+requires descendants gone; all errors remain unverified and cannot authorize
+replay or outcome/hold release. Disposable test claims establish control facts,
+not runtime enrollment, eligibility, recovery or original-live-claim authority.
