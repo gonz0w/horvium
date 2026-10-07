@@ -21,7 +21,7 @@ func TestNativeJobPublication(t *testing.T) {
 	if os.Geteuid() != 0 {
 		t.Fatal("owned root required")
 	}
-	anchor, err := os.MkdirTemp("/root", "horvium-job-publish-")
+	anchor, err := nativeStateAnchor(t, "horvium-job-publish-")
 	if err != nil {
 		t.Fatal(err)
 	}

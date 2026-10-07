@@ -19,7 +19,7 @@ func TestNativeOwnershipCapacity(t *testing.T) {
 	if os.Geteuid() != 0 {
 		t.Fatal("owned root required")
 	}
-	anchor, err := os.MkdirTemp("/root", "horvium-capacity-")
+	anchor, err := nativeStateAnchor(t, "horvium-capacity-")
 	if err != nil {
 		t.Fatal(err)
 	}

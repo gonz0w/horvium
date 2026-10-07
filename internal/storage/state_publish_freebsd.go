@@ -17,6 +17,14 @@ import (
 // fresh-census capacity guard and current-predecessor validator. Both publishers
 // use this actual descriptor-relative sync/rename pipeline without shell work.
 func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, expected uint64, limits stateCatalogLimits, validate func(StateCatalog) error, predecessor func() error, wrap func(ownershipPublication) ownershipPublication) error {
+	return s.publishStateInspectedLocked(name, prefix, data, expected, validate, predecessor,
+		func(temporary string) (StateCatalog, error) { return s.inspectStateLocked(limits, nil, temporary) }, wrap)
+}
+
+// The inspector must validate the complete descriptor-bound namespace and may
+// exclude only this transaction's independently verified temporary. Submission
+// publication adds full baseline/reservation checks to each actual census.
+func (s *StateDirectory) publishStateInspectedLocked(name, prefix string, data []byte, expected uint64, validate func(StateCatalog) error, predecessor func() error, inspect func(string) (StateCatalog, error), wrap func(ownershipPublication) ownershipPublication) error {
 	if s.publicationBlocked {
 		return ErrStateUncertain
 	}
@@ -29,10 +37,10 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 		return ErrStateDirectory
 	}
 	kind := unix.ByteSliceToString(fs.Fstypename[:])
-	if kind != "ufs" && kind != "zfs" {
+	if kind != "ufs" && kind != "zfs" || kind == "ufs" && fs.Flags&unix.MNT_SOFTDEP != 0 {
 		return ErrStateDirectory
 	}
-	catalog, err := s.inspectStateLocked(limits, nil, "")
+	catalog, err := inspect("")
 	if errors.Is(err, ErrStateUncertain) {
 		s.publicationBlocked = true
 	}
@@ -179,7 +187,7 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 		if e := verifyObjects(); e != nil {
 			return e
 		}
-		catalog, e := s.inspectStateLocked(limits, nil, temporary)
+		catalog, e := inspect(temporary)
 		if e != nil {
 			return fmt.Errorf("catalog verification: %w", e)
 		}
@@ -189,7 +197,13 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 		return verifyObjects()
 	}
 	tx.rename = func() error { return unix.Renameat(dir, temporary, dir, name) }
-	tx.syncDirectory = func() error { return unix.Fsync(dir) }
+	tx.syncDirectory = func() error {
+		// A changed destination after rename is uncertain, never acknowledged.
+		if err := verifyPublishedState(dir, name, data, written); err != nil {
+			return err
+		}
+		return unix.Fsync(dir)
+	}
 	if wrap != nil {
 		tx = wrap(tx)
 	}
@@ -198,4 +212,34 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 		s.publicationBlocked = true
 	}
 	return err
+}
+
+// Rename already occurred. Any failure is uncertain, never rollback/cleanup of
+// the destination. Only the exact owned inode may be read back; verify its
+// canonical bytes and strict metadata again after rename.
+func verifyPublishedState(dir int, name string, data []byte, written unix.Stat_t) error {
+	fd, err := unix.Openat(dir, name, unix.O_RDONLY|unix.O_NOFOLLOW|unix.O_NONBLOCK|unix.O_CLOEXEC, 0)
+	if err != nil {
+		return ErrStateDirectory
+	}
+	f := os.NewFile(uintptr(fd), "storage-state-published")
+	defer f.Close()
+	var before, after, named unix.Stat_t
+	if unix.Fstat(fd, &before) != nil || !privateOwnershipFile(before) || !safeStateACL(fd, uint32(before.Mode), false) || before.Dev != written.Dev || before.Ino != written.Ino || before.Size != int64(len(data)) || before.Mtim != written.Mtim || before.Gid != written.Gid || before.Flags != written.Flags || before.Gen != written.Gen || before.Btim != written.Btim {
+		return fmt.Errorf("published opened metadata: %w", ErrDrift)
+	}
+	current, err := io.ReadAll(io.LimitReader(f, int64(len(data))+1))
+	if err != nil || !bytes.Equal(current, data) {
+		return fmt.Errorf("published bytes: %w", ErrDrift)
+	}
+	if unix.Fstat(fd, &after) != nil || !sameOwnershipMetadata(before, after) {
+		return fmt.Errorf("published read metadata (ctime %t, mtime %t): %w", before.Ctim != after.Ctim, before.Mtim != after.Mtim, ErrDrift)
+	}
+	if unix.Fstatat(dir, name, &named, unix.AT_SYMLINK_NOFOLLOW) != nil || !sameOwnershipMetadata(after, named) {
+		return fmt.Errorf("published named metadata (ctime %t, mtime %t): %w", after.Ctim != named.Ctim, after.Mtim != named.Mtim, ErrDrift)
+	}
+	if f.Close() != nil {
+		return ErrStateDirectory
+	}
+	return nil
 }

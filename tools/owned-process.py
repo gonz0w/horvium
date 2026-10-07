@@ -158,6 +158,10 @@ def supervise(directory):
             record['group_cleaned'], record['escalated'] = stop_group(process, config['grace'])
             # Reap only AFTER the owned group is empty: never signal a reused PID.
             record['worker_returncode'] = process.wait(timeout=5)
+        else:
+            # Startup failed before a worker/group existed. Preserve failure,
+            # but do not invent a group to kill or strand prepared native files.
+            record['group_cleaned'] = True
         record.update(reason=reason or 'supervisor-failure', completed=True, completed_at=time.time())
         if config.get('native_fixture') and record['group_cleaned']:
             try:

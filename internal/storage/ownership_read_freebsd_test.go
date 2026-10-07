@@ -62,7 +62,7 @@ func TestNativeOwnershipRead(t *testing.T) {
 	if os.Geteuid() != 0 {
 		t.Fatal("requires owned guest root")
 	}
-	anchor, err := os.MkdirTemp("/root", "horvium-read-")
+	anchor, err := nativeStateAnchor(t, "horvium-read-")
 	if err != nil {
 		t.Fatal("owned read fixture unavailable")
 	}
