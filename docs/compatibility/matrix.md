@@ -3,6 +3,19 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [reviewed enrollment publication](../testing/M2/enrollment-publication.md) adds
+one-attempt root metadata publication through the original lease and unchanged
+sync/rename engine. Both releases passed
+all 819 state/backing assertions at source `656e4220a4040669c09bce29311e2fdd74d62992`.
+Corrected source `0a1f4041fc4cf18ae0919428e303dd2140e63d48` passed both 88-case
+actual native pool suites and complete portable review; its rebuilt state binary
+exactly matches the executed state binary. Root ZFS real-input first/successor
+publication and owned non-softupdates UFS synthetic-input metadata controls passed;
+actual softupdates UFS refused and preserved absent-first/explicit-previous records.
+See the [manifest](../testing/M2/enrollment-publication-manifest.json). All teardown
+passed. No native executor, runtime enrollment command, restored-state clearance,
+hardware/scale support or write eligibility follows.
+
 M2 [native enrollment source](../testing/M2/native-enrollment-source.md) composes
 explicit root selections, fixed pool/provider/system collectors and sealed root
 state checks. Signed source

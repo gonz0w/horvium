@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 68; native enrollment source in progress; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 69; enrollment metadata publication in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -631,5 +631,22 @@ zero and success remains ineligible. Require all 84 focused assertions on both
 releases, complete portable review and verified owned teardown. Both targets passed all 84 assertions at signed source
 `d13f4ba489cd659b87f81f2746830aaa3a94bfef` with complete portable review and teardown;
 see the [manifest](../../testing/M2/native-enrollment-source-manifest.json).
-Maintainer review pending. Authorized runtime provisioning, final fresh publication checks, full
+Accepted in PR 69 at merged source `1b74c3f5e3d15d7049ccd2099f8efd86f1771548`. Authorized runtime provisioning, final fresh publication checks, full
 restored-state/executor reconciliation and the remaining M2 lifecycle remain open.
+
+
+## Reviewed enrollment metadata publication
+
+The [contract](../../testing/M2/enrollment-publication.md) adds one attempt across
+copies/rebindings, complete census/predecessor/hold/backing/capacity checks under
+the original root lease and clock/context guards around the unchanged sync/rename
+engine. Require all 819 state assertions and 88 actual native pool assertions on
+both releases, complete portable review and teardown. Corrected source
+`0a1f4041fc4cf18ae0919428e303dd2140e63d48` passed complete portable review and both
+88-case pool suites. Original source `656e4220a4040669c09bce29311e2fdd74d62992`
+passed both 819-assertion state suites; the corrected source state binary is
+byte-identical. See the [manifest](../../testing/M2/enrollment-publication-manifest.json).
+The superseded 14.5 predecessor fixture failure remains unqualified; all teardown
+passed. Maintainer review pending.
+Runtime provisioning/adoption, native eligibility/recovery, authorized transport,
+backend/executor and remaining M2 lifecycle/operator workflows stay open.

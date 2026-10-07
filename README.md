@@ -177,6 +177,12 @@ explicit root proposals to fresh native collectors and sealed state checks.
 Both targets passed all 84 focused assertions, complete portable review and
 verified teardown; runtime publication remains disabled.
 
+The [reviewed enrollment publisher](docs/testing/M2/enrollment-publication.md) adds
+one-attempt root ownership metadata publication with complete original-lease
+state and clock/context checks. Both targets passed 819 state/backing and 88 native
+pool assertions with complete portable review and teardown; runtime storage writes
+remain disabled.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

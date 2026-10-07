@@ -12,47 +12,56 @@ import (
 // Private reduced-bound/after-read seams are only for disposable tests. The
 // public binder always uses validated defaults and the actual held root lease.
 func (s *StateDirectory) propertyEnrollmentState(next, previous Policy, u PoolSystemUse, limits stateCatalogLimits, afterRead func()) ([32]byte, error) {
+	if s == nil || os.Geteuid() != 0 {
+		return [32]byte{}, ErrStateDirectory
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	_, digest, err := s.inspectEnrollmentStateLocked(next, previous, u, limits, afterRead, "")
+	return digest, err
+}
+
+// Caller holds mu; only the actual publisher may exclude its inode-verified temp.
+func (s *StateDirectory) inspectEnrollmentStateLocked(next, previous Policy, u PoolSystemUse, limits stateCatalogLimits, afterRead func(), temporary string) (StateCatalog, [32]byte, error) {
 	var zero [32]byte
 	if s == nil || os.Geteuid() != 0 {
-		return zero, ErrStateDirectory
+		return StateCatalog{}, zero, ErrStateDirectory
 	}
 	data, err := EncodeOwnershipRecord(next)
 	if err != nil {
-		return zero, err
+		return StateCatalog{}, zero, err
 	}
 	if len(next.Members) == 0 || len(next.Scopes) == 0 {
-		return zero, ErrDenied
+		return StateCatalog{}, zero, ErrDenied
 	}
 	canonical, err := enrollmentPredecessor(next, previous)
 	if err != nil {
-		return zero, err
+		return StateCatalog{}, zero, err
 	}
 	var expected []byte
 	if canonical.Revision != 0 {
 		expected, err = EncodeOwnershipRecord(canonical)
 		if err != nil {
-			return zero, err
+			return StateCatalog{}, zero, err
 		}
 	}
 	if !u.initialized {
-		return zero, ErrUnavailable
+		return StateCatalog{}, zero, ErrUnavailable
 	}
 	b, err := newReservationBuilder(limits)
 	if err != nil {
-		return zero, err
+		return StateCatalog{}, zero, err
 	}
-	s.mu.Lock()
-	defer s.mu.Unlock()
 	if s.publicationBlocked {
-		return zero, ErrStateUncertain
+		return StateCatalog{}, zero, ErrStateUncertain
 	}
 	dir, err := s.ownershipDirectoryLocked()
 	if err != nil {
-		return zero, err
+		return StateCatalog{}, zero, err
 	}
 	before, err := propertyStateFilesystem(dir)
 	if err != nil {
-		return zero, err
+		return StateCatalog{}, zero, err
 	}
 	h := sha256.New()
 	_, _ = h.Write([]byte("horvium-property-enrollment-state-v1\x00"))
@@ -61,7 +70,7 @@ func (s *StateDirectory) propertyEnrollmentState(next, previous Policy, u PoolSy
 		_, _ = h.Write(data)
 	}
 	found := false
-	catalog, err := s.inspectStateRecordsLocked(limits, afterRead, "", func(entry stateRecordName, current []byte) error {
+	catalog, err := s.inspectStateRecordsLocked(limits, afterRead, temporary, func(entry stateRecordName, current []byte) error {
 		// Every byte has already passed strict decoding and descriptor/ACL checks.
 		// Exact complete records, including unrelated policies/jobs, bind review.
 		frame([]byte(entry.name))
@@ -93,23 +102,23 @@ func (s *StateDirectory) propertyEnrollmentState(next, previous Policy, u PoolSy
 		s.publicationBlocked = true
 	}
 	if err != nil {
-		return zero, err
+		return StateCatalog{}, zero, err
 	}
 	if canonical.Revision != 0 && !found {
-		return zero, ErrDrift
+		return StateCatalog{}, zero, ErrDrift
 	}
 	if err = checkEnrollmentStateCatalog(catalog, next, canonical, uint64(len(data)), limits, b.finish(), before, u); err != nil {
-		return zero, err
+		return StateCatalog{}, zero, err
 	}
 	if _, err = s.ownershipDirectoryLocked(); err != nil {
-		return zero, err
+		return StateCatalog{}, zero, err
 	}
 	after, err := propertyStateFilesystem(dir)
 	if err != nil {
-		return zero, err
+		return StateCatalog{}, zero, err
 	}
 	if before != after {
-		return zero, ErrDrift
+		return StateCatalog{}, zero, ErrDrift
 	}
 	// Internal hash framing, not a durable schema or an exported host inventory.
 	frame([]byte(before.kind))
@@ -119,5 +128,5 @@ func (s *StateDirectory) propertyEnrollmentState(next, previous Policy, u PoolSy
 	_ = binary.Write(h, binary.BigEndian, before.flags)
 	var digest [32]byte
 	copy(digest[:], h.Sum(nil))
-	return digest, nil
+	return catalog, digest, nil
 }

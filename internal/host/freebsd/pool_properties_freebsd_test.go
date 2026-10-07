@@ -107,6 +107,7 @@ func TestNativePoolPropertyCollection(t *testing.T) {
 		cases = append(cases, "enrollment_review_bound", "enrollment_review_expired", "enrollment_review_context_denied", "enrollment_review_policy_drift", "enrollment_review_native_drift", "enrollment_review_missing_scope", "enrollment_review_immutable", "enrollment_review_preserved")
 		cases = append(cases, "enrollment_state_bound", "enrollment_state_absent", "enrollment_state_predecessor_denied", "enrollment_state_record_drift", "enrollment_state_unrelated_drift", "enrollment_state_unknown_denied", "enrollment_state_job_denied", "enrollment_state_orphan_denied", "enrollment_state_expired_denied", "enrollment_state_context_denied", "enrollment_state_preserved", "enrollment_state_fixture_teardown")
 		cases = append(cases, "enrollment_source_review", "enrollment_source_revalidate", "enrollment_source_policy_denied", "enrollment_source_member_denied", "enrollment_source_cancelled", "enrollment_source_context_denied", "enrollment_source_store_uncertain", "enrollment_source_preserved")
+		cases = append(cases, "enrollment_publish_native_first", "enrollment_publish_native_successor", "enrollment_publish_native_repeat_denied", "enrollment_publish_native_preserved")
 		if len(passed) != len(cases) {
 			t.Error("incomplete native assertions")
 			return

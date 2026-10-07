@@ -756,5 +756,23 @@ Both targets passed all 84 assertions at signed source
 `d13f4ba489cd659b87f81f2746830aaa3a94bfef`, including actual successor review/fresh
 revalidation on root ZFS and preserved-record softupdates UFS denial. Complete
 portable review and teardown passed; see the
-[manifest](../../testing/M2/native-enrollment-source-manifest.json). Maintainer review
-pending; first enrollment through this source and full M2 acceptance stay open.
+[manifest](../../testing/M2/native-enrollment-source-manifest.json). Accepted in PR 69; first enrollment through this source and full M2 acceptance stay open.
+
+
+## Reviewed enrollment metadata publication
+
+The [contract/procedure](../../testing/M2/enrollment-publication.md) qualifies partial
+M2-OWN-001/M2-PLAN-001/M2-STATE-001/M2-DRIFT-001 behavior. Require portable concurrent
+single-attempt/typed-denial/late-acknowledgement tests, all 819 native state assertions,
+67 parents and 1,876 codec children on both releases, plus all 88 actual native pool
+controls and complete owned teardown. Root ZFS real-input publication, synthetic
+metadata-input non-softupdates UFS publication and actual softupdates UFS refusal
+are distinct claims. Unchanged historical manifests retain their original sources.
+
+Corrected source `0a1f4041fc4cf18ae0919428e303dd2140e63d48` passed complete portable
+review and both 88-case native pool suites. Both 819-assertion/67-parent/1,876-child
+state runs passed at original source `656e4220a4040669c09bce29311e2fdd74d62992`;
+a corrected-source cross-build exactly matched the executed state binary. Native
+results remain bound to those actual sources; see the
+[manifest](../../testing/M2/enrollment-publication-manifest.json). All teardown
+passed. Maintainer review and runtime/M2 acceptance remain pending.
