@@ -1,6 +1,6 @@
 # M2 reserved property-submission publication
 
-Date: 2026-10-06. Status: qualified on both declared native targets; maintainer review pending.
+Date: 2026-10-06. Status: qualified on both declared native targets; accepted in PR 57.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [ADR 0007](../../adr/0007-durable-storage-jobs.md),

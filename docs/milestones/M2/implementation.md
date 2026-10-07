@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 56; reserved property-submission publication qualified, maintainer review pending; Actions disabled.
+Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 57; bounded restart projections implementing; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -422,8 +422,8 @@ admission, caller/policy/eligibility/session/clock, executor/recovery/release an
 M2 acceptance stay open. Require 710 state assertions, 60 parents and 1,837
 codec/model children on both releases with full owned teardown. Both native
 targets passed at signed source
-`1dc80019f5d68430ad49845ecdb666192922806f` with full teardown; maintainer
-review is pending. Shared pipeline/evidence/supervisor changes required one
+`1dc80019f5d68430ad49845ecdb666192922806f` with full teardown; accepted in PR 57 at merged source
+`d79a55779f713e1209a930343fdb482d403c85ef`. Shared pipeline/evidence/supervisor changes required one
 complete portable review; startup failure before worker creation must remain a
 failure and clean prepared owned fixtures without inventing/signalling a PID.
 
@@ -436,3 +436,16 @@ metadata fixture backing are recorded separately. Strict census timestamps remai
 no product mount/tunefs change or root-fencing claim is added.
 
 See the [execution manifest](../../testing/M2/property-submission-manifest.json); no runtime admission/release follows.
+
+
+## Bounded job restart projection prerequisite
+
+The [restart projection contract](../../testing/M2/job-restart.md) provides ID-sorted pages of 1..64
+summaries from the complete immutable mixed-job view. Queued work projects
+review-expired; applying/observing work projects executor-unverified, separately
+from the unchanged last durable event. Both record formats, all terminal/uncertain
+holds and full retry history remain retained. Unavailable/malformed cursors and
+invalid page bounds expose no partial page; cursors require the same retained
+view. No native observation, publication, startup consumer, replay or release is
+added. Portable behavioral/race/fuzz and FreeBSD cross-compilation qualification
+is pending; native executor attribution/recovery and complete M2 gates remain open.

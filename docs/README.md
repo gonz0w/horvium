@@ -127,4 +127,6 @@
 
 - [M2 native job reservations](testing/M2/native-job-reservations.md): complete root-leased mixed census and bound property retry/reservation views; both targets passed all 622 assertions and teardown; accepted in PR 56.
 
-- [M2 reserved property submissions](testing/M2/property-submission.md): one lease/mutex across complete retry/pool checks and synced initial publication; both targets passed all 710 assertions and teardown; maintainer review pending; runtime writes disabled.
+- [M2 reserved property submissions](testing/M2/property-submission.md): one lease/mutex across complete retry/pool checks and synced initial publication; both targets passed all 710 assertions and teardown; accepted in PR 57; runtime writes disabled.
+
+- [M2 bounded job restart projections](testing/M2/job-restart.md): immutable mixed-job pages, conservative interrupted-work presentation and unchanged holds; portable qualification pending; no startup replay/recovery consumer.
