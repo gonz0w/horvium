@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 )
 
 // Only a new owned private root directory and the parent's declared mirror.
@@ -58,18 +59,67 @@ func nativeEnrollmentPublicationFixture(t *testing.T, ctx context.Context, check
 	for _, kind := range []string{"first", "successor"} {
 		bound, e := source.Review(ctx, "root-publish-fixture", p, previous)
 		if unsupported {
-			check("enrollment_publish_native_"+kind, errors.Is(e, storage.ErrStateDirectory) && errors.Is(bound.Publish(ctx, "root-publish-fixture", storage.Observation{}, nil, storage.PoolSystemUse{}), storage.ErrInvalid))
+			check("enrollment_publish_native_"+kind, errors.Is(e, storage.ErrStateDirectory) && errors.Is(source.Publish(ctx, "root-publish-fixture", bound), storage.ErrInvalid))
 		} else {
 			if e != nil {
 				t.Fatal(e)
 			}
-			o, d, u, e := source.collect(ctx, p)
-			if e != nil {
-				t.Fatal(e)
-			}
-			check("enrollment_publish_native_"+kind, bound.Publish(ctx, "root-publish-fixture", o, d, u) == nil && !o.Eligible)
 			if kind == "first" {
-				check("enrollment_publish_native_repeat_denied", errors.Is(bound.Publish(ctx, "root-publish-fixture", o, d, u), storage.ErrDenied))
+				// Same sealed binding remains usable after pre-attempt denials.
+				// All altered output is a read-projection fixture, never a ZFS write.
+				originalRead, originalClock := source.pool.read, source.now
+				for _, mode := range []string{"cancelled", "expired", "backwards", "native-failure", "context", "property-drift"} {
+					t.Run("enrollment-source-publication-"+mode, func(t *testing.T) {
+						request, cancel := context.WithCancel(ctx)
+						defer cancel()
+						root := "root-publish-fixture"
+						expected := storage.ErrExpired
+						switch mode {
+						case "cancelled":
+							cancel()
+							expected = context.Canceled
+						case "expired":
+							source.now = func() time.Time { return bound.Review().ExpiresAt }
+						case "backwards":
+							source.now = func() time.Time { return bound.Review().CreatedAt.Add(-time.Second) }
+						case "native-failure":
+							expected = ErrUnavailable
+							source.pool.read = func(context.Context, poolProbe, string, int) (readOutput, error) { return readOutput{}, ErrUnavailable }
+						case "context":
+							root = "different-context"
+							expected = storage.ErrDenied
+						case "property-drift":
+							expected = storage.ErrDrift
+							changed := false
+							source.pool.read = func(ctx context.Context, probe poolProbe, name string, budget int) (readOutput, error) {
+								out, err := originalRead(ctx, probe, name, budget)
+								if err == nil && probe == poolProperties {
+									old := string(out.data)
+									out = enrollmentPropertyDriftOutput(out)
+									changed = changed || old != string(out.data)
+								}
+								return out, err
+							}
+							defer func() {
+								if !changed {
+									t.Error("property drift fixture changed nothing")
+								}
+							}()
+						}
+						err := source.Publish(request, root, bound)
+						source.pool.read, source.now = originalRead, originalClock
+						if !errors.Is(err, expected) {
+							t.Fatal("publication denial", err, expected)
+						}
+						if _, err := os.Lstat(filepath.Join(path, "ownership-"+p.PoolGUID+".json")); !errors.Is(err, os.ErrNotExist) {
+							t.Fatal("denial published metadata", err)
+						}
+					})
+				}
+			}
+			check("enrollment_publish_native_"+kind, source.Publish(ctx, "root-publish-fixture", bound) == nil && !bound.Review().Observation.Eligible)
+			if kind == "first" {
+				check("enrollment_publish_native_repeat_denied", errors.Is(source.Publish(ctx, "root-publish-fixture", bound), storage.ErrDenied))
 			}
 		}
 		if unsupported && kind == "first" {
@@ -90,7 +140,7 @@ func nativeEnrollmentPublicationFixture(t *testing.T, ctx context.Context, check
 		p.Revision++
 	}
 	if unsupported {
-		check("enrollment_publish_native_repeat_denied", errors.Is((storage.PropertyEnrollmentState{}).Publish(ctx, "root-publish-fixture", storage.Observation{}, nil, storage.PoolSystemUse{}), storage.ErrInvalid))
+		check("enrollment_publish_native_repeat_denied", errors.Is(source.Publish(ctx, "root-publish-fixture", storage.PropertyEnrollmentState{}), storage.ErrInvalid))
 	}
 	got, e := os.ReadFile(filepath.Join(path, "ownership-"+p.PoolGUID+".json"))
 	expected, encodeErr := storage.EncodeOwnershipRecord(previous)

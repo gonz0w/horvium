@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 69; enrollment metadata publication in progress; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 70; independently collected enrollment publication in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -647,6 +647,22 @@ both releases, complete portable review and teardown. Corrected source
 passed both 819-assertion state suites; the corrected source state binary is
 byte-identical. See the [manifest](../../testing/M2/enrollment-publication-manifest.json).
 The superseded 14.5 predecessor fixture failure remains unqualified; all teardown
-passed. Maintainer review pending.
+passed. Accepted in PR 70 at merged source
+`1562334b09f3492b81a540459368efc2911a1309`.
 Runtime provisioning/adoption, native eligibility/recovery, authorized transport,
 backend/executor and remaining M2 lifecycle/operator workflows stay open.
+
+
+## Independently collected enrollment publication
+
+The [contract](../../testing/M2/native-enrollment-publication.md) connects sealed
+root-state reviews to independent final native collection and the accepted
+one-attempt publisher. Callers cannot provide observations or substitute selections;
+actual metadata acknowledgements survive later cancellation/expiry. Both targets
+passed all 88 assertions at signed source `d6fc9eb9dfee6cda75de7ed727db11bcaf00cb8d`,
+with focused portable review and verified teardown; see the
+[manifest](../../testing/M2/native-enrollment-publication-manifest.json). The initial
+invalid drift projection remains unqualified; a failing-first fixture regression
+and source-consistent correction passed. Maintainer review pending. Runtime
+provisioning, eligibility/recovery, authorized transport and operator workflows
+remain open.

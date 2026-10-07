@@ -776,3 +776,28 @@ a corrected-source cross-build exactly matched the executed state binary. Native
 results remain bound to those actual sources; see the
 [manifest](../../testing/M2/enrollment-publication-manifest.json). All teardown
 passed. Maintainer review and runtime/M2 acceptance remain pending.
+
+
+## Independently collected enrollment publication integration
+
+The [procedure](../../testing/M2/native-enrollment-publication.md) adds partial
+M2-OWN-001, M2-PLAN-001, M2-DRIFT-001 and M2-STATE-001 integration coverage.
+Portable orchestration must recollect complete bounded inputs, reject pre-attempt
+failures, preserve publisher outcomes and refuse zero public bindings before I/O.
+Both releases must pass the unchanged 88-marker native pool suite with its four
+publication controls using the composed source. Supported root ZFS additionally
+runs six mandatory refusal/absence subtests on the same first review and then
+valid publication; softupdates UFS retains explicit zero-binding denial and
+independently provisioned predecessor preservation. No shared evidence/selector
+or storage-package behavior changes; retain PR 70's actual 819-case state/backing
+evidence without relabeling it. Require focused portable review and complete
+teardown; runtime provisioning/recovery/transport and M2 acceptance remain open.
+
+
+Both releases passed all 88 assertions at signed source
+`d6fc9eb9dfee6cda75de7ed727db11bcaf00cb8d`, with the six supported-backing refusal
+subtests, required softupdates denial, focused portable review and full teardown.
+See the [manifest](../../testing/M2/native-enrollment-publication-manifest.json).
+The superseded invalid default-quota projection remains unqualified at its original
+source; its portable regression failed first and the source-consistent local-quota
+fixture passed. No historical metadata evidence was rewritten.

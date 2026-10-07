@@ -1,6 +1,6 @@
 # M2 reviewed enrollment metadata publication
 
-Date: 2026-10-07. Status: native and complete portable qualification passed; maintainer review pending.
+Date: 2026-10-07. Status: native and complete portable qualification passed; accepted in PR 70.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0006](../../adr/0006-storage-ownership-and-plans.md),
 [ADR 0007](../../adr/0007-durable-storage-jobs.md),
