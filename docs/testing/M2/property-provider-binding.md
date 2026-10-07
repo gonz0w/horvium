@@ -71,7 +71,10 @@ The focused native fixture retains the previous 32 assertions and adds five:
 `providers_missing_denied`, `provider_fixtures_teardown`. The existing uniquely
 identified mirror must bind both its 512-byte and 4096-byte logical sectors.
 Two additional separately owned pools use only the already declared unused
-snapshot fixtures: a duplicate-serial mirror and a missing-serial single disk.
+snapshot fixtures: a duplicate-serial mirror and a mirror with one missing serial.
+After the original mirror is GUID-checked and destroyed, its first declared
+unique disk is reused only in the latter test fixture.
+Both layouts satisfy the existing supported redundant-topology gate.
 Independent native property collection succeeds; provider collection must deny
 both with zero results. Each pool has GUID-checked cleanup registered before
 creation and is destroyed before the success record. No root/existing pools,
@@ -105,3 +108,10 @@ provider: [FreeBSD 15.1 vdev_geom.c](https://github.com/freebsd/freebsd-src/blob
 [FreeBSD 14.5 vdev_geom.c](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/module/os/freebsd/zfs/vdev_geom.c).
 Source inspection guides the separate classifier; actual native success is still
 required and is not implied by source inspection. No unused-device rule is widened.
+
+A subsequent attempt passed provider binding but its missing-serial negative
+fixture incorrectly used an unsupported single-disk topology. It remains
+unqualified with complete preservation/teardown. The test-only correction runs
+both negative fixtures after the original mirror's verified destruction and
+pairs the missing-serial disk with its now-free declared unique disk. Product
+topology and provider rules remain unchanged; no force or layout bypass is added.

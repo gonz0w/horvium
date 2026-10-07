@@ -15,7 +15,7 @@ import (
 // Only called inside the opted-in owned five-disk snapshot fixture. Candidates
 // were independently checked against declared serial/geometry and root/use
 // backing before entry. These intentionally bad identities never enroll.
-func nativePropertyProviderDenials(t *testing.T, ctx context.Context, prefix string, duplicates []inventory.Provider, missing inventory.Provider, check func(string, bool)) {
+func nativePropertyProviderDenials(t *testing.T, ctx context.Context, prefix string, duplicates []inventory.Provider, missing, unique inventory.Provider, check func(string, bool)) {
 	t.Helper()
 	command := func(ctx context.Context, path string, args ...string) (string, error) {
 		out, err := execute(ctx, path, args, 1<<20)
@@ -66,7 +66,7 @@ func nativePropertyProviderDenials(t *testing.T, ctx context.Context, prefix str
 		if mode == "duplicate" {
 			args = append(args, "mirror", "/dev/"+duplicates[0].Name, "/dev/"+duplicates[1].Name)
 		} else {
-			args = append(args, "/dev/"+missing.Name)
+			args = append(args, "mirror", "/dev/"+unique.Name, "/dev/"+missing.Name)
 		}
 		if _, err = command(ctx, "/sbin/zpool", args...); err != nil {
 			t.Fatal("owned provider fixture create", err)
