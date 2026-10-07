@@ -101,6 +101,7 @@ func TestNativePoolPropertyCollection(t *testing.T) {
 		passed["teardown"] = true
 		cases := []string{"complete", "pool_identity", "dataset_identity", "property_values", "inheritance", "snapshot_owner", "features", "topology", "eligibility_denied", "wrong_guid_denied", "rename_fresh", "readonly_denied", "volume_denied", "preservation", "backing_preserved", "teardown", "policy_bound", "policy_missing_denied", "policy_change_denied", "policy_scope_denied", "policy_rename_denied", "policy_closed_denied"}
 		cases = append(cases, "system_root_backing", "system_pool_backing", "safety_bound", "safety_system_mount_denied", "safety_fresh_restored", "system_swap_observed", "safety_swap_disjoint", "system_mount_preserved", "system_fixture_teardown", "unsupported_md_denied")
+		cases = append(cases, "providers_correlated", "provider_geometry", "providers_duplicate_denied", "providers_missing_denied", "provider_fixtures_teardown")
 		if len(passed) != len(cases) {
 			t.Error("incomplete native assertions")
 			return

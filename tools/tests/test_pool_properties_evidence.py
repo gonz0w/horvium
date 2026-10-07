@@ -33,3 +33,11 @@ class PoolPropertiesEvidenceTests(unittest.TestCase):
         selected=re.findall(r"-test.run='([^']+)'",script)
         self.assertEqual(selected,['^TestNativePoolPropertyCollection$'])
         self.assertIn('func TestNativePoolPropertyCollection(', (ROOT/'internal/host/freebsd/pool_properties_freebsd_test.go').read_text())
+
+    def test_guest_emitted_inventory_matches_host_checker(self):
+        import re
+        native=(ROOT/'internal/host/freebsd/pool_properties_freebsd_test.go').read_text()
+        blocks=re.findall(r'cases := \[\]string\{([^}]+)\}|cases = append\(cases,([^)]*)\)',native)
+        cases=[name for block in blocks for part in block for name in re.findall(r'"([a-z_]+)"',part)]
+        self.assertEqual(len(cases),len(self.module.CASES))
+        self.assertEqual(set(cases),self.module.CASES)

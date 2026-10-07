@@ -115,3 +115,11 @@ unqualified with complete preservation/teardown. The test-only correction runs
 both negative fixtures after the original mirror's verified destruction and
 pairs the missing-serial disk with its now-free declared unique disk. Product
 topology and provider rules remain unchanged; no force or layout bypass is added.
+
+The next attempt completed its fixtures but correctly failed because the guest's
+final emitted-case inventory still listed only the earlier 32 cases. Its results
+remain unqualified, with full preservation/teardown. A failing-first consistency
+regression now compares the guest's entire emitted inventory with the exact host
+checker; both require the same 37 unique cases. The correction changes evidence
+accounting only. Portable review at that source passed, but cannot qualify the
+new evidence-tool inputs without a fresh review.
