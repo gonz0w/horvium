@@ -33,7 +33,7 @@ func TestNativeAssessmentUIDChild(t *testing.T) {
 // The parent owns the pool/children and deadline. This fixture provisions only
 // test metadata in its private /root directory; no native publication, runtime
 // admission or executor is inferred from those bytes.
-func nativePropertyJobSource(t *testing.T, ctx context.Context, poolSource *PoolPropertySource, policy storage.Policy, i storage.PropertyIntent, must func(testing.TB, string, ...string) string) {
+func nativePropertyJobSource(t *testing.T, ctx context.Context, policy storage.Policy, i storage.PropertyIntent, must func(testing.TB, string, ...string) string) {
 	t.Helper()
 	path, err := os.MkdirTemp("/root", "horvium-assessment-")
 	if err != nil {
@@ -260,9 +260,11 @@ func nativePropertyJobSource(t *testing.T, ctx context.Context, poolSource *Pool
 		if err != nil || e != nil || f != nil || !bytes.Equal(data, jobBytes) || !os.SameFile(lockBefore, lockAfter) {
 			t.Fatal("native metadata/lock preservation", err, e, f)
 		}
-		actual, err := poolSource.Collect(ctx, policy.PoolGUID, policy.PoolName)
-		if err != nil || actual.Eligible {
-			t.Fatal("restored ineligible native graph", err)
+		// Independently verify the two properties changed by this fixture. The
+		// parent later verifies its entire original raw state/identity projection.
+		actual := strings.TrimSpace(must(t, "/sbin/zfs", "get", "-H", "-p", "-o", "property,value,received,source", "quota,refquota", target))
+		if actual != "quota\t1048576\t-\tlocal\nrefquota\t0\t-\tdefault" {
+			t.Fatal("owned quota/source restoration")
 		}
 	})
 	t.Run("closed", func(t *testing.T) {

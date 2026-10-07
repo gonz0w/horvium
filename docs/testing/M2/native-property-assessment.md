@@ -82,7 +82,8 @@ zero. An independent presentation change must change the actual census fingerpri
 The wrong-UID subprocess runs only a copied public test executable in a separately
 owned traversable temporary directory, never private metadata or credentials;
 require it to exit successfully and remove the executable/directory. Verify retained
-records/lock/holds, restored false-eligibility graph and final lease-closed denial.
+records/lock/holds, independent restored quota/refquota raw sources and final
+lease-closed denial. The parent verifies its full original raw projection.
 Original pool/provider/backing/sentinel, root fixtures, child and host teardown stay
 required. Previous metadata/publication/cut evidence retains its original scope.
 
@@ -93,3 +94,19 @@ PR_TITLE='feat(storage): bind native assessment to the root ledger' make review
 .tools/venv/bin/python3 tools/local-qualification.py pool-properties 14.5 --run
 make lab-status
 ```
+
+## Fixture collection correction
+
+Two initial 15.1 attempts reached the unchanged five-minute aggregate fixture
+limit during older postcondition cases, after all seventeen new source cases
+passed. One attempt ran alongside portable review and one ran alone; neither is
+acceptance evidence. Preserve both failed reports and complete host teardown.
+Remove redundant native reads only where no native change occurs between capture
+and comparison: use the same newly collected false-eligibility graph for capture
+and retained assessment, and the same newly collected drift graph for both
+comparators. Initial new-source capture uses the actual graph collected immediately
+before pure policy construction. The new source still independently collects all
+its native evidence; no caller graph is accepted. Its restoration control now
+checks exact quota/refquota raw value/received/source columns, while the parent
+retains full original projection verification. All old/new assertions and product/
+fixture timeouts remain unchanged; no skipped case or longer deadline qualifies.
