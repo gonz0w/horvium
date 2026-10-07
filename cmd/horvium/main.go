@@ -12,6 +12,7 @@ import (
 	"github.com/gonz0w/horvium/internal/client"
 	"github.com/gonz0w/horvium/internal/observation"
 	"github.com/gonz0w/horvium/internal/service"
+	"github.com/gonz0w/horvium/internal/storage"
 	"io"
 	"os"
 	"os/signal"
@@ -60,6 +61,16 @@ func run(ctx context.Context, args []string, input io.Reader, out, errout io.Wri
 	flags := flag.NewFlagSet("horvium", flag.ContinueOnError)
 	flags.SetOutput(io.Discard)
 	switch args[0] {
+	case "storage-assess":
+		path := flags.String("state-dir", "", "absolute existing root-provisioned storage ledger")
+		id := flags.String("job-id", "", "canonical retained property job ID")
+		if flags.Parse(args[1:]) != nil || flags.NArg() != 0 || !filepath.IsAbs(*path) || filepath.Clean(*path) != *path || *path == "/" || storage.ValidatePropertyJobSelection(*id) != nil {
+			return fail(errInput)
+		}
+		if e := runStoragePropertyAssessment(ctx, *path, *id, out); e != nil {
+			return fail(errStorageAssessment)
+		}
+		return 0
 	case "storage-jobs":
 		path := flags.String("state-dir", "", "absolute existing root-provisioned storage ledger")
 		if flags.Parse(args[1:]) != nil || flags.NArg() != 0 || !filepath.IsAbs(*path) || filepath.Clean(*path) != *path || *path == "/" {

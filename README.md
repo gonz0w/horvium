@@ -214,6 +214,11 @@ new source cases, eleven postcondition cases, eight retained-assessment cases an
 88 existing assertions, with focused portable review and verified teardown. Runtime
 writes, job resolution and operator workflows remain disabled.
 
+The [foreground property-job assessment](docs/operations/M2-property-assessment.md)
+selects one protected retained job and presents fresh native match facts separately
+from history and recovery status. Qualification is pending; no writes or recovery
+resolution are enabled.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

@@ -3,6 +3,12 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [foreground property-job assessment](../testing/M2/property-assessment-diagnostic.md)
+connects the accepted source to OS-root command selection and bounded output with
+explicit retained holds and false executor/recovery verification. Portable/native
+qualification is pending. No runtime writer, recovery resolution, authenticated
+management transport or new hardware/client support is added.
+
 M2 [root-leased native assessment](../testing/M2/native-property-assessment.md) joins
 complete protected ledger reads to independently collected current root policy and
 native property facts. Focused portable review passed at signed source
