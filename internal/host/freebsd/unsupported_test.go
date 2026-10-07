@@ -10,6 +10,9 @@ import (
 )
 
 func TestUnsupportedHostFailsExplicitly(t *testing.T) {
+	if _, err := NewPropertyEnrollmentSource(nil); !errors.Is(err, ErrUnsupported) {
+		t.Fatal(err)
+	}
 	if _, err := New(inventory.DefaultLimits()); !errors.Is(err, ErrUnsupported) {
 		t.Fatalf("host discovery pretended to support this OS: %v", err)
 	}

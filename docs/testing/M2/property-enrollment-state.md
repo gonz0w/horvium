@@ -1,6 +1,6 @@
 # M2 root-leased enrollment state binding
 
-Date: 2026-10-07. Status: both native targets and complete portable review passed; maintainer review pending.
+Date: 2026-10-07. Status: accepted in PR 68; both native targets and complete portable review passed.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0006](../../adr/0006-storage-ownership-and-plans.md),
 [ADR 0007](../../adr/0007-durable-storage-jobs.md),

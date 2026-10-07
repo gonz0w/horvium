@@ -103,6 +103,15 @@ metadata/backing checks through the original lease. No publication, claims,
 recovered-state authority, runtime workflow or eligibility is added. See the
 [contract](../../testing/M2/property-enrollment-state.md).
 
+Native enrollment-source amendment: accept only explicit typed root proposal and
+predecessor selections; validate and own them before fixed independent native
+pool/provider/system collection. Join the bounded volatile review to its borrowed
+root lease, repeat full state validation and actual clock/context checks before
+returning. Fresh revalidation recollects native inputs through the original sealed
+binding. No authority transfer, inferred selections, publication, recovery clearance
+or runtime consumer is added. See the
+[source contract](../../testing/M2/native-enrollment-source.md).
+
 ## Plans and application contract
 
 1. Authenticated UI/CLI submits a typed operation and resource selection. The
