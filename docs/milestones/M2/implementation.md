@@ -370,6 +370,21 @@ gate requires 555 assertions, fifty parents and 1,804 codec subtests on both
 releases with full owned teardown. Both targets passed at signed source
  `5a0e67cd7f469cf398b1cd831284d8a44a3b67ce`
 with full teardown; see the [manifest](../../testing/M2/property-job-storage-manifest.json).
-Review is pending. Runtime admission,
+Accepted in PR 54 at merged source `5d0fb0314de157f0ace3755e862480dea02c1c4f`. Runtime admission,
 eligibility/executable attribution, reservations/recovery/cuts and M2 acceptance
 remain open.
+
+
+## Job reservation metadata prerequisite
+
+The [reservation contract](../../testing/M2/job-reservations.md) strictly validates
+the supplied complete job-record set, retains full property baselines, indexes
+unique submission/plan identities and projects all whole-pool holders. Matching
+property retries return the existing current record; conflicting meaning, reused
+plans, pool holds and exhaustion deny new metadata. Terminal labels cannot release
+holds. Concurrent checks do not atomically claim/admit work. Portable qualification passed. Full native namespace/provenance, authorization/eligibility assembly,
+durable admission, executor/recovery/release and M2 acceptance remain open.
+
+Reservation qualification: signed source `eec1ad7c34485bc2b548f8a1c88f68cdaaaae647`, six parents/thirty
+subtests, required baseline, storage race/all nineteen fuzz targets and FreeBSD
+cross-compilation; see the [manifest](../../testing/M2/job-reservations-manifest.json). Maintainer review is pending; no native admission/release claim follows.

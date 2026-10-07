@@ -436,5 +436,23 @@ late namespace/valid-baseline drift, duplicate serialization, safe-file refusal,
 POSIX/NFSv4 ACL/kernel UID controls and real UFS ENOSPC/read-only preservation.
 Require all 555 named assertions, fifty parents and 1,804 distinct codec subtests
 on both declared targets with complete guest/host teardown. Shared evidence changes
-require a complete portable review. Qualification is pending; no admission/native
+require a complete portable review. Both targets passed at signed source
+`5a0e67cd7f469cf398b1cd831284d8a44a3b67ce` with complete teardown; see the
+[manifest](../../testing/M2/property-job-storage-manifest.json). Accepted in PR 54; no admission/native
 effect, recovery/acknowledgement cut or M2 acceptance claim follows.
+
+
+## Job reservation metadata prerequisite
+
+The [procedure](../../testing/M2/job-reservations.md) adds partial M2-JOB-001,
+M2-PLAN-001 and M2-SCALE-001 at T1: failing-first complete-set/collision/zero-return
+tests, exact retry binding/current history, every lifecycle pool hold, unrelated
+pools, actual 64/1,000 class ceilings, byte preflight/exhaustion, copy isolation,
+concurrent read-only checks and bounded hostile-input fuzzing. Require baseline
+and storage-only race/all compiler-listed fuzz checks; cross-compilation is
+portability only. Portable qualification passed. Actual native admission, root caller/
+policy/eligibility provenance, recovery/release/cuts and M2 acceptance remain open.
+
+Reservation qualification: signed source `eec1ad7c34485bc2b548f8a1c88f68cdaaaae647`, six parents/thirty
+subtests, required baseline, storage race/all nineteen fuzz targets and FreeBSD
+cross-compilation; see the [manifest](../../testing/M2/job-reservations-manifest.json). Maintainer review is pending; no native admission/release claim follows.
