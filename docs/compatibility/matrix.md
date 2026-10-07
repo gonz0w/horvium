@@ -292,7 +292,17 @@ property-job format. Require 555 state assertions, fifty parents and 1,804 codec
 subtests on both targets with complete teardown; both passed at signed source
  `5a0e67cd7f469cf398b1cd831284d8a44a3b67ce`
 with full teardown; see the [manifest](../testing/M2/property-job-storage-manifest.json).
-Review is pending. Existing
+Accepted in PR 54. Existing
 job/ownership versions remain supported, with no cross-format overwrite or guessed
 baseline. No product admission, native storage effect, migration/deployment,
 resource/commercial scale, hardware/client, recovery or acceptance claim follows.
+
+
+M2 job reservation metadata: [contract](../testing/M2/job-reservations.md) adds
+pure complete-record-set validation, exact property retry binding and conservative
+whole-pool holds for both accepted job formats. Every retained lifecycle state
+continues to hold; no terminal label releases reservations. New work can pass on
+an unrelated pool, but checks claim/admit nothing and ownership/transient capacity
+needs the existing native boundary. Qualification is pending. No native reader,
+publisher, file schema, runtime/transport or deployment changes; native admission/
+recovery/release and M2 acceptance remain unqualified.
