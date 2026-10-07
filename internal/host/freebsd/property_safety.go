@@ -4,10 +4,8 @@ package freebsd
 import (
 	"bytes"
 	"context"
-	"reflect"
 	"time"
 
-	"github.com/gonz0w/horvium/internal/inventory"
 	"github.com/gonz0w/horvium/internal/storage"
 )
 
@@ -72,7 +70,7 @@ func (s *PropertySafetySource) collect(ctx context.Context, guid string, check f
 	if err = storage.CheckPropertySystemExclusions(o, u); err != nil {
 		return storage.Policy{}, storage.Observation{}, err
 	}
-	if err = bindSystemProviders(o.PoolGUID, u, providers); err != nil {
+	if err = storage.CheckPropertySystemProviders(o.PoolGUID, u, providers); err != nil {
 		return storage.Policy{}, storage.Observation{}, err
 	}
 	if err = ctx.Err(); err != nil {
@@ -108,38 +106,4 @@ func (s *PropertySafetySource) collect(ctx context.Context, guid string, check f
 	}
 	o.Eligible = false
 	return p, o, nil
-}
-
-func bindSystemProviders(guid string, u storage.PoolSystemUse, disks []inventory.DiskObservation) error {
-	for _, pool := range u.Pools() {
-		if pool.GUID != guid {
-			continue
-		}
-		if len(pool.Disks) != len(disks) {
-			return storage.ErrDrift
-		}
-		seen := map[string]bool{}
-		for _, d := range disks {
-			matched := false
-			for _, p := range pool.Disks {
-				if p.Name != d.Provider.Name {
-					continue
-				}
-				// IDs are graph-local; independently compare complete provider
-				// identity/provenance/geometry rather than persisting graph IDs.
-				expected := d.Provider
-				expected.ID = ""
-				expected.GeomID = ""
-				p.ID = ""
-				p.GeomID = ""
-				matched = reflect.DeepEqual(expected, p)
-			}
-			if !matched || seen[d.Provider.Name] {
-				return storage.ErrDrift
-			}
-			seen[d.Provider.Name] = true
-		}
-		return nil
-	}
-	return storage.ErrUnavailable
 }

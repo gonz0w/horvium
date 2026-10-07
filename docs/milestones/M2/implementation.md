@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 62; native property system exclusions qualified, maintainer review pending; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 66; explicit enrollment review in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -592,3 +592,17 @@ success and softupdates UFS denial passed; see the
 [execution manifest](../../testing/M2/property-store-readiness-manifest.json).
 Provisioning/adoption, full restored-state/executor
 validation, atomic admission, transport and execution remain open.
+
+
+## Explicit property enrollment review
+
+The [contract](../../testing/M2/property-enrollment-review.md) adds a volatile
+immutable five-minute review of an explicit root proposal, complete native
+context and normalized full system-use baseline. Fresh typed validation refuses
+proposal/native/system drift; no scope is inferred and eligibility stays false.
+No runtime provisioning/publication workflow is added. Require all 64 focused
+native cases on both targets, complete portable review and owned teardown;
+both targets passed at signed source `8f6f0cef7f4321b56f37ae99f05c50696c8cc319` with complete portable review and teardown;
+see the [manifest](../../testing/M2/property-enrollment-review-manifest.json).
+Maintainer review is pending. Root authorization, current predecessor/backing/capacity/
+recovery and atomic publication gates remain open.

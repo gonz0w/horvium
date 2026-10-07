@@ -393,6 +393,7 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 		geometryOK = geometryOK && disk.Provider.MediaSize == 64<<20 && disk.SectorCount == disk.Provider.MediaSize/disk.Provider.SectorSize && (disk.Provider.Name == first.Name && disk.Provider.SectorSize == 512 || disk.Provider.Name == second.Name && disk.Provider.SectorSize == 4096)
 	}
 	check("provider_geometry", geometryOK)
+	nativePropertyEnrollmentReviewFixture(t, ctx, check, policy, statePath, ordinary, data, sentinel)
 	must("/sbin/zfs", "set", "mountpoint="+systemMount, pool)
 	p, o, e = safety.Collect(ctx, guid)
 	check("safety_system_mount_denied", errors.Is(e, storage.ErrDenied) && reflect.DeepEqual(p, storage.Policy{}) && reflect.DeepEqual(o, storage.Observation{}))
