@@ -817,3 +817,9 @@ portable review and exact new-artifact cleanup after interruption. No native
 metadata implementation/codec or prior manifest changes; full state evidence keeps
 its actual sources. Management transport/browser parity, native reconciliation,
 restoration, execution and complete M2 acceptance remain open.
+
+Both targets passed all 21 assertions at signed source
+`03d4ab5948dc56a41333acb0e4dd20d3191e1bc7`, with full portable review (122 tooling tests,
+11 race packages, all 35 bounded fuzz targets) and verified teardown; see the
+[manifest](../../testing/M2/storage-job-status-manifest.json). Retain original
+passed and superseded unqualified fixture scopes without relabeling.

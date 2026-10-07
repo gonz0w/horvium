@@ -1,6 +1,6 @@
 # M2 foreground storage job-status diagnostic
 
-Date: 2026-10-07. Status: implementing; native qualification pending.
+Date: 2026-10-07. Status: qualified subset; maintainer review pending.
 Authority: [approved M2 design](../milestones/M2/EDD.md),
 [qualification contract](../testing/M2/storage-job-status.md).
 

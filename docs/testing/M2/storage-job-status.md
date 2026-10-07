@@ -1,6 +1,6 @@
 # M2 foreground storage job-status diagnostic
 
-Date: 2026-10-07. Status: implementing; qualification pending.
+Date: 2026-10-07. Status: qualified subset; maintainer review pending.
 Authority: [approved PRD](../../milestones/M2/PRD.md),
 [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [ADR 0007](../../adr/0007-durable-storage-jobs.md),
@@ -79,3 +79,15 @@ implementation/tests, codecs, restart semantics and historical manifests remain
 unchanged; prior 819-case metadata evidence retains its actual tested source and
 is not relabeled. Full built application/helper/client workflows, recovery,
 restoration, resources/hardware, browser parity and M2 acceptance remain open.
+
+## Source-bound results
+
+Signed source `03d4ab5948dc56a41333acb0e4dd20d3191e1bc7` passed all 21 assertions on both
+FreeBSD 15.1 (ZFS, 3.38 seconds) and 14.5 (softupdates UFS, 3.24 seconds).
+Complete local review passed the baseline, 122 tooling tests, 11 race packages
+and all 35 bounded fuzz targets. Every guest/child/artifact/session was torn down.
+See the [manifest](storage-job-status-manifest.json) for actual tool/image/source
+hashes, backing and teardown. The initial 20-case passed scope is retained at its
+original source. The later unqualified fixture reused the expected cancellation
+error in an independent query-success check; the corrected fixture passed both
+releases. Neither result is relabeled, and no prior state evidence is rewritten.

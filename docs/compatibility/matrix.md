@@ -531,6 +531,9 @@ bounded to 1,064 jobs/1 MiB with unverified recovery and unchanged pool holds. T
 first-use private writer lock may be initialized; policy/job records remain
 unchanged. Native reading on ZFS/UFS is distinct from publication capability;
 softupdates UFS publication stays denied. Both disposable releases, actual UID
-denial, artifact/child/host teardown and shared-tooling portable review are pending.
+denial and artifact/child/host teardown passed all 21 assertions at signed source
+`03d4ab5948dc56a41333acb0e4dd20d3191e1bc7`. Full portable review passed 122 tooling tests,
+11 race packages and 35 bounded fuzz targets; see the
+[manifest](../testing/M2/storage-job-status-manifest.json).
 No native metadata/schema/codec behavior, M1 transport or historical manifest is
 changed; hardware/resource/client/recovery and milestone claims remain open.

@@ -675,5 +675,12 @@ The [contract](../../testing/M2/storage-job-status.md) connects the root lease's
 complete mixed census and bounded restart pages to a foreground OS-root command.
 It stages all retained summaries with explicit unverified recovery and unchanged
 holds, closes its lease before output and enables no storage write or service.
-Portable/native qualification is pending; management UI/CLI parity, native
-reconciliation/transport/execution and the remaining M2 lifecycle remain open.
+Both native targets passed all 21 assertions at signed source
+`03d4ab5948dc56a41333acb0e4dd20d3191e1bc7`, with actual root/wrong-UID checks, full-pipe
+signal cancellation, record/lock preservation, backing and complete teardown.
+Full portable review passed 122 tooling tests, 11 race packages and 35 bounded
+fuzz targets. See the [manifest](../../testing/M2/storage-job-status-manifest.json).
+All 47 historical M2 manifests and native metadata code/tests/codecs are unchanged;
+the state-directory public comment now names inspection wiring. Maintainer review,
+management UI/CLI parity, native reconciliation/transport/execution and the
+remaining M2 lifecycle remain open.

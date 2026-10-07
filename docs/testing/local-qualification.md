@@ -446,5 +446,11 @@ are waited/reaped and owned metadata/executable directories removed. See the
 .tools/venv/bin/python3 tools/local-qualification.py job-status 14.5 --run
 ```
 
-Qualification is pending. This suite covers retained metadata presentation, not
-native recovery, actual storage operations, resources/hardware or M2 acceptance.
+This suite covers retained metadata presentation. Native recovery, actual storage
+operations, resources/hardware and M2 acceptance remain separate gates.
+
+The focused job-status suite passed all 21 assertions on both pinned guests at
+signed source `03d4ab5948dc56a41333acb0e4dd20d3191e1bc7`; actual UID, full-output-pipe
+cancellation, backing/preservation and complete teardown are recorded in the
+[source-bound manifest](M2/storage-job-status-manifest.json). This is diagnostic
+qualification, not native mutation/recovery or full application acceptance.
