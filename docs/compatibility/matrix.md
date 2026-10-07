@@ -520,3 +520,20 @@ teardown. Root ZFS also passed all six refusal/absence subtests; actual softupda
 UFS remained denied. See the [manifest](../testing/M2/native-enrollment-publication-manifest.json).
 Historical 819-case metadata evidence stays at its actual PR 70 sources; physical
 hardware/commercial/client/recovery claims remain open.
+
+
+## Foreground retained job-status diagnostic
+
+The [root diagnostic](../operations/M2-job-status.md) requires FreeBSD and the
+existing protected storage ledger; other OSes refuse native access. It opens no
+listener/service and reads no management token. Complete retained summaries are
+bounded to 1,064 jobs/1 MiB with unverified recovery and unchanged pool holds. The
+first-use private writer lock may be initialized; policy/job records remain
+unchanged. Native reading on ZFS/UFS is distinct from publication capability;
+softupdates UFS publication stays denied. Both disposable releases, actual UID
+denial and artifact/child/host teardown passed all 21 assertions at signed source
+`03d4ab5948dc56a41333acb0e4dd20d3191e1bc7`. Full portable review passed 122 tooling tests,
+11 race packages and 35 bounded fuzz targets; see the
+[manifest](../testing/M2/storage-job-status-manifest.json).
+No native metadata/schema/codec behavior, M1 transport or historical manifest is
+changed; hardware/resource/client/recovery and milestone claims remain open.

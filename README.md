@@ -188,6 +188,12 @@ connects that sealed review to fresh native evidence without caller-supplied
 observations. Both targets passed all 88 native assertions with verified teardown;
 focused portable review passed. Operator workflows remain disabled.
 
+The [foreground storage job-status diagnostic](docs/operations/M2-job-status.md)
+reads the complete protected ledger as OS root and shows retained events separately
+from conservative restart status. Both disposable FreeBSD targets passed all 21
+assertions with verified teardown; full portable review passed. No write or
+recovery authority is added.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

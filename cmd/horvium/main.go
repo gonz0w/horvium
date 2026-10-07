@@ -60,6 +60,15 @@ func run(ctx context.Context, args []string, input io.Reader, out, errout io.Wri
 	flags := flag.NewFlagSet("horvium", flag.ContinueOnError)
 	flags.SetOutput(io.Discard)
 	switch args[0] {
+	case "storage-jobs":
+		path := flags.String("state-dir", "", "absolute existing root-provisioned storage ledger")
+		if flags.Parse(args[1:]) != nil || flags.NArg() != 0 || !filepath.IsAbs(*path) || filepath.Clean(*path) != *path || *path == "/" {
+			return fail(errInput)
+		}
+		if e := runStorageJobs(ctx, *path, out); e != nil {
+			return fail(e)
+		}
+		return 0
 	case "inventory":
 		endpoint := flags.String("endpoint", "http://127.0.0.1:8088", "explicit loopback management endpoint")
 		kind := flags.String("resource", "overview", "overview, pools, datasets or providers")
@@ -135,5 +144,8 @@ func run(ctx context.Context, args []string, input io.Reader, out, errout io.Wri
 func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
-	os.Exit(run(ctx, os.Args[1:], os.Stdin, os.Stdout, os.Stderr))
+	ctx, stop := storageJobCommandContext(ctx, os.Args[1:], os.Exit)
+	code := run(ctx, os.Args[1:], os.Stdin, os.Stdout, os.Stderr)
+	stop()
+	os.Exit(code)
 }

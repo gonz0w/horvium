@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 70; independently collected enrollment publication in progress; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 71; foreground storage job-status integration in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -663,6 +663,24 @@ passed all 88 assertions at signed source `d6fc9eb9dfee6cda75de7ed727db11bcaf00c
 with focused portable review and verified teardown; see the
 [manifest](../../testing/M2/native-enrollment-publication-manifest.json). The initial
 invalid drift projection remains unqualified; a failing-first fixture regression
-and source-consistent correction passed. Maintainer review pending. Runtime
+and source-consistent correction passed. Accepted in PR 71 at merged source
+`c937a29d202b1714c15509b75ba043c625a8a6c8`. Runtime
 provisioning, eligibility/recovery, authorized transport and operator workflows
 remain open.
+
+
+## Foreground retained job-status diagnostic
+
+The [contract](../../testing/M2/storage-job-status.md) connects the root lease's
+complete mixed census and bounded restart pages to a foreground OS-root command.
+It stages all retained summaries with explicit unverified recovery and unchanged
+holds, closes its lease before output and enables no storage write or service.
+Both native targets passed all 21 assertions at signed source
+`03d4ab5948dc56a41333acb0e4dd20d3191e1bc7`, with actual root/wrong-UID checks, full-pipe
+signal cancellation, record/lock preservation, backing and complete teardown.
+Full portable review passed 122 tooling tests, 11 race packages and 35 bounded
+fuzz targets. See the [manifest](../../testing/M2/storage-job-status-manifest.json).
+All 47 historical M2 manifests and native metadata code/tests/codecs are unchanged;
+the state-directory public comment now names inspection wiring. Maintainer review,
+management UI/CLI parity, native reconciliation/transport/execution and the
+remaining M2 lifecycle remain open.

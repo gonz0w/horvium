@@ -57,6 +57,23 @@ class LocalQualificationTests(unittest.TestCase):
         for bad in ['',log.replace('teardown=pass','teardown=fail'),log.replace('eligibility_denied=pass',''),log.replace('--- PASS:','--- SKIP:')]:
             with self.assertRaises(ValueError):self.module.validate_result('pool-properties',bad)
 
+    def test_storage_status_prebuilt_requires_checksum_and_no_devices(self):
+        packages,command=self.module.suite_command('job-status',False,'a'*64)
+        self.assertEqual(packages,'')
+        self.assertIn('bsd-storage-job-status-prebuilt.sh',command)
+        self.assertIn('HORVIUM_STATUS_VM=1',command)
+        self.assertFalse(self.module.uses_device_fixture('job-status'))
+        self.module.validate_prebuilt('STORAGE_JOB_STATUS_PREBUILT_SHA256 '+'a'*64+'\n','a'*64,'job-status')
+        for digest in [None,'oops','a'*63,'a'*64+';bad']:
+            with self.assertRaises(ValueError):self.module.suite_command('job-status',False,digest)
+
+    def test_storage_status_requires_complete_actual_native_evidence(self):
+        checker=self.module.load_tool('check-storage-job-status-evidence')
+        log='--- PASS: TestNativeStorageJobStatus (1.0s)\nSTORAGE_JOB_STATUS_RESULT '+' '.join(c+'=pass' for c in sorted(checker.CASES))+'\nSTORAGE_JOB_STATUS_BACKING filesystem=zfs softupdates=off teardown=pass\n'
+        self.module.validate_result('job-status',log,complete=True)
+        for bad in ['',log.replace('kernel_uid_denied=pass',''),log.replace('fixtures_teardown=pass','fixtures_teardown=fail')]:
+            with self.assertRaises(ValueError):self.module.validate_result('job-status',bad,complete=True)
+
     def test_guest_has_snapshot_storage_and_only_loopback_ssh(self):
         command = self.module.qemu_command('qemu', Path('/fixture/base'), Path('/code'), Path('/fixture/vars'), 23456)
         self.assertIn('-snapshot', command)

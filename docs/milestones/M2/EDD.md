@@ -364,3 +364,17 @@ return its actual acknowledgement unchanged even after cancellation/expiry. No
 caller-supplied observations, renewed claim, storage operation, restored-state
 clearance or runtime authority is added. See the
 [contract](../../testing/M2/native-enrollment-publication.md).
+
+
+## OS-root retained job-status diagnostic amendment
+
+The foreground `storage-jobs` command takes an explicit existing private storage
+ledger path. Acquire the accepted root lease, validate the complete namespace and
+inspect all retained jobs from one immutable view before releasing the lease and
+emitting output. Separate historical last events from conservative restart status;
+state explicitly that recovery is unverified and holds are retained. Stage all
+summaries under the accepted 1,064-job/1 MiB diagnostic bounds and preserve all
+records/lock identity on refusal. Initial empty-lock creation/sync remains the
+existing opener contract. No native collection/write, policy/job publication,
+management transport, repair/replay or service is added. See the
+[contract](../../testing/M2/storage-job-status.md).
