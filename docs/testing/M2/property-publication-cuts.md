@@ -1,6 +1,6 @@
 # M2 property metadata publication process-death cuts
 
-Date: 2026-10-06. Status: native qualification pending.
+Date: 2026-10-06. Status: both native targets qualified; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [ADR 0007](../../adr/0007-durable-storage-jobs.md),
@@ -79,3 +79,31 @@ reservation release, replay-window tombstones or complete M2 recovery/acceptance
 No runtime consumer, service, deployment or storage write authority is enabled.
 All owned child processes, leases, mounts/devices, guest images/keys/binaries and
 firmware variables must be removed, preserving inert base/runtime caches.
+
+## Executed qualification
+
+Signed qualification source `a3a33d5929f7fba32fd9ab6364320984b49d9162` passed all 777 state/backing
+assertions, 66 parents and 1,876 distinct model/codec children on both native
+targets without skips/failures. The [sanitized manifest](property-publication-cuts-manifest.json)
+records exact source/base/input/compiler/guest/runtime/artifact/utility/log hashes,
+case inventories, unchanged product Go inputs, prior evidence and full teardown.
+
+The changed shared selectors/verifier required one complete portable review.
+All mandatory baseline checks (103 tooling regressions), eleven-package race
+and all 28 compiler-listed portable fuzz targets passed in
+137.015 seconds. Documentation-only followups must rerun the
+baseline/title/signature/DCO/source checks; any deep reuse retains this original
+executed source.
+
+| Target | OS root | Cut fixture backing | Process-cut parent | Full owned guest | Result |
+|---|---|---|---|---|---|
+| FreeBSD 15.1 amd64 | zfs | zfs | 0.51 s | 72.641 s | All required controls passed; full teardown |
+| FreeBSD 14.5 amd64 | ufs | ufs (soft updates off) | 0.52 s | 60.253 s | All required controls passed; full teardown |
+
+Both guests used the same verified cross-built artifact. All eight child processes
+were actually killed/reaped per target, then every owned lease/backing and guest
+image/key/test binary/firmware variable/process group was removed. Inert base and
+runtime caches were preserved. All 34 prior M2 manifests are byte-identical to
+the base. `make lab-status` verified all 236 owned sessions stopped.
+Actual native executor recovery, reboot/power-cut durability and complete M2
+acceptance remain open.

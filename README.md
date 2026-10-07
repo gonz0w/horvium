@@ -116,8 +116,8 @@ The [bounded restart projection](docs/testing/M2/job-restart.md) passed portable
 history and pool holds. Actual native recovery remains pending.
 
 The [metadata process-death qualification](docs/testing/M2/property-publication-cuts.md)
-is in progress. It tests interrupted publication and conservative restart metadata
-on disposable native fixtures; runtime writes remain disabled.
+passed all 777 state/backing assertions on both native targets. It tests interrupted
+publication and conservative restart metadata on disposable fixtures; runtime writes remain disabled.
 
 ## Agreed direction
 

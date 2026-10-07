@@ -384,6 +384,10 @@ holds. Matching retries are metadata readback without fresh sync/durability clai
 No native storage command, startup consumer or product behavior/schema changes.
 Require all 777 state/backing assertions, 66 parents and 1,876 codec/model children
 on both targets, including native restart-page execution and complete backing/
-child/host teardown. Native qualification is pending. Shared evidence/selector
-changes require one complete portable review. Reboot/power-cut and actual native
+child/host teardown. Both targets passed at signed source
+`a3a33d5929f7fba32fd9ab6364320984b49d9162` with full teardown; maintainer
+review is pending. Shared evidence/selector changes required one complete portable
+review. Reboot/power-cut and actual native
 executor/reconciliation/restoration/release gates remain open.
+
+See the [execution manifest](../testing/M2/property-publication-cuts-manifest.json); no native executor/recovery authority follows.
