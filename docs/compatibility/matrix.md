@@ -5,8 +5,12 @@ validation are separate. Refresh exact versions in each active research manifest
 
 M2 [property execution sequence](../testing/M2/property-execution.md) adds a
 one-attempt trusted-worker contract with exact durability acknowledgements and
-conservative reconciliation holds. Portable qualification is pending. No native
-backend, global scheduler, restored authority or operator writes are supplied.
+conservative reconciliation holds. Signed source `cceb615b82aedc98d4e93fb1cdb90545b05916ea`
+passed baseline/122 tooling tests, ten new behavioral groups, nine affected race
+packages and all 34 selected fuzz targets. FreeBSD tests cross-compiled, were not
+executed and the artifact was removed; all owned processes stopped. See the
+[manifest](../testing/M2/property-execution-manifest.json). No native backend,
+global scheduler, restored authority or operator writes are supplied.
 
 M2 [repaired-checksum findings](../testing/M2/checksum-findings.md) add a
 GUID-targeted disposable mirror read-corruption fixture with actual member

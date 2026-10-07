@@ -1,6 +1,6 @@
 # M2 one-attempt property execution sequence
 
-Date: 2026-10-07. Status: implementation; portable qualification pending.
+Date: 2026-10-07. Status: portable subset qualified; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [ADR 0007](../../adr/0007-durable-storage-jobs.md),
@@ -93,3 +93,22 @@ evidence retains actual tested revisions; an unexecuted cross-build and syntheti
 backend do not qualify a native executor. Root live-claim/eligibility/transport,
 one global launch/pool serialization, native argument/process containment,
 real durability/effect/death/reboot cuts, recovery and complete M2 remain open.
+
+## Source-bound results
+
+Signed source `cceb615b82aedc98d4e93fb1cdb90545b05916ea` passed all ten new behavioral
+groups and the mandatory baseline (`make check lint test secrets`, 122 tooling
+tests). Focused review ran nine affected race packages and all 34 compiler-listed
+fuzz targets, including `FuzzPropertyExecutionCut`, in 192.379 seconds. Both supervised
+review workers completed with verified process-group teardown. See the
+[manifest](property-execution-manifest.json) for actual source/input/report/log
+hashes, selected inventory and the initial absent-contract compile failure.
+
+The same source compiled the storage tests for `freebsd/amd64`, cgo disabled.
+The binary was not executed and was removed. All 55 historical M2 manifests and
+397 existing code/tool/manifest paths remain byte-identical to the base, including
+every native source/store/fixture and shared selector/supervisor. Prior native
+evidence was not rerun or relabeled; no native guest or service was started.
+`make lab-status` reports no active or unverified owned sessions. This is portable
+sequence qualification; synthetic backend authority and effects establish no
+real native execution, root claim, restored-state safety, release or M2 acceptance.

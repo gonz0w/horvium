@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 79; property execution sequence in progress; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 79; property execution sequence qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -816,6 +816,11 @@ The [contract](../../testing/M2/property-execution.md) connects queued records,
 durable applying intent, fresh rechecks, a single typed control attempt, observed
 facts and exact durable outcomes through a trusted root-worker boundary.
 Publication uncertainty stops work; missing quiescence and differing observations
-retain nonterminal reconciliation holds. Portable qualification is pending.
+retain nonterminal reconciliation holds. Signed source
+`cceb615b82aedc98d4e93fb1cdb90545b05916ea` passed baseline/122 tooling tests, ten
+behavioral groups, nine affected race packages and all 34 selected fuzz targets.
+FreeBSD tests cross-compiled without execution, the artifact was removed and all
+owned processes stopped; see the [manifest](../../testing/M2/property-execution-manifest.json).
+Maintainer review is pending.
 No native backend, runtime launch, authority restoration, scheduler or hold
 release is added; these require separate native gates before operator writes.
