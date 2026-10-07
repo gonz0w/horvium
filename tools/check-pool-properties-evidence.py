@@ -7,7 +7,9 @@ import sys
 
 CASES={'complete','pool_identity','dataset_identity','property_values','inheritance',
        'snapshot_owner','features','topology','eligibility_denied','wrong_guid_denied',
-       'rename_fresh','readonly_denied','volume_denied','preservation','backing_preserved','teardown'}
+       'rename_fresh','readonly_denied','volume_denied','preservation','backing_preserved','teardown',
+       'policy_bound','policy_missing_denied','policy_change_denied','policy_scope_denied',
+       'policy_rename_denied','policy_closed_denied'}
 
 def validate(text):
     if len(text)>1<<20 or re.search(r'(?m)^(?:FAIL|--- (?:FAIL|SKIP):)',text):

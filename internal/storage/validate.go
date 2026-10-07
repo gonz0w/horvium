@@ -214,6 +214,31 @@ func indexObservation(o Observation) (map[string]Filesystem, error) {
 	if !o.Complete || !o.Eligible {
 		return nil, ErrUnavailable
 	}
+	return indexCollectedObservation(o)
+}
+
+// ValidatePropertyPolicyBinding checks a complete collected graph against every
+// explicit ownership scope. This is consistency only: it deliberately requires
+// no Eligible flag and never sets one, authorizes enrollment or builds a plan.
+func ValidatePropertyPolicyBinding(p Policy, o Observation) error {
+	if err := preflight(p, o); err != nil {
+		return err
+	}
+	if len(p.Scopes) == 0 {
+		return ErrDenied
+	}
+	files, err := indexCollectedObservation(o)
+	if err != nil {
+		return err
+	}
+	_, _, err = indexPolicy(p, o, files)
+	return err
+}
+
+func indexCollectedObservation(o Observation) (map[string]Filesystem, error) {
+	if !o.Complete {
+		return nil, ErrUnavailable
+	}
 	if !validGUID(o.PoolGUID) {
 		return nil, ErrInvalid
 	}

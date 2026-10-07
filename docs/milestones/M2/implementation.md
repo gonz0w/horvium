@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 60; native property collection qualified, maintainer review pending; Actions disabled.
+Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 61; root policy/native binding qualification pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -501,6 +501,19 @@ transport remain open. Signed source
 targets, the baseline/109 tooling tests, all 11 portable race packages and 30 fuzz
 targets with complete teardown; see the
 [execution manifest](../../testing/M2/native-property-collection-manifest.json).
-Maintainer review is pending. A focused native fixture and
+Accepted in PR 61 at merged source `851928471a2330689ebd970ed832e9b8861f0fe3`. A focused native fixture and
 checksum-bound prebuilt suite qualify only collection/preservation/teardown; shared
 runner and cleanup changes require complete portable review.
+
+## Root policy and native property binding
+
+The [binding contract](../../testing/M2/property-policy-binding.md) connects the
+held root ownership reader to the native collector. Requests select a GUID only;
+private policy supplies the name and scopes. Two canonical policy reads bracket
+collection, and complete graph validation checks every selected filesystem
+against that policy. Failure returns no partial result; success retains false
+eligibility. Portable/native qualification is pending. The focused fixture adds
+six policy/lease denials and positive binding controls to the original 16 checks.
+Native state reader/publisher behavior and existing evidence remain unchanged.
+System/provider/device exclusions, atomic admission, full backend/transport and
+executor/recovery still precede an operator storage workflow.

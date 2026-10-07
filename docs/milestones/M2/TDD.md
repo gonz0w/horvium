@@ -583,3 +583,22 @@ the baseline/109 tooling tests, all 11 race packages and 30 fuzz targets with fu
 teardown; see the [execution manifest](../../testing/M2/native-property-collection-manifest.json).
 No native root/policy eligibility, mutation/executor/recovery or complete
 M2 acceptance follows.
+
+## Root policy and native property binding
+
+M2-OWN-001, M2-PLAN-001 and M2-DRIFT-001 at T1/T3 (partial): require GUID-only
+selection with names/scopes independently read through the held root lease.
+Canonical policy reads must bracket complete native collection; refuse changed
+revision/properties, failed reads, foreign pool, missing/renamed scopes,
+inconsistent unselected descendants, empty scope and cancellation with zero
+output. Require independent canonical results, harmless ordering equivalence and
+bounded hostile policy fuzz. The original planner eligibility refusal must remain.
+
+On both native targets, extend the focused collector fixture from 16 to 22
+assertions with actual private-file/lease binding, absent policy, actual revision
+change between reads, wrong filesystem scope, external GUID-preserving rename and
+closed lease refusals. Test-only metadata setup grants no enrollment/publication
+claim. Require the exact executable, executed pass, all assertions and complete
+owned teardown. Shared checker changes require one complete portable review.
+See the [procedure](../../testing/M2/property-policy-binding.md). Qualification
+is pending; system/device eligibility, native admission and M2 acceptance remain open.
