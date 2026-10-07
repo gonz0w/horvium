@@ -4,17 +4,20 @@ package freebsd
 import (
 	"bytes"
 	"context"
+	"reflect"
 	"time"
 
+	"github.com/gonz0w/horvium/internal/inventory"
 	"github.com/gonz0w/horvium/internal/storage"
 )
 
-// PropertySafetySource joins private policy/native properties with a complete
-// system-use collection. It borrows the root lease and remains read-only and
-// ineligible: provider enrollment and store/admission/recovery gates are absent.
+// PropertySafetySource joins private policy/native properties with complete
+// provider and system-use collections. It borrows the root lease and remains
+// read-only and ineligible: provider enrollment and store/admission/recovery gates are absent.
 type PropertySafetySource struct {
-	policy *PropertyPolicySource
-	system *SystemUseSource
+	policy    *PropertyPolicySource
+	system    *SystemUseSource
+	providers *PoolProviderSource
 }
 
 func NewPropertySafetySource(state *storage.StateDirectory) (*PropertySafetySource, error) {
@@ -26,18 +29,26 @@ func NewPropertySafetySource(state *storage.StateDirectory) (*PropertySafetySour
 	if err != nil {
 		return nil, err
 	}
-	return &PropertySafetySource{policy: policy, system: system}, nil
+	providers, err := NewPoolProviderSource()
+	if err != nil {
+		return nil, err
+	}
+	return &PropertySafetySource{policy: policy, system: system, providers: providers}, nil
 }
 func (s *PropertySafetySource) Collect(ctx context.Context, guid string) (storage.Policy, storage.Observation, error) {
 	if ctx == nil {
 		return storage.Policy{}, storage.Observation{}, storage.ErrInvalid
 	}
-	if s == nil || s.policy == nil || s.system == nil {
+	if s == nil || s.policy == nil || s.system == nil || s.providers == nil {
 		return storage.Policy{}, storage.Observation{}, ErrUnavailable
 	}
-	ctx, cancel := context.WithTimeout(ctx, 90*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 135*time.Second)
 	defer cancel()
 	p, o, err := s.policy.Collect(ctx, guid)
+	if err != nil {
+		return storage.Policy{}, storage.Observation{}, err
+	}
+	providers, err := s.providers.Collect(ctx, o)
 	if err != nil {
 		return storage.Policy{}, storage.Observation{}, err
 	}
@@ -48,10 +59,13 @@ func (s *PropertySafetySource) Collect(ctx context.Context, guid string) (storag
 	if err = storage.CheckPropertySystemExclusions(o, u); err != nil {
 		return storage.Policy{}, storage.Observation{}, err
 	}
+	if err = bindSystemProviders(o.PoolGUID, u, providers); err != nil {
+		return storage.Policy{}, storage.Observation{}, err
+	}
 	if err = ctx.Err(); err != nil {
 		return storage.Policy{}, storage.Observation{}, err
 	}
-	// The added system phase must not extend the earlier policy baseline window
+	// The provider/system phases must not extend the earlier policy baseline window
 	// without a final independent read through the same held root lease.
 	next, err := s.policy.ownership(guid)
 	if err != nil {
@@ -73,4 +87,38 @@ func (s *PropertySafetySource) Collect(ctx context.Context, guid string) (storag
 	}
 	o.Eligible = false
 	return p, o, nil
+}
+
+func bindSystemProviders(guid string, u storage.PoolSystemUse, disks []inventory.DiskObservation) error {
+	for _, pool := range u.Pools() {
+		if pool.GUID != guid {
+			continue
+		}
+		if len(pool.Disks) != len(disks) {
+			return storage.ErrDrift
+		}
+		seen := map[string]bool{}
+		for _, d := range disks {
+			matched := false
+			for _, p := range pool.Disks {
+				if p.Name != d.Provider.Name {
+					continue
+				}
+				// IDs are graph-local; independently compare complete provider
+				// identity/provenance/geometry rather than persisting graph IDs.
+				expected := d.Provider
+				expected.ID = ""
+				expected.GeomID = ""
+				p.ID = ""
+				p.GeomID = ""
+				matched = reflect.DeepEqual(expected, p)
+			}
+			if !matched || seen[d.Provider.Name] {
+				return storage.ErrDrift
+			}
+			seen[d.Provider.Name] = true
+		}
+		return nil
+	}
+	return storage.ErrUnavailable
 }

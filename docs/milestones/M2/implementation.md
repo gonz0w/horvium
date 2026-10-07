@@ -546,4 +546,22 @@ targets with complete teardown and unchanged snapshot disks; see the
 The initial UFS-only fixture assumption and stopped superseded review retain
 unqualified evidence. The correction resolves actual mounted root pools without
 changing product gates; a separate failing-first fix rechecks root policy after
-the entire system collection. Maintainer review is pending.
+the entire system collection. Accepted in PR 63 at merged source
+`12ecb173e48099040f4f52662d3e1fba04de5dc6`.
+
+
+## Native pool-provider integration
+
+The [provider contract](../../testing/M2/property-provider-binding.md) connects
+complete native topology to independent direct-provider serial/geometry and
+attachment evidence. The composed safety source requires this gate before its
+system collection and final root policy re-read. Two fresh passes reject ordinary
+drift; every failure returns zero, and success remains ineligible. Signed source `1b6fef0cc54f304a88badffabeb5929ce7edd6d6` passed all 37 assertions
+on both native targets, the baseline/112 tooling tests, all 11 race packages and
+35 fuzz targets with complete owned teardown. See the
+[execution manifest](../../testing/M2/property-provider-binding-manifest.json).
+The exact imported ZFS consumer classifier preserves unused-device refusal;
+provider identity/geometry must agree with the later fresh system graph. Failed
+fixture/evidence attempts remain unqualified at their original sources. Maintainer
+review is pending. Runtime enrollment, store/recovery/admission, transport and
+execution still precede an operator storage workflow.

@@ -16,7 +16,7 @@ binary=.tools/pool-properties-native.test
 printf 'POOL_PROPERTIES_PREBUILT_SHA256 %s\n' "$expected"
 freebsd-version -kru
 zfs version
-/sbin/sha256 /sbin/zfs /sbin/zpool /sbin/mdconfig /usr/bin/timeout
+/sbin/sha256 /sbin/zfs /sbin/zpool /sbin/mdconfig /usr/bin/timeout /usr/sbin/diskinfo /sbin/sysctl /sbin/mount /usr/sbin/swapinfo /sbin/swapon /sbin/swapoff /bin/freebsd-version
 if ! "$binary" -test.v -test.count=1 -test.run='^TestNativePoolPropertyCollection$' > .tools/pool-properties-native.log 2>&1; then
     cat .tools/pool-properties-native.log
     exit 1

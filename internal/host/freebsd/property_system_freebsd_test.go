@@ -71,7 +71,7 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 			}
 		}
 	}
-	var first, second inventory.Provider
+	var first, second, missing inventory.Provider
 	var extras []inventory.Provider
 	count := 0
 	for _, p := range graph.Providers {
@@ -106,19 +106,20 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 			}
 			extras = append(extras, p)
 		case "":
-			if p.Identity != inventory.IdentityMissing {
+			if p.Identity != inventory.IdentityMissing || missing.ID != "" {
 				t.Fatal("missing fixture")
 			}
+			missing = p
 		default:
 			t.Fatal("foreign fixture serial")
 		}
 	}
-	if count != 5 || len(rootIDs) == 0 || first.ID == "" || second.ID == "" || len(extras) != 2 {
+	if count != 5 || len(rootIDs) == 0 || first.ID == "" || second.ID == "" || missing.ID == "" || len(extras) != 2 {
 		t.Fatal("declared snapshot fixture incomplete")
 	}
 	sort.Slice(extras, func(i, j int) bool { return extras[i].Name < extras[j].Name })
 	swapDisk := extras[0]
-	for _, d := range []inventory.Provider{first, second, swapDisk} {
+	for _, d := range []inventory.Provider{first, second, extras[0], extras[1], missing} {
 		for _, m := range baseline.Mounts {
 			for _, used := range m.Disks {
 				if used.ID == d.ID {
@@ -135,11 +136,15 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 		}
 		infoRows := must("/usr/sbin/diskinfo", "/dev/"+d.Name)
 		serialRows := must("/usr/sbin/diskinfo", "-s", "/dev/"+d.Name)
-		if d.ID == swapDisk.ID {
+		if d.Identity != inventory.IdentityUnique {
 			// This explicitly declared swap fixture has a duplicate serial. That
 			// is positive system-use evidence, never runtime creation identity.
 			fields := strings.Fields(infoRows)
-			if len(fields) < 3 || strings.TrimPrefix(fields[0], "/dev/") != d.Name || fields[1] != "512" || fields[2] != "67108864" || strings.TrimSpace(serialRows) != "HVM-DUPLICATE" {
+			expectedSerial := "HVM-DUPLICATE"
+			if d.ID == missing.ID {
+				expectedSerial = ""
+			}
+			if len(fields) < 3 || strings.TrimPrefix(fields[0], "/dev/") != d.Name || fields[1] != "512" || fields[2] != "67108864" || strings.TrimSpace(serialRows) != expectedSerial {
 				t.Fatal("swap fixture geometry/address")
 			}
 		} else {
@@ -273,8 +278,22 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 		t.Fatal(err)
 	}
 	p, o, e := safety.Collect(ctx, guid)
+	if e != nil {
+		t.Fatal("native composed provider safety", e)
+	}
 	_, planErr := storage.Build(time.Now(), "fixture-session", p, o, storage.Intent{FilesystemGUID: rootGUID, Property: storage.Quota, Value: "1"})
 	check("safety_bound", e == nil && o.Complete && !o.Eligible && p.PoolGUID == guid && errors.Is(planErr, storage.ErrUnavailable))
+	providers, err := NewPoolProviderSource()
+	if err != nil {
+		t.Fatal(err)
+	}
+	disks, err := providers.Collect(ctx, o)
+	check("providers_correlated", err == nil && len(disks) == 2 && !o.Eligible)
+	geometryOK := len(disks) == 2
+	for _, disk := range disks {
+		geometryOK = geometryOK && disk.Provider.MediaSize == 64<<20 && disk.SectorCount == disk.Provider.MediaSize/disk.Provider.SectorSize && (disk.Provider.Name == first.Name && disk.Provider.SectorSize == 512 || disk.Provider.Name == second.Name && disk.Provider.SectorSize == 4096)
+	}
+	check("provider_geometry", geometryOK)
 	must("/sbin/zfs", "set", "mountpoint="+systemMount, pool)
 	p, o, e = safety.Collect(ctx, guid)
 	check("safety_system_mount_denied", errors.Is(e, storage.ErrDenied) && reflect.DeepEqual(p, storage.Policy{}) && reflect.DeepEqual(o, storage.Observation{}))
@@ -298,5 +317,6 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 	if !cleanup() {
 		t.Fatal("direct fixture teardown failed")
 	}
+	nativePropertyProviderDenials(t, ctx, pool, extras, missing, first, check)
 	check("system_fixture_teardown", must("/sbin/mount", "-p") == mountsBefore && must("/usr/sbin/swapinfo", "-k") == swapBefore)
 }

@@ -3,6 +3,16 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [native provider binding](../testing/M2/property-provider-binding.md) adds
+independent direct-DISK serial/geometry and existing-pool attachment checks for every pool leaf.
+The unused-device classifier still refuses ZFS consumers.
+The composed safety path requires them and keeps eligibility false. Signed source
+`1b6fef0cc54f304a88badffabeb5929ce7edd6d6` passed all 37 assertions on both
+native targets, the baseline/112 tooling tests, all 11 race packages and 35 fuzz
+targets with full teardown. See the
+[execution manifest](../testing/M2/property-provider-binding-manifest.json).
+No root enrollment, runtime writes or hardware support follows.
+
 M2 [native system exclusions](../testing/M2/property-system-exclusions.md) collect
 fixed all-pool/mount/swap/GEOM projections and reject system backing or conflicts
 in the property safety path. Eligibility stays false. Signed source

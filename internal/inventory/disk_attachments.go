@@ -22,6 +22,19 @@ type DiskAttachments struct {
 // recognized. Partition and all other attachments refuse this partial proof.
 // No native command, raw probe, runtime wiring or mutation authority is added.
 func ParseDiskAttachments(data []byte, name string, limits Limits) (DiskAttachments, error) {
+	return parseDiskAttachments(data, name, limits, false)
+}
+
+// ParsePoolDiskAttachments requires the exact terminal ZFS::VDEV consumer shape
+// in addition to the accepted DEV/disk-ident graph. The shared zfs::vdev geom
+// can consume providers from multiple pools; it cannot attribute pool ownership.
+// Callers must independently bind native topology and all system/pool use. This
+// is never an unused-device proof; ParseDiskAttachments still refuses ZFS use.
+func ParsePoolDiskAttachments(data []byte, name string, limits Limits) (DiskAttachments, error) {
+	return parseDiskAttachments(data, name, limits, true)
+}
+
+func parseDiskAttachments(data []byte, name string, limits Limits, pool bool) (DiskAttachments, error) {
 	if err := limits.Validate(); err != nil {
 		return DiskAttachments{}, err
 	}
@@ -75,10 +88,30 @@ func ParseDiskAttachments(data []byte, name string, limits Limits) (DiskAttachme
 	}
 	queue := []Provider{disk}
 	devSeen := make(map[string]bool)
+	zfsSeen := false
 	var aliases []Provider
 	for i := 0; i < len(queue); i++ {
 		parent := queue[i]
 		for _, child := range incoming[parent.ID] {
+			if pool && classes[child.ClassID] == "ZFS::VDEV" {
+				if zfsSeen || parent.ID != disk.ID || child.Name != "zfs::vdev" || len(outputs[child.ID]) != 0 {
+					return DiskAttachments{}, ErrDiskAttachments
+				}
+				// One shared native geom has one consumer per provider. Its other
+				// inputs are observed backing, not an assertion of this pool's scope.
+				seen := map[string]bool{}
+				for _, c := range child.Consumers {
+					if c.ProviderID == "" || seen[c.ProviderID] {
+						return DiskAttachments{}, ErrDiskAttachments
+					}
+					seen[c.ProviderID] = true
+				}
+				if !seen[parent.ID] {
+					return DiskAttachments{}, ErrDiskAttachments
+				}
+				zfsSeen = true
+				continue
+			}
 			if len(child.Consumers) != 1 || child.Consumers[0].ProviderID != parent.ID {
 				return DiskAttachments{}, ErrDiskAttachments
 			}
@@ -115,6 +148,9 @@ func ParseDiskAttachments(data []byte, name string, limits Limits) (DiskAttachme
 		}
 	}
 	if names["diskid/DISK-"+serial] != 0 && len(aliases) != 1 {
+		return DiskAttachments{}, ErrDiskAttachments
+	}
+	if pool && !zfsSeen {
 		return DiskAttachments{}, ErrDiskAttachments
 	}
 	sort.Slice(aliases, func(i, j int) bool { return aliases[i].Name < aliases[j].Name })

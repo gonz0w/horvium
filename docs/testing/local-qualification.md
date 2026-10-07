@@ -407,3 +407,10 @@ review. Reboot/power-cut and actual native
 executor/reconciliation/restoration/release gates remain open.
 
 See the [execution manifest](M2/property-publication-cuts-manifest.json); no native executor/recovery authority follows.
+
+
+The property-provider extension retains the existing owned five-disk fixture and
+requires all 37 focused assertions, including actual duplicate/missing serial pool
+refusal and extra GUID-checked pool teardown. See the
+[provider qualification](M2/property-provider-binding.md). No additional guest,
+background service or metadata publication run is needed.
