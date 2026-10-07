@@ -278,6 +278,9 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 		t.Fatal(err)
 	}
 	p, o, e := safety.Collect(ctx, guid)
+	if e != nil {
+		t.Fatal("native composed provider safety", e)
+	}
 	_, planErr := storage.Build(time.Now(), "fixture-session", p, o, storage.Intent{FilesystemGUID: rootGUID, Property: storage.Quota, Value: "1"})
 	check("safety_bound", e == nil && o.Complete && !o.Eligible && p.PoolGUID == guid && errors.Is(planErr, storage.ErrUnavailable))
 	providers, err := NewPoolProviderSource()
