@@ -38,8 +38,28 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 	}
 	mountsBefore := must("/sbin/mount", "-p")
 	swapBefore := must("/usr/sbin/swapinfo", "-k")
-	// The pinned guests use UFS system backing; no boot-pool mutation is needed.
-	baseline, err := storage.ParseSystemDeviceUse([]byte(must("/sbin/sysctl", "-b", "kern.geom.confxml")), []byte(mountsBefore), []byte(swapBefore), nil, inventory.DefaultLimits())
+	// Independently resolve all actually mounted ZFS pools; the two pinned guests
+	// have different system backing. No boot-pool mutation is needed.
+	names := map[string]bool{}
+	for _, line := range strings.Split(mountsBefore, "\n") {
+		fields := strings.Fields(line)
+		if len(fields) == 6 && fields[2] == "zfs" {
+			names[strings.Split(fields[0], "/")[0]] = true
+		}
+	}
+	ordered := make([]string, 0, len(names))
+	for name := range names {
+		ordered = append(ordered, name)
+	}
+	sort.Strings(ordered)
+	var rootCaptures []storage.PoolUseCapture
+	for _, name := range ordered {
+		if storage.ValidatePoolSelection("1", name) != nil {
+			t.Fatal("unsafe fixture root pool")
+		}
+		rootCaptures = append(rootCaptures, storage.PoolUseCapture{Name: name, GUID: []byte(must("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", name)), StatusGUIDs: []byte(must("/sbin/zpool", "status", "-g", "-p", name)), StatusPaths: []byte(must("/sbin/zpool", "status", "-L", "-P", "-p", name))})
+	}
+	baseline, err := storage.ParseSystemDeviceUse([]byte(must("/sbin/sysctl", "-b", "kern.geom.confxml")), []byte(mountsBefore), []byte(swapBefore), rootCaptures, inventory.DefaultLimits())
 	if err != nil {
 		t.Fatal("fixture root use", err)
 	}
