@@ -1,6 +1,6 @@
 # M2 native repaired-checksum finding qualification
 
-Date: 2026-10-07. Status: implementation; native qualification pending.
+Date: 2026-10-07. Status: qualified subset; maintainer review pending.
 Authority: [approved PRD](../../milestones/M2/PRD.md),
 [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -97,3 +97,30 @@ M2 manifests unchanged. Focused review selects the command package, which has no
 portable compiler-listed fuzz target. Advancing progress, unrecoverable errors,
 full scan formats, attribution/executor/recovery, protocol continuity and complete
 M2/hardware/client acceptance remain separate. Actions/services stay disabled.
+
+## Source-bound results
+
+Signed source `8078e1d0c694a0384b5183ae33ea95fddc6a45fb` passed focused review: `make check lint test secrets`,
+122 tooling tests and command-package race checks. The selected package has no
+compiler-listed portable fuzz targets; unrelated prior evidence was not rerun or
+relabeled. Both releases independently rebuilt the identical binary
+`27cd25247124cceefae3d2c483835a7e384d39432b01580875655c45a4c5144b`
+and passed all eight new children/group, eight scan children, six health children,
+fifteen assessment children and 21 original status assertions.
+
+- FreeBSD 15.1: native parent 33.54 seconds; new checksum group 5.99 seconds.
+- FreeBSD 14.5: native parent 31.03 seconds; new checksum group 5.44 seconds.
+
+The [manifest](checksum-findings-manifest.json) records pinned injector provenance,
+actual tool/source/binary/image/report/log hashes and preservation/teardown. Actual
+member checksum findings coexisted with completed scrub and zero final scan/data
+errors; sentinel content remained intact. The acknowledged handler was removed,
+the native list returned to empty and a fresh clean scrub restored healthy zero
+member counters. Child GUID/absence and original raw properties were verified.
+All owned storage/metadata/executable/VM files and process groups were removed;
+base/runtime preservation and host teardown passed. No active or unverified owned
+session remains. Product code, existing health/scan fixtures, shared tools and all
+54 prior M2 manifests remain byte-identical. Every original assertion/deadline is
+preserved. No Actions or persistent services were enabled. Advancing progress,
+unrecoverable errors, full formats, attribution/executor/recovery and complete
+M2/hardware/client acceptance remain open.

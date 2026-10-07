@@ -947,5 +947,10 @@ read-buffer bit flip on one mirror leaf must produce nonzero member checksum
 findings while repaired scan completion/error count remain separate; independently
 verify content and clear only the owned acknowledged handler. Missing/unknown
 acknowledgement cannot broaden cleanup. No new product implementation; native
-qualification and focused review are pending. Unrecoverable errors, advancing
+qualification and focused review passed at signed source
+`8078e1d0c694a0384b5183ae33ea95fddc6a45fb`: baseline/122 tooling tests, command-package
+race checks and all eight checksum cases plus original checks on both releases
+with identical binaries and verified handler/storage/process/base/runtime
+teardown; see the [manifest](../../testing/M2/checksum-findings-manifest.json).
+Maintainer review is pending. Unrecoverable errors, advancing
 progress, attribution/executor/recovery and full acceptance remain open.

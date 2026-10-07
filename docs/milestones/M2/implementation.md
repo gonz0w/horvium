@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 78; native checksum-finding qualification in progress; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 78; native checksum findings qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -801,5 +801,10 @@ mirror leaf with the base kernel read-corruption facility and verifies member
 findings separately from scan completion/error count. Preserve content, remove
 only the acknowledged injector, restore original properties and retain all old
 native checks/deadlines. Product code/gates remain unchanged. Native qualification
-and focused review are pending; unrecoverable errors, attribution/executor/
+and focused review passed at signed source
+`8078e1d0c694a0384b5183ae33ea95fddc6a45fb`: baseline/122 tooling tests, command-package
+race checks and eight new checksum cases plus all original checks on both
+releases, with identical binaries and verified handler/storage/process/base/
+runtime teardown; see the [manifest](../../testing/M2/checksum-findings-manifest.json).
+Maintainer review is pending; unrecoverable errors, attribution/executor/
 recovery and complete M2 acceptance remain open.
