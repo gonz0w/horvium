@@ -17,6 +17,14 @@ import (
 // fresh-census capacity guard and current-predecessor validator. Both publishers
 // use this actual descriptor-relative sync/rename pipeline without shell work.
 func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, expected uint64, limits stateCatalogLimits, validate func(StateCatalog) error, predecessor func() error, wrap func(ownershipPublication) ownershipPublication) error {
+	return s.publishStateInspectedLocked(name, prefix, data, expected, validate, predecessor,
+		func(temporary string) (StateCatalog, error) { return s.inspectStateLocked(limits, nil, temporary) }, wrap)
+}
+
+// The inspector must validate the complete descriptor-bound namespace and may
+// exclude only this transaction's independently verified temporary. Submission
+// publication adds full baseline/reservation checks to each actual census.
+func (s *StateDirectory) publishStateInspectedLocked(name, prefix string, data []byte, expected uint64, validate func(StateCatalog) error, predecessor func() error, inspect func(string) (StateCatalog, error), wrap func(ownershipPublication) ownershipPublication) error {
 	if s.publicationBlocked {
 		return ErrStateUncertain
 	}
@@ -32,7 +40,7 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 	if kind != "ufs" && kind != "zfs" {
 		return ErrStateDirectory
 	}
-	catalog, err := s.inspectStateLocked(limits, nil, "")
+	catalog, err := inspect("")
 	if errors.Is(err, ErrStateUncertain) {
 		s.publicationBlocked = true
 	}
@@ -179,7 +187,7 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 		if e := verifyObjects(); e != nil {
 			return e
 		}
-		catalog, e := s.inspectStateLocked(limits, nil, temporary)
+		catalog, e := inspect(temporary)
 		if e != nil {
 			return fmt.Errorf("catalog verification: %w", e)
 		}

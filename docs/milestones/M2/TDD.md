@@ -474,5 +474,21 @@ review. Both targets passed at signed source
 recovery/release/cuts, execution or M2 acceptance follows from this inspection.
 
 Native reservation qualification: `cca3a07eed591ed3bab757fc530eada0a40686be`; see
-the [manifest](../../testing/M2/native-job-reservations-manifest.json). Maintainer
-review is pending; no runtime admission/release follows.
+the [manifest](../../testing/M2/native-job-reservations-manifest.json). Accepted
+in PR 56; no runtime admission/release follows.
+
+
+## Reserved property-submission publication prerequisite
+
+The [contract/procedure](../../testing/M2/property-submission.md) combines strict complete retained
+plan/submission/pool checks and initial queued property publication under one
+root lease/mutex. Repeat full baseline/capacity checks before staging and rename;
+new success follows final directory sync, while retries return existing current
+metadata without rewriting or a fresh durability acknowledgement. Uncertain
+publication denies even duplicate returns. Terminal holds remain; runtime native
+admission, caller/policy/eligibility/session/clock, executor/recovery/release and
+M2 acceptance stay open. Require 686 state assertions, 59 parents and 1,837
+codec/model children on both releases with full owned teardown. Native
+qualification is pending. Shared pipeline/evidence/supervisor changes require one
+complete portable review; startup failure before worker creation must remain a
+failure and clean prepared owned fixtures without inventing/signalling a PID.

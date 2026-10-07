@@ -100,11 +100,15 @@ in PR 54. The [job reservation checks](docs/testing/M2/job-reservations.md) add
 bounded duplicate/plan/pool metadata checks; accepted in PR 55. The
 [native reservation inspector](docs/testing/M2/native-job-reservations.md) connects
 that view to the held root state lease; both targets passed all 622 assertions
-and full teardown; maintainer review is pending. Runtime admission
+and full teardown; accepted in PR 56. Runtime admission
 remains disabled.
 Runtime enrollment and full store/recovery gates remain open.
 Other native gates, runtime job admission and storage writes remain pending; the runtime is
 still read-only.
+
+The [reserved submission publisher](docs/testing/M2/property-submission.md)
+combines complete retry/pool checks and initial record publication under one
+writer lock. Native qualification is pending; executable admission remains disabled.
 
 ## Agreed direction
 

@@ -17,22 +17,29 @@ func (s *StateDirectory) inspectJobReservations(limits stateCatalogLimits, after
 	if s == nil || os.Geteuid() != 0 {
 		return JobReservations{}, ErrStateDirectory
 	}
-	b, err := newReservationBuilder(limits)
-	if err != nil {
-		return JobReservations{}, err
-	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	catalog, err := s.inspectStateRecordsLocked(limits, afterRead, "", func(entry stateRecordName, data []byte) error {
+	view, _, err := s.inspectJobReservationsLocked(limits, afterRead, "")
+	return view, err
+}
+
+// Caller holds mu. Full record binding and reservation accounting share one
+// census; no partial view/catalog escapes an unsuccessful final check.
+func (s *StateDirectory) inspectJobReservationsLocked(limits stateCatalogLimits, afterRead func(), temporary string) (JobReservations, StateCatalog, error) {
+	b, err := newReservationBuilder(limits)
+	if err != nil {
+		return JobReservations{}, StateCatalog{}, err
+	}
+	catalog, err := s.inspectStateRecordsLocked(limits, afterRead, temporary, func(entry stateRecordName, data []byte) error {
 		if entry.jobID != "" {
 			return b.add(data)
 		}
 		return nil
 	})
 	if err != nil {
-		return JobReservations{}, err
+		return JobReservations{}, StateCatalog{}, err
 	}
 	view := b.finish()
 	view.bytes = catalog.Bytes
-	return view, nil
+	return view, catalog, nil
 }

@@ -57,6 +57,37 @@ RESULT += 'JOB_RESERVATIONS_RESULT '+' '.join(c+'=pass' for c in RESERVATION_CAS
 RESULT=RESULT.replace('STATE_ACL_RESULT ','STATE_ACL_RESULT '+' '.join(c+'=pass' for c in RESERVATION_ACL_CASES)+' ',1)
 PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
 
+OLD_SUBMISSION_FREE_PASS=PASS
+OLD_SUBMISSION_FREE_RESULT=RESULT
+
+SUBMISSION_CASES=['canonical_bytes', 'cleanup_blocks_retry', 'cleanup_failure', 'closeFile_failure', 'closed_inert_denial', 'create', 'current_history', 'duplicate_no_write', 'exact_capacity', 'fixture_absent', 'fixture_teardown', 'full_store_retry', 'independent_result', 'invalid_capacity_denial', 'invalid_denial', 'late_bytes_denial', 'late_orphan_denial', 'late_plan_denial', 'late_pool_denial', 'late_submission_denial', 'late_unknown_denial', 'lease_close', 'legacy_retry_denial', 'nonterminal_capacity_denial', 'not_queued_denial', 'owner_bytes_capacity_denial', 'plan_reuse_denial', 'pool_hold_denial', 'private_file', 'rename_failure', 'reopen_metadata_retry', 'serialized_distinct_pools', 'serialized_last_slot', 'serialized_same_pool', 'serialized_same_submission', 'submission_reuse_denial', 'syncDirectory_blocks_retry', 'syncDirectory_failure', 'syncFile_failure', 'terminal_pool_hold', 'uncertain_visible_read', 'unrelated_pool', 'verify_failure', 'write_failure']
+SUBMISSION_ACL_CASES=['submission_kernel_uid_denial', 'posix_submission_baseline', 'posix_submission_directory_denial', 'posix_submission_lock_denial', 'posix_submission_ownership_denial', 'posix_submission_job_denial', 'posix_submission_property_denial', 'posix_submission_inheritance_denial', 'posix_submission_restored', 'nfs4_submission_baseline', 'nfs4_submission_directory_denial', 'nfs4_submission_lock_denial', 'nfs4_submission_ownership_denial', 'nfs4_submission_job_denial', 'nfs4_submission_property_denial', 'nfs4_submission_inheritance_denial', 'nfs4_submission_restored']
+SUBMISSION_FS_CASES=['ufs_submission_publication', 'submission_full_denial', 'submission_readonly_denial']
+TESTS += ['TestNativePropertySubmission']
+ACL_CASES += SUBMISSION_ACL_CASES
+PUBLISH_FS_CASES += SUBMISSION_FS_CASES
+RESULT += 'PROPERTY_SUBMISSION_RESULT '+' '.join(c+'=pass' for c in SUBMISSION_CASES)+'\n'
+RESULT=RESULT.replace('STATE_ACL_RESULT ','STATE_ACL_RESULT '+' '.join(c+'=pass' for c in SUBMISSION_ACL_CASES)+' ',1)
+RESULT=RESULT.replace('OWNERSHIP_PUBLISH_FS_RESULT ','OWNERSHIP_PUBLISH_FS_RESULT '+' '.join(c+'=pass' for c in SUBMISSION_FS_CASES)+' ',1)
+PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
+
+class SubmissionEvidenceTests(unittest.TestCase):
+    def test_old_inspection_evidence_cannot_qualify_submission_publication(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
+        with self.assertRaises(ValueError):m.validate(OLD_SUBMISSION_FREE_PASS+OLD_SUBMISSION_FREE_RESULT)
+
+    def test_every_submission_assertion_and_parent_is_required(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
+        with self.assertRaises(ValueError):m.validate(PASS.replace('--- PASS: TestNativePropertySubmission (1.0s)\n','')+RESULT)
+        for case in SUBMISSION_CASES:
+            for value in ['',case+'=fail',case+'=pass '+case+'=pass']:
+                bad=RESULT.replace('PROPERTY_SUBMISSION_RESULT '+' '.join(c+'=pass' for c in SUBMISSION_CASES),
+                                   'PROPERTY_SUBMISSION_RESULT '+' '.join(value if c==case else c+'=pass' for c in SUBMISSION_CASES))
+                with self.subTest(case=case,value=value),self.assertRaises(ValueError):m.validate(PASS+bad)
+        for case in SUBMISSION_ACL_CASES+SUBMISSION_FS_CASES:
+            with self.subTest(case=case),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(case+'=pass',''))
+
+
 class StateEvidenceTests(unittest.TestCase):
     def module(self):
         m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m);return m
@@ -68,7 +99,7 @@ class StateEvidenceTests(unittest.TestCase):
 
     def test_missing_duplicate_unknown_failed_or_oversized_cases_denied(self):
         m=self.module()
-        for case in set(CASES+READ_CASES+ACL_CASES+PUBLISH_CASES+PUBLISH_FS_CASES+CATALOG_CASES+CAPACITY_CASES+JOB_READ_CASES+STATE_CATALOG_CASES+JOB_PUBLICATION_CASES+PROPERTY_JOB_STORAGE_CASES+RESERVATION_CASES):
+        for case in set(CASES+READ_CASES+ACL_CASES+PUBLISH_CASES+PUBLISH_FS_CASES+CATALOG_CASES+CAPACITY_CASES+JOB_READ_CASES+STATE_CATALOG_CASES+JOB_PUBLICATION_CASES+PROPERTY_JOB_STORAGE_CASES+RESERVATION_CASES+SUBMISSION_CASES):
             for bad in [RESULT.replace(case+'=pass',''),RESULT.replace(case+'=pass',case+'=fail'),RESULT.rstrip()+' '+case+'=pass\n']:
                 with self.subTest(case=case),self.assertRaises(ValueError):m.validate(PASS+bad)
         for bad in [RESULT.rstrip()+' invented=pass\n',RESULT+'x'*(1<<20)]:

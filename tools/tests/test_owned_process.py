@@ -9,6 +9,7 @@ import sys
 import tempfile
 import time
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -138,6 +139,33 @@ class OwnedProcessTests(unittest.TestCase):
         self.addCleanup(process.stop)
         self.assertEqual(process.wait(timeout=15), 7)
         self.assertTrue(process.record()['group_cleaned'])
+
+    def test_control_bind_failure_starts_no_worker_and_cleans_prepared_fixture(self):
+        for native in [None, str(self.root / 'prepared-native')]:
+            with self.subTest(native=native):
+                session = self.root / ('plain-startup' if native is None else 'native-startup')
+                session.mkdir(mode=0o700)
+                self.tool.write_record(session / 'launch.json', {
+                    'argv': [sys.executable, '-c', 'raise SystemExit(0)'],
+                    'cwd': str(self.root), 'timeout': 1, 'grace': 0.5,
+                    'native_fixture': native,
+                })
+                with patch.object(self.tool.socket, 'socket') as socket, \
+                        patch.object(self.tool.subprocess, 'Popen') as launch, \
+                        patch.object(self.tool.signal, 'signal'), \
+                        patch.object(self.tool, 'native_cleanup') as cleanup:
+                    socket.return_value.__enter__.return_value.bind.side_effect = PermissionError('owned bind denial')
+                    with self.assertRaises(PermissionError):self.tool.supervise(session)
+                    launch.assert_not_called()
+                    if native is None:cleanup.assert_not_called()
+                    else:cleanup.assert_called_once_with(Path(native), True)
+                record = json.loads((session / 'state.json').read_text())
+                self.assertTrue(record['completed'])
+                self.assertTrue(record['group_cleaned'])
+                self.assertEqual(record['reason'], 'supervisor-failure')
+                self.assertNotIn('group', record)
+                self.assertNotIn('worker_returncode', record)
+                self.assertFalse((session / 'control.sock').exists())
 
     def test_interrupted_device_fixture_is_removed_with_native_resources(self):
         self.tool.ROOT = self.root

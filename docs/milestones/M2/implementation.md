@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: Implementing; approved design, accepted model subset; accepted native property subset; identity subset accepted; filesystem state subset accepted; pool observation subset accepted; feature subset accepted; topology subset accepted; virtual device fixture qualified on both targets through the Mac supervisor; fixture accepted in PR 28; native disk correlation accepted in PR 31; attachment classifier accepted in PR 32; system device-use subset accepted in PR 33; imported-pool use subset accepted in PR 34; filesystem signature subset accepted in PR 35; combined device-use subset accepted in PR 36; positive pool-label subset accepted in PR 37; disk-access subset accepted in PR 38; state-directory subset accepted in PR 39; ownership codec accepted in PR 40; native ownership reader accepted in PR 41; state ACL validation accepted in PR 42; ownership publication accepted in PR 43; bounded ownership catalog accepted in PR 46; ownership capacity accepted in PR 47; job lifecycle metadata accepted in PR 48; native job reader accepted in PR 49; mixed state census accepted in PR 50; durable job metadata accepted in PR 51; reviewed property intent accepted in PR 52; property job binding accepted in PR 53; native property-job store qualified, review pending; Actions disabled.
+Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 56; reserved property-submission publication implementing; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -406,5 +406,21 @@ admission/recovery/release or native effect is authorized by the result;
 caller/policy/eligibility/session/clock and executor gates remain open.
 
 Native reservation qualification: `cca3a07eed591ed3bab757fc530eada0a40686be`; see
-the [manifest](../../testing/M2/native-job-reservations-manifest.json). Maintainer
-review is pending; no runtime admission/release follows.
+the [manifest](../../testing/M2/native-job-reservations-manifest.json). Accepted
+in PR 56; no runtime admission/release follows.
+
+
+## Reserved property-submission publication prerequisite
+
+The [contract/procedure](../../testing/M2/property-submission.md) combines strict complete retained
+plan/submission/pool checks and initial queued property publication under one
+root lease/mutex. Repeat full baseline/capacity checks before staging and rename;
+new success follows final directory sync, while retries return existing current
+metadata without rewriting or a fresh durability acknowledgement. Uncertain
+publication denies even duplicate returns. Terminal holds remain; runtime native
+admission, caller/policy/eligibility/session/clock, executor/recovery/release and
+M2 acceptance stay open. Require 686 state assertions, 59 parents and 1,837
+codec/model children on both releases with full owned teardown. Native
+qualification is pending. Shared pipeline/evidence/supervisor changes require one
+complete portable review; startup failure before worker creation must remain a
+failure and clean prepared owned fixtures without inventing/signalling a PID.

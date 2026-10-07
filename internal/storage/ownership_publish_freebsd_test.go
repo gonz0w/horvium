@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -491,6 +492,11 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 	propertyNext, _ := TransitionPropertyJob(property, JobApplying, property.job.History[0].At+1, "launch-intent", "")
 	propertyPath := filepath.Join(path, "job-"+property.job.ID+".json")
 	check("ufs_property_publication", lease.PublishPropertyJob(property, 0) == nil)
+	submission := freshPropertySubmission(t, 41, "778")
+	submitted, duplicate, submitErr := lease.PublishPropertySubmission(submission)
+	check("ufs_submission_publication", submitErr == nil && !duplicate && reflect.DeepEqual(submitted, submission))
+	submission = freshPropertySubmission(t, 42, "779")
+	submissionPath := filepath.Join(path, "job-"+submission.job.ID+".json")
 
 	// Fill only this new 32 MiB memory filesystem, observing real ENOSPC.
 	filler := filepath.Join(mountpoint, "filler")
@@ -533,6 +539,9 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 	}
 	var fullFS unix.Statfs_t
 	check("native_enospc", full && unix.Fstatfs(int(lease.directory.Fd()), &fullFS) == nil && fullFS.Bfree == 0)
+	submitted, duplicate, submitErr = lease.PublishPropertySubmission(submission)
+	_, submitMissing := os.Stat(submissionPath)
+	check("submission_full_denial", submitErr != nil && !duplicate && reflect.DeepEqual(submitted, PropertyJob{}) && os.IsNotExist(submitMissing))
 	propertyErr := lease.PublishPropertyJob(propertyNext, 1)
 	pb, pe := os.ReadFile(propertyPath)
 	check("property_full_denial", propertyErr != nil && pe == nil && bytes.Equal(pb, propertyBytes))
@@ -577,6 +586,9 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 	}
 	var fs unix.Statfs_t
 	check("native_readonly", unix.Fstatfs(int(dir.Fd()), &fs) == nil && fs.Flags&unix.MNT_RDONLY != 0)
+	submitted, duplicate, submitErr = ro.PublishPropertySubmission(submission)
+	_, submitMissing = os.Stat(submissionPath)
+	check("submission_readonly_denial", errors.Is(submitErr, ErrStateDirectory) && !duplicate && reflect.DeepEqual(submitted, PropertyJob{}) && os.IsNotExist(submitMissing))
 	check("readonly_denial", errors.Is(ro.PublishOwnership(next, 1), ErrStateDirectory))
 	check("job_readonly_denial", errors.Is(ro.PublishJob(jobNext, 1), ErrStateDirectory))
 	check("property_readonly_denial", errors.Is(ro.PublishPropertyJob(propertyNext, 1), ErrStateDirectory))
