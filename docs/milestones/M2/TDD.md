@@ -893,5 +893,12 @@ operator evidence. Require failing-first projection/denial/lifetime tests, focus
 review and both disposable native job-status suites, retaining all 21 old
 assertions and fifteen new actual command/UID/native/preservation/teardown cases.
 Copied public main re-exec is test-only; native root records/intents are synthetic
-fixtures, not executed jobs. Qualification is pending. No execution attribution,
-recovered-state clearance, resolution/replay/release or full M2 acceptance follows.
+fixtures, not executed jobs. Both native releases passed all original and new
+mandatory cases with complete preservation/teardown at signed source
+`b8d078d0097ae47f2e9d5f9b035fccbd2f144e9c`. Focused portable review passed
+baseline checks, 122 tooling tests and command-package race checks. See the
+[manifest](../../testing/M2/property-assessment-diagnostic-manifest.json),
+including the earlier unqualified timing fixture and actual failing-first
+regression. All 51 historical M2 manifests remain byte-identical. Maintainer
+review, execution attribution, recovered-state clearance,
+resolution/replay/release and full M2 acceptance remain open.

@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 75; foreground native assessment in progress; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 75; foreground native assessment qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -750,8 +750,15 @@ The [diagnostic contract](../../testing/M2/property-assessment-diagnostic.md)
 connects the accepted independent source to an OS-root foreground command with
 explicit protected ledger/job selection and bounded output/lifetime. It presents
 fresh match facts separately from unchanged durable/restart labels, false recovery/
-executor verification and retained holds. Qualification is pending; require focused
-portable review plus both native command fixtures and complete preservation/teardown.
+executor verification and retained holds. Focused portable review passed at
+signed source `b8d078d0097ae47f2e9d5f9b035fccbd2f144e9c`: baseline checks, 122
+tooling tests and command-package race checks. Both native command fixtures
+passed all 21 old and fifteen new cases with complete preservation/teardown;
+independently rebuilt binaries matched exactly. See the
+[manifest](../../testing/M2/property-assessment-diagnostic-manifest.json). The
+initial timestamp fixture failure remains unqualified; its portable
+failing-first regression and corrected constructor passed without changing
+product code or time limits. Maintainer review remains pending.
 The new isolated mirror/provider subgroup retains the existing job-status parent
 and its 21 original assertions. Native eligibility/execution, recovery resolution,
 restored-state validation, authenticated UI/CLI parity and full M2 remain open.

@@ -1,6 +1,6 @@
 # M2 foreground property-job assessment qualification
 
-Date: 2026-10-07. Status: implemented; qualification pending.
+Date: 2026-10-07. Status: qualified subset; maintainer review pending.
 Authority: [approved PRD](../../milestones/M2/PRD.md),
 [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -81,3 +81,27 @@ test-only constructor into portable tests and reproduce the failure with a fixed
 fractional capture timestamp. Queue at the following millisecond and append the
 applying/cancelled event one millisecond later. Product/source validation, native
 assertions and every time limit remain unchanged. Preserve the failed record.
+
+## Source-bound results
+
+Signed source `b8d078d0097ae47f2e9d5f9b035fccbd2f144e9c` passed focused portable
+review: `make check lint test secrets`, 122 tooling tests and race checks for
+the changed command package. That package has no compiler-listed portable fuzz
+target; unrelated prior fuzz evidence was not rerun or relabeled. Both
+disposable releases independently built the exact same test binary
+`ed27a9ed1434149b1e35bea0330526010cdd9e555b38790a1d435bea30cb428d` and passed
+all 21 original status assertions plus fifteen mandatory native assessment
+command cases.
+
+- FreeBSD 15.1: native parent 14.24 seconds; assessment subgroup 11.20 seconds.
+- FreeBSD 14.5: native parent 12.80 seconds; assessment subgroup 10.15 seconds.
+
+All owned mirror/provider/ledger/executable fixtures were removed, and base/runtime
+and process/host teardown were verified. No active or unverified owned session
+remained. The [manifest](property-assessment-diagnostic-manifest.json) retains actual
+source/binary/tool/log/report hashes and the earlier unqualified timestamp fixture
+with complete cleanup. Every time limit remains unchanged. All 51 prior M2
+manifests, existing storage/native source code/tests/codecs and shared tools remain
+byte-identical; the historical 819-state and 88-pool evidence keeps its old scope.
+No service, runner or GitHub Actions was enabled. Runtime writes, resolution and
+complete recovery/UI/CLI/M2/hardware/client acceptance remain open.

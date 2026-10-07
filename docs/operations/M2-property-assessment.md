@@ -1,6 +1,6 @@
 # M2 foreground property-job assessment
 
-Date: 2026-10-07. Status: implemented; qualification pending.
+Date: 2026-10-07. Status: qualified subset; maintainer review pending.
 Authority: [approved M2 design](../milestones/M2/EDD.md),
 [qualification contract](../testing/M2/property-assessment-diagnostic.md).
 
@@ -67,3 +67,7 @@ runner or service is installed.
 This diagnostic is a partial operator workflow. Authenticated UI/CLI parity,
 native eligibility/admission/execution, reconciliation resolution, restored-state
 validation, durable outcomes and full M2 qualification remain open.
+
+The [qualification record](../testing/M2/property-assessment-diagnostic.md) covers
+both declared FreeBSD releases with source-bound command/UID/native comparison,
+preservation and teardown evidence. It does not grant write or recovery authority.

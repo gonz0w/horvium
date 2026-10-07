@@ -5,9 +5,16 @@ validation are separate. Refresh exact versions in each active research manifest
 
 M2 [foreground property-job assessment](../testing/M2/property-assessment-diagnostic.md)
 connects the accepted source to OS-root command selection and bounded output with
-explicit retained holds and false executor/recovery verification. Portable/native
-qualification is pending. No runtime writer, recovery resolution, authenticated
-management transport or new hardware/client support is added.
+explicit retained holds and false executor/recovery verification. Focused portable
+review passed at signed source `b8d078d0097ae47f2e9d5f9b035fccbd2f144e9c`:
+baseline checks, 122 tooling tests and command-package race checks. Both FreeBSD
+releases passed all 21 old status assertions and fifteen new command cases, with
+identical independently rebuilt binaries, verified preservation and complete
+teardown. See the
+[manifest](../testing/M2/property-assessment-diagnostic-manifest.json), which
+retains the first unqualified fixture-timestamp attempt. No runtime writer,
+recovery resolution, authenticated management transport or new hardware/client
+support is added.
 
 M2 [root-leased native assessment](../testing/M2/native-property-assessment.md) joins
 complete protected ledger reads to independently collected current root policy and

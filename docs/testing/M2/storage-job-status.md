@@ -38,7 +38,7 @@ Its static bytes are embedded only in the test executable, not the product.
 The native fixture owns two temporary directories and one copy of its exact test
 binary. It re-executes the compiled public `main` command/flag/signal path through
 a private test helper, then waits/reaps each child. This is not a new product
-switch and does not build/install a standalone product in the guest. It supplies
+switch and does not build/install a standalone product in the guest. The original retained-status portion supplies
 no disk, pool, mount, daemon or listener. Root-owned synthetic plain and property
 records cross the internal page boundary, retaining queued/applying/observing and
 terminal states. GUID 100 is independently verified absent from imported pools;
@@ -91,3 +91,13 @@ hashes, backing and teardown. The initial 20-case passed scope is retained at it
 original source. The later unqualified fixture reused the expected cancellation
 error in an independent query-success check; the corrected fixture passed both
 releases. Neither result is relabeled, and no prior state evidence is rewritten.
+
+## Additional assessment subgroup
+
+The current `job-status` procedure also invokes the isolated
+[property-job assessment command fixture](property-assessment-diagnostic.md). It
+creates and removes its own unmounted mirror, exclusive vnode backing/providers
+and separate private ledger. The original 21 status assertions, parent deadline
+and backing record remain unchanged. Historical status evidence retains its
+original source and disk-free scope; the new manifest separately requires all
+fifteen assessment cases and complete native/host teardown.

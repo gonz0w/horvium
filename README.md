@@ -216,8 +216,9 @@ writes, job resolution and operator workflows remain disabled.
 
 The [foreground property-job assessment](docs/operations/M2-property-assessment.md)
 selects one protected retained job and presents fresh native match facts separately
-from history and recovery status. Qualification is pending; no writes or recovery
-resolution are enabled.
+from history and recovery status. Both FreeBSD releases passed the 21 existing
+status assertions and fifteen new assessment cases, with focused portable review
+and verified teardown. No writes or recovery resolution are enabled.
 
 ## Agreed direction
 
