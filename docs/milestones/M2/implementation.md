@@ -709,9 +709,15 @@ management mutation transport is added.
 The [contract](../../testing/M2/property-assessment.md) joins independently fresh
 baseline/expected-effect facts to immutable retained job history and conservative
 restart status. Both/neither matches are explicit and supply no causation or
-recovery clearance. Qualification is pending; require focused portable checks and
-the 88 existing native assertions, eleven postcondition subtests and eight mandatory
-assessment subtests on both releases, with complete owned teardown. Metadata
-codecs/publication, shared runner/checker/selector and prior manifests are unchanged.
+recovery clearance. Focused review passed at signed source
+`2ddc0bb971af47ac6d21f0898deb374cf94ef0d5`: 122 tooling tests, nine affected race
+packages and all 31 selected bounded fuzz targets. Both releases passed the 88
+existing native assertions, eleven postcondition subtests and eight mandatory
+assessment subtests with complete owned teardown. Original 15.1 and corrected 14.5
+sources ran the exact same independently rebuilt binary after a portable-only
+selector/fixture correction. The failed portable review remains unqualified; see
+the [manifest](../../testing/M2/property-assessment-manifest.json). Metadata
+codecs/publication, shared runner/checker/selector and all 49 prior manifests are unchanged.
+Maintainer review remains pending.
 Actual executor/reconciliation/restoration, durable outcomes, runtime transport/
 eligibility/writes and operator workflows remain pending.

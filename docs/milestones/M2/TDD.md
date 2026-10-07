@@ -855,4 +855,11 @@ pool suites: 88 existing assertions, eleven existing postcondition subtests and
 eight new mandatory assessment subtests. Actual graphs are native; histories are
 encoded/decoded test metadata. No publication, process-death, reboot, executor
 attribution, restoration, resolution, release or full M2 acceptance follows.
-Qualification is pending.
+Focused portable review passed at signed source
+`2ddc0bb971af47ac6d21f0898deb374cf94ef0d5`: 122 tooling tests, nine affected race
+packages and 31 bounded fuzz targets. Both declared FreeBSD releases passed the
+required native inventory and complete preservation/teardown; 15.1 retained its
+original source and 14.5 independently rebuilt the exact same binary at corrected
+source. The portable selector failure remains unqualified. See the
+[manifest](../../testing/M2/property-assessment-manifest.json). All 49 prior M2
+manifests and native metadata/shared tooling retain their existing scope.

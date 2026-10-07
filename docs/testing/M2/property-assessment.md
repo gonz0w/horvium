@@ -1,6 +1,6 @@
 # M2 retained property-job observation assessment
 
-Date: 2026-10-07. Status: implemented; qualification pending.
+Date: 2026-10-07. Status: qualified subset; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -92,3 +92,28 @@ complete surviving graph rather than a corrupted captured binding. These changes
 affect only the separately compiled storage tests and documentation. The product
 library and native fixture remain byte-identical; require exact independently
 rebuilt native binary equality before reusing the original 15.1 result.
+
+## Source-bound results
+
+Corrected signed source `2ddc0bb971af47ac6d21f0898deb374cf94ef0d5` passed focused
+portable review: `make check lint test secrets`, 122 tooling tests, nine affected
+race packages and all 31 selected bounded fuzz targets. FreeBSD 15.1 passed the
+88 existing assertions, eleven postcondition subtests and eight mandatory
+assessments at original source `81517c35a7ad68125ebd2241c6ec89e932d6e7e8`;
+14.5 passed the same inventory at the corrected source. Both executed the exact
+same cross-built binary, independently rebuilt at the corrected source; product
+library and native fixture bytes are unchanged after the portable-only correction.
+Keep each run's actual source: no native rerun or source relabel is claimed.
+
+Native parent/group times were 159.99/54.04 seconds on 15.1 and 228.55/87.30 seconds
+on 14.5. These are fixture timings under QEMU TCG, not NAS performance evidence.
+Every mandatory assessment checked nine fixture histories and incomplete-copy
+refusal, with unchanged encoded records, restart pages and pool holders. Actual
+root/default-ACL fixture, received/inherited properties, original projection,
+provider/backing/device, guest and process preservation/teardown passed. The earlier
+portable selector failure remains unqualified with completed group cleanup.
+See the [manifest](property-assessment-manifest.json) for actual source, compiler,
+binary, image, log and report hashes. All 49 historical M2 manifests, native
+metadata implementations/tests/codecs, shared runners/checkers/selectors, CLI,
+modules and Makefile are byte-identical; no 819-case metadata rerun or relabel.
+No active or unverified owned sessions remained after qualification.
