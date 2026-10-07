@@ -145,8 +145,8 @@ complete portable review and verified teardown.
 
 The [native provider binding](docs/testing/M2/property-provider-binding.md)
 requires fresh direct-DISK serial/geometry and attachment proof for every pool
-leaf in the safety path. Native qualification is pending; write eligibility
-remains false.
+leaf in the safety path. Both native targets passed all 37 focused assertions,
+complete portable review and verified teardown; write eligibility remains false.
 
 ## Agreed direction
 

@@ -1,6 +1,6 @@
 # M2 native pool-provider binding
 
-Date: 2026-10-06. Status: implementing; native qualification pending.
+Date: 2026-10-06. Status: both native targets and complete portable review passed; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
@@ -123,3 +123,30 @@ regression now compares the guest's entire emitted inventory with the exact host
 checker; both require the same 37 unique cases. The correction changes evidence
 accounting only. Portable review at that source passed, but cannot qualify the
 new evidence-tool inputs without a fresh review.
+
+
+## Executed qualification
+
+Signed source `1b6fef0cc54f304a88badffabeb5929ce7edd6d6`, based on PR 63 merge
+`12ecb173e48099040f4f52662d3e1fba04de5dc6`, passed all 37 assertions on
+FreeBSD 15.1-RELEASE-p3 (ZFS system backing) and 14.5-RELEASE (UFS system backing),
+using the same checksum-bound executable. Guest workloads including setup and
+teardown took 120.221/86.900 seconds; actual tests took 64.08/46.23 seconds.
+These are Mac/QEMU lab measurements, not NAS throughput or hardware qualification.
+See the [sanitized execution manifest](property-provider-binding-manifest.json).
+
+The complete portable review passed `make check lint test secrets`, 112 tooling
+tests, all 11 race packages and all 35 compiler-listed bounded fuzz targets in
+175.485 seconds. Every own pool/mount/swap/md/private metadata fixture was removed;
+guest/image/key/variables/executable/device cleanup and process-group teardown
+passed. Snapshot backing files, base images and runtime inputs stayed unchanged.
+`make lab-status` verified all 315 owned sessions stopped at this checkpoint.
+All 39 prior M2 manifests and native storage metadata sources remain byte-identical
+to the base. No Actions, runner or host service was enabled.
+
+The manifest retains all four failed native attempts, both interrupted superseded
+portable reviews and the earlier successful portable-only review at its original
+source. None qualifies the final source's native behavior. Documentation followups
+rerun the complete cheap baseline and may reuse only the exact successful deep
+inputs. Full root enrollment, eligibility, runtime admission/execution/recovery,
+operator workflows and M2 acceptance remain pending.

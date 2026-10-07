@@ -650,5 +650,9 @@ actual native checks: two unique mirror leaves/geometry, duplicate-serial mirror
 refusal, missing-serial pool refusal and GUID-verified teardown of both additional
 fixtures. Require exact executable/source, all 37 assertions, actual executed PASS,
 unchanged snapshot/base/runtime backings and all owned guest/host cleanup. Shared
-evidence-checker changes require complete portable review. Qualification is pending;
-root enrollment, admission, execution/recovery and M2 acceptance remain open.
+evidence-checker changes require complete portable review. Signed source
+`1b6fef0cc54f304a88badffabeb5929ce7edd6d6` passed all 37 assertions on both
+targets, the baseline/112 tooling tests, all 11 race packages and 35 fuzz targets
+with full teardown; see the
+[execution manifest](../../testing/M2/property-provider-binding-manifest.json).
+Root enrollment, admission, execution/recovery and M2 acceptance remain open.
