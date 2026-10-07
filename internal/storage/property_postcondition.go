@@ -28,6 +28,15 @@ func (i PropertyIntent) ComparePostcondition(policy Policy, observation Observat
 	if err != nil || digest != normalized.policyDigest {
 		return ErrDrift
 	}
+	if !reflect.DeepEqual(actual, propertyPostconditionReview(normalized)) {
+		return ErrDrift
+	}
+	return nil
+}
+
+// Call only with a normalized intent. Return an owned expected projection;
+// changing it cannot change the captured baseline or an observation.
+func propertyPostconditionReview(normalized PropertyIntent) Review {
 	expected := normalized.Review()
 	change := expected.Intent
 	affected := make(map[string]bool, len(expected.Affected))
@@ -58,8 +67,5 @@ func (i PropertyIntent) ComparePostcondition(policy Policy, observation Observat
 	expected.ID = ""
 	expected.CreatedAt = time.Time{}
 	expected.ExpiresAt = time.Time{}
-	if !reflect.DeepEqual(actual, expected) {
-		return ErrDrift
-	}
-	return nil
+	return expected
 }

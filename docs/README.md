@@ -157,3 +157,5 @@
 
 - [M2 reviewed property postconditions](testing/M2/property-postconditions.md):
   exact local effects, inheritance/received context and conservative matching.
+
+- [M2 retained property-job observation assessment](testing/M2/property-assessment.md)

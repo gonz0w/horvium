@@ -390,3 +390,15 @@ relevant review/policy context. Preserve the original precondition gates. A matc
 is an observed fact and cannot attribute execution, grant admission, release
 holds, clear recovery or acknowledge durable job success; even an already-matching
 value may match. See the [contract](../../testing/M2/property-postconditions.md).
+
+## Retained property-job assessment amendment
+
+The [assessment contract](../../testing/M2/property-assessment.md) joins immutable
+property-job binding to two independent fresh graph comparisons and the accepted
+conservative restart summary. Validate the complete graph and trusted policy before
+returning any result; errors expose zero, and valid context/policy drift matches
+neither. An already-matching value may match both. Retained labels remain unchanged,
+including terminal labels on a differing graph. Neither match supplies attribution,
+quiescence, restored-state validity, replay, resolution, durable success or release.
+False eligibility remains false; no clock/session/review authority is restored.
+This is a read-only prerequisite for actual recovery, not a recovery coordinator.

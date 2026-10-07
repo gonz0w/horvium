@@ -3,6 +3,11 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [retained property-job assessment](../testing/M2/property-assessment.md) joins
+fresh baseline/expected-effect comparisons to unchanged durable history and restart
+status. Portable and native qualification are pending. It adds no schema, command,
+executor attribution, recovery clearance, durable outcome or runtime write authority.
+
 M2 [reviewed enrollment publication](../testing/M2/enrollment-publication.md) adds
 one-attempt root metadata publication through the original lease and unchanged
 sync/rename engine. Both releases passed

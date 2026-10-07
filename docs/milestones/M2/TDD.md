@@ -842,3 +842,17 @@ signed source `0b828eb38be56708abca17dbfc200fb49d1ddd62`, with 122 tooling tests
 nine affected race packages, 30 bounded fuzz targets and full owned teardown.
 See the [manifest](../../testing/M2/property-postconditions-manifest.json); both
 superseded fixture failures remain unqualified and historical evidence unchanged.
+
+## Retained property-job observation assessment
+
+The [contract](../../testing/M2/property-assessment.md) adds partial M2-RECOVERY-001,
+M2-JOB-001, M2-DRIFT-001 and M2-PROPERTY-001 evidence. Require independent
+baseline/expected/both/neither facts across nine retained histories, unchanged
+restart projection/bytes/holds, incomplete/invalid zero-result refusal, decoded
+binding, relevant-context/policy drift and preserved plan eligibility refusal.
+Run bounded value fuzzing and focused review, then both actual disposable native
+pool suites: 88 existing assertions, eleven existing postcondition subtests and
+eight new mandatory assessment subtests. Actual graphs are native; histories are
+encoded/decoded test metadata. No publication, process-death, reboot, executor
+attribution, restoration, resolution, release or full M2 acceptance follows.
+Qualification is pending.

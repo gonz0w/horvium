@@ -1,0 +1,83 @@
+# M2 retained property-job observation assessment
+
+Date: 2026-10-07. Status: implemented; qualification pending.
+Authority: [approved EDD](../../milestones/M2/EDD.md),
+[Test Design](../../milestones/M2/TDD.md),
+[issue 19](https://github.com/gonz0w/horvium/issues/19).
+
+`PropertyJob.AssessObservation(policy, observation)` joins an immutable retained
+property job to a complete independently fresh graph and trusted policy. It returns
+two independent facts, `BaselineMatches` and `PostconditionMatches`, alongside
+`Restart`, the unchanged last durable event and accepted conservative restart
+projection. This is evidence for a future recovery coordinator, with no executor,
+startup consumer, native backend, transport or operator workflow.
+
+## Interpretation and refusals
+
+| Baseline | Postcondition | Meaning of the observed graph |
+|---|---|---|
+| true | false | Matches the retained original relevant review |
+| false | true | Matches the reviewed local property effect and preserved context |
+| true | true | Already-matching local value; cannot distinguish execution |
+| false | false | Matches neither projection or the full policy digest changed |
+
+No row proves causation, absence of earlier effects, executor quiescence, restored
+metadata validity or durable job success. Another root actor can produce either
+matching graph, including by changing then restoring it. Do not replay, resolve,
+release a reservation or overwrite history using these facts. A stored succeeded
+or failed label is retained even when today's graph differs; a queued or applying
+label never becomes successful merely because the expected effect is present.
+
+Normalize and validate the whole retained binding, preflight bounded inputs and
+validate the complete collected graph and explicit policy before exposing a result.
+Malformed, incomplete, oversized, inconsistent or unprojectable inputs return an
+error and a zero assessment, including no partial history. A well-formed changed
+policy digest or differing relevant review returns neither match. Reuse the exact
+relevant projection and expected-effect construction from the
+[accepted postcondition comparison](property-postconditions.md). Full policy scope/
+member binding and relevant pool/incarnation/features/topology/filesystem/state/
+version/received/inheritance context remain required. Unrelated sibling rows remain
+outside the accepted captured review; no whole-pool preservation claim follows.
+
+Collected false eligibility is accepted for fact comparison and never changes.
+`Build`, plan validation, capture and `CompareBaseline` retain their existing
+eligibility gates. Assessment restores no clock, session or expired review, writes
+no file, appends no event and changes no input or encoded record. Caller-owned
+bytes/model labels do not establish root/native provenance; the caller must obtain
+fresh evidence independently. No schema, dependency or command is added.
+
+## Portable and native gates
+
+Failing-first behavioral tests cover baseline/expected/neither for nine retained
+histories, both matches for an already-local value, zero-result errors, decoded
+binding, policy/member and relevant-context drift, input ownership, expired review
+history and preserved precondition refusal. A bounded fuzz target checks arbitrary
+quota values, exact comparison results, zero-on-error and unchanged inputs/history.
+
+Run the existing disposable `pool-properties` fixture on both declared releases.
+Retain its 88 original assertions and eleven postcondition subtests, plus these
+eight mandatory assessments beneath
+`TestNativePoolPropertyCollection/property-postconditions`:
+`job-baseline`, `job-already-matching`, `quota/job-postcondition`,
+`refquota/job-postcondition`, `no-limit/job-postcondition`, `job-inherited`,
+`wrong-source/job-neither`, `received/job-received`.
+Each joins actual false-eligibility native graphs to nine encoded/decoded fixture
+histories and verifies restart-page equivalence, unchanged record bytes and retained
+pool holders. Each also denies a deliberately incomplete copy with zero result.
+The histories are fixture metadata, not acknowledged native execution or a native
+persistence/restart qualification. No extra native mutation is required: reuse the
+owned fixture-only changes, received stream, independent source checks and original
+projection restoration from the accepted postcondition procedure.
+
+```sh
+make test-focus PKG=./internal/storage TEST='^TestProperty(JobAssessment|Postcondition)'
+PR_TITLE='feat(storage): assess retained property jobs against observations' make review
+.tools/venv/bin/python3 tools/local-qualification.py pool-properties 15.1 --run
+.tools/venv/bin/python3 tools/local-qualification.py pool-properties 14.5 --run
+make lab-status
+```
+
+Native writer/eligibility/admission, executor attribution/containment, actual
+reconciliation and restored-state clearance, durable outcomes, management parity
+and complete M2 acceptance remain open. Existing shared runners/selectors/checkers,
+metadata implementations/codecs and historical manifests retain their actual scope.

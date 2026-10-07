@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 72; reviewed property postconditions in progress; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 73; retained property-job assessment in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -699,7 +699,19 @@ and 30 selected bounded fuzz targets, with full owned teardown; see the
 [manifest](../../testing/M2/property-postconditions-manifest.json). Both superseded
 fixture failures remain unqualified; the corrections change only fixture reset
 semantics/raw-column expectations. The existing pool-source checker/selector and
-all 48 historical metadata manifests retain their actual scope. Maintainer review
-remains pending. No runtime native
+all 48 historical metadata manifests retain their actual scope. Accepted in [PR 73](https://github.com/gonz0w/horvium/pull/73) at merged source
+`37343f66e3c3a95ebc7dfbb0eb965581ed20231b`. No runtime native
 writer, job-success publication, attribution, recovered-state clearance or
 management mutation transport is added.
+
+## Retained property-job observation assessment
+
+The [contract](../../testing/M2/property-assessment.md) joins independently fresh
+baseline/expected-effect facts to immutable retained job history and conservative
+restart status. Both/neither matches are explicit and supply no causation or
+recovery clearance. Qualification is pending; require focused portable checks and
+the 88 existing native assertions, eleven postcondition subtests and eight mandatory
+assessment subtests on both releases, with complete owned teardown. Metadata
+codecs/publication, shared runner/checker/selector and prior manifests are unchanged.
+Actual executor/reconciliation/restoration, durable outcomes, runtime transport/
+eligibility/writes and operator workflows remain pending.
