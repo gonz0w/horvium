@@ -600,5 +600,8 @@ change between reads, wrong filesystem scope, external GUID-preserving rename an
 closed lease refusals. Test-only metadata setup grants no enrollment/publication
 claim. Require the exact executable, executed pass, all assertions and complete
 owned teardown. Shared checker changes require one complete portable review.
-See the [procedure](../../testing/M2/property-policy-binding.md). Qualification
-is pending; system/device eligibility, native admission and M2 acceptance remain open.
+See the [procedure](../../testing/M2/property-policy-binding.md). Signed source
+`cd1991c6a1cb36375f0fca7e7dd90228338390cc` passed all 22 assertions on both native
+targets, the baseline/109 tooling tests, all 11 race packages and 31 fuzz targets
+with full teardown; see the [execution manifest](../../testing/M2/property-policy-binding-manifest.json).
+System/device eligibility, native admission and M2 acceptance remain open.

@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 61; root policy/native binding qualification pending; Actions disabled.
+Date: 2026-10-06. Status: implementing; design approved; model/native subsets accepted through PR 61; root policy/native binding qualified, maintainer review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -512,8 +512,16 @@ held root ownership reader to the native collector. Requests select a GUID only;
 private policy supplies the name and scopes. Two canonical policy reads bracket
 collection, and complete graph validation checks every selected filesystem
 against that policy. Failure returns no partial result; success retains false
-eligibility. Portable/native qualification is pending. The focused fixture adds
+eligibility. The focused fixture adds
 six policy/lease denials and positive binding controls to the original 16 checks.
 Native state reader/publisher behavior and existing evidence remain unchanged.
 System/provider/device exclusions, atomic admission, full backend/transport and
 executor/recovery still precede an operator storage workflow.
+
+Signed source `cd1991c6a1cb36375f0fca7e7dd90228338390cc` passed all 22 assertions
+on both native targets, the required baseline/109 tooling tests, all 11 race
+packages and 31 fuzz targets with complete owned teardown; see the
+[execution manifest](../../testing/M2/property-policy-binding-manifest.json).
+Maintainer review is pending. The first writable-ancestor fixture failure and
+superseded interrupted portable review retain unqualified original evidence;
+the correction changes test setup only.

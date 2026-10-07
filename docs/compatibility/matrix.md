@@ -5,9 +5,11 @@ validation are separate. Refresh exact versions in each active research manifest
 
 M2 [root policy/native binding](../testing/M2/property-policy-binding.md) connects
 the held private ownership reader to the bounded native collector, refusing
-policy/native scope drift while keeping eligibility false. The 22-assertion
-focused fixture and portable qualification are pending; no runtime write,
-system/device clearance, atomic admission or production support follows.
+policy/native scope drift while keeping eligibility false. Signed source
+`cd1991c6a1cb36375f0fca7e7dd90228338390cc` passed all 22 assertions on both native
+targets, the baseline/109 tooling tests, all 11 race packages and 31 fuzz targets
+with full teardown; see the [execution manifest](../testing/M2/property-policy-binding-manifest.json).
+No runtime write, system/device clearance, atomic admission or production support follows.
 
 M2 [native property observation collection](../testing/M2/native-property-collection.md)
 joins fixed guarded FreeBSD projections and rejects ordinary drift across two

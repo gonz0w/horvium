@@ -133,8 +133,9 @@ eligibility or runtime submission authority.
 
 The [root policy/native binding](docs/testing/M2/property-policy-binding.md)
 derives pool addresses from the held root metadata reader, refuses policy drift
-and checks every explicit scope against fresh native observations. Qualification
-is pending; successful binding still grants no write eligibility.
+and checks every explicit scope against fresh native observations. Both native
+targets passed all 22 assertions, complete portable review and teardown;
+successful binding still grants no write eligibility.
 
 ## Agreed direction
 

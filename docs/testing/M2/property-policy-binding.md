@@ -1,6 +1,6 @@
 # M2 root policy and native property binding
 
-Date: 2026-10-06. Status: implementing; qualification pending.
+Date: 2026-10-06. Status: both native targets and complete portable review passed; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [issue 19](https://github.com/gonz0w/horvium/issues/19).
 
@@ -62,3 +62,31 @@ make lab-status
 Changing the shared native evidence checker requires one complete portable deep
 review. Daily behavior checks remain focused; this slice adds no Actions jobs or
 home-lab requirement beyond the selected Mac/QEMU fixtures.
+
+## Executed qualification
+
+Signed source `cd1991c6a1cb36375f0fca7e7dd90228338390cc`, based on PR 61 merge
+`851928471a2330689ebd970ed832e9b8861f0fe3`, passed all 22 assertions on FreeBSD
+15.1-RELEASE-p3 and 14.5-RELEASE using the same checksum-bound executable.
+Complete guest workloads took 65.064/51.453 seconds including setup and teardown;
+these are lab durations, not NAS performance measurements. See the
+[sanitized execution manifest](property-policy-binding-manifest.json).
+
+The required complete portable review passed `make check lint test secrets`,
+109 tooling tests, all 11 race packages and all 31 compiler-listed portable fuzz
+targets in 158.675 seconds. Both native fixtures preserved base/runtime hashes,
+destroyed their declared pools, detached owned providers, closed the root lease
+and removed their private metadata directories. Supervisors verified stopped
+groups and removed guests/images/keys/variables/executables. `make lab-status`
+verified all 270 owned sessions stopped at this checkpoint; no services were
+enabled. All 37 prior M2 manifests and native storage metadata source files remain
+byte-identical to the base.
+
+The first 15.1 run at signed source `ae6a5f05259edb717320e8279f2d8e14a27a3cc9`
+correctly failed opening the fixture's state directory beneath writable `/tmp`.
+It remains unqualified, with complete guest/host cleanup. The correction moves
+only test provisioning under trusted guest `/root`; product safety is unchanged.
+Its superseded portable review was stopped through the owned supervisor before
+editing and remains unqualified. Failed logs/reports retain their original hashes
+and sources. Documentation followups rerun current-source baseline checks and may
+reuse the exact successful deep record, without a new native authority claim.

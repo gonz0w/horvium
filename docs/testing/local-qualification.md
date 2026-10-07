@@ -74,6 +74,15 @@ and transfers the same exact cross-built binary to each guest. Qualification too
 43.432/43.554 seconds per guest; these lab timings do not establish NAS performance.
 Actual root/system/device-use eligibility, policy binding and writes remain open.
 
+The subsequent [root policy/native binding](M2/property-policy-binding.md)
+extended this focused suite to 22 assertions. Both targets passed at signed source
+`cd1991c6a1cb36375f0fca7e7dd90228338390cc`, with complete owned teardown and
+base/runtime preservation; see the [manifest](M2/property-policy-binding-manifest.json).
+It uses test-owned private metadata under trusted guest `/root`, retaining the
+actual root lease's writable-ancestor refusal. The same checksummed binary ran
+on both targets without guest packages. System/device clearance, actual enrollment,
+atomic admission and runtime writes remain open.
+
 Foundation/15.1, properties/15.1/14.5 and devices/15.1/14.5 have actual execution evidence
 through this runner. The other selectable suites and Linux host remain unqualified
 through this runner until executed and reviewed; existing hosted evidence is
