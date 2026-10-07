@@ -87,6 +87,13 @@ func prepare(p Policy, o Observation, i Intent) (Review, [32]byte, error) {
 	if err != nil {
 		return Review{}, zero, err
 	}
+	return prepareIndexed(p, o, i, files)
+}
+
+// Reuse the exact review projection after a caller has validated the complete
+// collected graph. Fact comparison may use it without granting eligibility.
+func prepareIndexed(p Policy, o Observation, i Intent, files map[string]Filesystem) (Review, [32]byte, error) {
+	var zero [32]byte
 	scopes, digest, err := indexPolicy(p, o, files)
 	if err != nil {
 		return Review{}, zero, err

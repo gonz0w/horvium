@@ -537,3 +537,13 @@ denial and artifact/child/host teardown passed all 21 assertions at signed sourc
 [manifest](../testing/M2/storage-job-status-manifest.json).
 No native metadata/schema/codec behavior, M1 transport or historical manifest is
 changed; hardware/resource/client/recovery and milestone claims remain open.
+
+
+## Reviewed property postconditions
+
+The [comparison contract](../testing/M2/property-postconditions.md) requires a
+complete collected graph and unchanged trusted policy, exact local target values,
+received-column preservation, expected inherited compression and protected
+overrides. It preserves native false eligibility and the existing precondition
+checks. Both-release native effect/subtest and focused portable qualification are
+pending; no runtime write, recovery, attribution or durable-success claim is added.

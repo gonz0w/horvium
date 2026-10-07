@@ -1,6 +1,6 @@
 # M2 foreground storage job-status diagnostic
 
-Date: 2026-10-07. Status: qualified subset; maintainer review pending.
+Date: 2026-10-07. Status: accepted in PR 72; qualified subset.
 Authority: [approved PRD](../../milestones/M2/PRD.md),
 [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [ADR 0007](../../adr/0007-durable-storage-jobs.md),

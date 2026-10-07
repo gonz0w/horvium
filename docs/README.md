@@ -154,3 +154,6 @@
 - [M2 independently collected enrollment publication](testing/M2/native-enrollment-publication.md): sealed root reviews, independent final native inputs and unchanged metadata acknowledgements; both targets passed all 88 assertions, focused portable review and teardown; accepted in PR 71.
 
 - [M2 foreground storage job status](testing/M2/storage-job-status.md): root-leased complete retained summaries, conservative restart status and explicit unverified recovery; qualification pending. [Runbook](operations/M2-job-status.md).
+
+- [M2 reviewed property postconditions](testing/M2/property-postconditions.md):
+  exact local effects, inheritance/received context and conservative matching.

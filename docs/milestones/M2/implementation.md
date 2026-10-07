@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 71; foreground storage job-status integration in progress; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 72; reviewed property postconditions in progress; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -681,6 +681,18 @@ signal cancellation, record/lock preservation, backing and complete teardown.
 Full portable review passed 122 tooling tests, 11 race packages and 35 bounded
 fuzz targets. See the [manifest](../../testing/M2/storage-job-status-manifest.json).
 All 47 historical M2 manifests and native metadata code/tests/codecs are unchanged;
-the state-directory public comment now names inspection wiring. Maintainer review,
-management UI/CLI parity, native reconciliation/transport/execution and the
+the state-directory public comment now names inspection wiring. Accepted in
+[PR 72](https://github.com/gonz0w/horvium/pull/72) at merged source
+`d3ca26e03b0f40be38d39dfa226d2da4bc29991c`. Management UI/CLI parity, native reconciliation/transport/execution and the
 remaining M2 lifecycle remain open.
+
+
+## Reviewed property postcondition comparison
+
+The [contract](../../testing/M2/property-postconditions.md) checks exact local
+property effects and relevant retained context against independently fresh native
+observations, preserving false eligibility and all existing precondition gates.
+Portable/native qualification is pending. The existing pool-source checker/selector
+and historical metadata evidence retain their actual scope. No runtime native
+writer, job-success publication, attribution, recovered-state clearance or
+management mutation transport is added.
