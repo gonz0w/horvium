@@ -166,10 +166,20 @@ func TestNativePoolPropertyCollection(t *testing.T) {
 	check("eligibility_denied", errors.Is(err, storage.ErrUnavailable))
 	// Test-only metadata provisioning: these bytes are not product enrollment or
 	// a publication/durability test. The actual source reads through the root lease.
-	statePath := t.TempDir()
-	if err := os.Chmod(statePath, 0700); err != nil {
+	// The state lease refuses writable ancestors, including sticky /tmp.
+	// Provision this test-owned private directory under the guest's trusted root.
+	statePath, err := os.MkdirTemp("/root", "horvium-property-policy-")
+	if err != nil {
 		t.Fatal(err)
 	}
+	t.Cleanup(func() {
+		if err := os.RemoveAll(statePath); err != nil {
+			t.Error("owned policy fixture cleanup", err)
+		}
+		if _, err := os.Lstat(statePath); !errors.Is(err, os.ErrNotExist) {
+			t.Error("owned policy fixture remains")
+		}
+	})
 	state, err := storage.OpenStateDirectory(statePath)
 	if err != nil {
 		t.Fatal("fixture state lease", err)
