@@ -292,7 +292,7 @@ func TestNativeJobReservations(t *testing.T) {
 	write(lock, nil)
 	check("lock_denial", errors.Is(denied(drift), ErrStateDirectory))
 	blocked, _ := lease("uncertain")
-	err = blocked.publishPropertyJob(p, 0, func(tx ownershipPublication) ownershipPublication {
+	err = blocked.publishPropertyJobBounded(p, 0, defaultStateCatalogLimits, func(tx ownershipPublication) ownershipPublication {
 		tx.syncDirectory = func() error { return errors.New("owned seam") }
 		return tx
 	})
