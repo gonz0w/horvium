@@ -1,6 +1,6 @@
 # M2 read-only pool health and scan observations
 
-Date: 2026-10-07. Status: qualified subset; maintainer review pending.
+Date: 2026-10-07. Status: accepted subset in [PR 77](https://github.com/gonz0w/horvium/pull/77).
 Authority: [approved PRD](../../milestones/M2/PRD.md),
 [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).

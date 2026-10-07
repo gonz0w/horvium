@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 76; read-only health/scan observation qualified, review pending; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 77; native scrub-state observations qualified, review pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -773,6 +773,22 @@ portable tests and focused review passed at signed source
 `ab2685cdffcb6aa06d14b356b1df6f2787143300` (122 tooling tests, 9 race packages, 33 fuzz targets).
 Both pinned releases passed six new health cases and all old status/assessment
 checks with identical binaries and complete owned teardown; see the
-[manifest](../../testing/M2/pool-health-manifest.json). Maintainer review is pending.
+[manifest](../../testing/M2/pool-health-manifest.json). Accepted in
+[PR 77](https://github.com/gonz0w/horvium/pull/77) at merged source
+`60b6f254badbf95d3a781c24b99feff632b5009e`.
 This progresses slice 4 observation independently of unqualified mutation gates;
 attributed start/stop/recovery and complete health/scan acceptance remain open.
+
+## Native scrub-state observation qualification
+
+The [fixture contract](../../testing/M2/scan-lifecycle-observations.md) exercises
+actual running/paused/resumed/cancelled/completed scrub observations using a
+restored, disposable-guest-only kernel progress control. Preserve existing
+product code/gates, all old status/assessment/health cases and deadlines. Native
+qualification and focused review passed at signed source
+`728e980a8b21755c9b87f33e48405f096bb03b24`: baseline/122 tooling tests, command-package
+race checks and eight new scan cases plus all old status/assessment/health checks
+on both releases, with identical binaries and complete verified teardown; see the
+[manifest](../../testing/M2/scan-lifecycle-observations-manifest.json). Maintainer
+review is pending. Advancing progress, faults,
+attribution, executor/recovery and full M2 acceptance remain open.

@@ -916,6 +916,23 @@ qualification passed at signed source `ab2685cdffcb6aa06d14b356b1df6f2787143300`
 health children, fifteen assessment cases and all 21 original status assertions
 on both releases, with identical binaries and complete teardown. Focused review
 passed baseline/122 tooling tests, 9 race packages and 33 fuzz targets; see the
-[manifest](../../testing/M2/pool-health-manifest.json). Maintainer review and
-complete health/scan lifecycle acceptance remain pending; all 52 prior manifests
+[manifest](../../testing/M2/pool-health-manifest.json). Accepted in [PR 77](https://github.com/gonz0w/horvium/pull/77);
+complete health/scan lifecycle acceptance remains pending. All 52 prior manifests
 retain their actual scope.
+
+## Native scrub-state observation fixture
+
+The [contract](../../testing/M2/scan-lifecycle-observations.md) adds partial
+M2-HEALTH-001, M2-SCRUB-001, M2-DRIFT-001 and M2-NATIVE-001 observation
+evidence. Require eight actual running/pause/resume/cancel/completion/preservation
+children on each release, retaining all old status/assessment/health checks and
+deadlines. A pinned disposable-guest-only progress control holds actual kernel
+scanning; independently restore/reread it on every exit. No synthetic output
+or job attribution qualifies a native state. Existing product code needs no new
+implementation. Signed source `728e980a8b21755c9b87f33e48405f096bb03b24` passed
+baseline/122 tooling tests and command-package race checks; both releases passed
+all eight new cases, six health/fifteen assessment children and 21 status assertions
+with identical binaries and verified control/storage/process/base/runtime teardown.
+See the [manifest](../../testing/M2/scan-lifecycle-observations-manifest.json).
+Maintainer review is pending. Advancing
+progress, injected errors, attributed lifecycle and full M2 remain open.

@@ -3,6 +3,18 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [native scrub-state observations](../testing/M2/scan-lifecycle-observations.md)
+add an eight-case fixture for real running/pause/resume/cancel/completion facts
+with restored disposable-guest kernel control and unchanged product code/gates.
+Signed source `728e980a8b21755c9b87f33e48405f096bb03b24` passed focused review
+(baseline/122 tooling tests and command-package race checks) and all eight new
+scan cases on both releases, retaining six health/fifteen assessment cases and 21
+original assertions. Independently rebuilt binaries matched and all control/storage/
+process/base/runtime teardown passed; see the
+[manifest](../testing/M2/scan-lifecycle-observations-manifest.json). Advancing
+progress, faults, attributed lifecycle
+and hardware/client/scale acceptance remain open.
+
 M2 [pool health and scan observation](../testing/M2/pool-health.md) adds bounded
 read-only pool/import/release binding, paired topology/error facts and typed
 legacy scrub/resilver status. Signed source `ab2685cdffcb6aa06d14b356b1df6f2787143300` passed
