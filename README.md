@@ -95,9 +95,10 @@ passed portable qualification; accepted in PR 52. The
 [property job binding](docs/testing/M2/property-jobs.md) combines that baseline
 with immutable lifecycle metadata and passed portable qualification; accepted in
 PR 53. The [native property-job store](docs/testing/M2/property-job-storage.md)
-extends the safe shared store; qualification is pending. Runtime admission remains disabled.
+passed all 555 state assertions and complete teardown on both targets; review is
+pending. Runtime admission remains disabled.
 Runtime enrollment and full store/recovery gates remain open.
-Other native gates, durable jobs and storage writes remain pending; the runtime is
+Other native gates, runtime job admission and storage writes remain pending; the runtime is
 still read-only.
 
 ## Agreed direction

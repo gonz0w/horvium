@@ -1,6 +1,6 @@
 # M2 native property-job metadata store
 
-Date: 2026-10-06. Status: implementing; native qualification pending.
+Date: 2026-10-06. Status: qualified on both declared native targets; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -88,9 +88,45 @@ python3.14 tools/local-qualification.py state 14.5 --run
 make lab-status
 ```
 
-Native qualification is pending. Exact source/input/toolchain/image/runtime/log
+Executed qualification below retains exact source/input/toolchain/image/runtime/log
 provenance and full backing/base/runtime/group teardown must be recorded. Prior
 manifests retain their actual tested sources; they are not relabeled. Native
 storage eligibility/operations, full executable attribution, actual admission/
 reservations, retention/tombstones, recovery/restoration/acknowledgement cuts,
 M2 acceptance and deferred M1 manual accessibility remain open.
+
+
+## Executed qualification
+
+Signed functional/native-test source `5a0e67cd7f469cf398b1cd831284d8a44a3b67ce` passed all 555
+state assertions, fifty parents and 1,804 distinct codec/model subtests on both
+releases without skips/failures. The [sanitized manifest](property-job-storage-manifest.json)
+records actual source/inputs/compiler/image/runtime/utility/artifact/log hashes,
+test inventory, complete teardown and earlier failed/superseded runs.
+
+The first native fixture expected its raw injected error instead of the shared
+pipeline's intentionally sanitized `ErrStateDirectory`; correcting the fixture
+left production publication unchanged. The old synthetic host runner fixture also
+needed the new result marker. A broad selector also included three unrelated parser
+parents; the exact-inventory evidence gate refused it. The selector was narrowed
+and both shell paths now have an inventory regression. Failed/superseded guests
+fully tore down; obsolete portable runs were intentionally stopped and remain
+unqualified. Final qualification
+uses the corrected actual source above, without relabeling earlier evidence.
+
+Shared evidence changes selected one complete portable review: all baseline checks
+(95 tooling regressions), race checks across 11 packages and all
+26 compiler-listed fuzz targets passed in 123.621 seconds.
+
+| Target | Root | Property store parent | Full owned guest | Result |
+|---|---|---|---|---|
+| 15.1-RELEASE-p3 | zfs | 1.23 s | 45.762 s | all 555; complete teardown |
+| 14.5-RELEASE | ufs | 1.06 s | 48.04 s | all 555; complete teardown |
+
+Both guests verified the same cross-built executable. Owned leases/files/mounts/
+memory devices/children were closed/removed; supervisor groups stopped; base/runtime
+hashes preserved; snapshots/keys/variables/test executables removed. All 29 prior
+M2 manifests remain byte-identical. Final prose/evidence review reruns baseline/
+source/title/signature checks and can reuse this exact-input complete deep result.
+Native eligibility/execution, admission/reservations, attribution/recovery/cuts,
+M2 acceptance and the deferred M1 accessibility gate remain open.

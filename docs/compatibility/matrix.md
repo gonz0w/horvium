@@ -280,8 +280,8 @@ single 64 KiB bound. Portable qualification passed at signed source
  `ddec32450bfc533eca98c2e39d6a68ce09951404`:
 six parents/859 subtests, storage race/all 18 fuzz targets and FreeBSD cross-compilation;
 see the [manifest](../testing/M2/property-jobs-manifest.json). Accepted in PR 53.
-Existing job/ownership
-wire versions, native readers/publishers and runtime remain unchanged; they reject
+At the portable binding prerequisite, job/ownership
+wire versions, native readers/publishers and runtime remained unchanged and rejected
 the distinct new kind. No native persistence, execution, migration, resource,
 hardware/client, recovery or commercial support claim follows.
 
@@ -289,7 +289,10 @@ hardware/client, recovery or commercial support claim follows.
 M2 native property-job store: [contract](../testing/M2/property-job-storage.md)
 extends root-only metadata access and the complete mixed census to the bound
 property-job format. Require 555 state assertions, fifty parents and 1,804 codec
-subtests on both targets with complete teardown; qualification is pending. Existing
+subtests on both targets with complete teardown; both passed at signed source
+ `5a0e67cd7f469cf398b1cd831284d8a44a3b67ce`
+with full teardown; see the [manifest](../testing/M2/property-job-storage-manifest.json).
+Review is pending. Existing
 job/ownership versions remain supported, with no cross-format overwrite or guessed
 baseline. No product admission, native storage effect, migration/deployment,
 resource/commercial scale, hardware/client, recovery or acceptance claim follows.

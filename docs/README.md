@@ -121,4 +121,4 @@
 
 - [M2 property job binding](testing/M2/property-jobs.md): single bounded baseline/lifecycle record and immutable successors; six parents/859 subtests and focused storage race/fuzz passed; accepted in PR 53.
 
-- [M2 native property-job store](testing/M2/property-job-storage.md): full baseline reads/publication, mixed capacity and format-preserving successors; qualification pending.
+- [M2 native property-job store](testing/M2/property-job-storage.md): full baseline reads/publication, mixed capacity and format-preserving successors; both targets passed all 555 assertions and teardown, review pending.
