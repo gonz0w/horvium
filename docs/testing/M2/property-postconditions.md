@@ -93,6 +93,15 @@ the documented `inherit -S` reset returns a received value or, when none exists,
 the default ([OpenZFS 2.2 manual](https://openzfs.github.io/openzfs-docs/man/v2.2/8/zfs-inherit.8.html)).
 Use this only for test-fixture restoration. The native reference-quota subtest
 must prove plain inheritance is denied without changing the matched local row,
-then independently verify the explicit reset returns `none / - / default`.
+then independently verify the explicit native reset returns `0 / - / default`
+(model value `none`).
 No product command, comparator rule or privilege boundary is widened. Retain the
 unqualified attempt and its complete owned teardown at the actual tested source.
+
+The second unqualified attempt matched every native effect, including no-limit
+and received values, but its independent raw-column assertions expected the
+model display string `none`. Native parsable quota columns encode no-limit as
+numeric `0`, which the accepted parser already normalizes to `none`. That assertion
+failure interrupted quota restoration and caused the final projection mismatch.
+Correct only the test expectations, retaining exact raw source/received checks
+and original projection restoration. No model/parser/matcher rule changes.

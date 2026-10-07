@@ -110,7 +110,13 @@ func nativePropertyPostconditions(t *testing.T, ctx context.Context, source *Poo
 			i := capture(t, target, tc.property, tc.value)
 			must(t, "/sbin/zfs", "set", string(tc.property)+"="+tc.value, target)
 			match(t, i)
-			if got := strings.TrimSpace(must(t, "/sbin/zfs", "get", "-H", "-p", "-o", "value,received,source", string(tc.property), target)); got != tc.value+"\t-\tlocal" {
+			// Parsable native quota columns encode no-limit as numeric zero;
+			// only the accepted model parser presents that value as "none".
+			raw := tc.value
+			if raw == "none" {
+				raw = "0"
+			}
+			if got := strings.TrimSpace(must(t, "/sbin/zfs", "get", "-H", "-p", "-o", "value,received,source", string(tc.property), target)); got != raw+"\t-\tlocal" {
 				t.Fatal("independent selected value/source mismatch")
 			}
 			if tc.property == storage.Quota {
@@ -122,7 +128,7 @@ func nativePropertyPostconditions(t *testing.T, ctx context.Context, source *Poo
 				}
 				match(t, i) // Refused reset preserves the actual local value/source.
 				must(t, "/sbin/zfs", "inherit", "-S", "refquota", target)
-				if strings.TrimSpace(must(t, "/sbin/zfs", "get", "-H", "-p", "-o", "value,received,source", "refquota", target)) != "none\t-\tdefault" {
+				if strings.TrimSpace(must(t, "/sbin/zfs", "get", "-H", "-p", "-o", "value,received,source", "refquota", target)) != "0\t-\tdefault" {
 					t.Fatal("received/default fixture reset mismatch")
 				}
 			}
