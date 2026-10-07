@@ -616,5 +616,7 @@ complete private record/backing baseline, projected capacity and retained job ho
 Fresh native/context/expiry and full metadata validation remain read-only; no
 publication, claims, recovered-state authority or write eligibility is added.
 Require all 76 focused native assertions on both releases, complete portable review
-and owned teardown; qualification pending. Actual provisioning/atomic publication,
+and owned teardown; both targets passed at signed source `9329f795185df1a823247d8cba917357d7e614fe`.
+See the [manifest](../../testing/M2/property-enrollment-state-manifest.json);
+maintainer review pending. Actual provisioning/atomic publication,
 restored-state/executor validation and authorized runtime workflows remain open.

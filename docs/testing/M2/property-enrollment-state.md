@@ -1,6 +1,6 @@
 # M2 root-leased enrollment state binding
 
-Date: 2026-10-07. Status: implementation; qualification pending.
+Date: 2026-10-07. Status: both native targets and complete portable review passed; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0006](../../adr/0006-storage-ownership-and-plans.md),
 [ADR 0007](../../adr/0007-durable-storage-jobs.md),
@@ -107,3 +107,39 @@ changes require complete portable review. Existing native metadata file engines
 and historical manifests remain unchanged; do not rerun or relabel the original
 777-case state suite. No production/hardware/populated scale, restored-state,
 throughput, manual accessibility or complete M2 acceptance follows.
+
+
+## Executed qualification
+
+Signed source `9329f795185df1a823247d8cba917357d7e614fe`, based on PR 67 merge
+`6b1aa9ecacaa7e2c00b6798be544a76529ea0a85`, passed all 76 exact focused assertions
+on FreeBSD 15.1-RELEASE-p3 and 14.5-RELEASE using the same checksum-bound executable.
+Actual root-backed ZFS permitted first/successor binding, owned review/predecessor
+copies and fresh validation. An unrelated valid record change required new review.
+Actual root-backed softupdates UFS refused first/successor binding with zero results;
+its unrelated-record control retained backing refusal and preserved records.
+It cannot qualify successful baseline revalidation on that unsupported backing.
+Both targets passed exact predecessor/selected-record/unknown-file/job/orphan/
+expiry/context refusals, preserved fixture bytes and removed the separate lease.
+Guest workloads including setup/teardown took 98.446/89.731 seconds; actual tests
+took 65.93/57.63 seconds. These are Mac/QEMU fixture measurements, not NAS throughput
+or hardware qualification. Separate system mounts/non-softupdates UFS success
+remain policy targets without a new native pass here. See the
+[sanitized execution manifest](property-enrollment-state-manifest.json).
+
+Complete portable review passed `make check lint test secrets`, 112 tooling tests,
+all 11 race packages and all 35 compiler-listed bounded fuzz targets in 186.314
+seconds. All 43 historical M2 manifests and pre-existing native metadata file
+engines remain byte-identical to the base. No ownership schema change occurred;
+the historical 777-case state suite retains its actual original source and was
+not rerun or relabeled. Documentation followups rerun the complete cheap baseline
+and may reuse only exact successful deep inputs.
+
+Every owned pool/mount/swap/md/private record and guest/device/image/key/variables/
+executable fixture was removed, with snapshot/base/runtime inputs preserved.
+The standalone development cross-build artifact was also removed.
+`make lab-status` verified all 362 owned sessions stopped at this checkpoint.
+No Actions, runner or host service was enabled. Runtime provisioning/publication,
+restored-state/executor validation, atomic admission and authorized operator
+workflows remain open. This read-only binding grants no write eligibility or
+complete milestone acceptance.

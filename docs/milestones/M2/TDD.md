@@ -732,5 +732,8 @@ preservation/teardown controls on a separate owned private lease. Actual ZFS per
 binding and revalidation; softupdates UFS must refuse with zero binding and unchanged
 records. Require all 76 assertions, actual PASS on both releases, complete portable
 review and full owned teardown. No metadata engine/schema change or historical
-777-case state-suite rerun; qualification pending. Runtime provisioning/publication,
+777-case state-suite rerun. Both targets passed all 76 assertions at signed source
+`9329f795185df1a823247d8cba917357d7e614fe` with complete portable review and teardown; see the
+[manifest](../../testing/M2/property-enrollment-state-manifest.json). Maintainer
+review pending. Runtime provisioning/publication,
 restored-state/executor validation and complete M2 acceptance remain open.
