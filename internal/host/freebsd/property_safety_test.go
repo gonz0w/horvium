@@ -3,6 +3,7 @@ package freebsd
 
 import (
 	"context"
+	"errors"
 	"reflect"
 	"testing"
 
@@ -22,6 +23,41 @@ func safetyCaptures() map[systemProbe]string {
 	rows[systemPoolTopologyGUID] = properties[poolTopologyGUID]
 	rows[systemPoolTopologyPath] = properties[poolTopologyPath]
 	return rows
+}
+
+func TestPropertySafetyCollectionRechecksPolicyAfterSystemReads(t *testing.T) {
+	for _, mode := range []string{"revision", "missing", "canceled"} {
+		t.Run(mode, func(t *testing.T) {
+			rows := safetyCaptures()
+			changed := false
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+			s := &PropertySafetySource{policy: policySource(func(string) (storage.Policy, error) {
+				p := collectionPolicy()
+				if changed {
+					switch mode {
+					case "revision":
+						p.Revision++
+					case "missing":
+						return storage.Policy{}, storage.ErrStateRecord
+					case "canceled":
+						cancel()
+					}
+				}
+				return p, nil
+			}), system: useSource(func(_ context.Context, p systemProbe, _ string, _ int) (readOutput, error) {
+				changed = true
+				return testOutput(rows[p]), nil
+			})}
+			p, o, err := s.Collect(ctx, "100")
+			if err == nil || !reflect.DeepEqual(p, storage.Policy{}) || !reflect.DeepEqual(o, storage.Observation{}) {
+				t.Fatal("policy changed during system reads accepted", err)
+			}
+			if mode == "revision" && !errors.Is(err, storage.ErrDrift) {
+				t.Fatal("policy drift classification", err)
+			}
+		})
+	}
 }
 
 func TestPropertySafetyCollectionJoinsExclusionsWithoutAuthority(t *testing.T) {

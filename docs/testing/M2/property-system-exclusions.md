@@ -29,6 +29,9 @@ mounted at `/`, `/boot`, `/etc`, `/usr`, `/var`, `/root`, or below those non-roo
 system directories; these are conservative capability exclusions, not configurable
 mount namespaces. It also denies physical-disk overlap with other mounts, swap or
 other imported pools. A pool's own ordinary data mounts remain permissible.
+The composed path reads canonical root policy once more after the system phase;
+changed or missing policy denies the whole result. Cancellation at that final
+read also exposes zero. Its equality check retains the existing non-atomic limits.
 Unsupported logical/md backing denies the new safety path; existing read-only
 collectors retain their accepted observation behavior without a bypass.
 

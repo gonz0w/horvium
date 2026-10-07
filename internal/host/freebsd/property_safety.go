@@ -2,6 +2,7 @@
 package freebsd
 
 import (
+	"bytes"
 	"context"
 	"time"
 
@@ -46,6 +47,26 @@ func (s *PropertySafetySource) Collect(ctx context.Context, guid string) (storag
 	}
 	if err = storage.CheckPropertySystemExclusions(o, u); err != nil {
 		return storage.Policy{}, storage.Observation{}, err
+	}
+	if err = ctx.Err(); err != nil {
+		return storage.Policy{}, storage.Observation{}, err
+	}
+	// The added system phase must not extend the earlier policy baseline window
+	// without a final independent read through the same held root lease.
+	next, err := s.policy.ownership(guid)
+	if err != nil {
+		return storage.Policy{}, storage.Observation{}, err
+	}
+	before, err := storage.EncodeOwnershipRecord(p)
+	if err != nil {
+		return storage.Policy{}, storage.Observation{}, err
+	}
+	after, err := storage.EncodeOwnershipRecord(next)
+	if err != nil {
+		return storage.Policy{}, storage.Observation{}, err
+	}
+	if !bytes.Equal(before, after) {
+		return storage.Policy{}, storage.Observation{}, storage.ErrDrift
 	}
 	if err = ctx.Err(); err != nil {
 		return storage.Policy{}, storage.Observation{}, err
