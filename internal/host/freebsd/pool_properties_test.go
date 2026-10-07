@@ -178,6 +178,52 @@ func TestPoolPropertyCancellationDuringCollection(t *testing.T) {
 	}
 }
 
+func TestPoolPropertyTopologyOrder(t *testing.T) {
+	rows := propertyCaptures()
+	rows[poolTopologyGUID] = strings.ReplaceAll(rows[poolTopologyGUID], "900 ONLINE", "9900 ONLINE")
+	s := propertySource(func(_ context.Context, p poolProbe, _ string, _ int) (readOutput, error) {
+		return testOutput(rows[p]), nil
+	})
+	o, err := s.Collect(context.Background(), "100", "tank")
+	if err != nil || o.Topology.Nodes[0].Kind != "leaf" || !matchesCollectedMirror(o.Topology, []string{"/dev/ada0", "/dev/ada1"}) {
+		t.Fatal("fixture assumed positional topology", err)
+	}
+	if matchesCollectedMirror(o.Topology, []string{"/dev/ada0", "/dev/ada2"}) {
+		t.Fatal("fixture accepted wrong member")
+	}
+}
+
+// Native topology is GUID-sorted, not traversal-ordered. Compare declared
+// members and their parent identity without assigning meaning to slice offsets.
+func matchesCollectedMirror(topology storage.PoolTopology, leaves []string) bool {
+	if len(topology.Nodes) != 3 || len(leaves) != 2 || leaves[0] == leaves[1] {
+		return false
+	}
+	expected := map[string]bool{leaves[0]: true, leaves[1]: true}
+	parent := ""
+	for _, n := range topology.Nodes {
+		if n.Kind == "mirror" {
+			if parent != "" || n.ParentGUID != "" {
+				return false
+			}
+			parent = n.GUID
+		}
+	}
+	if parent == "" {
+		return false
+	}
+	for _, n := range topology.Nodes {
+		if n.GUID == parent {
+			continue
+		}
+		if n.Kind != "leaf" || n.ParentGUID != parent || !expected[n.Address] {
+			return false
+		}
+		delete(expected, n.Address)
+	}
+	return len(expected) == 0
+}
+
 func FuzzPoolPropertyCollection(f *testing.F) {
 	f.Add([]byte("hostile output"), "100", "tank", uint8(2))
 	f.Add([]byte{}, "0100", "-tank", uint8(0))

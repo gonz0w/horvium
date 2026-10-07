@@ -160,7 +160,7 @@ func TestNativePoolPropertyCollection(t *testing.T) {
 	check("inheritance", o.States[1].Mountpoint.Effective == "none" && o.States[1].Mountpoint.Source == storage.Inherited && o.States[1].Mountpoint.SourceGUID == rootGUID)
 	check("snapshot_owner", o.Identities[2].Type == storage.SnapshotType && o.Identities[2].OwnerGUID == childGUID)
 	check("features", len(o.Features.Values) == 39 || len(o.Features.Values) == 47)
-	check("topology", len(o.Topology.Nodes) == 3 && o.Topology.Nodes[0].Kind == "mirror" && o.Topology.Nodes[1].Address == "/dev/"+devices[0].unit && o.Topology.Nodes[2].Address == "/dev/"+devices[1].unit)
+	check("topology", matchesCollectedMirror(o.Topology, []string{"/dev/" + devices[0].unit, "/dev/" + devices[1].unit}))
 	p := storage.Policy{Revision: 1, PoolGUID: guid, PoolName: pool, Scopes: []storage.Scope{{GUID: childGUID, Name: pool + "/data", ParentGUID: rootGUID, Properties: []storage.Property{storage.RefQuota}}}}
 	_, err = storage.Build(time.Now(), "fixture-session", p, o, storage.Intent{FilesystemGUID: childGUID, Property: storage.RefQuota, Value: "1"})
 	check("eligibility_denied", errors.Is(err, storage.ErrUnavailable))
