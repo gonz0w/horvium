@@ -9,7 +9,6 @@ import (
 	"golang.org/x/sys/unix"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 	"time"
 )
@@ -96,9 +95,8 @@ func nativeEnrollmentPublicationFixture(t *testing.T, ctx context.Context, check
 								out, err := originalRead(ctx, probe, name, budget)
 								if err == nil && probe == poolProperties {
 									old := string(out.data)
-									next := strings.ReplaceAll(old, "\tquota\t0\t", "\tquota\t1\t")
-									changed = changed || old != next
-									out = testOutput(next)
+									out = enrollmentPropertyDriftOutput(out)
+									changed = changed || old != string(out.data)
 								}
 								return out, err
 							}

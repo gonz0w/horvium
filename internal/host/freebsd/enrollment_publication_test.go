@@ -4,6 +4,7 @@ package freebsd
 import (
 	"context"
 	"errors"
+	"strings"
 	"testing"
 	"time"
 
@@ -151,5 +152,32 @@ func TestPropertyEnrollmentSourcePublicationCannotHydrateBinding(t *testing.T) {
 	}
 	if err := s.Publish(context.Background(), "root", storage.PropertyEnrollmentState{}); !errors.Is(err, storage.ErrInvalid) {
 		t.Fatal(err)
+	}
+}
+
+// Preserve native source/value consistency so drift reaches the sealed review
+// validator rather than merely failing the native projection parser.
+func enrollmentPropertyDriftOutput(out readOutput) readOutput {
+	return testOutput(strings.ReplaceAll(string(out.data), "\tquota\t0\t-\tdefault", "\tquota\t131072\t-\tlocal"))
+}
+
+func TestPropertyEnrollmentSourcePublicationPassesFreshDriftToSealedValidation(t *testing.T) {
+	s := enrollmentSourceFixture(nil)
+	plan, r := enrollmentPublicationReview(t, s)
+	original := s.pool.read
+	s.pool.read = func(ctx context.Context, p poolProbe, name string, budget int) (readOutput, error) {
+		out, err := original(ctx, p, name, budget)
+		if p == poolProperties && err == nil {
+			out = enrollmentPropertyDriftOutput(out)
+		}
+		return out, err
+	}
+	called := false
+	err := s.publishReview(context.Background(), "root", r, storage.Policy{}, func(_ context.Context, o storage.Observation, d []inventory.DiskObservation, u storage.PoolSystemUse) error {
+		called = true
+		return plan.Validate(enrollmentInstant, "root", r.Policy, o, d, u)
+	})
+	if !called || !errors.Is(err, storage.ErrDrift) {
+		t.Fatal("drift fixture did not reach sealed validation", err)
 	}
 }
