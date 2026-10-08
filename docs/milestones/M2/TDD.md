@@ -1113,3 +1113,13 @@ all pool observer/control fixtures remain unchanged. Native input selection
 remains synthetic; actual metadata operations grant no native eligibility.
 Source-bound artifacts, baseline and affected race/fuzz evidence are required.
 Complete backend, actual effects/interruption/recovery and M2 remain separate.
+
+Signed source `80f3588a89abcf8484f45da06f37eca18bcfa6dd` passed both new portable parents, all 15
+exact-successor cases, mandatory baseline/124 tooling tests, 9 affected race
+packages and all 38 selected fuzz targets. Both native releases passed every
+required historical gate, all 19 live-state and 23 applying children plus actual
+credential denial and complete teardown. All shared pipelines/readers/runners,
+old limits and 61 prior manifests remain unchanged; see the
+[manifest](../../testing/M2/property-claim-applying-manifest.json). This qualifies
+metadata acknowledgement only; full backend, native effects/recovery, operator
+workflows and M2 acceptance remain open.

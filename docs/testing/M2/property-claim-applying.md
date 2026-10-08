@@ -1,6 +1,6 @@
 # M2 original-claim applying acknowledgement
 
-Date: 2026-10-08. Status: implementation; native qualification pending.
+Date: 2026-10-08. Status: metadata subset qualified; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -93,6 +93,38 @@ PR_TITLE='feat(storage): acknowledge applying metadata through original claims' 
 make lab-status
 ```
 
-Source-bound qualification results and teardown will be recorded before review.
+Source-bound qualification results and teardown are recorded in the
+[manifest](property-claim-applying-manifest.json).
 Full root backend, native effects/death/reboot/recovery, terminal outcomes/hold
 release, authenticated operator workflows and assembled M2 acceptance remain open.
+
+## Source-bound results
+
+Signed source `80f3588a89abcf8484f45da06f37eca18bcfa6dd`, based on merged PR 85
+source `1c8afa7ff49052a6db1ef997204eedd55246becd`, passed both new portable
+parents/all 15 exact-successor cases and mandatory `make check lint test secrets`
+with 124 tooling tests. Focused review passed 9 affected race packages and all
+38 selected bounded fuzz targets in 208.828 seconds.
+
+Both serial pinned FreeBSD releases passed all 23 actual applying cases, the actual
+non-root credential child, all 19 live-state cases and every original 819
+state/backing assertion, 67 parent and 1,876 codec child. The applying groups took
+3.92/3.83 seconds on 15.1/14.5; the enclosing submission parents took
+37.75/33.75 seconds. Identical checksum-bound artifacts ran on both guests.
+Metadata operations/lease/UID/backing facts are actual; intent/policy selections
+remain synthetic and qualify neither native eligibility nor launch authority.
+
+All shared publisher/readers, selectors/checkers, supervisors, native pool/observer/
+control sources/fixtures, schemas, dependencies, old limits and 61 prior M2
+manifests remain byte-identical. The original admission logic changes only by
+adding a private attempt field consumed solely by this new method. Previously
+qualified pool evidence is retained under its actual source rather than rerun or
+relabeled. No terminal-resolution or recovered-state claim follows.
+
+Both guests, owned metadata mounts/backings, lease directories, images/keys/firmware,
+executables and process groups were removed or verified stopped. Host base/runtime
+hashes were preserved; `make lab-status` verified zero active/unverified owned
+sessions. Actions remain disabled and no persistent service was enabled. The
+unexecuted development cross-build was removed; it is not native qualification.
+The [manifest](property-claim-applying-manifest.json) records actual source,
+artifact/report/log hashes, scope and remaining gates.

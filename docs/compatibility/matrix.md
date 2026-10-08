@@ -8,8 +8,12 @@ adds metadata publication only on the original root lease. The existing supporte
 ZFS/UFS-without-softupdates metadata rules stay unchanged; no native eligibility,
 root backend, runtime storage write or support claim follows. Both disposable
 state releases, all 23 new children, actual UID denial and complete teardown are
-required and pending. Shared pool/state selectors/checkers and historical
-fixtures remain unchanged except the submission/UID fixture additions.
+passed at signed source `80f3588a89abcf8484f45da06f37eca18bcfa6dd`, retaining every historical state
+assertion. Focused portable review passed 124 tooling tests, 9 race packages and
+38 bounded fuzz targets. Identical native artifacts and complete teardown were
+verified; all 61 prior manifests and shared selectors/checkers/publishers remain
+byte-identical. Pool evidence retains its original source. See the
+[manifest](../testing/M2/property-claim-applying-manifest.json).
 
 M2 [native claim fixture isolation](../testing/M2/property-claim-fixtures.md)
 retains every historical collector case while allocating an eight-minute aggregate

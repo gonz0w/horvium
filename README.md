@@ -275,9 +275,11 @@ ineligible; the complete root backend and runtime writes remain disabled. Earlie
 [partial evidence](docs/testing/M2/property-claim-source-manifest.json) remains source-bound.
 
 The [original-claim applying acknowledgement](docs/testing/M2/property-claim-applying.md)
-is implementing: one exact durable metadata successor through the original root
-claim, without native effects. Complete root backend, runtime writes and recovery
-workflows remain disabled/pending; native qualification is required before review.
+passed focused portable review and all 23 native metadata cases on both FreeBSD
+targets, with complete teardown. It permits one exact applying acknowledgement
+through the original root claim, without native effects. Complete root backend,
+runtime writes and recovery workflows remain disabled/pending; see the
+[manifest](docs/testing/M2/property-claim-applying-manifest.json).
 
 ## Agreed direction
 
