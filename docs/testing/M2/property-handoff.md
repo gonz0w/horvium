@@ -82,6 +82,22 @@ manifests retain their actual executed sources. This portable repair changes no
 native implementation/fixture/shared tooling and needs no unchanged native-suite
 rerun. A FreeBSD cross-build remains unexecuted compilation evidence only.
 
+Signed repair source `3bb8e871fb3324d894d04c56e0ea95600f325703`, based on PR 86
+merge `fd817121c375f02d9c02700a7cd66a001c99787c`, passed all 20 new cases,
+verified reconciliation and the eight prior handoff parents. Mandatory baseline
+checks passed all 124 tooling tests; focused deep review passed 9 race packages
+and all 38 selected fuzz targets in 217.749 seconds, with both supervisors cleaned.
+FreeBSD/amd64 tests cross-compiled but were not executed; the artifact was removed.
+All 62 historical manifests and 176 native/shared tooling paths remain unchanged.
+Lab status found no active or unverified owned sessions; Actions remain disabled.
+
+The first review stopped before deep execution when an unchanged disposable Git
+fixture's directory cleanup found residual Git metadata. Its 13 foundation tests
+passed on recheck, the inspected residue was removed after no maintenance process
+remained, and the full review then passed. That failed run remains unqualified
+and recorded separately in the new manifest. No fixture/tooling repair or native
+qualification is attributed to this portable change.
+
 ## Native and runtime obligations
 
 This portable handoff creates no process, goroutine, file, service or lease. The

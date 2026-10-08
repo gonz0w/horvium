@@ -1,10 +1,285 @@
 {
   "record_type": "M2-worker-publication-uncertainty-propagation",
-  "status": "qualification-pending",
+  "date": "2026-10-08",
+  "status": "portable-qualified; maintainer review pending",
+  "source_commit": "3bb8e871fb3324d894d04c56e0ea95600f325703",
+  "source_tree": "222d8fba8579b3ff4c3fca044ef59216113587d7",
   "base_commit": "fd817121c375f02d9c02700a7cd66a001c99787c",
-  "scope": "Portable original-coordinator uncertainty propagation; no native backend, serialization, effect, recovery or runtime write authority",
-  "regression_cases": 20,
-  "concurrent_confirmation_callers_per_case": 16,
-  "native_suite_rerun": false,
-  "runtime_storage_writes": false
+  "requirements": [
+    "M2-JOB-001 (partial)",
+    "M2-RECOVERY-001 (partial)"
+  ],
+  "scope": "Portable original-coordinator publication uncertainty propagation; no native backend, serialization, effect, recovery or runtime write authority",
+  "input_sha256": [
+    {
+      "path": "internal/storage/property_handoff.go",
+      "sha256": "40c7c69daef9aa455f323bcaa1a06d02fac8f8e58d0daf74fa745c88ea28b0f7"
+    },
+    {
+      "path": "internal/storage/property_handoff_uncertainty_test.go",
+      "sha256": "a393adb5fb628b622c35d5c507373816cbd9f80176055062d8d2ac5b1b84bd11"
+    }
+  ],
+  "regression": {
+    "parents": [
+      "TestPropertyExecutionHandoffPublicationUncertainty",
+      "TestPropertyExecutionHandoffVerifiedReconciliation"
+    ],
+    "states": [
+      "applying",
+      "observing",
+      "succeeded",
+      "reconcile-required"
+    ],
+    "failure_modes": [
+      "error",
+      "lost",
+      "invalid",
+      "foreign",
+      "earlier"
+    ],
+    "cases": 20,
+    "concurrent_confirmation_callers_per_case": 16,
+    "original_handoff_parents_retained": 8,
+    "failing_first_log_sha256": "0d3717b337a7159a48037fa126cdb2581925b92675961e954231a2ecfb807714",
+    "focused_green_log_sha256": "3210ffbcd2c68c987bbb578f520911a1a13235c8f5b25deec6b79a21ed3f35da"
+  },
+  "portable_review": {
+    "source_commit": "3bb8e871fb3324d894d04c56e0ea95600f325703",
+    "session": "g0m3iypx",
+    "qualified": true,
+    "mode": "focused",
+    "baseline": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "tooling_tests": 124,
+    "duration_seconds": 217.749,
+    "deep_result": {
+      "fuzz_targets": [
+        {
+          "package": "./internal/admin",
+          "target": "FuzzConfiguration"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzRequest"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzSnapshot"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPoolPropertyCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPoolProviderCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyClaimSourceSelection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyControlSelection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyJobSource"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyPolicyCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzSystemUseCollection"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzDeviceUseReview"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemSignature"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemStates"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzIdentities"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzImportedPoolUse"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobReservations"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobRestartPage"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipCatalogNames"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolFeatures"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolLabels"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolScan"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolState"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolSystemUse"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolTopology"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzProperties"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyCoordinatorActions"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyExecutionCut"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyExecutionHandoff"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyIntent"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyJob"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyJobAssessment"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyLiveStateReceipt"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyPlan"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyPostcondition"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzStateCatalogNames"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzSystemDeviceUse"
+        }
+      ],
+      "race_packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ]
+    },
+    "report_sha256": "42f7c3a7b5a70c19ba10df85e5358dc541ed35206c5e348fa1454d7770703122",
+    "checks_log_sha256": "46e70fe794eae178cdf2aa94a6d6937c016d065e1d298f0fd97e548c95185f62",
+    "deep_log_sha256": "d5a3da5583d27a9854193d0b1e3453dcd41aae8ea114aa756e864089826fd520",
+    "completed_clean_supervisors": 2
+  },
+  "initial_unqualified_review": {
+    "session": "xq3nuhvq",
+    "reason": "Unchanged disposable Git fixture TemporaryDirectory cleanup failed with directory not empty; no deep checks executed; owned residue inspected and removed after no maintenance process remained",
+    "report_sha256": "139ba03e84148e3b6e08137c1580d25b7d6b250b5f7498b4ef3847847e301033",
+    "checks_log_sha256": "cf94933334dd81e3ef0137d1dbfb45b6a7946162c1866cbc471af45d46a424b0",
+    "foundation_tests_rechecked": 13,
+    "foundation_recheck_passed": true,
+    "recheck_log_sha256": "c5bbb741e7f107bcf567b717476c38ae0776a9c333f420cb12b01586bf329244"
+  },
+  "freebsd_cross_build": {
+    "source_commit": "3bb8e871fb3324d894d04c56e0ea95600f325703",
+    "target": "freebsd/amd64",
+    "cgo_enabled": false,
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+    "binary_sha256": "83c6499089040dc638494dbbf773aa1480fe6278cd485960e0872be35ce638ae",
+    "binary_bytes": 11518835,
+    "build_arguments": [
+      "go",
+      "test",
+      "-c",
+      "-trimpath",
+      "-o",
+      "<owned-artifact>",
+      "./internal/storage"
+    ],
+    "executed": false,
+    "removed": true
+  },
+  "preservation": {
+    "historical_M2_manifests": 62,
+    "native_and_shared_tool_paths": 176,
+    "all_byte_identical_to_base": true,
+    "native_suites_rerun": false,
+    "prior_evidence_relabeled": false
+  },
+  "teardown": {
+    "lab_status_log_sha256": "2ab8253097af4c7b928ed6a269c561872fd1732defd13f58894ef078fe25c090",
+    "owned_active": 0,
+    "unverified": 0,
+    "failed_tooling_fixture_residue_removed": true,
+    "cross_binary_removed": true,
+    "guest_or_persistent_services_started": false,
+    "actions_enabled": false
+  },
+  "remaining_gates": [
+    "complete original root backend and native eligibility",
+    "global executor/pool serialization",
+    "native effects, actual interruption/reboot/recovery and terminal resolution",
+    "authenticated operator workflow and assembled M2 qualification",
+    "pending M1 manual accessibility and explicit milestone acceptance"
+  ]
 }

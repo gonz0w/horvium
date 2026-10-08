@@ -182,6 +182,10 @@ now denies subsequent admissions and issued-worker launches after such uncertain
 This portable repair supplies no complete root backend, native serialization or
 recovery clearance; runtime writes stay disabled. See the
 [qualification record](../../testing/M2/property-handoff-uncertainty-manifest.json).
+Signed repair source `3bb8e871fb3324d894d04c56e0ea95600f325703` passed the new
+20-case regression and retained handoff tests, all mandatory baseline checks,
+9 affected race packages and 38 bounded fuzz targets. FreeBSD compilation and
+complete teardown passed; native fixtures were unchanged and not rerun.
 
 ## Independent slice 2 prerequisite
 

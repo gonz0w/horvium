@@ -11,6 +11,10 @@ shared tools and historical manifests are unchanged, so their evidence retains
 its actual sources. No native suite rerun or support claim follows. See the
 [handoff contract](../testing/M2/property-handoff.md#worker-publication-uncertainty)
 and [qualification record](../testing/M2/property-handoff-uncertainty-manifest.json).
+Signed source `3bb8e871fb3324d894d04c56e0ea95600f325703` passed 20 new cases,
+the previous handoff tests, 124 tooling tests, 9 affected race packages and all
+38 selected fuzz targets. FreeBSD/amd64 compilation passed without execution;
+the artifact was removed and lab status verified no active/unverified sessions.
 
 M2 [original claim applying acknowledgement](../testing/M2/property-claim-applying.md)
 adds metadata publication only on the original root lease. The existing supported
