@@ -501,6 +501,16 @@ eligibility/recovery, global scheduling or operator authorization proof; qualify
 the combined native backend separately. See the
 [handoff contract](../../testing/M2/property-handoff.md).
 
+Publication uncertainty flows in both directions through that original envelope.
+Before delegating publication, deny an already blocked coordinator. Own the
+candidate's canonical bytes before backend I/O, compare the complete returned
+acknowledgement, and latch the original coordinator on every publication error
+or mismatched/invalid reply. Deny later admissions, handoffs and issued-worker
+prelaunch gates while retaining read-only review and all existing holds. Perform
+backend I/O outside the coordinator mutex; this propagation is not atomic native
+launch serialization. Exact durable acknowledgements survive forward expiry;
+no recovery/reset/retry mechanism is introduced.
+
 ## Fresh property submission state claim amendment
 
 An exact new post-sync submission may retain a bounded volatile receipt on its

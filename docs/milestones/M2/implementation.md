@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 85; claim-bound observer pool gates qualified; original-claim applying metadata subset qualified; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 86; claim-bound observer pool gates qualified; original-claim applying metadata subset qualified; worker uncertainty propagation in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -168,6 +168,20 @@ if commit history is rebased. Agents leave PRs open for the maintainer.
 The approval adopts scope and gates, not passing native behavior or a NAS release.
 Record actual slice results here and in the compatibility matrix; skipped fixtures
 are never acceptance evidence. Full M1 acceptance remains a separate pending decision.
+
+## Original worker uncertainty propagation
+
+PR 86 accepted original-claim applying metadata acknowledgement at merged source
+`fd817121c375f02d9c02700a7cd66a001c99787c`. Its native evidence remains bound to
+the executed source in its [manifest](../../testing/M2/property-claim-applying-manifest.json).
+The next focused repair connects execution publication uncertainty back to the
+original coordinator. A worker previously stopped itself after a lost/foreign
+acknowledgement while leaving new coordinator submissions possible. The
+[handoff contract](../../testing/M2/property-handoff.md#worker-publication-uncertainty)
+now denies subsequent admissions and issued-worker launches after such uncertainty.
+This portable repair supplies no complete root backend, native serialization or
+recovery clearance; runtime writes stay disabled. See the
+[qualification record](../../testing/M2/property-handoff-uncertainty-manifest.json).
 
 ## Independent slice 2 prerequisite
 

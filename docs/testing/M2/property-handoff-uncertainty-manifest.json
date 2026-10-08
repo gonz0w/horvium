@@ -1,0 +1,10 @@
+{
+  "record_type": "M2-worker-publication-uncertainty-propagation",
+  "status": "qualification-pending",
+  "base_commit": "fd817121c375f02d9c02700a7cd66a001c99787c",
+  "scope": "Portable original-coordinator uncertainty propagation; no native backend, serialization, effect, recovery or runtime write authority",
+  "regression_cases": 20,
+  "concurrent_confirmation_callers_per_case": 16,
+  "native_suite_rerun": false,
+  "runtime_storage_writes": false
+}

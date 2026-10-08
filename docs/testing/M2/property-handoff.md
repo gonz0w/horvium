@@ -48,6 +48,40 @@ reconciliation and hold-retention rules remain unchanged. Cancellation of the
 handoff request does not become the issued worker's lifetime context; the trusted
 helper must supply its independent worker context to `Run`.
 
+## Worker publication uncertainty
+
+Execution and admission share the same uncertainty latch. A publication error,
+lost acknowledgement, invalid reply or valid but different record at any worker
+boundary blocks the original coordinator before that worker returns. Own the
+canonical candidate before delegation and compare the whole acknowledgement;
+an earlier queued record is not an applying/outcome acknowledgement. The worker
+returns only its last exactly acknowledged record, performs no further control
+or publication after the cut, and retains every hold.
+
+Subsequent confirmations (including duplicates), execution handoffs and the
+prelaunch checks of already-issued workers return `ErrStateUncertain` without
+backend I/O. Read-only review remains available. Publication itself also denies
+an already blocked coordinator. There is no latch reset, retry, rollback,
+terminal resolution or hold release. Exact verified reconciliation remains
+distinct from uncertain publication and does not set this latch; native/pool
+holds still belong to the trusted backend.
+
+Do not hold the coordinator mutex during backend publication. The latch protects
+later accesses after uncertainty is observed; it does not fence a backend call
+already in progress or supply global native launch serialization. The complete
+root backend must still prove those obligations. Forward expiry after a verified
+effect cannot erase a subsequent exact durable acknowledgement.
+
+Two added behavioral parents require 20 failing-first publication cases (four
+states by five failure modes), denial of a second worker issued before the cut,
+new handoffs, duplicate confirmations and 16 concurrent new confirmations per
+case, plus available read-only reviews. Verified reconciliation and the eight
+historical handoff parents remain passing requirements. Qualification is recorded
+in the separate [manifest](property-handoff-uncertainty-manifest.json); historical
+manifests retain their actual executed sources. This portable repair changes no
+native implementation/fixture/shared tooling and needs no unchanged native-suite
+rerun. A FreeBSD cross-build remains unexecuted compilation evidence only.
+
 ## Native and runtime obligations
 
 This portable handoff creates no process, goroutine, file, service or lease. The

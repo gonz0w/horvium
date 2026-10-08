@@ -257,6 +257,12 @@ record. Eight behavioral groups and affected race/fuzz checks passed; see the
 [manifest](docs/testing/M2/property-handoff-manifest.json). Full native backend
 and runtime execution remain open.
 
+Worker publication uncertainty now also suspends the original admission
+coordinator: failed, lost or mismatched acknowledgements block subsequent
+confirmations and execution handoffs. Read-only review remains available; no
+recovery or native execution authority is added. See the
+[handoff contract](docs/testing/M2/property-handoff.md#worker-publication-uncertainty).
+
 The [fresh root submission state claim](docs/testing/M2/property-live-state.md)
 adds an original-lease receipt for a read-only readiness exception for its own
 queued/applying job. Restored records cannot reconstruct the claim; other holds

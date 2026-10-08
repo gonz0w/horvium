@@ -3,6 +3,15 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 worker publication uncertainty propagates to the original property coordinator.
+Failed, lost or mismatched applying/observing/outcome acknowledgements deny later
+admissions and issued-worker launches; read-only review remains available.
+This changes portable orchestration only. Native implementations, fixtures,
+shared tools and historical manifests are unchanged, so their evidence retains
+its actual sources. No native suite rerun or support claim follows. See the
+[handoff contract](../testing/M2/property-handoff.md#worker-publication-uncertainty)
+and [qualification record](../testing/M2/property-handoff-uncertainty-manifest.json).
+
 M2 [original claim applying acknowledgement](../testing/M2/property-claim-applying.md)
 adds metadata publication only on the original root lease. The existing supported
 ZFS/UFS-without-softupdates metadata rules stay unchanged; no native eligibility,

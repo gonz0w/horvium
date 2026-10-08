@@ -4,6 +4,7 @@ package storage
 import (
 	"bytes"
 	"context"
+	"errors"
 	"time"
 )
 
@@ -109,6 +110,37 @@ type propertyHandoffBackend struct {
 	id       string
 	admitted []byte
 	expires  time.Time
+}
+
+// A worker's uncertain publication must suspend the same coordinator that
+// admitted it. The execution sequence keeps its last exact acknowledgement;
+// returning uncertainty here also denies later admissions and issued workers.
+// Backend I/O must stay outside owner.mu: root adapters may consult the original
+// coordinator. This is propagation, not atomic native launch serialization.
+func (b *propertyHandoffBackend) PublishPropertyExecution(next PropertyJob, expected uint64) (PropertyJob, error) {
+	b.owner.mu.Lock()
+	blocked := b.owner.publicationBlocked
+	b.owner.mu.Unlock()
+	if blocked {
+		return PropertyJob{}, ErrStateUncertain
+	}
+	// Own the expected bytes before delegation; an adapter must not be able to
+	// rewrite an aliased candidate and thereby redefine its acknowledgement.
+	encoded, err := EncodePropertyJob(next)
+	if err != nil {
+		return PropertyJob{}, err
+	}
+	ack, err := b.PropertyExecutionBackend.PublishPropertyExecution(clonePropertyJob(next), expected)
+	actual, encodingErr := EncodePropertyJob(ack)
+	if err != nil || encodingErr != nil || !bytes.Equal(encoded, actual) {
+		b.owner.mu.Lock()
+		b.owner.publicationBlocked = true
+		b.owner.mu.Unlock()
+		return PropertyJob{}, errors.Join(ErrStateUncertain, err, encodingErr)
+	}
+	// No expiry/context check after an exact durable acknowledgement. A late
+	// verified outcome still belongs to the existing attempt.
+	return clonePropertyJob(ack), nil
 }
 
 func (b *propertyHandoffBackend) live(ctx context.Context) error {
