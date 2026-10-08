@@ -1,6 +1,6 @@
 # M2 bounded property reply prerequisite
 
-Date: 2026-10-08. Status: implementation in review; qualification pending.
+Date: 2026-10-08. Status: implementation in review; partial portable evidence.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 Approved [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [typed requests](property-requests.md), [native peer](action-peer.md).
@@ -72,7 +72,20 @@ fixtures; the shared converters retain the existing durable schemas and checksum
 Run baseline/focused affected-package race/fuzz checks and unexecuted helper/storage
 FreeBSD compilation. Existing native controls, peer checks, fixtures and shared
 tooling remain unchanged; this portable codec/converter slice makes no new native
-execution claim and does not rerun QEMU. Source-bound evidence is pending.
+execution claim and does not rerun QEMU. Source-bound evidence is recorded below.
 Owned exchange, root recovery/global launch, operator workflows, native assembled
 safety/continuity/resources and full M2 acceptance remain open. M1 Safari/VoiceOver
 stays pending; Actions stay disabled.
+
+Executed partial evidence: signed source `728387ba21d322f5ee42426bdf617d527e2afdda` passed
+twelve behavioral parents/36 children and five fuzz seeds, baseline/131 tooling
+tests, 9 affected race packages and all 43 bounded fuzz targets in 225.190
+seconds. Helper/storage FreeBSD test packages compiled without execution; exact
+checksummed artifacts were removed. Independent old/new synthetic intent/property-job
+record hashes match merged PR 95 and are guarded by golden regression tests.
+All 71 historical M2 manifests and 395 protected existing inputs retain actual
+bytes. All 628 owned sessions stopped with verified teardown; Actions
+remain disabled. The earlier native-selector naming collision is explicitly
+unqualified and corrected before this fresh review. See the
+[source-bound manifest](property-replies-manifest.json). Owned exchange, root
+recovery/global launch, actual admission and full M2 acceptance remain pending.

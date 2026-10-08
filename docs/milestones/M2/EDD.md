@@ -736,4 +736,17 @@ Admission/duplicate/refusal labels remain peer assertions, not durability or ret
 permission. This is a portable T1 subset of M2-PLAN-001/M2-PRIV-001/M2-JOB-001;
 owned socket phases, original session/kernel authorization, enrolled root policy,
 recovery/global launch and actual admission/native execution remain pending.
-Baseline/focused race/fuzz and unexecuted FreeBSD compilation are pending.
+Baseline/focused race/fuzz and unexecuted FreeBSD compilation are recorded below.
+
+Executed partial evidence: signed source `728387ba21d322f5ee42426bdf617d527e2afdda` passed
+twelve behavioral parents/36 children and five fuzz seeds, baseline/131 tooling
+tests, 9 affected race packages and all 43 bounded fuzz targets in 225.190
+seconds. Helper/storage FreeBSD test packages compiled without execution; exact
+checksummed artifacts were removed. Independent old/new synthetic intent/property-job
+record hashes match merged PR 95 and are guarded by golden regression tests.
+All 71 historical M2 manifests and 395 protected existing inputs retain actual
+bytes. All 628 owned sessions stopped with verified teardown; Actions
+remain disabled. The earlier native-selector naming collision is explicitly
+unqualified and corrected before this fresh review. See the
+[source-bound manifest](../../testing/M2/property-replies-manifest.json). Owned exchange, root
+recovery/global launch, actual admission and full M2 acceptance remain pending.
