@@ -225,7 +225,12 @@ func (s *propertyServer) deny(c *propertyConnection) (err error) {
 		return err
 	}
 	defer func() { err = errors.Join(err, a.Close()) }()
-	if _, _, err := a.receive(); err != nil {
+	binding, err := receivePropertyBinding(a)
+	if err != nil {
+		return err
+	}
+	defer func() { err = errors.Join(err, binding.Close()) }()
+	if err := binding.check(c.ctx); err != nil {
 		return err
 	}
 	return a.refuse("denied")
