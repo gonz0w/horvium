@@ -1240,6 +1240,13 @@ PR 98 accepted connection accounting at merged source
 [admitted exchange](../../testing/M2/property-admitted.md) ties one negotiation
 attempt to the original admission context/descriptor, automatically releases
 capacity after terminal replies/errors and contains shutdown/overlap in both I/O
-phases. Native failing-first and fresh full portable qualification are pending.
+phases. Signed source `24fd2777481139386f8e824579f22e9579755a8e` passed all 60
+transport cases on both disposable FreeBSD releases, four portable behavioral
+parents, baseline/133 tooling tests and fresh full portable review (11 race
+packages and 49 bounded fuzz targets). Native denying-stub evidence remains
+unqualified; earlier passing results retain their actual source. All 647 owned
+sessions stopped with verified teardown; Actions remain disabled. All 74 historical
+M2 manifests retain their bytes. See the
+[source-bound manifest](../../testing/M2/property-admitted-manifest.json).
 It registers no listener, worker, session adapter, backend or storage command;
 independent root/session/recovery/global launch and complete M2 acceptance remain open.

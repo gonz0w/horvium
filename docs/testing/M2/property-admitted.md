@@ -1,6 +1,6 @@
 # M2 admitted property exchange
 
-Date: 2026-10-08. Status: test-first contract; native qualification pending.
+Date: 2026-10-08. Status: partial native transport qualification; maintainer review pending.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 Approved [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [connection admission](property-connections.md), [typed exchange](property-exchange.md).
@@ -54,8 +54,19 @@ artifact hashes and full fixture/base/runtime/supervisor cleanup. The strict che
 requires every parent/case/result once; historical uncomposed proofs retain their
 actual sources and cannot qualify this extension. Shared selector/checker edits
 require fresh full portable review and serial runs on both pinned FreeBSD releases.
-Native/portable evidence is pending. M1 Safari/VoiceOver remains pending and Actions
-stay disabled; full M2/native write acceptance remains open.
+Signed source `24fd2777481139386f8e824579f22e9579755a8e` passed all 60 cases
+(18 original peer, 26 original typed exchange and 16 admitted exchange) on both
+disposable FreeBSD 15.1 and 14.5. Four portable behavioral parents passed, as did
+fresh baseline checks/133 tooling tests, all 11 race packages and 49 bounded fuzz
+targets. Deep portable review took 214.903 seconds. The native denying-stub run
+remains unqualified; earlier successful results retain their actual earlier source.
+See the [source-bound manifest](property-admitted-manifest.json).
+
+All 647 owned sessions stopped with verified teardown; native executable/key
+artifacts were removed and both guests' base/runtime inputs preserved. All 74
+historical M2 manifests and 378 protected existing internal/tooling inputs retain
+their bytes. M1 Safari/VoiceOver remains pending and Actions stay disabled;
+full M2/native write acceptance remains open.
 
 The interruption fixture must fail if negotiation returns any owner or request
 metadata, rather than converting unexpected success into a synthetic error. Normal

@@ -4,8 +4,11 @@
 validation are separate. Refresh exact versions in each active research manifest.
 
 M2 [admitted property exchange](../testing/M2/property-admitted.md) composes the
-original admission lease and typed peer. Native/portable qualification is pending;
-no runtime worker, session/backend authority or native write is registered.
+original admission lease and typed peer. Both disposable FreeBSD 15.1 and 14.5
+passed all 60 transport cases. Four portable behavioral parents, baseline/133
+tooling tests, 11 race packages and 49 bounded fuzz targets passed with verified
+teardown; see the [manifest](../testing/M2/property-admitted-manifest.json).
+No runtime worker, session/backend authority or native write is registered.
 
 M2 [bounded property connection admission](../testing/M2/property-connections.md)
 passed eight portable behavioral parents/twelve children, baseline/132 tooling
