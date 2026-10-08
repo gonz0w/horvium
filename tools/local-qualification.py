@@ -19,6 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ROOT / 'tools'
 SUITES = {
+    'action-peer': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_ACTION_PEER_VM=1 sh tools/bsd-action-peer-prebuilt.sh'),
     'foundation': ('git', 'sh tools/bsd-foundation-smoke.sh FreeBSD'),
     'research': ('python314', 'env HORVIUM_RESEARCH_VM=1 sh tools/research/m1-native.sh'),
     'discovery': ('python314', 'env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh'),
@@ -32,6 +33,7 @@ SUITES = {
 }
 
 PREBUILT = {
+    'action-peer': ('action-peer-native.test', './internal/helper', 'ACTION_PEER_PREBUILT_SHA256', 'HORVIUM_ACTION_PEER_VM=1', 'bsd-action-peer-prebuilt.sh'),
     'job-status': ('storage-job-status-native.test', './cmd/horvium', 'STORAGE_JOB_STATUS_PREBUILT_SHA256', 'HORVIUM_STATUS_VM=1', 'bsd-storage-job-status-prebuilt.sh'),
     'state': ('state-native.test', './internal/storage', 'STATE_PREBUILT_SHA256', 'HORVIUM_STATE_VM=1', 'bsd-state-prebuilt.sh'),
     'pool-properties': ('pool-properties-native.test', './internal/host/freebsd', 'POOL_PROPERTIES_PREBUILT_SHA256', 'HORVIUM_PROPERTY_VM=1', 'bsd-pool-properties-prebuilt.sh'),
@@ -131,6 +133,9 @@ def stop_guest(process):
 def validate_result(suite, log, complete=False):
     if '--- FAIL:' in log or '\nFAIL\n' in log:
         raise ValueError('guest test failure')
+    if suite == 'action-peer':
+        load_tool('check-action-peer-evidence').validate(log)
+        return
     if suite == 'job-status':
         load_tool('check-storage-job-status-evidence').validate(log)
         return
@@ -339,6 +344,7 @@ def main():
             (directory / 'state-native.test').unlink(missing_ok=True)
             (directory / 'pool-properties-native.test').unlink(missing_ok=True)
             (directory / 'storage-job-status-native.test').unlink(missing_ok=True)
+            (directory / 'action-peer-native.test').unlink(missing_ok=True)
             record['host_teardown'] = True
             if device_tool and record.get('guest_assertions'):
                 if not record.get('device_backings_preserved') or not record.get('device_fixture_teardown'):

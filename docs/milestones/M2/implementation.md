@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 92; context negotiation in review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 93; native action peer in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1108,3 +1108,30 @@ checksummed artifacts were removed. Review supervisors and all 612 owned
 sessions stopped with verified teardown; Actions remain disabled. All 68
 historical M2 manifests and 386 existing Go/tooling inputs are byte-identical
 to the merged base. See the [manifest](../../testing/M2/action-negotiation-manifest.json).
+
+## Native action-peer prerequisite
+
+PR 93 accepted the bounded negotiation codecs at merged source
+`3728211628a270de3f958534d6f37e3374ce6f46`. The next
+[peer contract](../../testing/M2/action-peer.md) binds private negotiation to the
+actual kernel UID and original connection with bounded cancellation/deadline and
+owned close. It remains unregistered, supplies no policy/recovery/launch authority
+and preserves version-1 inventory behavior. A focused checksummed prebuilt peer
+suite avoids repeated discovery SDK/package builds on the Mac. Shared runner/
+cleanup changes require fresh full portable qualification plus both native
+targets. Source-bound evidence is recorded below.
+
+Executed partial evidence: signed source `4222e8f098114df8942fb4843f7e683ae9068ee7` passed
+four new portable parents/nine children, baseline/131 tooling tests, all 11
+portable race packages and all 46 bounded fuzz targets in 223.465 seconds.
+The shared-tooling change selected a fresh full review. The same exact executable
+passed all eighteen native cases on FreeBSD 15.1-RELEASE-p3 and 14.5-RELEASE,
+in 33.303/36.617 seconds including boot/teardown. Wrong/root UID, nonroot helper
+despite repaired file ownership, EOF and extra-frame denials used actual kernel
+facilities. Every socket/fixture/artifact/guest/supervisor cleaned up; all
+618 owned sessions stopped. The earlier native stub run is explicitly
+unqualified with verified cleanup. All 69 historical M2 manifests and 383
+protected existing inputs retain actual bytes/sources; existing native peer/
+socket functions and old suite commands/deadlines are preserved. See the
+[manifest](../../testing/M2/action-peer-manifest.json). No runtime operation or full recovery/global
+launch/acceptance follows. Actions remain disabled.

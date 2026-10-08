@@ -73,6 +73,30 @@ class LocalQualificationTests(unittest.TestCase):
         for digest in [None,'oops','a'*63,'a'*64+';bad']:
             with self.assertRaises(ValueError):self.module.suite_command('job-status',False,digest)
 
+    def test_action_peer_prebuilt_is_hash_bound_without_devices_or_packages(self):
+        packages, command = self.module.suite_command('action-peer', False, 'a' * 64)
+        self.assertEqual(packages, '')
+        self.assertIn('bsd-action-peer-prebuilt.sh', command)
+        self.assertIn('HORVIUM_ACTION_PEER_VM=1', command)
+        self.assertFalse(self.module.uses_device_fixture('action-peer'))
+        self.module.validate_prebuilt('ACTION_PEER_PREBUILT_SHA256 ' + 'a' * 64 + '\n', 'a' * 64, 'action-peer')
+        for digest in (None, 'oops', 'a' * 63, 'a' * 64 + ';bad'):
+            with self.assertRaises(ValueError):
+                self.module.suite_command('action-peer', False, digest)
+        for log in ('', 'ACTION_PEER_PREBUILT_SHA256 ' + 'b' * 64 + '\n', ('ACTION_PEER_PREBUILT_SHA256 ' + 'a' * 64 + '\n') * 2):
+            with self.assertRaises(ValueError):
+                self.module.validate_prebuilt(log, 'a' * 64, 'action-peer')
+
+    def test_action_peer_requires_complete_kernel_and_teardown_cases(self):
+        checker = self.module.load_tool('check-action-peer-evidence')
+        log = ('--- PASS: TestNativeActionPeer (1.0s)\n'
+               + ''.join('    --- PASS: TestNativeActionPeer/' + n + ' (0.1s)\n' for n in sorted(checker.CASES))
+               + 'ACTION_PEER_RESULT ' + ' '.join(n + '=pass' for n in sorted(checker.CASES)) + '\n')
+        self.module.validate_result('action-peer', log, complete=True)
+        for bad in ('', log.replace('wrong-uid=pass', ''), log.replace('fixtures-teardown=pass', 'fixtures-teardown=fail')):
+            with self.assertRaises(ValueError):
+                self.module.validate_result('action-peer', bad, complete=True)
+
     def test_storage_status_requires_complete_actual_native_evidence(self):
         checker=self.module.load_tool('check-storage-job-status-evidence')
         log='--- PASS: TestNativeStorageJobStatus (1.0s)\nSTORAGE_JOB_STATUS_RESULT '+' '.join(c+'=pass' for c in sorted(checker.CASES))+'\nSTORAGE_JOB_STATUS_BACKING filesystem=zfs softupdates=off teardown=pass\n'

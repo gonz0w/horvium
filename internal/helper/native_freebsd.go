@@ -33,6 +33,34 @@ func peerUID(c *net.UnixConn) (uint32, error) {
 	return uid, nil
 }
 
+// Peer credentials can outlive the peer's close. Only a nonblocking empty live
+// stream passes; EOF, unread extra bytes and any syscall uncertainty deny use.
+func actionPeerQuiet(c *net.UnixConn) error {
+	if c == nil {
+		return ErrPermission
+	}
+	raw, err := c.SyscallConn()
+	if err != nil {
+		return ErrPermission
+	}
+	result := ErrPermission
+	err = raw.Control(func(fd uintptr) {
+		var b [1]byte
+		n, _, err := unix.Recvfrom(int(fd), b[:], unix.MSG_PEEK|unix.MSG_DONTWAIT)
+		if n > 0 {
+			result = ErrProtocol
+			return
+		}
+		if err == unix.EAGAIN || err == unix.EWOULDBLOCK {
+			result = nil
+		}
+	})
+	if err != nil {
+		return ErrPermission
+	}
+	return result
+}
+
 func safeDirectory(c Config) error {
 	dir := filepath.Dir(c.Socket)
 	first := true
