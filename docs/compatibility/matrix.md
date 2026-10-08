@@ -3,6 +3,11 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [typed property requests](../testing/M2/property-requests.md) add bounded,
+strict version-2 review/submission codecs and shared literal intent validation.
+These portable prerequisites do not enable the inventory runtime, prove native
+exchange, enroll a pool or authorize a job. Qualification is pending.
+
 M2 [native action-peer binding](../testing/M2/action-peer.md) requires actual
 kernel UID negotiation/lifetime evidence on both disposable targets. Private
 factories remain unregistered; runtime operations and full recovery/global launch

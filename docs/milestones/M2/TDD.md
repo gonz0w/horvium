@@ -1322,3 +1322,18 @@ protected existing inputs retain actual bytes/sources; existing native peer/
 socket functions and old suite commands/deadlines are preserved. See the
 [manifest](../../testing/M2/action-peer-manifest.json). No runtime operation or full recovery/global
 launch/acceptance follows. Actions remain disabled.
+
+## Typed property request prerequisite
+
+PR 94 accepted the original native peer boundary at merged source
+`543889037dba05df0906130ddcc720e995afde9f`. The next
+[request contract](../../testing/M2/property-requests.md) defines strict version-2
+property review/submission selections: canonical pool/filesystem GUIDs and the
+planner's literal property allowlist, or only pool/plan/submission identifiers.
+Each schema rejects extra privilege fields and replacement intent. Original request
+correlation and fixed frame/field/depth limits are syntax checks, never peer/session,
+enrollment, original plan, recovery or launch proof. Inventory runtime and original
+peer quiet behavior remain unchanged; response/exchange/dispatcher integration
+remains pending. This is a T1 subset of M2-PLAN-001/M2-PRIV-001, not native or M2
+acceptance. Baseline/focused race/fuzz and unexecuted FreeBSD compilation are
+pending; preserve historical source-bound native evidence.
