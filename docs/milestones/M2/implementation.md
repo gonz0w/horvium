@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 98; admitted property exchange in review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 99; session-bound property client in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1250,3 +1250,12 @@ M2 manifests retain their bytes. See the
 [source-bound manifest](../../testing/M2/property-admitted-manifest.json).
 It registers no listener, worker, session adapter, backend or storage command;
 independent root/session/recovery/global launch and complete M2 acceptance remain open.
+
+## Session-bound property client prerequisite
+
+PR 99 accepted admitted exchange ownership at merged source
+`50c342f8314e704db7da4c8d1df7e39d7670d1d5`. The next
+[application client](../../testing/M2/property-client.md) joins original live-session
+checks to an actual kernel-authenticated one-operation client, with typed selection
+validation before negotiation. Qualification is pending. Runtime/session backend
+assembly, root recovery/global launch and complete M2 acceptance remain open.

@@ -319,6 +319,10 @@ pool suites passed with verified teardown; see the
 [evidence](docs/testing/M2/property-native-backend-manifest.json). Operator writes
 remain disabled.
 
+The [session-bound property client](docs/testing/M2/property-client.md) connects
+original application authority to the kernel-authenticated typed client. Qualification
+is pending; no runtime route, backend dispatch or storage write is registered.
+
 The [admitted property exchange](docs/testing/M2/property-admitted.md) composes
 original connection capacity/deadlines with one kernel-authorized typed exchange.
 Both disposable FreeBSD releases passed all 60 transport cases; baseline and full

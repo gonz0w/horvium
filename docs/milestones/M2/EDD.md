@@ -800,3 +800,17 @@ worker, application-session adapter or policy/store dispatcher is registered.
 Qualify the composed transport with real credentials/Unix I/O on both releases;
 retain separate original peer/exchange evidence and synthetic metadata limits.
 Independent session/backend/recovery/global launch gates remain mandatory.
+
+## Session-bound property client prerequisite
+
+PR 99 accepted the admitted exchange at merged source
+`50c342f8314e704db7da4c8d1df7e39d7670d1d5`. The
+[application client contract](../../testing/M2/property-client.md) binds the concrete
+original application authority to a kernel-authenticated client-side socket owner.
+Recheck the original credential-free context around negotiation/request/reply
+phases without idle renewal, fallback or retry. A trusted liveness callback cannot
+substitute for actual kernel UID or confer independent root session/policy/recovery
+permission. Revocation during blocked I/O is observed at phase boundaries and the
+original deadline bounds I/O; already transmitted bytes cannot be undone. The
+private adapters validate typed selections before negotiation. No runtime route,
+listener/backend/service or native write is registered; assembled gates remain open.

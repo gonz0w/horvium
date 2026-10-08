@@ -1429,3 +1429,18 @@ parents and exact case/result inventories with unchanged 80/90-second deadlines.
 Shared tooling changes require fresh full portable review; execute failing-stub
 native proof before implementation and retain it as unqualified. Full authenticated
 session/backend/recovery/global launch and assembled M2 qualification remain open.
+
+## Session-bound property client prerequisite
+
+Require the [client contract](../../testing/M2/property-client.md) for partial
+M2-PLAN-001/M2-PRIV-001/M2-HTTP-001 T1/T2 evidence. Start with denying stubs and
+real original-session tests; deny reconstructed/mismatched/revoked/expired/rollback/
+cancelled authorities without idle renewal. Retire invalid/unsupported factories.
+A separate native parent uses actual configured nonroot reexec credentials and
+root Unix peers, synthetic display replies and callback phase-cut fixtures (never
+kernel UID hooks): review/submission/duplicate/refusal, every guarded phase,
+copy/invalid selection denial, fixed missing-reply deadline and fixture removal.
+Strictly retain every old 60 case and fourteen new client cases on both pinned
+releases, original 80/90-second bounds, source/hash provenance and verified cleanup.
+Shared tools require fresh full portable review. Full native authenticated runtime,
+backend/recovery/global launch and M2 acceptance remain separate.

@@ -491,3 +491,10 @@ complete original/composed inventories; retain existing 80/90-second deadlines.
 This adds no artifact/package/storage disk or service; existing owned guest/binary
 cleanup applies. Previous peer/exchange proofs stay bound to their original sources.
 See the [contract](M2/property-admitted.md).
+
+The session-bound property client extends `action-peer` with a fourth separate
+native parent and fourteen callback phase/typed-client cases. These callbacks model
+application revocation; actual root/configured service kernel UIDs remain mandatory.
+All 74 transport cases and unchanged 80/90-second bounds must pass; old three-parent
+proofs retain their original sources but cannot qualify this extension. No new
+persistent service, operator storage, guest disk or artifact type is introduced.
