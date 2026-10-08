@@ -7,7 +7,10 @@ M2 [original-claim successor metadata](../testing/M2/property-claim-successor.md
 permits exact observing/reconciliation/success appends only after an acknowledgement
 by the original root claim. Stored/raw-published bytes cannot reconstruct that
 lineage. It changes no backing rules or native eligibility and releases no holds.
-Portable/native state qualification is pending in the
+Both portable and native state qualification passed at signed source
+`7af2f1cda24179f4e9f8ceebc4a20503dc6c9c25`: 18 lineage cases, 125 tooling tests,
+9 affected race packages, 38 bounded fuzz targets and all 38 new native children
+on both pinned targets, retaining every old state gate and complete teardown. See the
 [manifest](../testing/M2/property-claim-successor-manifest.json). Existing native
 pool sources, claim readiness/readers and shared tools remain unchanged; prior
 evidence keeps its actual sources. Runtime storage writes remain disabled.

@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 87; claim-bound observer pool gates qualified; original-claim applying metadata and worker uncertainty subsets qualified; successor metadata in qualification; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 87; claim-bound observer pool gates qualified; original-claim applying metadata and worker uncertainty subsets qualified; successor metadata qualified/in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -985,3 +985,9 @@ both disposable native state gates plus focused portable review; see its
 [manifest](../../testing/M2/property-claim-successor-manifest.json). Runtime writes,
 complete root backend, native effects/interruption/recovery and transport remain
 unqualified/disabled; metadata success alone supplies no native outcome authority.
+Signed source `7af2f1cda24179f4e9f8ceebc4a20503dc6c9c25` passed all 18 portable
+lineage cases, mandatory baseline with 125 tooling tests, 9 affected race packages
+and 38 bounded fuzz targets. Both native state releases passed all 38 new children,
+23 applying/19 live-state children, actual UID denial and every historical gate,
+with identical artifacts and complete teardown. Maintainer acceptance is pending;
+all 63 prior manifests retain their original sources.

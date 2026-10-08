@@ -1,6 +1,6 @@
 # M2 original-claim property successor acknowledgement
 
-Date: 2026-10-08. Status: qualification pending; runtime writes disabled.
+Date: 2026-10-08. Status: metadata subset qualified; maintainer review pending; runtime writes disabled.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -101,3 +101,31 @@ See the [manifest](property-claim-successor-manifest.json) for source-bound resu
 artifacts and teardown. Full original backend, native effects/death/reboot/recovery,
 authenticated operator workflow, terminal resolution/hold release and assembled M2
 acceptance remain separate gates.
+
+## Source-bound results
+
+Signed source `7af2f1cda24179f4e9f8ceebc4a20503dc6c9c25`, based on PR 87 merge
+`412cf3a9bd49c435eb77dbd7664ed0ed8981a378`, passed both new portable parents,
+all 18 lineage cases, prior applying tests and mandatory `make check lint test secrets`
+with 125 tooling tests. Focused review passed 9 affected race packages and all
+38 selected bounded fuzz targets in 195.271 seconds, with both supervisors cleaned.
+
+Both pinned FreeBSD releases passed all 38 new children, actual UID denial,
+23 applying/19 live-state children and every old 819 state/backing assertion,
+67 parent and 1,876 codec child. Identical artifact
+`19638da705a51331ef8fccf811b26baa7b52d85bfeb67143a89292595f41536b`
+ran on both guests. Successor groups took 11.03/10.19 seconds on 15.1/14.5;
+full qualification took 83.637/75.337 seconds. These are lab timings and real
+metadata operations, with synthetic intent/policy/digest values and no native
+outcome or hardware performance claim.
+
+All 63 prior manifests and 120 protected shared/native observer/reader/publisher
+inputs remain unchanged. Original ledger/readiness logic, claim readers, generic
+publisher/backing checks, selectors/checkers/supervisors, old deadlines and native
+pool/control sources are byte-identical; pool evidence retains its original source.
+Both guests, owned metadata fixtures/backings, images/keys/variables/binaries and
+process groups were removed or verified stopped. Base/runtime hashes were preserved;
+lab status found no active/unverified owned sessions. The unexecuted development
+cross-build was removed and is not native evidence. Actions remain disabled.
+See the [manifest](property-claim-successor-manifest.json) for actual artifact/report/
+log hashes, scope and remaining gates.

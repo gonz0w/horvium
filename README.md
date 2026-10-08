@@ -289,9 +289,10 @@ runtime writes and recovery workflows remain disabled/pending; see the
 
 The [original-claim successor acknowledgement](docs/testing/M2/property-claim-successor.md)
 adds exact observing/outcome metadata after the original applying acknowledgement.
-It retains volatile publication lineage, strict census checks and holds, without
-native outcome authority or runtime storage writes. Qualification is recorded
-separately in its [manifest](docs/testing/M2/property-claim-successor-manifest.json).
+It retains volatile publication lineage, strict census checks and holds. Focused
+portable review and all 38 new native metadata cases passed on both FreeBSD targets
+with complete teardown. Native outcome authority and runtime storage writes remain
+disabled; see its [manifest](docs/testing/M2/property-claim-successor-manifest.json).
 
 ## Agreed direction
 
