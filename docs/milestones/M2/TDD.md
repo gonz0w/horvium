@@ -1290,3 +1290,20 @@ checksummed artifacts were removed. Review supervisors and all 612 owned
 sessions stopped with verified teardown; Actions remain disabled. All 68
 historical M2 manifests and 386 existing Go/tooling inputs are byte-identical
 to the merged base. See the [manifest](../../testing/M2/action-negotiation-manifest.json).
+
+## Native action-peer amendment
+
+The [peer contract](../../testing/M2/action-peer.md) supplies partial M2-PRIV-001/
+M2-NATIVE-001 T1/T3 evidence. Require actual reexec UID drop before connecting,
+actual root/kernel nonroot UID binding, root/wrong-UID rejection before reads,
+nonroot helper rejection before writes despite repaired file ownership, local
+UID denial, schema/version/operation refusal, idle/truncated cuts and retained
+connection cancellation/deadline/disconnect/extra-frame/close denials. A canonical
+service-asserted context is correlation, not independently verified human/session
+identity. All eighteen named native children and unique complete result, exact
+artifact hash and owned socket/binary/guest/host/supervisor teardown must pass on
+both release candidates. Reject unissued/decoded private peers portably; preserve
+existing inventory/negotiation tests. Shared runner/cleanup changes require fresh
+full portable review; old suites retain their actual source-bound evidence and
+unchanged commands/deadlines. Record failing-first native stub evidence without
+qualifying it. Runtime operations/recovery/global launch/M2 acceptance remain open.

@@ -3,6 +3,12 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [native action-peer binding](../testing/M2/action-peer.md) requires actual
+kernel UID negotiation/lifetime evidence on both disposable targets. Private
+factories remain unregistered; runtime operations and full recovery/global launch
+are unavailable. No hardware or deployment support follows from this boundary.
+Actual evidence is recorded after execution.
+
 M2 [application-context negotiation](../testing/M2/action-negotiation.md) is an
 unregistered portable codec/application prerequisite. Separate version-2 hello/ready
 frames enforce 512-byte bounds, strict schemas and original session correlation;

@@ -665,3 +665,18 @@ checksummed artifacts were removed. Review supervisors and all 612 owned
 sessions stopped with verified teardown; Actions remain disabled. All 68
 historical M2 manifests and 386 existing Go/tooling inputs are byte-identical
 to the merged base. See the [manifest](../../testing/M2/action-negotiation-manifest.json).
+
+## Original native action-peer amendment
+
+The [peer contract](../../testing/M2/action-peer.md) binds version-2 negotiation
+to an original owned Unix connection. Require the actual configured nonroot UID
+at the root side and actual root peer at the nonroot side before bytes cross;
+caller JSON is never UID proof. The connection owns a bounded context/deadline
+and retires on denial, timeout, cancellation, disconnect, extra unparsed data or
+close. Revalidate kernel identity and retained original context before projecting
+the private correlation tuple. These private factories are unregistered and
+install no service or listener. Existing socket directory/ownership safeguards
+remain the future transport owner's obligation. Negotiation grants no operation,
+application-session attestation, enrollment, recovery/global launch or executor
+death proof. A compromised authorized service can assert a canonical context,
+as already specified by the approved design.

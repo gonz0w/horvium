@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 92; context negotiation in review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 93; native action peer in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1108,3 +1108,15 @@ checksummed artifacts were removed. Review supervisors and all 612 owned
 sessions stopped with verified teardown; Actions remain disabled. All 68
 historical M2 manifests and 386 existing Go/tooling inputs are byte-identical
 to the merged base. See the [manifest](../../testing/M2/action-negotiation-manifest.json).
+
+## Native action-peer prerequisite
+
+PR 93 accepted the bounded negotiation codecs at merged source
+`3728211628a270de3f958534d6f37e3374ce6f46`. The next
+[peer contract](../../testing/M2/action-peer.md) binds private negotiation to the
+actual kernel UID and original connection with bounded cancellation/deadline and
+owned close. It remains unregistered, supplies no policy/recovery/launch authority
+and preserves version-1 inventory behavior. A focused checksummed prebuilt peer
+suite avoids repeated discovery SDK/package builds on the Mac. Shared runner/
+cleanup changes require fresh full portable qualification plus both native
+targets. Source-bound evidence is recorded after actual execution.

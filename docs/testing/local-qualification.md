@@ -45,7 +45,7 @@ runner.
 
 Use a clean committed checkout. The runner transfers `git archive HEAD`, never
 the host's ignored files, Git credentials or private configuration. The state
-and focused pool-property suites additionally transfer one explicitly built,
+and focused pool-property/peer suites additionally transfer one explicitly built,
 checksummed test executable.
 
 ```sh
@@ -61,7 +61,7 @@ python3.14 tools/local-qualification.py pool-properties 14.5 --run
 ```
 
 Supported suites: `foundation`, `research`, `discovery`, `state`, `properties`, `pool-properties`,
-`continuity`, `performance`, `devices`, `job-status`. Run the two release candidates **sequentially** on
+`continuity`, `performance`, `devices`, `job-status`, `action-peer`. Run the two release candidates **sequentially** on
 the Mac. Each guest has two CPUs, 6,144 MiB RAM, qemu64 and snapshot storage.
 Reserve additional RAM for macOS; stop other large workloads while testing.
 These are lab allocations, not Horvium runtime hardware requirements.
@@ -454,3 +454,16 @@ signed source `03d4ab5948dc56a41333acb0e4dd20d3191e1bc7`; actual UID, full-outpu
 cancellation, backing/preservation and complete teardown are recorded in the
 [source-bound manifest](M2/storage-job-status-manifest.json). This is diagnostic
 qualification, not native mutation/recovery or full application acceptance.
+
+## Focused action-peer boundary
+
+`python3.14 tools/local-qualification.py action-peer 15.1 --run` (then `14.5`)
+uses one host-cross-built FreeBSD helper test executable with an exact checksum.
+It installs no guest packages and attaches no storage fixture disks. The selected
+native parent has a 90-second outer/80-second Go deadline; every kernel UID,
+negotiation, cancellation/deadline/disconnection and owned fixture case must pass
+once. The [contract](M2/action-peer.md) and strict host checker distinguish actual
+execution from portable tests and prohibit missing/skipped/duplicate evidence.
+Both normal runner cleanup and controller-interruption fallback remove the new
+executable along with guest image/key/variables. Existing suite commands, cases
+and deadlines remain unchanged. The new suite is unqualified until executed.
