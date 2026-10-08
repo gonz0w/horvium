@@ -11,6 +11,7 @@ import sys
 import tempfile
 import tarfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 SOURCE = Path(__file__).resolve().parents[2]
@@ -27,6 +28,10 @@ class FoundationTests(unittest.TestCase):
         self.git("config", "user.email", "author@example.invalid")
         self.git("config", "commit.gpgsign", "false")
         self.git("config", "core.hooksPath", "/dev/null")
+        # Disposable fixture commits must not outlive their synchronous command.
+        # Do not inherit a policy that starts detached maintenance during teardown.
+        self.git("config", "maintenance.auto", "false")
+        self.git("config", "gc.auto", "0")
 
     def command(self, *args):
         return subprocess.run(args, cwd=self.repo, capture_output=True, text=True,
@@ -111,6 +116,25 @@ class FoundationTests(unittest.TestCase):
         head = self.git("rev-parse", "HEAD")
         result = self.command(sys.executable, "tools/check-dco.py", base, head)
         self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_fixture_commits_launch_no_automatic_maintenance(self):
+        # An inherited aggressive policy must not create a detached child that
+        # writes into the disposable repository while TemporaryDirectory cleans it.
+        global_config = Path(self.temp.name) / 'global-config'
+        global_config.write_text('[maintenance]\n\tauto = true\n[gc]\n\tauto = 1\n')
+        trace = Path(self.temp.name) / 'git-trace.json'
+        with mock.patch.dict(os.environ, {
+            'GIT_CONFIG_GLOBAL': str(global_config),
+            'GIT_TRACE2_EVENT': str(trace),
+        }):
+            self.commit('test: create maintenance fixture', signoff=True)
+            (self.repo / 'probe.md').write_text('Probe\n')
+            self.commit('test: update maintenance fixture', signoff=True)
+        events = [json.loads(line) for line in trace.read_text().splitlines()]
+        self.assertTrue(any(event.get('event') == 'start' for event in events))
+        automatic = [event for event in events if event.get('event') == 'child_start'
+                     and any(value in ('maintenance', 'gc') for value in event.get('argv', []))]
+        self.assertEqual(automatic, [], 'fixture commit launched automatic maintenance')
 
     def test_commit_hook_rejects_missing_or_wrong_signoff(self):
         message = self.repo / "message"

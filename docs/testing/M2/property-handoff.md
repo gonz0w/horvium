@@ -48,6 +48,77 @@ reconciliation and hold-retention rules remain unchanged. Cancellation of the
 handoff request does not become the issued worker's lifetime context; the trusted
 helper must supply its independent worker context to `Run`.
 
+## Worker publication uncertainty
+
+Execution and admission share the same uncertainty latch. A publication error,
+lost acknowledgement, invalid reply or valid but different record at any worker
+boundary blocks the original coordinator before that worker returns. Own the
+canonical candidate before delegation and compare the whole acknowledgement;
+an earlier queued record is not an applying/outcome acknowledgement. The worker
+returns only its last exactly acknowledged record, performs no further control
+or publication after the cut, and retains every hold.
+
+Subsequent confirmations (including duplicates), execution handoffs and the
+prelaunch checks of already-issued workers return `ErrStateUncertain` without
+backend I/O. Read-only review remains available. Publication itself also denies
+an already blocked coordinator. There is no latch reset, retry, rollback,
+terminal resolution or hold release. Exact verified reconciliation remains
+distinct from uncertain publication and does not set this latch; native/pool
+holds still belong to the trusted backend.
+
+Do not hold the coordinator mutex during backend publication. The latch protects
+later accesses after uncertainty is observed; it does not fence a backend call
+already in progress or supply global native launch serialization. The complete
+root backend must still prove those obligations. Forward expiry after a verified
+effect cannot erase a subsequent exact durable acknowledgement.
+
+Two added behavioral parents require 20 failing-first publication cases (four
+states by five failure modes), denial of a second worker issued before the cut,
+new handoffs, duplicate confirmations and 16 concurrent new confirmations per
+case, plus available read-only reviews. Verified reconciliation and the eight
+historical handoff parents remain passing requirements. Qualification is recorded
+in the separate [manifest](property-handoff-uncertainty-manifest.json); historical
+manifests retain their actual executed sources. The storage repair changes no
+native implementation/fixture and needs no unchanged native-suite rerun. The
+accompanying disposable Git-fixture teardown repair changes shared test tooling
+and therefore requires a fresh full portable review. A FreeBSD cross-build remains
+unexecuted compilation evidence only.
+
+Signed repair source `3bb8e871fb3324d894d04c56e0ea95600f325703`, based on PR 86
+merge `fd817121c375f02d9c02700a7cd66a001c99787c`, passed all 20 new cases,
+verified reconciliation and the eight prior handoff parents. Mandatory baseline
+checks passed all 124 tooling tests; focused deep review passed 9 race packages
+and all 38 selected fuzz targets in 217.749 seconds, with both supervisors cleaned.
+FreeBSD/amd64 tests cross-compiled but were not executed; the artifact was removed.
+All 62 historical manifests and 176 native/shared tooling paths remain unchanged.
+Lab status found no active or unverified owned sessions; Actions remain disabled.
+
+Two baseline runs stopped before deep execution when the disposable Git fixture's
+cleanup raced detached automatic maintenance. The original 13 foundation tests
+passed on an intervening recheck and focused review passed at the source above;
+the final documentation baseline reproduced the race. Six traced DCO fixtures
+confirmed detached `git maintenance run --auto ... --detach` children, with two
+cleanup failures. These failed runs remain unqualified and source-bound.
+
+The fixture now disables `maintenance.auto` and `gc.auto` in its own temporary
+repository, preserving operator/repository settings elsewhere. A failing-first
+trace regression uses an inherited aggressive global policy and requires two
+fixture commits to launch no automatic maintenance child. This prevents the
+identified cleanup race without suppressing cleanup errors or retrying deletion.
+All 14 foundation tests must pass; inspected residue is removed only after the
+owned diagnostic has stopped. Changing shared test tooling requires a fresh full
+portable review, recorded separately in the same new manifest. Native runtime
+implementations and fixture semantics are unchanged.
+
+Signed combined source `cdc6fd34bbf41a3a4885abd44e04047a14b01d9e` passed the
+fresh full portable review: mandatory baseline with 125 tooling tests, all 11
+race packages and all 44 bounded fuzz targets in 212.167 seconds. Both review
+supervisors completed with verified clean groups. Storage code is byte-identical
+to the focused/cross-compiled source above; all 62 historical manifests and all
+native implementations/fixtures remain unchanged. Lab status found no active
+or unverified owned sessions. Actions remain disabled; native runtime writes
+and complete backend/recovery qualification remain pending.
+
 ## Native and runtime obligations
 
 This portable handoff creates no process, goroutine, file, service or lease. The

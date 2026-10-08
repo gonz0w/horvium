@@ -1013,6 +1013,20 @@ complete preservation and owned-process teardown passed. See the
 interruption/recovery, transport or assembled acceptance follows from synthetic
 adapters or an unexecuted FreeBSD cross-build.
 
+## Worker publication uncertainty regression
+
+The [worker publication uncertainty repair](../../testing/M2/property-handoff.md#worker-publication-uncertainty)
+adds portable regression evidence for M2-JOB-001 and M2-RECOVERY-001. Require
+all four publication boundaries crossed with ordinary errors, lost acknowledgements,
+invalid replies, foreign replies and earlier valid records (20 cases). Each must
+retain the last acknowledged state, suspend the original coordinator, deny an
+already-issued second worker and new handoffs/duplicate confirmations, preserve
+read-only review, and refuse 16 concurrent new confirmations without backend I/O.
+A separately verified reconciliation acknowledgement must not latch uncertainty.
+Retain the prior late-success/clock/context/cut cases. Native implementations and
+fixtures are unchanged; portable checks and an unexecuted FreeBSD cross-build
+cannot qualify native launch, interruption/recovery or the assembled backend.
+
 ## Fresh property submission state claim amendment
 
 Require the [state-claim contract](../../testing/M2/property-live-state.md) at T1
