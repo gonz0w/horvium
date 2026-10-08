@@ -1,0 +1,334 @@
+{
+  "schema": 1,
+  "status": "partial portable qualification; FreeBSD admission/assembly execution pending; maintainer review pending",
+  "requirements": [
+    "M2-PRIV-001",
+    "M2-JOB-001"
+  ],
+  "source_commit": "8273a09538d566982f0bd1d3edc311aa0580e4d9",
+  "inputs": [
+    {
+      "path": "internal/helper/property_connections.go",
+      "sha256": "94c574412d9f32640c9a8bf6d18ea00e66188d0a26937d514c7ace0f445aae49"
+    },
+    {
+      "path": "internal/helper/property_connections_test.go",
+      "sha256": "c0fb08c6704b5cbb6b9a8c88c672ee4040de942f7e3f08851e7abed6549c76dc"
+    }
+  ],
+  "scope": "Private original accepted socket capacity/lifetime ownership only; no peer/session/storage/worker/native authority or runtime consumer",
+  "behavior": {
+    "source_commit": "8273a09538d566982f0bd1d3edc311aa0580e4d9",
+    "command": [
+      "go",
+      "test",
+      "-json",
+      "./internal/helper",
+      "-run",
+      "^TestPropertyConnections",
+      "-count=1"
+    ],
+    "log_sha256": "de9ecd98a91f53486b108271c4743d5ab43e50934296ef6eaa46c47f0a877e54",
+    "parents": [
+      "TestPropertyConnectionsConfiguration",
+      "TestPropertyConnectionsOriginalAndUnissued",
+      "TestPropertyConnectionsCapacityAndFailureRecovery",
+      "TestPropertyConnectionsDuplicateAndMissingOwner",
+      "TestPropertyConnectionsCancellationAtAdmission",
+      "TestPropertyConnectionsShutdownInterruptsIO",
+      "TestPropertyConnectionsOriginalDeadline",
+      "TestPropertyConnectionsConcurrentLastSlot"
+    ],
+    "subtests": [
+      "TestPropertyConnectionsConfiguration/nil-context",
+      "TestPropertyConnectionsConfiguration/cancelled",
+      "TestPropertyConnectionsConfiguration/zero-limit",
+      "TestPropertyConnectionsConfiguration/negative-limit",
+      "TestPropertyConnectionsConfiguration/large-limit",
+      "TestPropertyConnectionsConfiguration/zero-timeout",
+      "TestPropertyConnectionsConfiguration/negative-timeout",
+      "TestPropertyConnectionsConfiguration/large-timeout",
+      "TestPropertyConnectionsShutdownInterruptsIO/explicit",
+      "TestPropertyConnectionsShutdownInterruptsIO/parent-cancellation",
+      "TestPropertyConnectionsOriginalDeadline/configured",
+      "TestPropertyConnectionsOriginalDeadline/earlier-parent"
+    ],
+    "qualified": true
+  },
+  "test_first": {
+    "source_commit": "30fe1ec24f48eaf40d11cc085f9128ac5f1844f6",
+    "command": [
+      "go",
+      "test",
+      "-json",
+      "./internal/helper",
+      "-run",
+      "^TestPropertyConnections",
+      "-count=1"
+    ],
+    "log_sha256": "c39427dec84b2e8a6b3da7c951fabe6eb1a6dc64cfb5f21eeda2271f20dfd7ab",
+    "parents": [
+      "TestPropertyConnectionsConfiguration",
+      "TestPropertyConnectionsOriginalAndUnissued",
+      "TestPropertyConnectionsCapacityAndFailureRecovery",
+      "TestPropertyConnectionsDuplicateAndMissingOwner",
+      "TestPropertyConnectionsShutdownInterruptsIO",
+      "TestPropertyConnectionsOriginalDeadline",
+      "TestPropertyConnectionsConcurrentLastSlot"
+    ],
+    "subtests": [
+      "TestPropertyConnectionsShutdownInterruptsIO/explicit",
+      "TestPropertyConnectionsShutdownInterruptsIO/parent-cancellation",
+      "TestPropertyConnectionsOriginalDeadline/configured",
+      "TestPropertyConnectionsOriginalDeadline/earlier-parent"
+    ],
+    "qualified": false,
+    "reason": "Seven original behavioral parents failed against denying stubs. Cancellation-at-admission regression was added during implementation review."
+  },
+  "portable_review": {
+    "source_commit": "8273a09538d566982f0bd1d3edc311aa0580e4d9",
+    "base_commit": "70d090d9c0ea84f514b1adba846b0368b96a59f9",
+    "source_tree": "ce7ee615bd568de347af9f51242af1b1e63e2741",
+    "title": "feat(helper): bound property connection admission",
+    "signed_commits": [
+      "8273a09538d566982f0bd1d3edc311aa0580e4d9",
+      "30fe1ec24f48eaf40d11cc085f9128ac5f1844f6"
+    ],
+    "schema": 2,
+    "qualified": true,
+    "qualification_scope": "portable review only",
+    "host_os": "Darwin",
+    "host_arch": "arm64",
+    "started_at": 1791486489.2132668,
+    "command": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service"
+      ],
+      "native_review_required": true
+    },
+    "deep_key": {
+      "mode": "focused",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service"
+      ],
+      "inputs_digest": "6a2e8545928ef3e63a44da84712e8be8e54c0e2dc983c15c1f5ba03a53ca26a1",
+      "environment_digest": "6be56162b8969339df5fa3a421321d524cadf08265416ea080a5fca26f23c273"
+    },
+    "full_requested": false,
+    "active_supervisor_session": "e0diyfil",
+    "supervisors": [
+      {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "2644ba56e52e5941ae4155b127658287cfb5e5708eaceecf6e52143515f10f28",
+        "group": 55737,
+        "started_at": 1791486489.272831,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791486511.918684
+      },
+      {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "e6950177f171e69d49033b0accc1271e11e943bca2068b9b55582b0e6ef641ce",
+        "group": 56150,
+        "started_at": 1791486512.003523,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791486577.19069
+      }
+    ],
+    "supervisor": {
+      "completed": true,
+      "group_cleaned": true,
+      "command_sha256": "e6950177f171e69d49033b0accc1271e11e943bca2068b9b55582b0e6ef641ce",
+      "group": 56150,
+      "started_at": 1791486512.003523,
+      "escalated": false,
+      "worker_returncode": 0,
+      "reason": "exit",
+      "completed_at": 1791486577.19069
+    },
+    "deep_evidence": {
+      "executed": true,
+      "command": [
+        "/Users/cam/DEV/NAS/.tools/venv/bin/python3",
+        "/Users/cam/DEV/NAS/tools/deep-check.py",
+        "--packages",
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service"
+      ],
+      "supervisor": {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "e6950177f171e69d49033b0accc1271e11e943bca2068b9b55582b0e6ef641ce",
+        "group": 56150,
+        "started_at": 1791486512.003523,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791486577.19069
+      },
+      "log_sha256": "7444d0939f4d134e3e181fefcc635aaccec7a2a734212c99228cc492db783967",
+      "result": {
+        "fuzz_targets": [
+          {
+            "package": "./internal/admin",
+            "target": "FuzzConfiguration"
+          },
+          {
+            "package": "./internal/admin",
+            "target": "FuzzSessionAuthorityActions"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzActionNegotiation"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzPropertyReplies"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzPropertyRequest"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzRequest"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzSnapshot"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPoolPropertyCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPoolProviderCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyClaimSourceSelection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyControlSelection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyJobSource"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyPolicyCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzSystemUseCollection"
+          }
+        ],
+        "race_packages": [
+          "./cmd/horvium",
+          "./internal/admin",
+          "./internal/client",
+          "./internal/console",
+          "./internal/helper",
+          "./internal/host/freebsd",
+          "./internal/observation",
+          "./internal/service"
+        ]
+      }
+    },
+    "checks_log_sha256": "42e818c6550d4853691b378d28481fa75f7642a3a5560f8b4428a1ab4bfc9dd0",
+    "completed_at": 1791486577.45378,
+    "verification_input_count": 439,
+    "record": ".tools/review-runs/ouw313fp/result.json",
+    "record_sha256": "e2648c8d4c1c7722a6aab11fe53eb2a0b5d02cb413ff4d9d5ba768b40a01596c",
+    "baseline_tooling_tests": 132,
+    "deep_seconds": 65.187
+  },
+  "freebsd_compilation": {
+    "source_commit": "8273a09538d566982f0bd1d3edc311aa0580e4d9",
+    "target": "freebsd/amd64",
+    "command": [
+      "/Users/cam/DEV/NAS/.tools/go/bin/go",
+      "test",
+      "-c",
+      "-trimpath",
+      "-o",
+      "/private/tmp/horvium-property-connections-rqferji4.test",
+      "./internal/helper"
+    ],
+    "compiled": true,
+    "executed": false,
+    "sha256": "857d14fcff011d74072da844c1ebeb21875a200e882791119d95141dce41289c",
+    "bytes": 8472974,
+    "artifact_removed": true,
+    "record_sha256": "d3cd158a57756101a8a2e097fd69089616f25bca263f98aed35a3f712449a666",
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "compiler_sha256": "5936b43cd2d699c8c4e750172b38abf360040457a18eebdc583701a3ec9ce5c0",
+    "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+    "goamd64": "v1",
+    "cgo_enabled": false,
+    "goenv": "off",
+    "gotoolchain": "local"
+  },
+  "preservation": {
+    "base_commit": "70d090d9c0ea84f514b1adba846b0368b96a59f9",
+    "protected_existing_internal_and_tools_inputs_byte_identical": 381,
+    "protected_path_inventory_sha256": "7917f3149f9a1c4a11950f4c1a59aa327f6b5a68977b9adc84f4e297316af11f",
+    "historical_M2_manifests_byte_identical": 73,
+    "existing_native_peer_code_typed_exchange_fixtures_shared_tools_unchanged": true,
+    "native_suites_not_rerun": "Unregistered ordinary Go transport/accounting slice; no native primitive/fixture/runner/checker or runtime consumer changed. Actual FreeBSD connection admission/assembly remains unqualified; prior native evidence retains its original sources."
+  },
+  "teardown": {
+    "all_owned_sessions_stopped": true,
+    "owned_sessions": 637,
+    "lab_status_command": "make lab-status",
+    "lab_status_sha256": "c02fe29923cbaf16e9ed39c748bc63a8dd78cc89896f6e19674de6e4a0a0e8a9",
+    "actions_enabled": false,
+    "actions_report_sha256": "32700f5e09febdcc97d40b65c42a1c4b981b4b96af6eb1b8e87c932aba0a71ca",
+    "runtime_services_installed": false,
+    "operator_storage_used": false,
+    "compilation_artifact_removed": true
+  },
+  "remaining_gates": [
+    "Native admitted transport/worker assembly, safe root-owned listener policy and original authenticated application-session binding",
+    "Independent root backend/recovery/executor absence/global launch clearance, original plans/coordinator and durable admission",
+    "Native assembled safety/recovery/continuity/resources, operator workflows, hold release and full M2 acceptance",
+    "M1 Safari/VoiceOver remains pending"
+  ]
+}

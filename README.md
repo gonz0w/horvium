@@ -319,6 +319,13 @@ pool suites passed with verified teardown; see the
 [evidence](docs/testing/M2/property-native-backend-manifest.json). Operator writes
 remain disabled.
 
+The [bounded property connection admission](docs/testing/M2/property-connections.md)
+is a private network accounting prerequisite for the future typed transport.
+Original slots/deadlines, immediate overflow denial and socket retirement passed
+portable behavioral/focused race/fuzz checks. Helper tests compiled for FreeBSD
+without execution; native admission/runtime assembly remains unqualified. See the
+[evidence](docs/testing/M2/property-connections-manifest.json).
+
 The [owned property exchange](docs/testing/M2/property-exchange.md) carries one
 bounded typed request and terminal reply over the original kernel-authorized
 connection. Both disposable FreeBSD releases passed all 44 peer/exchange cases;
