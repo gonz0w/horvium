@@ -287,6 +287,13 @@ through the original root claim, without native effects. Complete root backend,
 runtime writes and recovery workflows remain disabled/pending; see the
 [manifest](docs/testing/M2/property-claim-applying-manifest.json).
 
+The [original-claim successor acknowledgement](docs/testing/M2/property-claim-successor.md)
+adds exact observing/outcome metadata after the original applying acknowledgement.
+It retains volatile publication lineage, strict census checks and holds. Focused
+portable review and all 38 new native metadata cases passed on both FreeBSD targets
+with complete teardown. Native outcome authority and runtime storage writes remain
+disabled; see its [manifest](docs/testing/M2/property-claim-successor-manifest.json).
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

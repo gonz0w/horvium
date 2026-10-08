@@ -22,6 +22,12 @@ func (c *PropertyStateClaim) PublishApplyingPropertyJob(next PropertyJob) (Prope
 
 // Reduced bounds and phase wrapping are private disposable fixture seams.
 func (c *PropertyStateClaim) publishApplyingPropertyJobBounded(next PropertyJob, limits stateCatalogLimits, wrap func(ownershipPublication) ownershipPublication) (PropertyJob, error) {
+	return c.publishClaimPropertyJobBounded(next, limits, wrap, true)
+}
+
+// The two original-claim publishers share the same strict transaction. Only
+// validated metadata edges and the private post-sync acknowledgement differ.
+func (c *PropertyStateClaim) publishClaimPropertyJobBounded(next PropertyJob, limits stateCatalogLimits, wrap func(ownershipPublication) ownershipPublication, applying bool) (PropertyJob, error) {
 	zero := func(err error) (PropertyJob, error) { return PropertyJob{}, err }
 	if os.Geteuid() != 0 {
 		return zero(ErrStateDirectory)
@@ -49,7 +55,7 @@ func (c *PropertyStateClaim) publishApplyingPropertyJobBounded(next PropertyJob,
 	if s.publicationBlocked {
 		return zero(ErrStateUncertain)
 	}
-	if c.identity.applyingAttempted {
+	if applying && c.identity.applyingAttempted || !applying && c.identity.successorAttempted {
 		return zero(ErrDenied)
 	}
 	if _, err = s.ownershipDirectoryLocked(); err != nil {
@@ -109,8 +115,14 @@ func (c *PropertyStateClaim) publishApplyingPropertyJobBounded(next PropertyJob,
 		if !owned {
 			return StateCatalog{}, ErrDenied
 		}
-		if e := s.propertyAdmissions.validateApplying(c.identity, view, r.property, next); e != nil {
-			return StateCatalog{}, e
+		var validation error
+		if applying {
+			validation = s.propertyAdmissions.validateApplying(c.identity, view, r.property, next)
+		} else {
+			validation = s.propertyAdmissions.validateSuccessor(c.identity, view, r.property, next)
+		}
+		if validation != nil {
+			return StateCatalog{}, validation
 		}
 		var digest, projected [32]byte
 		copy(digest[:], before.Sum(nil))
@@ -131,10 +143,15 @@ func (c *PropertyStateClaim) publishApplyingPropertyJobBounded(next PropertyJob,
 	}
 	// Consume before staging, under the original mutex. A failed attempt cannot
 	// be retried through a copied claim, even if owned cleanup succeeds.
-	c.identity.applyingAttempted = true
-	err = s.publishStateInspectedLocked("job-"+next.job.ID+".json", ".job-", data, 1,
+	if applying {
+		c.identity.applyingAttempted = true
+	} else {
+		c.identity.successorAttempted = true
+	}
+	revision := uint64(len(predecessor.job.History))
+	err = s.publishStateInspectedLocked("job-"+next.job.ID+".json", ".job-", data, revision,
 		func(catalog StateCatalog) error {
-			return allowJobPublication(catalog, next.job, 1, uint64(len(data)), limits)
+			return allowJobPublication(catalog, next.job, revision, uint64(len(data)), limits)
 		},
 		func() error {
 			current, e := s.readPropertyJobLocked(next.job.ID)
@@ -154,11 +171,24 @@ func (c *PropertyStateClaim) publishApplyingPropertyJobBounded(next PropertyJob,
 	if err != nil {
 		return zero(err)
 	}
-	ack, digest, err := c.inspectPropertyJobLocked()
+	var ack PropertyJob
+	var digest [32]byte
+	if applying {
+		ack, digest, err = c.inspectPropertyJobLocked()
+	} else {
+		ack, digest, err = s.inspectPropertyJobLocked(c.identity.id, func(v JobReservations, current PropertyJob) error {
+			return s.propertyAdmissions.checkAcknowledged(c.identity, v, current, sha256.Sum256(data), revision+1)
+		})
+	}
 	actual, encodingErr := EncodePropertyJob(ack)
 	if err != nil || encodingErr != nil || digest != expectedAfter || !bytes.Equal(actual, data) {
 		s.publicationBlocked = true
 		return zero(ErrStateUncertain)
 	}
+	// Populate lineage ONLY after exact post-sync record and whole-census readback.
+	// This private receipt never grants native outcome attribution or release.
+	c.identity.acknowledgedReceipt = sha256.Sum256(data)
+	c.identity.acknowledgedRevision = revision + 1
+	c.identity.successorAttempted = false
 	return ack, nil
 }

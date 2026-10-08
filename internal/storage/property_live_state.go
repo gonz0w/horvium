@@ -8,9 +8,12 @@ import "crypto/sha256"
 const maxPropertyAdmissionReceipts = 64
 
 type propertyStateClaimIdentity struct {
-	id                string
-	receipt           [32]byte
-	applyingAttempted bool
+	id                   string
+	receipt              [32]byte
+	applyingAttempted    bool
+	acknowledgedReceipt  [32]byte
+	acknowledgedRevision uint64
+	successorAttempted   bool
 }
 
 // Access only under StateDirectory.mu. No disk decoder populates this ledger.
@@ -97,7 +100,9 @@ func checkLivePropertyStateJobs(v JobReservations, current PropertyJob, guid str
 // PropertyStateClaim is a state prerequisite tied to one freshly
 // published initial job and the original open root lease. It has no constructor,
 // persisted form, release or native execution method. Copies share the same
-// identity and one exact applying-metadata publication attempt.
+// identity and one exact applying-metadata publication attempt. Only exact
+// post-sync acknowledgements permit bounded observing/outcome metadata appends;
+// failed valid successor attempts cannot retry. Success releases no claim.
 // It supplies no session, clock, expiry, native eligibility, executor quiescence
 // or restored-state clearance. The original coordinator/backend must supply all
 // those independently before any native control. Only FreeBSD can issue it.

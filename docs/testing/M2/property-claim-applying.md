@@ -128,3 +128,13 @@ sessions. Actions remain disabled and no persistent service was enabled. The
 unexecuted development cross-build was removed; it is not native qualification.
 The [manifest](property-claim-applying-manifest.json) records actual source,
 artifact/report/log hashes, scope and remaining gates.
+
+## Subsequent metadata acknowledgement
+
+The [original-claim successor contract](property-claim-successor.md) extends the
+metadata chain after an exact applying acknowledgement. The shared transaction
+now retains a private canonical-record hash/revision only after sync and exact
+record/census readback. The original queued receipt, one applying attempt and
+queued/applying readiness semantics remain unchanged. This extension permits no
+native effect, terminal resolution or hold release; its own qualification is
+separate from the historical applying evidence above.

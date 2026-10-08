@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 86; claim-bound observer pool gates qualified; original-claim applying metadata subset qualified; worker uncertainty propagation in review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 87; claim-bound observer pool gates qualified; original-claim applying metadata and worker uncertainty subsets qualified; successor metadata qualified/in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -969,3 +969,25 @@ the new groups took 3.92/3.83 seconds with complete teardown. See the
 instructions for this subset are superseded; 61 historical manifests, shared
 publisher/readers and pool fixtures remain byte-identical. No native executor,
 complete root backend, runtime writer, hold release or M2 acceptance follows.
+
+## Original-claim observing/outcome metadata
+
+PR 87 accepted worker uncertainty propagation and the disposable Git-maintenance
+teardown fix at merged source `412cf3a9bd49c435eb77dbd7664ed0ed8981a378`.
+The next [successor metadata subset](../../testing/M2/property-claim-successor.md)
+continues exact original-claim acknowledgement from applying through observing,
+success or reconciliation. Only successful sync and independent exact record/
+census readback populate its volatile hash/revision. Raw/restored metadata cannot
+replace this lineage; failed valid attempts cannot retry and no hold is released.
+Existing queued/applying readers/readiness, generic metadata publishers and native
+pool/control sources remain unchanged. The shared claim transaction requires
+both disposable native state gates plus focused portable review; see its
+[manifest](../../testing/M2/property-claim-successor-manifest.json). Runtime writes,
+complete root backend, native effects/interruption/recovery and transport remain
+unqualified/disabled; metadata success alone supplies no native outcome authority.
+Signed source `7af2f1cda24179f4e9f8ceebc4a20503dc6c9c25` passed all 18 portable
+lineage cases, mandatory baseline with 125 tooling tests, 9 affected race packages
+and 38 bounded fuzz targets. Both native state releases passed all 38 new children,
+23 applying/19 live-state children, actual UID denial and every historical gate,
+with identical artifacts and complete teardown. Maintainer acceptance is pending;
+all 63 prior manifests retain their original sources.
