@@ -7,8 +7,17 @@ M2 [private native property backend](../testing/M2/property-native-backend.md)
 connects the original coordinator/state lease to one fixed native property step
 and independently witnessed exact durable outcomes. Public observers retain false
 eligibility; private worker eligibility requires external trusted clearance,
-currently supplied only by fixtures. Both native pool releases and focused portable
-qualification are pending. Actual authentication/recovery/global clearance, runtime
+currently supplied only by fixtures. Signed source `649a60b1b6a28f5c791f1d1332e44362d05a98ab` passed
+focused portable review (125 tooling tests, nine race packages, all 38 selected
+fuzz targets) and both complete disposable native pool suites. Each retained every
+prior executed PASS name and passed all twelve new backend cases plus their
+backing/preservation/teardown groups. Exact native quota/source, durable applying
+before effect, honest lost-acknowledgement states and no replay were verified.
+Owned artifacts/guests/supervisors stopped with base/runtime preservation; see the
+[manifest](../testing/M2/property-native-backend-manifest.json). The first 15.1
+attempt remains unqualified after exceeding the original claim context; new
+scenarios now use separate serial 135-second fixtures, preserving old deadlines.
+Actual authentication/recovery/global clearance, runtime
 writes, hold release, hardware support and M2 acceptance remain open. Metadata
 transactions, backing rules, shared tools and historical manifests are unchanged.
 

@@ -621,3 +621,7 @@ Outcome publication after forward expiry needs no renewed launch authority;
 uncertainty/rollback blocks replay and retains all holds. Only test fixtures supply
 external clearance today; complete authentication/recovery/global native proof and
 operator writes remain disabled. No schema, native transaction or guard change.
+
+Executed partial integration evidence and remaining authority/recovery limits are
+recorded in the [manifest](../../testing/M2/property-native-backend-manifest.json).
+Runtime storage writes remain disabled.

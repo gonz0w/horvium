@@ -1232,3 +1232,13 @@ unchanged; old-only runner success cannot qualify the new group. Native metadata
 transactions/fixtures outside the pool suite are unchanged and retain historical
 source-bound evidence. Full authenticators/executor-death/reboot/recovery/global
 proof, operator workflows, reservation release and assembled M2 remain open.
+
+Executed partial integration evidence: signed source `649a60b1b6a28f5c791f1d1332e44362d05a98ab`
+passed the eight new portable parents/42 children, baseline/125 tooling tests,
+nine race packages and all 38 selected fuzz targets. Both native targets retained
+every prior PASS name/count and passed twelve new cases plus their separate
+bounded fixture/backing/preservation/teardown groups. The initial native timeout
+remains unqualified; the repair changes only fixture setup, preserving old
+deadlines and shared tooling. All guest/artifact/supervisor cleanup was verified;
+see the [manifest](../../testing/M2/property-native-backend-manifest.json).
+External authenticators/recovery/global launch and assembled M2 gates remain open.

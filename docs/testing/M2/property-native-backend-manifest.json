@@ -1,0 +1,1024 @@
+{
+  "record_type": "M2-private-native-property-backend",
+  "date": "2026-10-08",
+  "qualification_complete": true,
+  "source_commit": "649a60b1b6a28f5c791f1d1332e44362d05a98ab",
+  "source_tree": "113871178755540c3905c19f66a0c491823efb36",
+  "base_commit": "fa7013198b50bb058bb6775cefdad2698aaf270b",
+  "qualification_scope": "Private original review/admission/root-claim/coordinator/control/outcome integration in disposable fixtures; mandatory external peer/session/recovery/global clearance is test-only; no runtime writer or production authority",
+  "requirements": [
+    "M2-PLAN-001 (partial)",
+    "M2-PROPERTY-001 (partial)",
+    "M2-JOB-001 (partial)",
+    "M2-PRIV-001 (partial)",
+    "M2-DRIFT-001 (partial)",
+    "M2-STATE-001 (partial)",
+    "M2-RECOVERY-001 (partial)"
+  ],
+  "input_sha256": [
+    {
+      "path": "internal/host/freebsd/property_backend.go",
+      "sha256": "0e0e26b460062357c0724ec71254443991bd1ac0ae174aa59a0d07f1680f37d2"
+    },
+    {
+      "path": "internal/host/freebsd/property_backend_freebsd_test.go",
+      "sha256": "618bc772ba192f11d7d42ffaa9c532f7b2e50412e9c88d3e8f715e4ce30cd624"
+    },
+    {
+      "path": "internal/host/freebsd/property_backend_test.go",
+      "sha256": "d358fcf5fb7d487851d67620b56c7dde354316e3f9acc7a4285928380c2bb2ff"
+    },
+    {
+      "path": "internal/host/freebsd/property_claim_source_freebsd_test.go",
+      "sha256": "7510a4108e8618d226c1b577068c9b4d1b3c848b3f79d01598fe3bc7489dc8ef"
+    },
+    {
+      "path": "internal/host/freebsd/property_control_freebsd_test.go",
+      "sha256": "ce0405e6ba2088592b591964cf587a95f223a8bc9ef54bff1e92a2ae0af55ae9"
+    },
+    {
+      "path": "internal/storage/property_coordinator.go",
+      "sha256": "973b7d6caeb663674008b479adbfc564f169ed33a4c63bb16ef41f4ce56de2ea"
+    },
+    {
+      "path": "internal/storage/property_execution.go",
+      "sha256": "581039e0b39992aafbd95d019376f80e5e0024630797e3835ed1bcc9aa4a0728"
+    }
+  ],
+  "portable_tests": {
+    "parents": [
+      {
+        "name": "TestPropertyBackendAdmissionDenials",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendCompleteSequence",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendConcurrentWorkerAndBusyCallback",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendCutsRetainHonestOutcomes",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendFactoryUnavailable",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendFinalClearanceChecks",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendLostAndForeignAcknowledgements",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendRequiresOriginalBindingAndOutcome",
+        "count": 1
+      }
+    ],
+    "children": [
+      {
+        "name": "TestPropertyBackendAdmissionDenials/busy",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendAdmissionDenials/cancel",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendAdmissionDenials/clearance",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendAdmissionDenials/eligible",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendAdmissionDenials/native",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendAdmissionDenials/rollback",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendAdmissionDenials/root",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendAdmissionDenials/wrong-pool",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendCutsRetainHonestOutcomes/apply",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendCutsRetainHonestOutcomes/applying",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendCutsRetainHonestOutcomes/claim",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendCutsRetainHonestOutcomes/collect",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendCutsRetainHonestOutcomes/control-factory",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendCutsRetainHonestOutcomes/initial",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendCutsRetainHonestOutcomes/observing",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendCutsRetainHonestOutcomes/queued",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendCutsRetainHonestOutcomes/succeeded",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendCutsRetainHonestOutcomes/verify",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendFinalClearanceChecks/expired",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendFinalClearanceChecks/rollback",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendFinalClearanceChecks/root",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendLostAndForeignAcknowledgements/applying/foreign",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendLostAndForeignAcknowledgements/applying/invalid",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendLostAndForeignAcknowledgements/applying/lost",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendLostAndForeignAcknowledgements/observing/foreign",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendLostAndForeignAcknowledgements/observing/invalid",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendLostAndForeignAcknowledgements/observing/lost",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendLostAndForeignAcknowledgements/queued/foreign",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendLostAndForeignAcknowledgements/queued/invalid",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendLostAndForeignAcknowledgements/queued/lost",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendLostAndForeignAcknowledgements/succeeded/foreign",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendLostAndForeignAcknowledgements/succeeded/invalid",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendLostAndForeignAcknowledgements/succeeded/lost",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendRequiresOriginalBindingAndOutcome/mismatched-effect",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendRequiresOriginalBindingAndOutcome/nil-authority",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendRequiresOriginalBindingAndOutcome/premature-observe",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendRequiresOriginalBindingAndOutcome/premature-success",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendRequiresOriginalBindingAndOutcome/second-binding",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendRequiresOriginalBindingAndOutcome/unbound",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendRequiresOriginalBindingAndOutcome/wrong-digest",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendRequiresOriginalBindingAndOutcome/wrong-id",
+        "count": 1
+      },
+      {
+        "name": "TestPropertyBackendRequiresOriginalBindingAndOutcome/wrong-intent",
+        "count": 1
+      }
+    ],
+    "concurrent_workers": 32,
+    "failing_first": {
+      "source": "Uncommitted denying contract stub; executable complete-sequence behavioral failure",
+      "log_sha256": "531942f0a49e98f792409c6a9579228c64dad42aff3cca0e148cf5a7a2ee658d"
+    },
+    "initial_unexecuted_fixture_compile_error": {
+      "cause": "Value fixture used absent Text field; corrected before behavioral red",
+      "log_sha256": "7206dd765924c16107f6c0936cb47208d4cae1900ca2f25cb323360d5adebe77",
+      "qualification": false
+    },
+    "development_behavior": {
+      "source": "Uncommitted runtime/portable Go inputs byte-identical to signed source; native fixture revision separately identified",
+      "log_sha256": "ed54c91d55b992cb8dfa8d8276b54a43ea8276a4dbb5794844dd2faa6c8c1833",
+      "result": "pass"
+    }
+  },
+  "portable_review": {
+    "source_commit": "649a60b1b6a28f5c791f1d1332e44362d05a98ab",
+    "base_commit": "fa7013198b50bb058bb6775cefdad2698aaf270b",
+    "source_tree": "113871178755540c3905c19f66a0c491823efb36",
+    "title": "feat(freebsd): compose the private property execution backend",
+    "command": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "qualified": true,
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ],
+      "native_review_required": true
+    },
+    "deep_key": {
+      "mode": "focused",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ],
+      "inputs_digest": "e68fd165b55125eebb521b6a6f1f65ff1ecc6689b72561e59360924f3916bd89",
+      "environment_digest": "6be56162b8969339df5fa3a421321d524cadf08265416ea080a5fca26f23c273"
+    },
+    "supervisors": [
+      {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "2644ba56e52e5941ae4155b127658287cfb5e5708eaceecf6e52143515f10f28",
+        "group": 62256,
+        "started_at": 1791467369.273063,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791467388.176617
+      },
+      {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "ee9dfc2183b972fb9ae13ea119224e51c6854b2a6a72007821a183fedac2707c",
+        "group": 62609,
+        "started_at": 1791467388.249314,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791467554.613922
+      }
+    ],
+    "checks_log_sha256": "74aed33305eb767d18c05aef814f50fb860cbab87f68e2da88328bd84a70febc",
+    "session": "3_lxcvfz",
+    "report_sha256": "3e4483c3f1febc8b7f0495215767d67d478a46c79621681571cdae19e04bd4ac",
+    "tooling_tests": 125,
+    "elapsed_seconds": 185.659,
+    "deep": {
+      "executed": true,
+      "command": [
+        "/Users/cam/DEV/NAS/.tools/venv/bin/python3",
+        "/Users/cam/DEV/NAS/tools/deep-check.py",
+        "--packages",
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ],
+      "supervisor": {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "ee9dfc2183b972fb9ae13ea119224e51c6854b2a6a72007821a183fedac2707c",
+        "group": 62609,
+        "started_at": 1791467388.249314,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791467554.613922
+      },
+      "log_sha256": "533b99cfa3cc412d0bfd300613e6de78d6d863d49adea9ab24903d58020a4552",
+      "result": {
+        "fuzz_targets": [
+          {
+            "package": "./internal/admin",
+            "target": "FuzzConfiguration"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzRequest"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzSnapshot"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPoolPropertyCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPoolProviderCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyClaimSourceSelection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyControlSelection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyJobSource"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyPolicyCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzSystemUseCollection"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzDeviceUseReview"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzFilesystemSignature"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzFilesystemStates"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzIdentities"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzImportedPoolUse"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzJobRecord"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzJobReservations"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzJobRestartPage"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzOwnershipCatalogNames"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzOwnershipRecord"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolFeatures"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolLabels"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolScan"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolState"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolSystemUse"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolTopology"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzProperties"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyCoordinatorActions"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyExecutionCut"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyExecutionHandoff"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyIntent"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyJob"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyJobAssessment"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyLiveStateReceipt"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyPlan"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyPostcondition"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzStateCatalogNames"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzSystemDeviceUse"
+          }
+        ],
+        "race_packages": [
+          "./cmd/horvium",
+          "./internal/admin",
+          "./internal/client",
+          "./internal/console",
+          "./internal/helper",
+          "./internal/host/freebsd",
+          "./internal/observation",
+          "./internal/service",
+          "./internal/storage"
+        ]
+      }
+    }
+  },
+  "native_fixture": {
+    "parent": "TestNativePropertyClaimCollection",
+    "phase_cases": {
+      "success-and-denials": [
+        "clearance-denied",
+        "original-admission",
+        "durable-success",
+        "applying-before-effect",
+        "independent-postcondition",
+        "no-replay",
+        "retained-hold",
+        "preserved-metadata",
+        "revoked-clearance",
+        "closed-lease"
+      ],
+      "gaps": [
+        "lost-applying-ack",
+        "lost-succeeded-ack"
+      ]
+    },
+    "new_phase_contexts_seconds": 135,
+    "required_children": [
+      "clearance-denied",
+      "original-admission",
+      "durable-success",
+      "applying-before-effect",
+      "independent-postcondition",
+      "no-replay",
+      "retained-hold",
+      "preserved-metadata",
+      "revoked-clearance",
+      "closed-lease",
+      "lost-applying-ack",
+      "lost-succeeded-ack"
+    ],
+    "clearance": "TEST-ONLY external peer/session/recovery/global clearance; no actual authenticator or recovery proof",
+    "effect": "Actual unchanged fixed native runner; exact independent applying/live-authority witness before delegation; independent actual quota value/source after effect",
+    "response_gaps": "Discarded acknowledgement after actual completed applying/success publication; not process death/reboot/power-loss proof",
+    "restoration": "Exact GUID-checked default quota/source, owned metadata cleanup and historical whole data/system/backing preservation",
+    "historical_marker_assertions": 88,
+    "shared_checkers_selectors_supervisors_deadlines_unchanged": true
+  },
+  "native_runs": [
+    {
+      "source_commit": "649a60b1b6a28f5c791f1d1332e44362d05a98ab",
+      "release": "15.1",
+      "suite": "pool-properties",
+      "prebuilt": {
+        "source_commit": "649a60b1b6a28f5c791f1d1332e44362d05a98ab",
+        "sha256": "59cb570b8988fade85f861968f2a6be550892fc480b0ea22947744ae4f967d13",
+        "bytes": 11963246,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+        "go_sum_sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "<owned-artifact>",
+          "./internal/host/freebsd"
+        ]
+      },
+      "image": {
+        "release": "15.1",
+        "builder": "2.2.8",
+        "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+        "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+        "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144
+      },
+      "execution_mode": "host-cross-built",
+      "runtime": {
+        "qemu_version": "QEMU emulator version 11.1.1",
+        "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+        "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+        "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+        "accelerator": "tcg",
+        "cpu_count": 2,
+        "cpu_model": "qemu64",
+        "memory_mib": 6144,
+        "host_os": "Darwin",
+        "host_arch": "arm64"
+      },
+      "session": "pool-properties-15.1-d6ou4ry5",
+      "supervisor_session": "z86_xiy7",
+      "supervisor": {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "3c22a46f985f2ffc753741c048aca439c8c345ebc2f179b102f129ade20de512",
+        "group": 58902,
+        "started_at": 1791466420.310806,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791466917.230861
+      },
+      "qualified": true,
+      "preservation_teardown": {
+        "host_teardown": true,
+        "base_preserved": true,
+        "guest_assertions": true,
+        "device_backings_preserved": true,
+        "device_fixture_teardown": true,
+        "runtime_preserved": true,
+        "supervisor_fixture_cleanup": true,
+        "supervisor_group_cleaned": true
+      },
+      "guest_versions": {
+        "freebsd_version_kru": [
+          "15.1-RELEASE-p3",
+          "15.1-RELEASE-p3",
+          "15.1-RELEASE-p3"
+        ],
+        "zfs_userland": "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+        "zfs_module": "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0"
+      },
+      "qualification_seconds": 496.728,
+      "new_pass_names": [
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps/native-claim-source",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps/native-claim-source/backend-integration",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps/native-claim-source/backend-integration/lost-applying-ack",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps/native-claim-source/backend-integration/lost-succeeded-ack",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps/native-claim-source/independent-backing",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps/native-claim-source/preserved",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps/native-claim-source/teardown",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/applying-before-effect",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/clearance-denied",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/closed-lease",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/durable-success",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/independent-postcondition",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/no-replay",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/original-admission",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/preserved-metadata",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/retained-hold",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/revoked-clearance",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/independent-backing",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/preserved",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/teardown",
+          "count": 1
+        }
+      ],
+      "old_pass_occurrences_retained": 76,
+      "old_pass_reference_session": "pool-properties-15.1-riggrp08",
+      "old_log_sha256": "3d265711741632524fd58b1d1464e68dc81b53fb62380b113504bbab5f86154b",
+      "pass_names_sha256": "838b4414f270770dfac65ba719b13fa30753ecb44a3892ce12391d40a24d6a3d",
+      "report_sha256": "08b7db23efaf7017a64ea5167848d6c468a2ee09db15937b40f3d1d6542ce6b3",
+      "guest_log_sha256": "b679a2f815d9d7b253dcd316c90ecf7eb2299acc1e6ef40738bae072efcb69a0",
+      "serial_log_sha256": "a679148791c2afc18f6b92f83e64dd9c7fdddddf4aaa1b1ea81372436e5ac483",
+      "host_log_sha256": "c5810d0bb0729b4850ff2012a142d4691a93833bc08ef10e2f7cfd93162db855",
+      "supervisor_sha256": "e49b2d036afe887bde9a4fe4a2632e3bbb9e078d45078c20eca1538be60e2d95",
+      "all_owned_artifacts_removed": true
+    },
+    {
+      "source_commit": "649a60b1b6a28f5c791f1d1332e44362d05a98ab",
+      "release": "14.5",
+      "suite": "pool-properties",
+      "prebuilt": {
+        "source_commit": "649a60b1b6a28f5c791f1d1332e44362d05a98ab",
+        "sha256": "59cb570b8988fade85f861968f2a6be550892fc480b0ea22947744ae4f967d13",
+        "bytes": 11963246,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+        "go_sum_sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "<owned-artifact>",
+          "./internal/host/freebsd"
+        ]
+      },
+      "image": {
+        "release": "14.5",
+        "builder": "2.2.8",
+        "compressed_sha256": "cd90489bb7d94585016e177b9e3f0084f3410454dc0af19481f44ddd5aa45257",
+        "qcow2_sha256": "6593466e8d6341eaad95755973ab594222516dd75bcd99b18239b5047e5396f4",
+        "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144
+      },
+      "execution_mode": "host-cross-built",
+      "runtime": {
+        "qemu_version": "QEMU emulator version 11.1.1",
+        "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+        "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+        "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+        "accelerator": "tcg",
+        "cpu_count": 2,
+        "cpu_model": "qemu64",
+        "memory_mib": 6144,
+        "host_os": "Darwin",
+        "host_arch": "arm64"
+      },
+      "session": "pool-properties-14.5-4l2izj44",
+      "supervisor_session": "ehvuaemp",
+      "supervisor": {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "d53c4fd195d2691367e355209c0acf2cb5812cf46aeb3fe3505b707b4cc0a3b6",
+        "group": 61781,
+        "started_at": 1791466945.265779,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791467338.389139
+      },
+      "qualified": true,
+      "preservation_teardown": {
+        "host_teardown": true,
+        "base_preserved": true,
+        "guest_assertions": true,
+        "device_backings_preserved": true,
+        "device_fixture_teardown": true,
+        "runtime_preserved": true,
+        "supervisor_fixture_cleanup": true,
+        "supervisor_group_cleaned": true
+      },
+      "guest_versions": {
+        "freebsd_version_kru": [
+          "14.5-RELEASE",
+          "14.5-RELEASE",
+          "14.5-RELEASE"
+        ],
+        "zfs_userland": "zfs-2.2.9-FreeBSD_g079ba86d7",
+        "zfs_module": "zfs-kmod-2.2.9-FreeBSD_g079ba86d7"
+      },
+      "qualification_seconds": 392.975,
+      "new_pass_names": [
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps/native-claim-source",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps/native-claim-source/backend-integration",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps/native-claim-source/backend-integration/lost-applying-ack",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps/native-claim-source/backend-integration/lost-succeeded-ack",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps/native-claim-source/independent-backing",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps/native-claim-source/preserved",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-gaps/native-claim-source/teardown",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/applying-before-effect",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/clearance-denied",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/closed-lease",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/durable-success",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/independent-postcondition",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/no-replay",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/original-admission",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/preserved-metadata",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/retained-hold",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/backend-integration/revoked-clearance",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/independent-backing",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/preserved",
+          "count": 1
+        },
+        {
+          "name": "TestNativePropertyClaimCollection/backend-success-and-denials/native-claim-source/teardown",
+          "count": 1
+        }
+      ],
+      "old_pass_occurrences_retained": 70,
+      "old_pass_reference_session": "pool-properties-14.5-2xv8eo3n",
+      "old_log_sha256": "25a7159b7ef651a84585311ab1ba22d88e4782deb183439e5130ee47343e0a9d",
+      "pass_names_sha256": "d9df0438d357e470a5c4900ed9fecd6857d0b9fb4967eee138ae982680c724a4",
+      "report_sha256": "ca367506f1fe4cded9b319d7b2d4596e06d514eb17d99b69ddf7892c4e574ba0",
+      "guest_log_sha256": "ef3409c367c4595fbe95b38018234a15e354bfa119efb530b07fe93c3596828e",
+      "serial_log_sha256": "b03e55d0757dc82f067d5f4bd3044dcb593c6909c110f9c56e8602d882fae35b",
+      "host_log_sha256": "0f73b933f89e2d870b6fa6619befc1eced2f8b3913ae5f566ecc3a88945ed8db",
+      "supervisor_sha256": "b1b3e6de189fff9ab3826c1a14166524c9f285bf6d60380a7e933c2b0977f5ed",
+      "all_owned_artifacts_removed": true
+    }
+  ],
+  "preservation": {
+    "historical_M2_manifests_byte_identical": 66,
+    "protected_paths_byte_identical": 441,
+    "protected_path_hashes_digest": "c7b9f01b80bc236f2c93e945ba6c729a6463e6aaf1a871e9d6924f2e4dc7f79b",
+    "historical_native_state_evidence_retained_at_actual_sources": true,
+    "state_suite_not_rerun": "Metadata transactions/readers/readiness/ACL/backing and state fixtures unchanged; affected complete pool suites rerun"
+  },
+  "teardown": {
+    "lab_status_command": "make lab-status",
+    "all_owned_sessions_stopped": true,
+    "owned_sessions": 606,
+    "lab_status_sha256": "2cae43c3b8438f32e400546123de6e3b8586805ee0d60457d5c436c5cd7c45d1",
+    "actions_enabled": false,
+    "actions_report_sha256": "32700f5e09febdcc97d40b65c42a1c4b981b4b96af6eb1b8e87c932aba0a71ca",
+    "runtime_services_installed": false,
+    "operator_storage_used": false
+  },
+  "unqualified_attempts": [
+    {
+      "source_commit": "601fcfe8ad621c70bf10575603345f34a953e448",
+      "session": "pool-properties-15.1-_kvpxor2",
+      "cause": "New cases appended to original unchanged 135-second claim fixture context; response-gap checks and later preservation hit its deadline",
+      "result": "unqualified",
+      "report_sha256": "276f37713057f4e363d87929d701506dc9d8d843df74127cfffc18052501c8ce",
+      "guest_log_sha256": "48acabb9c77524f2c017e027fb4c078ded0dd5ef7e18611eb21a1e6a9dea41c1",
+      "host_log_sha256": "bb0404a2aeb55a74cee83c83a1d6ee3fb8f297a6035e793d41aedf7c134fe796",
+      "preservation_teardown": {
+        "host_teardown": true,
+        "base_preserved": true,
+        "runtime_preserved": true,
+        "device_backings_preserved": true,
+        "device_fixture_teardown": true,
+        "supervisor_fixture_cleanup": true,
+        "supervisor_group_cleaned": true
+      },
+      "supervisor": {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "76ecdfde4b316f995d17a19e50c4ba07eaba2c431c5d1e152ab2ce9f2a8e1c25",
+        "group": 54101,
+        "started_at": 1791465744.6155672,
+        "escalated": false,
+        "worker_returncode": 1,
+        "reason": "exit",
+        "completed_at": 1791466177.784833
+      },
+      "repair": "Only FreeBSD fixture setup changes; new serial success/denial and gap fixtures each receive their own 135-second context; original cases/deadlines and shared tools unchanged"
+    }
+  ],
+  "remaining_gates": [
+    "Actual authenticated kernel peer/application writer context",
+    "Recovered executor/store clearance and native global/pool launch fencing",
+    "Native executor death/reboot/recovery and complete combined safety/resource/continuity qualification",
+    "Runtime operator workflows, reservation release and M2 acceptance",
+    "M1 manual Safari/VoiceOver remains pending"
+  ]
+}

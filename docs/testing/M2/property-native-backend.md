@@ -1,6 +1,6 @@
 # M2 private native property backend
 
-Date: 2026-10-08. Status: implementing; qualification pending; runtime writes disabled.
+Date: 2026-10-08. Status: partially qualified private prerequisite; runtime writes disabled.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -137,3 +137,28 @@ artifacts and supervisor were cleaned with verified base/runtime preservation.
 The repair separates newly added scenarios into their own bounded fixtures,
 without changing product behavior, old test deadlines or shared tooling. Subsequent
 native evidence must identify its actual revised fixture source.
+
+## Executed qualification
+
+Signed revised fixture source `649a60b1b6a28f5c791f1d1332e44362d05a98ab` passed fresh
+focused portable review in 185.659 seconds: baseline, 125 tooling tests, nine
+affected race packages and all 38 selected fuzz targets. Both review supervisors
+verified cleanup. The eight new portable parents and 42 children passed; product
+and portable test inputs remain identical to the initial implementation source.
+
+The same checksummed FreeBSD/amd64 executable ran in both disposable guests:
+15.1-RELEASE-p3 (ZFS root, OpenZFS 2.4.2) and 14.5-RELEASE (UFS root, OpenZFS
+2.2.9), with metadata on its separately owned nonboot ZFS disk. Complete
+qualification took 496.728/392.975 seconds including guest preparation and teardown;
+these timings make no NAS performance claim. Both runs retained every prior PASS
+name/count (76/70 respectively) and added 24 names: twelve cases and two groups'
+backing/preservation/teardown checks. Actual kernel non-root factory refusal,
+fixed control, independent quota/source, response gaps and original holds passed.
+Exact raw properties, policy bytes, lock inode, sentinel, mounts, physical backing
+and all guest/host/artifact/supervisor teardown were preserved/verified.
+
+All 66 historical M2 manifests and shared tools retain their actual bytes/sources.
+GitHub Actions stay disabled. See the source-bound
+[qualification manifest](property-native-backend-manifest.json), which also keeps
+the first failed native attempt separate. This evidence does not establish the
+external authentication/recovery/global gates or enable runtime writes.

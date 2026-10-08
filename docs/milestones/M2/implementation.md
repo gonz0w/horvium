@@ -1047,9 +1047,18 @@ PR 90 accepted the original coordinator authority at merged source
 original review/admission/claim, exact applying publication, one fixed native
 control, independent facts and witnessed observing/success acknowledgement.
 Require mandatory external authentication/recovery/global clearance, supplied
-only by fixtures; no runtime consumer exists. Portable tests pass; both affected
-native releases at revised bounded fixture source and final focused review are
-pending. The initial native attempt exhausted the original claim context; new
-scenarios now run in separate serial 135-second fixtures. No hold release, new schema,
-transaction/backing/guard change, shared tool change or historical evidence
-relabeling. Operator writes and complete root/recovery/M2 gates remain open.
+only by fixtures; no runtime consumer exists. Signed source `649a60b1b6a28f5c791f1d1332e44362d05a98ab`
+passed all eight new portable parents/42 children, baseline/125 tooling tests,
+nine race packages and all 38 selected fuzz targets in 185.659 seconds. Both complete
+native pool suites passed all twelve new backend cases and their backing,
+preservation and teardown groups, retaining every old PASS name/count (76/70).
+The same executable ran on both guests, with exact native value/source and
+applying-before-effect evidence, lost-acknowledgement uncertainty and no replay.
+The initial 15.1 attempt remains unqualified after exhausting the old claim
+context; new scenarios use separate serial 135-second fixtures. Original deadlines,
+shared tools, metadata transactions and all 66 historical manifests stay unchanged.
+All owned sessions stopped with verified artifact/guest/supervisor teardown;
+Actions remain disabled. See the
+[manifest](../../testing/M2/property-native-backend-manifest.json). No hold release,
+new schema, authenticated runtime transport, native recovery/global launch fence
+or complete root/M2 acceptance follows. Operator writes remain disabled.
