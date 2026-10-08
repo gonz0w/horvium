@@ -1,6 +1,6 @@
 # M2 original coordinator execution authority
 
-Date: 2026-10-08. Status: implementation in review; portable qualification pending.
+Date: 2026-10-08. Status: portable subset qualified; maintainer review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -79,3 +79,21 @@ The combined original root backend must independently prove those gates, own one
 fixed control and bind its original state claim. The private native factory is
 unchanged and has no runtime consumer. Transport/operator writes, native
 interruption/reboot/recovery, hold release and complete M2 acceptance remain open.
+
+## Executed qualification
+
+Signed source `68a6cf6e1794d258be31c42a7b7913574fec7311`, based on PR 89 merge
+`025e496a3d10f935071fae59ba606e0a246e9d62`, passed all nine new parents and
+41 children, all ten retained handoff/uncertainty parents, mandatory baseline with
+125 tooling tests, nine affected race packages and every one of 38 selected fuzz
+targets. Focused review took 212.450 seconds; both supervisors completed cleanly.
+FreeBSD/amd64 compilation passed without execution and its artifact was removed.
+All 65 historical M2 manifests and 364 protected native/metadata/shared-tool paths
+are byte-identical to the base. Lab status found no active or unverified sessions;
+Actions remain disabled. See the [source-bound record](property-execution-authority-manifest.json).
+
+The first baseline stopped on six existing process-fixture failures because the
+sandbox denied their Unix-socket bind. The unchanged source passed through the
+permitted owned review gate. Preserve that initial run as unqualified; no test,
+process-containment or product restriction was relaxed. Full native/backend and
+M2 acceptance gates remain open.

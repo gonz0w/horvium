@@ -1197,3 +1197,13 @@ transactions, fixtures, shared tools and historical manifests are unchanged;
 retain their actual sources without redundant native reruns or relabeling.
 Full root backend/authentication/eligibility/recovery/global launch and runtime
 writer gates remain open; retained session context is not authentication.
+
+Signed source `68a6cf6e1794d258be31c42a7b7913574fec7311` passed all required
+nine new parents/41 children, ten retained handoff/uncertainty parents, baseline/
+125 tooling tests, nine race packages and all 38 selected fuzz targets in 212.450
+seconds, with both supervisors cleaned. FreeBSD compilation passed without
+execution; the artifact was removed. The initial sandbox socket-denial baseline
+remains unqualified. All 65 historical manifests and 364 protected paths retain
+exact base bytes, with verified lab teardown and disabled Actions; see the
+[manifest](../../testing/M2/property-execution-authority-manifest.json). Complete
+native/root backend, authentication, recovery/global and M2 gates remain open.

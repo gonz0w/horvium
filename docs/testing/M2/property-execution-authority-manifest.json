@@ -1,0 +1,375 @@
+{
+  "record_type": "M2-original-coordinator-execution-authority",
+  "date": "2026-10-08",
+  "source_commit": "68a6cf6e1794d258be31c42a7b7913574fec7311",
+  "source_tree": "d5183461c5de42c97421f67ae2267eb6f156dd51",
+  "base_commit": "025e496a3d10f935071fae59ba606e0a246e9d62",
+  "requirements": [
+    "M2-PLAN-001 (partial)",
+    "M2-JOB-001 (partial)",
+    "M2-DRIFT-001 (partial)",
+    "M2-RECOVERY-001 (partial)"
+  ],
+  "scope": "Portable mandatory original admission/execution backend binding, exact retained whole plan/session context/queued acknowledgement/civil clock and publication uncertainty, one consumed handoff and shared prelaunch retirement; no authentication/native/root/recovery/global authority or runtime consumer",
+  "input_sha256": [
+    {
+      "path": "internal/storage/property_coordinator.go",
+      "sha256": "35ad2b5e49323d00ac7d55f792683481a84864213d579ccc90e7c353932e4ca1"
+    },
+    {
+      "path": "internal/storage/property_execution.go",
+      "sha256": "e03cfcc1eb9aaeed5bf280bb4c4fcfd525305d187675bf1084cf664ae13e74ea"
+    },
+    {
+      "path": "internal/storage/property_execution_authority.go",
+      "sha256": "3434e3ff081512b614076a48295efe634bcef17ff8b3bd8de8abe6da64559b5d"
+    },
+    {
+      "path": "internal/storage/property_execution_authority_test.go",
+      "sha256": "e880f766e70e4de43ce0ab04263defe5a1a0ad00ca7a56d9ce786b3d7cfaf578"
+    },
+    {
+      "path": "internal/storage/property_handoff.go",
+      "sha256": "1fd7e164b4a033270285c1339686f8877545db03732864ab810161f0d4f9106f"
+    },
+    {
+      "path": "internal/storage/property_handoff_test.go",
+      "sha256": "bf606470bbe395e956081c8a975b366289f2ea646022b811ba189d27ff138618"
+    }
+  ],
+  "tests": {
+    "new_parents": [
+      "TestPropertyExecutionAuthorityBinding",
+      "TestPropertyExecutionAuthorityBindingCuts",
+      "TestPropertyExecutionAuthorityLiveDenials",
+      "TestPropertyExecutionAuthorityFinalLiveChecks",
+      "TestPropertyExecutionAuthorityRetirement",
+      "TestPropertyExecutionAuthorityLateOutcome",
+      "TestPropertyExecutionAuthorityWorkerContext",
+      "TestPropertyExecutionAuthorityConcurrentBinding",
+      "TestPropertyExecutionAuthorityRequiresBinder"
+    ],
+    "new_children": [
+      "TestPropertyExecutionAuthorityBindingCuts/error",
+      "TestPropertyExecutionAuthorityBindingCuts/expired",
+      "TestPropertyExecutionAuthorityBindingCuts/rollback",
+      "TestPropertyExecutionAuthorityBindingCuts/cancelled",
+      "TestPropertyExecutionAuthorityBindingCuts/uncertainty",
+      "TestPropertyExecutionAuthorityBindingCuts/removed",
+      "TestPropertyExecutionAuthorityBindingCuts/changed-ack",
+      "TestPropertyExecutionAuthorityBindingCuts/changed-plan",
+      "TestPropertyExecutionAuthorityBindingCuts/changed-session",
+      "TestPropertyExecutionAuthorityBindingCuts/replaced-entry",
+      "TestPropertyExecutionAuthorityLiveDenials/nil",
+      "TestPropertyExecutionAuthorityLiveDenials/zero",
+      "TestPropertyExecutionAuthorityLiveDenials/nil-context",
+      "TestPropertyExecutionAuthorityLiveDenials/cancelled",
+      "TestPropertyExecutionAuthorityLiveDenials/uncertainty",
+      "TestPropertyExecutionAuthorityLiveDenials/expired",
+      "TestPropertyExecutionAuthorityLiveDenials/rollback",
+      "TestPropertyExecutionAuthorityLiveDenials/clock-unavailable",
+      "TestPropertyExecutionAuthorityLiveDenials/removed",
+      "TestPropertyExecutionAuthorityLiveDenials/changed-ack",
+      "TestPropertyExecutionAuthorityLiveDenials/changed-intent",
+      "TestPropertyExecutionAuthorityLiveDenials/changed-plan",
+      "TestPropertyExecutionAuthorityLiveDenials/changed-session",
+      "TestPropertyExecutionAuthorityLiveDenials/duplicate",
+      "TestPropertyExecutionAuthorityLiveDenials/unclaimed",
+      "TestPropertyExecutionAuthorityLiveDenials/submission",
+      "TestPropertyExecutionAuthorityLiveDenials/replaced-entry",
+      "TestPropertyExecutionAuthorityFinalLiveChecks/expired",
+      "TestPropertyExecutionAuthorityFinalLiveChecks/rollback",
+      "TestPropertyExecutionAuthorityFinalLiveChecks/cancelled",
+      "TestPropertyExecutionAuthorityRetirement/success",
+      "TestPropertyExecutionAuthorityRetirement/prepare",
+      "TestPropertyExecutionAuthorityRetirement/applying",
+      "TestPropertyExecutionAuthorityRetirement/refresh",
+      "TestPropertyExecutionAuthorityRetirement/apply",
+      "TestPropertyExecutionAuthorityRetirement/observe",
+      "TestPropertyExecutionAuthorityRetirement/observing",
+      "TestPropertyExecutionAuthorityRetirement/succeeded",
+      "TestPropertyExecutionAuthorityRetirement/unquiet",
+      "TestPropertyExecutionAuthorityRetirement/wrong-run-id",
+      "TestPropertyExecutionAuthorityRetirement/clock"
+    ],
+    "retained_handoff_parents": [
+      "TestPropertyExecutionHandoffOriginalAdmission",
+      "TestPropertyExecutionHandoffConcurrentSingleUse",
+      "TestPropertyExecutionHandoffDenials",
+      "TestPropertyExecutionHandoffFreshRecordBinding",
+      "TestPropertyExecutionHandoffFinalClock",
+      "TestPropertyExecutionHandoffAdmissionUncertainty",
+      "TestPropertyExecutionHandoffLiveGates",
+      "TestPropertyExecutionHandoffLateOutcomeAndCuts",
+      "TestPropertyExecutionHandoffPublicationUncertainty",
+      "TestPropertyExecutionHandoffVerifiedReconciliation"
+    ],
+    "pending_and_active_concurrent_callers": 32,
+    "fuzz_target": "FuzzPropertyExecutionHandoff",
+    "fuzz_action_limit": 32,
+    "added_actions": [
+      "copied authority live/evidence checks",
+      "failed backend binding"
+    ],
+    "failing_first": {
+      "source": "uncommitted contract stub with denial methods; handoff still lacked binding",
+      "log_sha256": "baaf0e84713b7109ce7504322c65a035e10b59c079812194a98abbb26ca6a6b7",
+      "failures": [
+        "original backend did not receive binding",
+        "backend lacking mandatory binder was accepted"
+      ]
+    },
+    "development_behavior": {
+      "source": "uncommitted Go inputs byte-identical to signed review source",
+      "log_sha256": "a55b178dce3a37c190e906d07a224e90c3919f2de024f36be0a8ee19e77fbf4e",
+      "result": "pass"
+    }
+  },
+  "portable_review": {
+    "source_commit": "68a6cf6e1794d258be31c42a7b7913574fec7311",
+    "session": "ceb0clcy",
+    "mode": "focused",
+    "title": "feat(storage): bind execution to original coordinator authority",
+    "command": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "qualified": true,
+    "tooling_tests": 125,
+    "race_packages": [
+      "./cmd/horvium",
+      "./internal/admin",
+      "./internal/client",
+      "./internal/console",
+      "./internal/helper",
+      "./internal/host/freebsd",
+      "./internal/observation",
+      "./internal/service",
+      "./internal/storage"
+    ],
+    "fuzz_targets": [
+      {
+        "package": "./internal/admin",
+        "target": "FuzzConfiguration"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzRequest"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzSnapshot"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPoolPropertyCollection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPoolProviderCollection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPropertyClaimSourceSelection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPropertyControlSelection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPropertyJobSource"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPropertyPolicyCollection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzSystemUseCollection"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzDeviceUseReview"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzFilesystemSignature"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzFilesystemStates"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzIdentities"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzImportedPoolUse"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzJobRecord"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzJobReservations"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzJobRestartPage"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzOwnershipCatalogNames"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzOwnershipRecord"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolFeatures"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolLabels"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolScan"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolState"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolSystemUse"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolTopology"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzProperties"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyCoordinatorActions"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyExecutionCut"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyExecutionHandoff"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyIntent"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyJob"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyJobAssessment"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyLiveStateReceipt"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyPlan"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyPostcondition"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzStateCatalogNames"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzSystemDeviceUse"
+      }
+    ],
+    "seconds": 212.45,
+    "report_sha256": "5b0fdb654f2c344a134dd98966baf388821c62a32539669c68cd62cdacbc1532",
+    "checks_log_sha256": "8d3745d9e4ee0d2a70b933e0059e8b80ea92ee8ede1e1b9299a8cbf2bdc4432b",
+    "deep_log_sha256": "4a210f3ba5f797a1a264ce4a51c08b84ced7c924ce9bafe05fea543a0315b3cc",
+    "completed_clean_supervisors": 2
+  },
+  "unqualified_attempts": [
+    {
+      "stage": "initial unsupervised mandatory baseline",
+      "source": "same uncommitted implementation",
+      "log_sha256": "cdf9e59ebbbc1581030e69bc8a2aa36e08604031011261a0b26bed3705890d36",
+      "result": "six existing process-fixture failures: sandbox denied Unix socket bind",
+      "qualification": false,
+      "repair": "rerun unchanged inputs through the permitted owned local review gate; no test/tool/product relaxation"
+    }
+  ],
+  "freebsd_cross_build": {
+    "source_commit": "68a6cf6e1794d258be31c42a7b7913574fec7311",
+    "toolchain": "go version go1.27.1 darwin/arm64",
+    "toolchain_binary_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+    "environment": {
+      "GOOS": "freebsd",
+      "GOARCH": "amd64",
+      "GOAMD64": "v1",
+      "CGO_ENABLED": "0",
+      "GOTOOLCHAIN": "local",
+      "GOENV": "off"
+    },
+    "command": "go test -trimpath -c ./internal/storage",
+    "compiled": true,
+    "executed": false,
+    "artifact_sha256": "d13492cd23e2a8c62bca5da24ad61f3733bf6a60d98340d08be836e4a9488f8e",
+    "artifact_bytes": 11785909,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dependency_sha256": {
+      "go.mod": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+      "go.sum": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+    },
+    "artifact_removed": true
+  },
+  "native_evidence": {
+    "executed": false,
+    "rationale": "No native facility adapter, transaction or fixture changes. Existing native sources remain unchanged and historical native evidence retains its actual executed sources. Full original root backend/combined interruption/recovery qualification remains required before runtime effects.",
+    "historical_M2_manifests": 65,
+    "historical_manifest_paths_sha256": "edc65bf20ea855ce3239cce458bdd503f63680f7f0ceb51d7dc75dbb346f5775",
+    "protected_unchanged_paths": 364,
+    "protected_paths_and_hashes_sha256": "6bb3a4ae756e1daf807720027586b10fdb17012228bd71c4c802709b40d4ad57",
+    "all_protected_paths_byte_identical_to_base": true
+  },
+  "teardown": {
+    "all_review_supervisors_completed_clean": true,
+    "status_log_sha256": "0aef9653374809d2ab58c4477748cfd654c4fc1c36376187ba697414667b144e",
+    "no_active_or_unverified_sessions": true,
+    "cross_build_artifact_removed": true,
+    "persistent_services_installed": false
+  },
+  "github_actions": {
+    "enabled": false,
+    "permissions_record_sha256": "32700f5e09febdcc97d40b65c42a1c4b981b4b96af6eb1b8e87c932aba0a71ca"
+  },
+  "remaining_gates": [
+    "kernel peer and live application authentication",
+    "original root backend/native eligibility and matching state claim",
+    "executor/recovery/global and pool launch clearance",
+    "actual native interruption/reboot/recovery",
+    "operator write transport and UI/CLI workflows",
+    "hold release and complete M2 acceptance"
+  ]
+}

@@ -1026,6 +1026,13 @@ acknowledgement, original civil clock and publication uncertainty. Pending and
 failed binding cannot launch; control return and every consumed worker exit
 retire copied handles without releasing holds or discarding late verified outcome
 duties. Nine new parents and extended existing handoff fuzz actions retain all
-old handoff/uncertainty cases. Portable qualification is pending. Native adapters,
+old handoff/uncertainty cases. Signed source
+`68a6cf6e1794d258be31c42a7b7913574fec7311` passed nine new parents/41 children,
+all ten retained handoff parents, baseline/125 tooling tests, nine race packages
+and 38 selected fuzz targets in 212.450 seconds. FreeBSD cross-compilation passed
+without execution and the artifact was removed; both review supervisors and all
+lab sessions stopped with verified teardown. All 65 historical manifests and 364
+protected paths remain byte-identical; Actions stay disabled. See the
+[manifest](../../testing/M2/property-execution-authority-manifest.json). Native adapters,
 transactions and fixtures stay unchanged. Full root backend, authenticated write
 transport, native recovery/global clearance and runtime writers remain open.
