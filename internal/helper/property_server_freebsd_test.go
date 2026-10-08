@@ -60,7 +60,7 @@ func (r *listenerFixture) stop(t *testing.T) {
 		r.cancel()
 		select {
 		case err := <-r.done:
-			if !errors.Is(err, context.Canceled) {
+			if !errors.Is(err, context.Canceled) || err.Error() != context.Canceled.Error() {
 				t.Error("root listener stop", err)
 			}
 		case <-time.After(3 * time.Second):

@@ -5,6 +5,9 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
+	"net"
 	"testing"
 	"time"
 )
@@ -156,6 +159,23 @@ func TestPropertyServerFactoryValidation(t *testing.T) {
 	if !nativeSupported {
 		if s, err := newPropertyServer(valid); s != nil || !errors.Is(err, ErrUnsupported) {
 			t.Fatal("unsupported root listener authorized", err)
+		}
+	}
+}
+
+func TestPropertyWorkerCloseFailureReporting(t *testing.T) {
+	closed := &net.OpError{Op: "close", Net: "unix", Err: net.ErrClosed}
+	read := &net.OpError{Op: "read", Net: "unix", Err: io.ErrUnexpectedEOF}
+	sentinel := errors.New("synthetic close failure for error classification only")
+	closeError := &net.OpError{Op: "close", Net: "unix", Err: sentinel}
+	for _, err := range []error{nil, ErrPermission, context.DeadlineExceeded, read, closed, errors.Join(read, closed)} {
+		if propertyWorkerCloseFailure(err) != nil {
+			t.Fatal("ordinary denial treated as cleanup failure")
+		}
+	}
+	for _, err := range []error{closeError, errors.Join(read, closeError), fmt.Errorf("wrapped: %w", errors.Join(ErrProtocol, closeError))} {
+		if !errors.Is(propertyWorkerCloseFailure(err), sentinel) {
+			t.Fatal("first real close error discarded")
 		}
 	}
 }

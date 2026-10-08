@@ -42,7 +42,11 @@ qualified independently before replacing this default denial.
 
 Cancellation closes the original listener/admission owner, interrupts negotiation
 and request I/O, waits for every owned worker and joins descriptor/socket cleanup
-errors. No new phase deadline is minted; the original admission context remains
+errors. Preserve the first listener close result across cancellation and synchronous
+cleanup. A bounded one-entry worker failure channel retains the first genuine
+standard-library socket close error and cancels serving; ordinary protocol/read/
+write denials neither stop the listener nor grow an error ledger. Admission and
+worker-reservation close failures also end serving. No new phase deadline is minted; the original admission context remains
 bounded by the server parent. The current workers do only bounded socket I/O.
 Future backend assembly must separately define durable job lifetime and execution
 shutdown rather than infer either from a management disconnect.
@@ -53,6 +57,11 @@ Start with signed denying stubs. Portable actual-socket tests require independen
 worker/socket lifetime, original lease/owner identity, duplicate denial, concurrent
 last-slot exclusivity, factory configuration bounds and unsupported-host refusal.
 The private portable worker-accounting fixture supplies no root or kernel authority.
+A synthetic error-tree regression verifies close-error classification only. It
+does not inject a kernel or descriptor failure. Genuine Close syscall failure
+cannot safely be forced on these concrete owned sockets without bypassing their
+ownership; no close-operation or UID substitution hook is added. Native shutdown
+requires the sole cancellation error, drained workers and retired descriptors.
 
 Add a separate opted-in native parent with eighteen cases: complete denied typed
 review/submission, actual configured/wrong/root peers, malformed and legacy input,
