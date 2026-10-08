@@ -257,6 +257,11 @@ record. Eight behavioral groups and affected race/fuzz checks passed; see the
 [manifest](docs/testing/M2/property-handoff-manifest.json). Full native backend
 and runtime execution remain open.
 
+The [fresh root submission state claim](docs/testing/M2/property-live-state.md)
+adds an original-lease receipt for a read-only readiness exception for its own
+queued/applying job. Restored records cannot reconstruct the claim; other holds
+remain blocking. Source-bound qualification is pending; runtime writes stay disabled.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

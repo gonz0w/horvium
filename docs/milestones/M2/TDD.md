@@ -1011,3 +1011,21 @@ complete preservation and owned-process teardown passed. See the
 pending; no root lease, native backend/eligibility/scheduling, actual durable
 interruption/recovery, transport or assembled acceptance follows from synthetic
 adapters or an unexecuted FreeBSD cross-build.
+
+## Fresh property submission state claim amendment
+
+Require the [state-claim contract](../../testing/M2/property-live-state.md) at T1
+and T2 for partial M2-JOB-001, M2-STATE-001, M2-DRIFT-001 and M2-RECOVERY-001.
+Five behavioral parents and bounded action fuzzing must prove exact original
+receipt/current record binding, stage/refused restored and foreign metadata,
+retained independent holds, bounded nonreplacement, one claimant and invalidation
+on close. Add all 18 live-state children to the existing native submission parent;
+require 32 native concurrent callers, actual post-sync/no-receipt failure cuts,
+root/closed/orphan/unsafe-record denials and a waited UID/GID-65534 child.
+Preserve every historical state/backing/codec assertion and all deadlines on both
+pinned releases with serial disposable QEMU runs and full owned teardown.
+Kernel metadata behavior is actual; fixture policy/physical system-use facts are
+synthetic, and positive readiness must not be claimed as full native eligibility.
+No changes to shared tools/selectors/checkers/old manifests or runtime consumers.
+Qualification pending; original backend/native eligibility, effect interruption/
+recovery, authenticated workflows, hold release and complete M2 remain open.

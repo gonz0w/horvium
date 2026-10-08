@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 81; original admission execution handoff qualified for review; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 82; fresh root submission state claim awaiting qualification; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -857,6 +857,18 @@ baseline/122 tooling tests, eight new behavioral groups, 9 affected race package
 and all 36 selected fuzz targets. FreeBSD tests cross-compiled without execution;
 the artifact was removed, all owned processes stopped and native code/fixtures/
 selectors remained byte-identical. See the
-[manifest](../../testing/M2/property-handoff-manifest.json). Maintainer review is
-pending; a complete original root backend and all actual native eligibility/
+[manifest](../../testing/M2/property-handoff-manifest.json). Accepted in
+[PR 82](https://github.com/gonz0w/horvium/pull/82) at merged source
+`76774cf1add6479ab6a917beddfb464b869cbd10`; a complete original root backend and all actual native eligibility/
 interruption/recovery gates remain.
+
+## Fresh root submission state claim
+
+The [contract](../../testing/M2/property-live-state.md) distinguishes an original
+post-sync submission from restored/foreign metadata through a bounded volatile
+receipt on the original root lease. One opaque read-only claim permits only its
+exact queued record or applying successor through unchanged state/backing gates;
+other holds remain blocking. It enables no native executor or eligibility.
+Test-first implementation is awaiting focused portable review and both native
+state runs; full root backend, native eligibility, effect recovery and assembled
+operator acceptance remain separate.

@@ -21,6 +21,10 @@ func (s *StateDirectory) CheckPropertyState(p Policy, u PoolSystemUse) error {
 
 // Private reduced-bound/read seam for disposable fixtures, never a runtime knob.
 func (s *StateDirectory) checkPropertyState(p Policy, u PoolSystemUse, limits stateCatalogLimits, afterRead func()) error {
+	return s.checkPropertyStateClaim(p, u, limits, afterRead, nil, PropertyJob{})
+}
+
+func (s *StateDirectory) checkPropertyStateClaim(p Policy, u PoolSystemUse, limits stateCatalogLimits, afterRead func(), claim *PropertyStateClaim, current PropertyJob) error {
 	if s == nil || os.Geteuid() != 0 {
 		return ErrStateDirectory
 	}
@@ -83,7 +87,15 @@ func (s *StateDirectory) checkPropertyState(p Policy, u PoolSystemUse, limits st
 	if !found {
 		return ErrDenied
 	}
-	if err = checkPropertyStateJobs(b.finish(), p.PoolGUID); err != nil {
+	view := b.finish()
+	if claim == nil {
+		err = checkPropertyStateJobs(view, p.PoolGUID)
+	} else if claim.state != s {
+		err = ErrDenied
+	} else {
+		err = s.propertyAdmissions.check(claim.identity, view, current, p.PoolGUID)
+	}
+	if err != nil {
 		return err
 	}
 	if err = checkPropertyStateBacking(before, u, owners); err != nil {

@@ -3,6 +3,12 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [fresh root submission state claim](../testing/M2/property-live-state.md)
+adds bounded original-lease post-sync provenance and a read-only own-job exception.
+Qualification is pending. Native tests use actual kernel metadata facilities but
+synthetic policy/physical system-use inputs; they cannot qualify full native
+eligibility, recovery clearance, operator writes or a support claim.
+
 M2 [original admission execution handoff](../testing/M2/property-handoff.md)
 transfers one freshly acknowledged volatile admission through its original
 coordinator/backend and checks the exact fresh queued record before applying.
