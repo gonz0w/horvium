@@ -101,7 +101,7 @@ func TestPropertyViewsClosedSchema(t *testing.T) {
 		t.Fatal("review as job")
 	}
 }
-func TestPropertyJobViewLifecycle(t *testing.T) {
+func TestPropertyViewJobLifecycle(t *testing.T) {
 	j := jobFixture()
 	data, err := EncodePropertyJobView(j)
 	if err != nil {
