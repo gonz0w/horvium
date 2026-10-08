@@ -3,6 +3,18 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [fresh root submission state claim](../testing/M2/property-live-state.md)
+adds bounded original-lease post-sync provenance and a read-only own-job exception.
+Signed source `fe56955fcc2b1803bfa6bf61685b336f8716b420` passed baseline/122 tooling tests,
+nine affected race packages and all 37 selected fuzz targets. Both pinned native
+releases passed all 19 new cases and every historical 819 state/backing,
+67-parent/1,876-codec gate, using identical checksum-bound artifacts with full
+teardown. Positive readiness uses synthetic policy/physical system-use inputs;
+actual kernel metadata proof does not qualify full native eligibility, recovery
+clearance, operator writes or a support claim. Superseded attempts remain
+unqualified, all shared tools and 58 prior manifests remain unchanged and Actions
+remain disabled. See the [manifest](../testing/M2/property-live-state-manifest.json).
+
 M2 [original admission execution handoff](../testing/M2/property-handoff.md)
 transfers one freshly acknowledged volatile admission through its original
 coordinator/backend and checks the exact fresh queued record before applying.

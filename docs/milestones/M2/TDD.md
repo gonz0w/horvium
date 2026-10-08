@@ -1007,7 +1007,32 @@ action fuzzing must refuse a second publication, handoff or effect. Signed sourc
 new groups, 9 affected race packages and all 36 selected fuzz targets.
 FreeBSD tests cross-compiled without execution and the artifact was removed;
 complete preservation and owned-process teardown passed. See the
-[manifest](../../testing/M2/property-handoff-manifest.json). Maintainer review is
-pending; no root lease, native backend/eligibility/scheduling, actual durable
+[manifest](../../testing/M2/property-handoff-manifest.json). Accepted in
+[PR 82](https://github.com/gonz0w/horvium/pull/82) at merged source
+`76774cf1add6479ab6a917beddfb464b869cbd10`; no root lease, native backend/eligibility/scheduling, actual durable
 interruption/recovery, transport or assembled acceptance follows from synthetic
 adapters or an unexecuted FreeBSD cross-build.
+
+## Fresh property submission state claim amendment
+
+Require the [state-claim contract](../../testing/M2/property-live-state.md) at T1
+and T2 for partial M2-JOB-001, M2-STATE-001, M2-DRIFT-001 and M2-RECOVERY-001.
+Five behavioral parents and bounded action fuzzing must prove exact original
+receipt/current record binding, stage/refused restored and foreign metadata,
+retained independent holds, bounded nonreplacement, one claimant and invalidation
+on close. Add all 19 live-state children to the existing native submission parent;
+require 32 native concurrent callers, actual post-sync/no-receipt failure cuts,
+root/closed/orphan/unsafe-record denials and a waited UID/GID-65534 child.
+Preserve every historical state/backing/codec assertion and all deadlines on both
+pinned releases with serial disposable QEMU runs and full owned teardown.
+Kernel metadata behavior is actual; fixture policy/physical system-use facts are
+synthetic, and positive readiness must not be claimed as full native eligibility.
+No changes to shared tools/selectors/checkers/old manifests or runtime consumers.
+Signed source `fe56955fcc2b1803bfa6bf61685b336f8716b420` passed all new portable/race/fuzz gates,
+the mandatory baseline with 122 tooling tests, and all 19 new children plus every
+historical native state/backing/codec gate on both pinned releases. Identical
+artifacts, same supported metadata backing rules and complete owned teardown
+were verified; superseded attempts remain unqualified. See the
+[manifest](../../testing/M2/property-live-state-manifest.json). Maintainer review,
+original backend/native eligibility, effect interruption/recovery, authenticated
+workflows, hold release and complete M2 remain open.

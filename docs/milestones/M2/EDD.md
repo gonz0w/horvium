@@ -500,3 +500,18 @@ outcome obligations. This portable handoff is not root-lease, complete native
 eligibility/recovery, global scheduling or operator authorization proof; qualify
 the combined native backend separately. See the
 [handoff contract](../../testing/M2/property-handoff.md).
+
+## Fresh property submission state claim amendment
+
+An exact new post-sync submission may retain a bounded volatile receipt on its
+original root lease. Only that lease can issue one opaque read-only state claim,
+using a job identifier and a complete native metadata census. A reopened lease,
+duplicate readback or decoded/raw-published record cannot reconstruct it.
+The claim permits only its whole acknowledged queued record or single applying
+successor through the otherwise unchanged policy/namespace/backing prerequisite;
+other global pending and selected-pool retained holds remain blocking.
+Keep one claimant until close and at most 64 nonreplacing receipts. Exhaustion
+must preserve actual successful durable acknowledgements while refusing missing
+provenance. This is not eligibility, session/clock authority, recovery clearance,
+executor quiescence, effect admission or a scheduler; no runtime writer is enabled.
+See the [state-claim contract](../../testing/M2/property-live-state.md).

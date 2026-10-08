@@ -47,6 +47,7 @@ func TestNativePropertySubmission(t *testing.T) {
 		_ = os.RemoveAll(anchor)
 	}()
 	var results []string
+	nativePropertyLiveState(t, anchor)
 	check := func(name string, ok bool) {
 		t.Helper()
 		if !ok {

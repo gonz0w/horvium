@@ -1,6 +1,6 @@
 # M2 original property admission execution handoff
 
-Date: 2026-10-07. Status: portable subset qualified; maintainer review pending.
+Date: 2026-10-07. Status: portable subset accepted in PR 82.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [ADR 0006](../../adr/0006-storage-ownership-and-plans.md),

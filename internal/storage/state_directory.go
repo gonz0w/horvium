@@ -21,6 +21,8 @@ type StateDirectory struct {
 	mu                 sync.Mutex
 	directory, writer  *os.File
 	publicationBlocked bool
+	propertyAdmissions propertyAdmissionLedger
+	propertyOrigin     *StateDirectory
 }
 
 // Close releases owned descriptors once, including for a zero handle. It never
@@ -31,6 +33,8 @@ func (s *StateDirectory) Close() error {
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	s.propertyAdmissions = propertyAdmissionLedger{}
+	s.propertyOrigin = nil
 	var err error
 	if s.writer != nil {
 		if s.writer.Close() != nil {

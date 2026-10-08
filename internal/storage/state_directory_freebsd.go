@@ -92,7 +92,9 @@ func OpenStateDirectory(path string) (*StateDirectory, error) {
 	if unix.Fsync(fd) != nil || unix.Fsync(dir) != nil {
 		return badLock()
 	}
-	return &StateDirectory{directory: os.NewFile(uintptr(dir), "storage-state-directory"), writer: os.NewFile(uintptr(fd), "storage-state-writer")}, nil
+	s := &StateDirectory{directory: os.NewFile(uintptr(dir), "storage-state-directory"), writer: os.NewFile(uintptr(fd), "storage-state-writer")}
+	s.propertyOrigin = s
+	return s, nil
 }
 
 func validStateLock(st unix.Stat_t) bool {

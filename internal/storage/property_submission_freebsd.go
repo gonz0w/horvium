@@ -87,5 +87,8 @@ func (s *StateDirectory) publishPropertySubmissionBounded(p PropertyJob, limits 
 	if err != nil {
 		return PropertyJob{}, false, err
 	}
+	if s.propertyOrigin == s {
+		s.propertyAdmissions.remember(bound.job.ID, data)
+	}
 	return bound, false, nil
 }
