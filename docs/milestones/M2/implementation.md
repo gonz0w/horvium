@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 99; session-bound property client in review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 100; private root property listener in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1268,3 +1268,12 @@ stopped with verified teardown; Actions remain disabled. All 75 historical manif
 retain their bytes; see the
 [source-bound evidence](../../testing/M2/property-client-manifest.json). Runtime/session backend
 assembly, root recovery/global launch and complete M2 acceptance remain open.
+
+## Private root property listener prerequisite
+
+PR 100 accepted the original-session property client at merged source
+`4ae7c268fa3c939a28c62cdf74852e13ba4da119`. The next
+[root listener](../../testing/M2/property-listener.md) owns its root socket and joins
+original admission to a separately bounded worker ledger. All typed operations
+remain denied. Qualification is pending; backend, original plans/session, recovery/
+global launch and assembled runtime/M2 acceptance remain open.

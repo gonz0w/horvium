@@ -3,6 +3,10 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [private root property listener](../testing/M2/property-listener.md) joins
+safe root socket ownership, original admission and separate worker accounting.
+Qualification is pending; all typed operations remain denied.
+
 M2 [session-bound property client](../testing/M2/property-client.md) adds private
 original-session phase checks around a kernel-authenticated one-operation client.
 Five portable parents/nineteen children, all 74 transport cases on disposable
