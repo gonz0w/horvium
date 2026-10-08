@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 100; private root property listener in review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 101; configured property client in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1285,3 +1285,23 @@ verified teardown; Actions remain disabled and all 76 historical manifests retai
 their bytes. See the [source-bound evidence](../../testing/M2/property-listener-manifest.json).
 All typed operations remain denied. Backend, original plans/session, recovery/global
 launch and assembled runtime/M2 acceptance remain open.
+
+## Configured property client prerequisite
+
+PR 101 accepted the private denial listener at merged source
+`acb51f0405ad5d7db22e319b5024e19465d96c6e`. The next
+[configured client](../../testing/M2/property-dial.md) joins trusted socket selection,
+actual UID, original deadline and session-phase checks without runtime registration.
+Signed source `dae7383aaf3d9518535254d281756f96c7c9507c` passed three portable parents/
+seventeen children, all 104 transport cases on both disposable FreeBSD releases,
+baseline/136 tooling tests and fresh full portable review (eleven race packages/
+49 bounded fuzz targets in 220.066 seconds). The first signed denying-stub native
+run remains unqualified; it also exposed a startup race in the prior replacement
+fixture. That case now completes an actual exchange before replacement; product
+listener bytes remain unchanged. The corrected signed red run retained all 92 old
+cases and failed only the new configured parent. Both red records retain actual
+sources and verified cleanup. All 672 owned sessions stopped with verified teardown;
+Actions remain disabled and all 77 historical manifests retain their bytes.
+See the [source-bound evidence](../../testing/M2/property-dial-manifest.json).
+Root application authentication, backend/policy/plan, recovery/global launch,
+durable admission and assembled M2 acceptance remain open.

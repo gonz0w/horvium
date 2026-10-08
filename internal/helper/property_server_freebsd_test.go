@@ -237,6 +237,12 @@ func TestNativePropertyListener(t *testing.T) {
 			r := startPropertyListener(t, local)
 			switch name {
 			case "replacement-preserved":
+				// Safe mode bits can appear before the final startup validation. A
+				// completed actual exchange proves serving began before replacing it.
+				ready := listenerChild(t, local, "review-denied", f.uid)
+				startActionChild(t, ready)
+				waitActionChild(t, ready)
+				listenerWorkers(t, r.server, 0)
 				if os.Remove(local.config.Socket) != nil || os.WriteFile(local.config.Socket, []byte("replacement"), 0600) != nil {
 					t.Fatal("replacement fixture")
 				}

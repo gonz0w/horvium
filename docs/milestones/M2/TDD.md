@@ -1460,3 +1460,16 @@ bounds on both pinned releases. Shared tools require fresh full portable review;
 store signed denying-stub failures separately. No callback/native write or runtime
 registration is added. Session/backend/recovery/global launch/assembled M2 gates
 remain mandatory.
+
+## Configured property client prerequisite
+
+Require the [configured connection contract](../../testing/M2/property-dial.md)
+after the accepted private listener. Reuse trusted helper configuration and actual
+kernel identity, original safe directory/socket policy and session checks. Repeat
+namespace identity/policy after dialing, before protocol bytes; own one original
+bounded dial/negotiation/operation lifetime and retire it on every terminal path.
+Keep raw-socket APIs and all 92 earlier native cases. Add twelve actual configured
+cases, six exact native parents, unchanged 80/90-second bounds and signed failing-
+first evidence. Shared checker/selector changes require fresh full portable review.
+Private configured adapters register no route/service/backend or native write;
+independent root application/recovery/global launch gates remain mandatory.

@@ -35,6 +35,11 @@ class ActionPeerEvidenceTests(unittest.TestCase):
                      + ''.join('    --- PASS: TestNativePropertyListener/' + n + ' (0.1s)\n' for n in sorted(self.module.LISTENER_CASES))
                      + 'PROPERTY_LISTENER_RESULT ' + ' '.join(n + '=pass' for n in sorted(self.module.LISTENER_CASES)) + '\n')
 
+        self.listener_only = self.log
+        self.log += ('--- PASS: TestNativeConfiguredPropertyClient (1.0s)\n'
+                     + ''.join('    --- PASS: TestNativeConfiguredPropertyClient/' + n + ' (0.1s)\n' for n in sorted(self.module.CONFIGURED_CASES))
+                     + 'CONFIGURED_PROPERTY_RESULT ' + ' '.join(n + '=pass' for n in sorted(self.module.CONFIGURED_CASES)) + '\n')
+
     def test_complete_and_matching_native_case_inventory(self):
         self.module.validate(self.log)
         source = (ROOT / 'internal/helper/action_peer_freebsd_test.go').read_text()
@@ -66,7 +71,7 @@ class ActionPeerEvidenceTests(unittest.TestCase):
 
     def test_script_selects_only_bounded_native_parent(self):
         script = (ROOT / 'tools/bsd-action-peer-prebuilt.sh').read_text()
-        self.assertEqual(re.findall(r"-test.run='([^']+)'", script), ['^TestNative(ActionPeer|PropertyExchange|AdmittedPropertyExchange|SessionPropertyClient|PropertyListener)$'])
+        self.assertEqual(re.findall(r"-test.run='([^']+)'", script), ['^TestNative(ActionPeer|PropertyExchange|AdmittedPropertyExchange|SessionPropertyClient|PropertyListener|ConfiguredPropertyClient)$'])
         self.assertIn('/usr/bin/timeout 90', script)
         self.assertIn('-test.timeout=80s', script)
 
@@ -131,5 +136,21 @@ class ActionPeerEvidenceTests(unittest.TestCase):
                         self.log.replace(case + '=pass', case + '=fail'),
                         self.log.replace(case + '=pass', ''),
                         self.log + 'PROPERTY_LISTENER_RESULT extra=pass\n'):
+                with self.assertRaises(ValueError):
+                    self.module.validate(bad)
+
+    def test_configured_inventory_and_old_only_proof_refused(self):
+        source = (ROOT / 'internal/helper/property_dial_freebsd_test.go').read_text()
+        cases = re.findall(r'"([a-z-]+)"', re.search(r'cases := \[\]string\{([^}]+)\}', source).group(1))
+        self.assertEqual(len(cases), len(self.module.CONFIGURED_CASES))
+        self.assertEqual(set(cases), self.module.CONFIGURED_CASES)
+        with self.assertRaises(ValueError):
+            self.module.validate(self.listener_only)
+        for case in self.module.CONFIGURED_CASES:
+            line = '    --- PASS: TestNativeConfiguredPropertyClient/' + case + ' (0.1s)\n'
+            for bad in (self.log.replace(line, ''), self.log + line,
+                        self.log.replace(case + '=pass', case + '=fail'),
+                        self.log.replace(case + '=pass', ''),
+                        self.log + 'CONFIGURED_PROPERTY_RESULT extra=pass\n'):
                 with self.assertRaises(ValueError):
                     self.module.validate(bad)

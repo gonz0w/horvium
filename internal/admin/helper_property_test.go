@@ -170,3 +170,57 @@ func TestPropertyAdapterSelectionBeforeNegotiation(t *testing.T) {
 		})
 	}
 }
+
+func TestConfiguredPropertyAdapterSelection(t *testing.T) {
+	for _, name := range []string{"review-selection", "submit-selection", "review-authority", "submit-authority", "config", "unsupported"} {
+		t.Run(name, func(t *testing.T) {
+			_, _, _, authority, _, _ := authorityFixture(t)
+			c := helper.Config{Socket: "/var/run/horvium/helper.sock", ManagementUID: 42, SocketGID: 42, Limits: helper.DefaultLimits(), Timeout: time.Second, MaxClients: 1}
+			intent := storage.Intent{FilesystemGUID: "101", Property: storage.Quota, Value: "1"}
+			plan, submission := strings.Repeat("a", 64), strings.Repeat("b", 64)
+			if name == "review-selection" {
+				intent.Value = "0"
+				authority = nil
+			}
+			if name == "submit-selection" {
+				plan = "../plan"
+				authority = nil
+			}
+			if strings.HasSuffix(name, "authority") {
+				authority = nil
+			}
+			if name == "config" {
+				c.MaxClients = 65
+			}
+			var err error
+			if strings.HasPrefix(name, "submit") {
+				j, d, e := submitConfiguredHelperProperty(context.Background(), c, "configured", "100", plan, submission, authority)
+				err = e
+				if j.ID != "" || d {
+					t.Fatal("denial projected admission")
+				}
+			} else {
+				r, e := reviewConfiguredHelperProperty(context.Background(), c, "configured", "100", intent, authority)
+				err = e
+				if r.ID != "" {
+					t.Fatal("denial projected review")
+				}
+			}
+			if err == nil {
+				t.Fatal("unsafe configured adapter accepted")
+			}
+			if strings.HasSuffix(name, "selection") && !errors.Is(err, helper.ErrProtocol) {
+				t.Fatal("selection not checked before session/dial", err)
+			}
+			if strings.HasSuffix(name, "authority") && !errors.Is(err, ErrUnauthorized) {
+				t.Fatal("original authority bypassed", err)
+			}
+			if name == "config" && !errors.Is(err, helper.ErrConfig) {
+				t.Fatal("config not validated before connection", err)
+			}
+			if name == "unsupported" && runtime.GOOS != "freebsd" && !errors.Is(err, helper.ErrUnsupported) {
+				t.Fatal("unsupported connector used", err)
+			}
+		})
+	}
+}

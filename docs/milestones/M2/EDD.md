@@ -828,3 +828,16 @@ preserve foreign entries. One original server has one serve attempt. Default-den
 all typed operations; no successful backend/clearance callback or runtime consumer
 is registered. Independent policy/session/recovery/global launch/durable admission
 and assembled runtime qualification must precede replacing denial.
+
+## Configured property client prerequisite
+
+Require the [configured connection contract](../../testing/M2/property-dial.md)
+after the accepted private listener. Reuse trusted helper configuration and actual
+kernel identity, original safe directory/socket policy and session checks. Repeat
+namespace identity/policy after dialing, before protocol bytes; own one original
+bounded dial/negotiation/operation lifetime and retire it on every terminal path.
+Keep raw-socket APIs and all 92 earlier native cases. Add twelve actual configured
+cases, six exact native parents, unchanged 80/90-second bounds and signed failing-
+first evidence. Shared checker/selector changes require fresh full portable review.
+Private configured adapters register no route/service/backend or native write;
+independent root application/recovery/global launch gates remain mandatory.

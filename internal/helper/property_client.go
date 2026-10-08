@@ -15,6 +15,7 @@ import (
 type PropertyClient struct {
 	identity *PropertyClient
 	exchange *propertyPeer
+	cancel   context.CancelFunc
 }
 
 // ConnectPropertyClient transfers the original socket, including on failure.
@@ -99,6 +100,9 @@ func (c *PropertyClient) Submit(pool, plan, submission string) (j storage.Job, d
 func (c *PropertyClient) Close() error {
 	if !c.original() {
 		return nil
+	}
+	if c.cancel != nil {
+		defer c.cancel()
 	}
 	return c.exchange.Close()
 }
