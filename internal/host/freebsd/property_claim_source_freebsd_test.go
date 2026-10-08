@@ -221,7 +221,10 @@ func nativePropertyClaimFixture(t *testing.T, ctx context.Context, policy storag
 		if err != nil || state.PublishPropertyJob(applying, 1) != nil {
 			t.Fatal("owned applying publication", err)
 		}
-		t.Run("applying", func(t *testing.T) { collect(t, applying) })
+		t.Run("applying", func(t *testing.T) {
+			collect(t, applying) // Retain the original raw-applying read-only assertion.
+			nativePropertyClaimControlBinding(t, ctx, claim, applying, anchor, policy)
+		})
 		t.Run("foreign-selection", func(t *testing.T) {
 			j, p, o, err := source.Collect(ctx, strings.Repeat("d", 64))
 			if err == nil || !reflect.DeepEqual(j, storage.PropertyJob{}) || !reflect.DeepEqual(p, storage.Policy{}) || !reflect.DeepEqual(o, storage.Observation{}) {

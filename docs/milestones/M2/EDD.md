@@ -569,3 +569,22 @@ Existing read-only readiness/observer claims retain queued/applying semantics.
 This supplies no native attribution, verified quiescence, actual outcome authority,
 terminal resolution or hold release; those remain original-backend gates. See the
 [successor contract](../../testing/M2/property-claim-successor.md).
+
+## Original claim control binding amendment
+
+The [private binding](../../testing/M2/property-claim-control.md) supplies the fixed
+control's metadata/native provenance prerequisite. Require the original opaque
+claim's exact successful applying acknowledgement, complete strict census/holds
+and independently collected claim-bound native baseline before invocation. Repeat
+acknowledged-record/live/context checks after collection; keep observers ineligible.
+Raw or lost applying publication cannot supply this lineage. The complete original
+backend still supplies live authenticated session/plan/civil-clock, recovery and
+global/pool launch clearance and owns exactly one control object. The private
+factory does not implement or reconstruct that authority; disposable callbacks
+are test-only. Existing control attempt/root/expiry/guard bounds remain unchanged.
+No runtime writer, transport, durable outcome, replay or hold release is enabled.
+
+The private binding's native and portable subset passed on both pinned releases;
+see its [source-bound manifest](../../testing/M2/property-claim-control-manifest.json).
+Only the disposable callback/capture supplies live clearance. The complete
+original backend and its authority remain unqualified.

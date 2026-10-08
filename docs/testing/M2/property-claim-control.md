@@ -1,0 +1,152 @@
+# M2 original-claim native property-control binding
+
+Date: 2026-10-08. Status: private binding subset qualified; maintainer review pending; runtime writes disabled.
+Authority: [approved EDD](../../milestones/M2/EDD.md),
+[Test Design](../../milestones/M2/TDD.md), [ADR 0006](../../adr/0006-storage-ownership-and-plans.md),
+[issue 19](https://github.com/gonz0w/horvium/issues/19).
+Partial M2-PROPERTY-001, M2-PRIV-001, M2-DRIFT-001 and M2-NATIVE-001 work.
+
+## Exact applying lineage and fresh control facts
+
+The private `newPropertyClaimControl` connects the existing fixed one-attempt
+native control to the same original opaque root state claim and claim-bound
+native observer. It has no public constructor or runtime consumer. The complete
+original backend must supply a mandatory live-clearance callback for its original
+plan/authenticated session/civil clock, recovered-state and global/pool launch
+reservations, and own exactly one control object. This binding does not implement
+that callback or prevent multiple independently constructed controls. Only declared
+disposable fixtures install test-only clearance. Neither a callback returning nil
+nor this fixture is complete native execution authority.
+
+`VerifyPropertyApplyingAcknowledgement` is a separate root-only metadata check.
+Under the original lease mutex, require the active claim, its successful private
+post-sync applying hash/revision, an exact two-event applying record and a complete
+strict mixed census including selected ownership and all other job holds. Reject
+raw/visible-but-unacknowledged records, foreign/copied state handles, closed/reopened
+leases, changed expected/durable records and any later or consumed successor attempt.
+Claim copies share provenance; repeated verification consumes nothing. Orphan
+uncertainty latches the existing publication block. This verifies canonical metadata
+lineage only, without launch authority, native effect attribution or hold release.
+
+The private factory owns the expected applying record, checks actual kernel UID
+and metadata acknowledgement, and installs only methods from the original claim,
+fixed native source/runner and actual clock. Authorization checks the entire typed
+intent and acknowledged predecessor before fresh independent property/provider/
+system/backing collection, matches the full returned record and baseline, then
+repeats exact metadata/live/context checks after owning the reply. Read-only
+observations must retain false eligibility. Missing adapters/clearance, cancellation,
+drift or uncertainty return zero projections and perform no control invocation.
+
+The existing control still consumes one attempt per object and rechecks root,
+expiry, civil-clock order, applying timestamp, context, allowed arguments and
+baseline before one guarded `/sbin/zfs set`. Its ten-second/4 KiB bound and descendant
+quiescence semantics remain unchanged. Sequential observations/advisory locking
+cannot fence a competing OS-root actor. No store schema, transport, constructor in
+the runtime, scheduler, success publisher, replay, reservation release or recovery
+resolution is introduced.
+
+## Test-first and native qualification
+
+Portable tests first require the absent acknowledgement/binding contracts. They
+cover eleven private lineage cases and eighteen binding failures, exact expected
+record/intent, fresh baseline, false eligibility, repeated live/metadata checks,
+cancellation and zero outputs. Existing original-claim/control tests remain required.
+An initial unexecuted FreeBSD cross-build caught a fixture referring to an absent
+publication-fault type; it was corrected to the existing private phase hooks.
+Unexecuted development binaries are removed and supply no native evidence.
+
+The existing disposable state submission parent adds nineteen
+`claim-acknowledgement` cases: exact/copy/repeated reads, queued/raw/lost applying,
+foreign/copied/closed/reopened denials, expected/durable/ownership/hold/orphan drift,
+observing/success/reconciliation and a failed ordinary successor attempt. Require
+unchanged bytes/private lineage, stable lock inode, retained claims and complete
+owned teardown. Actual non-root credentials must refuse the new method.
+
+The independent native claim fixture retains its original eight direct children
+and raw-applying observation. Its applying child additionally runs six nested
+`control-binding` cases: raw acknowledgement denial, clearance denial, one exact
+quota control/repeat denial, independent postcondition, retained applying/policy/
+lock/lineage and changed-ledger denial. Use a separate private state subdirectory on
+the already declared independent metadata ZFS pool, the enrolled data-pool GUID
+and actual member/system/backing checks. Arm cleanup before effect; require initial
+default quota, restore exact default value/source and verify the original full raw
+projection/sentinel/mount/backing and owned teardown. Test-only intent capture and
+live clearance remain explicit. The actual dropped-UID native control child must
+also refuse the factory before input validation.
+
+The first 15.1 pool attempt at signed source
+`277afb1ef7e139d61ae930a720f064e92dc5ed86` passed the exact native control,
+independent postcondition and applying preservation, but failed quota restoration
+and the enclosing full data-projection preservation gate. Ordinary `zfs inherit`
+cannot reset this non-inheritable property; the fixture now uses the existing
+`inherit -S` restoration form, with GUID and exact value/source checks. See
+[OpenZFS's documented default restoration](https://openzfs.github.io/openzfs-docs/man/v2.2/8/zfs-inherit.8.html).
+The failed run remains unqualified and source-bound; owned guest/fixture/process
+teardown and base/runtime preservation completed. No product control, reader,
+publisher, assertion, deadline or shared tool changed. Both state suites passed
+at that source; only the changed pool fixture needs fresh native execution.
+
+Retain all previous state/backing/codec cases, live/applying/successor groups, pool/
+control/guard cases, original selectors/checkers/supervisors and every deadline.
+Audit the new nineteen/six children exactly once in addition to unchanged shared
+checkers. Run both complete affected native suites serially on each pinned release,
+then focused portable review; do not overlap guest qualification and deep review.
+
+```sh
+make test-focus PKG=./internal/storage TEST='^TestPropertyClaimApplyingAcknowledgement'
+make test-focus PKG=./internal/host/freebsd TEST='^TestPropertyClaimControl'
+.tools/venv/bin/python3 tools/local-qualification.py state 15.1 --run
+.tools/venv/bin/python3 tools/local-qualification.py state 14.5 --run
+.tools/venv/bin/python3 tools/local-qualification.py pool-properties 15.1 --run
+.tools/venv/bin/python3 tools/local-qualification.py pool-properties 14.5 --run
+PR_TITLE='feat(freebsd): bind property controls to original applying claims' make review
+make lab-status
+```
+
+The complete original backend/live authority, actual effect interruption/death/
+reboot/recovery, serialized admission, operator workflows and assembled M2 acceptance
+remain separate. Historical manifests retain their original executed sources.
+
+## Source-bound results
+
+Signed source `277afb1ef7e139d61ae930a720f064e92dc5ed86`, based on PR 88 merge
+`c77923a96842b16c6c34199ebdc79279e0757e23`, passed both complete state suites:
+nineteen new acknowledgement cases once per target, real non-root denial, all
+19 live/23 applying/38 successor children, 819 historical state/backing assertions,
+67 parents and 1,876 codec children. The new groups took 3.86/3.62 seconds on
+15.1/14.5; full qualification took 91.799/76.991 seconds. These actual metadata
+operations retain synthetic intent/system inputs and establish no launch authority.
+
+The fixture-only correction at signed source
+`d5ca26c6a814b63eb88057623a33fb70cbc901d3` passed both complete pool suites:
+all six new nested binding cases, actual UID denial, all 88 old assertions, eight
+original claim children and every prior control/guard/assessment/postcondition case.
+Actual original-claim quota control, independent postcondition, retained applying
+bytes, denied raw/clearance/drift controls and exact default-source restoration
+passed. New groups took 11.73/10.81 seconds; full qualification took 240.108/197.336
+seconds. Timings are lab measurements, not hardware/NAS throughput evidence.
+
+Every state-package/build input remains byte-identical between those two signed
+sources. State evidence keeps its actual executed source; only the affected pool
+fixture was rerun. Both releases used identical artifacts within each suite; all
+2,026 prior state PASS occurrences and all 69 prior pool PASS occurrences were
+retained per target, with exactly the declared new children/group. Shared checkers,
+selectors, supervisors, deadlines, original readers/publishers/readiness/control
+code and all 64 historical manifests remain unchanged. The failed initial pool
+attempt remains unqualified with verified teardown in the
+[sanitized manifest](property-claim-control-manifest.json).
+
+All five new portable parents, eleven lineage cases and eighteen binding denials
+passed. Focused review `490w669p` at corrected source passed mandatory
+`make check lint test secrets`, 125 tooling tests, nine affected race packages and
+all 38 bounded fuzz targets in 194.118 seconds. Both review supervisors completed
+with clean process groups. All guests, owned fixture backings, images/keys/variables/
+binaries and process groups were removed or verified stopped; base/runtime hashes
+were preserved. Lab status found no active or unverified owned sessions, and
+Actions remain disabled. Development cross-builds were unexecuted and removed.
+See the manifest for exact artifacts, actual versions, hashes and retained sources.
+
+Only fixture callbacks/capture supplied live clearance. This qualifies the private
+metadata/native binding; full original backend session/clock/recovery/global
+authority, actual interruption/recovery, outcome/hold release, operator workflows,
+assembled M2 and the pending M1 manual gate remain separate.

@@ -29,6 +29,9 @@ func TestPropertyLiveStateUIDChild(t *testing.T) {
 	if got, err := c.PublishPropertyJobSuccessor(PropertyJob{}); !reflect.DeepEqual(got, PropertyJob{}) || !errors.Is(err, ErrStateDirectory) {
 		t.Fatal("successor publisher UID", err)
 	}
+	if err := c.VerifyPropertyApplyingAcknowledgement(PropertyJob{}); !errors.Is(err, ErrStateDirectory) {
+		t.Fatal("applying acknowledgement bypassed kernel UID", err)
+	}
 	if got, err := c.PublishApplyingPropertyJob(PropertyJob{}); !reflect.DeepEqual(got, PropertyJob{}) || !errors.Is(err, ErrStateDirectory) {
 		t.Fatal("applying publisher UID", err)
 	}

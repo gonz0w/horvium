@@ -50,6 +50,7 @@ func TestNativePropertySubmission(t *testing.T) {
 	nativePropertyLiveState(t, anchor)
 	nativePropertyClaimApplying(t, anchor)
 	nativePropertyClaimSuccessor(t, anchor)
+	nativePropertyClaimAcknowledgement(t, anchor)
 	check := func(name string, ok bool) {
 		t.Helper()
 		if !ok {
