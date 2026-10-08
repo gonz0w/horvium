@@ -17,7 +17,7 @@ The new claim group passed in 20.84 seconds, and all postcondition cases passed.
 That attempt remains unqualified. Host contention cannot be assumed as the sole
 cause; fixture accumulation consumes the existing deadline budget.
 
-Keep `TestNativePoolPropertyCollection`, its five-minute context, all 88 named
+Keep `TestNativePoolPropertyCollection`, its aggregate context, all 88 named
 assertions and every old subgroup. Remove only the new claim call from its
 system fixture. `TestNativePropertyClaimCollection` has its own 135-second
 context and a fresh root-excluded enrolled mirror supplied by the same declared
@@ -49,7 +49,7 @@ children. After implementation, the checker and local runner regressions pass.
 These synthetic logs test the validator; they are not native evidence. The runner
 tests use a complete synthetic fixture record and still require host device
 teardown. The selector test binds both actual native parents and the retained
-five-minute/new 135-second contexts.
+eight-minute/new 135-second contexts.
 
 Require both pinned disposable FreeBSD releases, run serially after portable
 review completes. Because shared qualification tools change, the existing review
@@ -69,3 +69,17 @@ Actual native results, artifact/report hashes, the unqualified merged-source ret
 and complete owned teardown will be recorded separately before review. Root
 backend/eligibility, executor/recovery clearance, interruptions, reservation release
 and authenticated operator workflows remain open.
+
+## Aggregate fixture budget amendment
+
+The first separated-fixture attempt at source
+`2e62e58e08e21a5b749e814464ff9668a9610711` passed the independent claim parent in
+27.05 seconds. The historical collector still hit its five-minute deadline during
+the control group and remains unqualified. Isolation alone does not resolve the
+accumulated scenario budget. Increase that aggregate lab-fixture context to eight
+minutes, explicitly changing the old aggregate limit. Retain every old assertion,
+subgroup and failure/cleanup check. The new parent still has 135 seconds; production
+native observations still have 135 seconds and property commands ten seconds.
+There is no change to runtime safety timeouts or a NAS performance/support claim.
+Both full parent results are mandatory on each pinned release, with serial guests
+and fresh source-bound artifacts. Record the failed five-minute retry separately.

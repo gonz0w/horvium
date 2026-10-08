@@ -1076,3 +1076,12 @@ claim execution and missing or incorrect teardown. Run both pinned releases.
 Product bytes and historical manifests remain unchanged; shared checker/selector
 maintenance requires current full portable review under the existing planner.
 Native qualification is pending; no eligibility or backend acceptance follows.
+
+The separated-fixture retry still exhausted the historical collector's five-minute
+aggregate context while its independent claim parent passed. Amend the aggregate
+collector fixture budget to eight minutes for the complete accumulated corpus,
+explicitly superseding its old aggregate limit. Retain all assertions and individual
+production observer (135-second) and property command (ten-second) limits. The
+separate claim parent remains 135 seconds. Require both full parents and all cases,
+source-bound artifacts and complete teardown on both releases. This allocation
+is a lab-fixture limit, with no runtime behavior or performance/support claim.

@@ -55,7 +55,7 @@ class PoolPropertiesEvidenceTests(unittest.TestCase):
         self.assertEqual(selected,['^TestNative(PoolPropertyCollection|PropertyClaimCollection)$'])
         self.assertIn('func TestNativePropertyClaimCollection(', (ROOT/'internal/host/freebsd/property_claim_source_freebsd_test.go').read_text())
         self.assertIn('135*time.Second', (ROOT/'internal/host/freebsd/property_claim_source_freebsd_test.go').read_text())
-        self.assertIn('5*time.Minute', (ROOT/'internal/host/freebsd/pool_properties_freebsd_test.go').read_text())
+        self.assertIn('8*time.Minute', (ROOT/'internal/host/freebsd/pool_properties_freebsd_test.go').read_text())
         self.assertIn('func TestNativePoolPropertyCollection(', (ROOT/'internal/host/freebsd/pool_properties_freebsd_test.go').read_text())
 
     def test_guest_emitted_inventory_matches_host_checker(self):

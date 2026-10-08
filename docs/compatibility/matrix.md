@@ -4,8 +4,9 @@
 validation are separate. Refresh exact versions in each active research manifest.
 
 M2 [native claim fixture isolation](../testing/M2/property-claim-fixtures.md)
-preserves the historical five-minute collector while giving the new claim cases
-an independent 135-second native fixture. Both parents and all eight claim children
+retains every historical collector case while allocating an eight-minute aggregate
+lab-fixture budget and an independent 135-second claim fixture. Individual production
+observer/command limits remain unchanged. Both parents and all eight claim children
 are mandatory in the shared checker. Native qualification is pending. Product
 code, runtime eligibility and support claims remain unchanged.
 

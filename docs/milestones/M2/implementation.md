@@ -907,3 +907,8 @@ in a fresh 135-second fixture, and requires both actual parents plus outer teard
 in the shared checker. Two failing-first checker regressions now pass. No product
 bytes change; native and required full portable qualification are pending. Historical
 partial results remain source-bound and unqualified attempts are not relabeled.
+
+The first separated retry passed its 27.05-second claim parent, but the old parent
+still exhausted five minutes. The fixture contract explicitly amends its aggregate
+lab budget to eight minutes while retaining all cases and production operation
+limits. This is qualification tooling only; current native results remain pending.
