@@ -1,6 +1,6 @@
 # M2 configured property client
 
-Date: 2026-10-08. Status: test-first; qualification pending.
+Date: 2026-10-08. Status: partial qualification passed; maintainer review pending.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 Approved [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [original application client](property-client.md), [private listener](property-listener.md).
@@ -64,3 +64,42 @@ cases/result markers on both pinned FreeBSD releases, without expanding the Go
 full portable review. Preserve historical manifests, actual signed red/green
 sources, native executable hashes, base/runtime bytes and verified supervisor/
 artifact cleanup. Actions remain disabled; M1 Safari/VoiceOver stays pending.
+
+## Executed qualification
+
+Signed source `dae7383aaf3d9518535254d281756f96c7c9507c` passed three focused portable
+parents/seventeen children, all 104 actual cases on both disposable FreeBSD 15.1
+and 14.5, baseline/136 tooling tests and fresh full portable review: eleven race
+packages/all 49 bounded fuzz targets in 220.066 seconds. Both native runs used
+identically checksummed executables and retained the original 80/90-second bounds.
+The new callback gates model phase checks; portable admin tests use the original
+actual application authority. Neither proves native root authentication of a human
+session or accepts runtime mutation authority.
+
+The first signed denying-stub run at
+`11b393280e7d7a37ab818faaee4074d8a982072e` failed the new configured parent and
+exposed a race in the existing replacement fixture: safe startup mode bits could
+appear before final validation. That fixture now completes an actual exchange
+before replacement. The listener product bytes remain unchanged. Corrected signed
+stub source `85f3bff23154ef5400bea9b9c98bb7597dac57a7` failed all three new
+portable parents and the new native parent with all 92 earlier cases passing.
+Both failed native records remain unqualified with actual source and verified
+cleanup. Final green runs separately qualify the corrected signed implementation.
+
+The safe replacement test changes only the socket inode while preserving the
+complete root/group/mode policy; it verifies refusal before hello, preservation
+and no retry on the replacement's empty backlog. Original shorter deadlines remain
+identical across every configured/client phase. Terminal operations and failed
+construction retire their contexts; actual native descriptor closure is observed.
+This is transport proof, without enrollment/backend/global launch or storage effects.
+
+All 672 owned sessions stopped with verified teardown before the
+[source-bound manifest](property-dial-manifest.json) was recorded. Fixture keys,
+binaries and overlays were removed and base/runtime bytes preserved. All
+77 historical M2 manifests retain their bytes. Actions stay disabled; no
+persistent host service or operator storage was used. A final documentation-only
+review reruns the complete baseline and may reuse the original successful deep
+proof only for exact implementation/verification inputs. Original native human/
+application authentication, backend/policy/plan, recovery/executor absence/global
+launch, durable admission, runtime workflows and full M2 acceptance remain open.
+M1 Safari/VoiceOver remains pending by maintainer choice.
