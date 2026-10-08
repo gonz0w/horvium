@@ -29,6 +29,7 @@ type propertyReviewEntry struct {
 	// An existing-store retry is not this coordinator's fresh admission. A
 	// successful new admission can hand off its original live claim only once.
 	duplicateAdmission, executionClaimed bool
+	executionAuthority                   *propertyExecutionAuthorityIdentity
 }
 
 // PropertyCoordinator connects volatile review to metadata submission. It owns

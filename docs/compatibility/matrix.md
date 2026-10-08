@@ -3,6 +3,20 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [original coordinator authority](../testing/M2/property-execution-authority.md)
+adds mandatory original-backend binding, exact retained plan/admission checks and
+shared launch-authority retirement. This changes portable orchestration only;
+FreeBSD adapters, metadata transactions, fixtures, shared tools and historical
+native manifests retain their actual sources. Signed source
+`68a6cf6e1794d258be31c42a7b7913574fec7311` passed nine new parents/41 children,
+ten retained handoff parents, baseline/125 tooling tests, nine race packages and
+all 38 selected fuzz targets in 212.450 seconds. FreeBSD compilation passed
+without execution; its artifact was removed. Both supervisors and lab status
+verified teardown; see the
+[manifest](../testing/M2/property-execution-authority-manifest.json).
+Session context is not authentication, and no native eligibility, full backend,
+recovery/global launch clearance, runtime writer or support claim is added.
+
 M2 [original-claim control binding](../testing/M2/property-claim-control.md) adds
 root-only exact applying acknowledgement verification and a private fixed-control
 binding to the same claim's independent native source. Both pinned releases passed

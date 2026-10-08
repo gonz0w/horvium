@@ -301,6 +301,15 @@ verified teardown; see the [evidence](docs/testing/M2/property-claim-control-man
 The complete backend must still supply
 live session/clock/recovery/global clearance; runtime storage writes stay disabled.
 
+The [original coordinator execution authority](docs/testing/M2/property-execution-authority.md)
+adds a mandatory opaque binding to the same admission/execution backend. It checks
+the retained whole plan/session context, acknowledgement and civil clock, and
+revokes launch authority when the attempt ends. Focused portable qualification
+passed with verified teardown; see the
+[evidence](docs/testing/M2/property-execution-authority-manifest.json).
+Authentication, complete root
+backend and native recovery/global clearance remain pending; runtime writes stay disabled.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

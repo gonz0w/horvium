@@ -16,12 +16,22 @@ import (
 type handoffFixture struct {
 	*coordinatorFixture
 	*executionFixture
+	authorities []*PropertyExecutionAuthority
+	bind        func(*PropertyExecutionAuthority) error
+}
+
+func (b *handoffFixture) BindPropertyExecutionAuthority(a *PropertyExecutionAuthority) error {
+	b.authorities = append(b.authorities, a)
+	if b.bind != nil {
+		return b.bind(a)
+	}
+	return nil
 }
 
 func handoffSetup(t testing.TB, duplicate bool) (*PropertyCoordinator, *handoffFixture, *time.Time, PropertyJob) {
 	t.Helper()
 	c, admission, now, intent := coordinatorSetup(t)
-	b := &handoffFixture{admission, &executionFixture{policy: admission.policy, baseline: admission.observation, quiet: true}}
+	b := &handoffFixture{coordinatorFixture: admission, executionFixture: &executionFixture{policy: admission.policy, baseline: admission.observation, quiet: true}}
 	c.backend = b
 	admission.publish = func(j PropertyJob) (PropertyJob, bool, error) {
 		b.job = clonePropertyJob(j)
@@ -348,7 +358,7 @@ func FuzzPropertyExecutionHandoff(f *testing.F) {
 		var execution *PropertyExecution
 		grants := 0
 		for _, action := range actions {
-			switch action % 6 {
+			switch action % 8 {
 			case 0:
 				e, err := c.ClaimPropertyExecution(context.Background(), "session-a", j.Job().ID)
 				if err == nil {
@@ -369,6 +379,16 @@ func FuzzPropertyExecutionHandoff(f *testing.F) {
 				b.executionFixture.policy.Revision++
 			case 5:
 				c.publicationBlocked = true
+			case 6:
+				for _, a := range b.authorities {
+					copy := *a
+					_, _ = copy.AdmittedJob()
+					if err := copy.CheckLive(context.Background()); err == nil && (execution == nil || execution.attempted) {
+						t.Fatal("unissued or completed authority became live")
+					}
+				}
+			case 7:
+				b.bind = func(*PropertyExecutionAuthority) error { return ErrUnavailable }
 			}
 			if grants > 1 || executionCount(b.executionFixture, "apply") > 1 || b.publications != 1 {
 				t.Fatal("handoff replayed admission or control")

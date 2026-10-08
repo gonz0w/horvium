@@ -25,8 +25,10 @@ policy, observation, eligibility flag, clock, executable or replacement-backend
 input. Repeat handoffs are denied even when the first object never runs. Copies
 of the issued pointer still share the execution sequence's one-attempt mutex.
 
-The exact same original backend must implement both admission and execution
-contracts. An envelope retains that backend and the owned canonical queued
+The exact same original backend must implement admission, execution and the
+[mandatory authority binder](property-execution-authority.md). Binding carries
+the opaque original plan/admission lineage into its final prelaunch callback,
+without supplying native or authentication proof. An envelope retains that backend and the owned canonical queued
 acknowledgement. Before any applying publication, its independently prepared
 current durable job must equal the entire acknowledged record, including intent,
 capture time, selection, history and identifier. Selection or job-ID equality

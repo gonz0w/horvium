@@ -1179,3 +1179,31 @@ nineteen/six new native cases, every old gate and mandatory/focused portable rev
 passed with verified teardown. The initial failed quota-restoration attempt remains
 unqualified; only its fixture was corrected and rerun. Full authority/M2 gates
 remain open.
+
+## Original coordinator execution authority amendment
+
+Require the [binding contract](../../testing/M2/property-execution-authority.md)
+for partial M2-PLAN-001, M2-JOB-001, M2-DRIFT-001 and M2-RECOVERY-001 at T1/T2.
+Nine new parents cover owned exact admission evidence, inactive/bounded binding
+outside the original mutex, missing-binder refusal, ten binding cuts, seventeen
+live denials, three final clock/context cuts, eleven attempt retirement cases,
+late verified success, request-independent worker context and 32 concurrent
+pending/active checks. Keep all ten old handoff/uncertainty parents; extend the
+existing bounded handoff fuzz actions with copied authority and failed binding.
+No second admission, handoff or effect is permitted. Require failing-first
+behavioral evidence, mandatory baseline, affected race/all selected fuzz and an
+unexecuted FreeBSD compilation record with artifact removal. Native adapters,
+transactions, fixtures, shared tools and historical manifests are unchanged;
+retain their actual sources without redundant native reruns or relabeling.
+Full root backend/authentication/eligibility/recovery/global launch and runtime
+writer gates remain open; retained session context is not authentication.
+
+Signed source `68a6cf6e1794d258be31c42a7b7913574fec7311` passed all required
+nine new parents/41 children, ten retained handoff/uncertainty parents, baseline/
+125 tooling tests, nine race packages and all 38 selected fuzz targets in 212.450
+seconds, with both supervisors cleaned. FreeBSD compilation passed without
+execution; the artifact was removed. The initial sandbox socket-denial baseline
+remains unqualified. All 65 historical manifests and 364 protected paths retain
+exact base bytes, with verified lab teardown and disabled Actions; see the
+[manifest](../../testing/M2/property-execution-authority-manifest.json). Complete
+native/root backend, authentication, recovery/global and M2 gates remain open.

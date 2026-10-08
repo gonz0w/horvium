@@ -45,6 +45,8 @@ type PropertyExecution struct {
 	clock     func() time.Time
 	last      time.Time
 	attempted bool
+	// Only an original coordinator handoff installs lifecycle revocation.
+	finish func()
 }
 
 func NewPropertyExecution(backend PropertyExecutionBackend) *PropertyExecution {
@@ -89,6 +91,9 @@ func (e *PropertyExecution) Run(ctx context.Context, id string) (PropertyJob, er
 		return PropertyJob{}, ErrDenied
 	}
 	e.attempted = true
+	if e.finish != nil {
+		defer e.finish()
+	}
 	if _, err := e.now(PropertyJob{}); err != nil {
 		return PropertyJob{}, err
 	}
