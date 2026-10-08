@@ -24,11 +24,12 @@ caller-claimed UID, new framing or native command is introduced.
 
 Successful terminal review/admission/refusal replies, invalid requests, failed
 writes/negotiation and explicit close retire both the typed exchange and admission
-lease. Close the descriptor before returning its slot. An accepted connection
-cannot retain capacity merely because the typed peer closed independently. Parent
+lease. Close the descriptor before returning its slot. Each composed terminal path
+releases capacity without relying on its caller to notice typed-peer closure. Parent
 shutdown, expiry and overlapping negotiation interrupt both negotiation and request
 reads; this remains socket I/O containment, never proof that a worker or kernel
-mutation stopped. Close errors are retained rather than treated as cleanup success.
+mutation stopped. Explicit close reports both ownership errors, and factory failure
+joins final cleanup errors rather than discarding them.
 
 No listener, worker, HTTP/CLI route, application-session adapter, collector, root
 policy/store dispatcher or storage write is registered. Kernel/correlation snapshots
@@ -55,3 +56,10 @@ actual sources and cannot qualify this extension. Shared selector/checker edits
 require fresh full portable review and serial runs on both pinned FreeBSD releases.
 Native/portable evidence is pending. M1 Safari/VoiceOver remains pending and Actions
 stay disabled; full M2/native write acceptance remains open.
+
+The interruption fixture must fail if negotiation returns any owner or request
+metadata, rather than converting unexpected success into a synthetic error. Normal
+close/retirement paths are exercised on real sockets. A socket-close syscall error
+cannot safely be forced through this concrete owned connection without bypassing
+its descriptor ownership; factory error joining is reviewed directly without
+introducing an injected close/credential hook.

@@ -117,9 +117,7 @@ func admittedNegotiating(t *testing.T, c *propertyConnection, uid uint32) <-chan
 		a, err := c.accept(uid)
 		if a != nil {
 			_ = a.Close()
-			if err == nil {
-				err = ErrProtocol
-			}
+			t.Error("interrupted negotiation returned an owner")
 		}
 		done <- err
 	}()
@@ -271,7 +269,13 @@ func TestNativeAdmittedPropertyExchange(t *testing.T) {
 				}
 				if name == "shutdown-request" {
 					done := make(chan error, 1)
-					go func() { _, _, err := a.receive(); done <- err }()
+					go func() {
+						req, actor, err := a.receive()
+						if req != (propertyRequest{}) || actor != (actionIdentity{}) {
+							t.Error("shutdown request projected metadata")
+						}
+						done <- err
+					}()
 					deadline := time.Now().Add(time.Second)
 					for {
 						if !a.exchange.mu.TryLock() {

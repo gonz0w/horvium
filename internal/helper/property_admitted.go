@@ -47,8 +47,7 @@ func (c *propertyConnection) accept(uid uint32) (a *admittedPropertyPeer, err er
 	a = &admittedPropertyPeer{lease: c, exchange: exchange}
 	a.identity = a
 	if err := a.live(); err != nil {
-		_ = a.Close()
-		return nil, err
+		return nil, errors.Join(err, a.Close())
 	}
 	return a, nil
 }
