@@ -1206,6 +1206,11 @@ kernel/transport behavior. Single-operation/overlap/cancellation/partial-stream 
 role/identity/correlation cases join the unchanged eighteen old native peer cases
 in a separate opted-in parent; strict complete evidence is mandatory on both pinned
 releases. Shared checker/selector maintenance requires fresh full portable review.
-Test-first native and full portable qualification are pending. Actual backend
-admission, authenticated session assembly, recovery/global launch and M2 acceptance
-remain open.
+Signed source `f26e51413b8325e2ffa3d7681f0213564f108c4f` passed all 44 actual
+peer/exchange cases on disposable FreeBSD 15.1 and 14.5. Baseline/132 tooling tests,
+11 race packages and all 49 bounded fuzz targets passed with verified teardown.
+The actual denying-stub native run stays separately unqualified; all 72 historical
+M2 manifests retain their bytes. See the
+[source-bound evidence](../../testing/M2/property-exchange-manifest.json).
+Actual backend admission, authenticated session assembly, recovery/global launch
+and M2 acceptance remain open.

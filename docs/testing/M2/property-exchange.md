@@ -1,6 +1,6 @@
 # M2 owned property exchange prerequisite
 
-Date: 2026-10-08. Status: test-first contract; qualification pending.
+Date: 2026-10-08. Status: partial native transport qualification; maintainer review pending.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 Approved [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [native peer](action-peer.md), [requests](property-requests.md), [replies](property-replies.md).
@@ -65,6 +65,31 @@ parent/child/result once; old peer-only, skipped/failed/missing/duplicate/unknow
 proofs cannot qualify the new exchange. Shared checker/selector edits require fresh
 full portable review and serial qualification on both pinned FreeBSD releases.
 All previous native fixture code and historical evidence retain their sources.
-Source-bound red/green results and teardown are pending. M1 Safari/VoiceOver and
+Source-bound red/green results and teardown are recorded below. M1 Safari/VoiceOver and
 assembled M2/native safety/recovery/continuity/resources remain open; Actions stay
 disabled and storage writes remain unregistered.
+
+## Executed evidence
+
+Actual FreeBSD 15.1 execution against signed denying-stub source
+`21b5bcfa982310c3b9e4ab9689f7e2b41a952495` passed all eighteen original peer cases
+and failed the new exchange parent. This test-first run remains unqualified;
+fixture/base/runtime preservation and supervised teardown were verified.
+
+Signed implementation `f26e51413b8325e2ffa3d7681f0213564f108c4f` passed all eighteen
+original peer cases and all twenty-six exchange cases on both pinned releases.
+Each host-cross-built FreeBSD/amd64 executable was hash checked before actual
+guest execution. Both complete case inventories, preserved base/runtime, fixture
+cleanup, removed executables/fixture keys and stopped process groups were verified.
+Replies were synthetic display views; no storage backend or command was exercised.
+
+Fresh full local review passed `make check lint test secrets`, all 132 tooling
+tests, all eleven portable race packages and all 49 bounded fuzz targets. The
+earlier restricted-sandbox tooling attempt could not bind supervisor sockets and
+is not qualification evidence; the fresh supervised baseline used the required
+socket permissions. All 72 historical M2 manifests and 374 protected existing
+internal/tooling inputs retain actual bytes. All 634 owned sessions were stopped
+with verified teardown at this evidence snapshot. Actions remain disabled.
+See the [manifest](property-exchange-manifest.json). The documentation followup
+requires a fresh baseline and may reuse only this successful deep evidence when
+its exact behavioral inputs/base/toolchain remain unchanged.

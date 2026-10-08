@@ -319,10 +319,12 @@ pool suites passed with verified teardown; see the
 [evidence](docs/testing/M2/property-native-backend-manifest.json). Operator writes
 remain disabled.
 
-The [owned property exchange](docs/testing/M2/property-exchange.md) is a test-first
-prerequisite for one bounded typed request and terminal reply over the original
-kernel-authorized connection. Native/full portable qualification is pending;
-backend dispatch and root recovery/global launch remain disabled.
+The [owned property exchange](docs/testing/M2/property-exchange.md) carries one
+bounded typed request and terminal reply over the original kernel-authorized
+connection. Both disposable FreeBSD releases passed all 44 peer/exchange cases;
+baseline and full race/fuzz checks passed with verified teardown. See the
+[evidence](docs/testing/M2/property-exchange-manifest.json). Backend dispatch and
+root recovery/global launch remain disabled.
 
 The [bounded property replies](docs/testing/M2/property-replies.md) preserve complete
 review and job display views, enforce original selection/correlation and use bounded

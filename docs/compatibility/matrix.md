@@ -3,10 +3,13 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
-M2 [owned property exchange](../testing/M2/property-exchange.md) requires actual
-kernel UID, single-operation phase, cancellation/deadline and terminal EOF evidence
-on both disposable releases. Current qualification is pending. Synthetic reply
-fixtures prove transport behavior, without durable admission or native storage.
+M2 [owned property exchange](../testing/M2/property-exchange.md) passed actual
+kernel UID, single-operation phase, cancellation/deadline and terminal EOF checks
+on disposable FreeBSD 15.1 and 14.5. All 44 peer/exchange cases, baseline/132
+tooling tests, 11 race packages and 49 bounded fuzz targets passed with verified
+teardown; see the [manifest](../testing/M2/property-exchange-manifest.json).
+Synthetic reply fixtures prove transport behavior, without durable admission or
+native storage.
 
 M2 [bounded property replies](../testing/M2/property-replies.md) define strict
 version-2 review/admission/refusal views without private intent/session metadata.
