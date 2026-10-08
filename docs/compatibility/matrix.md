@@ -3,6 +3,11 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [owned property exchange](../testing/M2/property-exchange.md) requires actual
+kernel UID, single-operation phase, cancellation/deadline and terminal EOF evidence
+on both disposable releases. Current qualification is pending. Synthetic reply
+fixtures prove transport behavior, without durable admission or native storage.
+
 M2 [bounded property replies](../testing/M2/property-replies.md) define strict
 version-2 review/admission/refusal views without private intent/session metadata.
 Existing durable schemas remain unchanged; no runtime/native exchange or job
