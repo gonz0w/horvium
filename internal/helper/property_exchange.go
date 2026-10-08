@@ -19,6 +19,9 @@ type propertyPeer struct {
 	root    bool
 	phase   uint8
 	request propertyRequest
+	// Optional trusted application liveness, checked outside the peer UID lock.
+	// Root and the original transport primitives do not consume this callback.
+	application func() error
 }
 
 const (
@@ -141,7 +144,13 @@ func (x *propertyPeer) review(pool string, intent storage.Intent) (storage.Revie
 	defer x.mu.Unlock()
 	defer x.Close()
 	x.phase = propertyDone
+	if err := x.checkApplication(); err != nil {
+		return storage.Review{}, err
+	}
 	if err := WritePropertyReview(x.peer.connection, x.peer.requestID, pool, intent); err != nil {
+		return storage.Review{}, err
+	}
+	if err := x.checkApplication(); err != nil {
 		return storage.Review{}, err
 	}
 	if _, err := propertyIdentity(x.peer, false); err != nil {
@@ -156,6 +165,9 @@ func (x *propertyPeer) review(pool string, intent storage.Intent) (storage.Revie
 	if end := x.terminalRead(); end != nil {
 		return storage.Review{}, end
 	}
+	if end := x.checkApplication(); end != nil {
+		return storage.Review{}, end
+	}
 	return r, err
 }
 func (x *propertyPeer) submit(pool, plan, submission string) (storage.Job, bool, error) {
@@ -165,7 +177,13 @@ func (x *propertyPeer) submit(pool, plan, submission string) (storage.Job, bool,
 	defer x.mu.Unlock()
 	defer x.Close()
 	x.phase = propertyDone
+	if err := x.checkApplication(); err != nil {
+		return storage.Job{}, false, err
+	}
 	if err := WritePropertySubmission(x.peer.connection, x.peer.requestID, pool, plan, submission); err != nil {
+		return storage.Job{}, false, err
+	}
+	if err := x.checkApplication(); err != nil {
 		return storage.Job{}, false, err
 	}
 	if _, err := propertyIdentity(x.peer, false); err != nil {
@@ -178,6 +196,9 @@ func (x *propertyPeer) submit(pool, plan, submission string) (storage.Job, bool,
 		}
 	}
 	if end := x.terminalRead(); end != nil {
+		return storage.Job{}, false, end
+	}
+	if end := x.checkApplication(); end != nil {
 		return storage.Job{}, false, end
 	}
 	return j, d, err
@@ -235,4 +256,11 @@ func (x *propertyPeer) Close() error {
 		return nil
 	}
 	return x.peer.Close()
+}
+
+func (x *propertyPeer) checkApplication() error {
+	if x.application == nil {
+		return nil
+	}
+	return x.application()
 }
