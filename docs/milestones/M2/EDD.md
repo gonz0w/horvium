@@ -841,3 +841,13 @@ cases, six exact native parents, unchanged 80/90-second bounds and signed failin
 first evidence. Shared checker/selector changes require fresh full portable review.
 Private configured adapters register no route/service/backend or native write;
 independent root application/recovery/global launch gates remain mandatory.
+
+## Native application client integration amendment
+
+The [native application client](../../testing/M2/property-application.md) exposes
+the existing configured adapters as internal typed Go APIs. Original Auth and
+ProtectAction authority is exercised in a dropped-UID native child, including
+actual logout/Close before dial and during socket exchange. It registers no
+route or consumer; root typed requests remain denied. Correlation is still not
+independent root session authentication. Backend/policy/plan, recovery/global
+launch and durable admission remain separate mandatory gates.

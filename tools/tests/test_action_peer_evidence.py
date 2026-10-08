@@ -40,6 +40,11 @@ class ActionPeerEvidenceTests(unittest.TestCase):
                      + ''.join('    --- PASS: TestNativeConfiguredPropertyClient/' + n + ' (0.1s)\n' for n in sorted(self.module.CONFIGURED_CASES))
                      + 'CONFIGURED_PROPERTY_RESULT ' + ' '.join(n + '=pass' for n in sorted(self.module.CONFIGURED_CASES)) + '\n')
 
+        self.configured_only = self.log
+        self.log += ('--- PASS: TestNativeApplicationPropertyClient (1.0s)\n'
+                     + ''.join('    --- PASS: TestNativeApplicationPropertyClient/' + n + ' (0.1s)\n' for n in sorted(self.module.APPLICATION_CASES))
+                     + 'APPLICATION_PROPERTY_RESULT ' + ' '.join(n + '=pass' for n in sorted(self.module.APPLICATION_CASES)) + '\n')
+
     def test_complete_and_matching_native_case_inventory(self):
         self.module.validate(self.log)
         source = (ROOT / 'internal/helper/action_peer_freebsd_test.go').read_text()
@@ -71,7 +76,7 @@ class ActionPeerEvidenceTests(unittest.TestCase):
 
     def test_script_selects_only_bounded_native_parent(self):
         script = (ROOT / 'tools/bsd-action-peer-prebuilt.sh').read_text()
-        self.assertEqual(re.findall(r"-test.run='([^']+)'", script), ['^TestNative(ActionPeer|PropertyExchange|AdmittedPropertyExchange|SessionPropertyClient|PropertyListener|ConfiguredPropertyClient)$'])
+        self.assertEqual(re.findall(r"-test.run='([^']+)'", script), ['^TestNative(ActionPeer|PropertyExchange|AdmittedPropertyExchange|SessionPropertyClient|PropertyListener|ConfiguredPropertyClient|ApplicationPropertyClient)$'])
         self.assertIn('/usr/bin/timeout 90', script)
         self.assertIn('-test.timeout=80s', script)
 
@@ -152,5 +157,21 @@ class ActionPeerEvidenceTests(unittest.TestCase):
                         self.log.replace(case + '=pass', case + '=fail'),
                         self.log.replace(case + '=pass', ''),
                         self.log + 'CONFIGURED_PROPERTY_RESULT extra=pass\n'):
+                with self.assertRaises(ValueError):
+                    self.module.validate(bad)
+
+    def test_application_inventory_and_callback_only_proof_refused(self):
+        source = (ROOT / 'internal/helper/property_application_freebsd_test.go').read_text()
+        cases = re.findall(r'"([a-z-]+)"', re.search(r'cases := \[\]string\{([^}]+)\}', source).group(1))
+        self.assertEqual(len(cases), len(self.module.APPLICATION_CASES))
+        self.assertEqual(set(cases), self.module.APPLICATION_CASES)
+        with self.assertRaises(ValueError):
+            self.module.validate(self.configured_only)
+        for case in self.module.APPLICATION_CASES:
+            line = '    --- PASS: TestNativeApplicationPropertyClient/' + case + ' (0.1s)\n'
+            for bad in (self.log.replace(line, ''), self.log + line,
+                        self.log.replace(case + '=pass', case + '=fail'),
+                        self.log.replace(case + '=pass', ''),
+                        self.log + 'APPLICATION_PROPERTY_RESULT extra=pass\n'):
                 with self.assertRaises(ValueError):
                     self.module.validate(bad)

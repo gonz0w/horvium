@@ -194,13 +194,13 @@ func TestConfiguredPropertyAdapterSelection(t *testing.T) {
 			}
 			var err error
 			if strings.HasPrefix(name, "submit") {
-				j, d, e := submitConfiguredHelperProperty(context.Background(), c, "configured", "100", plan, submission, authority)
+				j, d, e := SubmitConfiguredProperty(context.Background(), c, "configured", "100", plan, submission, authority)
 				err = e
 				if j.ID != "" || d {
 					t.Fatal("denial projected admission")
 				}
 			} else {
-				r, e := reviewConfiguredHelperProperty(context.Background(), c, "configured", "100", intent, authority)
+				r, e := ReviewConfiguredProperty(context.Background(), c, "configured", "100", intent, authority)
 				err = e
 				if r.ID != "" {
 					t.Fatal("denial projected review")

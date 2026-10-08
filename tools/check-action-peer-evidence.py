@@ -46,6 +46,12 @@ CONFIGURED_CASES = {'review-denied', 'submit-denied', 'revoked-before-dial',
                     'original-deadline', 'negotiation-cancellation', 'fixtures-teardown'}
 
 
+APPLICATION_CASES = {'review-denied', 'submit-denied', 'logout-before-dial',
+                     'close-before-dial', 'decoded-authority', 'invalid-selection',
+                     'cancelled-before-dial', 'logout-after-hello',
+                     'logout-after-request', 'close-after-request', 'fixtures-teardown'}
+
+
 def validate(text):
     if len(text) > 1 << 20 or re.search(r'(?m)^(?:FAIL|\s*--- (?:FAIL|SKIP):)', text):
         raise ValueError('peer evidence failed, skipped or oversized')
@@ -55,7 +61,8 @@ def validate(text):
             ('TestNativeAdmittedPropertyExchange', 'ADMITTED_PROPERTY_RESULT', ADMITTED_CASES),
             ('TestNativeSessionPropertyClient', 'SESSION_PROPERTY_RESULT', SESSION_CASES),
             ('TestNativePropertyListener', 'PROPERTY_LISTENER_RESULT', LISTENER_CASES),
-            ('TestNativeConfiguredPropertyClient', 'CONFIGURED_PROPERTY_RESULT', CONFIGURED_CASES)):
+            ('TestNativeConfiguredPropertyClient', 'CONFIGURED_PROPERTY_RESULT', CONFIGURED_CASES),
+            ('TestNativeApplicationPropertyClient', 'APPLICATION_PROPERTY_RESULT', APPLICATION_CASES)):
         if len(re.findall(r'(?m)^--- PASS: ' + parent + r' \([0-9.]+s\)$', text)) != 1:
             raise ValueError('one actual native parent required: ' + parent)
         children = re.findall(r'(?m)^\s+--- PASS: ' + parent + r'/([^ ]+) \([0-9.]+s\)$', text)

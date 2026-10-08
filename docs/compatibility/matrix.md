@@ -887,3 +887,11 @@ tests, nine affected race packages and 30 selected bounded fuzz targets; full
 owned teardown passed. See the [manifest](../testing/M2/property-postconditions-manifest.json).
 The two superseded fixture failures retain their actual unqualified sources. No
 runtime write, recovery, attribution or durable-success claim is added.
+
+## Native application property client integration
+
+Qualification pending on disposable FreeBSD 15.1/14.5 amd64 guests. The
+[native application contract](../testing/M2/property-application.md) exercises
+actual original Auth/action authority and configured client integration, including
+logout/Close during exchange. It adds no runtime route, root authentication,
+write eligibility, storage effects or hardware/performance support claim.

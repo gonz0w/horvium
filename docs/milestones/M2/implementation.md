@@ -1305,3 +1305,12 @@ Actions remain disabled and all 77 historical manifests retain their bytes.
 See the [source-bound evidence](../../testing/M2/property-dial-manifest.json).
 Root application authentication, backend/policy/plan, recovery/global launch,
 durable admission and assembled M2 acceptance remain open.
+
+## Native original application client integration
+
+PR 102 accepted the configured connection at merged source
+`07d144efe7829f44d9fcad3dd2333bc8a40288b0`. The next
+[native application client](../../testing/M2/property-application.md) joins actual
+original Auth/action authority to that connection in a dropped-UID child.
+Qualification is pending; root operations remain denied and runtime registration,
+independent root/backend/recovery/global gates remain open.
