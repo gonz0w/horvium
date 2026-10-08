@@ -553,3 +553,19 @@ Session/clock/expiry, native eligibility, original coordinator/executor/recovery
 and global launch clearance remain complete-backend obligations before effects.
 No runtime consumer, transport/schema or storage command is added. See the
 [contract](../../testing/M2/property-claim-applying.md).
+
+## Original claim successor metadata amendment
+
+After an exact original-claim applying acknowledgement, retain only a private
+volatile canonical-record hash/revision for subsequent metadata publication.
+Permit exact applying-to-observing/reconciliation and observing-to-success/
+reconciliation appends through the same original lease and active claim. Preserve
+the entire intent/history, strict whole census and all other holds. Use the same
+descriptor-relative transaction; consume one valid attempt before staging and
+advance the receipt only after sync and exact independent record/census readback.
+Failed valid attempts cannot retry or recover lineage from visible metadata.
+Raw publication/reopened state cannot create this acknowledgement provenance.
+Existing read-only readiness/observer claims retain queued/applying semantics.
+This supplies no native attribution, verified quiescence, actual outcome authority,
+terminal resolution or hold release; those remain original-backend gates. See the
+[successor contract](../../testing/M2/property-claim-successor.md).

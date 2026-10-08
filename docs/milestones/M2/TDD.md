@@ -1137,3 +1137,19 @@ old limits and 61 prior manifests remain unchanged; see the
 [manifest](../../testing/M2/property-claim-applying-manifest.json). This qualifies
 metadata acknowledgement only; full backend, native effects/recovery, operator
 workflows and M2 acceptance remain open.
+
+## Original claim successor acknowledgement amendment
+
+Require the [successor contract](../../testing/M2/property-claim-successor.md) for
+partial M2-JOB-001, M2-STATE-001 and M2-RECOVERY-001 evidence. Portable tests must
+cover exact private acknowledged predecessor lineage, the four permitted edges,
+changed/missing/foreign records, complete holds and terminal/reconciliation replay.
+Both actual disposable FreeBSD targets must pass all 38 new children, the real
+non-root credential child, all 23 applying/19 live-state children and every old
+state/backing/codec assertion under unchanged deadlines and shared checkers.
+Native phase cuts must preserve exact bytes, private receipt/revision, stable lock,
+owned output and no-retry behavior; verify complete group/fixture/backing teardown.
+Matching metadata/digests grant no native outcome/quiescence/eligibility authority.
+Existing claim readiness/readers and native pool/control sources are unchanged;
+retain their historical source-bound evidence without relabeling. Full backend,
+actual effects/interruption/recovery, transport and M2 acceptance remain separate.

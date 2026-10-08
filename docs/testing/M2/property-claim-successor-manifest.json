@@ -1,0 +1,8 @@
+{
+  "record_type": "M2-original-claim-property-successor-metadata",
+  "status": "qualification-pending",
+  "base_commit": "412cf3a9bd49c435eb77dbd7664ed0ed8981a378",
+  "scope": "Original root claim exact observing/outcome metadata acknowledgement; no native effect, eligibility, outcome attribution or hold release",
+  "native_cases": 38,
+  "runtime_storage_writes": false
+}
