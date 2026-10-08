@@ -1,0 +1,326 @@
+{
+  "schema": 1,
+  "status": "partial portable qualification; maintainer review pending",
+  "requirements": [
+    "M2-PRIV-001",
+    "M2-HTTP-001"
+  ],
+  "source_commit": "e449b8c005f2f4635f471305a6e2cf8ab11a1100",
+  "inputs": [
+    {
+      "path": "internal/admin/helper_negotiation.go",
+      "sha256": "3b9c8833be4ca3e31c8443e2835d9f7bf9b5ffc9fa57867ba4307b3536b237b0"
+    },
+    {
+      "path": "internal/admin/helper_negotiation_test.go",
+      "sha256": "5a1e41cf60f1665bac79643c19fa238e187b7ab832a5e365f1bb51b16abf5842"
+    },
+    {
+      "path": "internal/helper/action_negotiation.go",
+      "sha256": "20c714cbe5384d464956b3a32e142c37a1221cee30932fc960e8c4741dbfe373"
+    },
+    {
+      "path": "internal/helper/action_negotiation_test.go",
+      "sha256": "059c422a1f7be35ff74733e0b1dd5dd9272346837ec5fcbda92a89780904d7d0"
+    }
+  ],
+  "behavior": {
+    "parents": [
+      "TestActionNegotiationBoundsAndCuts",
+      "TestActionNegotiationCorrelation",
+      "TestActionNegotiationFrameBoundary",
+      "TestActionNegotiationInventoryIsolation",
+      "TestActionNegotiationReadOnlyServerDenial",
+      "TestActionNegotiationRejectsClaimsAndDowngrades",
+      "TestActionNegotiationRoundTrip",
+      "TestActionNegotiationWriterDenials",
+      "TestHelperNegotiationAuthorityDenials",
+      "TestHelperNegotiationFinalSessionChecks",
+      "TestHelperNegotiationNoRetryAfterWriteFailure",
+      "TestHelperNegotiationOriginalSession"
+    ],
+    "children": [
+      "TestActionNegotiationBoundsAndCuts/depth",
+      "TestActionNegotiationBoundsAndCuts/long-field",
+      "TestActionNegotiationBoundsAndCuts/oversize",
+      "TestActionNegotiationCorrelation/invalid-context",
+      "TestActionNegotiationCorrelation/invalid-id",
+      "TestActionNegotiationCorrelation/wrong-context",
+      "TestActionNegotiationCorrelation/wrong-request",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/actor",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/bad-id",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/case",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/command",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/duplicate",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/floating-version",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/future-version",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/invalid-utf8",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/missing-context",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/nonhex-context",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/null-context",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/old-version",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/operation-",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/operation-destroy",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/operation-inventory",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/operation-property",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/operation-set",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/path",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/properties",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/response-",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/response-accepted",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/response-inventory",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/response-success",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/short-context",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/trailing-json",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/uid",
+      "TestActionNegotiationRejectsClaimsAndDowngrades/upper-context",
+      "TestActionNegotiationWriterDenials/context",
+      "TestActionNegotiationWriterDenials/field-limit",
+      "TestActionNegotiationWriterDenials/id",
+      "TestHelperNegotiationAuthorityDenials/cancelled",
+      "TestHelperNegotiationAuthorityDenials/closed",
+      "TestHelperNegotiationAuthorityDenials/decoded",
+      "TestHelperNegotiationAuthorityDenials/invalid-id",
+      "TestHelperNegotiationAuthorityDenials/logout",
+      "TestHelperNegotiationAuthorityDenials/nil",
+      "TestHelperNegotiationAuthorityDenials/nil-context",
+      "TestHelperNegotiationAuthorityDenials/nil-transport",
+      "TestHelperNegotiationAuthorityDenials/zero",
+      "TestHelperNegotiationFinalSessionChecks/cancel-during-read",
+      "TestHelperNegotiationFinalSessionChecks/cut-response",
+      "TestHelperNegotiationFinalSessionChecks/expiry-during-read",
+      "TestHelperNegotiationFinalSessionChecks/logout-during-read",
+      "TestHelperNegotiationFinalSessionChecks/logout-during-write",
+      "TestHelperNegotiationFinalSessionChecks/old-version",
+      "TestHelperNegotiationFinalSessionChecks/unknown-response",
+      "TestHelperNegotiationFinalSessionChecks/wrong-context",
+      "TestHelperNegotiationFinalSessionChecks/wrong-request",
+      "TestHelperNegotiationNoRetryAfterWriteFailure/error",
+      "TestHelperNegotiationNoRetryAfterWriteFailure/short-write"
+    ],
+    "fuzz_target": "FuzzActionNegotiation",
+    "fuzz_seeds": 3,
+    "fuzz_input_ceiling_bytes": 516,
+    "request_response_payload_ceiling_bytes": 512,
+    "behavior_log_sha256": "520d8c454e2446747d01c3ac5aa3102faf407ac511bc204be7a54d6ad196dcc8",
+    "development_source": "Uncommitted Go inputs byte-identical to signed source",
+    "failing_first": {
+      "case": "Exact codec round trip and original authenticated-session exchange failed against denying contract stubs",
+      "log_sha256": "1f6e58e732c4aa7a30a923bc8872461dd656fff3b355294f8bb2e84e6fe0864f"
+    }
+  },
+  "portable_review": {
+    "source_commit": "e449b8c005f2f4635f471305a6e2cf8ab11a1100",
+    "base_commit": "2cce0f276c84a61241a971dffddb546414d85682",
+    "source_tree": "e4634cf44c14a17fa292ae214020c41876b8274c",
+    "title": "feat(helper): bound application context negotiation",
+    "qualified": true,
+    "qualification_scope": "portable review only",
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service"
+      ],
+      "native_review_required": true
+    },
+    "command": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "deep_key": {
+      "mode": "focused",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service"
+      ],
+      "inputs_digest": "205dd5d8ba461ba36f6e2931400ed4b933e0deb21c1faebadf22a6073f1dc561",
+      "environment_digest": "6be56162b8969339df5fa3a421321d524cadf08265416ea080a5fca26f23c273"
+    },
+    "deep_evidence": {
+      "executed": true,
+      "command": [
+        "/Users/cam/DEV/NAS/.tools/venv/bin/python3",
+        "/Users/cam/DEV/NAS/tools/deep-check.py",
+        "--packages",
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service"
+      ],
+      "supervisor": {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "e6950177f171e69d49033b0accc1271e11e943bca2068b9b55582b0e6ef641ce",
+        "group": 78311,
+        "started_at": 1791476331.543953,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791476384.4564638
+      },
+      "log_sha256": "ee0a6e09084b9b7dc3d3bfa7f14184e2e8f0aee4ebe19a7b581559c4d9358096",
+      "result": {
+        "fuzz_targets": [
+          {
+            "package": "./internal/admin",
+            "target": "FuzzConfiguration"
+          },
+          {
+            "package": "./internal/admin",
+            "target": "FuzzSessionAuthorityActions"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzActionNegotiation"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzRequest"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzSnapshot"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPoolPropertyCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPoolProviderCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyClaimSourceSelection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyControlSelection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyJobSource"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyPolicyCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzSystemUseCollection"
+          }
+        ],
+        "race_packages": [
+          "./cmd/horvium",
+          "./internal/admin",
+          "./internal/client",
+          "./internal/console",
+          "./internal/helper",
+          "./internal/host/freebsd",
+          "./internal/observation",
+          "./internal/service"
+        ]
+      }
+    },
+    "supervisors": [
+      {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "2644ba56e52e5941ae4155b127658287cfb5e5708eaceecf6e52143515f10f28",
+        "group": 77931,
+        "started_at": 1791476316.732461,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791476331.495299
+      },
+      {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "e6950177f171e69d49033b0accc1271e11e943bca2068b9b55582b0e6ef641ce",
+        "group": 78311,
+        "started_at": 1791476331.543953,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791476384.4564638
+      }
+    ],
+    "checks_log_sha256": "c46aff477510fb406c1bbac6d97072c3db920aba6a7491eccdaa9acc2720b141",
+    "session": "hjf6ms7p",
+    "report_sha256": "ba9a7c96cf084783747f4ab88835d4b08991452cce993a9c6434852be6fbebd2",
+    "elapsed_seconds": 67.911,
+    "tooling_tests": 125
+  },
+  "freebsd_compilation": {
+    "source_commit": "e449b8c005f2f4635f471305a6e2cf8ab11a1100",
+    "target": "freebsd/amd64",
+    "goamd64": "v1",
+    "cgo_enabled": false,
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+    "artifacts": [
+      {
+        "package": "./internal/admin",
+        "sha256": "b879dc6f148f129790dfc53da313d3083749488466772d7a8ae859b61f80eeeb",
+        "bytes": 13677914,
+        "executed": false,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "removed": true
+      },
+      {
+        "package": "./internal/helper",
+        "sha256": "949e29b81ffa6a84f2905ef4870776cad8560fbf2e7f374ed6e70ed2d625569c",
+        "bytes": 7881497,
+        "executed": false,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "removed": true
+      }
+    ]
+  },
+  "preservation": {
+    "base_commit": "2cce0f276c84a61241a971dffddb546414d85682",
+    "protected_existing_inputs": 386,
+    "protected_sha256_digest": "613c055e7dc0b5c628f7c921909e98efb5d426ae18581805e4507c6de8113b1a",
+    "historical_M2_manifests_byte_identical": 68,
+    "native_peer_socket_metadata_collectors_controls_fixtures_shared_tools_unchanged": true,
+    "native_suites_not_rerun": "Unregistered portable codecs/application exchange only; no new kernel or native operation claim"
+  },
+  "teardown": {
+    "all_owned_sessions_stopped": true,
+    "owned_sessions": 612,
+    "lab_status_command": "make lab-status",
+    "lab_status_sha256": "11640c72cf9a56b5531d4f9d60d19e1bdf1ecb3e1459361d1b6d70a16dbb9d44",
+    "actions_enabled": false,
+    "actions_report_sha256": "32700f5e09febdcc97d40b65c42a1c4b981b4b96af6eb1b8e87c932aba0a71ca",
+    "runtime_services_installed": false,
+    "operator_storage_used": false
+  },
+  "remaining_gates": [
+    "Actual negotiated FreeBSD kernel peer authorization and connection lifetime/deadline/budget handling",
+    "Typed job operations, independent root policy/recovery/global launch clearance and native safety/recovery/continuity/resource gates",
+    "Operator workflows, hold release and full M2 acceptance",
+    "M1 Safari/VoiceOver remains pending"
+  ]
+}

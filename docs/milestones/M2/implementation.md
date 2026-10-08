@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 91; live session authority in review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 92; context negotiation in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1085,3 +1085,26 @@ negotiation, root recovery/
 global launch, enrollment and complete M2/operator gates remain open. Native
 facilities, shared tools and all 67 historical M2 manifests retain their actual
 bytes/sources; unrelated QEMU suites are not rerun for this portable boundary.
+
+## Application-context negotiation prerequisite
+
+PR 92 accepted original live-session authority at merged source
+`2cce0f276c84a61241a971dffddb546414d85682`; its actual portable evidence remains
+source-bound. The next [negotiation contract](../../testing/M2/action-negotiation.md)
+adds strict bounded version-2 hello/ready codecs and a private original-session
+adapter. The helper remains version-1 inventory only; no runtime caller is
+registered. Twelve parents/57 children, exhaustive frame truncations and bounded
+fuzz cover correlation, malformed/forged claims, downgrade/operation denials,
+original session revocation, no credentials/idle renewal and read-only dispatch
+isolation. Native facilities/fixtures and shared tools remain unchanged. Actual
+kernel peer binding, typed operations, root recovery/global launch and assembled
+M2 qualification remain pending. Executed evidence is recorded below.
+
+Executed partial evidence: signed source `e449b8c005f2f4635f471305a6e2cf8ab11a1100` passed
+all twelve parents/57 children and three fuzz seeds, baseline/125 tooling tests,
+eight affected race packages and all twelve bounded fuzz targets in 67.911
+seconds. Both admin/helper FreeBSD test packages compiled without execution;
+checksummed artifacts were removed. Review supervisors and all 612 owned
+sessions stopped with verified teardown; Actions remain disabled. All 68
+historical M2 manifests and 386 existing Go/tooling inputs are byte-identical
+to the merged base. See the [manifest](../../testing/M2/action-negotiation-manifest.json).

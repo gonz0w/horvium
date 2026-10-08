@@ -643,3 +643,25 @@ registry, root peer/recovery/global clearance or native authority is added.
 Partial application evidence and remaining root gates are recorded in the
 [manifest](../../testing/M2/session-authority-manifest.json). It grants no runtime
 mutation authority.
+
+## Application-context negotiation amendment
+
+The [negotiation contract](../../testing/M2/action-negotiation.md) implements the
+first wire prerequisite of the approved new transport: version-2 hello/ready with
+exact request/session-context correlation, 512-byte preallocation bounds and
+strict typed schemas. Private application exchange obtains context only through
+original live session authority and checks it after writes and replies. Neither
+parsing nor negotiation grants operations or proves kernel identity; correlation
+is an untrusted service assertion at the root boundary. Existing version-1
+inventory server/client are unchanged; no runtime route or caller exists. Actual
+peer authentication, deadlines/whole-connection budgets, typed operations and
+local policy/recovery/global launch clearance must precede runtime integration.
+
+Executed partial evidence: signed source `e449b8c005f2f4635f471305a6e2cf8ab11a1100` passed
+all twelve parents/57 children and three fuzz seeds, baseline/125 tooling tests,
+eight affected race packages and all twelve bounded fuzz targets in 67.911
+seconds. Both admin/helper FreeBSD test packages compiled without execution;
+checksummed artifacts were removed. Review supervisors and all 612 owned
+sessions stopped with verified teardown; Actions remain disabled. All 68
+historical M2 manifests and 386 existing Go/tooling inputs are byte-identical
+to the merged base. See the [manifest](../../testing/M2/action-negotiation-manifest.json).
