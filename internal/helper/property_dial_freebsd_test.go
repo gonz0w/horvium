@@ -133,16 +133,42 @@ func TestNativeConfiguredPropertyClient(t *testing.T) {
 				case <-time.After(2 * time.Second):
 					t.Fatal("post-dial signal timeout")
 				}
-				if os.Remove(local.config.Socket) != nil || os.WriteFile(local.config.Socket, []byte("replacement"), 0600) != nil {
-					t.Fatal("replacement fixture")
+				// Original worker admission proves startup finished. The replacement
+				// passes every socket-policy check, isolating the inode identity gate.
+				listenerWorkers(t, r.server, 1)
+				if os.Remove(local.config.Socket) != nil {
+					t.Fatal("unlink owned socket")
+				}
+				replacement, err := net.ListenUnix("unix", &net.UnixAddr{Name: local.config.Socket, Net: "unix"})
+				if err != nil {
+					t.Fatal("replacement fixture", err)
+				}
+				replacement.SetUnlinkOnClose(false)
+				defer replacement.Close()
+				if os.Chown(local.config.Socket, 0, int(f.gid)) != nil || os.Chmod(local.config.Socket, 0660) != nil || safeSocket(local.config) != nil {
+					t.Fatal("unsafe replacement fixture")
+				}
+				owned, err := os.Lstat(local.config.Socket)
+				if err != nil {
+					t.Fatal(err)
 				}
 				if _, err := io.WriteString(input, "continue\n"); err != nil {
 					t.Fatal(err)
 				}
 				waitActionChild(t, cmd)
 				r.stop(t)
-				if data, err := os.ReadFile(local.config.Socket); err != nil || string(data) != "replacement" {
-					t.Fatal("replacement changed", err)
+				if current, err := os.Lstat(local.config.Socket); err != nil || !os.SameFile(owned, current) || safeSocket(local.config) != nil {
+					t.Fatal("safe replacement changed", err)
+				}
+				_ = replacement.SetDeadline(time.Now().Add(150 * time.Millisecond))
+				unexpected, err := replacement.AcceptUnix()
+				if unexpected != nil {
+					_ = unexpected.Close()
+					t.Fatal("connector retried on replacement")
+				}
+				var timeout net.Error
+				if !errors.As(err, &timeout) || !timeout.Timeout() {
+					t.Fatal("replacement backlog absence", err)
 				}
 				if os.Remove(local.config.Socket) != nil {
 					t.Fatal("replacement cleanup")

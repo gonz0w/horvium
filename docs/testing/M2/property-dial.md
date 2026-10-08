@@ -43,17 +43,20 @@ recovery/global launch clearance, durable admission or native write is enabled.
 Signed denying stubs must fail portable preflight, original lifetime retirement
 and configured adapter selection tests. The portable lifetime owner is a private
 fixture with no socket or kernel authority. Keep original transport/UID/client/
-listener primitives and five native fixtures unchanged apart from the optional
-client-owned cancellation needed for configured connections.
+listener product primitives and the five original case inventories. Optional
+client-owned cancellation is added for configured connections. The original
+replacement fixture first completes an actual exchange so it cannot mistake
+visible startup mode bits for a fully serving listener.
 
 Add twelve actual native cases: denied review/submission through the private root
 listener, revocation/cancellation before dial with independently observed empty
 accept backlog, wrong real/effective local UID, unsafe directory/socket, replacement
 and revocation after actual dial, original shorter deadline through every phase,
-cancellation while blocked awaiting ready and complete fixture teardown. Children
+cancellation during pending ready negotiation and complete fixture teardown. Children
 drop credentials before exec. Callback phase gates model application checks, not
 actual human/session authentication or replacement peer UID. Root replacement is a
-synchronized disposable fixture; no host/operator storage is involved.
+synchronized safe root/group/socket fixture, isolating file identity rather than
+only testing unsafe mode or type. Require no retry on its empty accept backlog; no host/operator storage is involved.
 
 Retain all 92 earlier transport cases. Require all six parents and all 104 exact
 cases/result markers on both pinned FreeBSD releases, without expanding the Go
