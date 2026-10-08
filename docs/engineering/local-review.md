@@ -95,3 +95,10 @@ the owned process group, with bounded escalation and a private result record.
 No background service is installed. Processes deliberately escaping their group,
 external applications launched by macOS services, loss of the supervisor itself,
 or host power loss need separate recovery; unverified records never qualify.
+
+Disposable foundation Git repositories disable automatic maintenance and garbage
+collection in their local fixture configuration. This keeps commit commands from
+launching detached work that can race temporary-directory teardown; normal
+operator Git configuration is unchanged. A trace regression checks that two
+commits under an inherited aggressive maintenance policy start no automatic
+maintenance child. Cleanup errors remain failures, without deletion retries.

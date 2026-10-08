@@ -1,7 +1,7 @@
 {
   "record_type": "M2-worker-publication-uncertainty-propagation",
   "date": "2026-10-08",
-  "status": "portable-qualified; maintainer review pending",
+  "status": "storage-subset-qualified; shared-fixture-teardown-repair-qualification-pending",
   "source_commit": "3bb8e871fb3324d894d04c56e0ea95600f325703",
   "source_tree": "222d8fba8579b3ff4c3fca044ef59216113587d7",
   "base_commit": "fd817121c375f02d9c02700a7cd66a001c99787c",
@@ -281,5 +281,31 @@
     "native effects, actual interruption/reboot/recovery and terminal resolution",
     "authenticated operator workflow and assembled M2 qualification",
     "pending M1 manual accessibility and explicit milestone acceptance"
-  ]
+  ],
+  "tooling_teardown_repair": {
+    "scope": "Disable automatic detached maintenance only in disposable foundation Git repositories; operator Git configuration unchanged",
+    "qualification": "pending fresh full portable review",
+    "second_unqualified_baseline": {
+      "source_commit": "f18365901dff8e5b80b148fe9500faee7c796ace",
+      "session": "1jd5_a3b",
+      "report_sha256": "5af1944a6b8e343631eb7fe8db08f6f29bd7e6b685e14f96988e44604fd8f518",
+      "checks_log_sha256": "c99b1330af30180a4c794caa378cc4d07327e77408bdd9f708ae466961c6a674",
+      "reason": "Same disposable Git teardown race; no deep execution"
+    },
+    "trace_diagnostic": {
+      "dco_fixtures": 6,
+      "cleanup_failures": 2,
+      "detached_auto_maintenance_children": 18,
+      "log_sha256": "48ac9e9b2c432f45365f603a3bff15321ede19d8be91f7f5ceffd196329a4aa3",
+      "trace_sha256": "f9e170eb81a64abf201fb55078d3f785dbf8f83a6551585f0ab0b5c55efa9ff9"
+    },
+    "regression": "test_fixture_commits_launch_no_automatic_maintenance",
+    "failing_first_log_sha256": "0bdf0291ef6395134b58147def39e76a5fb84760191070c76ae49365c53e70fb",
+    "green_log_sha256": "7922c5d27859d4e9b195a3f6fe332f5628dde80b03b8df77d31e868dfc33ba2a",
+    "foundation_tests": 14,
+    "green_passed": true,
+    "all_inspected_failed_fixture_residue_removed": true,
+    "cleanup_errors_suppressed": false,
+    "cleanup_retries_added": false
+  }
 }

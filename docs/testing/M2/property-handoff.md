@@ -78,9 +78,10 @@ new handoffs, duplicate confirmations and 16 concurrent new confirmations per
 case, plus available read-only reviews. Verified reconciliation and the eight
 historical handoff parents remain passing requirements. Qualification is recorded
 in the separate [manifest](property-handoff-uncertainty-manifest.json); historical
-manifests retain their actual executed sources. This portable repair changes no
-native implementation/fixture/shared tooling and needs no unchanged native-suite
-rerun. A FreeBSD cross-build remains unexecuted compilation evidence only.
+manifests retain their actual executed sources. The storage repair changes no
+native implementation/fixture and needs no unchanged native-suite rerun. The
+accompanying disposable Git-fixture teardown repair changes shared test tooling
+and therefore requires a fresh full portable review. A FreeBSD cross-build remains unexecuted compilation evidence only.
 
 Signed repair source `3bb8e871fb3324d894d04c56e0ea95600f325703`, based on PR 86
 merge `fd817121c375f02d9c02700a7cd66a001c99787c`, passed all 20 new cases,
@@ -91,12 +92,22 @@ FreeBSD/amd64 tests cross-compiled but were not executed; the artifact was remov
 All 62 historical manifests and 176 native/shared tooling paths remain unchanged.
 Lab status found no active or unverified owned sessions; Actions remain disabled.
 
-The first review stopped before deep execution when an unchanged disposable Git
-fixture's directory cleanup found residual Git metadata. Its 13 foundation tests
-passed on recheck, the inspected residue was removed after no maintenance process
-remained, and the full review then passed. That failed run remains unqualified
-and recorded separately in the new manifest. No fixture/tooling repair or native
-qualification is attributed to this portable change.
+Two baseline runs stopped before deep execution when the disposable Git fixture's
+cleanup raced detached automatic maintenance. The original 13 foundation tests
+passed on an intervening recheck and focused review passed at the source above;
+the final documentation baseline reproduced the race. Six traced DCO fixtures
+confirmed detached `git maintenance run --auto ... --detach` children, with two
+cleanup failures. These failed runs remain unqualified and source-bound.
+
+The fixture now disables `maintenance.auto` and `gc.auto` in its own temporary
+repository, preserving operator/repository settings elsewhere. A failing-first
+trace regression uses an inherited aggressive global policy and requires two
+fixture commits to launch no automatic maintenance child. This prevents the
+identified cleanup race without suppressing cleanup errors or retrying deletion.
+All 14 foundation tests must pass; inspected residue is removed only after the
+owned diagnostic has stopped. Changing shared test tooling requires a fresh full
+portable review, recorded separately in the same new manifest. Native runtime
+implementations and fixture semantics are unchanged.
 
 ## Native and runtime obligations
 

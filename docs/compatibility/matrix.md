@@ -6,9 +6,11 @@ validation are separate. Refresh exact versions in each active research manifest
 M2 worker publication uncertainty propagates to the original property coordinator.
 Failed, lost or mismatched applying/observing/outcome acknowledgements deny later
 admissions and issued-worker launches; read-only review remains available.
-This changes portable orchestration only. Native implementations, fixtures,
-shared tools and historical manifests are unchanged, so their evidence retains
-its actual sources. No native suite rerun or support claim follows. See the
+The storage change affects portable orchestration only. Native implementations,
+fixtures and historical manifests are unchanged, so their evidence retains
+its actual sources. An accompanying shared Git-fixture test fix disables detached
+automatic maintenance only in disposable repositories and requires full portable
+review; it changes no operator Git settings. No native suite rerun or support claim follows. See the
 [handoff contract](../testing/M2/property-handoff.md#worker-publication-uncertainty)
 and [qualification record](../testing/M2/property-handoff-uncertainty-manifest.json).
 Signed source `3bb8e871fb3324d894d04c56e0ea95600f325703` passed 20 new cases,

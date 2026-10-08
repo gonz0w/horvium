@@ -185,7 +185,10 @@ recovery clearance; runtime writes stay disabled. See the
 Signed repair source `3bb8e871fb3324d894d04c56e0ea95600f325703` passed the new
 20-case regression and retained handoff tests, all mandatory baseline checks,
 9 affected race packages and 38 bounded fuzz targets. FreeBSD compilation and
-complete teardown passed; native fixtures were unchanged and not rerun.
+complete teardown passed; native fixtures were unchanged and not rerun. A repeated
+final-baseline Git fixture cleanup race was then traced to detached automatic
+maintenance. The accompanying fixture-only fix and failing-first child-process
+regression require fresh full portable qualification before final PR review.
 
 ## Independent slice 2 prerequisite
 
