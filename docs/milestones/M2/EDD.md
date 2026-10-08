@@ -484,3 +484,19 @@ ten-second/4 KiB base guard bounds remain enforced. Normal guarded acknowledgeme
 requires descendants gone; all errors remain unverified and cannot authorize
 replay or outcome/hold release. Disposable test claims establish control facts,
 not runtime enrollment, eligibility, recovery or original-live-claim authority.
+
+## Original admission execution handoff amendment
+
+The original bounded property coordinator may transfer one freshly acknowledged
+admission to one execution-sequence object using session/job identifiers only.
+Retain the same original backend for admission and execution, the exact canonical
+queued acknowledgement and the original civil-clock lineage. Independent prepared
+current metadata must match the whole acknowledgement before applying publication.
+Existing-store retry acknowledgements, decoded records and a reconstructed
+coordinator cannot create this volatile handoff. Check final clock/context after
+bounded encoding; original publication uncertainty, expiry and rollback continue
+to deny launch. Reclamation/expiry after a verified effect does not erase durable
+outcome obligations. This portable handoff is not root-lease, complete native
+eligibility/recovery, global scheduling or operator authorization proof; qualify
+the combined native backend separately. See the
+[handoff contract](../../testing/M2/property-handoff.md).

@@ -112,3 +112,10 @@ evidence was not rerun or relabeled; no native guest or service was started.
 `make lab-status` reports no active or unverified owned sessions. This is portable
 sequence qualification; synthetic backend authority and effects establish no
 real native execution, root claim, restored-state safety, release or M2 acceptance.
+
+
+The later [original admission handoff](property-handoff.md) binds one sequence
+object to the original coordinator/backend, the exact queued acknowledgement and
+original civil-clock lineage. The generic constructor and this sequence's durable
+ordering remain unchanged. Complete native/root eligibility, global scheduling,
+actual interruption/recovery and runtime workflows still require separate gates.

@@ -101,3 +101,10 @@ native storage implementation/test sources are byte-identical to the base.
 were started. Documentation-only followups rerun the baseline/current-source
 checks and may reuse this exact executed deep evidence under the accepted gate;
 they do not relabel the original source or claim native qualification.
+
+
+The later [original execution handoff](property-handoff.md) transfers one fresh
+admission through the same original combined backend. It preserves this
+coordinator's submission acknowledgements, limits and publication uncertainty;
+no native backend or runtime writer follows. Its separate manifest retains the
+actual later tested source without relabeling this original qualification.
