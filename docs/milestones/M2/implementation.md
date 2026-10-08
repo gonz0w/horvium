@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 93; native action peer in review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 94; typed property requests in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1135,3 +1135,30 @@ protected existing inputs retain actual bytes/sources; existing native peer/
 socket functions and old suite commands/deadlines are preserved. See the
 [manifest](../../testing/M2/action-peer-manifest.json). No runtime operation or full recovery/global
 launch/acceptance follows. Actions remain disabled.
+
+## Typed property request prerequisite
+
+PR 94 accepted the original native peer boundary at merged source
+`543889037dba05df0906130ddcc720e995afde9f`. The next
+[request contract](../../testing/M2/property-requests.md) defines strict version-2
+property review/submission selections: canonical pool/filesystem GUIDs and the
+planner's literal property allowlist, or only pool/plan/submission identifiers.
+Each schema rejects extra privilege fields and replacement intent. Original request
+correlation and fixed frame/field/depth limits are syntax checks, never peer/session,
+enrollment, original plan, recovery or launch proof. Inventory runtime and original
+peer quiet behavior remain unchanged; response/exchange/dispatcher integration
+remains pending. This is a T1 subset of M2-PLAN-001/M2-PRIV-001, not native or M2
+acceptance. Baseline/focused race/fuzz and unexecuted FreeBSD compilation are
+recorded below; preserve historical source-bound native evidence.
+
+Executed partial evidence: signed source `2c5d89680f6be5be790c92c741f8f965f2f5bf2a` passed
+five behavioral parents/61 children and three fuzz seeds, baseline/131 tooling
+tests, 9 affected race packages and all 41 bounded fuzz targets in 227.424
+seconds. Helper/storage FreeBSD test packages compiled without execution and their
+checksummed artifacts were removed. All 623 owned sessions stopped with
+verified teardown; Actions remain disabled. All 70 historical M2 manifests and
+393 protected existing inputs retain actual bytes. Existing planner validation is
+unchanged apart from the new bounded syntax entry point. The earlier lint failure
+is explicitly unqualified and corrected before this fresh review. See the
+[source-bound manifest](../../testing/M2/property-requests-manifest.json). No native typed exchange,
+root recovery/global launch or assembled acceptance follows.

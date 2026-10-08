@@ -43,6 +43,16 @@ func validIntent(i Intent) bool {
 	}
 	return false
 }
+
+// ValidatePropertyIntent checks the canonical GUID and literal property subset
+// shared by the planner and typed transport. It supplies no eligibility, policy,
+// observation, session binding or execution authority.
+func ValidatePropertyIntent(i Intent) error {
+	if len(i.FilesystemGUID) > 20 || len(i.Value) > 20 || !validIntent(i) {
+		return ErrInvalid
+	}
+	return nil
+}
 func token(s string) bool {
 	if len(s) < 1 || len(s) > 64 {
 		return false

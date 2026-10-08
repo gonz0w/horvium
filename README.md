@@ -319,6 +319,13 @@ pool suites passed with verified teardown; see the
 [evidence](docs/testing/M2/property-native-backend-manifest.json). Operator writes
 remain disabled.
 
+The [typed property requests](docs/testing/M2/property-requests.md) define strict
+review and submission payloads with the existing planner's literal allowlist.
+They are unregistered codecs; actual exchange, replies and recovery/global launch
+integration remain pending. Five behavioral parents/61 children, focused race/fuzz
+and baseline checks passed; helper/storage compiled for FreeBSD without execution.
+See the [source-bound evidence](docs/testing/M2/property-requests-manifest.json).
+
 The [native action-peer boundary](docs/testing/M2/action-peer.md) passed all
 eighteen cases on both disposable FreeBSD targets plus full portable review.
 It remains a private, unregistered kernel UID/connection-lifetime prerequisite;
