@@ -267,9 +267,12 @@ and the complete root backend remain open; runtime writes stay disabled.
 
 The [claim-bound native observer](docs/testing/M2/property-claim-source.md) joins
 that original claim to fresh properties, providers, system use and metadata backing.
-Portable and native state-reader gates passed. Full native pool qualification
-is pending after deadline failures; all observations remain ineligible and runtime
-writes remain disabled. See the [partial evidence](docs/testing/M2/property-claim-source-manifest.json).
+Portable, native state-reader and complete pool gates passed. The
+[separate native fixture qualification](docs/testing/M2/property-claim-fixtures.md)
+retains every old case and explicitly gives the aggregate lab corpus eight minutes.
+Both FreeBSD targets passed with complete teardown. All observations remain
+ineligible; the complete root backend and runtime writes remain disabled. Earlier
+[partial evidence](docs/testing/M2/property-claim-source-manifest.json) remains source-bound.
 
 ## Agreed direction
 

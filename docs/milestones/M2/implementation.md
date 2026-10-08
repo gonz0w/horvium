@@ -892,7 +892,7 @@ tests, nine affected race packages and all 38 selected fuzz targets. Both state
 releases passed every historical gate and all 19 claim children. The two 15.1 pool
 attempts passed all eight new actual native cases but exceeded the unchanged
 parent deadline in old cases; full pool qualification on both releases remains
-pending. Keep this PR draft; see the [partial manifest](../../testing/M2/property-claim-source-manifest.json).
+pending at that source. PR 84 was draft; see the [partial manifest](../../testing/M2/property-claim-source-manifest.json).
 All owned teardown passed, historical/shared inputs remain unchanged and unrelated
 workloads were not stopped. No executor, recovery/launch clearance, release,
 runtime consumer or operator writer is enabled.
@@ -902,7 +902,8 @@ runtime consumer or operator writer is enabled.
 PR 84 merged at `41140a8061267a000bd321b5c5f4f536954cfb25` with full pool gates
 outstanding. The quiet merged-source retry still exceeded the historical parent
 budget. The [fixture contract](../../testing/M2/property-claim-fixtures.md) keeps
-all old assertions and the five-minute collector, isolates the new eight cases
+all old assertions, explicitly amends the aggregate collector budget to eight
+minutes, isolates the new eight cases
 in a fresh 135-second fixture, and requires both actual parents plus outer teardown
 in the shared checker. Two failing-first checker regressions now pass. No product
 bytes change; native and required full portable qualification are pending. Historical
@@ -912,3 +913,13 @@ The first separated retry passed its 27.05-second claim parent, but the old pare
 still exhausted five minutes. The fixture contract explicitly amends its aggregate
 lab budget to eight minutes while retaining all cases and production operation
 limits. This is qualification tooling only; current native results remain pending.
+
+At signed source `03b7dce3f70ea13d972febba8702536785c78fb0`, both serial native pool releases passed
+all 88 old assertions, all retained subgroups, eight independent claim cases and
+complete teardown. Aggregate parents took 316.89/289.67 seconds; claim parents
+took 27.21/23.75 seconds. Fresh full portable review passed 124 tooling tests,
+11 race packages and 44 bounded fuzz targets. See the
+[manifest](../../testing/M2/property-claim-fixtures-manifest.json). The historical
+pending/draft instructions are superseded for this observer subset; all 60 prior
+manifests and product code remain byte-identical. Root backend/runtime execution,
+native effects/recovery and operator acceptance remain open.

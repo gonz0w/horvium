@@ -7,8 +7,12 @@ M2 [native claim fixture isolation](../testing/M2/property-claim-fixtures.md)
 retains every historical collector case while allocating an eight-minute aggregate
 lab-fixture budget and an independent 135-second claim fixture. Individual production
 observer/command limits remain unchanged. Both parents and all eight claim children
-are mandatory in the shared checker. Native qualification is pending. Product
-code, runtime eligibility and support claims remain unchanged.
+are mandatory in the shared checker. Both pinned releases passed every old gate,
+all eight children and complete teardown at signed source `03b7dce3f70ea13d972febba8702536785c78fb0`.
+Fresh full portable review passed 124 tooling tests, 11 race packages and 44 bounded
+fuzz targets; identical native artifacts ran serially. Product code and all 60 prior
+manifests remain byte-identical. See the [manifest](../testing/M2/property-claim-fixtures-manifest.json).
+Runtime eligibility and production support remain unchanged.
 
 M2 [claim-bound native observation](../testing/M2/property-claim-source.md)
 connects the original root claim to fresh native property/provider/system/backing
@@ -17,8 +21,8 @@ tests, nine affected race packages and all 38 selected fuzz targets. Both state
 releases passed all 819 historical controls and 19 claim children with actual
 metadata readers and synthetic physical inputs. Eight actual native claim cases
 passed in both 15.1 pool attempts, but the enclosing five-minute parents timed
-out during old cases; both full pool gates remain pending, including unattempted
-14.5. This is partial evidence, not native observer acceptance. All owned teardown
+out during old cases. That original manifest remains partial; the separate
+fixture qualification above completes both pool gates without relabeling it. All owned teardown
 passed; unrelated VM workloads remain untouched. The 59 historical manifests and
 shared tools remain unchanged. See the [manifest](../testing/M2/property-claim-source-manifest.json).
 No eligibility, runtime writer, recovery clearance or production support follows.

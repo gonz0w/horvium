@@ -1085,3 +1085,12 @@ production observer (135-second) and property command (ten-second) limits. The
 separate claim parent remains 135 seconds. Require both full parents and all cases,
 source-bound artifacts and complete teardown on both releases. This allocation
 is a lab-fixture limit, with no runtime behavior or performance/support claim.
+
+At signed source `03b7dce3f70ea13d972febba8702536785c78fb0`, both serial native releases passed all 88
+historical assertions, every retained subgroup, all eight independent claim
+children and complete fixture/host teardown, within the explicit amended lab
+budgets. Fresh full portable review passed 124 tooling tests, 11 race packages and
+44 bounded fuzz targets. The [manifest](../../testing/M2/property-claim-fixtures-manifest.json)
+closes these observer pool gates only; historical partial/failed results retain
+their actual sources. Full root backend, native eligibility/effect interruption/
+recovery, operator workflow and M2 acceptance remain separate.

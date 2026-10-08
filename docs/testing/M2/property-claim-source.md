@@ -1,6 +1,6 @@
 # M2 native property observation through an original root claim
 
-Date: 2026-10-08. Status: implementation merged in PR 84; native observer qualification pending.
+Date: 2026-10-08. Status: implementation merged in PR 84; observer subset qualified, fixture follow-up review pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md)
 and [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -73,7 +73,9 @@ bytes, the data sentinel and the complete data-property projection. Destroy the
 GUID-checked owned metadata pool and remove its private directory before the
 existing fixture continues. The guest root filesystem and its backing settings
 remain unchanged. Retain all 88 old pool assertions, all old assessment/control/
-postcondition children and the original five-minute parent deadline.
+postcondition children. The original PR 84 layout used a five-minute parent
+deadline; the [fixture amendment](property-claim-fixtures.md) supersedes that
+aggregate budget and gives the claim group an independent fixture.
 
 ```sh
 make test-focus PKG=./internal/host/freebsd TEST='^TestPropertyClaimSource'
@@ -93,7 +95,7 @@ fixtures, guest images/keys/firmware, executable artifacts and processes must be
 removed or verified stopped. Full backend/eligibility, interruption/reboot/recovery,
 terminal resolution and authenticated operator workflows remain separate gates.
 
-## Source-bound results and pending gates
+## Historical source-bound partial results
 
 Signed source `aa0794996733706c47cce45ad6e0aad3f4155d28`, based on accepted PR 83
 merge `36a919d78c03a5572087a7da8f6e6c9467189ef2`, passed all four new portable parents,
@@ -121,12 +123,11 @@ still timed out. Several unrelated active QEMU workloads were observed on the
 Mac; contention is a possible contributor, not a proven sole cause. No unrelated
 process was stopped. The 14.5 pool gate has not been attempted under that load.
 
-Both full current-source pool gates remain mandatory, with all 88 old assertions,
-old subgroups and original deadlines retained. Resume them when capacity is
-available; portable deep evidence may be reused only under the existing exact-input
-rules. Keep the PR draft until these native gates pass. No native observer or full
-backend acceptance, runtime eligibility or operator writer follows from partial
-results. The original failed policy-order fixture attempt and the original
+At that source both full pool gates remained mandatory, with all 88 old
+assertions and old subgroups retained; the PR was explicitly draft while the
+gates were pending. The completed follow-up below supersedes those pending
+instructions. Partial results granted no native observer/full backend acceptance,
+runtime eligibility or operator writer. The original failed policy-order fixture attempt and the original
 successful portable review retain their actual sources and are not relabeled.
 
 All 59 prior M2 manifests and 412 retained implementation/tool/fixture paths were
@@ -145,8 +146,24 @@ are outside Horvium's teardown claim.
 `41140a8061267a000bd321b5c5f4f536954cfb25` with the pool gates still outstanding.
 A retry without other QEMU guests observed at start also hit the unchanged parent
 deadline. The [separate fixture contract](property-claim-fixtures.md) preserves the
-old five-minute collector and all historical assertions, gives the new claim
+historical assertions, explicitly amends the aggregate collector budget to eight
+minutes, gives the new claim
 scenario its own 135-second context, and makes both actual parents/every claim
 child mandatory in the shared checker. This supersedes the earlier fixture layout
 and unchanged-selector assumption; product behavior and old manifests are unchanged.
-Current full native pool gates remain pending until both releases qualify.
+The completed source-bound qualification below closes both pool gates.
+
+## Completed pool-gate follow-up
+
+The [separate fixture qualification](property-claim-fixtures.md) completes both
+previously pending pool gates at signed source `03b7dce3f70ea13d972febba8702536785c78fb0`.
+It explicitly supersedes the old five-minute aggregate deadline and pending/draft
+instructions above: every old case remains required, the aggregate lab context is
+eight minutes, and production observer/command timeouts remain unchanged. Both
+pinned releases passed all old gates, all eight claim children and complete outer/
+host teardown. Shared checker/selector maintenance also passed fresh full portable
+review. The [new manifest](property-claim-fixtures-manifest.json) records exact
+source/artifacts, retained product bytes and all 60 untouched prior manifests.
+The original partial manifest is unchanged; its earlier failures and state-reader
+proofs are not relabeled. Successful observations still return false eligibility,
+and complete root backend/native effect/recovery/operator gates remain open.
