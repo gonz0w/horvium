@@ -112,8 +112,12 @@ class LocalQualificationTests(unittest.TestCase):
         log += ('--- PASS: TestNativeConfiguredPropertyClient (1.0s)\n'
                 + ''.join('    --- PASS: TestNativeConfiguredPropertyClient/' + n + ' (0.1s)\n' for n in sorted(checker.CONFIGURED_CASES))
                 + 'CONFIGURED_PROPERTY_RESULT ' + ' '.join(n + '=pass' for n in sorted(checker.CONFIGURED_CASES)) + '\n')
+        configured_only = log
+        log += ('--- PASS: TestNativeApplicationPropertyClient (1.0s)\n'
+                + ''.join('    --- PASS: TestNativeApplicationPropertyClient/' + n + ' (0.1s)\n' for n in sorted(checker.APPLICATION_CASES))
+                + 'APPLICATION_PROPERTY_RESULT ' + ' '.join(n + '=pass' for n in sorted(checker.APPLICATION_CASES)) + '\n')
         self.module.validate_result('action-peer', log, complete=True)
-        for bad in ('', peer_only, exchange_only, admitted_only, session_only, listener_only, log.replace('wrong-uid=pass', ''), log.replace('fixtures-teardown=pass', 'fixtures-teardown=fail')):
+        for bad in ('', peer_only, exchange_only, admitted_only, session_only, listener_only, configured_only, log.replace('wrong-uid=pass', ''), log.replace('fixtures-teardown=pass', 'fixtures-teardown=fail')):
             with self.assertRaises(ValueError):
                 self.module.validate_result('action-peer', bad, complete=True)
 

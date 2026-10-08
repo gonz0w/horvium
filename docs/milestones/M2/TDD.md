@@ -1473,3 +1473,26 @@ cases, six exact native parents, unchanged 80/90-second bounds and signed failin
 first evidence. Shared checker/selector changes require fresh full portable review.
 Private configured adapters register no route/service/backend or native write;
 independent root application/recovery/global launch gates remain mandatory.
+
+## Native original application client integration amendment
+
+Require the [native application contract](../../testing/M2/property-application.md)
+for partial M2-PRIV-001/M2-PLAN-001/M2-NATIVE-001 evidence. Signed denying stubs
+must fail the existing configured portable contract and new native assembly.
+Retain all 104 original transport cases and add eleven actual Auth/action/client
+cases: seven parents/115 exact cases on both pinned releases, under unchanged
+80/90-second bounds. Synchronize real original-store logout/Close before root
+continues; require the exact revocation error, zero metadata and terminal denial.
+No credential/context output or fake UID/session/phase hook is permitted. Preserve
+source-bound red/green and complete cleanup; shared checker changes require fresh
+full portable review. Independent root/backend/recovery/global gates remain open.
+
+Signed source `ea63b809858c2edd9561197ad33d473879fa09ca` passed all 115 actual cases on both disposable FreeBSD
+releases, three portable parents/seventeen children, baseline/137 tooling tests
+and fresh full portable review (eleven race packages/all 49 bounded fuzz targets,
+218.33 seconds). All 678 owned sessions stopped with verified teardown;
+Actions remain disabled and all 78 historical manifests retain their bytes.
+Signed red evidence remains unqualified; see the
+[source-bound record](../../testing/M2/property-application-manifest.json).
+This is native application/client integration, with root operations still denied;
+independent root/backend/recovery/global/runtime gates remain open.

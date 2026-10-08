@@ -75,8 +75,9 @@ func submitHelperProperty(ctx context.Context, c *net.UnixConn, uid uint32, id, 
 	return peer.Submit(pool, plan, submission)
 }
 
-// Private configured adapters; no HTTP/CLI route or service consumer is registered.
-func reviewConfiguredHelperProperty(ctx context.Context, c helper.Config, id, pool string, intent storage.Intent, authority *SessionAuthority) (r storage.Review, err error) {
+// ReviewConfiguredProperty performs one typed, session-bound configured exchange.
+// It registers no route and grants no root policy or mutation authority.
+func ReviewConfiguredProperty(ctx context.Context, c helper.Config, id, pool string, intent storage.Intent, authority *SessionAuthority) (r storage.Review, err error) {
 	if err = helper.WritePropertyReview(io.Discard, id, pool, intent); err != nil {
 		return storage.Review{}, err
 	}
@@ -96,7 +97,10 @@ func reviewConfiguredHelperProperty(ctx context.Context, c helper.Config, id, po
 	}()
 	return peer.Review(pool, intent)
 }
-func submitConfiguredHelperProperty(ctx context.Context, c helper.Config, id, pool, plan, submission string, authority *SessionAuthority) (j storage.Job, duplicate bool, err error) {
+
+// SubmitConfiguredProperty performs one typed, session-bound configured exchange.
+// It registers no route and grants no root policy or mutation authority.
+func SubmitConfiguredProperty(ctx context.Context, c helper.Config, id, pool, plan, submission string, authority *SessionAuthority) (j storage.Job, duplicate bool, err error) {
 	if err = helper.WritePropertySubmission(io.Discard, id, pool, plan, submission); err != nil {
 		return storage.Job{}, false, err
 	}

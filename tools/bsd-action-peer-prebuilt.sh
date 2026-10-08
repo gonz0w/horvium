@@ -16,7 +16,7 @@ binary=.tools/action-peer-native.test
 printf 'ACTION_PEER_PREBUILT_SHA256 %s\n' "$expected"
 freebsd-version -kru
 /sbin/sha256 /bin/freebsd-version /usr/bin/timeout
-if ! /usr/bin/timeout 90 "$binary" -test.v -test.count=1 -test.timeout=80s -test.run='^TestNative(ActionPeer|PropertyExchange|AdmittedPropertyExchange|SessionPropertyClient|PropertyListener|ConfiguredPropertyClient)$' > .tools/action-peer-native.log 2>&1; then
+if ! /usr/bin/timeout 90 "$binary" -test.v -test.count=1 -test.timeout=80s -test.run='^TestNative(ActionPeer|PropertyExchange|AdmittedPropertyExchange|SessionPropertyClient|PropertyListener|ConfiguredPropertyClient|ApplicationPropertyClient)$' > .tools/action-peer-native.log 2>&1; then
     cat .tools/action-peer-native.log
     exit 1
 fi
