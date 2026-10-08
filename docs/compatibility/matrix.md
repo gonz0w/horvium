@@ -3,6 +3,10 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [admitted property exchange](../testing/M2/property-admitted.md) composes the
+original admission lease and typed peer. Native/portable qualification is pending;
+no runtime worker, session/backend authority or native write is registered.
+
 M2 [bounded property connection admission](../testing/M2/property-connections.md)
 passed eight portable behavioral parents/twelve children, baseline/132 tooling
 tests, eight affected race packages and fourteen bounded fuzz targets with verified

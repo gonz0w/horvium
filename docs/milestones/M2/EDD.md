@@ -785,3 +785,18 @@ are not durable job reservations or proof of native/worker quiescence. No listen
 worker, dispatcher or root recovery/global launch gate is connected. Ordinary Go
 portable tests and unexecuted FreeBSD compilation qualify only this private
 accounting boundary; native assembly remains mandatory before runtime integration.
+
+## Admitted property exchange prerequisite
+
+PR 98 accepted private connection accounting at merged source
+`e241a9a08cc1c6dc530c5d80c2acec24bca3ea37`. The next
+[admitted exchange contract](../../testing/M2/property-admitted.md) binds a single
+negotiation attempt to the original lease, connection and admission deadline. Use
+that original context for the actual root-side kernel peer factory; no phase or
+pre-negotiation delay may renew it. Terminal replies/errors release both owners
+and capacity after closing the descriptor. Overlap/shutdown interrupt negotiation
+and request reads without conferring worker/native quiescence. No runtime listener,
+worker, application-session adapter or policy/store dispatcher is registered.
+Qualify the composed transport with real credentials/Unix I/O on both releases;
+retain separate original peer/exchange evidence and synthetic metadata limits.
+Independent session/backend/recovery/global launch gates remain mandatory.

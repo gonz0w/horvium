@@ -482,3 +482,12 @@ The `action-peer` suite additionally selects the separate actual
 parents; historical peer-only evidence cannot qualify this extension. It adds no
 artifact, package, storage fixture disk or service; existing owned executable/guest
 cleanup covers both parents. See the [contract](M2/property-exchange.md).
+
+## Admitted property exchange extension
+
+The `action-peer` suite also selects the separate actual
+`TestNativeAdmittedPropertyExchange` parent. Require all three parents and their
+complete original/composed inventories; retain existing 80/90-second deadlines.
+This adds no artifact/package/storage disk or service; existing owned guest/binary
+cleanup applies. Previous peer/exchange proofs stay bound to their original sources.
+See the [contract](M2/property-admitted.md).

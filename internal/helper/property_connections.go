@@ -24,12 +24,13 @@ type propertyConnections struct {
 	failure  error
 }
 type propertyConnection struct {
-	owner      *propertyConnections
-	connection *net.UnixConn
-	ctx        context.Context
-	cancel     context.CancelFunc
-	stop       func() bool
-	done       chan struct{}
+	owner            *propertyConnections
+	connection       *net.UnixConn
+	ctx              context.Context
+	cancel           context.CancelFunc
+	stop             func() bool
+	done             chan struct{}
+	bindingAttempted bool
 }
 
 func newPropertyConnections(parent context.Context, limit int, timeout time.Duration) (*propertyConnections, error) {

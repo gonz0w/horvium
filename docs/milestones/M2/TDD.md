@@ -1413,3 +1413,19 @@ Preserve existing kernel peer primitives, native fixtures/commands/deadlines and
 historical source-bound evidence. Socket closure supplies no worker/executor
 quiescence or storage authorization; actual native assembled safety/recovery/
 continuity/resources and full M2 acceptance remain open.
+
+## Admitted property exchange prerequisite
+
+The [admitted exchange contract](../../testing/M2/property-admitted.md) is a
+T1/T2 subset of M2-PRIV-001/M2-JOB-001. Portably deny unissued/copy/retired composed
+owners and release failed UID/unsupported-host negotiation capacity without touching
+unrelated originals. A new separate native parent qualifies actual configured/root/
+wrong UIDs, complete synthetic review/submission/refusal exchanges, automatic
+terminal/malformed slot reuse, overflow before bytes, original negotiation/phase/
+earlier-parent deadline equality, shutdown during both I/O phases, overlapping
+negotiation, duplicate lease retirement and full teardown. Child credentials apply
+before exec; no live storage is used. Require all three original/composed native
+parents and exact case/result inventories with unchanged 80/90-second deadlines.
+Shared tooling changes require fresh full portable review; execute failing-stub
+native proof before implementation and retain it as unqualified. Full authenticated
+session/backend/recovery/global launch and assembled M2 qualification remain open.

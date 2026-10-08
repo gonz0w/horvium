@@ -20,6 +20,10 @@ class ActionPeerEvidenceTests(unittest.TestCase):
         self.log += ('--- PASS: TestNativePropertyExchange (1.0s)\n'
                      + ''.join('    --- PASS: TestNativePropertyExchange/' + n + ' (0.1s)\n' for n in sorted(self.module.EXCHANGE_CASES))
                      + 'PROPERTY_EXCHANGE_RESULT ' + ' '.join(n + '=pass' for n in sorted(self.module.EXCHANGE_CASES)) + '\n')
+        self.exchange_only = self.log
+        self.log += ('--- PASS: TestNativeAdmittedPropertyExchange (1.0s)\n'
+                     + ''.join('    --- PASS: TestNativeAdmittedPropertyExchange/' + n + ' (0.1s)\n' for n in sorted(self.module.ADMITTED_CASES))
+                     + 'ADMITTED_PROPERTY_RESULT ' + ' '.join(n + '=pass' for n in sorted(self.module.ADMITTED_CASES)) + '\n')
 
     def test_complete_and_matching_native_case_inventory(self):
         self.module.validate(self.log)
@@ -52,7 +56,7 @@ class ActionPeerEvidenceTests(unittest.TestCase):
 
     def test_script_selects_only_bounded_native_parent(self):
         script = (ROOT / 'tools/bsd-action-peer-prebuilt.sh').read_text()
-        self.assertEqual(re.findall(r"-test.run='([^']+)'", script), ['^TestNative(ActionPeer|PropertyExchange)$'])
+        self.assertEqual(re.findall(r"-test.run='([^']+)'", script), ['^TestNative(ActionPeer|PropertyExchange|AdmittedPropertyExchange)$'])
         self.assertIn('/usr/bin/timeout 90', script)
         self.assertIn('-test.timeout=80s', script)
 
@@ -69,5 +73,21 @@ class ActionPeerEvidenceTests(unittest.TestCase):
                         self.log.replace(case + '=pass', case + '=fail'),
                         self.log.replace(case + '=pass', ''),
                         self.log + 'PROPERTY_EXCHANGE_RESULT extra=pass\n'):
+                with self.assertRaises(ValueError):
+                    self.module.validate(bad)
+
+    def test_admitted_inventory_and_uncomposed_proof_refused(self):
+        source = (ROOT / 'internal/helper/property_admitted_freebsd_test.go').read_text()
+        cases = re.findall(r'"([a-z-]+)"', re.search(r'cases := \[\]string\{([^}]+)\}', source).group(1))
+        self.assertEqual(len(cases), len(self.module.ADMITTED_CASES))
+        self.assertEqual(set(cases), self.module.ADMITTED_CASES)
+        with self.assertRaises(ValueError):
+            self.module.validate(self.exchange_only)
+        for case in self.module.ADMITTED_CASES:
+            line = '    --- PASS: TestNativeAdmittedPropertyExchange/' + case + ' (0.1s)\n'
+            for bad in (self.log.replace(line, ''), self.log + line,
+                        self.log.replace(case + '=pass', case + '=fail'),
+                        self.log.replace(case + '=pass', ''),
+                        self.log + 'ADMITTED_PROPERTY_RESULT extra=pass\n'):
                 with self.assertRaises(ValueError):
                     self.module.validate(bad)

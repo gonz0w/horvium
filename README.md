@@ -319,6 +319,11 @@ pool suites passed with verified teardown; see the
 [evidence](docs/testing/M2/property-native-backend-manifest.json). Operator writes
 remain disabled.
 
+The [admitted property exchange](docs/testing/M2/property-admitted.md) composes
+original connection capacity/deadlines with one kernel-authorized typed exchange.
+Test-first native/portable qualification is pending; runtime/session/backend and
+root recovery/global launch integration remain disabled.
+
 The [bounded property connection admission](docs/testing/M2/property-connections.md)
 is a private network accounting prerequisite for the future typed transport.
 Original slots/deadlines, immediate overflow denial and socket retirement passed
