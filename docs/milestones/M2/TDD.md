@@ -1094,3 +1094,32 @@ budgets. Fresh full portable review passed 124 tooling tests, 11 race packages a
 closes these observer pool gates only; historical partial/failed results retain
 their actual sources. Full root backend, native eligibility/effect interruption/
 recovery, operator workflow and M2 acceptance remain separate.
+
+## Original claim applying acknowledgement amendment
+
+Require portable exact-successor/receipt/hold/immutable-record denials and
+non-FreeBSD zero/unavailable behavior. The
+[contract](../../testing/M2/property-claim-applying.md) adds 23 actual metadata
+children to the existing submission parent, with actual credential-child denial.
+Require exact durable applying bytes and owned acknowledgement, one publication
+across copied/concurrent claims, missing/unsafe/foreign/stage/hold denials,
+whole-temporary capacity, late policy/job presentation/hold drift, actual
+sync/rename/cleanup cuts and uncertain changed readback after sync. Preserve
+queued or visible applying bytes as appropriate, stable lock inode, absence of
+unowned cleanup and complete lease/directory/backing/guest/process teardown.
+Retain every historical native state/backing/codec gate and all 19 live-state
+cases on both serial pinned releases; shared selectors/checkers/deadlines and
+all pool observer/control fixtures remain unchanged. Native input selection
+remains synthetic; actual metadata operations grant no native eligibility.
+Source-bound artifacts, baseline and affected race/fuzz evidence are required.
+Complete backend, actual effects/interruption/recovery and M2 remain separate.
+
+Signed source `80f3588a89abcf8484f45da06f37eca18bcfa6dd` passed both new portable parents, all 15
+exact-successor cases, mandatory baseline/124 tooling tests, 9 affected race
+packages and all 38 selected fuzz targets. Both native releases passed every
+required historical gate, all 19 live-state and 23 applying children plus actual
+credential denial and complete teardown. All shared pipelines/readers/runners,
+old limits and 61 prior manifests remain unchanged; see the
+[manifest](../../testing/M2/property-claim-applying-manifest.json). This qualifies
+metadata acknowledgement only; full backend, native effects/recovery, operator
+workflows and M2 acceptance remain open.

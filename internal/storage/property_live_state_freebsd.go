@@ -6,12 +6,14 @@ import (
 	"os"
 )
 
-// ClaimPropertyState issues one read-only readiness claim for an exact newly
+// ClaimPropertyState issues one original state claim for an exact newly
 // published queued submission on this live root lease. Stored metadata, matching
 // retries after reopening and raw job publication cannot create its receipt.
 // The complete census still refuses other pending work and selected-pool holds.
 // A successful claim is retained until Close, even if never used. No native
 // executor, eligibility promotion or recovery/reservation release is enabled.
+// The separate applying publisher permits only one exact metadata successor;
+// independent full backend/launch authority remains required.
 func (s *StateDirectory) ClaimPropertyState(id string) (*PropertyStateClaim, error) {
 	if s == nil || os.Geteuid() != 0 {
 		return nil, ErrStateDirectory

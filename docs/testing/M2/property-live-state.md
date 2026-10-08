@@ -139,3 +139,16 @@ Accepted in [PR 83](https://github.com/gonz0w/horvium/pull/83) at merged source
 `36a919d78c03a5572087a7da8f6e6c9467189ef2`. Its synthetic physical inputs remain
 bound to that historical evidence; the [claim-bound native observer](property-claim-source.md)
 qualifies fresh native inputs separately.
+
+## Exact applying metadata follow-up
+
+The [original-claim applying acknowledgement](property-claim-applying.md) extends
+the same opaque claim with one exact metadata publication attempt. It retains
+the immutable queued receipt and all read-only inspection/readiness semantics;
+no native execution method, terminal outcome or hold release is added. Copies
+share the consumed attempt. Both native releases passed the full old state
+gates and 23 new cases with complete teardown at signed source `80f3588a89abcf8484f45da06f37eca18bcfa6dd`.
+See the [manifest](property-claim-applying-manifest.json). This supersedes any
+interpretation that the current claim has no metadata publication method, while
+its original metadata/read-only evidence remains bound to the source above.
+Full coordinator/session/clock/native/executor/recovery authority remains separate.
