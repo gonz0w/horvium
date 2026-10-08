@@ -722,3 +722,18 @@ unchanged apart from the new bounded syntax entry point. The earlier lint failur
 is explicitly unqualified and corrected before this fresh review. See the
 [source-bound manifest](../../testing/M2/property-requests-manifest.json). No native typed exchange,
 root recovery/global launch or assembled acceptance follows.
+
+## Bounded property reply prerequisite
+
+PR 95 accepted typed property requests at merged source
+`43cd4b11b10ff7b155b71a6e0ef910a4b40e5089`. The next
+[reply contract](../../testing/M2/property-replies.md) preserves complete review
+and lifecycle display views with exact original correlation/selection, plus bounded
+refusal codes. Shared converters/validators preserve the existing durable formats;
+private session/policy digests and execution proofs stay outside replies. The fixed
+64 KiB frame cap includes the envelope and never permits truncated views/history.
+Admission/duplicate/refusal labels remain peer assertions, not durability or retry
+permission. This is a portable T1 subset of M2-PLAN-001/M2-PRIV-001/M2-JOB-001;
+owned socket phases, original session/kernel authorization, enrolled root policy,
+recovery/global launch and actual admission/native execution remain pending.
+Baseline/focused race/fuzz and unexecuted FreeBSD compilation are pending.

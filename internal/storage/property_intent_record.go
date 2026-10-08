@@ -91,7 +91,9 @@ func propertyPoolValueFromWire(w propertyPoolValueWire) PoolValue {
 }
 
 func propertyIntentToWire(i PropertyIntent) propertyIntentWire {
-	r := i.review
+	return propertyIntentWire{CapturedAt: i.capturedAt.Format(time.RFC3339Nano), PolicyDigest: propertyDigestString(i.policyDigest), SessionDigest: propertyDigestString(i.sessionDigest), Review: propertyReviewToWire(i.review)}
+}
+func propertyReviewToWire(r Review) propertyReviewWire {
 	w := propertyReviewWire{ID: r.ID, CreatedAt: r.CreatedAt.Format(time.RFC3339Nano), ExpiresAt: r.ExpiresAt.Format(time.RFC3339Nano), PolicyRevision: r.PolicyRevision, PoolGUID: r.PoolGUID, PoolName: r.PoolName, Change: jobChange{r.Intent.FilesystemGUID, r.Intent.Property, r.Intent.Value}, Context: make([]propertyFilesystemWire, len(r.Context)), Affected: make([]propertyResourceWire, len(r.Affected)), Versions: make([]propertyVersionWire, len(r.Versions)), States: make([]propertyStateWire, len(r.States))}
 	for n, f := range r.Context {
 		w.Context[n] = propertyFilesystemWire{f.GUID, f.Name, f.ParentGUID, propertyPropertiesWire{propertyValueToWire(f.Properties.Quota), propertyValueToWire(f.Properties.RefQuota), propertyValueToWire(f.Properties.Compression)}}
@@ -116,7 +118,7 @@ func propertyIntentToWire(i PropertyIntent) propertyIntentWire {
 	for n, v := range topo.Nodes {
 		w.Topology.Nodes[n] = propertyVdevWire{v.GUID, v.ParentGUID, v.Address, v.Kind, v.Health, v.Annotation, uint64(v.Ordinal), v.ReadErrors, v.WriteErrors, v.ChecksumErrors}
 	}
-	return propertyIntentWire{CapturedAt: i.capturedAt.Format(time.RFC3339Nano), PolicyDigest: propertyDigestString(i.policyDigest), SessionDigest: propertyDigestString(i.sessionDigest), Review: w}
+	return w
 }
 
 func propertyIntentTimeFromWire(value string) (time.Time, error) {
@@ -140,44 +142,51 @@ func propertyIntentFromWire(w propertyIntentWire) (PropertyIntent, error) {
 	if i.capturedAt, err = propertyIntentTimeFromWire(w.CapturedAt); err != nil {
 		return PropertyIntent{}, err
 	}
-	r := w.Review
-	created, err := propertyIntentTimeFromWire(r.CreatedAt)
+	i.review, err = propertyReviewFromWire(w.Review)
 	if err != nil {
 		return PropertyIntent{}, err
+	}
+	return i, nil
+}
+
+func propertyReviewFromWire(r propertyReviewWire) (Review, error) {
+	created, err := propertyIntentTimeFromWire(r.CreatedAt)
+	if err != nil {
+		return Review{}, err
 	}
 	expires, err := propertyIntentTimeFromWire(r.ExpiresAt)
 	if err != nil {
-		return PropertyIntent{}, err
+		return Review{}, err
 	}
 	if len(r.Context) > maxRecords || len(r.Affected) > maxRecords || len(r.Versions) > maxRecords || len(r.States) > maxRecords || len(r.Features.Values) > maxFeatures || len(r.Topology.Nodes) > maxVdevs {
-		return PropertyIntent{}, ErrLimit
+		return Review{}, ErrLimit
 	}
-	i.review = Review{ID: r.ID, CreatedAt: created, ExpiresAt: expires, PolicyRevision: r.PolicyRevision, PoolGUID: r.PoolGUID, PoolName: r.PoolName, Intent: Intent{r.Change.FilesystemGUID, r.Change.Property, r.Change.Value}, Context: make([]Filesystem, len(r.Context)), Affected: make([]Resource, len(r.Affected)), Versions: make([]DatasetIdentity, len(r.Versions)), States: make([]FilesystemState, len(r.States))}
+	review := Review{ID: r.ID, CreatedAt: created, ExpiresAt: expires, PolicyRevision: r.PolicyRevision, PoolGUID: r.PoolGUID, PoolName: r.PoolName, Intent: Intent{r.Change.FilesystemGUID, r.Change.Property, r.Change.Value}, Context: make([]Filesystem, len(r.Context)), Affected: make([]Resource, len(r.Affected)), Versions: make([]DatasetIdentity, len(r.Versions)), States: make([]FilesystemState, len(r.States))}
 	for n, f := range r.Context {
-		i.review.Context[n] = Filesystem{f.GUID, f.Name, f.ParentGUID, Properties{propertyValueFromWire(f.Properties.Quota), propertyValueFromWire(f.Properties.RefQuota), propertyValueFromWire(f.Properties.Compression)}}
+		review.Context[n] = Filesystem{f.GUID, f.Name, f.ParentGUID, Properties{propertyValueFromWire(f.Properties.Quota), propertyValueFromWire(f.Properties.RefQuota), propertyValueFromWire(f.Properties.Compression)}}
 	}
 	for n, a := range r.Affected {
-		i.review.Affected[n] = Resource{a.GUID, a.Name}
+		review.Affected[n] = Resource{a.GUID, a.Name}
 	}
 	for n, v := range r.Versions {
-		i.review.Versions[n] = DatasetIdentity{v.GUID, v.Name, v.Type, v.OwnerGUID}
+		review.Versions[n] = DatasetIdentity{v.GUID, v.Name, v.Type, v.OwnerGUID}
 	}
 	for n, s := range r.States {
-		i.review.States[n] = FilesystemState{GUID: s.GUID, Name: s.Name, EncryptionRootGUID: s.EncryptionRootGUID, Mountpoint: propertyValueFromWire(s.Mountpoint), CanMount: propertyValueFromWire(s.CanMount), Readonly: propertyValueFromWire(s.Readonly), Mounted: propertyValueFromWire(s.Mounted), Encryption: propertyValueFromWire(s.Encryption), EncryptionRoot: propertyValueFromWire(s.EncryptionRoot), KeyStatus: propertyValueFromWire(s.KeyStatus)}
+		review.States[n] = FilesystemState{GUID: s.GUID, Name: s.Name, EncryptionRootGUID: s.EncryptionRootGUID, Mountpoint: propertyValueFromWire(s.Mountpoint), CanMount: propertyValueFromWire(s.CanMount), Readonly: propertyValueFromWire(s.Readonly), Mounted: propertyValueFromWire(s.Mounted), Encryption: propertyValueFromWire(s.Encryption), EncryptionRoot: propertyValueFromWire(s.EncryptionRoot), KeyStatus: propertyValueFromWire(s.KeyStatus)}
 	}
 	p := r.Pool
-	i.review.Pool = PoolState{GUID: p.GUID, LoadGUID: p.LoadGUID, Name: p.Name, GUIDSource: p.GUIDSource, LoadGUIDSource: p.LoadGUIDSource, Health: propertyPoolValueFromWire(p.Health), Readonly: propertyPoolValueFromWire(p.Readonly), BootFS: propertyPoolValueFromWire(p.BootFS), AltRoot: propertyPoolValueFromWire(p.AltRoot), CacheFile: propertyPoolValueFromWire(p.CacheFile), Compatibility: propertyPoolValueFromWire(p.Compatibility), MultiHost: propertyPoolValueFromWire(p.MultiHost)}
-	i.review.Features = PoolFeatures{PoolGUID: r.Features.PoolGUID, PoolName: r.Features.PoolName, Format: r.Features.Format, Values: make([]PoolFeature, len(r.Features.Values))}
+	review.Pool = PoolState{GUID: p.GUID, LoadGUID: p.LoadGUID, Name: p.Name, GUIDSource: p.GUIDSource, LoadGUIDSource: p.LoadGUIDSource, Health: propertyPoolValueFromWire(p.Health), Readonly: propertyPoolValueFromWire(p.Readonly), BootFS: propertyPoolValueFromWire(p.BootFS), AltRoot: propertyPoolValueFromWire(p.AltRoot), CacheFile: propertyPoolValueFromWire(p.CacheFile), Compatibility: propertyPoolValueFromWire(p.Compatibility), MultiHost: propertyPoolValueFromWire(p.MultiHost)}
+	review.Features = PoolFeatures{PoolGUID: r.Features.PoolGUID, PoolName: r.Features.PoolName, Format: r.Features.Format, Values: make([]PoolFeature, len(r.Features.Values))}
 	for n, v := range r.Features.Values {
-		i.review.Features.Values[n] = PoolFeature{v.Name, v.State, v.Source}
+		review.Features.Values[n] = PoolFeature{v.Name, v.State, v.Source}
 	}
 	topo := r.Topology
-	i.review.Topology = PoolTopology{ScanReported: topo.ScanReported, PoolGUID: topo.PoolGUID, PoolName: topo.PoolName, Health: topo.Health, Scan: topo.Scan, Diagnostics: topo.Diagnostics, ReadErrors: topo.ReadErrors, WriteErrors: topo.WriteErrors, ChecksumErrors: topo.ChecksumErrors, DataErrors: topo.DataErrors, Nodes: make([]Vdev, len(topo.Nodes))}
+	review.Topology = PoolTopology{ScanReported: topo.ScanReported, PoolGUID: topo.PoolGUID, PoolName: topo.PoolName, Health: topo.Health, Scan: topo.Scan, Diagnostics: topo.Diagnostics, ReadErrors: topo.ReadErrors, WriteErrors: topo.WriteErrors, ChecksumErrors: topo.ChecksumErrors, DataErrors: topo.DataErrors, Nodes: make([]Vdev, len(topo.Nodes))}
 	for n, v := range topo.Nodes {
 		if v.Ordinal >= maxVdevs {
-			return PropertyIntent{}, ErrStateRecord
+			return Review{}, ErrStateRecord
 		}
-		i.review.Topology.Nodes[n] = Vdev{v.GUID, v.ParentGUID, v.Address, v.Kind, v.Health, v.Annotation, int(v.Ordinal), v.ReadErrors, v.WriteErrors, v.ChecksumErrors}
+		review.Topology.Nodes[n] = Vdev{v.GUID, v.ParentGUID, v.Address, v.Kind, v.Health, v.Annotation, int(v.Ordinal), v.ReadErrors, v.WriteErrors, v.ChecksumErrors}
 	}
-	return i, nil
+	return review, nil
 }

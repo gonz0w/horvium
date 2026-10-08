@@ -319,6 +319,11 @@ pool suites passed with verified teardown; see the
 [evidence](docs/testing/M2/property-native-backend-manifest.json). Operator writes
 remain disabled.
 
+The [bounded property replies](docs/testing/M2/property-replies.md) preserve complete
+review and job display views, enforce original selection/correlation and use bounded
+refusal codes. Private session/policy digests stay outside the transport. The codecs
+remain unregistered; qualification is pending.
+
 The [typed property requests](docs/testing/M2/property-requests.md) define strict
 review and submission payloads with the existing planner's literal allowlist.
 They are unregistered codecs; actual exchange, replies and recovery/global launch
