@@ -11,20 +11,33 @@ CASES = {'allowed', 'asserted-context', 'wrong-uid', 'root-denied', 'forged-uid'
          'disconnect', 'extra-frame', 'closed', 'nonroot-helper', 'fixtures-teardown'}
 
 
+EXCHANGE_CASES = {'review', 'submit', 'duplicate', 'refused', 'queued-request',
+                  'second-operation', 'second-receive', 'second-reply', 'wrong-uid',
+                  'root-denied', 'local-uid', 'malformed-request', 'wrong-request-id',
+                  'request-extra', 'request-cut', 'request-oversize', 'idle-deadline',
+                  'cancellation', 'explicit-close', 'reply-extra', 'reply-missing-eof',
+                  'reply-wrong-selection', 'reply-wrong-id', 'overlap',
+                  'nonroot-helper', 'fixtures-teardown'}
+
+
 def validate(text):
     if len(text) > 1 << 20 or re.search(r'(?m)^(?:FAIL|\s*--- (?:FAIL|SKIP):)', text):
         raise ValueError('peer evidence failed, skipped or oversized')
-    if len(re.findall(r'(?m)^--- PASS: TestNativeActionPeer \([0-9.]+s\)$', text)) != 1:
-        raise ValueError('one actual native peer parent required')
-    children = re.findall(r'(?m)^\s+--- PASS: TestNativeActionPeer/([^ ]+) \([0-9.]+s\)$', text)
-    if len(children) != len(CASES) or set(children) != CASES:
-        raise ValueError('missing, duplicate or unknown executed native peer child')
-    results = re.findall(r'(?m)^ACTION_PEER_RESULT ([^\n]+)$', text)
-    if len(results) != 1:
-        raise ValueError('one complete native peer result required')
-    fields = results[0].split()
-    if len(fields) != len(CASES) or set(fields) != {case + '=pass' for case in CASES}:
-        raise ValueError('missing, duplicate, unknown or failed peer assertion')
+    for parent, marker, cases in (
+            ('TestNativeActionPeer', 'ACTION_PEER_RESULT', CASES),
+            ('TestNativePropertyExchange', 'PROPERTY_EXCHANGE_RESULT', EXCHANGE_CASES)):
+        if len(re.findall(r'(?m)^--- PASS: ' + parent + r' \([0-9.]+s\)$', text)) != 1:
+            raise ValueError('one actual native parent required: ' + parent)
+        children = re.findall(r'(?m)^\s+--- PASS: ' + parent + r'/([^ ]+) \([0-9.]+s\)$', text)
+        if len(children) != len(cases) or set(children) != cases:
+            raise ValueError('missing, duplicate or unknown executed child: ' + parent)
+        results = re.findall(r'(?m)^' + marker + r' ([^\n]+)$', text)
+        if len(results) != 1:
+            raise ValueError('one complete native result required: ' + marker)
+        fields = results[0].split()
+        if len(fields) != len(cases) or set(fields) != {case + '=pass' for case in cases}:
+            raise ValueError('missing, duplicate, unknown or failed assertion: ' + marker)
+
 
 
 if __name__ == '__main__':

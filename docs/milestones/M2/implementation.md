@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 95; bounded property replies in review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 96; owned property exchange in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1190,3 +1190,27 @@ remain disabled. The earlier native-selector naming collision is explicitly
 unqualified and corrected before this fresh review. See the
 [source-bound manifest](../../testing/M2/property-replies-manifest.json). Owned exchange, root
 recovery/global launch, actual admission and full M2 acceptance remain pending.
+
+## Owned property exchange prerequisite
+
+PR 96 accepted bounded replies at merged source
+`f36876b0de6b278634ec5718efa0f901c7093e59`. The next
+[exchange contract](../../testing/M2/property-exchange.md) owns one original
+kernel-authorized connection across negotiation, one strict typed request and one
+terminal correlated reply. Fixed existing frame limits bound four-frame aggregate
+traffic; original deadlines never renew. Terminal EOF is required before returning
+client metadata, without asserting peer liveness after EOF. Root parsed identities
+remain snapshots; no application-session, enrolled policy, original plan, recovery,
+durability or launch authority is granted. Native synthetic replies qualify only
+kernel/transport behavior. Single-operation/overlap/cancellation/partial-stream and
+role/identity/correlation cases join the unchanged eighteen old native peer cases
+in a separate opted-in parent; strict complete evidence is mandatory on both pinned
+releases. Shared checker/selector maintenance requires fresh full portable review.
+Signed source `f26e51413b8325e2ffa3d7681f0213564f108c4f` passed all 44 actual
+peer/exchange cases on disposable FreeBSD 15.1 and 14.5. Baseline/132 tooling tests,
+11 race packages and all 49 bounded fuzz targets passed with verified teardown.
+The actual denying-stub native run stays separately unqualified; all 72 historical
+M2 manifests retain their bytes. See the
+[source-bound evidence](../../testing/M2/property-exchange-manifest.json).
+Actual backend admission, authenticated session assembly, recovery/global launch
+and M2 acceptance remain open.

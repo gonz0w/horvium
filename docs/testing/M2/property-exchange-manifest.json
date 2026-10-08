@@ -1,0 +1,624 @@
+{
+  "schema": 1,
+  "status": "partial native transport qualification; maintainer review pending",
+  "requirements": [
+    "M2-PLAN-001",
+    "M2-PRIV-001",
+    "M2-JOB-001"
+  ],
+  "source_commit": "f26e51413b8325e2ffa3d7681f0213564f108c4f",
+  "inputs": [
+    {
+      "path": "internal/helper/property_exchange.go",
+      "sha256": "d33da53126d838d320e1053356b64c8fdaa1088a0e78a52fae4e51fe9240c658"
+    },
+    {
+      "path": "internal/helper/property_exchange_freebsd_test.go",
+      "sha256": "8270a27bc416a510b3847ab34619ea187c2141c9b1d96575b353d41cac3df708"
+    },
+    {
+      "path": "internal/helper/property_exchange_test.go",
+      "sha256": "50f7547e79da2bfb6c92588b39572ecf6461c64664bdce854cada56d1ed0a8ac"
+    },
+    {
+      "path": "tools/bsd-action-peer-prebuilt.sh",
+      "sha256": "39e0f51af981abd8ab17a00ca3d750ca89591fb449553ccddaa8b78726ac1844"
+    },
+    {
+      "path": "tools/check-action-peer-evidence.py",
+      "sha256": "1929d6bfde769735db3cd7fae3e7adccacbfd905462e2b55b6249e49bf420ce8"
+    },
+    {
+      "path": "tools/tests/test_action_peer_evidence.py",
+      "sha256": "f6e57986f75ef784d0727733a5756841b91ca2b9c45ab014bcad090099fa55f0"
+    },
+    {
+      "path": "tools/tests/test_local_qualification.py",
+      "sha256": "139a3dd57aa1dbf00c668ad0563490f93c52aaceb9680f83616b64cd833ae584"
+    }
+  ],
+  "scope": "Private original Unix socket owner, one typed property request and terminal reply; synthetic review/job metadata only, no backend dispatch or native storage mutation",
+  "red_evidence": {
+    "record": ".tools/lab-runs/action-peer-15.1-xa540xxg/result.json",
+    "record_sha256": "dda811979755196bd0f771321b7bdcc80b32fbf606cbea9c891fea0d154e2fb4",
+    "result": {
+      "source_commit": "21b5bcfa982310c3b9e4ab9689f7e2b41a952495",
+      "suite": "action-peer",
+      "release": "15.1",
+      "started_at": "2026-10-08T18:38:10.294549+00:00",
+      "host_os": "Darwin",
+      "host_arch": "arm64",
+      "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+      "qemu_version": "QEMU emulator version 11.1.1",
+      "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "cpu_model": "qemu64",
+      "cpu_count": 2,
+      "memory_mib": 6144,
+      "accelerator": "tcg",
+      "qualified": false,
+      "host_teardown": true,
+      "base_preserved": true,
+      "execution_mode": "host-cross-built",
+      "prebuilt": {
+        "source_commit": "21b5bcfa982310c3b9e4ab9689f7e2b41a952495",
+        "sha256": "7a19bf9790b11f4ca100ee2830361f5bc00eb5cad87d6e5b771769ac2e9bdebc",
+        "bytes": 8387634,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+        "go_sum_sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "<owned-artifact>",
+          "./internal/helper"
+        ]
+      },
+      "image": {
+        "release": "15.1",
+        "builder": "2.2.8",
+        "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+        "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+        "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144
+      },
+      "failure": "supervisor interrupted the run or worker failed",
+      "runtime_preserved": true,
+      "completed_at": "2026-10-08T18:38:48.552682+00:00",
+      "supervisor_fixture_cleanup": true,
+      "supervisor_group_cleaned": true
+    },
+    "log_sha256": "b73b01e849ba4fd4fc46f6b2f02a6602d4deb94dcd531c699140f28af06b809f",
+    "supervisor": {
+      "record": ".tools/process-runs/j_551eq9/state.json",
+      "record_sha256": "7231773ad4340f8e494f22fa7c0cbf2027600230a3ccdac0b93e57c7b2544ad3",
+      "result": {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "9c9798e06b1dc3129a94067e4f74366e4a1a9286a3c8fb938933585d23a7936b",
+        "group": 34284,
+        "started_at": 1791484690.215043,
+        "escalated": false,
+        "worker_returncode": 1,
+        "reason": "exit",
+        "completed_at": 1791484728.6833642
+      }
+    },
+    "reason": "Actual new native exchange cases failed against denying stubs; original 18 peer cases passed. This run remains unqualified."
+  },
+  "native": [
+    {
+      "record": ".tools/lab-runs/action-peer-15.1-dd7bk9ob/result.json",
+      "record_sha256": "895ee0c5790b101321c8ecab5c887e13b6c9e1fda837b4616910934ff05d6f7f",
+      "result": {
+        "source_commit": "f26e51413b8325e2ffa3d7681f0213564f108c4f",
+        "suite": "action-peer",
+        "release": "15.1",
+        "started_at": "2026-10-08T18:44:01.968568+00:00",
+        "host_os": "Darwin",
+        "host_arch": "arm64",
+        "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+        "qemu_version": "QEMU emulator version 11.1.1",
+        "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+        "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144,
+        "accelerator": "tcg",
+        "qualified": true,
+        "host_teardown": true,
+        "base_preserved": true,
+        "execution_mode": "host-cross-built",
+        "prebuilt": {
+          "source_commit": "f26e51413b8325e2ffa3d7681f0213564f108c4f",
+          "sha256": "293138bd40c2999c22fe99056445b2b99cb63b44bf5e84c44a5f452719e712b8",
+          "bytes": 8420459,
+          "go_version": "go version go1.27.1 darwin/arm64",
+          "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+          "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+          "go_mod_sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+          "go_sum_sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+          "target": "freebsd/amd64",
+          "goamd64": "v1",
+          "cgo_enabled": false,
+          "build_arguments": [
+            "go",
+            "test",
+            "-c",
+            "-trimpath",
+            "-o",
+            "<owned-artifact>",
+            "./internal/helper"
+          ]
+        },
+        "image": {
+          "release": "15.1",
+          "builder": "2.2.8",
+          "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+          "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+          "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+          "cpu_model": "qemu64",
+          "cpu_count": 2,
+          "memory_mib": 6144
+        },
+        "guest_assertions": true,
+        "runtime_preserved": true,
+        "completed_at": "2026-10-08T18:44:53.274891+00:00",
+        "supervisor_fixture_cleanup": true,
+        "supervisor_group_cleaned": true
+      },
+      "log_sha256": "96a170a07fe6317e60fde4ff57502008ec617e24c44555eb65766a59eb780d1a",
+      "supervisor": {
+        "record": ".tools/process-runs/705wswq8/state.json",
+        "record_sha256": "f57ca6dd7c37799bdd372af5e38330fed9ae5227ed2ae590e55ce6901077a5fc",
+        "result": {
+          "completed": true,
+          "group_cleaned": true,
+          "command_sha256": "cc6c75fe4650bbdceaf7abd435cd1bf1d7e5b16f4e3642eca650842d2675b9d7",
+          "group": 42702,
+          "started_at": 1791485041.856538,
+          "escalated": false,
+          "worker_returncode": 0,
+          "reason": "exit",
+          "completed_at": 1791485093.3141189
+        }
+      },
+      "compiled_artifact_removed": true,
+      "fixture_key_removed": true
+    },
+    {
+      "record": ".tools/lab-runs/action-peer-14.5-c3r485u9/result.json",
+      "record_sha256": "6d66c9367a722c53ce542c86e97353c91265dcb53c199613129bd191ab5231ad",
+      "result": {
+        "source_commit": "f26e51413b8325e2ffa3d7681f0213564f108c4f",
+        "suite": "action-peer",
+        "release": "14.5",
+        "started_at": "2026-10-08T18:45:06.822474+00:00",
+        "host_os": "Darwin",
+        "host_arch": "arm64",
+        "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+        "qemu_version": "QEMU emulator version 11.1.1",
+        "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+        "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144,
+        "accelerator": "tcg",
+        "qualified": true,
+        "host_teardown": true,
+        "base_preserved": true,
+        "execution_mode": "host-cross-built",
+        "prebuilt": {
+          "source_commit": "f26e51413b8325e2ffa3d7681f0213564f108c4f",
+          "sha256": "293138bd40c2999c22fe99056445b2b99cb63b44bf5e84c44a5f452719e712b8",
+          "bytes": 8420459,
+          "go_version": "go version go1.27.1 darwin/arm64",
+          "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+          "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+          "go_mod_sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+          "go_sum_sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+          "target": "freebsd/amd64",
+          "goamd64": "v1",
+          "cgo_enabled": false,
+          "build_arguments": [
+            "go",
+            "test",
+            "-c",
+            "-trimpath",
+            "-o",
+            "<owned-artifact>",
+            "./internal/helper"
+          ]
+        },
+        "image": {
+          "release": "14.5",
+          "builder": "2.2.8",
+          "compressed_sha256": "cd90489bb7d94585016e177b9e3f0084f3410454dc0af19481f44ddd5aa45257",
+          "qcow2_sha256": "6593466e8d6341eaad95755973ab594222516dd75bcd99b18239b5047e5396f4",
+          "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+          "cpu_model": "qemu64",
+          "cpu_count": 2,
+          "memory_mib": 6144
+        },
+        "guest_assertions": true,
+        "runtime_preserved": true,
+        "completed_at": "2026-10-08T18:45:40.876495+00:00",
+        "supervisor_fixture_cleanup": true,
+        "supervisor_group_cleaned": true
+      },
+      "log_sha256": "4a66da772a25a85ff66af2ea7d618f38c1828d70b136c1cebe12f4962018db92",
+      "supervisor": {
+        "record": ".tools/process-runs/tsybh9ay/state.json",
+        "record_sha256": "ba87bce93992f24e1933e913f1d1d2d1e305993d73ea22727134a325bc020ebd",
+        "result": {
+          "completed": true,
+          "group_cleaned": true,
+          "command_sha256": "edbc09e6f74c786b4f1942f780e8bd6e49a650bba1657b74c19a60b95e3f14aa",
+          "group": 43619,
+          "started_at": 1791485106.736268,
+          "escalated": false,
+          "worker_returncode": 0,
+          "reason": "exit",
+          "completed_at": 1791485140.975615
+        }
+      },
+      "compiled_artifact_removed": true,
+      "fixture_key_removed": true
+    }
+  ],
+  "portable_review": {
+    "record": ".tools/review-runs/8c3x4p3m/result.json",
+    "record_sha256": "98d35a05d823fd68862ab2f49816d23c52642857587a8bbdbbe0e8eb5c832e8c",
+    "result": {
+      "source_commit": "f26e51413b8325e2ffa3d7681f0213564f108c4f",
+      "base_commit": "f36876b0de6b278634ec5718efa0f901c7093e59",
+      "source_tree": "3998d5a5e33a341caae5bab292bc392a4274a980",
+      "title": "feat(helper): own single property socket exchanges",
+      "signed_commits": [
+        "f26e51413b8325e2ffa3d7681f0213564f108c4f",
+        "21b5bcfa982310c3b9e4ab9689f7e2b41a952495"
+      ],
+      "schema": 2,
+      "qualified": true,
+      "qualification_scope": "portable review only",
+      "host_os": "Darwin",
+      "host_arch": "arm64",
+      "started_at": 1791485149.917784,
+      "command": [
+        "make",
+        "check",
+        "lint",
+        "test",
+        "secrets"
+      ],
+      "plan": {
+        "mode": "full",
+        "reason": "shared tooling, policy, module or packaging change",
+        "packages": [],
+        "native_review_required": true
+      },
+      "deep_key": {
+        "mode": "full",
+        "packages": [],
+        "inputs_digest": "ad6cef65ae99b17dc7fcc4f209bc5996828b8e881a7e0a9573ddea9a54a0500b",
+        "environment_digest": "6be56162b8969339df5fa3a421321d524cadf08265416ea080a5fca26f23c273"
+      },
+      "full_requested": false,
+      "active_supervisor_session": "5sjmhod0",
+      "supervisors": [
+        {
+          "completed": true,
+          "group_cleaned": true,
+          "command_sha256": "2644ba56e52e5941ae4155b127658287cfb5e5708eaceecf6e52143515f10f28",
+          "group": 43742,
+          "started_at": 1791485149.9578931,
+          "escalated": false,
+          "worker_returncode": 0,
+          "reason": "exit",
+          "completed_at": 1791485165.724499
+        },
+        {
+          "completed": true,
+          "group_cleaned": true,
+          "command_sha256": "95524bb87cde461cd3a83f1bf354ad093d10bf2f9235b247eba2821ab463dbea",
+          "group": 44183,
+          "started_at": 1791485165.777778,
+          "escalated": false,
+          "worker_returncode": 0,
+          "reason": "exit",
+          "completed_at": 1791485374.183285
+        }
+      ],
+      "supervisor": {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "95524bb87cde461cd3a83f1bf354ad093d10bf2f9235b247eba2821ab463dbea",
+        "group": 44183,
+        "started_at": 1791485165.777778,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791485374.183285
+      },
+      "deep_evidence": {
+        "executed": true,
+        "command": [
+          "/Users/cam/DEV/NAS/.tools/venv/bin/python3",
+          "/Users/cam/DEV/NAS/tools/deep-check.py",
+          "--all"
+        ],
+        "supervisor": {
+          "completed": true,
+          "group_cleaned": true,
+          "command_sha256": "95524bb87cde461cd3a83f1bf354ad093d10bf2f9235b247eba2821ab463dbea",
+          "group": 44183,
+          "started_at": 1791485165.777778,
+          "escalated": false,
+          "worker_returncode": 0,
+          "reason": "exit",
+          "completed_at": 1791485374.183285
+        },
+        "log_sha256": "a61e833c26ae3ebac3e145792a5ef106ddc725c40e8c5f9a583f180dd2753b59",
+        "result": {
+          "fuzz_targets": [
+            {
+              "package": "./internal/admin",
+              "target": "FuzzConfiguration"
+            },
+            {
+              "package": "./internal/admin",
+              "target": "FuzzSessionAuthorityActions"
+            },
+            {
+              "package": "./internal/helper",
+              "target": "FuzzActionNegotiation"
+            },
+            {
+              "package": "./internal/helper",
+              "target": "FuzzPropertyReplies"
+            },
+            {
+              "package": "./internal/helper",
+              "target": "FuzzPropertyRequest"
+            },
+            {
+              "package": "./internal/helper",
+              "target": "FuzzRequest"
+            },
+            {
+              "package": "./internal/helper",
+              "target": "FuzzSnapshot"
+            },
+            {
+              "package": "./internal/host/freebsd",
+              "target": "FuzzPoolPropertyCollection"
+            },
+            {
+              "package": "./internal/host/freebsd",
+              "target": "FuzzPoolProviderCollection"
+            },
+            {
+              "package": "./internal/host/freebsd",
+              "target": "FuzzPropertyClaimSourceSelection"
+            },
+            {
+              "package": "./internal/host/freebsd",
+              "target": "FuzzPropertyControlSelection"
+            },
+            {
+              "package": "./internal/host/freebsd",
+              "target": "FuzzPropertyJobSource"
+            },
+            {
+              "package": "./internal/host/freebsd",
+              "target": "FuzzPropertyPolicyCollection"
+            },
+            {
+              "package": "./internal/host/freebsd",
+              "target": "FuzzSystemUseCollection"
+            },
+            {
+              "package": "./internal/inventory",
+              "target": "FuzzDiskAccess"
+            },
+            {
+              "package": "./internal/inventory",
+              "target": "FuzzDiskAttachments"
+            },
+            {
+              "package": "./internal/inventory",
+              "target": "FuzzDiskObservation"
+            },
+            {
+              "package": "./internal/inventory",
+              "target": "FuzzGEOM"
+            },
+            {
+              "package": "./internal/inventory",
+              "target": "FuzzPoolDiskAttachments"
+            },
+            {
+              "package": "./internal/inventory",
+              "target": "FuzzPools"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzDeviceUseReview"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzFilesystemSignature"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzFilesystemStates"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzIdentities"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzImportedPoolUse"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzJobRecord"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzJobReservations"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzJobRestartPage"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzOwnershipCatalogNames"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzOwnershipRecord"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPoolFeatures"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPoolLabels"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPoolScan"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPoolState"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPoolSystemUse"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPoolTopology"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzProperties"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyCoordinatorActions"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyExecutionCut"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyExecutionHandoff"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyIntent"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyJob"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyJobAssessment"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyLiveStateReceipt"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyPlan"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyPostcondition"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyViews"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzStateCatalogNames"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzSystemDeviceUse"
+            }
+          ],
+          "race_packages": [
+            "./cmd/horvium",
+            "./internal/admin",
+            "./internal/client",
+            "./internal/console",
+            "./internal/eventlog",
+            "./internal/helper",
+            "./internal/host/freebsd",
+            "./internal/inventory",
+            "./internal/observation",
+            "./internal/service",
+            "./internal/storage"
+          ]
+        }
+      },
+      "checks_log_sha256": "35857d3b7dfc9069c763a08eecb4bf6079b03f3f9a77a29f8cabcf6794f6f114",
+      "completed_at": 1791485374.384012,
+      "verification_input_count": 437
+    },
+    "baseline_tooling_tests": 132,
+    "deep_seconds": 208.406
+  },
+  "preliminary_unqualified_tooling": {
+    "command": ".tools/venv/bin/python3 -m unittest discover -s tools/tests",
+    "qualified": false,
+    "tests": 132,
+    "failures": 6,
+    "reason": "Restricted sandbox refused supervisor Unix socket binds; fresh complete supervised baseline above passed with the required socket permissions."
+  },
+  "preservation": {
+    "base_commit": "f36876b0de6b278634ec5718efa0f901c7093e59",
+    "protected_existing_internal_and_tools_inputs_byte_identical": 374,
+    "protected_path_inventory_sha256": "6d2810ae643410dd7fccfc1199a9504b47be166af0e1f87aaa8e88ae8fed16e3",
+    "historical_M2_manifests_byte_identical": 72,
+    "original_peer_primitives_and_native_fixture_unchanged": true,
+    "existing_native_deadlines_unchanged": true
+  },
+  "teardown": {
+    "all_owned_sessions_stopped": true,
+    "owned_sessions": 634,
+    "lab_status_command": "make lab-status",
+    "lab_status_sha256": "727d363194be11c8169c15fb12ac4a5b96be26b4ceccb09395d922f0151ee66c",
+    "actions_enabled": false,
+    "actions_report_sha256": "32700f5e09febdcc97d40b65c42a1c4b981b4b96af6eb1b8e87c932aba0a71ca",
+    "runtime_services_installed": false,
+    "operator_storage_used": false
+  },
+  "remaining_gates": [
+    "Bounded concurrent admission and original authenticated application-session assembly",
+    "Independent enrolled root policy, original plans/coordinator, recovery/executor absence/global launch clearance and durable admission",
+    "Native assembled safety/recovery/continuity/resources, operator workflows, hold release and full M2 acceptance",
+    "M1 Safari/VoiceOver remains pending"
+  ]
+}

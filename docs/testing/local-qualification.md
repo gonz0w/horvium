@@ -473,3 +473,12 @@ complete owned cleanup and base/runtime preservation; see the
 tooling tests, all 11 race packages and 46 fuzz targets. The interruption
 regression removes the new executable; it supplies no new actual controller-death
 claim. Runtime operations and full recovery/global launch remain unavailable.
+
+## Owned property exchange extension
+
+The `action-peer` suite additionally selects the separate actual
+`TestNativePropertyExchange` parent. Preserve all eighteen original peer cases and
+80/90-second deadlines. Require complete new exchange children/result and both
+parents; historical peer-only evidence cannot qualify this extension. It adds no
+artifact, package, storage fixture disk or service; existing owned executable/guest
+cleanup covers both parents. See the [contract](M2/property-exchange.md).
