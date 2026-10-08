@@ -21,6 +21,9 @@ func (s *StateDirectory) ClaimPropertyState(id string) (*PropertyStateClaim, err
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	if s.propertyOrigin != s {
+		return nil, ErrStateDirectory
+	}
 	if s.publicationBlocked {
 		return nil, ErrStateUncertain
 	}

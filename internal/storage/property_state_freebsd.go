@@ -44,6 +44,9 @@ func (s *StateDirectory) checkPropertyStateClaim(p Policy, u PoolSystemUse, limi
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	if claim != nil && s.propertyOrigin != s {
+		return ErrStateDirectory
+	}
 	if s.publicationBlocked {
 		return ErrStateUncertain
 	}

@@ -24,7 +24,8 @@ It changes neither the durable capacity nor the configured job limit.
 FreeBSD's identifier-only `StateDirectory.ClaimPropertyState` validates actual root
 EUID, the original descriptor/lock, publication certainty and a strict complete
 mixed namespace. Exactly matching queued metadata may receive one opaque claim.
-There is no public claim constructor or persisted form. One successful claimant
+There is no public claim constructor or persisted form. The handle identity created by the original open is checked; a copied handle
+cannot issue claims or capture fresh provenance. One successful claimant
 is retained for this lease, including when never used. Copies share its identity;
 repeat/different claims are denied. Failure before grant does not consume it.
 No automatic release, reassignment or replacement-lease authority is added.
@@ -62,7 +63,7 @@ at most one grant. The initial absent-contract compile failure is retained;
 fixture field/reason corrections are not native/product failures.
 
 The unchanged state selector runs the existing submission parent plus its new
-live-state group: queued-applying, copy, reopen, raw-publication, duplicate-reopen,
+live-state group: queued-applying, copy, copied-handle, reopen, raw-publication, duplicate-reopen,
 concurrent, late-claim, current-drift, receipt-drift, uncertain-sync, other-pending,
 same-terminal, unsafe-mode, orphan, policy-drift, missing-system, closed and
 wrong-uid. Require every child once, no skips/failures, and 32 actual concurrent

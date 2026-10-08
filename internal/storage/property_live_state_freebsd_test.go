@@ -38,7 +38,7 @@ func TestPropertyLiveStateUIDChild(t *testing.T) {
 // physical system-use facts below are synthetic, never native eligibility.
 func nativePropertyLiveState(t *testing.T, anchor string) {
 	t.Run("live-state", func(t *testing.T) {
-		for _, mode := range []string{"queued-applying", "copy", "reopen", "raw-publication", "duplicate-reopen", "concurrent", "late-claim", "current-drift", "receipt-drift", "uncertain-sync", "other-pending", "same-terminal", "unsafe-mode", "orphan", "policy-drift", "missing-system", "closed", "wrong-uid"} {
+		for _, mode := range []string{"queued-applying", "copy", "copied-handle", "reopen", "raw-publication", "duplicate-reopen", "concurrent", "late-claim", "current-drift", "receipt-drift", "uncertain-sync", "other-pending", "same-terminal", "unsafe-mode", "orphan", "policy-drift", "missing-system", "closed", "wrong-uid"} {
 			t.Run(mode, func(t *testing.T) {
 				path := filepath.Join(anchor, "live-"+mode)
 				if os.Mkdir(path, 0700) != nil {
@@ -143,6 +143,12 @@ func nativePropertyLiveState(t *testing.T, anchor string) {
 					}
 					return
 				}
+				if mode == "copied-handle" {
+					copy := &StateDirectory{directory: s.directory, writer: s.writer, propertyAdmissions: s.propertyAdmissions, propertyOrigin: s.propertyOrigin}
+					if c, err := copy.ClaimPropertyState(p.job.ID); c != nil || err == nil {
+						t.Fatal("copied handle created second lease identity")
+					}
+				}
 				c, err := s.ClaimPropertyState(p.job.ID)
 				if mode == "reopen" || mode == "raw-publication" || mode == "duplicate-reopen" || mode == "late-claim" || mode == "other-pending" || mode == "same-terminal" {
 					if err == nil || c != nil {
@@ -180,7 +186,7 @@ func nativePropertyLiveState(t *testing.T, anchor string) {
 					copy := *c
 					c = &copy
 				}
-				if mode == "queued-applying" || mode == "copy" {
+				if mode == "queued-applying" || mode == "copy" || mode == "copied-handle" {
 					p, err = TransitionPropertyJob(p, JobApplying, p.job.History[0].At+1, "launch-intent", "")
 					if err != nil || s.PublishPropertyJob(p, 1) != nil {
 						t.Fatal("owned applying", err)
@@ -216,7 +222,7 @@ func nativePropertyLiveState(t *testing.T, anchor string) {
 					t.Fatal(err)
 				}
 				err = c.CheckPropertyState(policy, u, p)
-				positive := mode == "queued-applying" || mode == "copy"
+				positive := mode == "queued-applying" || mode == "copy" || mode == "copied-handle"
 				if (err == nil) != positive {
 					t.Fatal("readiness gate", err)
 				}

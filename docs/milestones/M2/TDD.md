@@ -1019,7 +1019,7 @@ and T2 for partial M2-JOB-001, M2-STATE-001, M2-DRIFT-001 and M2-RECOVERY-001.
 Five behavioral parents and bounded action fuzzing must prove exact original
 receipt/current record binding, stage/refused restored and foreign metadata,
 retained independent holds, bounded nonreplacement, one claimant and invalidation
-on close. Add all 18 live-state children to the existing native submission parent;
+on close. Add all 19 live-state children to the existing native submission parent;
 require 32 native concurrent callers, actual post-sync/no-receipt failure cuts,
 root/closed/orphan/unsafe-record denials and a waited UID/GID-65534 child.
 Preserve every historical state/backing/codec assertion and all deadlines on both

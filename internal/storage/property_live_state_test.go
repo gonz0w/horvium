@@ -202,6 +202,7 @@ func TestPropertyLiveStateBoundsAndGlobalClaim(t *testing.T) {
 func TestPropertyLiveStateReceiptCannotRebindAndCloseInvalidates(t *testing.T) {
 	p := propertyJobFixture(t)
 	s := &StateDirectory{}
+	s.propertyOrigin = s
 	rememberLiveState(t, &s.propertyAdmissions, p)
 	q := PropertyJob{job: p.Job(), intent: p.Intent()}
 	q.job.History[0].At++
@@ -216,7 +217,7 @@ func TestPropertyLiveStateReceiptCannotRebindAndCloseInvalidates(t *testing.T) {
 	if err := s.Close(); err != nil {
 		t.Fatal(err)
 	}
-	if len(s.propertyAdmissions.receipts) != 0 || s.propertyAdmissions.active != nil {
+	if len(s.propertyAdmissions.receipts) != 0 || s.propertyAdmissions.active != nil || s.propertyOrigin != nil {
 		t.Fatal("close retained volatile admission")
 	}
 	if err := s.propertyAdmissions.check(c, liveStateView(t, p), p, p.job.Intent.PoolGUID); err == nil {
