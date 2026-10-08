@@ -28,7 +28,9 @@ func TestNativePoolPropertyCollection(t *testing.T) {
 	if os.Geteuid() != 0 {
 		t.Fatal("requires disposable guest root")
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	// Aggregate fixture budget includes every accumulated metadata, observation
+	// and control scenario on TCG. Individual production timeouts stay unchanged.
+	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Minute)
 	defer cancel()
 	command := func(ctx context.Context, path string, args ...string) (string, error) {
 		out, err := execute(ctx, path, args, 1<<20)

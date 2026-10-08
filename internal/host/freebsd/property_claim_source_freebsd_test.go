@@ -17,6 +17,33 @@ import (
 	"golang.org/x/sys/unix"
 )
 
+// Both declared native parents run serially in the same disposable guest.
+// The new fixture has its own bounded context rather than consuming the old
+// collector's unchanged five-minute deadline. No runtime behavior changes.
+func TestNativePropertyClaimCollection(t *testing.T) {
+	if os.Getenv("HORVIUM_NATIVE_VM") != "1" || os.Getenv("HORVIUM_PROPERTY_VM") != "1" {
+		t.Skip("requires disposable property guest opt-ins")
+	}
+	if os.Geteuid() != 0 {
+		t.Fatal("requires disposable guest root")
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 135*time.Second)
+	defer cancel()
+	teardown := false
+	nativePropertySystemFixtureWithClaim(t, ctx, func(name string, ok bool) {
+		if name != "claim_fixture_teardown" || !ok || teardown {
+			t.Fatal("owned claim fixture restoration", name)
+		}
+		teardown = true
+	}, func(p storage.Policy, ordinary string, disk inventory.Provider) {
+		nativePropertyClaimFixture(t, ctx, p, ordinary, disk)
+	})
+	if !teardown {
+		t.Fatal("owned claim fixture teardown missing")
+	}
+	t.Log("CLAIM_PROPERTY_COLLECTION_RESULT fixture_teardown=pass")
+}
+
 // The existing system fixture supplies its enrolled data mirror and one of its
 // already declared nonboot snapshot disks. Metadata uses a separate unenrolled
 // ZFS pool under /root, with actual native physical backing on both guests.

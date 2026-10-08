@@ -15,6 +15,12 @@ class LocalQualificationTests(unittest.TestCase):
         self.module = importlib.util.module_from_spec(SPEC)
         SPEC.loader.exec_module(self.module)
 
+    def claim_log(self, checker):
+        parent='TestNativePropertyClaimCollection'
+        return ('--- PASS: '+parent+' (1.0s)\n    --- PASS: '+parent+'/native-claim-source (1.0s)\n'
+                + ''.join('        --- PASS: '+parent+'/native-claim-source/'+n+' (0.1s)\n' for n in checker.CLAIM_CASES)
+                + 'CLAIM_PROPERTY_COLLECTION_RESULT fixture_teardown=pass\n')
+
     def test_focused_property_suite_uses_owned_snapshot_device_fixture(self):
         for suite in ['devices','pool-properties']:
             self.assertTrue(self.module.uses_device_fixture(suite))
@@ -23,7 +29,7 @@ class LocalQualificationTests(unittest.TestCase):
 
     def test_focused_property_completion_requires_device_teardown(self):
         checker=self.module.load_tool('check-pool-properties-evidence')
-        log='--- PASS: TestNativePoolPropertyCollection (1.0s)\nPOOL_PROPERTY_COLLECTION_RESULT '+' '.join(c+'=pass' for c in sorted(checker.CASES))+'\n'
+        log='--- PASS: TestNativePoolPropertyCollection (1.0s)\nPOOL_PROPERTY_COLLECTION_RESULT '+' '.join(c+'=pass' for c in sorted(checker.CASES))+'\n'+self.claim_log(checker)
         for bad in [log,log+'DEVICE_FIXTURE_CLEANUP fail\n',log+('DEVICE_FIXTURE_CLEANUP pass\n'*2)]:
             with self.assertRaises(ValueError):self.module.validate_result('pool-properties',bad,complete=True)
         self.module.validate_result('pool-properties',log+'DEVICE_FIXTURE_CLEANUP pass\n',complete=True)
@@ -52,7 +58,7 @@ class LocalQualificationTests(unittest.TestCase):
 
     def test_pool_properties_require_native_assertions_and_teardown(self):
         checker=self.module.load_tool('check-pool-properties-evidence')
-        log='--- PASS: TestNativePoolPropertyCollection (1.0s)\nPOOL_PROPERTY_COLLECTION_RESULT '+' '.join(c+'=pass' for c in sorted(checker.CASES))+'\n'
+        log='--- PASS: TestNativePoolPropertyCollection (1.0s)\nPOOL_PROPERTY_COLLECTION_RESULT '+' '.join(c+'=pass' for c in sorted(checker.CASES))+'\n'+self.claim_log(checker)
         self.module.validate_result('pool-properties',log)
         for bad in ['',log.replace('teardown=pass','teardown=fail'),log.replace('eligibility_denied=pass',''),log.replace('--- PASS:','--- SKIP:')]:
             with self.assertRaises(ValueError):self.module.validate_result('pool-properties',bad)

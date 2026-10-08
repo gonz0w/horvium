@@ -1061,3 +1061,36 @@ both releases before accepting this observer; 14.5 is unattempted. Every attempt
 owned guest/process/fixture was cleaned. See the explicitly incomplete
 [manifest](../../testing/M2/property-claim-source-manifest.json). Historical proofs
 are unchanged and cannot substitute for these pending gates.
+
+## Native claim fixture isolation amendment
+
+The [fixture contract](../../testing/M2/property-claim-fixtures.md) moves the new
+claim group to a separate opted-in native parent with a 135-second context,
+retaining the historical collector's five-minute context and every old assertion/
+subgroup. Select both actual parents serially in the same disposable guest.
+Require all eight claim children once, no failures/skips/unknown cases, plus exact
+outer data-mirror/private-state teardown and restored mount/swap presentations.
+Keep all 88 old named assertions and host snapshot/base/runtime/process cleanup.
+Checker regressions must reject legacy-only, partial, duplicated, failed/skipped
+claim execution and missing or incorrect teardown. Run both pinned releases.
+Product bytes and historical manifests remain unchanged; shared checker/selector
+maintenance requires current full portable review under the existing planner.
+Native qualification is pending; no eligibility or backend acceptance follows.
+
+The separated-fixture retry still exhausted the historical collector's five-minute
+aggregate context while its independent claim parent passed. Amend the aggregate
+collector fixture budget to eight minutes for the complete accumulated corpus,
+explicitly superseding its old aggregate limit. Retain all assertions and individual
+production observer (135-second) and property command (ten-second) limits. The
+separate claim parent remains 135 seconds. Require both full parents and all cases,
+source-bound artifacts and complete teardown on both releases. This allocation
+is a lab-fixture limit, with no runtime behavior or performance/support claim.
+
+At signed source `03b7dce3f70ea13d972febba8702536785c78fb0`, both serial native releases passed all 88
+historical assertions, every retained subgroup, all eight independent claim
+children and complete fixture/host teardown, within the explicit amended lab
+budgets. Fresh full portable review passed 124 tooling tests, 11 race packages and
+44 bounded fuzz targets. The [manifest](../../testing/M2/property-claim-fixtures-manifest.json)
+closes these observer pool gates only; historical partial/failed results retain
+their actual sources. Full root backend, native eligibility/effect interruption/
+recovery, operator workflow and M2 acceptance remain separate.
