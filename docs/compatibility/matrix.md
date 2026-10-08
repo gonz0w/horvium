@@ -3,6 +3,12 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [native claim fixture isolation](../testing/M2/property-claim-fixtures.md)
+preserves the historical five-minute collector while giving the new claim cases
+an independent 135-second native fixture. Both parents and all eight claim children
+are mandatory in the shared checker. Native qualification is pending. Product
+code, runtime eligibility and support claims remain unchanged.
+
 M2 [claim-bound native observation](../testing/M2/property-claim-source.md)
 connects the original root claim to fresh native property/provider/system/backing
 checks. Signed source `aa0794996733706c47cce45ad6e0aad3f4155d28` passed baseline/122 tooling

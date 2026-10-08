@@ -1061,3 +1061,18 @@ both releases before accepting this observer; 14.5 is unattempted. Every attempt
 owned guest/process/fixture was cleaned. See the explicitly incomplete
 [manifest](../../testing/M2/property-claim-source-manifest.json). Historical proofs
 are unchanged and cannot substitute for these pending gates.
+
+## Native claim fixture isolation amendment
+
+The [fixture contract](../../testing/M2/property-claim-fixtures.md) moves the new
+claim group to a separate opted-in native parent with a 135-second context,
+retaining the historical collector's five-minute context and every old assertion/
+subgroup. Select both actual parents serially in the same disposable guest.
+Require all eight claim children once, no failures/skips/unknown cases, plus exact
+outer data-mirror/private-state teardown and restored mount/swap presentations.
+Keep all 88 old named assertions and host snapshot/base/runtime/process cleanup.
+Checker regressions must reject legacy-only, partial, duplicated, failed/skipped
+claim execution and missing or incorrect teardown. Run both pinned releases.
+Product bytes and historical manifests remain unchanged; shared checker/selector
+maintenance requires current full portable review under the existing planner.
+Native qualification is pending; no eligibility or backend acceptance follows.

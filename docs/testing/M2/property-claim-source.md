@@ -1,6 +1,6 @@
 # M2 native property observation through an original root claim
 
-Date: 2026-10-08. Status: portable/state-reader gates passed; native observer qualification pending; draft review.
+Date: 2026-10-08. Status: implementation merged in PR 84; native observer qualification pending.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md)
 and [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -138,3 +138,15 @@ unexecuted development cross-builds were removed and supply no qualification.
 `make lab-status` verified no active or unverified Horvium-owned session. Repository
 Actions remain disabled; no persistent service was enabled. Unrelated workloads
 are outside Horvium's teardown claim.
+
+## Qualification fixture maintenance
+
+[PR 84](https://github.com/gonz0w/horvium/pull/84) merged at
+`41140a8061267a000bd321b5c5f4f536954cfb25` with the pool gates still outstanding.
+A retry without other QEMU guests observed at start also hit the unchanged parent
+deadline. The [separate fixture contract](property-claim-fixtures.md) preserves the
+old five-minute collector and all historical assertions, gives the new claim
+scenario its own 135-second context, and makes both actual parents/every claim
+child mandatory in the shared checker. This supersedes the earlier fixture layout
+and unchanged-selector assumption; product behavior and old manifests are unchanged.
+Current full native pool gates remain pending until both releases qualify.

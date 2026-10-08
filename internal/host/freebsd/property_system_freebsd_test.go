@@ -21,6 +21,12 @@ import (
 // Every mutated device belongs to the five declared snapshot-backed lab disks;
 // selection verifies geometry/serial and excludes independently resolved root.
 func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(string, bool)) {
+	nativePropertySystemFixtureWithClaim(t, ctx, check, nil)
+}
+
+// A separate opted-in claim fixture borrows only declared, root-excluded disks
+// and an enrolled mirror from setup; the historical path keeps every old gate.
+func nativePropertySystemFixtureWithClaim(t *testing.T, ctx context.Context, check func(string, bool), claim func(storage.Policy, string, inventory.Provider)) {
 	t.Helper()
 	command := func(ctx context.Context, path string, args ...string) (string, error) {
 		out, err := execute(ctx, path, args, 1<<20)
@@ -267,6 +273,18 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 	if err = os.WriteFile(filepath.Join(statePath, "ownership-"+guid+".json"), data, 0600); err != nil {
 		t.Fatal(err)
 	}
+	if claim != nil {
+		must("/sbin/zfs", "set", "mountpoint="+ordinary, pool)
+		if err = os.WriteFile(filepath.Join(ordinary, "sentinel"), []byte("independent data sentinel"), 0600); err != nil {
+			t.Fatal(err)
+		}
+		claim(policy, ordinary, extras[0])
+		if !cleanup() {
+			t.Fatal("owned claim data fixture teardown")
+		}
+		check("claim_fixture_teardown", must("/sbin/mount", "-p") == mountsBefore && must("/usr/sbin/swapinfo", "-k") == swapBefore)
+		return
+	}
 	legacyRecord := storage.Policy{Revision: 1, PoolGUID: "999", PoolName: "legacy_fixture"}
 	legacyBytes, err := storage.EncodeOwnershipRecord(legacyRecord)
 	if err != nil {
@@ -381,8 +399,6 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 	check("enrollment_restored", restoredErr == nil && len(restoredPolicy.Members) == 2 && !restoredObservation.Eligible)
 
 	nativePropertyStateFixture(t, ctx, check, state, statePath, policy, u, data, legacyBytes, fs, backing.Flags&unix.MNT_SOFTDEP != 0)
-
-	nativePropertyClaimFixture(t, ctx, policy, ordinary, extras[0])
 
 	providers, err := NewPoolProviderSource()
 	if err != nil {

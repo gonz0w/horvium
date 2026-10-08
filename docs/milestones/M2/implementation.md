@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; prerequisites accepted through PR 83; claim-bound observer portable/state-reader gates passed, full native pool qualification pending; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 84; claim-bound observer portable/state-reader gates passed, full native pool qualification pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -896,3 +896,14 @@ pending. Keep this PR draft; see the [partial manifest](../../testing/M2/propert
 All owned teardown passed, historical/shared inputs remain unchanged and unrelated
 workloads were not stopped. No executor, recovery/launch clearance, release,
 runtime consumer or operator writer is enabled.
+
+## Separate native claim qualification fixture
+
+PR 84 merged at `41140a8061267a000bd321b5c5f4f536954cfb25` with full pool gates
+outstanding. The quiet merged-source retry still exceeded the historical parent
+budget. The [fixture contract](../../testing/M2/property-claim-fixtures.md) keeps
+all old assertions and the five-minute collector, isolates the new eight cases
+in a fresh 135-second fixture, and requires both actual parents plus outer teardown
+in the shared checker. Two failing-first checker regressions now pass. No product
+bytes change; native and required full portable qualification are pending. Historical
+partial results remain source-bound and unqualified attempts are not relabeled.
