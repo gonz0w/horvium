@@ -1,6 +1,6 @@
 # M2 original native action-peer prerequisite
 
-Date: 2026-10-08. Status: test-first implementation in review; not yet qualified.
+Date: 2026-10-08. Status: implementation in review; native/full portable qualification pending.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 Approved [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [negotiation](action-negotiation.md), [local runner](../local-qualification.md).
@@ -42,7 +42,9 @@ idle streams, local UID mismatch, cancellation/expiry after negotiation, peer
 disconnect, extra data, repeated close and owned socket/binary fixture teardown.
 For the nonroot-helper attack root relocates and repairs an unprivileged listener
 socket's file ownership; kernel credentials must still reject it before sending.
-Portable tests reject nil/zero/decoded peers and missing connections.
+Portable tests reject nil/zero/decoded peers, missing connections and invalid
+UID/timeout/context/request inputs. Both factories close owned connections on
+unsupported hosts; they cannot masquerade as FreeBSD.
 
 The focused `action-peer` runner cross-builds one checksummed helper executable,
 uses the existing snapshot/loopback guest supervisor and installs no guest

@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net"
@@ -188,8 +189,12 @@ func TestNativeActionPeer(t *testing.T) {
 			}
 			waitActionChild(t, cmd)
 			if name == "disconnect" || name == "extra-frame" {
-				if peer.checkLive() == nil {
+				err := peer.checkLive()
+				if err == nil {
 					t.Fatal("disconnected or pipelined peer live")
+				}
+				if name == "extra-frame" && !errors.Is(err, ErrProtocol) {
+					t.Fatal("unparsed extra bytes were not identified", err)
 				}
 			}
 			if err := peer.Close(); err != nil {
