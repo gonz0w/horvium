@@ -1257,5 +1257,14 @@ PR 99 accepted admitted exchange ownership at merged source
 `50c342f8314e704db7da4c8d1df7e39d7670d1d5`. The next
 [application client](../../testing/M2/property-client.md) joins original live-session
 checks to an actual kernel-authenticated one-operation client, with typed selection
-validation before negotiation. Qualification is pending. Runtime/session backend
+validation before negotiation. Signed source
+`9876bd3d637be43daedef3afe335fbb4b7488ed2` passed five portable parents/nineteen
+children, all 74 transport cases on both disposable FreeBSD releases, baseline/134
+tooling tests and fresh full portable review (eleven race packages/49 bounded fuzz
+targets). Native callbacks model phase revocation; real original authority is
+checked in portable admin tests. Earlier successful native results retain their
+source; the stopped incomplete deep review stays unqualified. All 657 owned sessions
+stopped with verified teardown; Actions remain disabled. All 75 historical manifests
+retain their bytes; see the
+[source-bound evidence](../../testing/M2/property-client-manifest.json). Runtime/session backend
 assembly, root recovery/global launch and complete M2 acceptance remain open.

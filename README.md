@@ -320,8 +320,11 @@ pool suites passed with verified teardown; see the
 remain disabled.
 
 The [session-bound property client](docs/testing/M2/property-client.md) connects
-original application authority to the kernel-authenticated typed client. Qualification
-is pending; no runtime route, backend dispatch or storage write is registered.
+original application authority to the kernel-authenticated typed client. Five portable
+behavioral parents/nineteen children, all 74 transport cases on both FreeBSD releases
+and full portable review passed with verified teardown. See the
+[evidence](docs/testing/M2/property-client-manifest.json). No runtime route, backend
+dispatch or storage write is registered.
 
 The [admitted property exchange](docs/testing/M2/property-admitted.md) composes
 original connection capacity/deadlines with one kernel-authorized typed exchange.

@@ -1,6 +1,6 @@
 # M2 session-bound property client
 
-Date: 2026-10-08. Status: test-first; qualification pending.
+Date: 2026-10-08. Status: partial session/client qualification; maintainer review pending.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 Approved [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [application authority](session-authority.md), [admitted exchange](property-admitted.md).
@@ -64,3 +64,25 @@ case/result inventories within unchanged Go 80-second/outer 90-second bounds.
 Shared selector/checker maintenance requires fresh full portable review and serial
 qualification on both pinned FreeBSD releases. Preserve all historical manifests
 at their actual sources. M1 Safari/VoiceOver remains pending; Actions stay disabled.
+
+## Executed qualification
+
+Signed source `9876bd3d637be43daedef3afe335fbb4b7488ed2` passed five portable
+behavioral parents/nineteen children and all 74 actual transport cases on both
+disposable FreeBSD 15.1 and 14.5. Fresh baseline checks/134 tooling tests, all eleven
+race packages and 49 bounded fuzz targets passed; deep review took 216.428 seconds.
+Native fixture callbacks qualify the original client phase contract, while portable
+admin tests use the real original authentication store. This is separate evidence,
+not an assembled native authenticated session/backend qualification.
+
+The signed denying-stub native run failed the new parent with all sixty old cases
+passing. An exact temporary archive of that signed source also failed both original
+session test parents and was removed. The earlier successful native source keeps
+its actual passing results; its portable deep review was deliberately stopped with
+verified cleanup before strengthening first-close error propagation. That incomplete
+review remains unqualified. See the [source-bound manifest](property-client-manifest.json).
+
+All 657 owned sessions stopped with verified teardown; native executables/fixture
+keys were removed and base/runtime inputs preserved. All 75 historical M2 manifests
+and 381 protected existing internal/tooling inputs retain their bytes. Full runtime,
+independent root/backend/recovery/global launch and M2 acceptance remain open.
