@@ -15,6 +15,7 @@ import (
 type PropertyClient struct {
 	identity *PropertyClient
 	exchange *propertyPeer
+	cancel   context.CancelFunc
 }
 
 // ConnectPropertyClient transfers the original socket, including on failure.

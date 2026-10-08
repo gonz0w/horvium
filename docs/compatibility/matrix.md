@@ -3,6 +3,10 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [configured property client](../testing/M2/property-dial.md) adds trusted socket
+policy and one original dial/operation deadline. Qualification is pending; runtime
+consumers, root session/backend authority and writes remain disabled.
+
 M2 [private root property listener](../testing/M2/property-listener.md) joins
 safe root socket ownership, original admission and separate worker accounting.
 Six portable parents/four children, all 92 transport cases on disposable FreeBSD

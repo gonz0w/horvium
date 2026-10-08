@@ -319,6 +319,10 @@ pool suites passed with verified teardown; see the
 [evidence](docs/testing/M2/property-native-backend-manifest.json). Operator writes
 remain disabled.
 
+The [configured property client](docs/testing/M2/property-dial.md) joins trusted
+socket policy, bounded dialing and original session checks. Qualification is
+pending; no runtime route, backend or storage write is registered.
+
 The [private root property listener](docs/testing/M2/property-listener.md) joins
 root socket ownership, connection admission and bounded workers. Six portable
 parents/four children, all 92 transport cases on both disposable FreeBSD releases

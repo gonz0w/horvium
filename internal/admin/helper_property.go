@@ -74,3 +74,11 @@ func submitHelperProperty(ctx context.Context, c *net.UnixConn, uid uint32, id, 
 	}
 	return peer.Submit(pool, plan, submission)
 }
+
+// Private configured adapters; no HTTP/CLI route or service consumer is registered.
+func reviewConfiguredHelperProperty(ctx context.Context, c helper.Config, id, pool string, intent storage.Intent, authority *SessionAuthority) (storage.Review, error) {
+	return storage.Review{}, ErrUnauthorized
+}
+func submitConfiguredHelperProperty(ctx context.Context, c helper.Config, id, pool, plan, submission string, authority *SessionAuthority) (storage.Job, bool, error) {
+	return storage.Job{}, false, ErrUnauthorized
+}

@@ -504,3 +504,9 @@ native parent and eighteen actual socket/worker/denial cases. All 92 transport c
 must pass within the unchanged 80/90-second limits. The listener defaults to denied
 operations and calls no backend; no operator storage or persistent service is used.
 Old four-parent proofs retain their actual sources but do not qualify this extension.
+
+Configured property clients extend action-peer qualification with twelve actual
+cases and a sixth exact parent; all 92 prior cases remain mandatory (104 total).
+Original deadlines/artifact/supervisor checks remain unchanged. See the
+[configured client contract](M2/property-dial.md); older five-parent proof cannot
+qualify this extension. No backend or runtime write is enabled.
