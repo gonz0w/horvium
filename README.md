@@ -274,6 +274,11 @@ Both FreeBSD targets passed with complete teardown. All observations remain
 ineligible; the complete root backend and runtime writes remain disabled. Earlier
 [partial evidence](docs/testing/M2/property-claim-source-manifest.json) remains source-bound.
 
+The [original-claim applying acknowledgement](docs/testing/M2/property-claim-applying.md)
+is implementing: one exact durable metadata successor through the original root
+claim, without native effects. Complete root backend, runtime writes and recovery
+workflows remain disabled/pending; native qualification is required before review.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

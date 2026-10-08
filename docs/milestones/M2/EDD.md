@@ -527,3 +527,19 @@ The existing diagnostic reader keeps its semantics. Every failure discards all
 projections; successful read-only observations remain ineligible. This closes
 native observation provenance only, without executor/recovery/session/global
 launch clearance, runtime consumers, effects, durable outcomes or release.
+
+## Original claim applying metadata amendment
+
+The original opaque state claim may acknowledge one exact queued-to-applying
+metadata successor through the original root lease and complete receipt-bound
+census. Consume one publication attempt under its original mutex; copies cannot
+repeat it. Preserve the existing private object/backing/capacity and actual
+file-sync/rename/directory-sync pipeline. Bind all record presentation bytes
+through staging and require exact independent whole-record/expected-census
+readback after sync. Uncertainty returns zero, blocks publication and never
+rolls back or releases a hold. Existing read-only claim operations retain their
+semantics; the claim acquires no native effect or terminal-resolution method.
+Session/clock/expiry, native eligibility, original coordinator/executor/recovery
+and global launch clearance remain complete-backend obligations before effects.
+No runtime consumer, transport/schema or storage command is added. See the
+[contract](../../testing/M2/property-claim-applying.md).

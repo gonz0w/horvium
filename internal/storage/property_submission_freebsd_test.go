@@ -48,6 +48,7 @@ func TestNativePropertySubmission(t *testing.T) {
 	}()
 	var results []string
 	nativePropertyLiveState(t, anchor)
+	nativePropertyClaimApplying(t, anchor)
 	check := func(name string, ok bool) {
 		t.Helper()
 		if !ok {

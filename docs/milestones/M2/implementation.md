@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 84; claim-bound observer portable/state-reader gates passed, full native pool qualification pending; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 85; claim-bound observer pool gates qualified; original-claim applying acknowledgement implementing; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -923,3 +923,16 @@ took 27.21/23.75 seconds. Fresh full portable review passed 124 tooling tests,
 pending/draft instructions are superseded for this observer subset; all 60 prior
 manifests and product code remain byte-identical. Root backend/runtime execution,
 native effects/recovery and operator acceptance remain open.
+
+
+## Original claim applying acknowledgement
+
+PR 85 accepted the [separate fixture qualification](../../testing/M2/property-claim-fixtures.md)
+at merged source `1c8afa7ff49052a6db1ef997204eedd55246becd`, closing the
+read-only observer pool gates without enabling effects. The
+[applying contract](../../testing/M2/property-claim-applying.md) adds one exact
+metadata publication/acknowledgement through the original live root claim,
+retaining the shared durability pipeline and strict full census through staging
+and readback. Portable failing-first tests now pass; both current-source native
+state gates and required portable review are pending. No full backend, launch
+authority, terminal resolution, runtime write or operator workflow is enabled.

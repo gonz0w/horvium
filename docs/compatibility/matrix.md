@@ -3,6 +3,14 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [original claim applying acknowledgement](../testing/M2/property-claim-applying.md)
+adds metadata publication only on the original root lease. The existing supported
+ZFS/UFS-without-softupdates metadata rules stay unchanged; no native eligibility,
+root backend, runtime storage write or support claim follows. Both disposable
+state releases, all 23 new children, actual UID denial and complete teardown are
+required and pending. Shared pool/state selectors/checkers and historical
+fixtures remain unchanged except the submission/UID fixture additions.
+
 M2 [native claim fixture isolation](../testing/M2/property-claim-fixtures.md)
 retains every historical collector case while allocating an eight-minute aggregate
 lab-fixture budget and an independent 135-second claim fixture. Individual production

@@ -26,6 +26,9 @@ func TestPropertyLiveStateUIDChild(t *testing.T) {
 	}
 	s := &StateDirectory{}
 	c := &PropertyStateClaim{state: s, identity: &propertyStateClaimIdentity{}}
+	if got, err := c.PublishApplyingPropertyJob(PropertyJob{}); !reflect.DeepEqual(got, PropertyJob{}) || !errors.Is(err, ErrStateDirectory) {
+		t.Fatal("applying publisher UID", err)
+	}
 	if j, d, err := c.InspectPropertyJob(strings.Repeat("a", 64)); j.job.ID != "" || d != ([32]byte{}) || !errors.Is(err, ErrStateDirectory) {
 		t.Fatal("inspector UID", err)
 	}
