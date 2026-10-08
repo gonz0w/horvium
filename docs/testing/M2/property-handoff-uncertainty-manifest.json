@@ -1,7 +1,7 @@
 {
   "record_type": "M2-worker-publication-uncertainty-propagation",
   "date": "2026-10-08",
-  "status": "storage-subset-qualified; shared-fixture-teardown-repair-qualification-pending",
+  "status": "portable storage and fixture repair qualified; maintainer review pending",
   "source_commit": "3bb8e871fb3324d894d04c56e0ea95600f325703",
   "source_tree": "222d8fba8579b3ff4c3fca044ef59216113587d7",
   "base_commit": "fd817121c375f02d9c02700a7cd66a001c99787c",
@@ -284,7 +284,7 @@
   ],
   "tooling_teardown_repair": {
     "scope": "Disable automatic detached maintenance only in disposable foundation Git repositories; operator Git configuration unchanged",
-    "qualification": "pending fresh full portable review",
+    "qualification": "fresh full portable review passed",
     "second_unqualified_baseline": {
       "source_commit": "f18365901dff8e5b80b148fe9500faee7c796ace",
       "session": "1jd5_a3b",
@@ -306,6 +306,241 @@
     "green_passed": true,
     "all_inspected_failed_fixture_residue_removed": true,
     "cleanup_errors_suppressed": false,
-    "cleanup_retries_added": false
+    "cleanup_retries_added": false,
+    "source_commit": "cdc6fd34bbf41a3a4885abd44e04047a14b01d9e",
+    "source_tree": "3ca38dccab76da3f922ee1896337f90052801469",
+    "base_commit": "fd817121c375f02d9c02700a7cd66a001c99787c",
+    "git_version": "git version 2.54.0 (Apple Git-156)",
+    "input_sha256": {
+      "tools/tests/test_foundation.py": "b03eb176f09f5038426832c48a851a368b4c50c32bde482659b1eaf20ba955b2"
+    },
+    "portable_review": {
+      "source_commit": "cdc6fd34bbf41a3a4885abd44e04047a14b01d9e",
+      "session": "sy5vp2n2",
+      "qualified": true,
+      "mode": "full",
+      "baseline": [
+        "make",
+        "check",
+        "lint",
+        "test",
+        "secrets"
+      ],
+      "tooling_tests": 125,
+      "duration_seconds": 212.167,
+      "deep_result": {
+        "fuzz_targets": [
+          {
+            "package": "./internal/admin",
+            "target": "FuzzConfiguration"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzRequest"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzSnapshot"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPoolPropertyCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPoolProviderCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyClaimSourceSelection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyControlSelection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyJobSource"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyPolicyCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzSystemUseCollection"
+          },
+          {
+            "package": "./internal/inventory",
+            "target": "FuzzDiskAccess"
+          },
+          {
+            "package": "./internal/inventory",
+            "target": "FuzzDiskAttachments"
+          },
+          {
+            "package": "./internal/inventory",
+            "target": "FuzzDiskObservation"
+          },
+          {
+            "package": "./internal/inventory",
+            "target": "FuzzGEOM"
+          },
+          {
+            "package": "./internal/inventory",
+            "target": "FuzzPoolDiskAttachments"
+          },
+          {
+            "package": "./internal/inventory",
+            "target": "FuzzPools"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzDeviceUseReview"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzFilesystemSignature"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzFilesystemStates"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzIdentities"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzImportedPoolUse"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzJobRecord"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzJobReservations"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzJobRestartPage"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzOwnershipCatalogNames"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzOwnershipRecord"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolFeatures"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolLabels"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolScan"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolState"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolSystemUse"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolTopology"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzProperties"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyCoordinatorActions"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyExecutionCut"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyExecutionHandoff"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyIntent"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyJob"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyJobAssessment"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyLiveStateReceipt"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyPlan"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyPostcondition"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzStateCatalogNames"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzSystemDeviceUse"
+          }
+        ],
+        "race_packages": [
+          "./cmd/horvium",
+          "./internal/admin",
+          "./internal/client",
+          "./internal/console",
+          "./internal/eventlog",
+          "./internal/helper",
+          "./internal/host/freebsd",
+          "./internal/inventory",
+          "./internal/observation",
+          "./internal/service",
+          "./internal/storage"
+        ]
+      },
+      "report_sha256": "74347e7aad40df61b725aa532aa8620b5660db96ef67461dc8a25844d071597b",
+      "checks_log_sha256": "7db5ce26e733d31fe6716c04f42e149d929883c642f5f8ca4ff5760b6c3df6e3",
+      "deep_log_sha256": "606d7f8e6f1d88e4e391be6050065e00854d00a9dd127bdadcc4cd91b820d686",
+      "completed_clean_supervisors": 2
+    },
+    "preservation": {
+      "storage_code_byte_identical_to_focused_source": true,
+      "native_implementations_and_fixtures_byte_identical_to_base": true,
+      "native_paths_verified": 114,
+      "historical_M2_manifests_unchanged": 62,
+      "shared_tooling_change": "tools/tests/test_foundation.py",
+      "native_suites_rerun": false
+    },
+    "teardown": {
+      "lab_status_log_sha256": "83b0e6bb1723ad35d806556292bfc84c851cbd6251825f9d9f25532d9a1977f4",
+      "owned_active": 0,
+      "unverified": 0,
+      "failed_fixture_residue_removed": true,
+      "guest_or_persistent_services_started": false,
+      "actions_enabled": false
+    }
   }
 }

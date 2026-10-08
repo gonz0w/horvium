@@ -188,7 +188,10 @@ Signed repair source `3bb8e871fb3324d894d04c56e0ea95600f325703` passed the new
 complete teardown passed; native fixtures were unchanged and not rerun. A repeated
 final-baseline Git fixture cleanup race was then traced to detached automatic
 maintenance. The accompanying fixture-only fix and failing-first child-process
-regression require fresh full portable qualification before final PR review.
+regression passed fresh full portable qualification at signed source
+`cdc6fd34bbf41a3a4885abd44e04047a14b01d9e`: 125 tooling tests, all 11 race
+packages and 44 bounded fuzz targets, with verified clean teardown. The combined
+change remains pending maintainer review and grants no native write authority.
 
 ## Independent slice 2 prerequisite
 

@@ -81,7 +81,8 @@ in the separate [manifest](property-handoff-uncertainty-manifest.json); historic
 manifests retain their actual executed sources. The storage repair changes no
 native implementation/fixture and needs no unchanged native-suite rerun. The
 accompanying disposable Git-fixture teardown repair changes shared test tooling
-and therefore requires a fresh full portable review. A FreeBSD cross-build remains unexecuted compilation evidence only.
+and therefore requires a fresh full portable review. A FreeBSD cross-build remains
+unexecuted compilation evidence only.
 
 Signed repair source `3bb8e871fb3324d894d04c56e0ea95600f325703`, based on PR 86
 merge `fd817121c375f02d9c02700a7cd66a001c99787c`, passed all 20 new cases,
@@ -108,6 +109,15 @@ All 14 foundation tests must pass; inspected residue is removed only after the
 owned diagnostic has stopped. Changing shared test tooling requires a fresh full
 portable review, recorded separately in the same new manifest. Native runtime
 implementations and fixture semantics are unchanged.
+
+Signed combined source `cdc6fd34bbf41a3a4885abd44e04047a14b01d9e` passed the
+fresh full portable review: mandatory baseline with 125 tooling tests, all 11
+race packages and all 44 bounded fuzz targets in 212.167 seconds. Both review
+supervisors completed with verified clean groups. Storage code is byte-identical
+to the focused/cross-compiled source above; all 62 historical manifests and all
+native implementations/fixtures remain unchanged. Lab status found no active
+or unverified owned sessions. Actions remain disabled; native runtime writes
+and complete backend/recovery qualification remain pending.
 
 ## Native and runtime obligations
 

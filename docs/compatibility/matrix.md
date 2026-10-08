@@ -17,6 +17,10 @@ Signed source `3bb8e871fb3324d894d04c56e0ea95600f325703` passed 20 new cases,
 the previous handoff tests, 124 tooling tests, 9 affected race packages and all
 38 selected fuzz targets. FreeBSD/amd64 compilation passed without execution;
 the artifact was removed and lab status verified no active/unverified sessions.
+The combined fixture repair passed fresh full portable review at signed source
+`cdc6fd34bbf41a3a4885abd44e04047a14b01d9e`: 125 tooling tests, all 11 race
+packages, all 44 bounded fuzz targets and verified supervisor/lab teardown.
+Storage code remains identical to the earlier focused/cross-compiled source.
 
 M2 [original claim applying acknowledgement](../testing/M2/property-claim-applying.md)
 adds metadata publication only on the original root lease. The existing supported
