@@ -203,6 +203,7 @@ func TestNativeSessionPropertyChild(t *testing.T) {
 		if x != nil || err == nil || calls != failAt {
 			t.Fatal("factory guard cut accepted", calls, err)
 		}
+		sessionClientClosed(t, conn)
 		return
 	}
 	if err != nil || x == nil {
@@ -218,6 +219,7 @@ func TestNativeSessionPropertyChild(t *testing.T) {
 	}
 	if mode == "submit" || mode == "duplicate" {
 		j, d, e := x.Submit("100", strings.Repeat("a", 64), strings.Repeat("b", 64))
+		sessionClientClosed(t, conn)
 		if e != nil || j.ID != strings.Repeat("c", 64) || d != (mode == "duplicate") || calls != 6 {
 			t.Fatal("guarded submission", calls, e)
 		}
@@ -231,6 +233,7 @@ func TestNativeSessionPropertyChild(t *testing.T) {
 		intent.Value = "0"
 	}
 	r, err := x.Review("100", intent)
+	sessionClientClosed(t, conn)
 	if failAt > 3 {
 		if err == nil || r.ID != "" || calls != failAt {
 			t.Fatal("phase revocation accepted", calls, err)
@@ -255,5 +258,14 @@ func TestNativeSessionPropertyChild(t *testing.T) {
 	}
 	if r, e := x.Review("100", intent); e == nil || r.ID != "" {
 		t.Fatal("terminal client reused")
+	}
+}
+
+func sessionClientClosed(t *testing.T, conn *net.UnixConn) {
+	t.Helper()
+	// EOF alone can leave the local descriptor open. This check must precede
+	// any deferred explicit close or attempted second operation in the fixture.
+	if err := conn.SetDeadline(time.Now()); !errors.Is(err, net.ErrClosed) {
+		t.Fatal("terminal method retained its local socket", err)
 	}
 }

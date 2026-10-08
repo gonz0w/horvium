@@ -142,7 +142,7 @@ func (x *propertyPeer) review(pool string, intent storage.Intent) (storage.Revie
 		return storage.Review{}, err
 	}
 	defer x.mu.Unlock()
-	defer x.Close()
+	defer x.closeUnguardedClient()
 	x.phase = propertyDone
 	if err := x.checkApplication(); err != nil {
 		return storage.Review{}, err
@@ -175,7 +175,7 @@ func (x *propertyPeer) submit(pool, plan, submission string) (storage.Job, bool,
 		return storage.Job{}, false, err
 	}
 	defer x.mu.Unlock()
-	defer x.Close()
+	defer x.closeUnguardedClient()
 	x.phase = propertyDone
 	if err := x.checkApplication(); err != nil {
 		return storage.Job{}, false, err
@@ -263,4 +263,13 @@ func (x *propertyPeer) checkApplication() error {
 		return nil
 	}
 	return x.application()
+}
+
+func (x *propertyPeer) closeUnguardedClient() {
+	// Original private clients retain their existing terminal closure. Guarded
+	// clients are closed by their original PropertyClient after this call returns,
+	// so that owner can report the first close error and withhold any metadata.
+	if x.application == nil {
+		_ = x.Close()
+	}
 }

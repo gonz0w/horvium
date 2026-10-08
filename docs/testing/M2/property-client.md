@@ -23,6 +23,14 @@ original opaque owner can operate/retire the exchange; copies/decoded/zero objec
 cannot use or close an unrelated original. One request and one terminal reply are
 allowed, with no automatic retry or protocol fallback.
 
+The original public client closes guarded exchanges after the typed call returns,
+joins its first close error and withholds metadata on failure. Unguarded private
+clients retain their existing terminal closure. Native checks distinguish actual
+local descriptor closure from remote EOF before any deferred fixture cleanup or
+second operation. A genuine close syscall error cannot safely be forced through
+this concrete owned Unix socket without bypassing descriptor ownership; error
+joining is reviewed directly, without introducing a close or kernel UID hook.
+
 Check the original session before hello, after hello before waiting for ready,
 after ready, before the typed request, after writing before waiting for a reply,
 and after the terminal EOF before returning any metadata (including a refusal).
