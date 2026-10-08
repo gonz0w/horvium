@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 82; fresh root submission state claim awaiting qualification; Actions disabled.
+Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 82; fresh root submission state claim qualified for review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -869,6 +869,12 @@ post-sync submission from restored/foreign metadata through a bounded volatile
 receipt on the original root lease. One opaque read-only claim permits only its
 exact queued record or applying successor through unchanged state/backing gates;
 other holds remain blocking. It enables no native executor or eligibility.
-Test-first implementation is awaiting focused portable review and both native
-state runs; full root backend, native eligibility, effect recovery and assembled
-operator acceptance remain separate.
+Signed source `fe56955fcc2b1803bfa6bf61685b336f8716b420` passed baseline/122 tooling tests,
+five new portable groups, nine affected race packages and all 37 selected fuzz
+targets. Both serial native state runs passed the 19 new children and every
+historical 819 control/67-parent/1,876-codec gate with identical artifacts and
+verified teardown. Native policy/physical system-use inputs remain synthetic;
+no eligibility or complete backend follows. Superseded native/portable attempts
+remain unqualified; see the [manifest](../../testing/M2/property-live-state-manifest.json).
+Maintainer review and complete root/native/effect recovery/operator acceptance
+remain open.

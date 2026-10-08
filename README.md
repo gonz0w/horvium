@@ -260,7 +260,10 @@ and runtime execution remain open.
 The [fresh root submission state claim](docs/testing/M2/property-live-state.md)
 adds an original-lease receipt for a read-only readiness exception for its own
 queued/applying job. Restored records cannot reconstruct the claim; other holds
-remain blocking. Source-bound qualification is pending; runtime writes stay disabled.
+remain blocking. Focused portable checks and all 19 new cases plus historical
+state gates passed on both disposable releases with full teardown; see the
+[manifest](docs/testing/M2/property-live-state-manifest.json). Native eligibility
+and the complete root backend remain open; runtime writes stay disabled.
 
 ## Agreed direction
 

@@ -1007,8 +1007,9 @@ action fuzzing must refuse a second publication, handoff or effect. Signed sourc
 new groups, 9 affected race packages and all 36 selected fuzz targets.
 FreeBSD tests cross-compiled without execution and the artifact was removed;
 complete preservation and owned-process teardown passed. See the
-[manifest](../../testing/M2/property-handoff-manifest.json). Maintainer review is
-pending; no root lease, native backend/eligibility/scheduling, actual durable
+[manifest](../../testing/M2/property-handoff-manifest.json). Accepted in
+[PR 82](https://github.com/gonz0w/horvium/pull/82) at merged source
+`76774cf1add6479ab6a917beddfb464b869cbd10`; no root lease, native backend/eligibility/scheduling, actual durable
 interruption/recovery, transport or assembled acceptance follows from synthetic
 adapters or an unexecuted FreeBSD cross-build.
 
@@ -1027,5 +1028,11 @@ pinned releases with serial disposable QEMU runs and full owned teardown.
 Kernel metadata behavior is actual; fixture policy/physical system-use facts are
 synthetic, and positive readiness must not be claimed as full native eligibility.
 No changes to shared tools/selectors/checkers/old manifests or runtime consumers.
-Qualification pending; original backend/native eligibility, effect interruption/
-recovery, authenticated workflows, hold release and complete M2 remain open.
+Signed source `fe56955fcc2b1803bfa6bf61685b336f8716b420` passed all new portable/race/fuzz gates,
+the mandatory baseline with 122 tooling tests, and all 19 new children plus every
+historical native state/backing/codec gate on both pinned releases. Identical
+artifacts, same supported metadata backing rules and complete owned teardown
+were verified; superseded attempts remain unqualified. See the
+[manifest](../../testing/M2/property-live-state-manifest.json). Maintainer review,
+original backend/native eligibility, effect interruption/recovery, authenticated
+workflows, hold release and complete M2 remain open.
