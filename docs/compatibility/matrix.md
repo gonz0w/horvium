@@ -3,6 +3,20 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [live session authority](../testing/M2/session-authority.md) is a portable
+application prerequisite: original authenticated POST/CSRF binding, opaque context,
+logout/expiry/civil-clock retirement and no idle renewal. Existing read wrappers
+keep their return behavior and mint no action authority. No runtime route or
+root/kernel-peer/recovery/global clearance is added. Signed source
+`3ddd368e747ae36813c009cdd10f6aa097cf41d7` passed nine new parents/51 children,
+baseline/125 tooling tests, eight affected race packages and all eleven selected
+fuzz targets in 72.839 seconds. FreeBSD/amd64 compilation passed without
+execution; its artifact was removed. Review supervisors and every lab session
+stopped with verified teardown. Native facilities, shared tools, all 67 historical
+M2 manifests and 448 protected existing inputs retain actual bytes/sources; see
+the [manifest](../testing/M2/session-authority-manifest.json). Runtime storage
+writes remain disabled.
+
 M2 [private native property backend](../testing/M2/property-native-backend.md)
 connects the original coordinator/state lease to one fixed native property step
 and independently witnessed exact durable outcomes. Public observers retain false

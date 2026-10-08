@@ -1242,3 +1242,25 @@ remains unqualified; the repair changes only fixture setup, preserving old
 deadlines and shared tooling. All guest/artifact/supervisor cleanup was verified;
 see the [manifest](../../testing/M2/property-native-backend-manifest.json).
 External authenticators/recovery/global launch and assembled M2 gates remain open.
+
+## Live application-session authority amendment
+
+Require the [application contract](../../testing/M2/session-authority.md) for
+partial M2-PLAN-001/M2-PRIV-001/M2-HTTP-001 T1/T2 evidence. Nine parents/51 children
+cover original credential-free stable context, seventeen request denials, eleven
+revocation/invalid-context cases, ten original-entry denials, ten entropy/final
+cuts, 32 concurrent requests, no idle renewal, read isolation and sticky retirement.
+Preserve old authentication/HTTP/consumer tests. Record denying-stub and changed-
+CSRF/creation-time/retirement behavioral red results; require bounded 32-action
+fuzz, affected race/fuzz review, explicit unexecuted FreeBSD compile and artifact/
+supervisor teardown. Native facilities/fixtures/shared tooling stay unchanged;
+no kernel-peer/root/runtime/browser or full M2 acceptance is inferred.
+
+Executed partial evidence: signed source `3ddd368e747ae36813c009cdd10f6aa097cf41d7` passed
+all nine new parents/51 children, retained authentication/HTTP/consumer tests,
+baseline/125 tooling tests, eight race packages and all eleven selected bounded
+fuzz targets. FreeBSD compilation passed without execution; the artifact was
+removed. All supervised/lab teardown passed; native/shared facilities and 67
+historical M2 manifests retain actual sources. See the
+[manifest](../../testing/M2/session-authority-manifest.json); full privilege,
+transport/recovery/runtime/M2 acceptance remains open.

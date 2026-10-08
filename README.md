@@ -319,6 +319,14 @@ pool suites passed with verified teardown; see the
 [evidence](docs/testing/M2/property-native-backend-manifest.json). Operator writes
 remain disabled.
 
+The [live application-session authority](docs/testing/M2/session-authority.md)
+adds an explicit authenticated POST wrapper and an opaque original-session
+binding, with logout/expiry/clock revocation and credential-free correlation.
+It registers no runtime route and supplies no root/native clearance. Focused
+portable qualification and unexecuted FreeBSD compilation passed with verified
+teardown; see the [evidence](docs/testing/M2/session-authority-manifest.json).
+Operator writes remain disabled.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.
