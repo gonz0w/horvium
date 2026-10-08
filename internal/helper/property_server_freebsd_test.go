@@ -249,7 +249,10 @@ func TestNativePropertyListener(t *testing.T) {
 				}
 				return
 			case "single-serve":
-				copy := *r.server
+				// Snapshot owner fields under the original lock; a mutex itself is never copied.
+				r.server.mu.Lock()
+				copy := propertyServer{identity: r.server.identity, config: r.server.config, attempted: r.server.attempted, active: r.server.active}
+				r.server.mu.Unlock()
 				if err := copy.serve(context.Background()); !errors.Is(err, ErrPermission) {
 					t.Fatal("copied server started", err)
 				}

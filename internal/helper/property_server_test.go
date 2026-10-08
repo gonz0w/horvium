@@ -39,7 +39,8 @@ func TestPropertyWorkerRetirementIndependentOfSocket(t *testing.T) {
 	if !errors.Is(s.reserve(next), ErrLimit) {
 		t.Fatal("retired socket released a live worker slot")
 	}
-	copy := *s
+	// Reconstruct all owner fields without copying a synchronization primitive.
+	copy := propertyServer{identity: s.identity, config: s.config, attempted: s.attempted, active: s.active}
 	copy.finish(c)
 	if !errors.Is(s.reserve(next), ErrLimit) {
 		t.Fatal("copied owner released original worker")
