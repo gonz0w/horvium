@@ -1,6 +1,6 @@
 # M2 private root property listener
 
-Date: 2026-10-08. Status: test-first; qualification pending.
+Date: 2026-10-08. Status: partial qualification passed; maintainer review pending.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 Approved [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [admitted exchange](property-admitted.md), [application client](property-client.md).
@@ -79,3 +79,31 @@ artifact checksums, base/runtime preservation and verified supervisor cleanup.
 Shared checker/selector changes require fresh full portable review and serial
 native runs on both pinned FreeBSD releases. Historical manifests keep their actual
 sources. M1 Safari/VoiceOver remains pending; GitHub Actions remain disabled.
+
+## Executed qualification
+
+Signed source `1245cb4e5c85ca01eca91b96c91131207167593c` passed six focused portable
+behavioral parents/four children, all 92 cases on both disposable FreeBSD 15.1 and
+14.5, baseline/135 tooling tests and fresh full portable review: eleven race
+packages and all 49 bounded fuzz targets in 210.028 seconds. The original
+Go 80-second/outer 90-second native bounds were retained. All 74 earlier transport
+cases and eighteen new listener cases passed exactly once on each release.
+
+Signed denying-stub source `afaf21cc1516a631b48cc278743d1068375e43c6` failed
+four portable parents and the new native listener parent as expected; the old 74
+transport cases passed. That native record remains unqualified with verified
+cleanup. Earlier successful native runs at
+`64a9f400f0ce19b915e6128fc9ce32e2931eb9e6` retain their actual source before
+correcting the owner fixtures to snapshot fields without copying a mutex. Final
+native runs test the corrected signed source; no old results are relabeled.
+
+All 665 owned sessions were stopped with verified teardown before recording the
+[source-bound manifest](property-listener-manifest.json). Native binaries, fixture
+keys and overlays were removed; base/runtime bytes were preserved. All 76
+historical M2 manifests retain their bytes. GitHub Actions are disabled; no host
+service or operator storage was used. The final documentation-only review reruns
+the complete baseline and may reuse deep evidence only for identical implementation
+and verification inputs. This proves the private denial listener only; original
+human/session authority, root policy/backend, plans, recovery/executor absence/
+global launch, durable admission, assembled runtime and full M2 acceptance remain
+open. M1 Safari/VoiceOver remains pending by maintainer choice.

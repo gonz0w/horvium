@@ -320,8 +320,11 @@ pool suites passed with verified teardown; see the
 remain disabled.
 
 The [private root property listener](docs/testing/M2/property-listener.md) joins
-root socket ownership, connection admission and bounded workers. Qualification is
-pending; typed operations remain denied and no runtime consumer is registered.
+root socket ownership, connection admission and bounded workers. Six portable
+parents/four children, all 92 transport cases on both disposable FreeBSD releases
+and full portable review passed with verified teardown. See the
+[evidence](docs/testing/M2/property-listener-manifest.json). Typed operations remain
+denied and no runtime consumer is registered.
 
 The [session-bound property client](docs/testing/M2/property-client.md) connects
 original application authority to the kernel-authenticated typed client. Five portable

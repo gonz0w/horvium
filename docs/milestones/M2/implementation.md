@@ -1274,6 +1274,14 @@ assembly, root recovery/global launch and complete M2 acceptance remain open.
 PR 100 accepted the original-session property client at merged source
 `4ae7c268fa3c939a28c62cdf74852e13ba4da119`. The next
 [root listener](../../testing/M2/property-listener.md) owns its root socket and joins
-original admission to a separately bounded worker ledger. All typed operations
-remain denied. Qualification is pending; backend, original plans/session, recovery/
-global launch and assembled runtime/M2 acceptance remain open.
+original admission to a separately bounded worker ledger. Signed source
+`1245cb4e5c85ca01eca91b96c91131207167593c` passed six portable parents/four children,
+all 92 transport cases on both disposable FreeBSD releases, baseline/135 tooling
+tests and fresh full portable review (eleven race packages/49 bounded fuzz targets,
+210.028 seconds). The signed denying-stub run remains unqualified; its 74
+retained transport cases passed. Earlier native passes retain their actual source
+before the mutex-copy fixture correction. All 665 owned sessions stopped with
+verified teardown; Actions remain disabled and all 76 historical manifests retain
+their bytes. See the [source-bound evidence](../../testing/M2/property-listener-manifest.json).
+All typed operations remain denied. Backend, original plans/session, recovery/global
+launch and assembled runtime/M2 acceptance remain open.
