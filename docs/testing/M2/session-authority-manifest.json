@@ -1,0 +1,312 @@
+{
+  "record_type": "M2-live-application-session-authority",
+  "date": "2026-10-08",
+  "qualification_scope": "Original volatile application-session/POST/CSRF capability only; no registered runtime route or root/kernel-peer/recovery/global authority",
+  "source_commit": "3ddd368e747ae36813c009cdd10f6aa097cf41d7",
+  "source_tree": "455c11d637e56bd7a2f5abdd27ec0db576c1f449",
+  "base_commit": "304d00df81a98b899c9d6e49d026ed96059a7661",
+  "requirements": [
+    "M2-PLAN-001 (partial T1/T2)",
+    "M2-PRIV-001 (partial T1/T2)",
+    "M2-HTTP-001 (partial T1/T2)"
+  ],
+  "input_sha256": [
+    {
+      "path": "internal/admin/auth.go",
+      "sha256": "82cc0fdc8b734d11fedd4b776632a8ad607be911faa503352ab7e98b7ab6469e"
+    },
+    {
+      "path": "internal/admin/session_authority.go",
+      "sha256": "37c52605e6ef3ebbe58daa5af1e9cfc6a191219d4e88ba84c0cbcaf03b52cc51"
+    },
+    {
+      "path": "internal/admin/session_authority_test.go",
+      "sha256": "0ba7aea59421860fdc892d814a3a90e7696548cd9848fc2feb5d1816be412254"
+    }
+  ],
+  "behavior": {
+    "parents": [
+      "TestSessionAuthorityActionDenials",
+      "TestSessionAuthorityAuthenticatedAction",
+      "TestSessionAuthorityConcurrentIssuance",
+      "TestSessionAuthorityEntropyAndFinalChecks",
+      "TestSessionAuthorityOriginalBinding",
+      "TestSessionAuthorityReadClockCannotResetBinding",
+      "TestSessionAuthorityReadGateIsolation",
+      "TestSessionAuthorityRevocation",
+      "TestSessionAuthorityRevocationCannotRestoreEntry"
+    ],
+    "children": [
+      "TestSessionAuthorityActionDenials/body-limit",
+      "TestSessionAuthorityActionDenials/cancelled",
+      "TestSessionAuthorityActionDenials/content-type",
+      "TestSessionAuthorityActionDenials/cross-site",
+      "TestSessionAuthorityActionDenials/duplicate-cookie",
+      "TestSessionAuthorityActionDenials/duplicate-csrf",
+      "TestSessionAuthorityActionDenials/duplicate-origin",
+      "TestSessionAuthorityActionDenials/forged-cookie",
+      "TestSessionAuthorityActionDenials/get",
+      "TestSessionAuthorityActionDenials/head",
+      "TestSessionAuthorityActionDenials/host",
+      "TestSessionAuthorityActionDenials/missing-cookie",
+      "TestSessionAuthorityActionDenials/missing-csrf",
+      "TestSessionAuthorityActionDenials/origin",
+      "TestSessionAuthorityActionDenials/put",
+      "TestSessionAuthorityActionDenials/query",
+      "TestSessionAuthorityActionDenials/wrong-csrf",
+      "TestSessionAuthorityEntropyAndFinalChecks/cancelled-during-entropy",
+      "TestSessionAuthorityEntropyAndFinalChecks/context-collision",
+      "TestSessionAuthorityEntropyAndFinalChecks/csrf-collision",
+      "TestSessionAuthorityEntropyAndFinalChecks/entropy-failure",
+      "TestSessionAuthorityEntropyAndFinalChecks/expired-during-entropy",
+      "TestSessionAuthorityEntropyAndFinalChecks/nil-reader",
+      "TestSessionAuthorityEntropyAndFinalChecks/removed-during-entropy",
+      "TestSessionAuthorityEntropyAndFinalChecks/rollback-during-entropy",
+      "TestSessionAuthorityEntropyAndFinalChecks/session-collision",
+      "TestSessionAuthorityEntropyAndFinalChecks/token-collision",
+      "TestSessionAuthorityOriginalBinding/changed-created",
+      "TestSessionAuthorityOriginalBinding/changed-csrf",
+      "TestSessionAuthorityOriginalBinding/changed-id",
+      "TestSessionAuthorityOriginalBinding/copied-binding",
+      "TestSessionAuthorityOriginalBinding/future-touch",
+      "TestSessionAuthorityOriginalBinding/other-auth",
+      "TestSessionAuthorityOriginalBinding/removed",
+      "TestSessionAuthorityOriginalBinding/replaced-identity",
+      "TestSessionAuthorityOriginalBinding/restored-record",
+      "TestSessionAuthorityOriginalBinding/reused-credential",
+      "TestSessionAuthorityRevocation/absolute",
+      "TestSessionAuthorityRevocation/cancelled",
+      "TestSessionAuthorityRevocation/close",
+      "TestSessionAuthorityRevocation/idle",
+      "TestSessionAuthorityRevocation/invalid-clock",
+      "TestSessionAuthorityRevocation/logout",
+      "TestSessionAuthorityRevocation/nil",
+      "TestSessionAuthorityRevocation/nil-context",
+      "TestSessionAuthorityRevocation/rollback",
+      "TestSessionAuthorityRevocation/zero",
+      "TestSessionAuthorityRevocation/zero-clock",
+      "TestSessionAuthorityRevocationCannotRestoreEntry/logout",
+      "TestSessionAuthorityRevocationCannotRestoreEntry/pruned-expiry",
+      "TestSessionAuthorityRevocationCannotRestoreEntry/unavailable-clock"
+    ],
+    "concurrent_requests": 32,
+    "fuzz_target": "FuzzSessionAuthorityActions",
+    "fuzz_action_limit": 32,
+    "development_source": "Uncommitted Go inputs byte-identical to signed source",
+    "behavior_log_sha256": "0c74e44b5b17d539151bf43ec3337effcd6c21350b4b0ed283a80c3212ab4cae",
+    "failing_first": [
+      {
+        "case": "Authenticated POST against denying contract stub",
+        "log_sha256": "d7b6a48c0c5f78b0a159d234cbf32046db65fcf0ece0ddc0df01928f0ab71814"
+      },
+      {
+        "case": "Changed original CSRF/creation time accepted before fingerprint/creation binding",
+        "log_sha256": "e3accb533a59a0ae094e68b9356650ea64c4b1ab13235c0868859f24924e844d"
+      },
+      {
+        "case": "Original private entry revived after logout/pruning/unavailable clock before sticky retirement",
+        "log_sha256": "9a61dd218adcd931a629353bf49fbbf134ce1fc860ae8da178a2ce84295fbeba"
+      }
+    ]
+  },
+  "portable_review": {
+    "source_commit": "3ddd368e747ae36813c009cdd10f6aa097cf41d7",
+    "base_commit": "304d00df81a98b899c9d6e49d026ed96059a7661",
+    "source_tree": "455c11d637e56bd7a2f5abdd27ec0db576c1f449",
+    "title": "feat(admin): bind action context to live sessions",
+    "qualified": true,
+    "qualification_scope": "portable review only",
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service"
+      ],
+      "native_review_required": true
+    },
+    "command": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "deep_key": {
+      "mode": "focused",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service"
+      ],
+      "inputs_digest": "8a9f24814eebdf95e7d161fd538df6787bd27e48861ca06d5335874bbb46af57",
+      "environment_digest": "6be56162b8969339df5fa3a421321d524cadf08265416ea080a5fca26f23c273"
+    },
+    "deep_evidence": {
+      "executed": true,
+      "command": [
+        "/Users/cam/DEV/NAS/.tools/venv/bin/python3",
+        "/Users/cam/DEV/NAS/tools/deep-check.py",
+        "--packages",
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service"
+      ],
+      "supervisor": {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "e6950177f171e69d49033b0accc1271e11e943bca2068b9b55582b0e6ef641ce",
+        "group": 69204,
+        "started_at": 1791469716.007531,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791469766.3943732
+      },
+      "log_sha256": "f58bc48bccebb628341fca16d6b49c4d2c08863d0bc8d4978962a930555196b7",
+      "result": {
+        "fuzz_targets": [
+          {
+            "package": "./internal/admin",
+            "target": "FuzzConfiguration"
+          },
+          {
+            "package": "./internal/admin",
+            "target": "FuzzSessionAuthorityActions"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzRequest"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzSnapshot"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPoolPropertyCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPoolProviderCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyClaimSourceSelection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyControlSelection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyJobSource"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyPolicyCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzSystemUseCollection"
+          }
+        ],
+        "race_packages": [
+          "./cmd/horvium",
+          "./internal/admin",
+          "./internal/client",
+          "./internal/console",
+          "./internal/helper",
+          "./internal/host/freebsd",
+          "./internal/observation",
+          "./internal/service"
+        ]
+      }
+    },
+    "checks_log_sha256": "38c17c0678444cc164ab5b95c848e1e017a388a15ebfbc058d1ad7c9282abf08",
+    "supervisors": [
+      {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "2644ba56e52e5941ae4155b127658287cfb5e5708eaceecf6e52143515f10f28",
+        "group": 68793,
+        "started_at": 1791469693.86369,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791469715.926539
+      },
+      {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "e6950177f171e69d49033b0accc1271e11e943bca2068b9b55582b0e6ef641ce",
+        "group": 69204,
+        "started_at": 1791469716.007531,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791469766.3943732
+      }
+    ],
+    "session": "dpx3rx4z",
+    "report_sha256": "62a24e22f4590949fad00d469aae3de1935449438e22fcea13effdae9ad2464b",
+    "elapsed_seconds": 72.839,
+    "tooling_tests": 125
+  },
+  "freebsd_compilation": {
+    "source_commit": "3ddd368e747ae36813c009cdd10f6aa097cf41d7",
+    "target": "freebsd/amd64",
+    "goamd64": "v1",
+    "cgo_enabled": false,
+    "package": "./internal/admin",
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "artifact_sha256": "9b8b46c7aaa7768676a4cd6496126dcf7ece5170f3415f0eb6ec88f3af240c60",
+    "artifact_bytes": 13624346,
+    "executed": false,
+    "artifact_removed": true,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+    "go_mod_sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+    "go_sum_sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+    "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64"
+  },
+  "preservation": {
+    "protected_paths_byte_identical": 448,
+    "protected_path_hashes_digest": "e282e1f89968d401608e5c4290e95c4aad61f194873c5488b1084a8be2d2cce9",
+    "historical_M2_manifests_byte_identical": 67,
+    "native_sources_controls_metadata_readers_publishers_fixtures_and_shared_tools_unchanged": true,
+    "native_suites_not_rerun": "Common application authority prerequisite with no exposed runtime route or changed FreeBSD facility; compilation is not native execution and no new native claim is made"
+  },
+  "teardown": {
+    "all_owned_sessions_stopped": true,
+    "owned_sessions": 609,
+    "lab_status_command": "make lab-status",
+    "lab_status_sha256": "b8755072e4a4d26c50c65ec6b055498b852f467d15dd0402e1b6e3e1c3937231",
+    "actions_enabled": false,
+    "actions_report_sha256": "32700f5e09febdcc97d40b65c42a1c4b981b4b96af6eb1b8e87c932aba0a71ca",
+    "runtime_services_installed": false,
+    "operator_storage_used": false
+  },
+  "remaining_gates": [
+    "Negotiated typed mutation transport binding actual kernel-authorized service UID to explicit application context",
+    "Root executor/recovery/global launch clearance and combined native safety/recovery/continuity/resource qualification",
+    "Enrollment/operator workflows, hold release and M2 acceptance",
+    "M1 Safari/VoiceOver remains pending"
+  ]
+}

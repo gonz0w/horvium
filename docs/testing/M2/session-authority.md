@@ -1,6 +1,6 @@
 # M2 live application-session authority
 
-Date: 2026-10-08. Status: implementing; portable qualification pending.
+Date: 2026-10-08. Status: partially qualified application prerequisite; runtime writes disabled.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -93,3 +93,19 @@ root recovery/global launch fence, enrollment provisioning, reservation release
 or operator storage write follows. M1 Safari/VoiceOver remains pending. The next
 root transport slice must bind actual kernel-authorized service UID to explicit
 application context; this local object cannot be serialized as root authority.
+
+## Executed qualification
+
+Signed source `3ddd368e747ae36813c009cdd10f6aa097cf41d7` passed the nine new parents/51
+children and all three fuzz seeds. All mandatory baseline checks/125 tooling tests,
+eight affected race packages and all eleven selected bounded fuzz targets passed
+in 72.839 seconds. The record retains three actual behavioral red results, including
+original credential/time binding and irreversible retirement regressions.
+
+FreeBSD/amd64 Go 1.27.1 compilation passed without execution; its checksummed test
+artifact was removed. This is compilation, not native kernel-peer evidence.
+Review supervisors and all owned sessions stopped with verified teardown; Actions
+remain disabled. All 67 historical M2 manifests and 448 protected existing inputs,
+including native facilities and shared tools, retain their exact base bytes and
+actual sources. See the [source-bound record](session-authority-manifest.json).
+The remaining root/transport/recovery/runtime gates above are unchanged.

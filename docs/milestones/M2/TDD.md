@@ -1255,3 +1255,12 @@ CSRF/creation-time/retirement behavioral red results; require bounded 32-action
 fuzz, affected race/fuzz review, explicit unexecuted FreeBSD compile and artifact/
 supervisor teardown. Native facilities/fixtures/shared tooling stay unchanged;
 no kernel-peer/root/runtime/browser or full M2 acceptance is inferred.
+
+Executed partial evidence: signed source `3ddd368e747ae36813c009cdd10f6aa097cf41d7` passed
+all nine new parents/51 children, retained authentication/HTTP/consumer tests,
+baseline/125 tooling tests, eight race packages and all eleven selected bounded
+fuzz targets. FreeBSD compilation passed without execution; the artifact was
+removed. All supervised/lab teardown passed; native/shared facilities and 67
+historical M2 manifests retain actual sources. See the
+[manifest](../../testing/M2/session-authority-manifest.json); full privilege,
+transport/recovery/runtime/M2 acceptance remains open.

@@ -639,3 +639,7 @@ expiry. Logout/expiry/Close permanently retire the binding; civil clock failure
 is sticky, including across ordinary read touches. Ordinary read responses remain
 unchanged and mint no capability. No runtime route, wire operation, helper session
 registry, root peer/recovery/global clearance or native authority is added.
+
+Partial application evidence and remaining root gates are recorded in the
+[manifest](../../testing/M2/session-authority-manifest.json). It grants no runtime
+mutation authority.

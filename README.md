@@ -322,8 +322,10 @@ remain disabled.
 The [live application-session authority](docs/testing/M2/session-authority.md)
 adds an explicit authenticated POST wrapper and an opaque original-session
 binding, with logout/expiry/clock revocation and credential-free correlation.
-It registers no runtime route and supplies no root/native clearance. Portable
-qualification is pending; operator writes remain disabled.
+It registers no runtime route and supplies no root/native clearance. Focused
+portable qualification and unexecuted FreeBSD compilation passed with verified
+teardown; see the [evidence](docs/testing/M2/session-authority-manifest.json).
+Operator writes remain disabled.
 
 ## Agreed direction
 

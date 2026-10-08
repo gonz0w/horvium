@@ -1075,7 +1075,13 @@ identity/fingerprint/creation-time checks and sticky logout/expiry/clock retirem
 prevent reconstruction or renewal through copied strings/records. Ordinary read
 responses stay unchanged; no runtime route or helper/native consumer is registered.
 Nine new portable parents/51 children and bounded action fuzz cover the contract;
-focused qualification is pending. Kernel-peer mutation negotiation, root recovery/
+signed source `3ddd368e747ae36813c009cdd10f6aa097cf41d7` passed baseline/125 tooling
+tests, all eight affected race packages and eleven selected bounded fuzz targets
+in 72.839 seconds. FreeBSD compilation passed without execution and its artifact
+was removed. Review supervisors/all owned sessions stopped with verified teardown;
+Actions stay disabled. See the
+[manifest](../../testing/M2/session-authority-manifest.json). Kernel-peer mutation
+negotiation, root recovery/
 global launch, enrollment and complete M2/operator gates remain open. Native
 facilities, shared tools and all 67 historical M2 manifests retain their actual
 bytes/sources; unrelated QEMU suites are not rerun for this portable boundary.
