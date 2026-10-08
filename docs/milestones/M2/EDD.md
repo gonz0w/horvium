@@ -515,3 +515,15 @@ must preserve actual successful durable acknowledgements while refusing missing
 provenance. This is not eligibility, session/clock authority, recovery clearance,
 executor quiescence, effect admission or a scheduler; no runtime writer is enabled.
 See the [state-claim contract](../../testing/M2/property-live-state.md).
+
+## Original claim native observation amendment
+
+Join fresh native property/provider/system observations to the original opaque
+root claim through [claim-bound readers](../../testing/M2/property-claim-source.md).
+Do not accept a replacement state handle or caller facts. The complete strict
+census and exact queued/applying record must remain stable around collection;
+actual backing checks occur inside the final independently reread policy window.
+The existing diagnostic reader keeps its semantics. Every failure discards all
+projections; successful read-only observations remain ineligible. This closes
+native observation provenance only, without executor/recovery/session/global
+launch clearance, runtime consumers, effects, durable outcomes or release.

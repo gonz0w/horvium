@@ -3,6 +3,19 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [claim-bound native observation](../testing/M2/property-claim-source.md)
+connects the original root claim to fresh native property/provider/system/backing
+checks. Signed source `aa0794996733706c47cce45ad6e0aad3f4155d28` passed baseline/122 tooling
+tests, nine affected race packages and all 38 selected fuzz targets. Both state
+releases passed all 819 historical controls and 19 claim children with actual
+metadata readers and synthetic physical inputs. Eight actual native claim cases
+passed in both 15.1 pool attempts, but the enclosing five-minute parents timed
+out during old cases; both full pool gates remain pending, including unattempted
+14.5. This is partial evidence, not native observer acceptance. All owned teardown
+passed; unrelated VM workloads remain untouched. The 59 historical manifests and
+shared tools remain unchanged. See the [manifest](../testing/M2/property-claim-source-manifest.json).
+No eligibility, runtime writer, recovery clearance or production support follows.
+
 M2 [fresh root submission state claim](../testing/M2/property-live-state.md)
 adds bounded original-lease post-sync provenance and a read-only own-job exception.
 Signed source `fe56955fcc2b1803bfa6bf61685b336f8716b420` passed baseline/122 tooling tests,

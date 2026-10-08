@@ -382,6 +382,8 @@ func nativePropertySystemFixture(t *testing.T, ctx context.Context, check func(s
 
 	nativePropertyStateFixture(t, ctx, check, state, statePath, policy, u, data, legacyBytes, fs, backing.Flags&unix.MNT_SOFTDEP != 0)
 
+	nativePropertyClaimFixture(t, ctx, policy, ordinary, extras[0])
+
 	providers, err := NewPoolProviderSource()
 	if err != nil {
 		t.Fatal(err)
