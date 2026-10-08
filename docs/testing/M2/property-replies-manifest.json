@@ -1,0 +1,490 @@
+{
+  "schema": 1,
+  "status": "partial portable qualification; maintainer review pending",
+  "requirements": [
+    "M2-PLAN-001",
+    "M2-PRIV-001",
+    "M2-JOB-001"
+  ],
+  "source_commit": "728387ba21d322f5ee42426bdf617d527e2afdda",
+  "inputs": [
+    {
+      "path": "internal/helper/property_reply.go",
+      "sha256": "8d1d8a2a9559634794699c93b3fb036532cb8fe1709a7727277ef67ce6679410"
+    },
+    {
+      "path": "internal/helper/property_reply_test.go",
+      "sha256": "899418b91afddee6d779b5a354dad3204bac6650da4dec9f3553c2d9e2500d9c"
+    },
+    {
+      "path": "internal/helper/testdata/property-review.json",
+      "sha256": "76d9ff0d3afb93bc86fa5f832127ed93cfd2ad3d30b5fc6e496e8e86b2d1b83e"
+    },
+    {
+      "path": "internal/storage/property_views.go",
+      "sha256": "b40c0e24a84fe56cc697a6cfdc4480e52c2bd4cfa4879f8cd538bc8a8fae5ad2"
+    },
+    {
+      "path": "internal/storage/property_views_test.go",
+      "sha256": "039b58886399290f813e0da6533e3d98a3e3053306732ee62dea038caf380f12"
+    },
+    {
+      "path": "internal/storage/property_intent_record.go",
+      "sha256": "a0ddf74a2a8bff916b61b722a1338646877b53451ecf2cff639cdddae0a7b76d"
+    }
+  ],
+  "behavior": {
+    "parents": [
+      "TestPropertyRepliesBoundsAndOwnership",
+      "TestPropertyRepliesClosedSchema",
+      "TestPropertyRepliesCorrelation",
+      "TestPropertyRepliesNoRetryOrOversizeOutput",
+      "TestPropertyRepliesRefusals",
+      "TestPropertyRepliesRoundTrip",
+      "TestPropertyReviewViewConsistency",
+      "TestPropertyReviewViewRoundTrip",
+      "TestPropertyViewJobLifecycle",
+      "TestPropertyViewsBounds",
+      "TestPropertyViewsClosedSchema",
+      "TestPropertyViewsDurableCompatibility"
+    ],
+    "subtests": [
+      "TestPropertyRepliesClosedSchema/case",
+      "TestPropertyRepliesClosedSchema/duplicate",
+      "TestPropertyRepliesClosedSchema/future-version",
+      "TestPropertyRepliesClosedSchema/missing",
+      "TestPropertyRepliesClosedSchema/null",
+      "TestPropertyRepliesClosedSchema/number",
+      "TestPropertyRepliesClosedSchema/old-version",
+      "TestPropertyRepliesClosedSchema/privilege",
+      "TestPropertyRepliesClosedSchema/trailing",
+      "TestPropertyRepliesClosedSchema/unknown-type",
+      "TestPropertyRepliesClosedSchema/utf8",
+      "TestPropertyRepliesCorrelation/invalid-id",
+      "TestPropertyRepliesCorrelation/invalid-pool",
+      "TestPropertyRepliesCorrelation/pool",
+      "TestPropertyRepliesCorrelation/request",
+      "TestPropertyRepliesRefusals/denied",
+      "TestPropertyRepliesRefusals/limit-exceeded",
+      "TestPropertyRepliesRefusals/review-required",
+      "TestPropertyRepliesRefusals/unavailable",
+      "TestPropertyRepliesRefusals/uncertain",
+      "TestPropertyReviewViewConsistency/affected",
+      "TestPropertyReviewViewConsistency/expiry",
+      "TestPropertyReviewViewConsistency/features",
+      "TestPropertyReviewViewConsistency/plan-id",
+      "TestPropertyReviewViewConsistency/property-source",
+      "TestPropertyReviewViewConsistency/revision",
+      "TestPropertyReviewViewConsistency/topology",
+      "TestPropertyReviewViewConsistency/version-owner",
+      "TestPropertyViewsClosedSchema/case",
+      "TestPropertyViewsClosedSchema/duplicate",
+      "TestPropertyViewsClosedSchema/missing",
+      "TestPropertyViewsClosedSchema/null",
+      "TestPropertyViewsClosedSchema/trailing",
+      "TestPropertyViewsClosedSchema/unknown",
+      "TestPropertyViewsDurableCompatibility/intent",
+      "TestPropertyViewsDurableCompatibility/property-job"
+    ],
+    "fuzz_targets": [
+      "FuzzPropertyReplies",
+      "FuzzPropertyViews"
+    ],
+    "fuzz_seeds": [
+      "FuzzPropertyReplies/seed#0",
+      "FuzzPropertyReplies/seed#1",
+      "FuzzPropertyReplies/seed#2",
+      "FuzzPropertyViews/seed#0",
+      "FuzzPropertyViews/seed#1"
+    ],
+    "framed_fuzz_input_ceiling_bytes": 65540,
+    "view_fuzz_input_ceiling_bytes": 65537,
+    "reply_payload_ceiling_bytes": 65536,
+    "behavior_log_sha256": "1362b4624a1188fa21d1e922eed46833d3681a3376c0dc94c4adc52d424bca8c",
+    "development_source": "Uncommitted behavioral inputs byte-identical to signed qualified source",
+    "failing_first": {
+      "case": "Successful display and framed reply/refusal round trips failed against denying stubs; further output/compatibility regressions added before qualification",
+      "view_log_sha256": "679ddd2db3bf1a7e71aae21a61d78eefe87aba503994e4b01f62bbffb8b321b0",
+      "wire_log_sha256": "6745fad215db0dda58308f86a4ba0e6089d2c9a2a1897ac92de6a80c4c1584ed"
+    }
+  },
+  "portable_review": {
+    "source_commit": "728387ba21d322f5ee42426bdf617d527e2afdda",
+    "base_commit": "43cd4b11b10ff7b155b71a6e0ef910a4b40e5089",
+    "source_tree": "089eb6d279478b14dade8de6df3dfef1263e5241",
+    "title": "feat(helper): bound property review and admission replies",
+    "qualified": true,
+    "qualification_scope": "portable review only",
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ],
+      "native_review_required": true
+    },
+    "command": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "deep_key": {
+      "mode": "focused",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ],
+      "inputs_digest": "43f71f9464e13050f40eec1488162dc979cde8a39c2a98576750814cb1b92385",
+      "environment_digest": "6be56162b8969339df5fa3a421321d524cadf08265416ea080a5fca26f23c273"
+    },
+    "deep_evidence": {
+      "executed": true,
+      "command": [
+        "/Users/cam/DEV/NAS/.tools/venv/bin/python3",
+        "/Users/cam/DEV/NAS/tools/deep-check.py",
+        "--packages",
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ],
+      "supervisor": {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "ee9dfc2183b972fb9ae13ea119224e51c6854b2a6a72007821a183fedac2707c",
+        "group": 14724,
+        "started_at": 1791482414.974114,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791482621.266617
+      },
+      "log_sha256": "7e3f65040d76c0dabbb31ad0f843a468fa410fd307e4379f1b707ff462656df7",
+      "result": {
+        "fuzz_targets": [
+          {
+            "package": "./internal/admin",
+            "target": "FuzzConfiguration"
+          },
+          {
+            "package": "./internal/admin",
+            "target": "FuzzSessionAuthorityActions"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzActionNegotiation"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzPropertyReplies"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzPropertyRequest"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzRequest"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzSnapshot"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPoolPropertyCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPoolProviderCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyClaimSourceSelection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyControlSelection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyJobSource"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyPolicyCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzSystemUseCollection"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzDeviceUseReview"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzFilesystemSignature"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzFilesystemStates"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzIdentities"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzImportedPoolUse"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzJobRecord"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzJobReservations"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzJobRestartPage"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzOwnershipCatalogNames"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzOwnershipRecord"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolFeatures"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolLabels"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolScan"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolState"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolSystemUse"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolTopology"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzProperties"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyCoordinatorActions"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyExecutionCut"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyExecutionHandoff"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyIntent"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyJob"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyJobAssessment"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyLiveStateReceipt"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyPlan"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyPostcondition"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyViews"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzStateCatalogNames"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzSystemDeviceUse"
+          }
+        ],
+        "race_packages": [
+          "./cmd/horvium",
+          "./internal/admin",
+          "./internal/client",
+          "./internal/console",
+          "./internal/helper",
+          "./internal/host/freebsd",
+          "./internal/observation",
+          "./internal/service",
+          "./internal/storage"
+        ]
+      }
+    },
+    "supervisors": [
+      {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "2644ba56e52e5941ae4155b127658287cfb5e5708eaceecf6e52143515f10f28",
+        "group": 14284,
+        "started_at": 1791482396.343169,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791482414.927256
+      },
+      {
+        "completed": true,
+        "group_cleaned": true,
+        "command_sha256": "ee9dfc2183b972fb9ae13ea119224e51c6854b2a6a72007821a183fedac2707c",
+        "group": 14724,
+        "started_at": 1791482414.974114,
+        "escalated": false,
+        "worker_returncode": 0,
+        "reason": "exit",
+        "completed_at": 1791482621.266617
+      }
+    ],
+    "checks_log_sha256": "a2b0cb2c2e5738cfe0b49346b949443100d9f4917736dcf13d566f8e0e4692a7",
+    "session": "c7_uuezz",
+    "report_sha256": "6129dcaa42570832a1ec6e89390c0212ae1abfa1ed77ba8299902ac4ab759dff",
+    "elapsed_seconds": 225.19,
+    "tooling_tests": 131
+  },
+  "freebsd_compilation": {
+    "source_commit": "728387ba21d322f5ee42426bdf617d527e2afdda",
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+    "target": "freebsd/amd64 GOAMD64=v1 CGO_ENABLED=0",
+    "artifacts": [
+      {
+        "package": "./internal/helper",
+        "command": [
+          "/Users/cam/DEV/NAS/.tools/go/bin/go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "/private/tmp/horvium-property-replies-helper-1ksz8rkj.test",
+          "./internal/helper"
+        ],
+        "sha256": "b17cd32e8b3598f8cd146a557e6ca0c6c886c38e2838e878402d4e397f3b3802",
+        "bytes": 8346238,
+        "compiled": true,
+        "executed": false,
+        "artifact_removed": true
+      },
+      {
+        "package": "./internal/storage",
+        "command": [
+          "/Users/cam/DEV/NAS/.tools/go/bin/go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "/private/tmp/horvium-property-replies-storage-ykpuh68r.test",
+          "./internal/storage"
+        ],
+        "sha256": "466601ff3037ac6dc170f87c65bf8e78be411ae826facdf8d304bbec1d074147",
+        "bytes": 11857828,
+        "compiled": true,
+        "executed": false,
+        "artifact_removed": true
+      }
+    ]
+  },
+  "durable_fixture_compatibility": {
+    "base_commit": "43cd4b11b10ff7b155b71a6e0ef910a4b40e5089",
+    "fixture": "propertyIntentFixture / propertyJobFixture, synthetic portable metadata only",
+    "intent_record_sha256": "f0d929adbfe7f1421541caf03422b04f068c1b849a511d76a011cce8bc30b269",
+    "property_job_record_sha256": "bcf8a9112fdbfcd7ce22fb50db276755c2e117722f89c1f49be622e9da60365f",
+    "actual_old_new_bytes_digest_equal": true,
+    "old_source_fixture_directory_removed": true,
+    "old_fixture_log_sha256": "2a45731b02c3648f3b6e2da99bc69b377bb315471f66250174fa606d64046732",
+    "new_fixture_log_sha256": "382a407c314572df4934ee78641a4b70a91fd980d75f2fab0c7532940cf207d6",
+    "qualified_source_golden_regression": true
+  },
+  "preservation": {
+    "base_commit": "43cd4b11b10ff7b155b71a6e0ef910a4b40e5089",
+    "protected_existing_inputs_byte_identical": 395,
+    "historical_M2_manifests_byte_identical": 71,
+    "native_controls_peers_fixtures_shared_tools_unchanged": true,
+    "shared_converter_change": "Review conversions extracted without changing existing field mappings, guards or checksums; actual old/new fixture record hashes have golden regression coverage",
+    "protected_path_inventory_sha256": "4e28c32439bd066e8002854861aec554f548fe6edc13404f9d709d5051fdd0f9",
+    "native_suites_not_rerun": "Unregistered pure codec/converter slice; no native control/peer/fixture/tool change or newly qualified native execution"
+  },
+  "earlier_unqualified_review": {
+    "source_commit": "b08ce4d72d608136d52e0120a71fdadd3c6ec1a7",
+    "qualified": false,
+    "reason": "Portable job-view test name matched the existing native state selector; renamed before fresh qualification, without changing native scripts/checkers/assertions",
+    "report_sha256": "8f8c726dd8b98987b6a0f2a5c3332336c6b60fc8b5ba26a3eec82dca976ede2a",
+    "checks_log_sha256": "db2db0a6a2ac225ceef79f0742987f06f0d310d4639da3a5d20c4c5f58995826",
+    "all_owned_supervisors_cleaned": true
+  },
+  "teardown": {
+    "all_owned_sessions_stopped": true,
+    "owned_sessions": 628,
+    "lab_status_command": "make lab-status",
+    "lab_status_sha256": "2876ccfacd5eee214e86f0058ed7e3714c3c61a2ee930c80cfbf5e7a44509a72",
+    "actions_enabled": false,
+    "actions_report_sha256": "32700f5e09febdcc97d40b65c42a1c4b981b4b96af6eb1b8e87c932aba0a71ca",
+    "runtime_services_installed": false,
+    "operator_storage_used": false,
+    "compilation_artifacts_removed": true
+  },
+  "remaining_gates": [
+    "Owned typed socket phases, whole-exchange admission/deadline/budgets and original authenticated application/kernel peer checks",
+    "Independent enrolled root policy, recovery/executor absence/global launch clearance, durable admission and native assembled safety/recovery/continuity/resources",
+    "Operator workflows, hold release and full M2 acceptance",
+    "M1 Safari/VoiceOver remains pending"
+  ]
+}

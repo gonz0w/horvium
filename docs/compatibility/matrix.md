@@ -3,6 +3,14 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [bounded property replies](../testing/M2/property-replies.md) define strict
+version-2 review/admission/refusal views without private intent/session metadata.
+Existing durable schemas remain unchanged; no runtime/native exchange or job
+admission is enabled. Twelve behavioral parents/36 children, baseline/131 tooling
+tests, focused race/fuzz and unexecuted FreeBSD compilation passed. Golden fixture
+regressions preserve existing durable bytes; see the
+[manifest](../testing/M2/property-replies-manifest.json).
+
 M2 [typed property requests](../testing/M2/property-requests.md) add bounded,
 strict version-2 review/submission codecs and shared literal intent validation.
 These portable prerequisites do not enable the inventory runtime, prove native

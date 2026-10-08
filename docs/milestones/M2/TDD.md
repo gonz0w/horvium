@@ -1349,3 +1349,31 @@ unchanged apart from the new bounded syntax entry point. The earlier lint failur
 is explicitly unqualified and corrected before this fresh review. See the
 [source-bound manifest](../../testing/M2/property-requests-manifest.json). No native typed exchange,
 root recovery/global launch or assembled acceptance follows.
+
+## Bounded property reply prerequisite
+
+PR 95 accepted typed property requests at merged source
+`43cd4b11b10ff7b155b71a6e0ef910a4b40e5089`. The next
+[reply contract](../../testing/M2/property-replies.md) preserves complete review
+and lifecycle display views with exact original correlation/selection, plus bounded
+refusal codes. Shared converters/validators preserve the existing durable formats;
+private session/policy digests and execution proofs stay outside replies. The fixed
+64 KiB frame cap includes the envelope and never permits truncated views/history.
+Admission/duplicate/refusal labels remain peer assertions, not durability or retry
+permission. This is a portable T1 subset of M2-PLAN-001/M2-PRIV-001/M2-JOB-001;
+owned socket phases, original session/kernel authorization, enrolled root policy,
+recovery/global launch and actual admission/native execution remain pending.
+Baseline/focused race/fuzz and unexecuted FreeBSD compilation are recorded below.
+
+Executed partial evidence: signed source `728387ba21d322f5ee42426bdf617d527e2afdda` passed
+twelve behavioral parents/36 children and five fuzz seeds, baseline/131 tooling
+tests, 9 affected race packages and all 43 bounded fuzz targets in 225.190
+seconds. Helper/storage FreeBSD test packages compiled without execution; exact
+checksummed artifacts were removed. Independent old/new synthetic intent/property-job
+record hashes match merged PR 95 and are guarded by golden regression tests.
+All 71 historical M2 manifests and 395 protected existing inputs retain actual
+bytes. All 628 owned sessions stopped with verified teardown; Actions
+remain disabled. The earlier native-selector naming collision is explicitly
+unqualified and corrected before this fresh review. See the
+[source-bound manifest](../../testing/M2/property-replies-manifest.json). Owned exchange, root
+recovery/global launch, actual admission and full M2 acceptance remain pending.
