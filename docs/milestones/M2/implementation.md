@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 89; original coordinator authority in review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 90; private native backend in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1036,3 +1036,18 @@ protected paths remain byte-identical; Actions stay disabled. See the
 [manifest](../../testing/M2/property-execution-authority-manifest.json). Native adapters,
 transactions and fixtures stay unchanged. Full root backend, authenticated write
 transport, native recovery/global clearance and runtime writers remain open.
+
+
+## Private native property backend integration
+
+PR 90 accepted the original coordinator authority at merged source
+`fa7013198b50bb058bb6775cefdad2698aaf270b`; its evidence retains actual source
+`68a6cf6e1794d258be31c42a7b7913574fec7311`. The
+[private backend](../../testing/M2/property-native-backend.md) now composes one
+original review/admission/claim, exact applying publication, one fixed native
+control, independent facts and witnessed observing/success acknowledgement.
+Require mandatory external authentication/recovery/global clearance, supplied
+only by fixtures; no runtime consumer exists. Portable tests pass; both affected
+native releases and focused review are pending. No hold release, new schema,
+transaction/backing/guard change, shared tool change or historical evidence
+relabeling. Operator writes and complete root/recovery/M2 gates remain open.

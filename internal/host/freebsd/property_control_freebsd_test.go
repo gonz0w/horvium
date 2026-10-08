@@ -34,6 +34,9 @@ func TestNativePropertyControlUIDChild(t *testing.T) {
 	if c, err := newPropertyClaimControl(nil, storage.PropertyJob{}, nil); c != nil || !errors.Is(err, ErrPermission) {
 		t.Fatal("claim control binding bypassed kernel UID", err)
 	}
+	if b, err := newPropertyBackend(nil, "100", nil); b != nil || !errors.Is(err, ErrPermission) {
+		t.Fatal("private backend bypassed kernel UID", err)
+	}
 }
 
 // Test-only reexecuted fixture: a normally exiting parent leaves a child alive

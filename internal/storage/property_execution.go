@@ -13,7 +13,8 @@ import (
 )
 
 // PropertyExecutionBackend is a trusted root-worker contract, not a transport or
-// request adapter. No native/runtime implementation exists yet. Prepare must
+// request adapter. Private native composition has no runtime consumer; full
+// authentication/recovery/global qualification remains open. Prepare must
 // independently read the current durably admitted job, claim its ORIGINAL live
 // plan/session, establish reservations, root/store/recovery/executor safety and
 // collect fresh policy/eligible native facts. A decoded job cannot supply these.
@@ -174,7 +175,7 @@ func (e *PropertyExecution) Run(ctx context.Context, id string) (PropertyJob, er
 	if err = coordinatorContext(ctx); err != nil {
 		return reconcile("storage-unavailable", err)
 	}
-	digest, err := propertyExecutionObservation(latest.intent, policy, observation)
+	digest, err := PropertyExecutionObservationDigest(latest.intent, policy, observation)
 	if err != nil {
 		return reconcile("storage-unavailable", err)
 	}
@@ -223,10 +224,11 @@ func (e *PropertyExecution) prelaunch(ctx context.Context, p PropertyJob, policy
 	return nil
 }
 
-// Hash the independently validated, bounded, sorted relevant projection and full
-// policy digest. No digest supplies provenance, quiescence or success. Unrelated
+// PropertyExecutionObservationDigest hashes the validated, bounded, sorted
+// relevant projection and full policy digest. It does not match an expected
+// effect or authenticate facts. No digest supplies provenance or quiescence. Unrelated
 // sibling properties remain outside the accepted intent's comparison scope.
-func propertyExecutionObservation(i PropertyIntent, p Policy, o Observation) (string, error) {
+func PropertyExecutionObservationDigest(i PropertyIntent, p Policy, o Observation) (string, error) {
 	if err := preflight(p, o); err != nil {
 		return "", err
 	}

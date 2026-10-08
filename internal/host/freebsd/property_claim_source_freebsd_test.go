@@ -224,6 +224,7 @@ func nativePropertyClaimFixture(t *testing.T, ctx context.Context, policy storag
 		t.Run("applying", func(t *testing.T) {
 			collect(t, applying) // Retain the original raw-applying read-only assertion.
 			nativePropertyClaimControlBinding(t, ctx, claim, applying, anchor, policy)
+			nativePropertyBackend(t, ctx, anchor, policy)
 		})
 		t.Run("foreign-selection", func(t *testing.T) {
 			j, p, o, err := source.Collect(ctx, strings.Repeat("d", 64))

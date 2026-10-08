@@ -603,3 +603,21 @@ without releasing holds or erasing independent post-effect outcome duties.
 Retained session context does not authenticate the session. The full original
 root backend still proves kernel peer, native eligibility, recovery and global/
 pool clearance and owns one fixed control. No native/runtime consumer is enabled.
+
+## Private native property backend amendment
+
+The [integration contract](../../testing/M2/property-native-backend.md) composes
+one original coordinator/admission/root lease/claim into the native sequence.
+Require a private kernel-root factory, explicit policy-selected pool and mandatory
+trusted external peer/session/recovery/global clearance, without a runtime consumer.
+One nonblocking instance admits/binds/controls/observes once. Before effects,
+repeat original opaque authority, complete fresh native/state/backing facts,
+whole record/intent and actual clock/context; only private worker facts may become
+eligible after those gates. Public sources retain false eligibility. Preserve
+actual applying acknowledgement even if fixed-control setup fails. After verified
+quiescence, independent claim facts supply a retained canonical observation digest
+and postcondition witness before observing/success metadata can be acknowledged.
+Outcome publication after forward expiry needs no renewed launch authority;
+uncertainty/rollback blocks replay and retains all holds. Only test fixtures supply
+external clearance today; complete authentication/recovery/global native proof and
+operator writes remain disabled. No schema, native transaction or guard change.

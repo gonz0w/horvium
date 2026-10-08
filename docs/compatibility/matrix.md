@@ -3,6 +3,15 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [private native property backend](../testing/M2/property-native-backend.md)
+connects the original coordinator/state lease to one fixed native property step
+and independently witnessed exact durable outcomes. Public observers retain false
+eligibility; private worker eligibility requires external trusted clearance,
+currently supplied only by fixtures. Both native pool releases and focused portable
+qualification are pending. Actual authentication/recovery/global clearance, runtime
+writes, hold release, hardware support and M2 acceptance remain open. Metadata
+transactions, backing rules, shared tools and historical manifests are unchanged.
+
 M2 [original coordinator authority](../testing/M2/property-execution-authority.md)
 adds mandatory original-backend binding, exact retained plan/admission checks and
 shared launch-authority retirement. This changes portable orchestration only;
