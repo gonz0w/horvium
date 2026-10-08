@@ -187,7 +187,8 @@ func TestPropertyConnectionsDuplicateAndMissingOwner(t *testing.T) {
 	if json.Unmarshal([]byte(`{}`), &decoded) != nil {
 		t.Fatal("fixture")
 	}
-	for _, owner := range []*propertyConnections{nil, {}, &decoded} {
+	forged := &propertyConnections{ctx: p.ctx, cancel: p.cancel, limit: p.limit, timeout: p.timeout, owned: p.owned}
+	for _, owner := range []*propertyConnections{nil, {}, &decoded, forged} {
 		client, raw := connected(t)
 		if c, err := owner.admit(raw); c != nil || err == nil {
 			t.Fatal("unissued owner admitted")
@@ -195,6 +196,43 @@ func TestPropertyConnectionsDuplicateAndMissingOwner(t *testing.T) {
 		connectionEOF(t, client)
 		if owner.Close() != nil {
 			t.Fatal("unissued close")
+		}
+	}
+}
+
+func TestPropertyConnectionsCancellationAtAdmission(t *testing.T) {
+	for range 32 {
+		ctx, cancel := context.WithCancel(context.Background())
+		p := connectionAdmission(t, ctx, 1, time.Second)
+		client, raw := connected(t)
+		start := make(chan struct{})
+		result := make(chan *propertyConnection, 1)
+		var wg sync.WaitGroup
+		wg.Go(func() {
+			<-start
+			c, err := p.admit(raw)
+			if (c == nil) == (err == nil) {
+				t.Error("partial admission result")
+			}
+			result <- c
+		})
+		wg.Go(func() { <-start; cancel() })
+		close(start)
+		c := <-result
+		cancel()
+		wg.Wait()
+		if p.Close() != nil {
+			t.Fatal("shutdown")
+		}
+		if c != nil {
+			connectionDone(t, c)
+		}
+		connectionEOF(t, client)
+		p.mu.Lock()
+		n := len(p.owned)
+		p.mu.Unlock()
+		if n != 0 {
+			t.Fatal("cancelled admission retained a slot")
 		}
 	}
 }
