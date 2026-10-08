@@ -498,3 +498,9 @@ application revocation; actual root/configured service kernel UIDs remain mandat
 All 74 transport cases and unchanged 80/90-second bounds must pass; old three-parent
 proofs retain their original sources but cannot qualify this extension. No new
 persistent service, operator storage, guest disk or artifact type is introduced.
+
+The private root property listener extends `action-peer` with a fifth separate
+native parent and eighteen actual socket/worker/denial cases. All 92 transport cases
+must pass within the unchanged 80/90-second limits. The listener defaults to denied
+operations and calls no backend; no operator storage or persistent service is used.
+Old four-parent proofs retain their actual sources but do not qualify this extension.

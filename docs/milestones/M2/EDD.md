@@ -814,3 +814,17 @@ permission. Revocation during blocked I/O is observed at phase boundaries and th
 original deadline bounds I/O; already transmitted bytes cannot be undone. The
 private adapters validate typed selections before negotiation. No runtime route,
 listener/backend/service or native write is registered; assembled gates remain open.
+
+## Private root property listener prerequisite
+
+PR 100 accepted the original-session client at merged source
+`4ae7c268fa3c939a28c62cdf74852e13ba4da119`. The
+[root listener contract](../../testing/M2/property-listener.md) joins safe root socket
+ownership, original bounded admission and separately bounded worker lifetime.
+Start a worker only after both reservations, keep its entry until the goroutine
+exits and never infer worker/native quiescence from socket retirement. Retain the
+actual kernel factories and original deadlines; close/drain on cancellation and
+preserve foreign entries. One original server has one serve attempt. Default-deny
+all typed operations; no successful backend/clearance callback or runtime consumer
+is registered. Independent policy/session/recovery/global launch/durable admission
+and assembled runtime qualification must precede replacing denial.

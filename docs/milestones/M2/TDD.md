@@ -1444,3 +1444,19 @@ Strictly retain every old 60 case and fourteen new client cases on both pinned
 releases, original 80/90-second bounds, source/hash provenance and verified cleanup.
 Shared tools require fresh full portable review. Full native authenticated runtime,
 backend/recovery/global launch and M2 acceptance remain separate.
+
+## Private root property listener prerequisite
+
+Require the [listener contract](../../testing/M2/property-listener.md) for partial
+M2-PRIV-001/M2-SCALE-001/M2-NATIVE-001 evidence. Portable failing-first tests check
+separate worker/socket retirement, original/copy/duplicate lease identity, 32-way
+last-slot exclusivity, config bounds and unsupported-host denial. Actual root/native
+fixtures must qualify all eighteen new cases with configured/wrong/root reexec UIDs,
+typed default refusals, malformed/legacy denial, immediate overflow/recovery, idle
+expiry, both shutdown phases, original socket/foreign-entry preservation, unsafe
+directory/owner/alias and nonroot constructor denial, single-serve and full removal.
+Retain all 74 original cases, five exact native parents and unchanged 80/90-second
+bounds on both pinned releases. Shared tools require fresh full portable review;
+store signed denying-stub failures separately. No callback/native write or runtime
+registration is added. Session/backend/recovery/global launch/assembled M2 gates
+remain mandatory.

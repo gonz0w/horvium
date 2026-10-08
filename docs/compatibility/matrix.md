@@ -3,6 +3,14 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [private root property listener](../testing/M2/property-listener.md) joins
+safe root socket ownership, original admission and separate worker accounting.
+Six portable parents/four children, all 92 transport cases on disposable FreeBSD
+15.1 and 14.5, baseline/135 tooling tests, eleven race packages and 49 bounded fuzz
+targets passed with verified teardown; see the
+[manifest](../testing/M2/property-listener-manifest.json). All typed operations remain
+denied; no backend, runtime consumer or native storage write is registered.
+
 M2 [session-bound property client](../testing/M2/property-client.md) adds private
 original-session phase checks around a kernel-authenticated one-operation client.
 Five portable parents/nineteen children, all 74 transport cases on disposable
