@@ -76,9 +76,43 @@ func submitHelperProperty(ctx context.Context, c *net.UnixConn, uid uint32, id, 
 }
 
 // Private configured adapters; no HTTP/CLI route or service consumer is registered.
-func reviewConfiguredHelperProperty(ctx context.Context, c helper.Config, id, pool string, intent storage.Intent, authority *SessionAuthority) (storage.Review, error) {
-	return storage.Review{}, ErrUnauthorized
+func reviewConfiguredHelperProperty(ctx context.Context, c helper.Config, id, pool string, intent storage.Intent, authority *SessionAuthority) (r storage.Review, err error) {
+	if err = helper.WritePropertyReview(io.Discard, id, pool, intent); err != nil {
+		return storage.Review{}, err
+	}
+	scope, err := authority.Context(ctx)
+	if err != nil {
+		return storage.Review{}, err
+	}
+	peer, err := helper.DialPropertyClient(ctx, c, id, scope, propertySessionCheck(authority, scope))
+	if err != nil {
+		return storage.Review{}, err
+	}
+	defer func() {
+		err = errors.Join(err, peer.Close())
+		if err != nil {
+			r = storage.Review{}
+		}
+	}()
+	return peer.Review(pool, intent)
 }
-func submitConfiguredHelperProperty(ctx context.Context, c helper.Config, id, pool, plan, submission string, authority *SessionAuthority) (storage.Job, bool, error) {
-	return storage.Job{}, false, ErrUnauthorized
+func submitConfiguredHelperProperty(ctx context.Context, c helper.Config, id, pool, plan, submission string, authority *SessionAuthority) (j storage.Job, duplicate bool, err error) {
+	if err = helper.WritePropertySubmission(io.Discard, id, pool, plan, submission); err != nil {
+		return storage.Job{}, false, err
+	}
+	scope, err := authority.Context(ctx)
+	if err != nil {
+		return storage.Job{}, false, err
+	}
+	peer, err := helper.DialPropertyClient(ctx, c, id, scope, propertySessionCheck(authority, scope))
+	if err != nil {
+		return storage.Job{}, false, err
+	}
+	defer func() {
+		err = errors.Join(err, peer.Close())
+		if err != nil {
+			j, duplicate = storage.Job{}, false
+		}
+	}()
+	return peer.Submit(pool, plan, submission)
 }

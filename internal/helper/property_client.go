@@ -101,5 +101,8 @@ func (c *PropertyClient) Close() error {
 	if !c.original() {
 		return nil
 	}
+	if c.cancel != nil {
+		defer c.cancel()
+	}
 	return c.exchange.Close()
 }
