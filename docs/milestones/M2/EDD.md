@@ -861,3 +861,14 @@ Signed red evidence remains unqualified; see the
 [source-bound record](../../testing/M2/property-application-manifest.json).
 This is native application/client integration, with root operations still denied;
 independent root/backend/recovery/global/runtime gates remain open.
+
+## Original root request binding amendment
+
+The [request binding](../../testing/M2/property-binding.md) seals one received
+typed request into the original admitted kernel-root peer. Repeated checks require
+its original owner/descriptor/context/deadline, reply phase, exact request/actor
+and actual quiet kernel peer. Failed valid checks and terminal close retire both
+socket and lease; copied/reconstructed bindings cannot create lineage or close
+the original. The default-denial listener consumes it before refusal. This is
+peer provenance only: context remains an untrusted service assertion and all
+policy/session/backend/recovery/global launch/durable admission gates remain open.

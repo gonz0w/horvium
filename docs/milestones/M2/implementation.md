@@ -1322,3 +1322,12 @@ historical manifests retain their bytes. See the
 [source-bound record](../../testing/M2/property-application-manifest.json).
 Root operations remain denied; independent root/backend/policy/plan,
 recovery/global launch, durable admission and runtime/M2 acceptance remain open.
+
+## Original root request binding prerequisite
+
+PR 103 accepted native application/client integration at merged source
+`a3702a594e2e9217f051885848a60555dfb14ebd`. The next
+[root request binding](../../testing/M2/property-binding.md) seals actual received
+requests to their original admitted kernel peer for repeated live checks.
+Qualification is pending. Root review/submission remain denied; policy/session/
+backend/recovery/global launch and runtime acceptance remain open.

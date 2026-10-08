@@ -13,6 +13,7 @@ type admittedPropertyPeer struct {
 	identity *admittedPropertyPeer
 	lease    *propertyConnection
 	exchange *propertyPeer
+	bindings *propertyRequestOwner
 }
 
 func (c *propertyConnection) accept(uid uint32) (a *admittedPropertyPeer, err error) {
