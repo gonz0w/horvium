@@ -3,6 +3,15 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [application-context negotiation](../testing/M2/action-negotiation.md) is an
+unregistered portable codec/application prerequisite. Separate version-2 hello/ready
+frames enforce 512-byte bounds, strict schemas and original session correlation;
+negotiation grants no mutation permission. Existing helper server/client remain
+version-1 inventory only. Native peer/socket facilities, metadata, collectors,
+controls and fixtures stay unchanged. Actual negotiated kernel peer binding,
+recovery/global launch and typed operations remain open; no hardware or runtime
+support is added. Focused qualification is recorded after execution.
+
 M2 [live session authority](../testing/M2/session-authority.md) is a portable
 application prerequisite: original authenticated POST/CSRF binding, opaque context,
 logout/expiry/civil-clock retirement and no idle renewal. Existing read wrappers

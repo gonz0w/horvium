@@ -643,3 +643,16 @@ registry, root peer/recovery/global clearance or native authority is added.
 Partial application evidence and remaining root gates are recorded in the
 [manifest](../../testing/M2/session-authority-manifest.json). It grants no runtime
 mutation authority.
+
+## Application-context negotiation amendment
+
+The [negotiation contract](../../testing/M2/action-negotiation.md) implements the
+first wire prerequisite of the approved new transport: version-2 hello/ready with
+exact request/session-context correlation, 512-byte preallocation bounds and
+strict typed schemas. Private application exchange obtains context only through
+original live session authority and checks it after writes and replies. Neither
+parsing nor negotiation grants operations or proves kernel identity; correlation
+is an untrusted service assertion at the root boundary. Existing version-1
+inventory server/client are unchanged; no runtime route or caller exists. Actual
+peer authentication, deadlines/whole-connection budgets, typed operations and
+local policy/recovery/global launch clearance must precede runtime integration.

@@ -1264,3 +1264,20 @@ removed. All supervised/lab teardown passed; native/shared facilities and 67
 historical M2 manifests retain actual sources. See the
 [manifest](../../testing/M2/session-authority-manifest.json); full privilege,
 transport/recovery/runtime/M2 acceptance remains open.
+
+## Application-context negotiation amendment
+
+The [negotiation contract](../../testing/M2/action-negotiation.md) supplies partial
+M2-PRIV-001/M2-HTTP-001 T1/T2 evidence. Require denying-stub red tests followed by
+exact hello/ready bytes, strict field/type/version/operation/claim denials,
+request/context mismatch refusal, every frame truncation, fixed preallocation
+bounds, short/error write refusal and no retry. Preserve version-1 behavior; an
+owned temporary Unix socket must reject negotiation without collector dispatch
+(the injected UID is portable evidence only). Use real original authenticated
+POST authority for successful exchanges and reject nil/zero/decoded/revoked
+capabilities, logout/expiry/cancellation during the exchange. No credentials or
+idle renewal; copied capability retains the same original binding. Twelve parents/
+57 children and bounded 516-byte request/response fuzz, all affected race/fuzz
+checks, unexecuted FreeBSD compilation and artifact/supervisor teardown are
+required. Existing native facilities and shared tools stay unchanged; no kernel,
+root recovery, operation, browser or complete M2 acceptance is inferred.
