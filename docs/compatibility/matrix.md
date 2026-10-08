@@ -3,6 +3,14 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [live session authority](../testing/M2/session-authority.md) is a portable
+application prerequisite: original authenticated POST/CSRF binding, opaque context,
+logout/expiry/civil-clock retirement and no idle renewal. Existing read wrappers
+keep their return behavior and mint no action authority. No runtime route or
+root/kernel-peer/recovery/global clearance is added. Portable qualification and
+FreeBSD compilation are pending; native facilities and their actual historical
+evidence stay unchanged. Runtime storage writes remain disabled.
+
 M2 [private native property backend](../testing/M2/property-native-backend.md)
 connects the original coordinator/state lease to one fixed native property step
 and independently witnessed exact durable outcomes. Public observers retain false

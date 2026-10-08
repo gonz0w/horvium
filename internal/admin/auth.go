@@ -39,6 +39,7 @@ type preauth struct {
 type session struct {
 	Session
 	created, touched time.Time
+	identity         *sessionIdentity
 }
 
 // Auth is volatile. Every operation is bounded by the fixed M1 caps. Restart or
@@ -89,6 +90,7 @@ func (a *Auth) prune(now time.Time) {
 	}
 	for id, s := range a.sessions {
 		if !now.Before(s.created.Add(AbsoluteLifetime)) || !now.Before(s.touched.Add(IdleLifetime)) {
+			a.retireSession(s)
 			delete(a.sessions, id)
 		}
 	}
@@ -179,7 +181,7 @@ func (a *Auth) Login(source, id, csrf, token string) (Session, error) {
 		return Session{}, ErrState
 	}
 	s := Session{sid, sc}
-	a.sessions[sid] = session{s, now, now}
+	a.sessions[sid] = session{Session: s, created: now, touched: now, identity: &sessionIdentity{owner: a, credentials: sessionFingerprint(s), created: now.Round(0).UTC(), last: now.Round(0).UTC()}}
 	return s, nil
 }
 
@@ -200,17 +202,33 @@ func (a *Auth) Session(id string, touch bool) (Session, error) {
 	if !ok {
 		return Session{}, ErrUnauthorized
 	}
+	if s.identity != nil && s.identity.owner == a {
+		_ = s.identity.observe(now) // Sticky action-authority failure; M1 reads remain unchanged.
+	}
 	if touch {
 		s.touched = now
 		a.sessions[id] = s
 	}
 	return s.Session, nil
 }
-func (a *Auth) Logout(id string) { a.mu.Lock(); defer a.mu.Unlock(); delete(a.sessions, id) }
+func (a *Auth) retireSession(s session) {
+	if s.identity != nil && s.identity.owner == a {
+		s.identity.blocked = true
+	}
+}
+func (a *Auth) Logout(id string) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	a.retireSession(a.sessions[id])
+	delete(a.sessions, id)
+}
 func (a *Auth) Close() {
 	a.mu.Lock()
 	defer a.mu.Unlock()
 	a.closed = true
+	for _, s := range a.sessions {
+		a.retireSession(s)
+	}
 	clear(a.sessions)
 	clear(a.challenges)
 	clear(a.sources)

@@ -625,3 +625,17 @@ operator writes remain disabled. No schema, native transaction or guard change.
 Executed partial integration evidence and remaining authority/recovery limits are
 recorded in the [manifest](../../testing/M2/property-native-backend-manifest.json).
 Runtime storage writes remain disabled.
+
+## Original application-session authority amendment
+
+The [application contract](../../testing/M2/session-authority.md) supplies the
+application half of live authentication without enabling a root writer. An
+explicit POST-only wrapper preserves M1 provenance/cookie/CSRF/body limits before
+binding an opaque capability to the original volatile authentication store,
+private session identity, credential fingerprint and creation time. One bounded
+random context per live session is distinct from credentials; correlation strings
+and JSON cannot reconstruct authority. Original live checks never renew idle
+expiry. Logout/expiry/Close permanently retire the binding; civil clock failure
+is sticky, including across ordinary read touches. Ordinary read responses remain
+unchanged and mint no capability. No runtime route, wire operation, helper session
+registry, root peer/recovery/global clearance or native authority is added.

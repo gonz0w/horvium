@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 90; private native backend in review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 91; live session authority in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1062,3 +1062,20 @@ Actions remain disabled. See the
 [manifest](../../testing/M2/property-native-backend-manifest.json). No hold release,
 new schema, authenticated runtime transport, native recovery/global launch fence
 or complete root/M2 acceptance follows. Operator writes remain disabled.
+
+## Live application-session authority prerequisite
+
+PR 91 accepted the private native backend at merged source
+`304d00df81a98b899c9d6e49d026ed96059a7661`; its native evidence retains actual
+source `649a60b1b6a28f5c791f1d1332e44362d05a98ab`. The
+[next application binding](../../testing/M2/session-authority.md) supplies an opaque
+original-session prerequisite behind explicit POST provenance/cookie/CSRF checks.
+Context is credential-free correlation, not root authorization. Exact private
+identity/fingerprint/creation-time checks and sticky logout/expiry/clock retirement
+prevent reconstruction or renewal through copied strings/records. Ordinary read
+responses stay unchanged; no runtime route or helper/native consumer is registered.
+Nine new portable parents/51 children and bounded action fuzz cover the contract;
+focused qualification is pending. Kernel-peer mutation negotiation, root recovery/
+global launch, enrollment and complete M2/operator gates remain open. Native
+facilities, shared tools and all 67 historical M2 manifests retain their actual
+bytes/sources; unrelated QEMU suites are not rerun for this portable boundary.
