@@ -74,6 +74,18 @@ projection/sentinel/mount/backing and owned teardown. Test-only intent capture a
 live clearance remain explicit. The actual dropped-UID native control child must
 also refuse the factory before input validation.
 
+The first 15.1 pool attempt at signed source
+`277afb1ef7e139d61ae930a720f064e92dc5ed86` passed the exact native control,
+independent postcondition and applying preservation, but failed quota restoration
+and the enclosing full data-projection preservation gate. Ordinary `zfs inherit`
+cannot reset this non-inheritable property; the fixture now uses the existing
+`inherit -S` restoration form, with GUID and exact value/source checks. See
+[OpenZFS's documented default restoration](https://openzfs.github.io/openzfs-docs/man/v2.2/8/zfs-inherit.8.html).
+The failed run remains unqualified and source-bound; owned guest/fixture/process
+teardown and base/runtime preservation completed. No product control, reader,
+publisher, assertion, deadline or shared tool changed. Both state suites passed
+at that source; only the changed pool fixture needs fresh native execution.
+
 Retain all previous state/backing/codec cases, live/applying/successor groups, pool/
 control/guard cases, original selectors/checkers/supervisors and every deadline.
 Audit the new nineteen/six children exactly once in addition to unchanged shared

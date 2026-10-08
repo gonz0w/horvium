@@ -34,7 +34,9 @@ func nativePropertyClaimControlBinding(t *testing.T, ctx context.Context, rawCla
 			if err != nil || strings.TrimSpace(guid) != policy.Scopes[0].GUID {
 				return errors.New("owned quota restoration GUID mismatch")
 			}
-			if _, err = command(c, "inherit", "quota", policy.PoolName); err != nil {
+			// Quota is non-inheritable; -S restores its default when no received
+			// value exists. The declared fresh fixture must regain exact source.
+			if _, err = command(c, "inherit", "-S", "quota", policy.PoolName); err != nil {
 				return err
 			}
 			restored, err := command(c, "get", "-H", "-p", "-o", "value,source", "quota", policy.PoolName)
