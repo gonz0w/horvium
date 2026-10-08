@@ -2,6 +2,7 @@
 package helper
 
 import (
+	"bufio"
 	"context"
 	"encoding/json"
 	"errors"
@@ -245,6 +246,15 @@ func TestNativeAdmittedPropertyExchange(t *testing.T) {
 				waitActionChild(t, cmd)
 			case "phase-deadline", "shutdown-request":
 				cmd := propertyChild(t, f, "idle-deadline", f.uid)
+				var ready io.ReadCloser
+				if name == "shutdown-request" {
+					var err error
+					ready, err = cmd.StdoutPipe()
+					if err != nil {
+						t.Fatal("child readiness pipe")
+					}
+					defer ready.Close()
+				}
 				startActionChild(t, cmd)
 				raw, err := l.AcceptUnix()
 				if err != nil {
@@ -268,6 +278,19 @@ func TestNativeAdmittedPropertyExchange(t *testing.T) {
 					t.Fatal("phase renewed deadline")
 				}
 				if name == "shutdown-request" {
+					// Root ready write does not prove that the child completed
+					// its own final kernel/quiet-peer check. Observe that phase
+					// before intentionally shutting down its request read.
+					completed := make(chan string, 1)
+					go func() { line, _ := bufio.NewReader(ready).ReadString('\n'); completed <- line }()
+					select {
+					case line := <-completed:
+						if line != "ready\n" {
+							t.Fatal("child did not complete negotiation")
+						}
+					case <-time.After(time.Second):
+						t.Fatal("child negotiation witness deadline")
+					}
 					done := make(chan error, 1)
 					go func() {
 						req, actor, err := a.receive()
