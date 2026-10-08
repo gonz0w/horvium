@@ -1207,3 +1207,38 @@ remains unqualified. All 65 historical manifests and 364 protected paths retain
 exact base bytes, with verified lab teardown and disabled Actions; see the
 [manifest](../../testing/M2/property-execution-authority-manifest.json). Complete
 native/root backend, authentication, recovery/global and M2 gates remain open.
+
+## Private native property backend amendment
+
+Require the [integration contract](../../testing/M2/property-native-backend.md)
+for partial plan/property/job/privilege/drift/state/recovery evidence. Eight portable
+parents require the complete sequence, eight admission denials, ten phase cuts,
+nine original-binding/outcome refusals, twelve lost/foreign/invalid acknowledgements, three final clearance cuts
+and 32 concurrent worker calls. Preserve all old coordinator/worker/control tests
+and selected fuzz targets; record the denying-stub behavioral red separately from
+an unexecuted fixture-field compile error. Both complete pinned pool suites must
+retain every old PASS name/count and add twelve nested backend children exactly
+once, including real applying-before-effect, exact durable success/independent
+quota-source facts, holds/no replay, native clearance/closed-lease denial and lost
+applying/success acks after actual publication. Require actual non-root factory
+refusal, unchanged fixed runner/guard, test-only clearance explicitly named, exact
+GUID-checked quota restoration, all metadata/policy/lock/sentinel/mount/backing
+preservation and complete owned teardown. Use separate serial success/denial and
+response-gap fixtures, each with its own 135-second context after the original
+claim fixture closes; retain all historical PASS names and require both new groups,
+backing/preservation/teardown names and twelve new children once. Keep shared
+runner/checkers and existing deadlines
+unchanged; old-only runner success cannot qualify the new group. Native metadata
+transactions/fixtures outside the pool suite are unchanged and retain historical
+source-bound evidence. Full authenticators/executor-death/reboot/recovery/global
+proof, operator workflows, reservation release and assembled M2 remain open.
+
+Executed partial integration evidence: signed source `649a60b1b6a28f5c791f1d1332e44362d05a98ab`
+passed the eight new portable parents/42 children, baseline/125 tooling tests,
+nine race packages and all 38 selected fuzz targets. Both native targets retained
+every prior PASS name/count and passed twelve new cases plus their separate
+bounded fixture/backing/preservation/teardown groups. The initial native timeout
+remains unqualified; the repair changes only fixture setup, preserving old
+deadlines and shared tooling. All guest/artifact/supervisor cleanup was verified;
+see the [manifest](../../testing/M2/property-native-backend-manifest.json).
+External authenticators/recovery/global launch and assembled M2 gates remain open.

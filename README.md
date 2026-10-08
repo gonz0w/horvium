@@ -310,6 +310,15 @@ passed with verified teardown; see the
 Authentication, complete root
 backend and native recovery/global clearance remain pending; runtime writes stay disabled.
 
+The [private native property backend](docs/testing/M2/property-native-backend.md)
+composes review/admission, the original root claim/coordinator authority, one fixed
+native control and independent durable outcome verification. It has no runtime
+consumer; external authentication/recovery/global clearance is still supplied only
+by disposable tests. Focused portable review and both complete disposable native
+pool suites passed with verified teardown; see the
+[evidence](docs/testing/M2/property-native-backend-manifest.json). Operator writes
+remain disabled.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

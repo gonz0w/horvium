@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 89; original coordinator authority in review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 90; private native backend in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1036,3 +1036,29 @@ protected paths remain byte-identical; Actions stay disabled. See the
 [manifest](../../testing/M2/property-execution-authority-manifest.json). Native adapters,
 transactions and fixtures stay unchanged. Full root backend, authenticated write
 transport, native recovery/global clearance and runtime writers remain open.
+
+
+## Private native property backend integration
+
+PR 90 accepted the original coordinator authority at merged source
+`fa7013198b50bb058bb6775cefdad2698aaf270b`; its evidence retains actual source
+`68a6cf6e1794d258be31c42a7b7913574fec7311`. The
+[private backend](../../testing/M2/property-native-backend.md) now composes one
+original review/admission/claim, exact applying publication, one fixed native
+control, independent facts and witnessed observing/success acknowledgement.
+Require mandatory external authentication/recovery/global clearance, supplied
+only by fixtures; no runtime consumer exists. Signed source `649a60b1b6a28f5c791f1d1332e44362d05a98ab`
+passed all eight new portable parents/42 children, baseline/125 tooling tests,
+nine race packages and all 38 selected fuzz targets in 185.659 seconds. Both complete
+native pool suites passed all twelve new backend cases and their backing,
+preservation and teardown groups, retaining every old PASS name/count (76/70).
+The same executable ran on both guests, with exact native value/source and
+applying-before-effect evidence, lost-acknowledgement uncertainty and no replay.
+The initial 15.1 attempt remains unqualified after exhausting the old claim
+context; new scenarios use separate serial 135-second fixtures. Original deadlines,
+shared tools, metadata transactions and all 66 historical manifests stay unchanged.
+All owned sessions stopped with verified artifact/guest/supervisor teardown;
+Actions remain disabled. See the
+[manifest](../../testing/M2/property-native-backend-manifest.json). No hold release,
+new schema, authenticated runtime transport, native recovery/global launch fence
+or complete root/M2 acceptance follows. Operator writes remain disabled.

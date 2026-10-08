@@ -15,8 +15,9 @@ const maxPropertyReviews = 64
 // PropertyBackend is a trusted helper-side boundary, never a request adapter.
 // ObserveProperty must independently read current root-owned policy and collect
 // complete fresh native eligibility/impact. PublishPropertySubmission must use
-// the held root StateDirectory lease. No product adapter implements this full
-// boundary yet; installing a mock does not establish native/root authority.
+// the held root StateDirectory lease. Private native composition has no runtime
+// consumer; its external authentication/recovery/global clearance still needs
+// qualification. Installing a mock does not establish native/root authority.
 type PropertyBackend interface {
 	ObserveProperty(context.Context, Intent) (Policy, Observation, error)
 	PublishPropertySubmission(PropertyJob) (PropertyJob, bool, error)
