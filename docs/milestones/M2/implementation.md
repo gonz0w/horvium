@@ -1222,7 +1222,13 @@ PR 97 accepted the owned typed exchange at merged source
 [connection contract](../../testing/M2/property-connections.md) bounds original
 accepted sockets and their lifetimes before future negotiation/workers. It is a
 private network accounting prerequisite, without listener/dispatcher, UID/session,
-durable admission or worker/native quiescence authority. Test-first portable and
-unexecuted FreeBSD compilation evidence are pending. Authenticated application
-assembly, original root/backend/recovery/global launch gates and full M2 acceptance
-remain open.
+durable admission or worker/native quiescence authority. Signed implementation
+`8273a09538d566982f0bd1d3edc311aa0580e4d9` passed eight behavioral parents/twelve
+children, baseline/132 tooling tests, eight affected race packages and fourteen
+bounded fuzz targets. Helper tests compiled for FreeBSD without execution; the
+artifact was removed and all 637 owned sessions stopped with verified teardown.
+All 73 historical M2 manifests retain their bytes; existing native peer/exchange/
+fixtures/shared tools remain unchanged. See the
+[source-bound manifest](../../testing/M2/property-connections-manifest.json).
+Native admission/runtime assembly, authenticated application binding, original
+root/backend/recovery/global launch gates and full M2 acceptance remain open.

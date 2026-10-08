@@ -4,9 +4,13 @@
 validation are separate. Refresh exact versions in each active research manifest.
 
 M2 [bounded property connection admission](../testing/M2/property-connections.md)
-is a private portable accounting boundary; qualification is pending. It grants no
-kernel/session/storage authority or worker/native quiescence. Native assembly
-remains unqualified and existing peer/exchange evidence retains its source.
+passed eight portable behavioral parents/twelve children, baseline/132 tooling
+tests, eight affected race packages and fourteen bounded fuzz targets with verified
+teardown. Helper tests compiled for FreeBSD without execution; actual FreeBSD
+admission/assembly remains unqualified. It grants no kernel/session/storage
+authority or worker/native quiescence. See the
+[manifest](../testing/M2/property-connections-manifest.json); existing peer/exchange
+evidence retains its source.
 
 M2 [owned property exchange](../testing/M2/property-exchange.md) passed actual
 kernel UID, single-operation phase, cancellation/deadline and terminal EOF checks

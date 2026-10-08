@@ -321,8 +321,10 @@ remain disabled.
 
 The [bounded property connection admission](docs/testing/M2/property-connections.md)
 is a private network accounting prerequisite for the future typed transport.
-Original slots/deadlines, immediate overflow denial and complete socket retirement
-are under test; native runtime assembly remains unqualified.
+Original slots/deadlines, immediate overflow denial and socket retirement passed
+portable behavioral/focused race/fuzz checks. Helper tests compiled for FreeBSD
+without execution; native admission/runtime assembly remains unqualified. See the
+[evidence](docs/testing/M2/property-connections-manifest.json).
 
 The [owned property exchange](docs/testing/M2/property-exchange.md) carries one
 bounded typed request and terminal reply over the original kernel-authorized

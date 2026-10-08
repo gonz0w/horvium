@@ -1,6 +1,6 @@
 # M2 bounded property connection admission
 
-Date: 2026-10-08. Status: test-first contract; portable qualification pending.
+Date: 2026-10-08. Status: partial portable qualification; maintainer review pending.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 Approved [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [owned exchange](property-exchange.md).
@@ -55,3 +55,26 @@ Actual FreeBSD admission/assembly behavior remains unqualified; the existing nat
 peer/exchange evidence retains its original source and is not relabeled. Future
 assembled native safety/recovery/continuity/resources and M2 acceptance remain open.
 M1 Safari/VoiceOver stays pending; GitHub Actions remain disabled.
+
+## Executed evidence
+
+Seven original behavioral parents failed against signed denying-stub source
+`30fe1ec24f48eaf40d11cc085f9128ac5f1844f6`. Implementation review added a
+cancellation-at-admission regression and captured the installed lease in the
+deadline callback, rather than the mutable named return value.
+
+Signed implementation `8273a09538d566982f0bd1d3edc311aa0580e4d9` passed all eight
+behavioral parents/twelve children. Fresh `make review` passed the entire baseline,
+132 tooling tests, eight affected race packages and fourteen bounded fuzz targets
+in 65.187 seconds of deep review. Helper tests compiled for FreeBSD/amd64 without
+execution; the checksummed artifact was removed. No QEMU/native suite was rerun:
+existing peer primitives, typed exchanges, native fixtures and shared tooling are
+unchanged, and actual FreeBSD admission/assembly remains unqualified.
+
+All 73 historical M2 manifests and 381 protected existing internal/tooling inputs
+retain actual bytes. All 637 owned sessions stopped with verified teardown at
+this evidence snapshot; Actions remain disabled. See the
+[source-bound manifest](property-connections-manifest.json). The documentation
+followup requires a fresh baseline and may reuse only this successful deep review
+when behavioral inputs/base/toolchain remain exactly unchanged. No runtime, storage
+or recovery authorization follows.
