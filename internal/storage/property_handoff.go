@@ -9,13 +9,13 @@ import (
 )
 
 // ClaimPropertyExecution transfers one fresh, exactly acknowledged admission to
-// one worker through this ORIGINAL coordinator/backend. It performs no I/O,
+// one worker through this ORIGINAL coordinator/backend. It performs no native I/O,
 // accepts identifiers only and cannot reconstruct a claim from stored bytes.
 // Matching Submit replies remain admission acknowledgements, not status/launch.
 // The session argument still requires independent application authentication.
 //
-// The original trusted backend must implement both admission and execution. It
-// must hold the same original root lease and prove complete native eligibility,
+// The original trusted backend must implement admission, execution and authority
+// binding. It must hold the same original root lease and prove native eligibility,
 // recovery, current durable records and global/pool launch serialization. This
 // portable handoff proves NONE of those native obligations. No runtime adapter
 // implements that combined boundary yet. Calls are synchronous, bounded by the
@@ -30,75 +30,98 @@ func (c *PropertyCoordinator) ClaimPropertyExecution(ctx context.Context, sessio
 	if c == nil {
 		return nil, ErrUnavailable
 	}
-	c.mu.Lock()
-	defer c.mu.Unlock()
-	if err := coordinatorContext(ctx); err != nil {
-		return nil, err
-	}
-	if c.backend == nil || c.clock == nil || c.reviews == nil {
-		return nil, ErrUnavailable
-	}
-	if c.publicationBlocked {
-		return nil, ErrStateUncertain
-	}
-	at, err := c.now()
+	a, backend, err := c.reservePropertyExecutionAuthority(ctx, session, id)
 	if err != nil {
 		return nil, err
 	}
-	// The retained set has the existing 64-review ceiling. No unbounded job index
-	// or decoded metadata is used to discover an execution claim.
+	granted := false
+	defer func() {
+		if !granted {
+			a.retire()
+		}
+	}()
+	// Consume the original claim before calling the binder, outside owner.mu.
+	// The backend may inspect the owned admission but cannot use pending authority.
+	if err = backend.BindPropertyExecutionAuthority(a); err != nil {
+		return nil, err
+	}
+	if err = a.activate(ctx); err != nil {
+		return nil, err
+	}
+	bound := &propertyHandoffBackend{PropertyExecutionBackend: backend, owner: c, id: id, admitted: a.identity.admitted, authority: a}
+	e := NewPropertyExecution(bound)
+	e.finish = a.retire
+	// Keep the original civil-clock lineage even after launch retirement: an
+	// actual verified late outcome still has durable publication obligations.
+	e.clock = func() time.Time {
+		c.mu.Lock()
+		defer c.mu.Unlock()
+		if c.clock == nil {
+			return time.Time{}
+		}
+		at, err := c.now()
+		if err != nil {
+			return time.Time{}
+		}
+		return at
+	}
+	granted = true
+	return e, nil
+}
+
+func (c *PropertyCoordinator) reservePropertyExecutionAuthority(ctx context.Context, session, id string) (*PropertyExecutionAuthority, propertyAuthorityBackend, error) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	if err := coordinatorContext(ctx); err != nil {
+		return nil, nil, err
+	}
+	if c.backend == nil || c.clock == nil || c.reviews == nil {
+		return nil, nil, ErrUnavailable
+	}
+	if c.publicationBlocked {
+		return nil, nil, ErrStateUncertain
+	}
+	at, err := c.now()
+	if err != nil {
+		return nil, nil, err
+	}
+	// The existing 64-review bound is unchanged; no decoded ledger can discover
+	// or reconstruct one of these volatile original identities.
 	for planID, entry := range c.reviews {
 		if entry.ack.job.ID != id {
 			continue
 		}
 		if entry.plan.session != session || entry.submission == "" || entry.executionClaimed || entry.duplicateAdmission || len(entry.ack.job.History) != 1 {
-			return nil, ErrDenied
+			return nil, nil, ErrDenied
 		}
 		if !at.Before(entry.plan.review.ExpiresAt) {
-			return nil, ErrExpired
+			return nil, nil, ErrExpired
 		}
 		encoded, err := EncodePropertyJob(entry.ack)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
-		backend, ok := c.backend.(PropertyExecutionBackend)
+		backend, ok := c.backend.(propertyAuthorityBackend)
 		if !ok {
-			return nil, ErrUnavailable
+			return nil, nil, ErrUnavailable
 		}
 		final, err := c.now()
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		if !final.Before(entry.plan.review.ExpiresAt) {
-			return nil, ErrExpired
+			return nil, nil, ErrExpired
 		}
 		if err = coordinatorContext(ctx); err != nil {
-			return nil, err
+			return nil, nil, err
 		}
-		// Claim under the original mutex before returning ANY executable object.
-		// Reconstruction, a second handoff and copies of the returned pointer
-		// cannot create a second attempt. Expiry reclamation releases no hold.
+		x := &propertyExecutionAuthorityIdentity{owner: c, plan: Plan{review: entry.plan.Review(), session: entry.plan.session, policyHash: entry.plan.policyHash}, admitted: encoded, submission: entry.submission}
 		entry.executionClaimed = true
+		entry.executionAuthority = x
 		c.reviews[planID] = entry
-		bound := &propertyHandoffBackend{PropertyExecutionBackend: backend, owner: c, id: id, admitted: encoded, expires: entry.plan.review.ExpiresAt}
-		e := NewPropertyExecution(bound)
-		// Keep the original civil-clock lineage. A worker rollback also blocks
-		// the coordinator; outcome publication after forward expiry remains legal.
-		e.clock = func() time.Time {
-			c.mu.Lock()
-			defer c.mu.Unlock()
-			if c.clock == nil {
-				return time.Time{}
-			}
-			at, err := c.now()
-			if err != nil {
-				return time.Time{}
-			}
-			return at
-		}
-		return e, nil
+		return &PropertyExecutionAuthority{identity: x}, backend, nil
 	}
-	return nil, ErrDenied
+	return nil, nil, ErrDenied
 }
 
 // Only the coordinator can create this envelope. Delegated publication/observation
@@ -106,10 +129,10 @@ func (c *PropertyCoordinator) ClaimPropertyExecution(ctx context.Context, sessio
 // lease/current-record/reservation proof remains that backend's responsibility.
 type propertyHandoffBackend struct {
 	PropertyExecutionBackend
-	owner    *PropertyCoordinator
-	id       string
-	admitted []byte
-	expires  time.Time
+	owner     *PropertyCoordinator
+	id        string
+	admitted  []byte
+	authority *PropertyExecutionAuthority
 }
 
 // A worker's uncertain publication must suspend the same coordinator that
@@ -144,26 +167,7 @@ func (b *propertyHandoffBackend) PublishPropertyExecution(next PropertyJob, expe
 }
 
 func (b *propertyHandoffBackend) live(ctx context.Context) error {
-	if err := coordinatorContext(ctx); err != nil {
-		return err
-	}
-	c := b.owner
-	c.mu.Lock()
-	defer c.mu.Unlock()
-	if c.publicationBlocked {
-		return ErrStateUncertain
-	}
-	if c.clock == nil {
-		return ErrUnavailable
-	}
-	at, err := c.now()
-	if err != nil {
-		return err
-	}
-	if !at.Before(b.expires) {
-		return ErrExpired
-	}
-	return coordinatorContext(ctx)
+	return b.authority.CheckLive(ctx)
 }
 
 func (b *propertyHandoffBackend) PreparePropertyExecution(ctx context.Context, id string) (PropertyJob, Policy, Observation, error) {
@@ -202,6 +206,9 @@ func (b *propertyHandoffBackend) RefreshPropertyExecution(ctx context.Context, j
 }
 
 func (b *propertyHandoffBackend) ApplyProperty(ctx context.Context, i PropertyIntent) (bool, error) {
+	// Native clearance exists only through this control attempt, never during
+	// post-effect observation/publication. Run also retires every preflight cut.
+	defer b.authority.retire()
 	if err := b.live(ctx); err != nil {
 		return false, err
 	}

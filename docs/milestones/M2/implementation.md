@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 88; original-claim control binding subset qualified/in review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 89; original coordinator authority in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1014,4 +1014,18 @@ targets in 194.118 seconds. All nineteen new state cases, every historical gate,
 All owned teardown passed; see the
 [manifest](../../testing/M2/property-claim-control-manifest.json). No runtime
 writer, complete backend/session/recovery/global authority or assembled M2
-acceptance is enabled. Maintainer review remains pending.
+acceptance is enabled. PR 89 accepted this subset at merged source
+`025e496a3d10f935071fae59ba606e0a246e9d62`.
+
+## Original coordinator authority binding
+
+The [next binding](../../testing/M2/property-execution-authority.md) supplies an
+opaque link from one original admission handoff to that same backend, allowing
+its final prelaunch callback to check exact retained plan/session context, queued
+acknowledgement, original civil clock and publication uncertainty. Pending and
+failed binding cannot launch; control return and every consumed worker exit
+retire copied handles without releasing holds or discarding late verified outcome
+duties. Nine new parents and extended existing handoff fuzz actions retain all
+old handoff/uncertainty cases. Portable qualification is pending. Native adapters,
+transactions and fixtures stay unchanged. Full root backend, authenticated write
+transport, native recovery/global clearance and runtime writers remain open.

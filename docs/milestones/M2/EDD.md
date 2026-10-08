@@ -588,3 +588,18 @@ The private binding's native and portable subset passed on both pinned releases;
 see its [source-bound manifest](../../testing/M2/property-claim-control-manifest.json).
 Only the disposable callback/capture supplies live clearance. The complete
 original backend and its authority remain unqualified.
+
+## Original coordinator execution authority amendment
+
+The [binding contract](../../testing/M2/property-execution-authority.md) requires
+the same admission/execution backend to accept an opaque original-coordinator
+authority during handoff. Consume the original handoff before bounded binding
+outside the coordinator mutex. The pending capability cannot authorize launch;
+activate only after successful binding and final exact original entry/whole
+plan/queued acknowledgement/clock/context checks. Failed binding cannot retry.
+The backend can repeat this check inside its final native prelaunch callback.
+Retire authority across copies on control return and every consumed worker exit,
+without releasing holds or erasing independent post-effect outcome duties.
+Retained session context does not authenticate the session. The full original
+root backend still proves kernel peer, native eligibility, recovery and global/
+pool clearance and owns one fixed control. No native/runtime consumer is enabled.
