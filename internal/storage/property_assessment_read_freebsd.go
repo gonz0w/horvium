@@ -23,6 +23,13 @@ func (s *StateDirectory) InspectPropertyJob(id string) (PropertyJob, [32]byte, e
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	return s.inspectPropertyJobLocked(id, nil)
+}
+
+// Caller validated kernel UID/selector and holds s.mu. An original claim may
+// add its exact volatile lineage/hold check to the same complete census. The
+// retained diagnostic uses no claim and preserves its read-only semantics.
+func (s *StateDirectory) inspectPropertyJobLocked(id string, check func(JobReservations, PropertyJob) error) (PropertyJob, [32]byte, error) {
 	b, err := newReservationBuilder(defaultStateCatalogLimits)
 	if err != nil {
 		return PropertyJob{}, [32]byte{}, err
@@ -50,7 +57,8 @@ func (s *StateDirectory) InspectPropertyJob(id string) (PropertyJob, [32]byte, e
 	if err != nil {
 		return PropertyJob{}, [32]byte{}, err
 	}
-	current, exists := b.finish().records[id]
+	view := b.finish()
+	current, exists := view.records[id]
 	if !exists {
 		return PropertyJob{}, [32]byte{}, ErrDenied
 	}
@@ -63,6 +71,11 @@ func (s *StateDirectory) InspectPropertyJob(id string) (PropertyJob, [32]byte, e
 	}
 	if !owned {
 		return PropertyJob{}, [32]byte{}, ErrDenied
+	}
+	if check != nil {
+		if err := check(view, current.property); err != nil {
+			return PropertyJob{}, [32]byte{}, err
+		}
 	}
 	var digest [32]byte
 	copy(digest[:], h.Sum(nil))

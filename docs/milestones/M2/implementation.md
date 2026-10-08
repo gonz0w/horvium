@@ -876,5 +876,16 @@ historical 819 control/67-parent/1,876-codec gate with identical artifacts and
 verified teardown. Native policy/physical system-use inputs remain synthetic;
 no eligibility or complete backend follows. Superseded native/portable attempts
 remain unqualified; see the [manifest](../../testing/M2/property-live-state-manifest.json).
-Maintainer review and complete root/native/effect recovery/operator acceptance
+Accepted in [PR 83](https://github.com/gonz0w/horvium/pull/83) at merged source
+`36a919d78c03a5572087a7da8f6e6c9467189ef2`. Complete root/native/effect recovery/operator acceptance
 remain open.
+
+## Native observation through the original root claim
+
+The [contract](../../testing/M2/property-claim-source.md) binds root metadata readers
+and the state/backing check to one original opaque claim. Fresh guarded native
+collection is bracketed by exact whole job and full census presentation reads;
+all failures discard output and success remains ineligible. Four portable groups
+and selector fuzzing plus the unchanged state/pool runners on both releases are
+required. Native qualification is pending. No executor, recovery/launch clearance,
+release, runtime consumer or operator writer is enabled.

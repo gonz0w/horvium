@@ -1033,6 +1033,21 @@ the mandatory baseline with 122 tooling tests, and all 19 new children plus ever
 historical native state/backing/codec gate on both pinned releases. Identical
 artifacts, same supported metadata backing rules and complete owned teardown
 were verified; superseded attempts remain unqualified. See the
-[manifest](../../testing/M2/property-live-state-manifest.json). Maintainer review,
+[manifest](../../testing/M2/property-live-state-manifest.json). Accepted in
+[PR 83](https://github.com/gonz0w/horvium/pull/83);
 original backend/native eligibility, effect interruption/recovery, authenticated
 workflows, hold release and complete M2 remain open.
+
+## Original claim native observation amendment
+
+Require all four [claim-source](../../testing/M2/property-claim-source.md) portable
+parents and bounded selector fuzzing, plus actual claim-bound metadata readers
+inside all existing 19 live-state cases. Retain every old state/backing/codec gate.
+Require all eight actual native claim-source children on both pinned releases,
+using a separate declared fixture disk for GUID-checked independent ZFS metadata
+backing. Verify actual GEOM/system/kernel agreement, original queued/applying
+collection with false eligibility, foreign/closed/restored denials, unchanged
+metadata/data and exact mount restoration. Preserve all old pool assertions and
+subgroups, the original five-minute deadline and shared tools. Qualified sources
+and artifacts must be explicit, with full owned teardown; native execution and
+recovery clearance remain separate.

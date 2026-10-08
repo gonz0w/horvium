@@ -265,6 +265,11 @@ state gates passed on both disposable releases with full teardown; see the
 [manifest](docs/testing/M2/property-live-state-manifest.json). Native eligibility
 and the complete root backend remain open; runtime writes stay disabled.
 
+The [claim-bound native observer](docs/testing/M2/property-claim-source.md) joins
+that original claim to fresh properties, providers, system use and metadata backing.
+Qualification is pending; all observations remain ineligible and runtime writes
+remain disabled.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

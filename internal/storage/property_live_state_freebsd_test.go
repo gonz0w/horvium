@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"sync"
 	"syscall"
@@ -24,10 +25,17 @@ func TestPropertyLiveStateUIDChild(t *testing.T) {
 		t.Fatal("actual nonroot credential required")
 	}
 	s := &StateDirectory{}
+	c := &PropertyStateClaim{state: s, identity: &propertyStateClaimIdentity{}}
+	if j, d, err := c.InspectPropertyJob(strings.Repeat("a", 64)); j.job.ID != "" || d != ([32]byte{}) || !errors.Is(err, ErrStateDirectory) {
+		t.Fatal("inspector UID", err)
+	}
+	if p, err := c.ReadOwnership("100"); !reflect.DeepEqual(p, Policy{}) || !errors.Is(err, ErrStateDirectory) {
+		t.Fatal("policy reader UID", err)
+	}
 	if c, err := s.ClaimPropertyState(strings.Repeat("a", 64)); c != nil || !errors.Is(err, ErrStateDirectory) {
 		t.Fatal("claim UID", err)
 	}
-	c := &PropertyStateClaim{state: s, identity: &propertyStateClaimIdentity{}}
+	c = &PropertyStateClaim{state: s, identity: &propertyStateClaimIdentity{}}
 	if err := c.CheckPropertyState(Policy{}, PoolSystemUse{}, PropertyJob{}); !errors.Is(err, ErrStateDirectory) {
 		t.Fatal("readiness UID", err)
 	}
@@ -162,6 +170,20 @@ func nativePropertyLiveState(t *testing.T, anchor string) {
 				if again, err := s.ClaimPropertyState(p.job.ID); again != nil || err == nil {
 					t.Fatal("second claim")
 				}
+				read, digest, e := c.InspectPropertyJob(p.job.ID)
+				if e != nil || digest == ([32]byte{}) || !reflect.DeepEqual(read, p) {
+					t.Fatal("claim-bound job reader", e)
+				}
+				ownedPolicy, e := c.ReadOwnership(policy.PoolGUID)
+				if e != nil || !reflect.DeepEqual(ownedPolicy, policy) {
+					t.Fatal("claim-bound policy reader", e)
+				}
+				if j, d, e := c.InspectPropertyJob(strings.Repeat("d", 64)); e == nil || j.job.ID != "" || d != ([32]byte{}) {
+					t.Fatal("foreign job selection", e)
+				}
+				if p, e := c.ReadOwnership("999"); e == nil || !reflect.DeepEqual(p, Policy{}) {
+					t.Fatal("foreign policy selection", e)
+				}
 				if mode == "wrong-uid" {
 					nativePropertyLiveStateUID(t)
 					return
@@ -229,6 +251,14 @@ func nativePropertyLiveState(t *testing.T, anchor string) {
 				after, e := os.ReadFile(target)
 				if e != nil || !bytes.Equal(before, after) {
 					t.Fatal("readiness changed records", e)
+				}
+				if mode == "receipt-drift" || mode == "unsafe-mode" || mode == "orphan" || mode == "closed" {
+					if j, d, e := c.InspectPropertyJob(p.job.ID); e == nil || j.job.ID != "" || d != ([32]byte{}) {
+						t.Fatal("unsafe claim reader retained output", e)
+					}
+					if p, e := c.ReadOwnership("100"); e == nil || !reflect.DeepEqual(p, Policy{}) {
+						t.Fatal("unsafe ownership reader retained output", e)
+					}
 				}
 				if mode == "orphan" && !s.publicationBlocked {
 					t.Fatal("orphan not latched")

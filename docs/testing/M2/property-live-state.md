@@ -1,6 +1,6 @@
 # M2 fresh property submission state claim
 
-Date: 2026-10-07. Status: metadata/prerequisite subset qualified; maintainer review pending.
+Date: 2026-10-07. Status: metadata/prerequisite subset qualified; accepted in PR 83.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md)
 and [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -134,3 +134,8 @@ GitHub Actions remain disabled; no persistent service was enabled.
 The original combined root backend, actual native eligibility/executor clearance,
 effect interruption/death/reboot/recovery, terminal resolution/hold release,
 authenticated workflows and complete M2 acceptance remain separate gates.
+
+Accepted in [PR 83](https://github.com/gonz0w/horvium/pull/83) at merged source
+`36a919d78c03a5572087a7da8f6e6c9467189ef2`. Its synthetic physical inputs remain
+bound to that historical evidence; the [claim-bound native observer](property-claim-source.md)
+qualifies fresh native inputs separately.

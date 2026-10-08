@@ -3,6 +3,11 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [claim-bound native observation](../testing/M2/property-claim-source.md)
+connects the original root claim to fresh native property/provider/system/backing
+checks. Qualification is pending. It adds no eligibility, runtime writer,
+recovery clearance or production support claim.
+
 M2 [fresh root submission state claim](../testing/M2/property-live-state.md)
 adds bounded original-lease post-sync provenance and a read-only own-job exception.
 Signed source `fe56955fcc2b1803bfa6bf61685b336f8716b420` passed baseline/122 tooling tests,
