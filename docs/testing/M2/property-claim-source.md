@@ -46,7 +46,11 @@ required state checks, selectors before I/O, cancellation, final policy drift,
 native provider/system failures and overlapping root use. Bounded selector fuzzing
 must not allow invalid input to reach I/O or accept missing trusted facts. The
 initial absent-contract compile failure precedes implementation; a later fixture
-callback type correction is not a product or native failure.
+callback type correction is not a product or native failure. The first native
+15.1 attempt correctly returned a canonically ordered policy; the new test
+incorrectly compared it to an unsorted input fixture. Compare the complete
+canonical encoding instead, retain the failed attempt under its actual source,
+and rerun both releases without weakening any product gate.
 
 Extend the existing 19 native live-state cases with actual claim-bound readers,
 foreign selection, root EUID, drift/orphan/unsafe/closed denials and zero outputs.

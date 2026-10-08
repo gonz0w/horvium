@@ -175,8 +175,12 @@ func nativePropertyLiveState(t *testing.T, anchor string) {
 					t.Fatal("claim-bound job reader", e)
 				}
 				ownedPolicy, e := c.ReadOwnership(policy.PoolGUID)
-				if e != nil || !reflect.DeepEqual(ownedPolicy, policy) {
+				if e != nil {
 					t.Fatal("claim-bound policy reader", e)
+				}
+				ownedBytes, e := EncodeOwnershipRecord(ownedPolicy)
+				if e != nil || !bytes.Equal(ownedBytes, policyBytes) {
+					t.Fatal("claim-bound complete canonical policy", e)
 				}
 				if j, d, e := c.InspectPropertyJob(strings.Repeat("d", 64)); e == nil || j.job.ID != "" || d != ([32]byte{}) {
 					t.Fatal("foreign job selection", e)
