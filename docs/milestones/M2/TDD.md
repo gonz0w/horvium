@@ -1051,3 +1051,13 @@ metadata/data and exact mount restoration. Preserve all old pool assertions and
 subgroups, the original five-minute deadline and shared tools. Qualified sources
 and artifacts must be explicit, with full owned teardown; native execution and
 recovery clearance remain separate.
+
+Signed source `aa0794996733706c47cce45ad6e0aad3f4155d28` passed all four new portable
+parents, nine affected race packages, all 38 selected fuzz targets and baseline/
+122 tooling tests. Both native state releases passed all required gates and new
+readers. Both 15.1 pool attempts passed the new eight children but failed the
+unchanged parent deadline in old cases. Require full current-source pool gates on
+both releases before accepting this observer; 14.5 is unattempted. Every attempted
+owned guest/process/fixture was cleaned. See the explicitly incomplete
+[manifest](../../testing/M2/property-claim-source-manifest.json). Historical proofs
+are unchanged and cannot substitute for these pending gates.

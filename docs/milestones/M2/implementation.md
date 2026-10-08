@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-07. Status: implementing; design approved; model/native prerequisites accepted through PR 82; fresh root submission state claim qualified for review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; prerequisites accepted through PR 83; claim-bound observer portable/state-reader gates passed, full native pool qualification pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -887,5 +887,12 @@ and the state/backing check to one original opaque claim. Fresh guarded native
 collection is bracketed by exact whole job and full census presentation reads;
 all failures discard output and success remains ineligible. Four portable groups
 and selector fuzzing plus the unchanged state/pool runners on both releases are
-required. Native qualification is pending. No executor, recovery/launch clearance,
-release, runtime consumer or operator writer is enabled.
+required. Signed source `aa0794996733706c47cce45ad6e0aad3f4155d28` passed baseline/122 tooling
+tests, nine affected race packages and all 38 selected fuzz targets. Both state
+releases passed every historical gate and all 19 claim children. The two 15.1 pool
+attempts passed all eight new actual native cases but exceeded the unchanged
+parent deadline in old cases; full pool qualification on both releases remains
+pending. Keep this PR draft; see the [partial manifest](../../testing/M2/property-claim-source-manifest.json).
+All owned teardown passed, historical/shared inputs remain unchanged and unrelated
+workloads were not stopped. No executor, recovery/launch clearance, release,
+runtime consumer or operator writer is enabled.

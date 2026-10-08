@@ -1,6 +1,6 @@
 # M2 native property observation through an original root claim
 
-Date: 2026-10-08. Status: implementation; qualification pending.
+Date: 2026-10-08. Status: portable/state-reader gates passed; native observer qualification pending; draft review.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0007](../../adr/0007-durable-storage-jobs.md)
 and [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -29,7 +29,7 @@ state handle, caller policy/system facts or command path. Identifier-only collec
 brackets the existing guarded native safety source with whole job/census reads.
 The claim's actual backing check runs inside the final policy window; an independent
 final ownership read, exact whole job and full census digest must remain stable.
-The operation has the existing 135-second bound and discards every projection on
+Collection uses the existing 135-second context and discards every projection on
 failure, including cancellation. Success always returns `Eligible=false`.
 
 Facts may differ from the captured baseline or describe a later effect. Read-only
@@ -85,9 +85,56 @@ PR_TITLE='feat(storage): collect native properties through original root claims'
 make lab-status
 ```
 
-Native runs are serial and source/artifact bound. Shared runners, selectors,
+Native runs are serial and source/artifact bound. Avoid overlapping deadline-sensitive
+pool qualification with portable deep review or unrelated VM qualification. Shared runners, selectors,
 checkers, supervisors, historical manifests and dependencies remain unchanged.
 Mandatory baseline and affected race/fuzz checks remain required. All owned
 fixtures, guest images/keys/firmware, executable artifacts and processes must be
 removed or verified stopped. Full backend/eligibility, interruption/reboot/recovery,
 terminal resolution and authenticated operator workflows remain separate gates.
+
+## Source-bound results and pending gates
+
+Signed source `aa0794996733706c47cce45ad6e0aad3f4155d28`, based on accepted PR 83
+merge `36a919d78c03a5572087a7da8f6e6c9467189ef2`, passed all four new portable parents,
+mandatory `make check lint test secrets` with 122 tooling tests, nine affected
+race packages and all 38 selected fuzz targets. Focused review completed in
+191.718 seconds with verified worker teardown. See the
+[sanitized manifest](property-claim-source-manifest.json), explicitly marked
+`qualification_complete=false`.
+
+Both disposable state runs passed every original 819 control, 67-parent and
+1,876-codec gate plus all 19 live-state children, including the new claim-bound
+readers, actual root/foreign/closed/unsafe/orphan checks. Identical checksum-bound
+state artifacts were executed on both releases. The live-state groups completed
+in 4.90/5.60 seconds on 15.1/14.5. Their policy and physical inputs remain synthetic;
+this result qualifies the metadata readers, not the combined native observer.
+
+Two actual 15.1 pool attempts passed all eight new native claim children,
+including independent GEOM/system/kernel backing agreement, queued/applying
+collection with false eligibility, foreign/closed/reopened denials, exact data/
+metadata preservation and complete new-pool/mount restoration. Both enclosing
+parents nevertheless hit the unchanged five-minute deadline during later old
+postcondition/control tests. Neither qualifies the native pool gate. The first
+also overlapped portable review; the identical-source rerun without that review
+still timed out. Several unrelated active QEMU workloads were observed on the
+Mac; contention is a possible contributor, not a proven sole cause. No unrelated
+process was stopped. The 14.5 pool gate has not been attempted under that load.
+
+Both full current-source pool gates remain mandatory, with all 88 old assertions,
+old subgroups and original deadlines retained. Resume them when capacity is
+available; portable deep evidence may be reused only under the existing exact-input
+rules. Keep the PR draft until these native gates pass. No native observer or full
+backend acceptance, runtime eligibility or operator writer follows from partial
+results. The original failed policy-order fixture attempt and the original
+successful portable review retain their actual sources and are not relabeled.
+
+All 59 prior M2 manifests and 412 retained implementation/tool/fixture paths were
+verified byte-identical. Shared runners, selectors, checkers, supervisors,
+dependencies, policies and the old pool assertions/deadline remain unchanged.
+Every attempted guest and owned executable/image/key/firmware/device backing was
+removed or verified stopped; host base/runtime hashes were preserved. The two
+unexecuted development cross-builds were removed and supply no qualification.
+`make lab-status` verified no active or unverified Horvium-owned session. Repository
+Actions remain disabled; no persistent service was enabled. Unrelated workloads
+are outside Horvium's teardown claim.

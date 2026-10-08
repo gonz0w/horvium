@@ -267,8 +267,9 @@ and the complete root backend remain open; runtime writes stay disabled.
 
 The [claim-bound native observer](docs/testing/M2/property-claim-source.md) joins
 that original claim to fresh properties, providers, system use and metadata backing.
-Qualification is pending; all observations remain ineligible and runtime writes
-remain disabled.
+Portable and native state-reader gates passed. Full native pool qualification
+is pending after deadline failures; all observations remain ineligible and runtime
+writes remain disabled. See the [partial evidence](docs/testing/M2/property-claim-source-manifest.json).
 
 ## Agreed direction
 
