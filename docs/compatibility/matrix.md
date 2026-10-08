@@ -3,6 +3,13 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [original-claim control binding](../testing/M2/property-claim-control.md) adds
+root-only exact applying acknowledgement verification and a private fixed-control
+binding to the same claim's independent native source. Fresh state and pool gates
+on both pinned releases plus focused portable review are pending. Observers keep
+false eligibility; full backend live session/recovery/global clearance and runtime
+writes remain disabled/pending. No hardware or production support claim follows.
+
 M2 [original-claim successor metadata](../testing/M2/property-claim-successor.md)
 permits exact observing/reconciliation/success appends only after an acknowledgement
 by the original root claim. Stored/raw-published bytes cannot reconstruct that

@@ -31,6 +31,9 @@ func TestNativePropertyControlUIDChild(t *testing.T) {
 	if !errors.Is(propertySetNative(context.Background(), storage.PropertyIntent{}), ErrPermission) {
 		t.Fatal("native control bypassed kernel UID")
 	}
+	if c, err := newPropertyClaimControl(nil, storage.PropertyJob{}, nil); c != nil || !errors.Is(err, ErrPermission) {
+		t.Fatal("claim control binding bypassed kernel UID", err)
+	}
 }
 
 // Test-only reexecuted fixture: a normally exiting parent leaves a child alive

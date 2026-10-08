@@ -1153,3 +1153,21 @@ Matching metadata/digests grant no native outcome/quiescence/eligibility authori
 Existing claim readiness/readers and native pool/control sources are unchanged;
 retain their historical source-bound evidence without relabeling. Full backend,
 actual effects/interruption/recovery, transport and M2 acceptance remain separate.
+
+## Original claim control binding amendment
+
+The [contract](../../testing/M2/property-claim-control.md) requires eleven portable
+applying-lineage cases and eighteen binding denial cases plus exact record/native/
+baseline/false-eligibility and repeated live/metadata checks. Both disposable state
+releases must retain all historical gates and add nineteen acknowledged-applying
+read checks, actual non-root denial, unchanged metadata/lineage/lock and teardown.
+Both complete pool suites retain the original eight claim children; six nested
+control-binding cases add raw/clearance/ledger denial, one actual quota effect,
+repeat refusal, independent false-eligibility postcondition and unchanged applying
+records. Use only declared separate metadata/data fixtures, explicit synthetic
+capture/live clearance and armed exact quota-source restoration. The actual
+non-root control child must refuse the factory. Shared checkers/selectors, old
+controls/guard cases, all deadlines and historical manifests stay unchanged.
+Require fresh affected native suites plus focused portable review and verified
+teardown. This does not qualify full backend session/recovery/global authority,
+effect-death/reboot/recovery, operator workflows or M2 acceptance.

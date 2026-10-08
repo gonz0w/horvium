@@ -294,6 +294,11 @@ portable review and all 38 new native metadata cases passed on both FreeBSD targ
 with complete teardown. Native outcome authority and runtime storage writes remain
 disabled; see its [manifest](docs/testing/M2/property-claim-successor-manifest.json).
 
+The [private original-claim control binding](docs/testing/M2/property-claim-control.md)
+requires an exact applying acknowledgement and fresh native checks through that
+same root claim. Qualification is pending. The complete backend must still supply
+live session/clock/recovery/global clearance; runtime storage writes stay disabled.
+
 ## Agreed direction
 
 - FreeBSD and ZFS; BSD-3-Clause license.

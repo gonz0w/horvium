@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 87; claim-bound observer pool gates qualified; original-claim applying metadata and worker uncertainty subsets qualified; successor metadata qualified/in review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 88; original-claim control binding qualification pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -991,3 +991,16 @@ and 38 bounded fuzz targets. Both native state releases passed all 38 new childr
 23 applying/19 live-state children, actual UID denial and every historical gate,
 with identical artifacts and complete teardown. Maintainer acceptance is pending;
 all 63 prior manifests retain their original sources.
+
+## Original claim fixed-control binding
+
+PR 88 accepted exact original-claim successor metadata at merged source
+`c77923a96842b16c6c34199ebdc79279e0757e23`; its evidence retains executed source
+`7af2f1cda24179f4e9f8ceebc4a20503dc6c9c25`. The next
+[private control binding](../../testing/M2/property-claim-control.md) verifies exact
+successful applying acknowledgement and fresh independent native baseline through
+that same root claim. Its mandatory live-clearance callback remains a complete
+original-backend obligation, with only explicit disposable fixtures supplying it.
+Portable failing-first lineage/binding tests pass; both complete affected native
+state/pool suites and focused portable review remain pending. No runtime writer,
+backend/session/recovery/global authority or assembled M2 acceptance is enabled.
