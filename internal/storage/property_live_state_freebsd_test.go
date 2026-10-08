@@ -205,7 +205,7 @@ func nativePropertyLiveState(t *testing.T, anchor string) {
 				if mode == "unsafe-mode" && os.Chmod(target, 0644) != nil {
 					t.Fatal("owned mode")
 				}
-				if mode == "orphan" && os.WriteFile(filepath.Join(path, ".job-live-cut"), []byte("owned orphan"), 0600) != nil {
+				if mode == "orphan" && os.WriteFile(filepath.Join(path, ".job-"+strings.Repeat("c", 32)+".tmp"), []byte("owned orphan"), 0600) != nil {
 					t.Fatal("owned orphan")
 				}
 				if mode == "policy-drift" {
