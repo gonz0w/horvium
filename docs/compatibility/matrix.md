@@ -3,6 +3,14 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [session-bound property client](../testing/M2/property-client.md) adds private
+original-session phase checks around a kernel-authenticated one-operation client.
+Five portable parents/nineteen children, all 74 transport cases on disposable
+FreeBSD 15.1 and 14.5, baseline/134 tooling tests, eleven race packages and 49
+bounded fuzz targets passed with verified teardown; see the
+[manifest](../testing/M2/property-client-manifest.json). Native authenticated runtime/
+backend acceptance remains separate; fixture callbacks qualify client phase cuts.
+
 M2 [admitted property exchange](../testing/M2/property-admitted.md) composes the
 original admission lease and typed peer. Both disposable FreeBSD 15.1 and 14.5
 passed all 60 transport cases. Four portable behavioral parents, baseline/133

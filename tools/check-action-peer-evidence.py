@@ -26,13 +26,20 @@ ADMITTED_CASES = {'review', 'submit', 'refused', 'wrong-uid', 'root-denied',
                   'duplicate-lease', 'fixtures-teardown'}
 
 
+SESSION_CASES = {'review', 'submit', 'duplicate', 'refused', 'before-hello',
+                 'after-hello', 'after-ready', 'before-request', 'after-request',
+                 'after-reply', 'wrong-scope', 'invalid-selection',
+                 'request-deadline', 'fixtures-teardown'}
+
+
 def validate(text):
     if len(text) > 1 << 20 or re.search(r'(?m)^(?:FAIL|\s*--- (?:FAIL|SKIP):)', text):
         raise ValueError('peer evidence failed, skipped or oversized')
     for parent, marker, cases in (
             ('TestNativeActionPeer', 'ACTION_PEER_RESULT', CASES),
             ('TestNativePropertyExchange', 'PROPERTY_EXCHANGE_RESULT', EXCHANGE_CASES),
-            ('TestNativeAdmittedPropertyExchange', 'ADMITTED_PROPERTY_RESULT', ADMITTED_CASES)):
+            ('TestNativeAdmittedPropertyExchange', 'ADMITTED_PROPERTY_RESULT', ADMITTED_CASES),
+            ('TestNativeSessionPropertyClient', 'SESSION_PROPERTY_RESULT', SESSION_CASES)):
         if len(re.findall(r'(?m)^--- PASS: ' + parent + r' \([0-9.]+s\)$', text)) != 1:
             raise ValueError('one actual native parent required: ' + parent)
         children = re.findall(r'(?m)^\s+--- PASS: ' + parent + r'/([^ ]+) \([0-9.]+s\)$', text)
