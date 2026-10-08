@@ -57,10 +57,19 @@ renewal, and no read/retry after failed writes. `FuzzActionNegotiation` exercise
 both frame readers with bounded 516-byte inputs and accepted-request round trips.
 The successful exchange tests first failed against denying contract stubs.
 
-Focused review and FreeBSD compilation are recorded with their actual source in
-the qualification manifest added after execution. Existing native peer, metadata,
+Focused review and FreeBSD compilation retain their actual source in the
+[qualification manifest](action-negotiation-manifest.json). Existing native peer, metadata,
 collector/control, fixtures and shared tools remain unchanged; unrelated QEMU
 suites are not rerun for these unregistered codecs. Compilation is not execution.
 Actual negotiated kernel peer binding, root recovery/global launch, typed job
 operations, operator workflows and assembled M2 qualification remain open.
 M1 Safari/VoiceOver stays pending; Actions stay disabled.
+
+Executed partial evidence: signed source `e449b8c005f2f4635f471305a6e2cf8ab11a1100` passed
+all twelve parents/57 children and three fuzz seeds, baseline/125 tooling tests,
+eight affected race packages and all twelve bounded fuzz targets in 67.911
+seconds. Both admin/helper FreeBSD test packages compiled without execution;
+checksummed artifacts were removed. Review supervisors and all 612 owned
+sessions stopped with verified teardown; Actions remain disabled. All 68
+historical M2 manifests and 386 existing Go/tooling inputs are byte-identical
+to the merged base. See the [manifest](action-negotiation-manifest.json).

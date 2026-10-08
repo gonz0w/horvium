@@ -321,7 +321,9 @@ remain disabled.
 
 The [application-context negotiation](docs/testing/M2/action-negotiation.md)
 adds bounded version-2 hello/ready codecs with exact request/context correlation
-and original live-session checks around the exchange. They grant no operation
+and original live-session checks around the exchange. Focused local review and
+unexecuted FreeBSD compilation passed with verified teardown; see the
+[evidence](docs/testing/M2/action-negotiation-manifest.json). They grant no operation
 permission and are unregistered; the helper remains inventory-only. Kernel-peer,
 recovery/global launch and typed mutation operations still precede runtime writes.
 
