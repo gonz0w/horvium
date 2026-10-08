@@ -1048,6 +1048,8 @@ original review/admission/claim, exact applying publication, one fixed native
 control, independent facts and witnessed observing/success acknowledgement.
 Require mandatory external authentication/recovery/global clearance, supplied
 only by fixtures; no runtime consumer exists. Portable tests pass; both affected
-native releases and focused review are pending. No hold release, new schema,
+native releases at revised bounded fixture source and final focused review are
+pending. The initial native attempt exhausted the original claim context; new
+scenarios now run in separate serial 135-second fixtures. No hold release, new schema,
 transaction/backing/guard change, shared tool change or historical evidence
 relabeling. Operator writes and complete root/recovery/M2 gates remain open.

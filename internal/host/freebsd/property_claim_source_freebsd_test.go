@@ -42,6 +42,27 @@ func TestNativePropertyClaimCollection(t *testing.T) {
 		t.Fatal("owned claim fixture teardown missing")
 	}
 	t.Log("CLAIM_PROPERTY_COLLECTION_RESULT fixture_teardown=pass")
+	// New integration scenarios own separate fixtures/135-second contexts; the
+	// original claim source assertions retain their unchanged deadline and names.
+	for _, phase := range []string{"success-and-denials", "gaps"} {
+		t.Run("backend-"+phase, func(t *testing.T) {
+			ctx, cancel := context.WithTimeout(context.Background(), 135*time.Second)
+			defer cancel()
+			cleaned := false
+			nativePropertySystemFixtureWithClaim(t, ctx, func(name string, ok bool) {
+				if name != "claim_fixture_teardown" || !ok || cleaned {
+					t.Fatal("owned backend fixture restoration", name)
+				}
+				cleaned = true
+			}, func(p storage.Policy, ordinary string, disk inventory.Provider) {
+				nativePropertyClaimFixturePhase(t, ctx, p, ordinary, disk, phase)
+			})
+			if !cleaned {
+				t.Fatal("owned backend fixture teardown missing")
+			}
+			t.Log("BACKEND_PROPERTY_COLLECTION_RESULT " + phase + "_fixture_teardown=pass")
+		})
+	}
 }
 
 // The existing system fixture supplies its enrolled data mirror and one of its
@@ -49,6 +70,10 @@ func TestNativePropertyClaimCollection(t *testing.T) {
 // ZFS pool under /root, with actual native physical backing on both guests.
 // No root filesystem flags or product provisioning behavior change.
 func nativePropertyClaimFixture(t *testing.T, ctx context.Context, policy storage.Policy, ordinary string, metadataDisk inventory.Provider) {
+	nativePropertyClaimFixturePhase(t, ctx, policy, ordinary, metadataDisk, "")
+}
+
+func nativePropertyClaimFixturePhase(t *testing.T, ctx context.Context, policy storage.Policy, ordinary string, metadataDisk inventory.Provider, phase string) {
 	t.Helper()
 	t.Run("native-claim-source", func(t *testing.T) {
 		command := func(c context.Context, path string, args ...string) (string, error) {
@@ -167,113 +192,130 @@ func nativePropertyClaimFixture(t *testing.T, ctx context.Context, policy storag
 				t.Fatal("real empty-store prerequisite", err)
 			}
 		})
-		safety, err := NewPropertySafetySource(state)
-		if err != nil {
-			t.Fatal(err)
-		}
-		p, o, err := safety.Collect(ctx, policy.PoolGUID)
-		if err != nil || !o.Complete || o.Eligible {
-			t.Fatal("real safety baseline", err)
-		}
-		at := time.Now().UTC().Truncate(time.Millisecond)
-		capture := o
-		capture.Eligible = true // Only test capture; sources never return this.
-		plan, err := storage.Build(at, "native-claim-fixture", p, capture, storage.Intent{FilesystemGUID: policy.Scopes[0].GUID, Property: storage.Quota, Value: "2097152"})
-		if err != nil {
-			t.Fatal(err)
-		}
-		intent, err := plan.CapturePropertyIntent(at, "native-claim-fixture", p, capture)
-		if err != nil {
-			t.Fatal(err)
-		}
-		review := intent.Review()
-		job, err := storage.BindPropertyJob(storage.Job{ID: strings.Repeat("a", 64), Intent: storage.JobIntent{PlanID: review.ID, SubmissionID: strings.Repeat("c", 64), PoolGUID: review.PoolGUID, PolicyRevision: review.PolicyRevision, Change: review.Intent}, History: []storage.JobTransition{{Revision: 1, At: uint64(at.Add(time.Millisecond).UnixMilli()), State: storage.JobQueued, Reason: "admitted"}}}, intent)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if ack, duplicate, err := state.PublishPropertySubmission(job); err != nil || duplicate || !reflect.DeepEqual(ack, job) {
-			t.Fatal("real new submission", err)
-		}
-		claim, err := state.ClaimPropertyState(job.Job().ID)
-		if err != nil {
-			t.Fatal(err)
-		}
-		source, err := NewPropertyClaimSource(claim)
-		if err != nil {
-			t.Fatal(err)
-		}
-		collect := func(t *testing.T, expected storage.PropertyJob) {
-			t.Helper()
-			got, p, o, err := source.Collect(ctx, job.Job().ID)
-			if err != nil || !reflect.DeepEqual(got, expected) || !o.Complete || o.Eligible {
-				t.Fatal("real claimed collection", err)
-			}
-			a, err := got.AssessObservation(p, o)
-			if err != nil || !a.BaselineMatches || a.PostconditionMatches {
-				t.Fatal("real baseline", err)
-			}
-			if _, err := storage.Build(time.Now(), "native-no-authority", p, o, review.Intent); !errors.Is(err, storage.ErrUnavailable) {
-				t.Fatal("native eligibility promoted", err)
-			}
-		}
-		t.Run("queued", func(t *testing.T) { collect(t, job) })
-		applying, err := storage.TransitionPropertyJob(job, storage.JobApplying, job.Job().History[0].At+1, "launch-intent", "")
-		if err != nil || state.PublishPropertyJob(applying, 1) != nil {
-			t.Fatal("owned applying publication", err)
-		}
-		t.Run("applying", func(t *testing.T) {
-			collect(t, applying) // Retain the original raw-applying read-only assertion.
-			nativePropertyClaimControlBinding(t, ctx, claim, applying, anchor, policy)
-			nativePropertyBackend(t, ctx, anchor, policy)
-		})
-		t.Run("foreign-selection", func(t *testing.T) {
-			j, p, o, err := source.Collect(ctx, strings.Repeat("d", 64))
-			if err == nil || !reflect.DeepEqual(j, storage.PropertyJob{}) || !reflect.DeepEqual(p, storage.Policy{}) || !reflect.DeepEqual(o, storage.Observation{}) {
-				t.Fatal("foreign selection retained projections", err)
-			}
-		})
-		applyingBytes, err := storage.EncodePropertyJob(applying)
-		if err != nil {
-			t.Fatal(err)
-		}
-		t.Run("closed", func(t *testing.T) {
-			if state.Close() != nil {
-				t.Fatal("lease close")
-			}
-			j, p, o, err := source.Collect(ctx, job.Job().ID)
-			if err == nil || !reflect.DeepEqual(j, storage.PropertyJob{}) || !reflect.DeepEqual(p, storage.Policy{}) || !reflect.DeepEqual(o, storage.Observation{}) {
-				t.Fatal("closed lease returned projections", err)
-			}
-		})
-		t.Run("reopened", func(t *testing.T) {
-			state, err = storage.OpenStateDirectory(path)
+		if phase != "" {
+			nativePropertyBackend(t, ctx, anchor, policy, phase)
+			t.Run("preserved", func(t *testing.T) {
+				actual, err := os.ReadFile(filepath.Join(path, "ownership-"+policy.PoolGUID+".json"))
+				if err != nil || !bytes.Equal(actual, policyBytes) {
+					t.Fatal("backend backing policy changed", err)
+				}
+				actual, err = os.ReadFile(sentinelPath)
+				if err != nil || !bytes.Equal(actual, sentinel) || raw() != original {
+					t.Fatal("backend data fixture changed", err)
+				}
+				entries, err := os.ReadDir(anchor)
+				if err != nil || len(entries) != 1 || entries[0].Name() != "state" {
+					t.Fatal("backend metadata subdirectories remain", err)
+				}
+			})
+		} else {
+			safety, err := NewPropertySafetySource(state)
 			if err != nil {
 				t.Fatal(err)
 			}
-			if c, err := state.ClaimPropertyState(job.Job().ID); err == nil || c != nil {
-				t.Fatal("reopened job restored claim", err)
+			p, o, err := safety.Collect(ctx, policy.PoolGUID)
+			if err != nil || !o.Complete || o.Eligible {
+				t.Fatal("real safety baseline", err)
 			}
-			if ack, duplicate, err := state.PublishPropertySubmission(job); err != nil || !duplicate || !reflect.DeepEqual(ack, applying) {
-				t.Fatal("retained metadata retry", err)
+			at := time.Now().UTC().Truncate(time.Millisecond)
+			capture := o
+			capture.Eligible = true // Only test capture; sources never return this.
+			plan, err := storage.Build(at, "native-claim-fixture", p, capture, storage.Intent{FilesystemGUID: policy.Scopes[0].GUID, Property: storage.Quota, Value: "2097152"})
+			if err != nil {
+				t.Fatal(err)
 			}
-			if c, err := state.ClaimPropertyState(job.Job().ID); err == nil || c != nil {
-				t.Fatal("retry restored claim", err)
+			intent, err := plan.CapturePropertyIntent(at, "native-claim-fixture", p, capture)
+			if err != nil {
+				t.Fatal(err)
 			}
-		})
-		t.Run("preserved", func(t *testing.T) {
-			actual, err := os.ReadFile(filepath.Join(path, "job-"+job.Job().ID+".json"))
-			if err != nil || !bytes.Equal(actual, applyingBytes) {
-				t.Fatal("job changed", err)
+			review := intent.Review()
+			job, err := storage.BindPropertyJob(storage.Job{ID: strings.Repeat("a", 64), Intent: storage.JobIntent{PlanID: review.ID, SubmissionID: strings.Repeat("c", 64), PoolGUID: review.PoolGUID, PolicyRevision: review.PolicyRevision, Change: review.Intent}, History: []storage.JobTransition{{Revision: 1, At: uint64(at.Add(time.Millisecond).UnixMilli()), State: storage.JobQueued, Reason: "admitted"}}}, intent)
+			if err != nil {
+				t.Fatal(err)
 			}
-			actual, err = os.ReadFile(filepath.Join(path, "ownership-"+policy.PoolGUID+".json"))
-			if err != nil || !bytes.Equal(actual, policyBytes) {
-				t.Fatal("policy changed", err)
+			if ack, duplicate, err := state.PublishPropertySubmission(job); err != nil || duplicate || !reflect.DeepEqual(ack, job) {
+				t.Fatal("real new submission", err)
 			}
-			actual, err = os.ReadFile(sentinelPath)
-			if err != nil || !bytes.Equal(actual, sentinel) || raw() != original {
-				t.Fatal("data fixture changed", err)
+			claim, err := state.ClaimPropertyState(job.Job().ID)
+			if err != nil {
+				t.Fatal(err)
 			}
-		})
+			source, err := NewPropertyClaimSource(claim)
+			if err != nil {
+				t.Fatal(err)
+			}
+			collect := func(t *testing.T, expected storage.PropertyJob) {
+				t.Helper()
+				got, p, o, err := source.Collect(ctx, job.Job().ID)
+				if err != nil || !reflect.DeepEqual(got, expected) || !o.Complete || o.Eligible {
+					t.Fatal("real claimed collection", err)
+				}
+				a, err := got.AssessObservation(p, o)
+				if err != nil || !a.BaselineMatches || a.PostconditionMatches {
+					t.Fatal("real baseline", err)
+				}
+				if _, err := storage.Build(time.Now(), "native-no-authority", p, o, review.Intent); !errors.Is(err, storage.ErrUnavailable) {
+					t.Fatal("native eligibility promoted", err)
+				}
+			}
+			t.Run("queued", func(t *testing.T) { collect(t, job) })
+			applying, err := storage.TransitionPropertyJob(job, storage.JobApplying, job.Job().History[0].At+1, "launch-intent", "")
+			if err != nil || state.PublishPropertyJob(applying, 1) != nil {
+				t.Fatal("owned applying publication", err)
+			}
+			t.Run("applying", func(t *testing.T) {
+				collect(t, applying) // Retain the original raw-applying read-only assertion.
+				nativePropertyClaimControlBinding(t, ctx, claim, applying, anchor, policy)
+			})
+			t.Run("foreign-selection", func(t *testing.T) {
+				j, p, o, err := source.Collect(ctx, strings.Repeat("d", 64))
+				if err == nil || !reflect.DeepEqual(j, storage.PropertyJob{}) || !reflect.DeepEqual(p, storage.Policy{}) || !reflect.DeepEqual(o, storage.Observation{}) {
+					t.Fatal("foreign selection retained projections", err)
+				}
+			})
+			applyingBytes, err := storage.EncodePropertyJob(applying)
+			if err != nil {
+				t.Fatal(err)
+			}
+			t.Run("closed", func(t *testing.T) {
+				if state.Close() != nil {
+					t.Fatal("lease close")
+				}
+				j, p, o, err := source.Collect(ctx, job.Job().ID)
+				if err == nil || !reflect.DeepEqual(j, storage.PropertyJob{}) || !reflect.DeepEqual(p, storage.Policy{}) || !reflect.DeepEqual(o, storage.Observation{}) {
+					t.Fatal("closed lease returned projections", err)
+				}
+			})
+			t.Run("reopened", func(t *testing.T) {
+				state, err = storage.OpenStateDirectory(path)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if c, err := state.ClaimPropertyState(job.Job().ID); err == nil || c != nil {
+					t.Fatal("reopened job restored claim", err)
+				}
+				if ack, duplicate, err := state.PublishPropertySubmission(job); err != nil || !duplicate || !reflect.DeepEqual(ack, applying) {
+					t.Fatal("retained metadata retry", err)
+				}
+				if c, err := state.ClaimPropertyState(job.Job().ID); err == nil || c != nil {
+					t.Fatal("retry restored claim", err)
+				}
+			})
+			t.Run("preserved", func(t *testing.T) {
+				actual, err := os.ReadFile(filepath.Join(path, "job-"+job.Job().ID+".json"))
+				if err != nil || !bytes.Equal(actual, applyingBytes) {
+					t.Fatal("job changed", err)
+				}
+				actual, err = os.ReadFile(filepath.Join(path, "ownership-"+policy.PoolGUID+".json"))
+				if err != nil || !bytes.Equal(actual, policyBytes) {
+					t.Fatal("policy changed", err)
+				}
+				actual, err = os.ReadFile(sentinelPath)
+				if err != nil || !bytes.Equal(actual, sentinel) || raw() != original {
+					t.Fatal("data fixture changed", err)
+				}
+			})
+		}
 		if !cleanup() {
 			t.Fatal("owned backing cleanup")
 		}

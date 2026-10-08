@@ -71,16 +71,19 @@ execution is implemented.
 
 Eight portable parents cover the complete durable sequence, eight admission
 denials, ten phase cuts, nine original-binding/outcome refusals, 32 concurrent
-worker attempts, unsupported-host refusal three final clearance/clock/root cuts and twelve lost/foreign/invalid
+worker attempts, unsupported-host refusal, three final clearance/clock/root cuts and twelve lost/foreign/invalid
 acknowledgements. Preserve existing coordinator, execution, handoff and control
 cases and all selected bounded fuzz targets. The initial complete-sequence test
 must fail against the denying contract stub. Its initial unexecuted fixture-field
 compile error is separate from the behavioral red result.
 
 The existing independent claim fixture supplies the already declared data mirror
-and separate nonboot ZFS metadata disk under `/root`. Add a nested backend group
-inside its applying child; preserve all eight original claim children, six prior
-control-binding children, every historical pool/guard assertion and all deadlines.
+and separate nonboot ZFS metadata disk under `/root`. After the original claim
+fixture closes, run two new serial groups: success/launch denials and response
+gaps. Each recreates its own owned data/system/metadata fixtures under a fresh
+135-second context. Preserve the original 135-second claim fixture, all eight
+original children, six prior control-binding children, every historical pool/guard
+assertion and existing time limits; do not append the extra work to its context.
 Create only owned private metadata subdirectories with the explicit fixture policy;
 do not claim enrollment provisioning or restored-state clearance from this setup.
 Use test-only external clearance, actual original coordinator/handoff, actual fresh
@@ -107,7 +110,8 @@ subdirectory and preserve policy bytes, stable lock inode, complete original raw
 properties/sentinel/mount/backing. Both complete pool suites, portable review and
 all guest/artifact/supervisor cleanup must pass. Shared checker/selector/supervisor
 bytes stay unchanged; the source-bound record additionally requires all twelve new
-children exactly once and every prior PASS name/count, without treating old-only
+children and both groups/backing/preservation/teardown cases exactly once, plus
+every prior PASS name/count, without treating old-only
 runner success as this integration's qualification.
 
 ## Remaining gates
@@ -121,3 +125,15 @@ facilities remain unchanged and keep their historical source-bound state evidenc
 this PR reruns the affected complete pool suites rather than unrelated native
 state fixtures. Complete mutation/recovery/resource/continuity and UI gates remain
 required before operator exposure.
+
+## Initial native attempt
+
+Signed source `601fcfe8ad621c70bf10575603345f34a953e448` passed portable review,
+but its first 15.1 native run remains unqualified. Real success, applying-before-
+effect, independent postcondition, holds and both launch-denial cases passed;
+appending all new scenarios to the original claim context exhausted its unchanged
+135-second deadline before the response gaps. The owned guest, disks, metadata,
+artifacts and supervisor were cleaned with verified base/runtime preservation.
+The repair separates newly added scenarios into their own bounded fixtures,
+without changing product behavior, old test deadlines or shared tooling. Subsequent
+native evidence must identify its actual revised fixture source.

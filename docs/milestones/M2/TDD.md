@@ -1223,7 +1223,11 @@ quota-source facts, holds/no replay, native clearance/closed-lease denial and lo
 applying/success acks after actual publication. Require actual non-root factory
 refusal, unchanged fixed runner/guard, test-only clearance explicitly named, exact
 GUID-checked quota restoration, all metadata/policy/lock/sentinel/mount/backing
-preservation and complete owned teardown. Keep shared runner/checkers and deadlines
+preservation and complete owned teardown. Use separate serial success/denial and
+response-gap fixtures, each with its own 135-second context after the original
+claim fixture closes; retain all historical PASS names and require both new groups,
+backing/preservation/teardown names and twelve new children once. Keep shared
+runner/checkers and existing deadlines
 unchanged; old-only runner success cannot qualify the new group. Native metadata
 transactions/fixtures outside the pool suite are unchanged and retain historical
 source-bound evidence. Full authenticators/executor-death/reboot/recovery/global
