@@ -18,7 +18,7 @@ func submissionPayload() string {
 	return `{"version":2,"request_id":"property-1","operation":"property-submit","data":{"pool_guid":"123","plan_id":"` + strings.Repeat("a", 64) + `","submission_id":"` + strings.Repeat("b", 64) + `"}}`
 }
 func TestPropertyRequestRoundTrip(t *testing.T) {
-	for _, intent := range []storage.Intent{{"456", storage.Quota, "4096"}, {"456", storage.RefQuota, "none"}, {"18446744073709551615", storage.Quota, "18446744073709551615"}, {"456", storage.Compression, "off"}, {"456", storage.Compression, "lz4"}} {
+	for _, intent := range []storage.Intent{{FilesystemGUID: "456", Property: storage.Quota, Value: "4096"}, {FilesystemGUID: "456", Property: storage.RefQuota, Value: "none"}, {FilesystemGUID: "18446744073709551615", Property: storage.Quota, Value: "18446744073709551615"}, {FilesystemGUID: "456", Property: storage.Compression, Value: "off"}, {FilesystemGUID: "456", Property: storage.Compression, Value: "lz4"}} {
 		t.Run(string(intent.Property)+"-"+intent.Value, func(t *testing.T) {
 			var b bytes.Buffer
 			if err := WritePropertyReview(&b, "property-1", "123", intent); err != nil {
@@ -122,12 +122,12 @@ func TestPropertyRequestInvalidSelections(t *testing.T) {
 				}
 			}
 			var b bytes.Buffer
-			if WritePropertyReview(&b, "property-1", guid, storage.Intent{"456", storage.Quota, "1"}) == nil || b.Len() != 0 {
+			if WritePropertyReview(&b, "property-1", guid, storage.Intent{FilesystemGUID: "456", Property: storage.Quota, Value: "1"}) == nil || b.Len() != 0 {
 				t.Fatal("invalid pool emitted")
 			}
 		})
 	}
-	for _, intent := range []storage.Intent{{"0", storage.Quota, "1"}, {"01", storage.Quota, "1"}, {"456", "mountpoint", "/fixture"}, {"456", storage.Quota, "0"}, {"456", storage.Quota, "1G"}, {"456", storage.RefQuota, "01"}, {"456", storage.Quota, "18446744073709551616"}, {"456", storage.Compression, "gzip"}, {"456", storage.Compression, "inherit"}, {"456", storage.Compression, "none"}} {
+	for _, intent := range []storage.Intent{{FilesystemGUID: "0", Property: storage.Quota, Value: "1"}, {FilesystemGUID: "01", Property: storage.Quota, Value: "1"}, {FilesystemGUID: "456", Property: "mountpoint", Value: "/fixture"}, {FilesystemGUID: "456", Property: storage.Quota, Value: "0"}, {FilesystemGUID: "456", Property: storage.Quota, Value: "1G"}, {FilesystemGUID: "456", Property: storage.RefQuota, Value: "01"}, {FilesystemGUID: "456", Property: storage.Quota, Value: "18446744073709551616"}, {FilesystemGUID: "456", Property: storage.Compression, Value: "gzip"}, {FilesystemGUID: "456", Property: storage.Compression, Value: "inherit"}, {FilesystemGUID: "456", Property: storage.Compression, Value: "none"}} {
 		t.Run(string(intent.Property)+"-"+intent.Value+"-"+intent.FilesystemGUID, func(t *testing.T) {
 			var b bytes.Buffer
 			if WritePropertyReview(&b, "property-1", "123", intent) == nil || b.Len() != 0 {
@@ -204,7 +204,7 @@ func TestPropertyRequestBoundsAndOwnership(t *testing.T) {
 	if _, err := readPropertyRequest(bytes.NewReader(frame(reviewPayload())), "../fixture"); err == nil {
 		t.Fatal("invalid expected correlation")
 	}
-	intent := storage.Intent{"456", storage.Quota, "1"}
+	intent := storage.Intent{FilesystemGUID: "456", Property: storage.Quota, Value: "1"}
 	if WritePropertyReview(nil, "property-1", "123", intent) == nil || WritePropertySubmission(nil, "property-1", "123", strings.Repeat("a", 64), strings.Repeat("b", 64)) == nil {
 		t.Fatal("nil writer")
 	}
