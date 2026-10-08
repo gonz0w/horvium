@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 88; original-claim control binding qualification pending; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 88; original-claim control binding subset qualified/in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -989,7 +989,7 @@ Signed source `7af2f1cda24179f4e9f8ceebc4a20503dc6c9c25` passed all 18 portable
 lineage cases, mandatory baseline with 125 tooling tests, 9 affected race packages
 and 38 bounded fuzz targets. Both native state releases passed all 38 new children,
 23 applying/19 live-state children, actual UID denial and every historical gate,
-with identical artifacts and complete teardown. Maintainer acceptance is pending;
+with identical artifacts and complete teardown. PR 88 accepted this subset;
 all 63 prior manifests retain their original sources.
 
 ## Original claim fixed-control binding
@@ -1001,6 +1001,17 @@ PR 88 accepted exact original-claim successor metadata at merged source
 successful applying acknowledgement and fresh independent native baseline through
 that same root claim. Its mandatory live-clearance callback remains a complete
 original-backend obligation, with only explicit disposable fixtures supplying it.
-Portable failing-first lineage/binding tests pass; both complete affected native
-state/pool suites and focused portable review remain pending. No runtime writer,
-backend/session/recovery/global authority or assembled M2 acceptance is enabled.
+Portable failing-first lineage/binding tests pass. Both complete state releases
+passed at signed source `277afb1ef7e139d61ae930a720f064e92dc5ed86`; its first
+pool attempt remained unqualified after the fixture's quota restoration failed.
+The fixture-only correction at `d5ca26c6a814b63eb88057623a33fb70cbc901d3` passed
+both complete pool releases, all six new binding cases and exact quota-source/
+metadata/sentinel preservation. Every state/build input remains byte-identical,
+so that evidence retains its actual source without redundant state reruns.
+Focused review passed 125 tooling tests, nine race packages and 38 bounded fuzz
+targets in 194.118 seconds. All nineteen new state cases, every historical gate,
+64 prior manifests and unchanged tools/readers/publishers/deadlines are retained.
+All owned teardown passed; see the
+[manifest](../../testing/M2/property-claim-control-manifest.json). No runtime
+writer, complete backend/session/recovery/global authority or assembled M2
+acceptance is enabled. Maintainer review remains pending.

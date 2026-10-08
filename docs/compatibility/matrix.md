@@ -5,10 +5,18 @@ validation are separate. Refresh exact versions in each active research manifest
 
 M2 [original-claim control binding](../testing/M2/property-claim-control.md) adds
 root-only exact applying acknowledgement verification and a private fixed-control
-binding to the same claim's independent native source. Fresh state and pool gates
-on both pinned releases plus focused portable review are pending. Observers keep
-false eligibility; full backend live session/recovery/global clearance and runtime
-writes remain disabled/pending. No hardware or production support claim follows.
+binding to the same claim's independent native source. Both pinned releases passed
+all nineteen new state and six nested native control cases, retaining every old
+state/pool/claim/control gate and exact quota-source/sentinel/metadata preservation.
+State evidence retains signed source `277afb1ef7e139d61ae930a720f064e92dc5ed86`;
+the fixture-only restoration correction and fresh pool evidence use
+`d5ca26c6a814b63eb88057623a33fb70cbc901d3`, with unchanged state inputs. The
+initial pool failure remains unqualified/source-bound. Focused portable review
+passed 125 tooling tests, nine race packages and 38 bounded fuzz targets, with
+complete guest/supervisor teardown. See the
+[manifest](../testing/M2/property-claim-control-manifest.json). Observers retain
+false eligibility; complete backend live session/recovery/global clearance remains
+open and runtime writes stay disabled. No hardware or production support follows.
 
 M2 [original-claim successor metadata](../testing/M2/property-claim-successor.md)
 permits exact observing/reconciliation/success appends only after an acknowledgement

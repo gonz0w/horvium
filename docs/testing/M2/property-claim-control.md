@@ -1,6 +1,6 @@
 # M2 original-claim native property-control binding
 
-Date: 2026-10-08. Status: qualification pending; runtime writes disabled.
+Date: 2026-10-08. Status: private binding subset qualified; maintainer review pending; runtime writes disabled.
 Authority: [approved EDD](../../milestones/M2/EDD.md),
 [Test Design](../../milestones/M2/TDD.md), [ADR 0006](../../adr/0006-storage-ownership-and-plans.md),
 [issue 19](https://github.com/gonz0w/horvium/issues/19).
@@ -106,3 +106,47 @@ make lab-status
 The complete original backend/live authority, actual effect interruption/death/
 reboot/recovery, serialized admission, operator workflows and assembled M2 acceptance
 remain separate. Historical manifests retain their original executed sources.
+
+## Source-bound results
+
+Signed source `277afb1ef7e139d61ae930a720f064e92dc5ed86`, based on PR 88 merge
+`c77923a96842b16c6c34199ebdc79279e0757e23`, passed both complete state suites:
+nineteen new acknowledgement cases once per target, real non-root denial, all
+19 live/23 applying/38 successor children, 819 historical state/backing assertions,
+67 parents and 1,876 codec children. The new groups took 3.86/3.62 seconds on
+15.1/14.5; full qualification took 91.799/76.991 seconds. These actual metadata
+operations retain synthetic intent/system inputs and establish no launch authority.
+
+The fixture-only correction at signed source
+`d5ca26c6a814b63eb88057623a33fb70cbc901d3` passed both complete pool suites:
+all six new nested binding cases, actual UID denial, all 88 old assertions, eight
+original claim children and every prior control/guard/assessment/postcondition case.
+Actual original-claim quota control, independent postcondition, retained applying
+bytes, denied raw/clearance/drift controls and exact default-source restoration
+passed. New groups took 11.73/10.81 seconds; full qualification took 240.108/197.336
+seconds. Timings are lab measurements, not hardware/NAS throughput evidence.
+
+Every state-package/build input remains byte-identical between those two signed
+sources. State evidence keeps its actual executed source; only the affected pool
+fixture was rerun. Both releases used identical artifacts within each suite; all
+2,026 prior state PASS occurrences and all 69 prior pool PASS occurrences were
+retained per target, with exactly the declared new children/group. Shared checkers,
+selectors, supervisors, deadlines, original readers/publishers/readiness/control
+code and all 64 historical manifests remain unchanged. The failed initial pool
+attempt remains unqualified with verified teardown in the
+[sanitized manifest](property-claim-control-manifest.json).
+
+All five new portable parents, eleven lineage cases and eighteen binding denials
+passed. Focused review `490w669p` at corrected source passed mandatory
+`make check lint test secrets`, 125 tooling tests, nine affected race packages and
+all 38 bounded fuzz targets in 194.118 seconds. Both review supervisors completed
+with clean process groups. All guests, owned fixture backings, images/keys/variables/
+binaries and process groups were removed or verified stopped; base/runtime hashes
+were preserved. Lab status found no active or unverified owned sessions, and
+Actions remain disabled. Development cross-builds were unexecuted and removed.
+See the manifest for exact artifacts, actual versions, hashes and retained sources.
+
+Only fixture callbacks/capture supplied live clearance. This qualifies the private
+metadata/native binding; full original backend session/clock/recovery/global
+authority, actual interruption/recovery, outcome/hold release, operator workflows,
+assembled M2 and the pending M1 manual gate remain separate.

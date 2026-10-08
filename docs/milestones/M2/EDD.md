@@ -583,3 +583,8 @@ global/pool launch clearance and owns exactly one control object. The private
 factory does not implement or reconstruct that authority; disposable callbacks
 are test-only. Existing control attempt/root/expiry/guard bounds remain unchanged.
 No runtime writer, transport, durable outcome, replay or hold release is enabled.
+
+The private binding's native and portable subset passed on both pinned releases;
+see its [source-bound manifest](../../testing/M2/property-claim-control-manifest.json).
+Only the disposable callback/capture supplies live clearance. The complete
+original backend and its authority remain unqualified.

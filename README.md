@@ -296,7 +296,9 @@ disabled; see its [manifest](docs/testing/M2/property-claim-successor-manifest.j
 
 The [private original-claim control binding](docs/testing/M2/property-claim-control.md)
 requires an exact applying acknowledgement and fresh native checks through that
-same root claim. Qualification is pending. The complete backend must still supply
+same root claim. Both native releases and focused portable review passed with
+verified teardown; see the [evidence](docs/testing/M2/property-claim-control-manifest.json).
+The complete backend must still supply
 live session/clock/recovery/global clearance; runtime storage writes stay disabled.
 
 ## Agreed direction

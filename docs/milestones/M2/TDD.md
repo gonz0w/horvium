@@ -1171,3 +1171,11 @@ controls/guard cases, all deadlines and historical manifests stay unchanged.
 Require fresh affected native suites plus focused portable review and verified
 teardown. This does not qualify full backend session/recovery/global authority,
 effect-death/reboot/recovery, operator workflows or M2 acceptance.
+
+The [manifest](../../testing/M2/property-claim-control-manifest.json) records both
+state releases at their actual implementation source and both repaired pool runs
+at the fixture correction, with unchanged state inputs and no relabeling. All
+nineteen/six new native cases, every old gate and mandatory/focused portable review
+passed with verified teardown. The initial failed quota-restoration attempt remains
+unqualified; only its fixture was corrected and rerun. Full authority/M2 gates
+remain open.
