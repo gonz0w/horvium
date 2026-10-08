@@ -1,6 +1,6 @@
 # M2 typed property request prerequisite
 
-Date: 2026-10-08. Status: implementation in review; qualification pending.
+Date: 2026-10-08. Status: implementation in review; partial portable evidence.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 Approved [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [original native peer](action-peer.md), [property coordinator](property-coordinator.md).
@@ -31,7 +31,7 @@ the original plan's exact pool, session, intent and current policy.
 
 The existing four-byte big-endian frame has a fixed 1024-byte JSON payload ceiling,
 checked before payload allocation/read, with 64-byte fields and depth at most
-three. Writers validate/bound inputs before allocation or output; failed/partial
+three. Writers validate/bound inputs before JSON framing or output; failed/partial
 I/O is returned without retry. The reader requires an independently supplied
 original negotiated request ID, consumes one frame and leaves later bytes alone.
 These are per-frame limits; the future owner still needs whole-exchange budgets,
@@ -62,5 +62,16 @@ peer, storage effects, fixtures, tooling and all historical evidence remain inta
 No QEMU rerun is required for a new kernel/native behavior claim because none is
 made here. Actual typed socket exchange, replies, root recovery/global launch,
 operator workflows and assembled M2 acceptance remain pending. M1 Safari/VoiceOver
-stays pending; Actions stay disabled. Source-bound evidence will be recorded after
-qualification.
+stays pending; Actions stay disabled. Source-bound evidence is recorded below.
+
+Executed partial evidence: signed source `2c5d89680f6be5be790c92c741f8f965f2f5bf2a` passed
+five behavioral parents/61 children and three fuzz seeds, baseline/131 tooling
+tests, 9 affected race packages and all 41 bounded fuzz targets in 227.424
+seconds. Helper/storage FreeBSD test packages compiled without execution and their
+checksummed artifacts were removed. All 623 owned sessions stopped with
+verified teardown; Actions remain disabled. All 70 historical M2 manifests and
+393 protected existing inputs retain actual bytes. Existing planner validation is
+unchanged apart from the new bounded syntax entry point. The earlier lint failure
+is explicitly unqualified and corrected before this fresh review. See the
+[source-bound manifest](property-requests-manifest.json). No native typed exchange,
+root recovery/global launch or assembled acceptance follows.
