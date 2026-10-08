@@ -1486,3 +1486,13 @@ continues; require the exact revocation error, zero metadata and terminal denial
 No credential/context output or fake UID/session/phase hook is permitted. Preserve
 source-bound red/green and complete cleanup; shared checker changes require fresh
 full portable review. Independent root/backend/recovery/global gates remain open.
+
+Signed source `ea63b809858c2edd9561197ad33d473879fa09ca` passed all 115 actual cases on both disposable FreeBSD
+releases, three portable parents/seventeen children, baseline/137 tooling tests
+and fresh full portable review (eleven race packages/all 49 bounded fuzz targets,
+218.33 seconds). All 678 owned sessions stopped with verified teardown;
+Actions remain disabled and all 78 historical manifests retain their bytes.
+Signed red evidence remains unqualified; see the
+[source-bound record](../../testing/M2/property-application-manifest.json).
+This is native application/client integration, with root operations still denied;
+independent root/backend/recovery/global/runtime gates remain open.

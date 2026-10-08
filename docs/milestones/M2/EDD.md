@@ -851,3 +851,13 @@ actual logout/Close before dial and during socket exchange. It registers no
 route or consumer; root typed requests remain denied. Correlation is still not
 independent root session authentication. Backend/policy/plan, recovery/global
 launch and durable admission remain separate mandatory gates.
+
+Signed source `ea63b809858c2edd9561197ad33d473879fa09ca` passed all 115 actual cases on both disposable FreeBSD
+releases, three portable parents/seventeen children, baseline/137 tooling tests
+and fresh full portable review (eleven race packages/all 49 bounded fuzz targets,
+218.33 seconds). All 678 owned sessions stopped with verified teardown;
+Actions remain disabled and all 78 historical manifests retain their bytes.
+Signed red evidence remains unqualified; see the
+[source-bound record](../../testing/M2/property-application-manifest.json).
+This is native application/client integration, with root operations still denied;
+independent root/backend/recovery/global/runtime gates remain open.

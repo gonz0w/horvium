@@ -1,6 +1,6 @@
 # M2 native application property client
 
-Date: 2026-10-08. Status: implementation qualification pending.
+Date: 2026-10-08. Status: partial qualification passed; maintainer review pending.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 Approved [EDD](../../milestones/M2/EDD.md) and [Test Design](../../milestones/M2/TDD.md).
 Partial M2-PRIV-001/M2-PLAN-001/M2-NATIVE-001 evidence.
@@ -49,3 +49,38 @@ This slice covers actual native application authority and client integration.
 Independent root authentication/backend/policy/plan, recovery/executor absence,
 global launch, durable admission, runtime workflows and full M2 acceptance remain
 open. It adds no root writer, storage effects, installable service or hardware claim.
+
+## Executed qualification
+
+Signed implementation `ea63b809858c2edd9561197ad33d473879fa09ca` passed three focused portable parents/seventeen
+children and all seven native parents/115 exact cases on both disposable FreeBSD
+15.1 and 14.5 amd64 guests. Both runs used the same checksummed test executable,
+with unchanged 80/90-second bounds. Baseline and 137 tooling tests passed;
+fresh full portable review ran eleven race packages and all 49 bounded fuzz
+checks in 218.33 seconds because the shared evidence checker changed.
+
+Signed denying-stub source `5915538c20ee727fa51677781856eaaefc771a25` failed the
+configured portable contract and eight new native assembly cases, while all 104
+older native cases passed. That failed record stays unqualified with its actual
+source, executable checksum and verified cleanup. No fixture or product transport
+correction was required for the successful implementation. The configured adapter
+bodies are unchanged from the merged predecessor, apart from their public names
+inside internal/admin and API comments; raw-socket adapters are unchanged.
+
+Actual login/action authority now reaches the native configured connection, and
+original-store logout/Close is synchronized before ready/reply continuation.
+The observed error is application revocation, not the root refusal. These are
+in-memory HTTP gate fixtures and actual kernel/socket exchanges; no installed
+HTTP service, independent root human/session authenticator, root backend or
+successful mutation is exercised. Submit is qualified through actual root denial;
+late logout/Close cases exercise review. Clock/expiry cases retain their separate
+portable authority evidence rather than a new native expiry claim.
+
+All 678 owned sessions stopped with verified teardown. Disposable fixture
+keys, executables and overlays were removed; cached base/runtime bytes were
+preserved. All 78 historical M2 manifests retain their bytes. Actions remain
+disabled. No persistent host service or operator storage was used. See the
+[source-bound manifest](property-application-manifest.json). The final documentation
+commit reruns baseline checks and can reuse only the successful original deep
+proof with identical implementation/verification inputs. This closes the tested
+native application/client assembly gap; the remaining gates above stay open.

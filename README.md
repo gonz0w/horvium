@@ -462,3 +462,11 @@ and [ports plan](packaging/ports/README.md). The selected remote is the private
 
 [BSD-3-Clause](LICENSE). Adapted BSD Cloud foundation tooling retains upstream
 attribution; see [NOTICE](NOTICE.md).
+
+The [native application property client](docs/testing/M2/property-application.md)
+joins actual original Auth/action authority to the configured Unix connection in
+an unprivileged FreeBSD fixture. Both pinned releases passed all 115 cases,
+including synchronized original-store logout/Close, with full local portable
+review and verified teardown. Root typed operations still receive denial;
+independent root/backend/recovery/global admission and runtime workflows remain
+open. See the [source-bound evidence](docs/testing/M2/property-application-manifest.json).

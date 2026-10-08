@@ -890,8 +890,14 @@ runtime write, recovery, attribution or durable-success claim is added.
 
 ## Native application property client integration
 
-Qualification pending on disposable FreeBSD 15.1/14.5 amd64 guests. The
+Partial qualification passed on disposable FreeBSD 15.1/14.5 amd64 guests: all
+115 actual transport/application cases and verified teardown on each release. The
 [native application contract](../testing/M2/property-application.md) exercises
 actual original Auth/action authority and configured client integration, including
 logout/Close during exchange. It adds no runtime route, root authentication,
 write eligibility, storage effects or hardware/performance support claim.
+
+Signed source `ea63b809858c2edd9561197ad33d473879fa09ca` passed baseline/137 tooling tests and fresh full
+portable race/fuzz review. All 78 historical manifests preserve their evidence;
+see the [source-bound record](../testing/M2/property-application-manifest.json).
+GitHub Actions remain disabled. M1 Safari/VoiceOver remains pending.

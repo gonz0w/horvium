@@ -1312,5 +1312,13 @@ PR 102 accepted the configured connection at merged source
 `07d144efe7829f44d9fcad3dd2333bc8a40288b0`. The next
 [native application client](../../testing/M2/property-application.md) joins actual
 original Auth/action authority to that connection in a dropped-UID child.
-Qualification is pending; root operations remain denied and runtime registration,
-independent root/backend/recovery/global gates remain open.
+Signed source `ea63b809858c2edd9561197ad33d473879fa09ca` passed three portable parents/seventeen children,
+all 115 native cases on both disposable FreeBSD releases, baseline/137 tooling
+tests and fresh full portable review (eleven race packages/all 49 bounded fuzz
+targets in 218.33 seconds). The signed red run failed the new assembly while
+retaining all 104 earlier cases; its evidence stays unqualified with verified
+cleanup. All 678 owned sessions stopped; Actions remain disabled and all 78
+historical manifests retain their bytes. See the
+[source-bound record](../../testing/M2/property-application-manifest.json).
+Root operations remain denied; independent root/backend/policy/plan,
+recovery/global launch, durable admission and runtime/M2 acceptance remain open.
