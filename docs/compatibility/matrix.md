@@ -7,7 +7,11 @@ M2 [native action-peer binding](../testing/M2/action-peer.md) requires actual
 kernel UID negotiation/lifetime evidence on both disposable targets. Private
 factories remain unregistered; runtime operations and full recovery/global launch
 are unavailable. No hardware or deployment support follows from this boundary.
-Actual evidence is recorded after execution.
+Signed source `4222e8f098114df8942fb4843f7e683ae9068ee7` passed all eighteen native
+cases on both pinned releases using one checksummed executable, four portable
+parents/nine children, baseline/131 tooling tests, all 11 race packages and
+46 fuzz targets. Actual kernel UID, lifetime, EOF/extra-data and owned teardown
+were verified; see the [manifest](../testing/M2/action-peer-manifest.json).
 
 M2 [application-context negotiation](../testing/M2/action-negotiation.md) is an
 unregistered portable codec/application prerequisite. Separate version-2 hello/ready

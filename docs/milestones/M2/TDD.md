@@ -1307,3 +1307,18 @@ existing inventory/negotiation tests. Shared runner/cleanup changes require fres
 full portable review; old suites retain their actual source-bound evidence and
 unchanged commands/deadlines. Record failing-first native stub evidence without
 qualifying it. Runtime operations/recovery/global launch/M2 acceptance remain open.
+
+Executed partial evidence: signed source `4222e8f098114df8942fb4843f7e683ae9068ee7` passed
+four new portable parents/nine children, baseline/131 tooling tests, all 11
+portable race packages and all 46 bounded fuzz targets in 223.465 seconds.
+The shared-tooling change selected a fresh full review. The same exact executable
+passed all eighteen native cases on FreeBSD 15.1-RELEASE-p3 and 14.5-RELEASE,
+in 33.303/36.617 seconds including boot/teardown. Wrong/root UID, nonroot helper
+despite repaired file ownership, EOF and extra-frame denials used actual kernel
+facilities. Every socket/fixture/artifact/guest/supervisor cleaned up; all
+618 owned sessions stopped. The earlier native stub run is explicitly
+unqualified with verified cleanup. All 69 historical M2 manifests and 383
+protected existing inputs retain actual bytes/sources; existing native peer/
+socket functions and old suite commands/deadlines are preserved. See the
+[manifest](../../testing/M2/action-peer-manifest.json). No runtime operation or full recovery/global
+launch/acceptance follows. Actions remain disabled.

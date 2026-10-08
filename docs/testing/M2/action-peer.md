@@ -1,6 +1,6 @@
 # M2 original native action-peer prerequisite
 
-Date: 2026-10-08. Status: implementation in review; native/full portable qualification pending.
+Date: 2026-10-08. Status: implementation in review; partial native/full portable evidence.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 Approved [EDD](../../milestones/M2/EDD.md), [Test Design](../../milestones/M2/TDD.md),
 [negotiation](action-negotiation.md), [local runner](../local-qualification.md).
@@ -12,7 +12,7 @@ Unix socket. The helper requires actual FreeBSD/root and the exact configured
 nonroot management peer UID before reading; the application requires its actual
 configured nonroot UID and kernel root peer before writing. Neither user fields,
 root clients, shared groups nor repaired socket file ownership can replace kernel
-identity. Constructors, decoded structs and strings cannot mint a live peer.
+identity. Zero/decoded structs and strings cannot mint a live peer.
 
 Use the existing strict version-2 hello/ready with the original request/context
 correlation. A fixed trusted timeout (positive, at most five minutes) bounds the
@@ -55,7 +55,22 @@ Shared tooling changes require fresh full portable review; both FreeBSD releases
 are tested serially. Native results retain actual source/artifact/guest/runtime
 hashes. Earlier suite evidence retains its original sources and deadlines.
 
-Actual red/green results and teardown are recorded after execution. Root policy,
+Actual source-bound red/green results and teardown are recorded below. Root policy,
 executor-death/reboot recovery/global launch, typed operations, operator workflows,
 assembled native safety/continuity/resources and M2 acceptance remain open.
 M1 Safari/VoiceOver stays pending and GitHub Actions stay disabled.
+
+Executed partial evidence: signed source `4222e8f098114df8942fb4843f7e683ae9068ee7` passed
+four new portable parents/nine children, baseline/131 tooling tests, all 11
+portable race packages and all 46 bounded fuzz targets in 223.465 seconds.
+The shared-tooling change selected a fresh full review. The same exact executable
+passed all eighteen native cases on FreeBSD 15.1-RELEASE-p3 and 14.5-RELEASE,
+in 33.303/36.617 seconds including boot/teardown. Wrong/root UID, nonroot helper
+despite repaired file ownership, EOF and extra-frame denials used actual kernel
+facilities. Every socket/fixture/artifact/guest/supervisor cleaned up; all
+618 owned sessions stopped. The earlier native stub run is explicitly
+unqualified with verified cleanup. All 69 historical M2 manifests and 383
+protected existing inputs retain actual bytes/sources; existing native peer/
+socket functions and old suite commands/deadlines are preserved. See the
+[manifest](action-peer-manifest.json). No runtime operation or full recovery/global
+launch/acceptance follows. Actions remain disabled.

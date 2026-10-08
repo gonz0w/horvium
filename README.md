@@ -319,9 +319,11 @@ pool suites passed with verified teardown; see the
 [evidence](docs/testing/M2/property-native-backend-manifest.json). Operator writes
 remain disabled.
 
-The [native action-peer boundary](docs/testing/M2/action-peer.md) is being added
-as a private kernel UID/connection-lifetime prerequisite. Runtime operations
-remain disabled; source-bound native qualification is recorded after execution.
+The [native action-peer boundary](docs/testing/M2/action-peer.md) passed all
+eighteen cases on both disposable FreeBSD targets plus full portable review.
+It remains a private, unregistered kernel UID/connection-lifetime prerequisite;
+runtime operations are disabled. See the
+[source-bound evidence](docs/testing/M2/action-peer-manifest.json).
 
 The [application-context negotiation](docs/testing/M2/action-negotiation.md)
 adds bounded version-2 hello/ready codecs with exact request/context correlation

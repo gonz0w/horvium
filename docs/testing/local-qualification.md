@@ -466,4 +466,10 @@ once. The [contract](M2/action-peer.md) and strict host checker distinguish actu
 execution from portable tests and prohibit missing/skipped/duplicate evidence.
 Both normal runner cleanup and controller-interruption fallback remove the new
 executable along with guest image/key/variables. Existing suite commands, cases
-and deadlines remain unchanged. The new suite is unqualified until executed.
+and deadlines remain unchanged. Signed source `4222e8f098114df8942fb4843f7e683ae9068ee7` passed all eighteen cases
+on both pinned guests in 33.303/36.617 seconds using one exact executable, with
+complete owned cleanup and base/runtime preservation; see the
+[manifest](M2/action-peer-manifest.json). Fresh full portable review passed 131
+tooling tests, all 11 race packages and 46 fuzz targets. The interruption
+regression removes the new executable; it supplies no new actual controller-death
+claim. Runtime operations and full recovery/global launch remain unavailable.
