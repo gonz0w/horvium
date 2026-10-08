@@ -1396,3 +1396,20 @@ releases. Shared checker/selector maintenance requires fresh full portable revie
 Test-first native and full portable qualification are pending. Actual backend
 admission, authenticated session assembly, recovery/global launch and M2 acceptance
 remain open.
+
+## Bounded property connection admission prerequisite
+
+The [connection contract](../../testing/M2/property-connections.md) is a portable
+T1 subset of M2-PRIV-001/M2-JOB-001. Use disposable actual Unix sockets to verify
+configuration bounds, exact original descriptor/context and no input consumption,
+zero/decoded/reconstructed/copied lease denial, overflow without bytes/waiting,
+closed/nil/duplicate descriptor denial, unrelated socket preservation and slot
+reuse. Concurrent last-slot attempts admit exactly one owner; concurrent release/
+shutdown closes all owned sockets. Parent cancellation, fixed deadline and an
+earlier parent deadline interrupt blocked I/O without phase/traffic renewal.
+Retired leases return no descriptor/context. Compile the helper tests for FreeBSD
+without execution, run baseline/affected race/fuzz and verify process teardown.
+Preserve existing kernel peer primitives, native fixtures/commands/deadlines and
+historical source-bound evidence. Socket closure supplies no worker/executor
+quiescence or storage authorization; actual native assembled safety/recovery/
+continuity/resources and full M2 acceptance remain open.

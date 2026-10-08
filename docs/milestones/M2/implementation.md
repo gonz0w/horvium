@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 96; owned property exchange in review; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 97; bounded property connection admission in review; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1214,3 +1214,15 @@ M2 manifests retain their bytes. See the
 [source-bound evidence](../../testing/M2/property-exchange-manifest.json).
 Actual backend admission, authenticated session assembly, recovery/global launch
 and M2 acceptance remain open.
+
+## Bounded property connection admission prerequisite
+
+PR 97 accepted the owned typed exchange at merged source
+`70d090d9c0ea84f514b1adba846b0368b96a59f9`. The next
+[connection contract](../../testing/M2/property-connections.md) bounds original
+accepted sockets and their lifetimes before future negotiation/workers. It is a
+private network accounting prerequisite, without listener/dispatcher, UID/session,
+durable admission or worker/native quiescence authority. Test-first portable and
+unexecuted FreeBSD compilation evidence are pending. Authenticated application
+assembly, original root/backend/recovery/global launch gates and full M2 acceptance
+remain open.

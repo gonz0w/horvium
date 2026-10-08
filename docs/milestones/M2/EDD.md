@@ -769,3 +769,19 @@ releases. Shared checker/selector maintenance requires fresh full portable revie
 Test-first native and full portable qualification are pending. Actual backend
 admission, authenticated session assembly, recovery/global launch and M2 acceptance
 remain open.
+
+## Bounded property connection admission prerequisite
+
+PR 97 accepted the owned typed exchange at merged source
+`70d090d9c0ea84f514b1adba846b0368b96a59f9`. The next
+[connection contract](../../testing/M2/property-connections.md) accounts for
+original accepted sockets before any future worker/negotiation. Trusted existing
+1–64 connection and positive at-most-five-minute timeout bounds apply. Overflow
+closes immediately without a queue or bytes. A private original lease retains the
+admission context/deadline; expiry/cancellation/shutdown retire the descriptor and
+slot without renewing it. Duplicate admission retires the earlier binding; decoded,
+copied or reconstructed leases cannot expose/retire the original. Transport slots
+are not durable job reservations or proof of native/worker quiescence. No listener,
+worker, dispatcher or root recovery/global launch gate is connected. Ordinary Go
+portable tests and unexecuted FreeBSD compilation qualify only this private
+accounting boundary; native assembly remains mandatory before runtime integration.

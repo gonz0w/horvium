@@ -3,6 +3,11 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+M2 [bounded property connection admission](../testing/M2/property-connections.md)
+is a private portable accounting boundary; qualification is pending. It grants no
+kernel/session/storage authority or worker/native quiescence. Native assembly
+remains unqualified and existing peer/exchange evidence retains its source.
+
 M2 [owned property exchange](../testing/M2/property-exchange.md) passed actual
 kernel UID, single-operation phase, cancellation/deadline and terminal EOF checks
 on disposable FreeBSD 15.1 and 14.5. All 44 peer/exchange cases, baseline/132
