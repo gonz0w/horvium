@@ -21,7 +21,7 @@ platforms/architectures are unavailable pending actual qualification.
 
 The private control reexecutes the same executable with two root-owned inherited
 anonymous pipes. Native pipes have zero links/permission bits and the creator
-UID; the channel checks root creation and read/write direction, never chmod or
+UID; both endpoints are bidirectional; the channel checks root creation and native access, never chmod or
 a pathname FIFO. Its internal entrypoint is not a management command or API. The
 request is a bounded canonical property intent, random exchange token and original
 boot identity. The child rejects non-root users, unsafe descriptors, malformed or
@@ -65,7 +65,7 @@ reports FIFO type without permissions, zero links and the creator credential UID
 chmod applies only to named pipes. Receipt SHA-256
 `322acd04a21eef65530c052cf9c9d5a75091507a31cd611d0b967e83fcbf137e`.
 The failing native cases remain unqualified; regression coverage accepts only
-actual anonymous pipe metadata and rejects named/foreign/wrong-direction channels.
+actual anonymous pipe metadata and rejects named/foreign/unsupported channels.
 
 A subsequent native attempt confirmed that inherited blocking descriptors also
 need explicit nonblocking setup before `os.NewFile` can support deadlines. The
@@ -73,3 +73,10 @@ pinned Go toolchain's `File.Fd` switches inherited pipe ends to blocking mode.
 The child now restores nonblocking mode before registering its channels with the
 poller; the existing actual ready/peer-loss cases cover this boundary. The failed
 attempt remains unqualified and all fixture teardown is retained.
+
+The next focused attempt exposed FreeBSD's bidirectional anonymous endpoints:
+both are created with `FREAD | FWRITE` and report `O_RDWR`. Descriptor positions
+and the original phase protocol define request/response roles. The same pinned
+pipe source establishes this native access mode; the boot/ABI fixture now checks
+both actual endpoints before starting an exchange. The failed attempt created no
+storage fixtures and remains unqualified.

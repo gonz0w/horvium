@@ -31,7 +31,7 @@ func nativeSupervisorFixtureProcess(args []string) (bool, int) {
 	if mode != "normal" && mode != "escaped" && mode != "normal-escaped" && mode != "residual" {
 		return true, 1
 	}
-	request, response := supervisorPipe(3, true), supervisorPipe(4, false)
+	request, response := supervisorPipe(3), supervisorPipe(4)
 	if request == nil || response == nil {
 		return true, 1
 	}
@@ -120,6 +120,20 @@ func TestNativeExecutorSupervision(t *testing.T) {
 		output := recoveryCommand(t, "/root/work/.tools/executor-observer", "abi")
 		if strings.TrimSpace(output) != "SUPERVISOR_NATIVE_ABI status=80 kill=80 pid=0 acquire=2 statuscmd=4 killcmd=6" || unsafe.Sizeof(nativeReaperStatus{}) != 80 || unsafe.Sizeof(nativeReaperKill{}) != 80 {
 			t.Fatal("unsupported native reaper layout", output)
+		}
+		r, w, err := os.Pipe()
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer r.Close()
+		defer w.Close()
+		for _, f := range []*os.File{r, w} {
+			var st unix.Stat_t
+			fd := f.Fd()
+			flags, e := unix.FcntlInt(fd, unix.F_GETFL, 0)
+			if unix.Fstat(int(fd), &st) != nil || e != nil || !validSupervisorPipe(uint32(st.Mode), st.Uid, uint64(st.Nlink), flags) {
+				t.Fatal("actual root anonymous pipe provenance", st.Mode, st.Uid, st.Nlink, flags, e)
+			}
 		}
 		fmt.Print(output)
 	})

@@ -100,7 +100,7 @@ func drainNativeReaper() error {
 	}
 	return ErrUnavailable
 }
-func supervisorPipe(fd uintptr, read bool) *os.File {
+func supervisorPipe(fd uintptr) *os.File {
 	unix.CloseOnExec(int(fd))
 	// exec.Cmd exposes inherited File.Fd values in blocking mode. Restore
 	// nonblocking before NewFile so the original channel supports bounded deadlines.
@@ -113,7 +113,7 @@ func supervisorPipe(fd uintptr, read bool) *os.File {
 	}
 	var st unix.Stat_t
 	flags, err := unix.FcntlInt(uintptr(fd), unix.F_GETFL, 0)
-	if unix.Fstat(int(fd), &st) != nil || err != nil || !validSupervisorPipe(uint32(st.Mode), st.Uid, uint64(st.Nlink), flags, read) {
+	if unix.Fstat(int(fd), &st) != nil || err != nil || !validSupervisorPipe(uint32(st.Mode), st.Uid, uint64(st.Nlink), flags) {
 		f.Close()
 		return nil
 	}
@@ -131,7 +131,7 @@ func PropertySupervisorProcess(args []string) (bool, int) {
 	if len(args) != 1 || os.Getuid() != 0 || os.Geteuid() != 0 {
 		return true, 1
 	}
-	request, response := supervisorPipe(3, true), supervisorPipe(4, false)
+	request, response := supervisorPipe(3), supervisorPipe(4)
 	if request == nil || response == nil {
 		return true, 1
 	}
