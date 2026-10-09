@@ -1,6 +1,6 @@
 # Private property executor supervision
 
-Status: Implemented prerequisite; native evidence pending. Date: 2026-10-08.
+Status: Native prerequisite qualified; awaiting maintainer review; runtime writes disabled. Date: 2026-10-08.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [Accepted mechanism](../../milestones/M2/property-recovery-mechanism.md),
 [ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md).
@@ -35,7 +35,8 @@ The isolated supervisor acquires native reaper ownership before spawning the bas
 guard. Its own kernel status must identify it as owner. It waits the actual guard,
 kills/reaps residual descendants through its own kernel subtree and requires zero
 children/descendants. Unexpected residual descendants are killed/reaped but still
-withhold normal completion, even if the utility itself reported success. It repeats boot identity before reporting completion through
+withhold normal completion, even if the utility itself reported success.
+It repeats boot identity before reporting completion through
 its original channel. The parent requires that exact report, actual supervisor
 wait and terminal EOF. An interrupted, expired, unavailable or failed exchange
 never returns success or establishes quiescence. No saved PID or global process
@@ -67,9 +68,9 @@ chmod applies only to named pipes. Receipt SHA-256
 The failing native cases remain unqualified; regression coverage accepts only
 actual anonymous pipe metadata and rejects named/foreign/unsupported channels.
 
-A subsequent native attempt confirmed that inherited blocking descriptors also
-need explicit nonblocking setup before `os.NewFile` can support deadlines. The
-pinned Go toolchain's `File.Fd` switches inherited pipe ends to blocking mode.
+Source inspection during a subsequent failed attempt found that inherited blocking
+descriptors also need explicit nonblocking setup before `os.NewFile` can support deadlines.
+The pinned Go toolchain's `File.Fd` switches inherited pipe ends to blocking mode.
 The child now restores nonblocking mode before registering its channels with the
 poller; the existing actual ready/peer-loss cases cover this boundary. The failed
 attempt remains unqualified and all fixture teardown is retained.
@@ -80,3 +81,35 @@ and the original phase protocol define request/response roles. The same pinned
 pipe source establishes this native access mode; the boot/ABI fixture now checks
 both actual endpoints before starting an exchange. The failed attempt created no
 storage fixtures and remains unqualified.
+
+## Executed evidence and limits
+
+Signed source `71f8a1197a0c6540287425ace4a143b0d901b12f` passed the full focused
+fixture on 15.1-RELEASE-p3 and 14.5-RELEASE using the same prebuilt Go executable.
+Each run contains 41 child results plus the standalone post-reboot boot check:
+42 cases across five parent tests. Actual native headers confirmed the 80-byte
+status/kill layouts and fixed self-reaper commands. Both endpoints' native pipe
+metadata, ten supervisor cases, all seventeen prior recovery cases and fourteen
+retained control/guard children passed. Real guest reboot changed the raw kernel
+boot identity; unchanged durable history, holds and fixture contents survived.
+Every guest, backing disk, inherited channel fixture, test binary and host process
+was removed/stopped with verified base/runtime preservation and teardown.
+
+The [sanitized manifest](property-supervisor-manifest.json) records actual versions,
+source/binary/log hashes, native layouts, four unqualified attempts and fresh full
+portable review (144 tooling tests, eleven race packages, all 49 bounded fuzz
+targets). Five new portable behavioral parents cover boot-owner lifetime, bounded
+canonical requests, phase/identity binding and native pipe provenance. The original
+working-tree boot rejection tests failed before implementation. All 81 historical
+M2 manifests remain byte-identical. Documentation-only final review repeats the
+cheap baseline and reuses successful deep evidence only for exact non-prose inputs.
+Actions remain disabled; qualification installs no host service or background job.
+
+These are disposable amd64 fixture results, not a production support/resource or
+file-client claim. Seeded enrollment and fixture-only clearance remain test inputs.
+The independent journal/census, original startup/provisioning leases, restore
+provenance and shared global owner still need implementation and actual native
+cut/restore tests. Supervisor-first death remains uncertain and requires explicit
+owned-fixture cleanup; a replacement runtime helper cannot infer quiescence.
+Active property-command/kernel interruption is still untested. The read-only root
+listener, retained pool holds and pending M1 manual accessibility gate are unchanged.

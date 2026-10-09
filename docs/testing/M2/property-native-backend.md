@@ -51,7 +51,9 @@ control setup fails, allowing durable reconciliation without a native launch.
 The fixed control repeats original live authority, trusted clearance, exact
 applying metadata and independent native baseline at its final callback. All
 existing allowlist, GUID/address, expiry, ten-second/4 KiB guard and descendant
-quiescence rules remain unchanged. An error never proves quiescence or authorizes
+quiescence rules are retained. The current private control additionally consumes
+the [original boot/reaper supervisor](property-supervisor.md); its evidence is separate
+from the historical backend run below. An error never proves quiescence or authorizes
 replay. The handoff retires original launch authority when the control returns.
 
 After a normal quiescent return, independently recollect through the same original

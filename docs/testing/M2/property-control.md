@@ -37,6 +37,12 @@ executable is `/sbin/zfs`; no-limit remains the explicit accepted `none` value.
 
 ## Guard acknowledgement and uncertainty
 
+The current private consumer adds the [original native supervisor](property-supervisor.md)
+and requires its exact completion report, owned subtree cleanup and actual wait.
+The separate [manifest](property-supervisor-manifest.json) qualifies the retained
+actual controls on both targets; the PR 81 evidence below keeps its original source.
+Runtime launch remains disabled.
+
 Use the accepted fixed FreeBSD base timeout/reaper with a ten-second command
 deadline and 4 KiB combined stdout/stderr budget. Its ordinary successful return
 waits for the child and reaper descendants, rather than inferring quiescence from

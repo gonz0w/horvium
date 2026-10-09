@@ -28,7 +28,8 @@ coexist with a surviving original executor. The
 specifies a dedicated native supervisor, independent execution journal and
 conservative restart/restore gates. PR 107 accepted its design and test plan;
 the [private supervisor](docs/testing/M2/property-supervisor.md) is the first
-implementation prerequisite, with native qualification pending.
+implementation prerequisite. Its 42 focused cases passed on both disposable
+FreeBSD targets with verified teardown; the runtime remains denied.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 

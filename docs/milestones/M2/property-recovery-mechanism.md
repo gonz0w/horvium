@@ -261,3 +261,14 @@ explicit recovery/hold resolution before shared HTML/CLI exposure. Keep every
 existing denial until its consumer and native gates pass. The accepted six
 runtime delivery gates still govern the assembled property workflow; other M2
 operations, M1 manual accessibility and the NAS release remain separate.
+
+
+## First implemented prerequisite
+
+The [original boot/reaper property supervisor](../../testing/M2/property-supervisor.md)
+implements the first private consumer. Its source-bound amd64 gates passed on both
+pinned disposable targets, including native header layouts, raw boot/clock checks,
+original channels, escaped/nested descendants, death ordering, retained actual
+controls and reboot/readback. Independent journal/provisioning/startup/global and
+active kernel-interruption gates above remain open. This partial qualification
+neither enables the root listener nor satisfies M2-RUNTIME-001 acceptance.

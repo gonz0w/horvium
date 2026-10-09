@@ -17,12 +17,15 @@ evidence remains bound to its actual source; startup clearance, shared global la
 independent workers and explicit hold resolution still need implementation and
 their listed gates. The accepted
 [recovery mechanism](../milestones/M2/property-recovery-mechanism.md) uses native
-boot identity, reaper supervision and an independent journal. Its source inspection
-is not execution evidence: boot-ID/reaper acquisition, journal/provisioning and
-same-boot/restore behavior still require native qualification. The [private supervisor prerequisite](../testing/M2/property-supervisor.md)
-integrates boot identity and reaper supervision with private property control;
-native evidence is pending and the runtime remains denied. No support claim
-follows from accepting or implementing the mechanism.
+boot identity, reaper supervision and an independent journal. Journal/provisioning
+and startup/restore behavior remain unqualified. The [private supervisor prerequisite](../testing/M2/property-supervisor.md)
+passed 42 focused cases across five parents on each disposable FreeBSD/amd64 target
+(15.1-RELEASE-p3 and 14.5-RELEASE), using the same signed-source executable. Raw boot
+identity, clock independence, original pipe exchange, nested/escaped containment,
+death ordering, retained controls and actual reboot/preservation passed with verified
+teardown. Its [manifest](../testing/M2/property-supervisor-manifest.json) retains four
+unqualified attempts. The runtime remains denied; other architectures and production
+resource/client/recovery behavior are not qualified by these fixtures.
 
 M2 [configured property client](../testing/M2/property-dial.md) adds trusted socket
 policy and one original dial/operation deadline. Three portable parents/seventeen

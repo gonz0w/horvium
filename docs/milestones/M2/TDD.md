@@ -39,7 +39,10 @@ acceptance row below is satisfied by this experiment. The accepted
 failing-first and actual native boot-ID/reaper/journal/restore gates; PR 107 accepted that design/test plan at source
 `02a995e5681f38b4a40141402dd2d0a9f0244933`. The
 [private supervisor](../../testing/M2/property-supervisor.md) implements the first
-boot/reaper consumer; native execution evidence remains pending.
+boot/reaper consumer; 42 focused cases across five parents passed on both pinned
+FreeBSD/amd64 fixtures. This includes retained actual controls, raw boot change,
+clock independence and verified teardown; it does not satisfy journal/startup/global
+or active kernel-interruption gates. See its [manifest](../../testing/M2/property-supervisor-manifest.json).
 
 | Requirement | Test ID / observable assertion | Level/environment |
 |---|---|---|
