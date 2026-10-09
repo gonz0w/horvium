@@ -112,6 +112,51 @@ RESULT += 'STATE_BACKING_RESULT TestNativeExecutionCensus filesystem=zfs softupd
 RESULT = RESULT.replace('STATE_ACL_RESULT ', 'STATE_ACL_RESULT '+' '.join(c+'=pass' for c in EXECUTION_CENSUS_ACL_CASES)+' ')
 PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
 
+OLD_JOURNAL_FREE_PASS=PASS
+OLD_JOURNAL_FREE_RESULT=RESULT
+JOURNAL_STORE_CASES=['empty_existing_lock', 'second_writer_denial', 'no_lock_initialization', 'missing_record_denial', 'copied_close_denial', 'copied_read_denial', 'copied_publish_denial', 'noninitial_denial', 'initial_publication', 'canonical_bytes', 'private_file', 'independent_read', 'no_reinitialize', 'separate_namespace', 'generation_gap_denial', 'pending_publication', 'pending_readback', 'real_ledger_publication', 'actual_after_census', 'confirmed_publication', 'native_pending_publication', 'replacement_inode', 'old_descriptor_preserved', 'distinct_metadata_pending', 'real_ledger_successor', 'metadata_preserves_native', 'both_domains_readback', 'restore_barrier_publication', 'no_ordinary_rearm', 'stable_lock', 'no_temporary', 'close', 'closed_denial', 'reopen_observation', 'reopen_no_authority', 'active_reopen_no_authority', 'serialized_generation', 'symlink_denial', 'hardlink_denial', 'fifo_denial', 'mode_denial', 'owner_denial', 'damage_denial', 'oversize_denial', 'unknown_denial', 'orphan_denial', 'write_failure', 'syncFile_failure', 'closeFile_failure', 'verify_failure', 'rename_failure', 'syncDirectory_failure', 'cleanup_failure', 'lost-ack_failure', 'after-ack-drift_failure', 'late-record_failure', 'late-lock_failure', 'syncDirectory_visible', 'lost-ack_visible', 'after-ack-drift_visible', 'identical_inode_replacement', 'read_namespace_drift', 'inert_denial', 'foreign_preservation', 'fixture_teardown']
+JOURNAL_CUT_CASES=['before_publish_barrier', 'before_publish_writer_denial', 'before_publish_kill_reaped', 'before_publish_lock_reacquired', 'before_publish_lock_preserved', 'before_publish_record_preserved', 'before_publish_temporary_state', 'before_publish_lease_close', 'before_publish_no_reconstructed_writer', 'staged_before_write_barrier', 'staged_before_write_writer_denial', 'staged_before_write_kill_reaped', 'staged_before_write_lock_reacquired', 'staged_before_write_lock_preserved', 'staged_before_write_record_preserved', 'staged_before_write_temporary_state', 'staged_before_write_lease_close', 'staged_before_write_no_reconstructed_writer', 'after_write_barrier', 'after_write_writer_denial', 'after_write_kill_reaped', 'after_write_lock_reacquired', 'after_write_lock_preserved', 'after_write_record_preserved', 'after_write_temporary_state', 'after_write_lease_close', 'after_write_no_reconstructed_writer', 'after_file_sync_barrier', 'after_file_sync_writer_denial', 'after_file_sync_kill_reaped', 'after_file_sync_lock_reacquired', 'after_file_sync_lock_preserved', 'after_file_sync_record_preserved', 'after_file_sync_temporary_state', 'after_file_sync_lease_close', 'after_file_sync_no_reconstructed_writer', 'before_rename_barrier', 'before_rename_writer_denial', 'before_rename_kill_reaped', 'before_rename_lock_reacquired', 'before_rename_lock_preserved', 'before_rename_record_preserved', 'before_rename_temporary_state', 'before_rename_lease_close', 'before_rename_no_reconstructed_writer', 'after_rename_barrier', 'after_rename_writer_denial', 'after_rename_kill_reaped', 'after_rename_lock_reacquired', 'after_rename_lock_preserved', 'after_rename_record_preserved', 'after_rename_temporary_state', 'after_rename_lease_close', 'after_rename_no_reconstructed_writer', 'after_directory_sync_barrier', 'after_directory_sync_writer_denial', 'after_directory_sync_kill_reaped', 'after_directory_sync_lock_reacquired', 'after_directory_sync_lock_preserved', 'after_directory_sync_record_preserved', 'after_directory_sync_temporary_state', 'after_directory_sync_lease_close', 'after_directory_sync_no_reconstructed_writer', 'after_return_barrier', 'after_return_writer_denial', 'after_return_kill_reaped', 'after_return_lock_reacquired', 'after_return_lock_preserved', 'after_return_record_preserved', 'after_return_temporary_state', 'after_return_lease_close', 'after_return_no_reconstructed_writer', 'foreign_preservation', 'fixture_teardown']
+JOURNAL_ACL_CASES=['posix_journal_directory_denial', 'posix_journal_directory_restored_observation', 'posix_journal_lock_denial', 'posix_journal_lock_restored_observation', 'posix_journal_record_denial', 'posix_journal_record_restored_observation', 'posix_journal_inheritance_denial', 'posix_journal_inheritance_restored_observation', 'nfs4_journal_directory_denial', 'nfs4_journal_directory_restored_observation', 'nfs4_journal_lock_denial', 'nfs4_journal_lock_restored_observation', 'nfs4_journal_record_denial', 'nfs4_journal_record_restored_observation', 'nfs4_journal_inheritance_denial', 'nfs4_journal_inheritance_restored_observation', 'journal_kernel_grant', 'journal_kernel_uid_denial']
+JOURNAL_FS_CASES=['ufs_journal_publication', 'journal_full_denial', 'journal_full_preservation', 'journal_full_cleanup', 'journal_readonly_open_denial', 'journal_readonly_preservation']
+TESTS += ['TestNativeExecutionJournalStore','TestNativeExecutionJournalCuts','TestExecutionJournalNamespace','TestExecutionJournalInitialBoundary']
+BACKING_TESTS += ['TestNativeExecutionJournalStore','TestNativeExecutionJournalCuts']
+SUBTESTS.update({'TestExecutionJournalNamespace':15,'TestExecutionJournalInitialBoundary':6})
+RESULT += 'EXECUTION_JOURNAL_STORE_RESULT '+' '.join(c+'=pass' for c in JOURNAL_STORE_CASES)+'\n'
+RESULT += 'EXECUTION_JOURNAL_CUTS_RESULT '+' '.join(c+'=pass' for c in JOURNAL_CUT_CASES)+'\n'
+RESULT += ''.join('STATE_BACKING_RESULT '+name+' filesystem=zfs softupdates=off teardown=pass\n' for name in ['TestNativeExecutionJournalStore','TestNativeExecutionJournalCuts'])
+ACL_CASES += JOURNAL_ACL_CASES
+PUBLISH_FS_CASES += JOURNAL_FS_CASES
+SOFTUPDATES_CASES += ['journal_denial']
+RESULT = RESULT.replace('STATE_ACL_RESULT ', 'STATE_ACL_RESULT '+' '.join(c+'=pass' for c in JOURNAL_ACL_CASES)+' ')
+RESULT = RESULT.replace('OWNERSHIP_PUBLISH_FS_RESULT ', 'OWNERSHIP_PUBLISH_FS_RESULT '+' '.join(c+'=pass' for c in JOURNAL_FS_CASES)+' ')
+RESULT = RESULT.replace('STATE_SOFTUPDATES_RESULT '+' '.join(c+'=pass' for c in SOFTUPDATES_CASES[:-1]), 'STATE_SOFTUPDATES_RESULT '+' '.join(c+'=pass' for c in SOFTUPDATES_CASES))
+PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
+
+class ExecutionJournalEvidenceTests(unittest.TestCase):
+    def module(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m);return m
+
+    def test_previous_evidence_cannot_qualify_journal_persistence(self):
+        with self.assertRaises(ValueError):self.module().validate(OLD_JOURNAL_FREE_PASS+OLD_JOURNAL_FREE_RESULT)
+        self.assertEqual(self.module().JOURNAL_STORE_CASES,set(JOURNAL_STORE_CASES))
+        self.assertEqual(self.module().JOURNAL_CUT_CASES,set(JOURNAL_CUT_CASES))
+        self.module().validate(PASS+RESULT)
+
+    def test_every_journal_control_parent_and_backing_is_required(self):
+        m=self.module()
+        for marker,cases in [('EXECUTION_JOURNAL_STORE_RESULT',JOURNAL_STORE_CASES),('EXECUTION_JOURNAL_CUTS_RESULT',JOURNAL_CUT_CASES)]:
+            line=marker+' '+' '.join(c+'=pass' for c in cases)
+            for case in cases:
+                for value in ['',case+'=fail',case+'=pass '+case+'=pass']:
+                    bad=marker+' '+' '.join(value if c==case else c+'=pass' for c in cases)
+                    with self.subTest(case=case,value=value),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(line,bad))
+        for case in JOURNAL_ACL_CASES+JOURNAL_FS_CASES+['journal_denial']:
+            with self.subTest(case=case),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(case+'=pass',''))
+        for parent in ['TestNativeExecutionJournalStore','TestNativeExecutionJournalCuts','TestExecutionJournalNamespace','TestExecutionJournalInitialBoundary']:
+            with self.subTest(parent=parent),self.assertRaises(ValueError):m.validate((PASS+RESULT).replace('--- PASS: '+parent+' (1.0s)\n',''))
+        for parent in ['TestNativeExecutionJournalStore','TestNativeExecutionJournalCuts']:
+            with self.subTest(parent=parent),self.assertRaises(ValueError):m.validate((PASS+RESULT).replace('STATE_BACKING_RESULT '+parent+' filesystem=zfs softupdates=off teardown=pass\n',''))
+
 class ExecutionCensusEvidenceTests(unittest.TestCase):
     def module(self):
         m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m);return m
