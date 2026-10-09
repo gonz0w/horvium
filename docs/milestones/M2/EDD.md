@@ -25,6 +25,9 @@ native supervisor, journal ordering and restart/restore boundary accepted in PR 
 the first [private boot/reaper consumer](../../testing/M2/property-supervisor.md)
 passed both focused native gates. Independent journal/startup/global clearance and
 assembled runtime gates remain required.
+The [portable journal core](../../testing/M2/execution-journal.md) specifies the
+bounded internal record and census framing for that owner. Its decoded metadata
+and successful successor checks carry no native or durable authority.
 
 ```mermaid
 flowchart TD

@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; prerequisites accepted through PR 104; runtime contract accepted in PR 105; research observations accepted in PR 106; mechanism accepted in PR 107; private supervisor qualified for review; runtime gates open; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; prerequisites accepted through PR 104; runtime contract accepted in PR 105; research observations accepted in PR 106; mechanism accepted in PR 107; private supervisor accepted in PR 108; journal core implementing; runtime gates open; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1407,3 +1407,17 @@ prose evidence updates reuse its exact non-prose inputs while rerunning baseline
 checks. This prerequisite supplies no durable journal, startup/restore clearance,
 shared global owner, operator recovery, active kernel-cut qualification or runtime
 write workflow. The root listener still denies every operation; M2 remains open.
+
+
+## Independent journal record and census core
+
+PR 108 accepted original boot/reaper supervision at merged source
+`a8a96403b40922b4751493d837f5a6d37b1f5e0e`. The next
+[journal core](../../testing/M2/execution-journal.md) defines bounded internal
+version 1 records, strict separate metadata/native pending transitions and a
+complete supplied-byte census consumer. It implements no native persistence,
+commissioning, startup/global launch owner or backend publication gate. These
+portable components must be consumed together by the accepted original native
+owner and real publishers before runtime use. Ten behavioral parents/235 child
+results and FreeBSD compilation passed; signed affected-package review is pending.
+No service, automatic replay, recovery authority or runtime write is added.

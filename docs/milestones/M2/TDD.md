@@ -23,6 +23,16 @@ below is satisfied yet. The virtual-device identity/geometry prerequisite passed
 on both pinned guests through the Mac supervisor; see [fixture evidence](../../testing/M2/devices.md).
 TDD means Test Design Document; implementation uses failing behavioral tests first.
 
+The [portable journal foundation](../../testing/M2/execution-journal.md) adds
+failing-first fixed-depth JSON and single-successor/census tests under
+M2-RUNTIME-001/M2-STATE-001/M2-RECOVERY-001. Require every top-level/nested field,
+zero-on-error/damage/version/overflow denials, separate pending domains and
+unchanged bindings; failed/incomplete/copy consumers must never yield a partial
+hash. Exact record bytes and original lock binding must affect the framed digest.
+Bound both record/census fuzz targets, run affected-package review, and report
+FreeBSD compilation as unexecuted. Native persistence/restore/bootstrap/global
+owner and real publisher/backend consumer gates are still required together.
+
 ## Traceability and required gates
 
 The accepted [property runtime delivery gates](property-runtime.md) map

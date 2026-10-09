@@ -1,13 +1,14 @@
 # Private property executor supervision
 
-Status: Native prerequisite qualified; awaiting maintainer review; runtime writes disabled. Date: 2026-10-08.
+Status: Native prerequisite qualified; accepted in [PR 108](https://github.com/gonz0w/horvium/pull/108); runtime writes disabled. Date: 2026-10-08.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [Accepted mechanism](../../milestones/M2/property-recovery-mechanism.md),
 [ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md).
 
 PR 107 accepted the mechanism and Test Design at merged source
 `02a995e5681f38b4a40141402dd2d0a9f0244933`. This first integrated prerequisite
-adds the raw kernel boot owner and a dedicated Go property supervisor. The existing
+adds the raw kernel boot owner and a dedicated Go property supervisor. Maintainer merge accepted it at
+`a8a96403b40922b4751493d837f5a6d37b1f5e0e`. The existing
 private property control consumes it; the root listener still denies every runtime
 operation. No journal, startup clearance, shared global permit, provisioning,
 operator recovery or service installation is supplied by this component.

@@ -27,6 +27,13 @@ teardown. Its [manifest](../testing/M2/property-supervisor-manifest.json) retain
 unqualified attempts. The runtime remains denied; other architectures and production
 resource/client/recovery behavior are not qualified by these fixtures.
 
+The [journal record/census core](../testing/M2/execution-journal.md) adds portable
+fixed-depth JSON, separate pending domains, strict successor checks and bounded
+exact-byte census framing. It uses the standard library and existing catalog
+rules. No native journal file, filesystem binding, startup clearance or executor
+is qualified by these portable checks. Existing native manifests retain their
+original source; journal durability/restore/owner gates remain open.
+
 M2 [configured property client](../testing/M2/property-dial.md) adds trusted socket
 policy and one original dial/operation deadline. Three portable parents/seventeen
 children, all 104 transport cases on disposable FreeBSD 15.1 and 14.5, baseline/136
