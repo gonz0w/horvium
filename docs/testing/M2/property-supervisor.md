@@ -65,3 +65,10 @@ chmod applies only to named pipes. Receipt SHA-256
 `322acd04a21eef65530c052cf9c9d5a75091507a31cd611d0b967e83fcbf137e`.
 The failing native cases remain unqualified; regression coverage accepts only
 actual anonymous pipe metadata and rejects named/foreign/wrong-direction channels.
+
+A subsequent native attempt confirmed that inherited blocking descriptors also
+need explicit nonblocking setup before `os.NewFile` can support deadlines. The
+pinned Go toolchain's `File.Fd` switches inherited pipe ends to blocking mode.
+The child now restores nonblocking mode before registering its channels with the
+poller; the existing actual ready/peer-loss cases cover this boundary. The failed
+attempt remains unqualified and all fixture teardown is retained.

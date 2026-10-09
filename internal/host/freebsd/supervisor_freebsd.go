@@ -97,6 +97,11 @@ func drainNativeReaper() error {
 }
 func supervisorPipe(fd uintptr, read bool) *os.File {
 	unix.CloseOnExec(int(fd))
+	// exec.Cmd exposes inherited File.Fd values in blocking mode. Restore
+	// nonblocking before NewFile so the original channel supports bounded deadlines.
+	if unix.SetNonblock(int(fd), true) != nil {
+		return nil
+	}
 	f := os.NewFile(fd, "private-property-supervisor")
 	if f == nil {
 		return nil
