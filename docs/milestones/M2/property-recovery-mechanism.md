@@ -313,3 +313,10 @@ adds fixed guarded native identity projections and repeated descriptor/mount
 correspondence. Original dual-lease integration, complete system/owned-pool
 exclusion, independent restore proof and commissioning/startup/global ownership
 remain required before using those observations to establish a writer.
+
+
+The [original-lease backing bridge](../../testing/M2/original-backing.md) borrows
+the original descriptor under its protected lease mutex and combines actual
+backing and object observations. It does not register the two-domain owner or
+establish complete system/owned-pool exclusion, independent restore scope,
+commissioning or startup/global launch clearance.

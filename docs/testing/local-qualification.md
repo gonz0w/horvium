@@ -517,3 +517,9 @@ package and selects only the two native UFS/ZFS backing parents. It installs no
 guest development packages and requires the exact artifact checksum, all identity
 controls and both owned filesystem/device/directory teardowns. Run 15.1 then 14.5
 serially, as for the other Mac qualifications. See the [scope](M2/persistent-backing.md).
+
+The focused `original-backing` suite runs actual UFS/ZFS observations through the
+original protected lease, including replacement/drift, kernel UID denial and Close
+exclusion. Run both pinned guests serially and also retain the affected `state`
+safety gates; see [original-lease qualification](M2/original-backing.md). It uses
+the existing prebuilt checksum and supervised complete teardown policy.

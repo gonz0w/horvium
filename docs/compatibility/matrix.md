@@ -989,3 +989,11 @@ unqualified; the repaired fixture observes actual child readiness before shutdow
 All 79 historical manifests preserve their sources/bytes; see the
 [source-bound record](../testing/M2/property-binding-manifest.json). Actions stay
 disabled; M1 Safari/VoiceOver remains pending.
+
+The private [original-lease backing bridge](../testing/M2/original-backing.md) is
+implemented with native qualification pending. It borrows only the original
+FreeBSD state descriptor under its mutex and retains zero results on failure.
+There is no registered dual-lease owner, commissioning or runtime write authority.
+Its focused UFS/ZFS and affected historical state safety gates must pass on both
+pinned amd64 targets before any native qualification claim. Other platforms deny
+without invoking the callback.
