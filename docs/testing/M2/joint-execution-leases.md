@@ -1,6 +1,6 @@
 # Original joint execution-domain leases
 
-Status: Implementation prerequisite; native qualification pending; runtime denied.
+Status: Joint observation prerequisite qualified; awaiting maintainer review; runtime denied.
 Date: 2026-10-09. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -97,3 +97,45 @@ manifests and unrelated original sources remain unchanged. Shared runner/checker
 maintenance requires one fresh full portable review; later evidence-only changes
 reuse its exact deep inputs while rerunning all baseline checks. GitHub Actions
 remain disabled and no host service is installed.
+
+## Qualified observations
+
+The [manifest](joint-execution-leases-manifest.json) binds the final implementation
+and qualification inputs to signed source
+`036847d0ee204eb73af7073559a0a5bf3e9b3a76`. The focused native suite passed all
+four parents, 147 identity/ownership assertions and twelve owned fixture teardown
+controls on each pinned FreeBSD/amd64 release. The 15.1 joint run executed signed
+source `b2d7fc3911f88d61c453b37f1f96e89c3d087a5f`; the subsequent source changed
+only the host runner's synthetic unit-test fixture. Native Go sources, tests,
+guest scripts and validators stayed identical. The 14.5 run produced the same
+native executable SHA-256
+`97c9989bbacc149e756011352edec88eeced93741b4d50293dd7350e29a7ba8a`.
+The manifest retains each actual source rather than relabelling the earlier run.
+
+Both expanded state suites executed the final implementation source and passed
+all 77 parents, 1,075 required native assertions and 1,930 codec children. Their
+native executable SHA-256 matched
+`e23da35c6f842f91bffdef953a3421c6649f8724a4ee90a3788e5cf691e32cd0`.
+The new journal parent's 21 assertions use explicitly supplied backing metadata
+for the storage contract. Actual native identity discovery is qualified separately
+by the focused host suite; supplied facts cannot grant host clearance.
+
+Full portable review passed check, lint, test and secrets, 158 tooling tests,
+eleven race packages and all 53 bounded fuzz targets. The initial native bridge
+stub's failed positive assertions and a failed portable attempt remain unqualified
+and source-bound. The portable failure exposed missing journal/backing markers in
+the runner's synthetic state log; its fixture was corrected before final review.
+No failed attempt is counted as a passing gate.
+
+All 88 historical M2 manifests and 347 other original source inputs retained
+their exact bytes. The sole intentional original Go source refactor is the locked
+single-domain observer, retaining its public wrapper. Every owned session stopped;
+runner teardown verified each guest fixture, process group, executable, disposable
+image and key. GitHub Actions remained disabled. These small disposable fixtures
+provide no production resource or performance qualification.
+
+This completes joint observation ownership. Registered runtime writer ownership,
+complete system/owned-pool exclusion, independent restoration, fresh commissioning,
+acknowledged journal/ledger transitions and startup/global launch composition
+remain required. No runtime consumer, service or storage effect is enabled.
+M1 manual Safari/VoiceOver acceptance remains pending separately.

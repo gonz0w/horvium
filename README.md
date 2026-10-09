@@ -64,8 +64,10 @@ exclusion, restore independence and commissioning/startup/global clearance remai
 required.
 The [joint journal/ledger lease owner](docs/testing/M2/joint-execution-leases.md)
 adds journal-first acquisition and simultaneous original protected observations.
-Native qualification is pending; it provides no commissioning, publication,
-startup/global clearance or runtime write authority.
+Both pinned native targets and the expanded state safety corpus passed with
+verified teardown; it awaits maintainer review. Registered writer ownership,
+complete system/owned-pool exclusion, restore independence, commissioning,
+publication and startup/global clearance remain required; runtime writes stay denied.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 
