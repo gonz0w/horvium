@@ -53,9 +53,15 @@ PR 112 accepted this prerequisite.
 The [guarded persistent backing collector](docs/testing/M2/persistent-backing.md)
 adds private native UFS/ZFS identity discovery. Both disposable FreeBSD targets
 passed the focused identity/remount/rename and complete teardown gates;
-maintainer review is pending.
-original lease integration, system exclusion, restore independence and commissioning
+PR 113 accepted this prerequisite.
+Registered dual-lease ownership, system exclusion, restore independence and commissioning
 remain required.
+The [original-lease backing observation](docs/testing/M2/original-backing.md)
+connects the fixed native producer to the original protected state lease under its
+mutex. Both pinned native targets and the affected state safety corpus passed;
+maintainer review is pending. Dual-domain ownership, complete system
+exclusion, restore independence and commissioning/startup/global clearance remain
+required.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 

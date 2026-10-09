@@ -989,3 +989,19 @@ unqualified; the repaired fixture observes actual child readiness before shutdow
 All 79 historical manifests preserve their sources/bytes; see the
 [source-bound record](../testing/M2/property-binding-manifest.json). Actions stay
 disabled; M1 Safari/VoiceOver remains pending.
+
+The private [original-lease backing bridge](../testing/M2/original-backing.md) passed
+all 66 focused UFS/ZFS assertions and six teardown controls on disposable FreeBSD
+15.1/14.5 amd64. Both affected state suites retained and passed all 76 parents,
+1,054 native assertions and 1,930 codec children. It borrows the original descriptor
+under its mutex and returns zero observations on failure; off-target calls deny
+without invoking the callback. There is no registered dual-lease owner,
+commissioning, restore independence, complete system exclusion or runtime writer.
+
+Signed source `a8d74d38a1a78e5ec74a15c2e71aedafcff6a753` passed baseline,
+155 tooling tests and fresh full portable race/fuzz review. All owned processes,
+storage fixtures, keys, images and prebuilt executables were removed. All 87
+historical manifests and 340 other original source inputs preserve their bytes;
+see the [source-bound record](../testing/M2/original-backing-manifest.json).
+These observations do not add hardware/performance support claims. GitHub Actions
+remain disabled; M1 manual Safari/VoiceOver acceptance remains pending.
