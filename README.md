@@ -35,7 +35,9 @@ implements bounded portable metadata and single-step checks; native persistence,
 provisioning/startup/global ownership and integrated publishers remain required.
 PR 109 accepted the portable core. The [native ledger census](docs/testing/M2/native-execution-census.md)
 connects its digest to actual descriptor-validated records, preserving publication
-uncertainty. Independent journal persistence/bindings and startup/global ownership
+uncertainty. Its focused assertions and affected state safety corpus passed on both
+disposable FreeBSD/amd64 targets with verified teardown. Independent journal
+persistence/bindings and startup/global ownership
 remain required; this inspection cannot enable a writer.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.

@@ -35,7 +35,11 @@ is qualified by these portable checks. Existing native manifests retain their
 original source; journal durability/restore/owner gates remain open.
 
 The [native census consumer](../testing/M2/native-execution-census.md) joins the
-portable digest to the original leased ledger reader. Its native gates are pending.
+portable digest to the original leased ledger reader. All 38 census/fifteen new
+ACL controls and the affected state safety corpus passed on disposable
+FreeBSD/amd64 15.1 (ZFS) and 14.5 (UFS without softupdates), using the same
+prebuilt executable. See its [manifest](../testing/M2/native-execution-census-manifest.json)
+for actual executed sources, the unqualified stub/baseline and verified teardown.
 Supplied binding digests are metadata, never proof of persistent native identity or
 independent restore scope. No journal file, restart or launch authority is added.
 

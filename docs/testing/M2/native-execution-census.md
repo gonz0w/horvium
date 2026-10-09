@@ -1,6 +1,6 @@
 # Native execution census prerequisite
 
-Status: Implementing; native qualification pending; runtime denied.
+Status: Native prerequisite qualified; awaiting maintainer review; runtime denied.
 Date: 2026-10-08. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -67,3 +67,31 @@ exact deep inputs while rerunning baseline checks.
 Native journal file/directory durability, dual-lease provisioning, persistent
 binding production, startup/global ownership, restore/reconciliation and active
 kernel-cut qualification remain open. Runtime writes remain disabled.
+
+## Executed evidence
+
+Signed native source `261fdb533723055d9d1a7142c272f46c9fb4ef19` passed all 68
+selected native/codec parents, 858 required native marker assertions and 1,876
+codec children on each pinned disposable FreeBSD/amd64 target. The same prebuilt
+executable SHA-256
+`d0cad5af498d2e89b2adf05f510aa13802c99d4d4448a2e78b984f8271099c64`
+ran on both. Native census parent times were 0.19 s on the 15.1 ZFS fixture and
+0.29 s on the 14.5 UFS fixture with softupdates disabled. These are small fixture
+execution times, not commercial-scale resource or throughput qualification.
+
+The signed denial stub at `cf0db4b4026bbd6cd568e5342583a33d19b14cc9` failed the new
+census and ACL controls while 66 other parents passed. It remains unqualified,
+with verified teardown. An initial portable review then found an older runner
+unittest fixture missing the new mandatory result marker. Its baseline failure
+remains unqualified; only that test fixture was corrected. Qualified native code,
+checker, scripts and runtime inputs remain unchanged and retain their actual source.
+
+Signed portable source `6662618c9206d8c9850e974af7789d9130374092` passed all baseline
+checks, 146 tooling tests and one fresh full review of eleven race packages/all
+51 bounded fuzz targets. All 83 historical M2 manifests and 141 protected existing
+native host/helper/command inputs retain their actual bytes. All 721 owned sessions
+were stopped with verified teardown at evidence capture; Actions remain disabled.
+The final prose/evidence review reruns baseline checks and reuses these exact deep
+inputs. See the [source-bound manifest](native-execution-census-manifest.json).
+No persistent binding, journal durability, operator provisioning, startup/global
+launch, recovery or M2/release acceptance follows from this qualification.
