@@ -24,6 +24,12 @@ int main(int argc, char **argv)
     long pid;
     if (argc != 2 || getuid() != 0 || geteuid() != 0)
         return 2;
+    if (strcmp(argv[1], "abi") == 0) {
+        printf("SUPERVISOR_NATIVE_ABI status=%zu kill=%zu pid=%d acquire=%d statuscmd=%d killcmd=%d\n",
+            sizeof(struct procctl_reaper_status), sizeof(struct procctl_reaper_kill),
+            P_PID, PROC_REAP_ACQUIRE, PROC_REAP_STATUS, PROC_REAP_KILL);
+        return 0;
+    }
     errno = 0;
     pid = strtol(argv[1], &end, 10);
     if (errno || *argv[1] == '\0' || *end != '\0' || pid < 1 || pid > INT_MAX)

@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"github.com/gonz0w/horvium/internal/admin"
 	"github.com/gonz0w/horvium/internal/client"
+	"github.com/gonz0w/horvium/internal/host/freebsd"
 	"github.com/gonz0w/horvium/internal/observation"
 	"github.com/gonz0w/horvium/internal/service"
 	"github.com/gonz0w/horvium/internal/storage"
@@ -153,6 +154,9 @@ func run(ctx context.Context, args []string, input io.Reader, out, errout io.Wri
 	}
 }
 func main() {
+	if handled, code := freebsd.PropertySupervisorProcess(os.Args[1:]); handled {
+		os.Exit(code)
+	}
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 	ctx, stop := storageJobCommandContext(ctx, os.Args[1:], os.Exit)

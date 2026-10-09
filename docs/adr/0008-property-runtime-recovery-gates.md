@@ -84,5 +84,6 @@ tracking: property-control quiescence must not be generalized to scrub or resilv
 
 PR 106 accepted the experiment observations at merged source
 `318ef8ac155f4004051ad6f4287fa8de2109a5a5`. The concrete followup
-[ADR 0009](0009-property-executor-recovery-mechanism.md) is proposed for review;
-it has not been adopted or qualified by accepting the experiment.
+[ADR 0009](0009-property-executor-recovery-mechanism.md) was accepted in PR 107,
+source `02a995e5681f38b4a40141402dd2d0a9f0244933`. Native/runtime qualification
+still requires its test and integration gates.

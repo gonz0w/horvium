@@ -24,9 +24,11 @@ contract and bounded experiment; the current runtime remains read-only. The
 [executor recovery observations](docs/research/M2/executor-recovery.md) passed on
 both disposable targets and demonstrated that singleton lock acquisition can
 coexist with a surviving original executor. The
-[recovery mechanism proposal](docs/milestones/M2/property-recovery-mechanism.md)
+[accepted recovery mechanism](docs/milestones/M2/property-recovery-mechanism.md)
 specifies a dedicated native supervisor, independent execution journal and
-conservative restart/restore gates; it still needs review and native qualification.
+conservative restart/restore gates. PR 107 accepted its design and test plan;
+the [private supervisor](docs/testing/M2/property-supervisor.md) is the first
+implementation prerequisite, with native qualification pending.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 

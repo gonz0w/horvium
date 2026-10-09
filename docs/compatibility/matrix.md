@@ -15,12 +15,14 @@ descendants alive after singleton reacquisition. Active property-command/kernel
 interruption and a runtime recovery mechanism remain unqualified. All historical
 evidence remains bound to its actual source; startup clearance, shared global launch, root dispatch,
 independent workers and explicit hold resolution still need implementation and
-their listed gates. The proposed
+their listed gates. The accepted
 [recovery mechanism](../milestones/M2/property-recovery-mechanism.md) uses native
 boot identity, reaper supervision and an independent journal. Its source inspection
 is not execution evidence: boot-ID/reaper acquisition, journal/provisioning and
-same-boot/restore behavior still require native qualification. No support claim
-or runtime change follows from the proposal.
+same-boot/restore behavior still require native qualification. The [private supervisor prerequisite](../testing/M2/property-supervisor.md)
+integrates boot identity and reaper supervision with private property control;
+native evidence is pending and the runtime remains denied. No support claim
+follows from accepting or implementing the mechanism.
 
 M2 [configured property client](../testing/M2/property-dial.md) adds trusted socket
 policy and one original dial/operation deadline. Three portable parents/seventeen

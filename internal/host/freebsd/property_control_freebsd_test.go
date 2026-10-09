@@ -64,7 +64,7 @@ func TestNativePropertyControlGuardChild(t *testing.T) {
 		os.Exit(2)
 	}
 	child := exec.Command(os.Args[0], "-test.run=^TestNativePropertyControlGuardChild$", "--", dir, "child")
-	if mode == "escaped" {
+	if mode == "escaped" || mode == "supervised-escaped" {
 		child.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
 	}
 	if child.Start() != nil {
@@ -73,6 +73,15 @@ func TestNativePropertyControlGuardChild(t *testing.T) {
 	until := time.Now().Add(5 * time.Second)
 	for time.Now().Before(until) {
 		if _, err := os.Stat(filepath.Join(dir, "child")); err == nil {
+			if mode == "supervised-escaped" {
+				for time.Now().Before(until) {
+					if _, e := os.Stat(filepath.Join(dir, "parent-release")); e == nil {
+						os.Exit(0)
+					}
+					time.Sleep(5 * time.Millisecond)
+				}
+				os.Exit(2)
+			}
 			os.Exit(0)
 		}
 		time.Sleep(5 * time.Millisecond)

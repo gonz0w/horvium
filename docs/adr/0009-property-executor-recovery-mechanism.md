@@ -1,9 +1,12 @@
 # ADR 0009: property executor supervision and recovery provenance
 
-Status: Proposed; maintainer review required. Date: 2026-10-08.
+Status: Accepted. Date: 2026-10-08.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [ADR 0008](0008-property-runtime-recovery-gates.md),
 [mechanism EDD and Test Design](../milestones/M2/property-recovery-mechanism.md).
+Authority: maintainer merge of [PR 107](https://github.com/gonz0w/horvium/pull/107),
+source `02a995e5681f38b4a40141402dd2d0a9f0244933`. This accepts the mechanism
+and test plan, not native/runtime qualification.
 PR 106 accepted research observations at merged source
 `318ef8ac155f4004051ad6f4287fa8de2109a5a5`; it did not adopt this mechanism.
 
@@ -22,7 +25,7 @@ an atomic, durable fence. A full `kinfo_proc` decoder would add an architecture
 dependent ABI without solving metadata rollback or races between inspection and
 launch. Choose a smaller mechanism whose uncertainty policy is explicit.
 
-## Proposed decision
+## Decision
 
 Use one dedicated root supervisor per active property operation. It acquires
 FreeBSD process-reaper ownership before creating any native child and retains that

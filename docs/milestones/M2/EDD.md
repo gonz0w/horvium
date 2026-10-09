@@ -19,11 +19,11 @@ The [executed research](../../research/M2/executor-recovery.md) supplies native
 observations on both disposable targets, including surviving original descendants
 after singleton reacquisition. The specific recovery mechanism still requires
 followup design review; the current runtime remains read-only until implementation
-is qualified. The proposed
+is qualified. The accepted
 [mechanism amendment](property-recovery-mechanism.md) and
 [ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md) specify the
-native supervisor, journal ordering and restart/restore boundary for review;
-they add no approved behavior until accepted.
+native supervisor, journal ordering and restart/restore boundary accepted in PR 107 at source `02a995e5681f38b4a40141402dd2d0a9f0244933`;
+implementation and native runtime gates remain required.
 
 ```mermaid
 flowchart TD

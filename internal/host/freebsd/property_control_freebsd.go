@@ -19,18 +19,7 @@ func propertySetNative(ctx context.Context, i storage.PropertyIntent) error {
 	if ctx == nil {
 		return storage.ErrInvalid
 	}
-	args, err := propertySetArguments(i)
-	if err != nil {
-		return err
-	}
 	ctx, stop := context.WithTimeout(ctx, 10*time.Second)
 	defer stop()
-	out, err := executeNative(ctx, "/sbin/zfs", args, 4096)
-	if err != nil {
-		return err
-	}
-	if len(out.data) != 0 {
-		return ErrUnavailable
-	}
-	return nil
+	return propertySetSupervised(ctx, i)
 }
