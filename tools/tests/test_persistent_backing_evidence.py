@@ -13,7 +13,7 @@ class PersistentBackingEvidenceTests(unittest.TestCase):
         self.log = ''.join('--- PASS: TestNativePersistentBacking'+kind+' (0.1s)\nPERSISTENT_BACKING_'+kind+'_RESULT '+' '.join(c+'=pass' for c in sorted(cases))+'\nPERSISTENT_BACKING_TEARDOWN '+kind.lower()+' filesystem=pass device=pass directory=pass\n' for kind, cases in self.module.CASES.items())
 
     def test_complete_actual_native_scope_required(self):
-        self.assertEqual([len(self.module.CASES[k]) for k in ('UFS','ZFS')], [17,12])
+        self.assertEqual([len(self.module.CASES[k]) for k in ('UFS','ZFS')], [17,13])
         self.module.validate(self.log)
         for bad in ['',self.log*2,self.log.replace('PASS','SKIP'),self.log.replace('PASS','FAIL'),self.log.replace('PERSISTENT_BACKING_TEARDOWN','MISSING_TEARDOWN')]:
             with self.assertRaises(ValueError): self.module.validate(bad)

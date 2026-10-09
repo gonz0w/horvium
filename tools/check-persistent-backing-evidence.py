@@ -7,7 +7,7 @@ import sys
 
 CASES = {
     'UFS': {'native_id','actual_kernel_correspondence','repeat','record_change','record_identity_stable','readonly_denial','cancelled','nil_context','invalid_fd','unsafe_mode','mode_denied','inherited_uid_denial','child_reaped','close_before_remount','remount_identity_stable','close','closed_denied'},
-    'ZFS': {'native_id','exact_dataset','exact_pool','repeat','rename_identity_stable','close_before_remount','remount_identity_stable','distinct_dataset','other_close','close','name_reuse_new_identity','replacement_close'},
+    'ZFS': {'native_id','exact_dataset','exact_pool','repeat','close_before_rename','rename_identity_stable','close_before_remount','remount_identity_stable','distinct_dataset','other_close','close','name_reuse_new_identity','replacement_close'},
 }
 
 def validate(text):

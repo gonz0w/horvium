@@ -200,8 +200,14 @@ func TestNativePersistentBackingZFS(t *testing.T) {
 	check("exact_pool", run("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", pool) == strconv.FormatUint(first.pool, 10))
 	again, e := collectNativePersistentBacking(context.Background(), int(f.Fd()))
 	check("repeat", e == nil && again == first)
+	check("close_before_rename", f.Close() == nil)
 	run("/sbin/zfs", "rename", source, pool+"/renamed")
 	source = pool + "/renamed"
+	renamedPath := run("/sbin/zfs", "get", "-H", "-o", "value", "mountpoint", source)
+	f, e = os.Open(renamedPath)
+	if e != nil {
+		t.Fatal(e)
+	}
 	again, e = collectNativePersistentBacking(context.Background(), int(f.Fd()))
 	check("rename_identity_stable", e == nil && again == first)
 	check("close_before_remount", f.Close() == nil)

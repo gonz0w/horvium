@@ -67,14 +67,15 @@ A bounded fuzz target validates the compact UFS/ZFS projections and zero partial
 results. Parsing supplied bytes remains separate from native observation.
 
 The focused disposable native suite selects two parents and requires 17 UFS and
-twelve ZFS assertions plus six filesystem/device/directory teardown controls.
+thirteen ZFS assertions plus six filesystem/device/directory teardown controls.
 Actual UFS observations survive record changes and an unmount/remount; read-only,
 unsafe mode, invalid/closed descriptors, cancellation and credential-dropped
 inherited descriptors deny. ZFS observes actual pool/dataset GUIDs, survives rename
 and unmount/remount, distinguishes a second dataset and detects a new identity
 after destroying/recreating the same dataset name. Both use owned memory devices
 and are removed before reporting success. No operator data or live storage is
-used. These are identity observations, not power-loss, reboot, rollback, snapshot
+used. The ZFS fixture closes its directory before rename's automatic remount and
+opens the resulting mount to compare identity. These are identity observations, not power-loss, reboot, rollback, snapshot
 restore or integrated writer qualification.
 
 Run `tools/local-qualification.py persistent-backing 15.1 --run` and then 14.5
