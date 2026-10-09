@@ -1322,3 +1322,23 @@ historical manifests retain their bytes. See the
 [source-bound record](../../testing/M2/property-application-manifest.json).
 Root operations remain denied; independent root/backend/policy/plan,
 recovery/global launch, durable admission and runtime/M2 acceptance remain open.
+
+## Original root request binding prerequisite
+
+PR 103 accepted native application/client integration at merged source
+`a3702a594e2e9217f051885848a60555dfb14ebd`. The next
+[root request binding](../../testing/M2/property-binding.md) seals actual received
+requests to their original admitted kernel peer for repeated live checks.
+Signed revised fixture source `ee4a997fd17eba420e6231b02c506fe90a304dde` passed two portable parents/six children,
+all 131 actual cases on both pinned FreeBSD releases, baseline/138 tooling tests
+and fresh full portable review (eleven race packages/all 49 bounded fuzz targets
+in 222.215 seconds). Signed stubs failed all fifteen new native behavior cases with
+115 earlier cases retained. Initial implementation passed the new cases but the
+prior shutdown fixture raced completed child negotiation; an actual ready witness
+now synchronizes shutdown. Product bytes/deadlines remain unchanged. Initial
+native and interrupted deep records remain unqualified. All 687 owned sessions
+stopped with verified teardown; Actions remain disabled and all 79 historical
+manifests preserve their bytes. See the
+[source-bound record](../../testing/M2/property-binding-manifest.json).
+Root review/submission remain denied. Policy/session/backend/recovery/global
+launch and runtime/M2 acceptance remain open.

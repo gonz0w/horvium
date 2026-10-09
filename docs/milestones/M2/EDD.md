@@ -861,3 +861,26 @@ Signed red evidence remains unqualified; see the
 [source-bound record](../../testing/M2/property-application-manifest.json).
 This is native application/client integration, with root operations still denied;
 independent root/backend/recovery/global/runtime gates remain open.
+
+## Original root request binding amendment
+
+The [request binding](../../testing/M2/property-binding.md) seals one received
+typed request into the original admitted kernel-root peer. Repeated checks require
+its original owner/descriptor/context/deadline, reply phase, exact request/actor
+and actual quiet kernel peer. Failed valid checks and terminal close retire both
+socket and lease; copied/reconstructed bindings cannot create lineage or close
+the original. The default-denial listener consumes it before refusal. This is
+peer provenance only: context remains an untrusted service assertion and all
+policy/session/backend/recovery/global launch/durable admission gates remain open.
+
+Signed revised fixture source `ee4a997fd17eba420e6231b02c506fe90a304dde` passed all 131 actual cases on both
+pinned disposable releases, two portable parents/six children, baseline/138
+tooling tests and fresh full portable review (eleven race packages/all 49 bounded
+fuzz targets in 222.215 seconds). The first implementation's native run exposed a
+prior shutdown readiness race; its new binding cases passed. The fixture now
+observes actual completed child negotiation, with unchanged product/deadlines.
+Initial native and interrupted deep records stay unqualified. All 687 owned
+sessions stopped with verified teardown; Actions remain disabled and all 79
+historical manifests retain their bytes. See the
+[source-bound record](../../testing/M2/property-binding-manifest.json).
+This is live peer/request provenance only; all other clearance/runtime gates stay open.

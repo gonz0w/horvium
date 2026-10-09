@@ -45,6 +45,11 @@ class ActionPeerEvidenceTests(unittest.TestCase):
                      + ''.join('    --- PASS: TestNativeApplicationPropertyClient/' + n + ' (0.1s)\n' for n in sorted(self.module.APPLICATION_CASES))
                      + 'APPLICATION_PROPERTY_RESULT ' + ' '.join(n + '=pass' for n in sorted(self.module.APPLICATION_CASES)) + '\n')
 
+        self.application_only = self.log
+        self.log += ('--- PASS: TestNativePropertyRequestBinding (1.0s)\n'
+                     + ''.join('    --- PASS: TestNativePropertyRequestBinding/' + n + ' (0.1s)\n' for n in sorted(self.module.BINDING_CASES))
+                     + 'PROPERTY_BINDING_RESULT ' + ' '.join(n + '=pass' for n in sorted(self.module.BINDING_CASES)) + '\n')
+
     def test_complete_and_matching_native_case_inventory(self):
         self.module.validate(self.log)
         source = (ROOT / 'internal/helper/action_peer_freebsd_test.go').read_text()
@@ -76,7 +81,7 @@ class ActionPeerEvidenceTests(unittest.TestCase):
 
     def test_script_selects_only_bounded_native_parent(self):
         script = (ROOT / 'tools/bsd-action-peer-prebuilt.sh').read_text()
-        self.assertEqual(re.findall(r"-test.run='([^']+)'", script), ['^TestNative(ActionPeer|PropertyExchange|AdmittedPropertyExchange|SessionPropertyClient|PropertyListener|ConfiguredPropertyClient|ApplicationPropertyClient)$'])
+        self.assertEqual(re.findall(r"-test.run='([^']+)'", script), ['^TestNative(ActionPeer|PropertyExchange|AdmittedPropertyExchange|SessionPropertyClient|PropertyListener|ConfiguredPropertyClient|ApplicationPropertyClient|PropertyRequestBinding)$'])
         self.assertIn('/usr/bin/timeout 90', script)
         self.assertIn('-test.timeout=80s', script)
 
@@ -173,5 +178,21 @@ class ActionPeerEvidenceTests(unittest.TestCase):
                         self.log.replace(case + '=pass', case + '=fail'),
                         self.log.replace(case + '=pass', ''),
                         self.log + 'APPLICATION_PROPERTY_RESULT extra=pass\n'):
+                with self.assertRaises(ValueError):
+                    self.module.validate(bad)
+
+    def test_binding_inventory_and_snapshot_only_proof_refused(self):
+        source = (ROOT / 'internal/helper/property_binding_freebsd_test.go').read_text()
+        cases = re.findall(r'"([a-z-]+)"', re.search(r'cases := \[\]string\{([^}]+)\}', source).group(1))
+        self.assertEqual(len(cases), len(self.module.BINDING_CASES))
+        self.assertEqual(set(cases), self.module.BINDING_CASES)
+        with self.assertRaises(ValueError):
+            self.module.validate(self.application_only)
+        for case in self.module.BINDING_CASES:
+            line = '    --- PASS: TestNativePropertyRequestBinding/' + case + ' (0.1s)\n'
+            for bad in (self.log.replace(line, ''), self.log + line,
+                        self.log.replace(case + '=pass', case + '=fail'),
+                        self.log.replace(case + '=pass', ''),
+                        self.log + 'PROPERTY_BINDING_RESULT extra=pass\n'):
                 with self.assertRaises(ValueError):
                     self.module.validate(bad)

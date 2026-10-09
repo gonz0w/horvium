@@ -13,6 +13,7 @@ type admittedPropertyPeer struct {
 	identity *admittedPropertyPeer
 	lease    *propertyConnection
 	exchange *propertyPeer
+	bindings *propertyRequestOwner
 }
 
 func (c *propertyConnection) accept(uid uint32) (a *admittedPropertyPeer, err error) {
@@ -46,6 +47,7 @@ func (c *propertyConnection) accept(uid uint32) (a *admittedPropertyPeer, err er
 	}
 	a = &admittedPropertyPeer{lease: c, exchange: exchange}
 	a.identity = a
+	a.bindings = &propertyRequestOwner{peer: a}
 	if err := a.live(); err != nil {
 		return nil, errors.Join(err, a.Close())
 	}
