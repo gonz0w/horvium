@@ -44,6 +44,12 @@ PREBUILT = {
 }
 
 
+def cleanup_prebuilt(directory):
+    # Only fixed registered executable names in this owned run directory.
+    for filename in {record[0] for record in PREBUILT.values()}:
+        (directory / filename).unlink(missing_ok=True)
+
+
 def load_tool(name):
     spec = importlib.util.spec_from_file_location(name.replace('-', '_'), TOOLS / (name + '.py'))
     module = importlib.util.module_from_spec(spec)
@@ -399,10 +405,7 @@ def main():
             if image.exists():
                 shutil.rmtree(image)
             variables.unlink(missing_ok=True)
-            (directory / 'state-native.test').unlink(missing_ok=True)
-            (directory / 'pool-properties-native.test').unlink(missing_ok=True)
-            (directory / 'storage-job-status-native.test').unlink(missing_ok=True)
-            (directory / 'action-peer-native.test').unlink(missing_ok=True)
+            cleanup_prebuilt(directory)
             record['host_teardown'] = True
             if device_tool and record.get('guest_assertions'):
                 if not record.get('device_backings_preserved') or not record.get('device_fixture_teardown'):
@@ -418,9 +421,7 @@ def main():
             raise
         finally:
             key.unlink(missing_ok=True)
-            (directory / 'state-native.test').unlink(missing_ok=True)
-            (directory / 'pool-properties-native.test').unlink(missing_ok=True)
-            (directory / 'storage-job-status-native.test').unlink(missing_ok=True)
+            cleanup_prebuilt(directory)
             record['completed_at'] = datetime.now(timezone.utc).isoformat()
             (directory / 'result.json').write_text(json.dumps(record, indent=2) + '\n')
             print(f'Qualification record: {directory / "result.json"}', flush=True)

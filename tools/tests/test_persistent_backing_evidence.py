@@ -2,6 +2,7 @@
 import importlib.util
 from pathlib import Path
 import unittest
+import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -40,3 +41,16 @@ class PersistentBackingEvidenceTests(unittest.TestCase):
         with self.assertRaises(ValueError):module.validate_prebuilt('', 'a'*64,'persistent-backing')
         script=(ROOT/'tools/bsd-persistent-backing-prebuilt.sh').read_text()
         self.assertIn("-test.run='^TestNativePersistentBacking(UFS|ZFS)$'",script)
+
+    def test_every_registered_prebuilt_artifact_is_removed_without_foreign_deletion(self):
+        spec = importlib.util.spec_from_file_location('local_qualification_cleanup', ROOT/'tools/local-qualification.py')
+        module = importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            names = {record[0] for record in module.PREBUILT.values()}
+            for name in names: (root/name).write_bytes(b'owned compiled fixture')
+            foreign = root/'foreign-sentinel';foreign.write_bytes(b'preserved')
+            module.cleanup_prebuilt(root)
+            self.assertTrue(all(not (root/name).exists() for name in names))
+            self.assertEqual(foreign.read_bytes(),b'preserved')
+            module.cleanup_prebuilt(root)
