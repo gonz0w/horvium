@@ -109,6 +109,33 @@ func TestNativeExecutionJournalStore(t *testing.T) {
 	j, e = s.read(nil)
 	check("independent_read", e == nil && j == initial)
 	check("no_reinitialize", errors.Is(s.initialize(initial, nil), ErrDenied))
+	// Loss of a journal cannot turn an observation handle into a fresh initializer.
+	missingStore, missingPath := nativeJournalFixture(t, anchor, "missing-reopened")
+	if missingStore.initialize(initial, nil) != nil || missingStore.close() != nil {
+		t.Fatal("owned missing reopen setup")
+	}
+	missingStore, e = openExecutionJournalStore(missingPath)
+	if e != nil || os.Remove(filepath.Join(missingPath, executionJournalName)) != nil {
+		t.Fatal("owned missing reopen")
+	}
+	missingErr := missingStore.initialize(initial, nil)
+	_, missingErrStat := os.Stat(filepath.Join(missingPath, executionJournalName))
+	check("missing_reopen_no_initialization", errors.Is(missingErr, ErrDenied) && os.IsNotExist(missingErrStat))
+	if missingStore.close() != nil {
+		t.Fatal("owned missing reopen close")
+	}
+	missingStore, missingPath = nativeJournalFixture(t, anchor, "missing-original")
+	if missingStore.initialize(initial, nil) != nil || os.Remove(filepath.Join(missingPath, executionJournalName)) != nil {
+		t.Fatal("owned missing original")
+	}
+	missingNext := initial
+	missingNext.Generation++
+	missingNext.Owner.State = "closed"
+	j, e = missingStore.read(nil)
+	check("missing_original_retirement", errors.Is(e, ErrStateDirectory) && j == (executionJournal{}) && errors.Is(missingStore.publish(missingNext, nil), ErrStateUncertain) && errors.Is(missingStore.initialize(initial, nil), ErrStateUncertain))
+	if missingStore.close() != nil {
+		t.Fatal("owned missing original close")
+	}
 	_, e = s.lease.InspectState()
 	check("separate_namespace", errors.Is(e, ErrStateRecord))
 	owner := ownershipGolden()

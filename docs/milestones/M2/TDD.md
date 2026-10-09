@@ -43,7 +43,7 @@ partial digest evidence cannot satisfy bootstrap/global/recovery acceptance.
 
 The [private persistence qualification](../../testing/M2/execution-journal-persistence.md)
 adds failing-first namespace/initial-state tests and actual file/ACL/durability
-controls. Require all 65 store, 74 process-death, eighteen added ACL, six full/
+controls. Require all 67 store, 74 process-death, eighteen added ACL, six full/
 read-only and one softupdates assertions alongside the affected state corpus.
 Original receipt loss/drift must retire writes, copied handles must leave the
 original intact and reopen must never reconstruct authority. These file gates

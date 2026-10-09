@@ -70,7 +70,7 @@ is no retry, destination rollback, orphan deletion, restore, rearm or hold relea
 ## Tests and required qualification
 
 Failing-first portable tests cover namespace/initial boundaries and bounded fuzzing.
-Native tests require 65 store assertions, 74 actual process-death assertions,
+Native tests require 67 store assertions, 74 actual process-death assertions,
 eighteen additional POSIX/NFSv4 ACL and credential-dropped read-grant assertions,
 six actual UFS full/read-only controls and one actual softupdates refusal. The
 fixture sequence publishes journal metadata-pending, a real ownership record,
@@ -88,7 +88,7 @@ These are warm process-death observations, not power-loss, reboot, rollback,
 active ZFS control/kernel interruption or integrated recovery qualification.
 
 Run both pinned disposable FreeBSD/amd64 guests serially, requiring all 72 selected
-parents, 1,022 native markers and 1,897 codec children in the affected state corpus.
+parents, 1,024 native markers and 1,897 codec children in the affected state corpus.
 The shared checker maintenance selects one fresh full portable review; later
 prose/evidence can reuse its exact deep inputs while rerunning all baseline checks.
 Historical manifests retain their original bytes and source. Verify owned guest,
