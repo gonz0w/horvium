@@ -74,3 +74,14 @@ func readSupervisorFrame(r io.Reader, kind byte, token [16]byte, boot bootIdenti
 	}
 	return nil
 }
+
+// FreeBSD anonymous pipes have no pathname links or permission bits. Descriptor
+// provenance and creator UID, not chmod on a named FIFO, protect this channel.
+func validSupervisorPipe(mode, uid uint32, links uint64, flags int, read bool) bool {
+	const fifo = 0010000
+	access := 1
+	if read {
+		access = 0
+	}
+	return mode == fifo && uid == 0 && links == 0 && flags&3 == access
+}

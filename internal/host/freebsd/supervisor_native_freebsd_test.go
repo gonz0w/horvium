@@ -31,7 +31,7 @@ func nativeSupervisorFixtureProcess(args []string) (bool, int) {
 	if mode != "normal" && mode != "escaped" && mode != "normal-escaped" {
 		return true, 1
 	}
-	request, response := supervisorPipe(3), supervisorPipe(4)
+	request, response := supervisorPipe(3, true), supervisorPipe(4, false)
 	if request == nil || response == nil {
 		return true, 1
 	}
@@ -146,8 +146,6 @@ func TestNativeExecutorSupervision(t *testing.T) {
 				defer w.Close()
 				defer sr.Close()
 				defer sw.Close()
-				r.Chmod(0600)
-				sw.Chmod(0600)
 				c := exec.Command(os.Args[0], supervisorFixtureArgument, "normal", dir)
 				c.ExtraFiles = []*os.File{r, sw}
 				if c.Start() != nil {
@@ -278,4 +276,30 @@ func TestNativeSupervisorBootAfter(t *testing.T) {
 		t.Fatal("owned boot witness teardown")
 	}
 	fmt.Println("SUPERVISOR_RESULT after=pass")
+}
+
+func TestNativeSupervisorPropertyControls(t *testing.T) {
+	recoveryOptIn(t)
+	f := recoverySetup(t)
+	source, err := NewPoolPropertySource()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx, stop := context.WithTimeout(context.Background(), 120*time.Second)
+	defer stop()
+	nativePropertyControl(t, ctx, source, f.Policy.PoolGUID, f.Policy.PoolName)
+	t.Run("fixture-teardown", func(t *testing.T) {
+		for _, pool := range []struct{ name, guid string }{{f.Policy.PoolName, f.Policy.PoolGUID}, {f.MetadataName, f.MetadataGUID}} {
+			if strings.TrimSpace(recoveryCommand(t, "/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", pool.name)) != pool.guid {
+				t.Fatal("owned retained-control pool identity")
+			}
+			recoveryCommand(t, "/sbin/zpool", "destroy", pool.name)
+		}
+		if os.RemoveAll(recoveryRoot) != nil {
+			t.Fatal("owned retained-control fixture removal")
+		}
+	})
+	if !t.Failed() {
+		fmt.Println("SUPERVISOR_CONTROLS_RESULT pass")
+	}
 }

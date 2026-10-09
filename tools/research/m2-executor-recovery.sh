@@ -24,7 +24,7 @@ case "${1:-before}" in
         chmod 700 .tools/executor-observer
         parent='TestNative(ExecutorRecoveryBefore|ExecutorSupervision)'
         ;;
-    after) parent='TestNative(ExecutorRecoveryAfter|SupervisorBootAfter)' ;;
+    after) parent='TestNative(ExecutorRecoveryAfter|SupervisorBootAfter|SupervisorPropertyControls)' ;;
     *) exit 1;;
 esac
 "$binary" -test.v -test.count=1 -test.timeout=6m -test.run="^${parent}$"

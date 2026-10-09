@@ -27,6 +27,11 @@ class ExecutorRecoveryEvidenceTests(unittest.TestCase):
         text += ''.join(f'    --- PASS: TestNativeExecutorSupervision/{name} (0.1s)\n' for name in sorted(self.checker.SUPERVISOR))
         text += '--- PASS: TestNativeSupervisorBootAfter (0.1s)\nSUPERVISOR_RESULT before=pass\nSUPERVISOR_RESULT after=pass\n'
         text += 'SUPERVISOR_NATIVE_ABI status=80 kill=80 pid=0 acquire=2 statuscmd=4 killcmd=6\n'
+        parent = 'TestNativeSupervisorPropertyControls'
+        text += f'--- PASS: {parent} (1.0s)\n'
+        text += ''.join(f'    --- PASS: {parent}/{name} (0.1s)\n' for name in sorted(self.checker.CONTROLS))
+        text += ''.join(f'    --- PASS: {parent}/guard-quiescence/{name} (0.1s)\n' for name in ['same-group','escaped'])
+        text += 'SUPERVISOR_CONTROLS_RESULT pass\n'
         return text + 'EXECUTOR_REBOOT {"before":[100,1],"after":[200,2]}\n'
 
     def test_complete_research_requires_actual_reboot_and_all_cases(self):

@@ -62,3 +62,19 @@ func TestSupervisorFramesBindOriginalPhaseAndIdentity(t *testing.T) {
 		t.Fatal("normal command entered private supervisor")
 	}
 }
+
+func TestSupervisorAnonymousPipeProvenance(t *testing.T) {
+	if !validSupervisorPipe(0010000, 0, 0, 0, true) || !validSupervisorPipe(0010000, 0, 0, 1, false) {
+		t.Fatal("actual FreeBSD anonymous metadata denied")
+	}
+	for _, x := range []struct {
+		mode, uid uint32
+		links     uint64
+		flags     int
+		read      bool
+	}{{0010600, 0, 0, 0, true}, {0010000, 1000, 0, 0, true}, {0010000, 0, 1, 0, true}, {0100000, 0, 0, 0, true}, {0010000, 0, 0, 1, true}, {0010000, 0, 0, 0, false}, {0010000, 0, 0, 2, false}} {
+		if validSupervisorPipe(x.mode, x.uid, x.links, x.flags, x.read) {
+			t.Fatal("named/foreign/nonpipe/wrong direction accepted", x)
+		}
+	}
+}

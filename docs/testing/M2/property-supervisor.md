@@ -20,7 +20,9 @@ clearance or attest restoration. FreeBSD/amd64 is the initial native ABI; other
 platforms/architectures are unavailable pending actual qualification.
 
 The private control reexecutes the same executable with two root-owned inherited
-private pipes. Its internal entrypoint is not a management command or API. The
+anonymous pipes. Native pipes have zero links/permission bits and the creator
+UID; the channel checks root creation and read/write direction, never chmod or
+a pathname FIFO. Its internal entrypoint is not a management command or API. The
 request is a bounded canonical property intent, random exchange token and original
 boot identity. The child rejects non-root users, unsafe descriptors, malformed or
 noncanonical intent and foreign boot/phase/token. Only fixed validated `/sbin/zfs`
@@ -47,10 +49,19 @@ helper must retain pending state and deny same-boot takeover under ADR 0009.
 
 The focused disposable suite extends the actual recovery fixture: all seventeen
 prior recovery cases, nine original boot/supervisor cases and a post-reboot kernel
-identity test are required by the checker. Cases use native header layout checks,
+identity test plus twelve retained property-control cases/two guard children
+are required by the checker. Cases use native header layout checks,
 real guest clock adjustment/restoration, root pipe exchange, pre-launch peer loss,
 foreign handshake, escaped/nested base-guard containment, guard/supervisor/helper
 death and actual private backend quota effects. Blocking probes are containment
 fixtures, not active kernel property interruptions. Actual reboot and complete
 host/device/supervisor teardown remain required. Portable rejection tests precede
 native acceptance; all historical manifests retain their executed source and bytes.
+
+The initial native run exposed an invalid assumption that anonymous pipes could
+be chmodded and report mode 0600. Pinned FreeBSD [pipe implementation](https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/kern/sys_pipe.c)
+reports FIFO type without permissions, zero links and the creator credential UID;
+chmod applies only to named pipes. Receipt SHA-256
+`322acd04a21eef65530c052cf9c9d5a75091507a31cd611d0b967e83fcbf137e`.
+The failing native cases remain unqualified; regression coverage accepts only
+actual anonymous pipe metadata and rejects named/foreign/wrong-direction channels.

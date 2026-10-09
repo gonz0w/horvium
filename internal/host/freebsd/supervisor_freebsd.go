@@ -95,14 +95,15 @@ func drainNativeReaper() error {
 	}
 	return ErrUnavailable
 }
-func supervisorPipe(fd uintptr) *os.File {
+func supervisorPipe(fd uintptr, read bool) *os.File {
 	unix.CloseOnExec(int(fd))
 	f := os.NewFile(fd, "private-property-supervisor")
 	if f == nil {
 		return nil
 	}
 	var st unix.Stat_t
-	if unix.Fstat(int(fd), &st) != nil || st.Mode&unix.S_IFMT != unix.S_IFIFO || st.Uid != 0 || st.Mode&0777 != 0600 {
+	flags, err := unix.FcntlInt(uintptr(fd), unix.F_GETFL, 0)
+	if unix.Fstat(int(fd), &st) != nil || err != nil || !validSupervisorPipe(uint32(st.Mode), st.Uid, uint64(st.Nlink), flags, read) {
 		f.Close()
 		return nil
 	}
@@ -120,7 +121,7 @@ func PropertySupervisorProcess(args []string) (bool, int) {
 	if len(args) != 1 || os.Getuid() != 0 || os.Geteuid() != 0 {
 		return true, 1
 	}
-	request, response := supervisorPipe(3), supervisorPipe(4)
+	request, response := supervisorPipe(3, true), supervisorPipe(4, false)
 	if request == nil || response == nil {
 		return true, 1
 	}
@@ -165,7 +166,7 @@ func runPropertySupervisor(request, response *os.File, run func(context.Context,
 	if n, e := request.Read(tail[:]); n != 0 || e != io.EOF {
 		return 1
 	}
-	if owner.check() != nil || !time.Now().Before(intent.Review().ExpiresAt) || run == nil {
+	if owner.check() != nil || time.Now().Before(intent.Review().CreatedAt) || !time.Now().Before(intent.Review().ExpiresAt) || run == nil {
 		return 1
 	}
 	ctx, stop := context.WithDeadline(context.Background(), deadline)
@@ -227,7 +228,7 @@ func exchangePropertySupervisor(ctx context.Context, intent storage.PropertyInte
 	}
 	defer statusReader.Close()
 	defer statusWriter.Close()
-	if reader.Chmod(0600) != nil || statusWriter.Chmod(0600) != nil || writer.SetWriteDeadline(deadline) != nil || statusReader.SetReadDeadline(deadline) != nil {
+	if writer.SetWriteDeadline(deadline) != nil || statusReader.SetReadDeadline(deadline) != nil {
 		return ErrUnavailable
 	}
 	executable, err := os.Executable()
@@ -273,7 +274,7 @@ func exchangePropertySupervisor(ctx context.Context, intent storage.PropertyInte
 	if writeSupervisorRequest(writer, token, owner.identity, encoded) != nil || readSupervisorFrame(statusReader, 1, token, owner.identity) != nil {
 		return ErrUnavailable
 	}
-	if ctx.Err() != nil || owner.check() != nil || !time.Now().Before(intent.Review().ExpiresAt) {
+	if ctx.Err() != nil || owner.check() != nil || time.Now().Before(intent.Review().CreatedAt) || !time.Now().Before(intent.Review().ExpiresAt) {
 		return ErrUnavailable
 	}
 	goFrame := supervisorFrame(2, token, owner.identity)
