@@ -65,6 +65,12 @@ backing discovery, system/owned-pool exclusion, independent restore scope and
 commissioning/startup/global ownership remain unimplemented. No runtime writer,
 new platform support or restore clearance follows from these private hashes.
 
+The [persistent backing collector](../testing/M2/persistent-backing.md) adds private
+fixed guarded UFS/ZFS projections with repeated native descriptor/mount
+correspondence. Native qualification is pending. It grants no original lease,
+commissioning, system/owned-pool exclusion, independent restore or runtime
+authority; existing historical observations retain their original sources.
+
 M2 [configured property client](../testing/M2/property-dial.md) adds trusted socket
 policy and one original dial/operation deadline. Three portable parents/seventeen
 children, all 104 transport cases on disposable FreeBSD 15.1 and 14.5, baseline/136

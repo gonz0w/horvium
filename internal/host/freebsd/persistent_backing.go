@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode/utf8"
 )
 
 // Private read-only facts. This collector does not own the original state lease,
@@ -33,7 +34,7 @@ func (s *persistentBackingCollector) collect(ctx context.Context) (persistentBac
 	if ctx == nil {
 		return persistentBackingIdentity{}, ErrUnavailable
 	}
-	if s == nil || s.read == nil || s.observe == nil || s.commandTimeout <= 0 || s.totalTimeout <= 0 {
+	if s == nil || s.read == nil || s.observe == nil || s.commandTimeout <= 0 || s.commandTimeout > 10*time.Second || s.totalTimeout <= 0 || s.totalTimeout > 45*time.Second {
 		return persistentBackingIdentity{}, ErrUnavailable
 	}
 	if s.bytes <= 0 || s.bytes > 64<<10 {
@@ -150,7 +151,7 @@ func persistentVersions(data []byte) bool {
 	return true
 }
 func validPersistentMount(m persistentBackingMount) bool {
-	if len(m.target) > 1023 || !filepath.IsAbs(m.target) || filepath.Clean(m.target) != m.target || strings.IndexFunc(m.target, func(r rune) bool { return r < 32 || r == 127 }) >= 0 {
+	if len(m.target) > 1023 || !utf8.ValidString(m.target) || !filepath.IsAbs(m.target) || filepath.Clean(m.target) != m.target || strings.IndexFunc(m.target, func(r rune) bool { return r < 32 || r == 127 }) >= 0 {
 		return false
 	}
 	switch m.kind {

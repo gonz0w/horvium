@@ -49,7 +49,11 @@ adds private persistent-identity framing and original descriptor observations.
 Guarded persistent backing discovery, fresh commissioning, dual-lease ownership
 and startup/global integration remain required. Both pinned disposable FreeBSD
 targets passed the object and UFS remount gates with verified teardown;
-maintainer review is pending.
+PR 112 accepted this prerequisite.
+The [guarded persistent backing collector](docs/testing/M2/persistent-backing.md)
+adds private native UFS/ZFS identity discovery. Native qualification is pending;
+original lease integration, system exclusion, restore independence and commissioning
+remain required.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 

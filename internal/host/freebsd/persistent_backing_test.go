@@ -4,10 +4,31 @@ package freebsd
 import (
 	"context"
 	"errors"
+	"fmt"
 	"strings"
 	"testing"
 	"time"
 )
+
+func FuzzPersistentBackingProjection(f *testing.F) {
+	f.Add([]byte("/dev/ufsid/1234567823456789\n"))
+	f.Add([]byte("tank/private\tguid\t456\ntank/private\ttype\tfilesystem\ntank/private\tmounted\tyes\ntank/private\tmountpoint\t/root/private\n"))
+	f.Add([]byte("/dev/ufsid/12345678ffffffff\n"))
+	f.Add([]byte(""))
+	f.Fuzz(func(t *testing.T, data []byte) {
+		ufs, e := parsePersistentUFS(data)
+		if e == nil && (ufs[0] == 0 || ufs[1] == 0 || string(data) != fmt.Sprintf("/dev/ufsid/%08x%08x\n", ufs[0], ufs[1])) {
+			t.Fatal("invalid UFS identity")
+		}
+		if e != nil && ufs != ([2]uint32{}) {
+			t.Fatal("partial UFS identity")
+		}
+		zfs, e := parsePersistentZFS(data, "tank/private", "/root/private")
+		if e == nil && zfs == 0 || e != nil && zfs != 0 {
+			t.Fatal("invalid/partial ZFS identity")
+		}
+	})
+}
 
 func persistentFixture(kind string) (*persistentBackingCollector, *persistentBackingMount) {
 	m := &persistentBackingMount{kind: kind, source: "/dev/md7", target: "/root/private", fsid: [2]int32{0x12345678, 0x23456789}}

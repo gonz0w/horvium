@@ -306,3 +306,10 @@ defines role-framed persistent identity metadata and original descriptor
 observations. Its supplied UFS/ZFS backing identities still require a guarded
 native producer and original descriptor correspondence; there is no commissioning,
 independent restore proof, registered dual-lease owner or startup/global clearance.
+
+
+The [private persistent backing collector](../../testing/M2/persistent-backing.md)
+adds fixed guarded native identity projections and repeated descriptor/mount
+correspondence. Original dual-lease integration, complete system/owned-pool
+exclusion, independent restore proof and commissioning/startup/global ownership
+remain required before using those observations to establish a writer.
