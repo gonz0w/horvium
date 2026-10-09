@@ -1,6 +1,6 @@
 # Spike: original executor identity and recovery
 
-Status: Executed; research observations qualified; runtime recovery unqualified.
+Status: Executed; observations accepted in PR 106; runtime recovery unqualified.
 Date: 2026-10-08.
 Owner: Cam (`@gonz0w`). Time box: two development days.
 Authority: maintainer merge of [PR 105](https://github.com/gonz0w/horvium/pull/105),
@@ -146,6 +146,12 @@ descendant counterexample, bind clearance to the original state lease and keep
 retained holds separate from global launch capacity. No new runtime schema or
 adapter is adopted by this experiment. M2-RUNTIME-001 still needs that concrete
 mechanism decision; the remaining delivery gates stay open.
+
+PR 106 accepted these observations at merged source
+`318ef8ac155f4004051ad6f4287fa8de2109a5a5`. The proposed
+[mechanism amendment](../../milestones/M2/property-recovery-mechanism.md) and
+[ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md) are the followup
+review; the original native manifest is unchanged.
 
 Boot time/start timestamps are observed identifiers, not cryptographic provenance
 or proof of kernel quiescence. PID-reuse, clock changes, restored-state provenance,

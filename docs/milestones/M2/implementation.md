@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; prerequisites accepted through PR 104; runtime recovery/launch contract accepted in PR 105; executor research observations qualified; mechanism/runtime gates open; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; prerequisites accepted through PR 104; runtime contract accepted in PR 105; research observations accepted in PR 106; concrete mechanism proposed; runtime gates open; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -11,8 +11,10 @@ independent workers before UI/CLI exposure. Its six ordered deliverables are not
 six promised PRs; actual native findings determine implementation boundaries.
 The amendment enables no runtime write. The approved
 [original executor recovery experiment](../../research/M2/executor-recovery.md)
-has produced native observations; the next gate is a concrete reviewed mechanism
-decision under M2-RUNTIME-001.
+has produced native observations accepted in PR 106. The next review is the
+[concrete mechanism amendment](property-recovery-mechanism.md) under
+M2-RUNTIME-001 and proposed
+[ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md).
 
 M1 automated work and the qualification record are merged. M1 is Validating;
 Safari/manual accessibility and explicit milestone acceptance remain pending.

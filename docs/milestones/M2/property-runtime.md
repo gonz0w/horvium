@@ -10,7 +10,11 @@ Date: 2026-10-08. Owner: Cam (`@gonz0w`).
 Authority: maintainer merge of [PR 105](https://github.com/gonz0w/horvium/pull/105),
 source `6854b5554f1104c4fc2f2ee0b4e36dd80b962a9f`, on 2026-10-08. The accepted
 contract authorizes the bounded [executor recovery experiment](../../research/M2/executor-recovery.md);
-its findings still need review before selecting a runtime mechanism.
+PR 106 accepted the findings at merged source
+`318ef8ac155f4004051ad6f4287fa8de2109a5a5`. The concrete
+[mechanism proposal](property-recovery-mechanism.md) and
+[ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md) are the next
+review, not an adopted runtime mechanism.
 
 This contract brings the accepted private prerequisites toward one actual property
 workflow. It adds no runtime behavior or qualification claim. The first assembled
