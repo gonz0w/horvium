@@ -22,7 +22,9 @@ case "${1:-before}" in
         /sbin/sha256 /usr/bin/cc /usr/bin/timeout /sbin/zfs /usr/include/sys/user.h /usr/include/sys/procctl.h
         /usr/bin/cc -std=c11 -Wall -Wextra -Werror -O2 tools/research/m2-executor-observer.c -o .tools/executor-observer
         chmod 700 .tools/executor-observer
-        parent='TestNative(ExecutorRecoveryBefore|ExecutorSupervision)'
+        # Fail the narrow pipe/reaper gate before allocating storage fixtures.
+        "$binary" -test.v -test.count=1 -test.timeout=6m -test.run='^TestNativeExecutorSupervision$'
+        parent=TestNativeExecutorRecoveryBefore
         ;;
     after) parent='TestNative(ExecutorRecoveryAfter|SupervisorBootAfter|SupervisorPropertyControls)' ;;
     *) exit 1;;
