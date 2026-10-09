@@ -1,6 +1,6 @@
 # Execution journal record and census core
 
-Status: Implemented portable prerequisite; review evidence pending; runtime denied.
+Status: Portable prerequisite qualified; awaiting maintainer review; runtime denied.
 Date: 2026-10-08. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [Accepted mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -108,8 +108,15 @@ in-memory census-to-journal consumer. Two bounded fuzz targets exercise hostile
 record bytes and name/content inputs. FreeBSD compilation is explicitly unexecuted;
 no new native or production claim follows from it.
 
-Affected-package review, signed source and teardown evidence are recorded after
-execution. The native independent journal domain, root commissioning, durable
+Signed source `236fea7dd18777aa548a712f2efb8f84649d471a` passed all baseline checks/144 tooling tests,
+all 9 affected race packages and 45 bounded selected fuzz targets, including both
+new targets. The [source-bound manifest](execution-journal-manifest.json) records
+actual execution, red results, unexecuted cross-build/artifact cleanup and limits.
+The initial sandbox-denied supervisor startup executed no tests; its behavioral
+retry and all subsequent supervised runs completed teardown. Documentation-only
+final review repeats baseline checks and reuses matching non-prose deep evidence.
+All 82 historical M2 manifests and existing native/helper/tooling inputs retain
+their bytes. Actions remain disabled. The native independent journal domain, root commissioning, durable
 sync/rename/census ordering, helper/process-death and ledger-only restore cuts,
 original startup leases, global launch owner and backend/publisher integration
 still need implementation and qualification on both disposable releases.

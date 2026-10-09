@@ -1,0 +1,129 @@
+{
+  "schema": 1,
+  "qualification_scope": "portable private journal record/successor/census core only; no native namespace observation, journal persistence, provenance, startup/global authority or M2 acceptance",
+  "source_commit": "236fea7dd18777aa548a712f2efb8f84649d471a",
+  "base_commit": "a8a96403b40922b4751493d837f5a6d37b1f5e0e",
+  "approval": {
+    "mechanism_pr": "https://github.com/gonz0w/horvium/pull/107",
+    "mechanism_merged_source": "02a995e5681f38b4a40141402dd2d0a9f0244933",
+    "supervisor_pr": "https://github.com/gonz0w/horvium/pull/108",
+    "supervisor_merged_source": "a8a96403b40922b4751493d837f5a6d37b1f5e0e"
+  },
+  "portable_core_qualified": true,
+  "native_journal_qualified": false,
+  "runtime_recovery_qualified": false,
+  "runtime_writes_enabled": false,
+  "tests": {
+    "parents": [
+      "TestExecutionCensusExactBytesAndBinding",
+      "TestExecutionCensusRefusesPartialOrUnsafeInputs",
+      "TestExecutionCensusLimitsAndJournalConsumer",
+      "TestExecutionJournalCanonicalAndIndependent",
+      "TestExecutionJournalPendingDomainsAndClosedState",
+      "TestExecutionJournalSemanticDenials",
+      "TestExecutionJournalStrictShapeAndDamage",
+      "TestExecutionJournalLimitsAndRawBoot",
+      "TestExecutionJournalOrderedTransitions",
+      "TestExecutionJournalTransitionDenials"
+    ],
+    "parent_count": 10,
+    "child_result_count": 235,
+    "case_log_sha256": "334089a591e1450d96628382eee3091d28d6f5918d12a01cda2355315e57fc0e",
+    "new_bounded_fuzz_targets": [
+      "FuzzExecutionJournal",
+      "FuzzExecutionCensus"
+    ]
+  },
+  "test_first": {
+    "source_state": "working-tree stubs before implementation; not signed native evidence",
+    "journal_red_log_sha256": "ea2d4231a3b4bb56a346337807bb5836bd24517b355ebeaaa4bad0f2d3379541",
+    "journal_failed_parents": 5,
+    "census_red_log_sha256": "798ae53fec06d7febab49e9a1abbe6725de2909b2cc0b1d3ff0b1b9856472783",
+    "census_failed_parents": 3,
+    "unstarted_local_attempt": {
+      "log_sha256": "238a69109df87ef72299ab821a1203560d8d8e9a3225d967a5c2f644f09173fd",
+      "tests_executed": false,
+      "qualified": false,
+      "description": "sandbox prevented transient supervisor control-socket binding; behavioral tests then ran with authorized local supervisor access"
+    }
+  },
+  "portable_review": {
+    "private_record": ".tools/review-runs/3kvsqs4t/result.json",
+    "source_commit": "236fea7dd18777aa548a712f2efb8f84649d471a",
+    "base_commit": "a8a96403b40922b4751493d837f5a6d37b1f5e0e",
+    "title": "feat(storage): validate execution journal records and census",
+    "record_sha256": "81355cb9d300d36c606a265cfe58e33b32c23f3fd3dd9a5915a7e67508bb85ab",
+    "checks_log_sha256": "5520fdfddfdd4122fa3e07b6293a16a089c159be30e26e15ce10b25688499538",
+    "deep_log_sha256": "67f070b0c660c57b0518c9aa9e91a1d86cfaff2747bdb4f9a88a5d24bd757303",
+    "qualified": true,
+    "selection": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ],
+      "native_review_required": true
+    },
+    "baseline_tooling_tests": 144,
+    "race_packages": [
+      "./cmd/horvium",
+      "./internal/admin",
+      "./internal/client",
+      "./internal/console",
+      "./internal/helper",
+      "./internal/host/freebsd",
+      "./internal/observation",
+      "./internal/service",
+      "./internal/storage"
+    ],
+    "race_package_count": 9,
+    "bounded_fuzz_target_count": 45,
+    "deep_executed": true,
+    "supervisors_cleaned": true
+  },
+  "freebsd_crossbuild": {
+    "executed": false,
+    "target": "freebsd/amd64",
+    "cgo_enabled": false,
+    "bytes": 12084924,
+    "sha256": "75e3701299ae807ea278a9ea78e618f3abc77f0780bf323d0abd77958632080d",
+    "removed": true,
+    "source_state": "working tree matching implementation files; compilation only"
+  },
+  "format": {
+    "version": 1,
+    "kind": "execution-journal",
+    "record_byte_ceiling": 65536,
+    "checksum_domain": "horvium:execution-journal:v1\n",
+    "census_domain": "horvium:execution-census:v1\n",
+    "identity_hex_bytes": 16,
+    "census_frame_uint_encoding": "uint64 big-endian",
+    "metadata_and_native_pending_independent": true,
+    "path_selected": false,
+    "digests_are_provenance": false
+  },
+  "preservation": {
+    "historical_m2_manifests_byte_identical": 82,
+    "native_go_and_tooling_helper_command_paths_byte_identical": 206,
+    "existing_ownership_job_formats_and_golden_records_retained": true,
+    "crossbuild_artifact_removed": true,
+    "github_actions_enabled": false
+  },
+  "remaining_gates": [
+    "native journal domain and original dual leases with independently derived system/directory/lock bindings",
+    "complete descriptor-bound census producer and measured native costs",
+    "root provisioning, journal durable sync/rename and actual metadata/native publication ordering",
+    "process-death, missing/partial state, ledger-only restore and joint-restore denial cuts on both FreeBSD targets",
+    "startup recovery, shared global launch owner and real backend/publisher integration together before runtime enablement",
+    "original supervisor/result proof before actual native pending clearance; operator recovery and retained hold resolution",
+    "active kernel property interruption, assembled runtime/resource/client/UI gates and M2 acceptance"
+  ]
+}

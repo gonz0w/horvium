@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; prerequisites accepted through PR 104; runtime contract accepted in PR 105; research observations accepted in PR 106; mechanism accepted in PR 107; private supervisor accepted in PR 108; journal core implementing; runtime gates open; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; prerequisites accepted through PR 104; runtime contract accepted in PR 105; research observations accepted in PR 106; mechanism accepted in PR 107; private supervisor accepted in PR 108; journal core qualified for review; runtime gates open; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1419,5 +1419,10 @@ complete supplied-byte census consumer. It implements no native persistence,
 commissioning, startup/global launch owner or backend publication gate. These
 portable components must be consumed together by the accepted original native
 owner and real publishers before runtime use. Ten behavioral parents/235 child
-results and FreeBSD compilation passed; signed affected-package review is pending.
+results and unexecuted FreeBSD compilation passed. Signed source
+`236fea7dd18777aa548a712f2efb8f84649d471a` passed baseline/144 tooling tests, all nine affected race
+packages and 45 bounded selected fuzz targets with verified teardown. See the
+[source-bound manifest](../../testing/M2/execution-journal-manifest.json). All 82
+historical manifests and existing native/helper/tooling sources retain their bytes;
+Actions remain disabled.
 No service, automatic replay, recovery authority or runtime write is added.
