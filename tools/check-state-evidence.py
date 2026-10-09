@@ -75,13 +75,17 @@ TESTS.update({'TestNativeExecutionBindings','TestNativeExecutionBindingRemount',
 BACKING_TESTS.update({'TestNativeExecutionBindings','TestNativeExecutionBindingRemount'})
 CODEC_SUBTEST_COUNTS.update({'TestExecutionBindingIdentity':13,'TestExecutionBindingDenials':20})
 
+JOINT_JOURNAL_CASES={'drift_retired', 'reopen_no_publisher', 'restored_observation', 'original_receipt_absent', 'same_record_preserved', 'observed_native', 'foreign_binding_denial', 'census_changed_fact', 'installation_drift', 'final_close', 'empty_pair', 'repeat_history', 'observed_metadata', 'census_mismatch_no_authority', 'journal_inode_drift', 'separate_original_objects', 'observed_active', 'observed_disarmed', 'observed_both', 'observed_closed', 'reopen_observation'}
+TESTS.add('TestNativeJointExecutionJournal')
+BACKING_TESTS.add('TestNativeJointExecutionJournal')
+
 def validate(text):
     if len(text)>1<<20 or re.search(r'(?m)^(?:FAIL|[ \t]*--- (?:FAIL|SKIP):)',text):
         raise ValueError('state native evidence failed, skipped or oversized')
     passed=re.findall(r'(?m)^--- PASS: (Test\w+) \([0-9.]+s\)$',text)
     if len(passed)!=len(TESTS) or set(passed)!=TESTS:
         raise ValueError('complete executed lease/reader/ACL/publication/codec tests required')
-    for marker,cases in [('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES),('STATE_ACL_RESULT',ACL_CASES),('OWNERSHIP_PUBLISH_RESULT',PUBLISH_CASES),('OWNERSHIP_PUBLISH_FS_RESULT',PUBLISH_FS_CASES),('OWNERSHIP_CATALOG_RESULT',CATALOG_CASES),('OWNERSHIP_CAPACITY_RESULT',CAPACITY_CASES),('JOB_READ_RESULT',JOB_READ_CASES),('STATE_CATALOG_RESULT',STATE_CATALOG_CASES),('JOB_PUBLICATION_RESULT',JOB_PUBLICATION_CASES),('PROPERTY_JOB_STORAGE_RESULT',PROPERTY_JOB_STORAGE_CASES),('JOB_RESERVATIONS_RESULT',RESERVATION_CASES),('PROPERTY_SUBMISSION_RESULT',SUBMISSION_CASES),('STATE_SOFTUPDATES_RESULT',SOFTUPDATES_CASES),('PROPERTY_PUBLICATION_CUTS_RESULT',CUT_CASES),('ENROLLMENT_PUBLICATION_RESULT',ENROLLMENT_CASES),('EXECUTION_CENSUS_RESULT',EXECUTION_CENSUS_CASES),('EXECUTION_JOURNAL_STORE_RESULT',JOURNAL_STORE_CASES),('EXECUTION_JOURNAL_CUTS_RESULT',JOURNAL_CUT_CASES),('EXECUTION_BINDING_RESULT',BINDING_CASES),('EXECUTION_BINDING_REMOUNT_RESULT',BINDING_REMOUNT_CASES)]:
+    for marker,cases in [('JOINT_EXECUTION_JOURNAL_RESULT',JOINT_JOURNAL_CASES),('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES),('STATE_ACL_RESULT',ACL_CASES),('OWNERSHIP_PUBLISH_RESULT',PUBLISH_CASES),('OWNERSHIP_PUBLISH_FS_RESULT',PUBLISH_FS_CASES),('OWNERSHIP_CATALOG_RESULT',CATALOG_CASES),('OWNERSHIP_CAPACITY_RESULT',CAPACITY_CASES),('JOB_READ_RESULT',JOB_READ_CASES),('STATE_CATALOG_RESULT',STATE_CATALOG_CASES),('JOB_PUBLICATION_RESULT',JOB_PUBLICATION_CASES),('PROPERTY_JOB_STORAGE_RESULT',PROPERTY_JOB_STORAGE_CASES),('JOB_RESERVATIONS_RESULT',RESERVATION_CASES),('PROPERTY_SUBMISSION_RESULT',SUBMISSION_CASES),('STATE_SOFTUPDATES_RESULT',SOFTUPDATES_CASES),('PROPERTY_PUBLICATION_CUTS_RESULT',CUT_CASES),('ENROLLMENT_PUBLICATION_RESULT',ENROLLMENT_CASES),('EXECUTION_CENSUS_RESULT',EXECUTION_CENSUS_CASES),('EXECUTION_JOURNAL_STORE_RESULT',JOURNAL_STORE_CASES),('EXECUTION_JOURNAL_CUTS_RESULT',JOURNAL_CUT_CASES),('EXECUTION_BINDING_RESULT',BINDING_CASES),('EXECUTION_BINDING_REMOUNT_RESULT',BINDING_REMOUNT_CASES)]:
         records=re.findall(marker+r' ([^\n]+)',text)
         if len(records)!=1:raise ValueError('one native result per boundary required')
         fields=records[0].split();expected={case+'=pass' for case in cases}
@@ -96,7 +100,7 @@ def validate(text):
         name,filesystem,soft=match.groups();names.append(name)
         if name=='TestNativeStateSoftUpdates':
             if (filesystem,soft)!=('ufs','on'):raise ValueError('actual softupdates refusal fixture required')
-        elif name=='TestNativeExecutionBindingRemount' and (filesystem,soft)!=('ufs','off'):
+        elif name in ('TestNativeExecutionBindingRemount','TestNativeJointExecutionJournal') and (filesystem,soft)!=('ufs','off'):
             raise ValueError('actual UFS remount fixture required')
         elif soft!='off':raise ValueError('qualified state backing must have softupdates disabled')
     if len(set(names))!=len(names) or set(names)!=BACKING_TESTS:raise ValueError('distinct complete native backing tests required')
