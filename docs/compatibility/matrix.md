@@ -56,7 +56,11 @@ Existing file formats and public ledger opening behavior remain unchanged.
 
 The [binding/object prerequisite](../testing/M2/execution-bindings.md) defines private
 UFS on-disk ID/ZFS GUID framing and a FreeBSD protected-object observer. Native
-qualification is pending. Supplied backing facts are metadata: native persistent
+object and UFS remount gates passed on both disposable FreeBSD/amd64 targets,
+using the same signed-source binary. All 76 selected parents and verified teardown
+passed; fresh portable review passed 150 tooling tests, eleven race packages and
+52 bounded fuzz targets. Its [manifest](../testing/M2/execution-bindings-manifest.json)
+retains failed attempts and original source. Supplied backing facts are metadata: native persistent
 backing discovery, system/owned-pool exclusion, independent restore scope and
 commissioning/startup/global ownership remain unimplemented. No runtime writer,
 new platform support or restore clearance follows from these private hashes.

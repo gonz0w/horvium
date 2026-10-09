@@ -1,6 +1,6 @@
 # Execution binding representation and native object observation
 
-Status: Implementation candidate; native qualification pending; runtime denied.
+Status: Native object and portable metadata prerequisite qualified; awaiting maintainer review; runtime denied.
 Date: 2026-10-09. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -103,3 +103,19 @@ ZFS exposes `z_gen` and creation time as generation/birth time; see
 [14.5 ZFS objects](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/contrib/openzfs/module/os/freebsd/zfs/zfs_vnops_os.c)
 and [15.1 ZFS objects](https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/contrib/openzfs/module/os/freebsd/zfs/zfs_vnops_os.c).
 Source reasoning does not replace disposable native observations.
+
+
+The [manifest](execution-bindings-manifest.json) records final signed implementation
+`a84e22d635bbb387ece77fd0d6a0c6e1ec609044`, both actual guest results and the
+identical binary SHA-256 `e40c2ef9255b1ce9c74e5c1d045ad23beb006e6698b24f16c4cca771218edb23`.
+All 76 selected parents, 1,054 native markers and 1,930 codec children passed on
+both targets with verified fixture/process/key/image teardown. The object parent
+took 0.17 s on UFS/14.5 and 0.06 s on ZFS/15.1; actual UFS remount took 0.14 s
+and 0.20 s respectively. These small fixtures are not production resource or
+performance qualification. Fresh local review passed all baseline checks, 150
+tooling tests, eleven race packages and 52 bounded fuzz targets. Both unqualified
+native attempts and the failed portable runner fixture are retained with original
+sources. All 85 historical M2 manifests and 141 existing host/helper/command
+inputs retained their bytes. All owned sessions stopped; GitHub Actions remained
+disabled. Guarded persistent backing discovery, independent restore scope and
+commissioning/startup/global ownership remain the next required prerequisites.

@@ -47,7 +47,9 @@ runtime ordering remain required; PR 111 accepted this prerequisite.
 The [binding representation and native object observer](docs/testing/M2/execution-bindings.md)
 adds private persistent-identity framing and original descriptor observations.
 Guarded persistent backing discovery, fresh commissioning, dual-lease ownership
-and startup/global integration remain required; qualification is pending.
+and startup/global integration remain required. Both pinned disposable FreeBSD
+targets passed the object and UFS remount gates with verified teardown;
+maintainer review is pending.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 
