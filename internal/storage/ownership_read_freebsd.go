@@ -41,7 +41,7 @@ func (s *StateDirectory) readOwnershipLocked(poolGUID string) (Policy, error) {
 }
 
 // Caller holds mu and has validated the kernel UID and typed selector. Only
-// ownership/job wrappers construct names; requests cannot supply a file path.
+// ownership/job wrappers and the private fixed journal construct names; requests cannot supply a file path.
 // Shared descriptor validation retains the accepted reader's native semantics.
 func (s *StateDirectory) readStateBytesLocked(name string) ([]byte, error) {
 	dir, err := s.ownershipDirectoryLocked()

@@ -1,11 +1,13 @@
 # Native execution census prerequisite
 
-Status: Native prerequisite qualified; awaiting maintainer review; runtime denied.
+Status: Native prerequisite accepted in PR 110; runtime denied.
 Date: 2026-10-08. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted mechanism](../../milestones/M2/property-recovery-mechanism.md),
 [record/census core](execution-journal.md).
 
+PR 110 accepted this prerequisite at merged source
+`3d9c5c49d8717ff4f8fd19c1a68a048d5244f415`.
 PR 109 accepted the portable journal core at merged source
 `2fc51de735e2df4657b8a61df8ebb171c9857311`. This private FreeBSD consumer connects
 that framing to complete descriptor-anchored ledger observations. It performs

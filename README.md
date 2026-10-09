@@ -39,6 +39,11 @@ uncertainty. Its focused assertions and affected state safety corpus passed on b
 disposable FreeBSD/amd64 targets with verified teardown. Independent journal
 persistence/bindings and startup/global ownership
 remain required; this inspection cannot enable a writer.
+PR 110 accepted that native observation prerequisite. The next
+[private journal persistence component](docs/testing/M2/execution-journal-persistence.md)
+adds a pre-existing journal lease and original durable file receipts. Qualification
+is pending; persistent bindings, startup/global ownership and integrated runtime
+ordering remain required.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 

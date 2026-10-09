@@ -87,6 +87,13 @@ postcondition observation still need the listed native gates.
 
 ## Independent execution journal
 
+The [private file persistence component](../../testing/M2/execution-journal-persistence.md)
+implements a separate pre-existing lease and original durable receipt under this
+contract. Its fixed relative filename/staging format is reviewed in that change.
+It does not commission the domain, produce persistent bindings, reconstruct an
+owner on reopen or compose the startup/global/native-clearance protocol.
+
+
 Provision one root-owned journal domain on verified local system UFS/ZFS storage,
 outside routine ledger exports and the ledger's rollback/snapshot scope. It can
 share a boot disk; a new physical disk is not required. A separate ZFS dataset

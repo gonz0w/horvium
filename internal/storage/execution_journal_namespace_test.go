@@ -69,3 +69,39 @@ func TestExecutionJournalInitialBoundary(t *testing.T) {
 		})
 	}
 }
+
+func FuzzExecutionJournalNamespace(f *testing.F) {
+	for _, seed := range []string{"writer.lock", "writer.lock\x00execution.json", "writer.lock\x00.execution-" + strings.Repeat("a", 32) + ".tmp", "", "writer.lock\x00writer.lock", "writer.lock\x00../execution.json"} {
+		f.Add(seed, "")
+	}
+	f.Fuzz(func(t *testing.T, input, own string) {
+		if len(input) > 4*maxFieldBytes || len(own) > maxFieldBytes+1 {
+			return
+		}
+		names := strings.Split(input, "\x00")
+		present, err := executionJournalNames(names, own)
+		if err != nil {
+			if present {
+				t.Fatal("partial namespace on refusal")
+			}
+			return
+		}
+		seen := map[string]bool{}
+		for _, name := range names {
+			if seen[name] || name != "writer.lock" && name != executionJournalName && (own == "" || name != own || !executionJournalTemporary(own)) {
+				t.Fatal("unsafe accepted namespace")
+			}
+			seen[name] = true
+		}
+		if !seen["writer.lock"] || present != seen[executionJournalName] || own != "" && !seen[own] {
+			t.Fatal("incomplete accepted namespace")
+		}
+		for i, j := 0, len(names)-1; i < j; i, j = i+1, j-1 {
+			names[i], names[j] = names[j], names[i]
+		}
+		other, err := executionJournalNames(names, own)
+		if err != nil || other != present {
+			t.Fatal("enumeration order changed valid domain")
+		}
+	})
+}

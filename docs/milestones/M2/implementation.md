@@ -1451,3 +1451,15 @@ remain disabled. See the
 Bindings are synthetic metadata in these fixtures, not persistent identity or
 restore proof; journal durability, provisioning/startup/global owner and actual
 backend ordering remain required before runtime use. No writer is enabled.
+
+## Original journal file persistence prerequisite
+
+PR 110 accepted the native census prerequisite at merged source
+`3d9c5c49d8717ff4f8fd19c1a68a048d5244f415`. The next
+[private persistence component](../../testing/M2/execution-journal-persistence.md)
+requires an already provisioned lock, separate bounded domain, original volatile
+publication receipt and post-directory-sync independent confirmation. File
+qualification is pending. Reopened bytes never reconstruct writer authority;
+failed publication retires the original store. Persistent identity/commissioning,
+dual-lease registration, startup/global owner, restore/reconciliation and real
+backend/supervisor composition remain required before enabling runtime writes.
