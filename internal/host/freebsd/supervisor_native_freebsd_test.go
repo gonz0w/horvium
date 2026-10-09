@@ -86,11 +86,7 @@ func TestNativeSupervisedOwner(t *testing.T) {
 		t.Fatal(err)
 	}
 	_ = exchangePropertySupervisor(context.Background(), i, data, owner, func(c *exec.Cmd) {
-		m := "escaped"
-		if mode == "normal-escaped" {
-			m = mode
-		}
-		c.Args = []string{os.Args[0], supervisorFixtureArgument, m, dir}
+		c.Args = []string{os.Args[0], supervisorFixtureArgument, "escaped", dir}
 	})
 }
 func TestNativeExecutorSupervision(t *testing.T) {
