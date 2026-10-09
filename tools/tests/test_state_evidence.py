@@ -132,6 +132,43 @@ RESULT = RESULT.replace('OWNERSHIP_PUBLISH_FS_RESULT ', 'OWNERSHIP_PUBLISH_FS_RE
 RESULT = RESULT.replace('STATE_SOFTUPDATES_RESULT '+' '.join(c+'=pass' for c in SOFTUPDATES_CASES[:-1]), 'STATE_SOFTUPDATES_RESULT '+' '.join(c+'=pass' for c in SOFTUPDATES_CASES))
 PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
 
+
+OLD_BINDING_FREE_PASS, OLD_BINDING_FREE_RESULT = PASS, RESULT
+BINDING_CASES = ['native_objects','exact_descriptor_identity','live_mount_observed','repeat','actual_publication','publication_identity_stable','uncertain_observation','uncertainty_not_cleared','copied_denial','nil_denial','inert_denial','directory_mode_denial','lock_mode_denial','lock_nonempty_denial','lock_hardlink_denial','same_inode_drift','namespace_drift','restored_observation','inherited_kernel_uid_denial','child_reaped','lock_replacement_denial','close','closed_denial','reopen_identity_stable','fixture_teardown']
+BINDING_REMOUNT_CASES = ['original_objects','closed_before_unmount','actual_remount','identity_preserved','close']
+TESTS += ['TestNativeExecutionBindings','TestNativeExecutionBindingRemount','TestExecutionBindingIdentity','TestExecutionBindingDenials']
+BACKING_TESTS += ['TestNativeExecutionBindings','TestNativeExecutionBindingRemount']
+SUBTESTS.update({'TestExecutionBindingIdentity':13,'TestExecutionBindingDenials':20})
+RESULT += 'EXECUTION_BINDING_RESULT '+' '.join(c+'=pass' for c in BINDING_CASES)+'\n'
+RESULT += 'EXECUTION_BINDING_REMOUNT_RESULT '+' '.join(c+'=pass' for c in BINDING_REMOUNT_CASES)+'\n'
+RESULT += 'STATE_BACKING_RESULT TestNativeExecutionBindings filesystem=zfs softupdates=off teardown=pass\nSTATE_BACKING_RESULT TestNativeExecutionBindingRemount filesystem=ufs softupdates=off teardown=pass\n'
+PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
+
+class ExecutionBindingEvidenceTests(unittest.TestCase):
+    def module(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m);return m
+
+    def test_previous_evidence_cannot_qualify_bindings(self):
+        m=self.module()
+        with self.assertRaises(ValueError):m.validate(OLD_BINDING_FREE_PASS+OLD_BINDING_FREE_RESULT)
+        self.assertEqual(m.BINDING_CASES,set(BINDING_CASES))
+        self.assertEqual(m.BINDING_REMOUNT_CASES,set(BINDING_REMOUNT_CASES))
+        m.validate(PASS+RESULT)
+
+    def test_binding_cases_parents_children_and_remount_are_required(self):
+        m=self.module()
+        for marker,cases in [('EXECUTION_BINDING_RESULT',BINDING_CASES),('EXECUTION_BINDING_REMOUNT_RESULT',BINDING_REMOUNT_CASES)]:
+            line=marker+' '+' '.join(c+'=pass' for c in cases)
+            for case in cases:
+                for value in ['',case+'=fail',case+'=pass '+case+'=pass']:
+                    bad=marker+' '+' '.join(value if c==case else c+'=pass' for c in cases)
+                    with self.subTest(case=case,value=value),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(line,bad))
+        for parent in ['TestNativeExecutionBindings','TestNativeExecutionBindingRemount','TestExecutionBindingIdentity','TestExecutionBindingDenials']:
+            with self.subTest(parent=parent),self.assertRaises(ValueError):m.validate((PASS+RESULT).replace('--- PASS: '+parent+' (1.0s)\n',''))
+        for parent in ['TestExecutionBindingIdentity','TestExecutionBindingDenials']:
+            with self.subTest(parent=parent),self.assertRaises(ValueError):m.validate((PASS+RESULT).replace('    --- PASS: '+parent+'/case_0 (0.0s)\n',''))
+        with self.assertRaises(ValueError):m.validate((PASS+RESULT).replace('TestNativeExecutionBindingRemount filesystem=ufs','TestNativeExecutionBindingRemount filesystem=zfs'))
+
 class ExecutionJournalEvidenceTests(unittest.TestCase):
     def module(self):
         m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m);return m

@@ -69,13 +69,19 @@ TESTS.update({"TestNativeExecutionJournalStore","TestNativeExecutionJournalCuts"
 BACKING_TESTS.update({"TestNativeExecutionJournalStore","TestNativeExecutionJournalCuts"})
 CODEC_SUBTEST_COUNTS.update({"TestExecutionJournalNamespace":15,"TestExecutionJournalInitialBoundary":6})
 
+BINDING_CASES=set(['native_objects','exact_descriptor_identity','live_mount_observed','repeat','actual_publication','publication_identity_stable','uncertain_observation','uncertainty_not_cleared','copied_denial','nil_denial','inert_denial','directory_mode_denial','lock_mode_denial','lock_nonempty_denial','lock_hardlink_denial','same_inode_drift','namespace_drift','restored_observation','inherited_kernel_uid_denial','child_reaped','lock_replacement_denial','close','closed_denial','reopen_identity_stable','fixture_teardown'])
+BINDING_REMOUNT_CASES=set(['original_objects','closed_before_unmount','actual_remount','identity_preserved','close'])
+TESTS.update({'TestNativeExecutionBindings','TestNativeExecutionBindingRemount','TestExecutionBindingIdentity','TestExecutionBindingDenials'})
+BACKING_TESTS.update({'TestNativeExecutionBindings','TestNativeExecutionBindingRemount'})
+CODEC_SUBTEST_COUNTS.update({'TestExecutionBindingIdentity':13,'TestExecutionBindingDenials':20})
+
 def validate(text):
     if len(text)>1<<20 or re.search(r'(?m)^(?:FAIL|[ \t]*--- (?:FAIL|SKIP):)',text):
         raise ValueError('state native evidence failed, skipped or oversized')
     passed=re.findall(r'(?m)^--- PASS: (Test\w+) \([0-9.]+s\)$',text)
     if len(passed)!=len(TESTS) or set(passed)!=TESTS:
         raise ValueError('complete executed lease/reader/ACL/publication/codec tests required')
-    for marker,cases in [('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES),('STATE_ACL_RESULT',ACL_CASES),('OWNERSHIP_PUBLISH_RESULT',PUBLISH_CASES),('OWNERSHIP_PUBLISH_FS_RESULT',PUBLISH_FS_CASES),('OWNERSHIP_CATALOG_RESULT',CATALOG_CASES),('OWNERSHIP_CAPACITY_RESULT',CAPACITY_CASES),('JOB_READ_RESULT',JOB_READ_CASES),('STATE_CATALOG_RESULT',STATE_CATALOG_CASES),('JOB_PUBLICATION_RESULT',JOB_PUBLICATION_CASES),('PROPERTY_JOB_STORAGE_RESULT',PROPERTY_JOB_STORAGE_CASES),('JOB_RESERVATIONS_RESULT',RESERVATION_CASES),('PROPERTY_SUBMISSION_RESULT',SUBMISSION_CASES),('STATE_SOFTUPDATES_RESULT',SOFTUPDATES_CASES),('PROPERTY_PUBLICATION_CUTS_RESULT',CUT_CASES),('ENROLLMENT_PUBLICATION_RESULT',ENROLLMENT_CASES),('EXECUTION_CENSUS_RESULT',EXECUTION_CENSUS_CASES),('EXECUTION_JOURNAL_STORE_RESULT',JOURNAL_STORE_CASES),('EXECUTION_JOURNAL_CUTS_RESULT',JOURNAL_CUT_CASES)]:
+    for marker,cases in [('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES),('STATE_ACL_RESULT',ACL_CASES),('OWNERSHIP_PUBLISH_RESULT',PUBLISH_CASES),('OWNERSHIP_PUBLISH_FS_RESULT',PUBLISH_FS_CASES),('OWNERSHIP_CATALOG_RESULT',CATALOG_CASES),('OWNERSHIP_CAPACITY_RESULT',CAPACITY_CASES),('JOB_READ_RESULT',JOB_READ_CASES),('STATE_CATALOG_RESULT',STATE_CATALOG_CASES),('JOB_PUBLICATION_RESULT',JOB_PUBLICATION_CASES),('PROPERTY_JOB_STORAGE_RESULT',PROPERTY_JOB_STORAGE_CASES),('JOB_RESERVATIONS_RESULT',RESERVATION_CASES),('PROPERTY_SUBMISSION_RESULT',SUBMISSION_CASES),('STATE_SOFTUPDATES_RESULT',SOFTUPDATES_CASES),('PROPERTY_PUBLICATION_CUTS_RESULT',CUT_CASES),('ENROLLMENT_PUBLICATION_RESULT',ENROLLMENT_CASES),('EXECUTION_CENSUS_RESULT',EXECUTION_CENSUS_CASES),('EXECUTION_JOURNAL_STORE_RESULT',JOURNAL_STORE_CASES),('EXECUTION_JOURNAL_CUTS_RESULT',JOURNAL_CUT_CASES),('EXECUTION_BINDING_RESULT',BINDING_CASES),('EXECUTION_BINDING_REMOUNT_RESULT',BINDING_REMOUNT_CASES)]:
         records=re.findall(marker+r' ([^\n]+)',text)
         if len(records)!=1:raise ValueError('one native result per boundary required')
         fields=records[0].split();expected={case+'=pass' for case in cases}
@@ -90,9 +96,11 @@ def validate(text):
         name,filesystem,soft=match.groups();names.append(name)
         if name=='TestNativeStateSoftUpdates':
             if (filesystem,soft)!=('ufs','on'):raise ValueError('actual softupdates refusal fixture required')
+        elif name=='TestNativeExecutionBindingRemount' and (filesystem,soft)!=('ufs','off'):
+            raise ValueError('actual UFS remount fixture required')
         elif soft!='off':raise ValueError('qualified state backing must have softupdates disabled')
     if len(set(names))!=len(names) or set(names)!=BACKING_TESTS:raise ValueError('distinct complete native backing tests required')
-    children=re.findall(r'(?m)^[ \t]+--- PASS: (Test(?:Ownership|Job|Property|Reservation|RestartPage|ExecutionJournal)\w+)/(\S+) \([0-9.]+s\)$',text)
+    children=re.findall(r'(?m)^[ \t]+--- PASS: (Test(?:Ownership|Job|Property|Reservation|RestartPage|ExecutionJournal|ExecutionBinding)\w+)/(\S+) \([0-9.]+s\)$',text)
     if len(children)!=sum(CODEC_SUBTEST_COUNTS.values()) or len(set(children))!=len(children):
         raise ValueError('complete distinct codec subtests required')
     for name,count in CODEC_SUBTEST_COUNTS.items():
