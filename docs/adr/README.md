@@ -26,6 +26,8 @@ M2 runtime composition accepted by maintainer merge of
 
 - [0008 Property runtime recovery and launch gates](0008-property-runtime-recovery-gates.md)
 
-Proposed mechanism decision following the accepted PR 106 research:
+M2 mechanism decision accepted by maintainer merge of
+[PR 107](https://github.com/gonz0w/horvium/pull/107), source
+`02a995e5681f38b4a40141402dd2d0a9f0244933`:
 
 - [0009 Property executor supervision and recovery provenance](0009-property-executor-recovery-mechanism.md)

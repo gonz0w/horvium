@@ -130,7 +130,7 @@ plan. Existing non-test product files and all eighty historical M2 manifests
 retain their bytes. All 695 owned sessions were stopped with verified teardown
 at evidence capture; Actions remained disabled.
 
-## Remaining mechanism decision
+## Mechanism followup and remaining runtime gates
 
 An active property-command/kernel interruption was **not exercised**. The final
 effect cut witnessed completed control before durable outcome publication; the
@@ -139,22 +139,24 @@ did not test power loss or a reboot during an active storage command. The owned
 sentinel is fixture preservation evidence, not independent file-client continuity.
 
 The observed tuple is useful attribution evidence for these owned processes,
-without becoming runtime clearance. Followup EDD/ADR review must choose concrete
-durable helper/guard identity, qualified containment/inspection and restored-state
-provenance before startup can grant authority. It must account for the surviving
-descendant counterexample, bind clearance to the original state lease and keep
+without becoming runtime clearance. The accepted PR 107 EDD/ADR selects concrete
+helper/supervisor identity, containment and the independent restored-state boundary.
+Implementation must qualify those gates before startup can grant authority, account
+for the surviving descendant counterexample, bind clearance to the original state lease and keep
 retained holds separate from global launch capacity. No new runtime schema or
-adapter is adopted by this experiment. M2-RUNTIME-001 still needs that concrete
-mechanism decision; the remaining delivery gates stay open.
+adapter is adopted by this experiment. M2-RUNTIME-001 retains its implementation/native delivery gates.
 
 PR 106 accepted these observations at merged source
-`318ef8ac155f4004051ad6f4287fa8de2109a5a5`. The proposed
+`318ef8ac155f4004051ad6f4287fa8de2109a5a5`. The accepted
 [mechanism amendment](../../milestones/M2/property-recovery-mechanism.md) and
-[ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md) are the followup
-review; the original native manifest is unchanged.
+[ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md) were accepted in PR 107 at merged source
+`02a995e5681f38b4a40141402dd2d0a9f0244933`; the original native manifest is unchanged.
+The [private supervisor qualification](../../testing/M2/property-supervisor.md)
+now supplies source-bound boot/clock/reaper/consumer evidence separately.
 
 Boot time/start timestamps are observed identifiers, not cryptographic provenance
-or proof of kernel quiescence. PID-reuse, clock changes, restored-state provenance,
-full process enumeration/containment attribution, power loss, root adversaries and
-production recovery remain separate gates. Research findings need a followup
-review before becoming clearance policy. M2 runtime writes remain disabled.
+or proof of kernel quiescence. The later supervisor evidence tests clock-independent
+raw boot identity, without qualifying general clock/restore recovery. PID reuse,
+restored-state provenance, full attribution, power loss, root adversaries and
+production recovery remain separate gates. The accepted clearance design
+still needs its independent journal/startup/global implementation. M2 runtime writes remain disabled.

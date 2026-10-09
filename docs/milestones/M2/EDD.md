@@ -17,13 +17,14 @@ remaining startup/recovery, global launch and independent worker composition.
 PR 105 accepted this composition contract and its bounded native experiment.
 The [executed research](../../research/M2/executor-recovery.md) supplies native
 observations on both disposable targets, including surviving original descendants
-after singleton reacquisition. The specific recovery mechanism still requires
-followup design review; the current runtime remains read-only until implementation
-is qualified. The proposed
+after singleton reacquisition. The concrete mechanism was accepted in PR 107;
+the current runtime remains read-only until its assembled implementation is qualified. The accepted
 [mechanism amendment](property-recovery-mechanism.md) and
 [ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md) specify the
-native supervisor, journal ordering and restart/restore boundary for review;
-they add no approved behavior until accepted.
+native supervisor, journal ordering and restart/restore boundary accepted in PR 107 at source `02a995e5681f38b4a40141402dd2d0a9f0244933`;
+the first [private boot/reaper consumer](../../testing/M2/property-supervisor.md)
+passed both focused native gates. Independent journal/startup/global clearance and
+assembled runtime gates remain required.
 
 ```mermaid
 flowchart TD

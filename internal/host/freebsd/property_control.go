@@ -94,7 +94,7 @@ func (c *propertyControl) apply(ctx context.Context, i storage.PropertyIntent) (
 	if err = c.run(ctx, i); err != nil {
 		return false, err
 	}
-	// Only the fixed native runner's normal successful guard acknowledgement can
+	// Only the original supervisor's normal completion report and actual wait can
 	// establish this narrow quiescence result. Any error remains unverified.
 	return true, nil
 }

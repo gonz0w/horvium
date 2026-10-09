@@ -8,6 +8,10 @@ from pathlib import Path
 BEFORE = {'fixture-preflight', 'process-observer', 'owner-death', 'stopped-guard',
           'guard-first', 'queued-cut', 'applying-cut', 'effect-cut', 'normal-completion',
           'retained-for-reboot'}
+SUPERVISOR = {'boot-identity', 'clock-independent', 'ready-success', 'residual-descendant-denied', 'peer-before-launch', 'foreign-handshake', 'normal-escaped', 'guard-first', 'supervisor-first', 'owner-death'}
+
+CONTROLS = {'preflight', 'quota', 'refquota', 'no-limit', 'compression', 'expired', 'ledger-drift', 'native-drift', 'wrong-uid', 'guard-quiescence', 'preserved', 'fixture-teardown'}
+
 AFTER = {'new-boot', 'exact-fixture-import', 'unchanged-ledger', 'holds-and-no-authority',
          'independent-properties', 'fixture-preservation', 'fixture-teardown'}
 
@@ -24,6 +28,24 @@ def validate(text):
         children = re.findall(r'(?m)^\s*--- PASS: ' + re.escape(parent) + r'/([^ /]+) \([0-9.]+s\)$', text)
         if len(children) != len(cases) or set(children) != cases:
             raise ValueError('unknown or duplicate research cases')
+    parent = 'TestNativeExecutorSupervision'
+    for name in [parent] + [parent + '/' + case for case in SUPERVISOR] + ['TestNativeSupervisorBootAfter']:
+        if len(re.findall(r'(?m)^\s*--- PASS: ' + re.escape(name) + r' \([0-9.]+s\)$', text)) != 1:
+            raise ValueError('complete once-only native supervisor evidence required')
+    children = re.findall(r'(?m)^\s*--- PASS: TestNativeExecutorSupervision/([^ /]+) \([0-9.]+s\)$', text)
+    if len(children) != len(SUPERVISOR) or set(children) != SUPERVISOR:
+        raise ValueError('unknown or duplicate supervisor case')
+    if re.findall(r'(?m)^SUPERVISOR_RESULT ([^\n]+)$', text) != ['before=pass', 'after=pass']:
+        raise ValueError('both native supervisor phases required')
+    if text.count('SUPERVISOR_NATIVE_ABI status=80 kill=80 pid=0 acquire=2 statuscmd=4 killcmd=6\n') != 1:
+        raise ValueError('actual native header layout required')
+    parent = 'TestNativeSupervisorPropertyControls'
+    for name in [parent] + [parent + '/' + case for case in CONTROLS] + [parent + '/guard-quiescence/' + case for case in ['same-group', 'escaped']]:
+        if len(re.findall(r'(?m)^\s*--- PASS: ' + re.escape(name) + r' \([0-9.]+s\)$', text)) != 1:
+            raise ValueError('complete retained native controls required')
+    children = re.findall(r'(?m)^\s*--- PASS: ' + re.escape(parent) + r'/([^ /]+) \([0-9.]+s\)$', text)
+    if len(children) != len(CONTROLS) or set(children) != CONTROLS or text.count('SUPERVISOR_CONTROLS_RESULT pass\n') != 1:
+        raise ValueError('unknown/missing/duplicate retained control result')
     records = re.findall(r'(?m)^EXECUTOR_REBOOT (\{[^\n]+\})$', text)
     if len(records) != 1:
         raise ValueError('one independently observed reboot required')

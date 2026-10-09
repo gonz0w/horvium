@@ -1,16 +1,17 @@
 # Property executor recovery mechanism: EDD and Test Design amendment
 
-Status: Proposed; not approved or implemented. Date: 2026-10-08.
+Status: Accepted design amendment; implementation/native gates pending. Date: 2026-10-08.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md),
 [runtime contract](property-runtime.md),
-[proposed ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md).
+[ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md).
 
 This is the concrete mechanism decision portion of M2-RUNTIME-001. Maintainer
 merge of PR 106 accepted the [experiment](../../research/M2/executor-recovery.md)
 at source `318ef8ac155f4004051ad6f4287fa8de2109a5a5`. That evidence remains bound
-to executed source `de3f028a8e579ece4843bcca59a8cbeb06d4588f`. This amendment
-proposes new obligations; it does not convert research into runtime qualification.
+to executed source `de3f028a8e579ece4843bcca59a8cbeb06d4588f`. Maintainer merge of [PR 107](https://github.com/gonz0w/horvium/pull/107) at source
+`02a995e5681f38b4a40141402dd2d0a9f0244933` accepted this mechanism and test plan.
+Acceptance does not convert research into runtime qualification.
 
 ## Scope and trusted boundary
 
@@ -252,7 +253,7 @@ Primary files were fetched from the pinned official FreeBSD source commits on
 | 14.5 | `sys/kern/kern_procctl.c` | `cec327bd2d5b0cd1dca5c356cbb4ca7dae8a373b20d553c56ca4156f9723abde` |
 | 15.1 | `sys/kern/kern_procctl.c` | `599405e3d3d22decf1f0feb71e6a45345e54b33b7ada11d6ace71ebeec8ffcd9` |
 
-After approval, implement and qualify native boot identity and the dedicated
+Implement and qualify native boot identity and the dedicated
 supervisor together with their original channel consumers; then implement the
 journal, root provisioning and original startup/global launch owner together with
 the real backend/publishers. Integrate root dispatch/independent workers and
@@ -260,3 +261,14 @@ explicit recovery/hold resolution before shared HTML/CLI exposure. Keep every
 existing denial until its consumer and native gates pass. The accepted six
 runtime delivery gates still govern the assembled property workflow; other M2
 operations, M1 manual accessibility and the NAS release remain separate.
+
+
+## First implemented prerequisite
+
+The [original boot/reaper property supervisor](../../testing/M2/property-supervisor.md)
+implements the first private consumer. Its source-bound amd64 gates passed on both
+pinned disposable targets, including native header layouts, raw boot/clock checks,
+original channels, escaped/nested descendants, death ordering, retained actual
+controls and reboot/readback. Independent journal/provisioning/startup/global and
+active kernel-interruption gates above remain open. This partial qualification
+neither enables the root listener nor satisfies M2-RUNTIME-001 acceptance.

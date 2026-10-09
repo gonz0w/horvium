@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; prerequisites accepted through PR 104; runtime contract accepted in PR 105; research observations accepted in PR 106; concrete mechanism proposed; runtime gates open; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; prerequisites accepted through PR 104; runtime contract accepted in PR 105; research observations accepted in PR 106; mechanism accepted in PR 107; private supervisor qualified for review; runtime gates open; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -11,10 +11,12 @@ independent workers before UI/CLI exposure. Its six ordered deliverables are not
 six promised PRs; actual native findings determine implementation boundaries.
 The amendment enables no runtime write. The approved
 [original executor recovery experiment](../../research/M2/executor-recovery.md)
-has produced native observations accepted in PR 106. The next review is the
+has produced native observations accepted in PR 106. PR 107 accepted the
 [concrete mechanism amendment](property-recovery-mechanism.md) under
-M2-RUNTIME-001 and proposed
+M2-RUNTIME-001 and
 [ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md).
+The first integrated prerequisite is [native boot and property supervision](../../testing/M2/property-supervisor.md);
+independent journal/startup/global/runtime gates remain open.
 
 M1 automated work and the qualification record are merged. M1 is Validating;
 Safari/manual accessibility and explicit milestone acceptance remain pending.
@@ -1379,3 +1381,29 @@ Fixture-only clearance and seeded enrollment do not implement operator bootstrap
 M2-RUNTIME-001 still needs its reviewed mechanism decision before the remaining
 startup/launch/dispatch/recovery/UI/qualification gates can close. Runtime writes
 remain disabled; this does not accept M2 or a NAS release.
+
+
+## Original native boot owner and property supervisor
+
+The accepted PR 107 mechanism's first integrated prerequisite passed 42 focused
+cases across five parents on each disposable FreeBSD/amd64 target. Signed source
+`71f8a1197a0c6540287425ace4a143b0d901b12f` used the same prebuilt executable on
+15.1-RELEASE-p3 and 14.5-RELEASE. The private consumer now requires original pipe
+handshake, exact raw boot identity, native reaper ownership before children,
+actual guard wait, empty owned subtree, completion report and supervisor wait.
+Unexpected forced descendant cleanup withholds success. Actual quota/refquota,
+compression, denials, escaped/nested lineage, death ordering and reboot/readback
+passed with complete host/device/process teardown. See the
+[qualification](../../testing/M2/property-supervisor.md) and
+[source-bound manifest](../../testing/M2/property-supervisor-manifest.json).
+
+Four earlier attempts remain unqualified: one unstarted cross-build failure and
+three native pipe-boundary failures. FreeBSD anonymous pipes have zero permission
+bits/links, root creator credentials and bidirectional access; inherited channels
+also need nonblocking registration before deadlines. Regression coverage and
+actual endpoint checks retain these findings. Historical evidence is unchanged.
+Shared checker/script changes required one fresh full portable review; subsequent
+prose evidence updates reuse its exact non-prose inputs while rerunning baseline
+checks. This prerequisite supplies no durable journal, startup/restore clearance,
+shared global owner, operator recovery, active kernel-cut qualification or runtime
+write workflow. The root listener still denies every operation; M2 remains open.
