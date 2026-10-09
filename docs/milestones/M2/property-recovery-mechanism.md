@@ -320,3 +320,11 @@ the original descriptor under its protected lease mutex and combines actual
 backing and object observations. It does not register the two-domain owner or
 establish complete system/owned-pool exclusion, independent restore scope,
 commissioning or startup/global launch clearance.
+
+
+The [joint execution-domain owner](../../testing/M2/joint-execution-leases.md)
+acquires existing journal then ledger leases and retains both original mutexes
+across repeated native and complete namespace observations. It neither initializes
+a journal nor registers a runtime writer. Complete system/owned-pool exclusion,
+independent restore proof, commissioning, acknowledged transitions and
+startup/global execution ownership remain required.

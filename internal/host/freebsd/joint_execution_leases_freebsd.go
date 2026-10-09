@@ -8,7 +8,7 @@ import (
 
 // Private native joint observation only. There is no runtime consumer or writer.
 func openNativeExecutionDomains(ctx context.Context, journal, ledger string) (*storage.ExecutionDomainLeases, error) {
-	return nil, ErrUnavailable
+	return storage.OpenExecutionDomainLeases(ctx, journal, ledger)
 }
 func observeNativeExecutionDomains(ctx context.Context, p *storage.ExecutionDomainLeases, installation string) (storage.ExecutionDomainsObservation, error) {
 	return p.Observe(ctx, installation, readNativeExecutionBacking)

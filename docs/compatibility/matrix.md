@@ -1005,3 +1005,9 @@ historical manifests and 340 other original source inputs preserve their bytes;
 see the [source-bound record](../testing/M2/original-backing-manifest.json).
 These observations do not add hardware/performance support claims. GitHub Actions
 remain disabled; M1 manual Safari/VoiceOver acceptance remains pending.
+
+The private [joint execution-domain owner](../testing/M2/joint-execution-leases.md)
+is implemented with native qualification pending. It owns pre-existing locks in
+journal-before-ledger order and keeps both original mutexes during observation.
+No journal initialization, metadata publisher, system/restore qualification or
+startup/global/runtime authority is added. Off-target opening and observation deny.

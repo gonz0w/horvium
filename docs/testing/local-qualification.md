@@ -523,3 +523,8 @@ original protected lease, including replacement/drift, kernel UID denial and Clo
 exclusion. Run both pinned guests serially and also retain the affected `state`
 safety gates; see [original-lease qualification](M2/original-backing.md). It uses
 the existing prebuilt checksum and supervised complete teardown policy.
+
+The focused `joint-leases` suite retains both `original-backing` parents and adds
+actual paired journal/ledger ownership on UFS/ZFS. It requires all four fixtures
+and their filesystem/device/directory teardown. Run both pinned releases serially
+and the affected expanded `state` corpus; see [joint-domain qualification](M2/joint-execution-leases.md).

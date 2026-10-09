@@ -59,9 +59,13 @@ remain required.
 The [original-lease backing observation](docs/testing/M2/original-backing.md)
 connects the fixed native producer to the original protected state lease under its
 mutex. Both pinned native targets and the affected state safety corpus passed;
-maintainer review is pending. Dual-domain ownership, complete system
+PR 114 accepted this prerequisite. Dual-domain ownership, complete system
 exclusion, restore independence and commissioning/startup/global clearance remain
 required.
+The [joint journal/ledger lease owner](docs/testing/M2/joint-execution-leases.md)
+adds journal-first acquisition and simultaneous original protected observations.
+Native qualification is pending; it provides no commissioning, publication,
+startup/global clearance or runtime write authority.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 
