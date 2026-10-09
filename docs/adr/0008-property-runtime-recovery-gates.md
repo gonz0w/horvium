@@ -81,3 +81,8 @@ manifests do not satisfy those gates.
 Revisit after the recovery experiment, when adding non-property operations or
 raising launch limits. Future kernel scans need separate episode/maintenance
 tracking: property-control quiescence must not be generalized to scrub or resilver.
+
+PR 106 accepted the experiment observations at merged source
+`318ef8ac155f4004051ad6f4287fa8de2109a5a5`. The concrete followup
+[ADR 0009](0009-property-executor-recovery-mechanism.md) is proposed for review;
+it has not been adopted or qualified by accepting the experiment.

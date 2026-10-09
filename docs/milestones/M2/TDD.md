@@ -34,7 +34,10 @@ PR 105 accepted the contract and bounded experiment. The
 and actual reboot/readback on each target. This is partial observation evidence:
 active property-command/kernel interruption remains untested, and the concrete
 recovery mechanism and assembled runtime gates remain required. No complete
-acceptance row below is satisfied by this experiment.
+acceptance row below is satisfied by this experiment. The proposed
+[mechanism Test Design amendment](property-recovery-mechanism.md) enumerates
+failing-first and actual native boot-ID/reaper/journal/restore gates; those tests
+have not executed and require approval before product implementation.
 
 | Requirement | Test ID / observable assertion | Level/environment |
 |---|---|---|
