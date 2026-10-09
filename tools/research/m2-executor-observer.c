@@ -2,6 +2,7 @@
 /* Disposable research observer; not a runtime adapter or clearance grant. */
 #include <sys/types.h>
 #include <sys/param.h>
+#include <sys/proc.h>
 #include <sys/sysctl.h>
 #include <sys/user.h>
 #include <sys/procctl.h>
@@ -39,7 +40,7 @@ int main(int argc, char **argv)
             return 3;
         size = 0;
     }
-    if (size != 0 && (size != sizeof(info) || info.ki_structsize != sizeof(info) || info.ki_pid != pid))
+    if (size != 0 && (size != sizeof(info) || info.ki_structsize != (int)sizeof(info) || info.ki_pid != pid))
         return 3;
     printf("{\"boot_sec\":%lld,\"boot_usec\":%ld,\"found\":%s,\"pid\":%ld",
         (long long)boot.tv_sec, (long)boot.tv_usec, size ? "true" : "false", pid);
@@ -49,10 +50,10 @@ int main(int argc, char **argv)
             reaper_error = errno;
         printf(",\"struct_bytes\":%zu,\"ppid\":%d,\"pgid\":%d,\"sid\":%d,"
             "\"start_sec\":%lld,\"start_usec\":%ld,\"uid\":%u,\"ruid\":%u,"
-            "\"state\":%d,\"reaper_error\":%d,\"reaper\":%d,\"children\":%u,\"descendants\":%u,\"reaper_flags\":%u",
+            "\"state\":%d,\"zombie\":%s,\"stopped\":%s,\"reaper_error\":%d,\"reaper\":%d,\"children\":%u,\"descendants\":%u,\"reaper_flags\":%u",
             sizeof(info), info.ki_ppid, info.ki_pgid, info.ki_sid,
             (long long)info.ki_start.tv_sec, (long)info.ki_start.tv_usec,
-            info.ki_uid, info.ki_ruid, info.ki_stat, reaper_error,
+            info.ki_uid, info.ki_ruid, info.ki_stat, info.ki_stat == SZOMB ? "true" : "false", info.ki_stat == SSTOP ? "true" : "false", reaper_error,
             reap.rs_reaper, reap.rs_children, reap.rs_descendants, reap.rs_flags);
     }
     puts("}");

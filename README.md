@@ -16,11 +16,11 @@ accessibility acceptance remains pending. See the
 remaining gates. There is no installable port, appliance image or production
 support claim.
 
-The next M2 work follows the proposed
+The next M2 work follows the accepted
 [property runtime delivery contract](docs/milestones/M2/property-runtime.md):
 qualify executor recovery, integrate startup and global launch gates, then assemble
-root admission/workers and the shared HTML/CLI workflow. The amendment is pending
-review; the current runtime remains read-only. Completing this sequence covers
+root admission/workers and the shared HTML/CLI workflow. PR 105 accepted the
+contract and bounded experiment; the current runtime remains read-only. Completing this sequence covers
 the property workflow rather than the entire NAS release.
 
 M2 storage lifecycle design is approved in [PR 20](https://github.com/gonz0w/horvium/pull/20): [PRD](docs/milestones/M2/PRD.md),

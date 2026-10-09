@@ -12,11 +12,11 @@ reviewed slices; it is not M2 acceptance or native qualification.
 ## Boundaries and authority
 
 The [property runtime amendment](property-runtime.md) and
-[proposed ADR 0008](../../adr/0008-property-runtime-recovery-gates.md) describe the
+[ADR 0008](../../adr/0008-property-runtime-recovery-gates.md) describe the
 remaining startup/recovery, global launch and independent worker composition.
-They are pending maintainer review; the approved contract below and current
-read-only runtime remain unchanged until the amendment is accepted and its
-implementation qualified.
+PR 105 accepted this composition contract and its bounded native experiment.
+The specific recovery mechanism still requires findings and followup design
+review; the current runtime remains read-only until implementation is qualified.
 
 ```mermaid
 flowchart TD

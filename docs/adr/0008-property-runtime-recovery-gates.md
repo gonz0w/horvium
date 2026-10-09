@@ -1,8 +1,10 @@
 # ADR 0008: property runtime recovery and launch gates
 
-Status: Proposed. Date: 2026-10-08. Owner: Cam (`@gonz0w`).
-Authority: pending maintainer review; this document does not amend the approved
-M2 design until accepted. [Issue 19](https://github.com/gonz0w/horvium/issues/19),
+Status: Accepted. Date: 2026-10-08. Owner: Cam (`@gonz0w`).
+Authority: maintainer merge of [PR 105](https://github.com/gonz0w/horvium/pull/105),
+source `6854b5554f1104c4fc2f2ee0b4e36dd80b962a9f`. This accepts the recovery/launch
+contract and bounded experiment, not a native mechanism or runtime qualification.
+[Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [approved EDD](../milestones/M2/EDD.md),
 [runtime contract and test sequence](../milestones/M2/property-runtime.md).
 
@@ -21,7 +23,7 @@ Existing state-directory qualification establishes a singleton metadata writer;
 it does not establish executor absence. Existing job assessment compares fresh
 properties without attributing an interrupted effect or releasing reservations.
 
-## Proposed decision
+## Decision
 
 Keep startup observation-only until a root-owned recovery review establishes
 complete state provenance and absence of outstanding prior execution. Startup,

@@ -1,10 +1,15 @@
 # Property runtime delivery and recovery contract
 
-Status: Proposed implementation amendment; pending maintainer review.
+Status: Accepted implementation amendment; experiment/implementation gates pending.
 Date: 2026-10-08. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19), [PRD](PRD.md),
 [approved EDD](EDD.md), [Test Design](TDD.md),
-[proposed ADR 0008](../../adr/0008-property-runtime-recovery-gates.md).
+[ADR 0008](../../adr/0008-property-runtime-recovery-gates.md).
+
+Authority: maintainer merge of [PR 105](https://github.com/gonz0w/horvium/pull/105),
+source `6854b5554f1104c4fc2f2ee0b4e36dd80b962a9f`, on 2026-10-08. The accepted
+contract authorizes the bounded [executor recovery experiment](../../research/M2/executor-recovery.md);
+its findings still need review before selecting a runtime mechanism.
 
 This contract brings the accepted private prerequisites toward one actual property
 workflow. It adds no runtime behavior or qualification claim. The first assembled
@@ -123,7 +128,7 @@ a disposable single-operation fixture proves only that restricted workflow.
 
 ## Native recovery experiment
 
-Proposed time box: two development days after maintainer acceptance of this
+Approved time box: two development days after maintainer acceptance of this
 contract. The question is which independently collected FreeBSD facts can
 attribute and exclude this helper's prior property executor after helper death,
 without relying on a PID or the released metadata lock alone.

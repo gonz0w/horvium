@@ -4,7 +4,7 @@ import re
 import subprocess
 import unittest
 from pathlib import Path
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 ROOT = Path(__file__).resolve().parents[2]
 SPEC = importlib.util.spec_from_file_location('local_qualification', ROOT / 'tools/local-qualification.py')
@@ -38,6 +38,38 @@ class LocalQualificationTests(unittest.TestCase):
                       '{"boot_sec":100,"boot_usec":1000000}']:
             with self.assertRaises(ValueError):
                 self.module.recovery_boot_identity(value)
+
+    def test_executor_recovery_does_not_accept_unchanged_boot(self):
+        import io
+        response = Mock(returncode=0, stdout='{"boot_sec":100,"boot_usec":1}')
+        guest = Mock()
+        guest.poll.return_value = None
+        with patch.object(self.module.subprocess, 'run', return_value=response) as run, \
+                patch.object(self.module.time, 'monotonic', side_effect=[0, 301]):
+            with self.assertRaisesRegex(ValueError, 'not independently observed'):
+                self.module.run_executor_recovery(['ssh'], guest, 'fixed-before', io.StringIO())
+        self.assertEqual(sum(call.args[0][-1] == '/sbin/shutdown -r now' for call in run.call_args_list), 1)
+        self.assertFalse(any(call.args[0][-1].endswith(' after') for call in run.call_args_list))
+
+    def test_executor_recovery_requires_successful_readback_after_reboot(self):
+        import io
+        old = Mock(returncode=0, stdout='{"boot_sec":100,"boot_usec":1}')
+        new = Mock(returncode=0, stdout='{"boot_sec":200,"boot_usec":2}')
+        guest = Mock()
+        guest.poll.return_value = None
+        log = io.StringIO()
+        with patch.object(self.module.subprocess, 'run', side_effect=[old, old, old, new, subprocess.CalledProcessError(1, 'after')]) as run:
+            with self.assertRaises(subprocess.CalledProcessError):
+                self.module.run_executor_recovery(['ssh'], guest, 'fixed-before', log)
+        self.assertIn('EXECUTOR_REBOOT {"before":[100,1],"after":[200,2]}', log.getvalue())
+        self.assertEqual(run.call_args_list[-1].args[0][-1], 'fixed-before after')
+
+    def test_executor_recovery_failure_before_cut_does_not_reboot(self):
+        import io
+        with patch.object(self.module.subprocess, 'run', side_effect=subprocess.CalledProcessError(1, 'before')) as run:
+            with self.assertRaises(subprocess.CalledProcessError):
+                self.module.run_executor_recovery(['ssh'], Mock(), 'fixed-before', io.StringIO())
+        self.assertEqual(run.call_count, 1)
 
     def test_focused_property_suite_uses_owned_snapshot_device_fixture(self):
         for suite in ['devices','pool-properties']:

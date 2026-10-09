@@ -1,15 +1,16 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 104; runtime recovery/launch amendment proposed; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; prerequisites accepted through PR 104; runtime recovery/launch contract accepted in PR 105; executor research pending; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
-The next delivery path is the proposed
+The next delivery path is the accepted
 [property runtime contract](property-runtime.md). It connects the accepted private
 components through startup recovery, a shared launch owner, root dispatch and
 independent workers before UI/CLI exposure. Its six ordered deliverables are not
 six promised PRs; actual native findings determine implementation boundaries.
-No runtime write or new qualification is enabled by the proposed amendment.
+No runtime write or new qualification is enabled by this amendment. The approved
+next experiment is [original executor recovery](../../research/M2/executor-recovery.md).
 
 M1 automated work and the qualification record are merged. M1 is Validating;
 Safari/manual accessibility and explicit milestone acceptance remain pending.
