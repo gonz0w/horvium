@@ -9,6 +9,14 @@ Approved by Cam (`@gonz0w`) on 2026-10-04 through maintainer merge of
 `753f601960529cd17596d0ffc628afe38d041c82`. Design approval authorizes the
 reviewed slices; it is not M2 acceptance or native qualification.
 
+The [native census consumer](../../testing/M2/native-execution-census.md) reuses
+complete descriptor-anchored state inspection under the original root lease.
+Stream exact bytes through the accepted framing and finish only after final
+record/lock/namespace validation. Existing non-digest consumers keep their checks.
+No supplied binding is provenance; persistent identities, independent journal
+persistence and the original startup/global owner remain required together with
+real publisher/backend integration before runtime use.
+
 ## Boundaries and authority
 
 The [property runtime amendment](property-runtime.md) and

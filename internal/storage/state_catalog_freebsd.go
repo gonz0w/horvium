@@ -39,6 +39,13 @@ func (s *StateDirectory) inspectStateLocked(limits stateCatalogLimits, afterRead
 // existing final object/namespace checks. A consumer error discards the census.
 // Lease-bound readers use consume; publication keeps it nil.
 func (s *StateDirectory) inspectStateRecordsLocked(limits stateCatalogLimits, afterRead func(), ownTemporary string, consume func(stateRecordName, []byte) error) (StateCatalog, error) {
+	return s.inspectStateStreamLocked(limits, afterRead, ownTemporary, nil, consume)
+}
+
+// begin receives the complete validated name set before any record is consumed.
+// Both callbacks are private synchronous consumers; the same final descriptor,
+// record and namespace checks apply to every caller. Caller holds mu.
+func (s *StateDirectory) inspectStateStreamLocked(limits stateCatalogLimits, afterRead func(), ownTemporary string, begin func([]string) error, consume func(stateRecordName, []byte) error) (StateCatalog, error) {
 	dir, err := s.ownershipDirectoryLocked()
 	if err != nil {
 		return StateCatalog{}, err
@@ -100,6 +107,11 @@ func (s *StateDirectory) inspectStateRecordsLocked(limits stateCatalogLimits, af
 	entries, err := stateCatalogNames(names, limits)
 	if err != nil {
 		return StateCatalog{}, err
+	}
+	if begin != nil {
+		if err = begin(names); err != nil {
+			return StateCatalog{}, err
+		}
 	}
 	b := newStateCatalogBuilder(limits)
 	metadata := make([]unix.Stat_t, 0, len(entries))

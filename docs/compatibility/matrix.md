@@ -34,6 +34,11 @@ rules. No native journal file, filesystem binding, startup clearance or executor
 is qualified by these portable checks. Existing native manifests retain their
 original source; journal durability/restore/owner gates remain open.
 
+The [native census consumer](../testing/M2/native-execution-census.md) joins the
+portable digest to the original leased ledger reader. Its native gates are pending.
+Supplied binding digests are metadata, never proof of persistent native identity or
+independent restore scope. No journal file, restart or launch authority is added.
+
 M2 [configured property client](../testing/M2/property-dial.md) adds trusted socket
 policy and one original dial/operation deadline. Three portable parents/seventeen
 children, all 104 transport cases on disposable FreeBSD 15.1 and 14.5, baseline/136

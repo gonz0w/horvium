@@ -33,6 +33,14 @@ Bound both record/census fuzz targets, run affected-package review, and report
 FreeBSD compilation as unexecuted. Native persistence/restore/bootstrap/global
 owner and real publisher/backend consumer gates are still required together.
 
+The [native census qualification](../../testing/M2/native-execution-census.md)
+adds failing-first T2/T3 observation checks under M2-STATE-001 and the journal
+portion of M2-RUNTIME-001. Require exact native bytes after actual publication,
+complete omission/drift detection, original handle isolation, both ACL models,
+credential-dropped inherited-descriptor refusal and preserved uncertainty.
+Run the affected state publication/crash corpus on both disposable releases;
+partial digest evidence cannot satisfy bootstrap/global/recovery acceptance.
+
 ## Traceability and required gates
 
 The accepted [property runtime delivery gates](property-runtime.md) map

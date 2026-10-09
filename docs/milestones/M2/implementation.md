@@ -1426,3 +1426,15 @@ packages and 45 bounded selected fuzz targets with verified teardown. See the
 historical manifests and existing native/helper/tooling sources retain their bytes;
 Actions remain disabled.
 No service, automatic replay, recovery authority or runtime write is added.
+
+
+## Original native execution census prerequisite
+
+PR 109 accepted the portable core at merged source
+`2fc51de735e2df4657b8a61df8ebb171c9857311`. The next
+[native census consumer](../../testing/M2/native-execution-census.md) binds its
+streaming digest to the existing descriptor-validated ledger reader, with all
+original root/record/namespace checks retained. Its native gates are pending.
+Bindings are synthetic metadata in these fixtures, not persistent identity or
+restore proof; journal durability, provisioning/startup/global owner and actual
+backend ordering remain required before runtime use. No writer is enabled.
