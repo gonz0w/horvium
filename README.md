@@ -30,6 +30,9 @@ conservative restart/restore gates. PR 107 accepted its design and test plan;
 the [private supervisor](docs/testing/M2/property-supervisor.md) is the first
 implementation prerequisite. Its 42 focused cases passed on both disposable
 FreeBSD targets with verified teardown; the runtime remains denied.
+PR 108 accepted that prerequisite. The [journal record/census core](docs/testing/M2/execution-journal.md)
+implements bounded portable metadata and single-step checks; native persistence,
+provisioning/startup/global ownership and integrated publishers remain required.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 

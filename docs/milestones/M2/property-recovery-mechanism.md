@@ -103,7 +103,7 @@ and registered ledger can own the global launch slot. A different directory or
 reconstructed lease cannot mint another writer. Recheck original objects around
 every acknowledged transition and revoke on drift or closure.
 
-Proposed journal version 1 has these bounded logical fields. This defines the
+Journal version 1 has these accepted bounded logical fields. This defines the
 immediate internal format obligation, not a config schema or public API. Exact
 encoding and pathname must be reviewed with its implementation, not improvised
 in a handler.
@@ -272,3 +272,15 @@ original channels, escaped/nested descendants, death ordering, retained actual
 controls and reboot/readback. Independent journal/provisioning/startup/global and
 active kernel-interruption gates above remain open. This partial qualification
 neither enables the root listener nor satisfies M2-RUNTIME-001 acceptance.
+
+
+## Portable journal foundation
+
+The [journal record/census core](../../testing/M2/execution-journal.md) implements
+an internal version 1 encoding, damage checksum, exact-byte streaming census and
+single-step metadata successor validator. No installation path or native identity
+producer is selected. Data validation does not prove publication acknowledgement,
+executor completion or write clearance; the original dual-lease owner must enforce
+all native ordering above. Its portable consumer/test results do not satisfy any
+journal/bootstrap/global/restore native gate. Native owner, provisioning and real
+publisher/backend integration remain required together before enabling runtime use.
