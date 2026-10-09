@@ -345,8 +345,16 @@ func TestNativeExecutionJournalStore(t *testing.T) {
 			case "syncDirectory":
 				tx.syncDirectory = fail
 			case "cleanup":
+				// Fail orphan cleanup after closing the actual staging descriptor;
+				// a retained name must not make the disposable UFS unmount busy.
+				closeFile := tx.closeFile
 				tx.write = fail
-				tx.cleanup = fail
+				tx.cleanup = func() error {
+					if e := closeFile(); e != nil {
+						return e
+					}
+					return fail()
+				}
 			case "lost-ack", "after-ack-drift":
 				original := tx.syncDirectory
 				tx.syncDirectory = func() error {
