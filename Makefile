@@ -21,7 +21,7 @@ lint: lint-tools lint-go
 
 lint-tools:
 	.tools/bin/shellcheck tools/research/m2-executor-recovery.sh
-	.tools/bin/shellcheck tools/check-repo.sh tools/bsd-foundation-smoke.sh tools/bsd-native-discovery.sh tools/bsd-performance.sh tools/bsd-continuity.sh tools/bsd-properties.sh tools/bsd-devices.sh tools/bsd-state-prebuilt.sh tools/bsd-persistent-backing-prebuilt.sh tools/bsd-pool-properties-prebuilt.sh tools/bsd-storage-job-status-prebuilt.sh tools/bsd-action-peer-prebuilt.sh tools/research/m1-native.sh .githooks/commit-msg .githooks/pre-commit
+	.tools/bin/shellcheck tools/check-repo.sh tools/bsd-foundation-smoke.sh tools/bsd-native-discovery.sh tools/bsd-performance.sh tools/bsd-continuity.sh tools/bsd-properties.sh tools/bsd-devices.sh tools/bsd-state-prebuilt.sh tools/bsd-original-backing-prebuilt.sh tools/bsd-persistent-backing-prebuilt.sh tools/bsd-pool-properties-prebuilt.sh tools/bsd-storage-job-status-prebuilt.sh tools/bsd-action-peer-prebuilt.sh tools/research/m1-native.sh .githooks/commit-msg .githooks/pre-commit
 
 lint-go:
 	@test -z "$$($(CURDIR)/.tools/go/bin/gofmt -l cmd internal tools/research/m1-geom.go)" || { echo 'Run gofmt on Go sources'; exit 1; }

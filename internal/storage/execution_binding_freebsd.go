@@ -20,6 +20,11 @@ func (s *StateDirectory) inspectExecutionBindingObjects(afterRead func()) (execu
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	return s.inspectExecutionBindingObjectsLocked(afterRead)
+}
+
+// Caller holds the original lease mutex, including throughout afterRead.
+func (s *StateDirectory) inspectExecutionBindingObjectsLocked(afterRead func()) (executionBindingObjects, error) {
 	if s.propertyOrigin != s {
 		return executionBindingObjects{}, ErrDenied
 	}
