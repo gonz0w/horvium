@@ -25,6 +25,7 @@ SUITES = {
     'research': ('python314', 'env HORVIUM_RESEARCH_VM=1 sh tools/research/m1-native.sh'),
     'discovery': ('python314', 'env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh'),
     'devices': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_DEVICE_VM=1 sh tools/bsd-devices.sh'),
+    'persistent-backing': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_BACKING_VM=1 sh tools/bsd-persistent-backing-prebuilt.sh'),
     'state': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_STATE_VM=1 sh tools/bsd-state.sh'),
     'properties': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_PROPERTY_VM=1 sh tools/bsd-properties.sh'),
     'job-status': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_STATUS_VM=1 sh tools/bsd-storage-job-status-prebuilt.sh'),
@@ -34,12 +35,19 @@ SUITES = {
 }
 
 PREBUILT = {
+    'persistent-backing': ('persistent-backing-native.test', './internal/host/freebsd', 'PERSISTENT_BACKING_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1', 'bsd-persistent-backing-prebuilt.sh'),
     'executor-recovery': ('pool-properties-native.test', './internal/host/freebsd', 'EXECUTOR_RECOVERY_PREBUILT_SHA256', 'HORVIUM_PROPERTY_VM=1 HORVIUM_RESEARCH_VM=1', 'research/m2-executor-recovery.sh'),
     'action-peer': ('action-peer-native.test', './internal/helper', 'ACTION_PEER_PREBUILT_SHA256', 'HORVIUM_ACTION_PEER_VM=1', 'bsd-action-peer-prebuilt.sh'),
     'job-status': ('storage-job-status-native.test', './cmd/horvium', 'STORAGE_JOB_STATUS_PREBUILT_SHA256', 'HORVIUM_STATUS_VM=1', 'bsd-storage-job-status-prebuilt.sh'),
     'state': ('state-native.test', './internal/storage', 'STATE_PREBUILT_SHA256', 'HORVIUM_STATE_VM=1', 'bsd-state-prebuilt.sh'),
     'pool-properties': ('pool-properties-native.test', './internal/host/freebsd', 'POOL_PROPERTIES_PREBUILT_SHA256', 'HORVIUM_PROPERTY_VM=1', 'bsd-pool-properties-prebuilt.sh'),
 }
+
+
+def cleanup_prebuilt(directory):
+    # Only fixed registered executable names in this owned run directory.
+    for filename in {record[0] for record in PREBUILT.values()}:
+        (directory / filename).unlink(missing_ok=True)
 
 
 def load_tool(name):
@@ -188,6 +196,9 @@ def validate_result(suite, log, complete=False):
         return
     if suite == 'job-status':
         load_tool('check-storage-job-status-evidence').validate(log)
+        return
+    if suite == 'persistent-backing':
+        load_tool('check-persistent-backing-evidence').validate(log)
         return
     if suite == 'state':
         load_tool('check-state-evidence').validate(log)
@@ -394,10 +405,7 @@ def main():
             if image.exists():
                 shutil.rmtree(image)
             variables.unlink(missing_ok=True)
-            (directory / 'state-native.test').unlink(missing_ok=True)
-            (directory / 'pool-properties-native.test').unlink(missing_ok=True)
-            (directory / 'storage-job-status-native.test').unlink(missing_ok=True)
-            (directory / 'action-peer-native.test').unlink(missing_ok=True)
+            cleanup_prebuilt(directory)
             record['host_teardown'] = True
             if device_tool and record.get('guest_assertions'):
                 if not record.get('device_backings_preserved') or not record.get('device_fixture_teardown'):
@@ -413,9 +421,7 @@ def main():
             raise
         finally:
             key.unlink(missing_ok=True)
-            (directory / 'state-native.test').unlink(missing_ok=True)
-            (directory / 'pool-properties-native.test').unlink(missing_ok=True)
-            (directory / 'storage-job-status-native.test').unlink(missing_ok=True)
+            cleanup_prebuilt(directory)
             record['completed_at'] = datetime.now(timezone.utc).isoformat()
             (directory / 'result.json').write_text(json.dumps(record, indent=2) + '\n')
             print(f'Qualification record: {directory / "result.json"}', flush=True)

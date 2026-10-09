@@ -61,7 +61,7 @@ python3.14 tools/local-qualification.py pool-properties 14.5 --run
 ```
 
 Supported suites: `foundation`, `research`, `discovery`, `state`, `properties`, `pool-properties`,
-`continuity`, `performance`, `devices`, `job-status`, `action-peer`. Run the two release candidates **sequentially** on
+`continuity`, `performance`, `devices`, `job-status`, `action-peer`, `persistent-backing`. Run the two release candidates **sequentially** on
 the Mac. Each guest has two CPUs, 6,144 MiB RAM, qemu64 and snapshot storage.
 Reserve additional RAM for macOS; stop other large workloads while testing.
 These are lab allocations, not Horvium runtime hardware requirements.
@@ -510,3 +510,10 @@ cases and a sixth exact parent; all 92 prior cases remain mandatory (104 total).
 Original deadlines/artifact/supervisor checks remain unchanged. See the
 [configured client contract](M2/property-dial.md); older five-parent proof cannot
 qualify this extension. No backend or runtime write is enabled.
+
+
+The focused `persistent-backing` suite cross-builds the existing FreeBSD host
+package and selects only the two native UFS/ZFS backing parents. It installs no
+guest development packages and requires the exact artifact checksum, all identity
+controls and both owned filesystem/device/directory teardowns. Run 15.1 then 14.5
+serially, as for the other Mac qualifications. See the [scope](M2/persistent-backing.md).
