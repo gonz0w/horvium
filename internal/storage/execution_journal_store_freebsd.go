@@ -14,6 +14,7 @@ import (
 type executionJournalStore struct {
 	original             *executionJournalStore
 	lease                *StateDirectory
+	initializable        bool
 	acknowledged, failed bool
 	ack                  executionJournal
 	ackBytes             []byte
@@ -28,7 +29,8 @@ func openExecutionJournalStore(path string) (*executionJournalStore, error) {
 	s := &executionJournalStore{lease: lease}
 	s.original = s
 	lease.mu.Lock()
-	_, err = s.inspectLocked("", nil)
+	snapshot, err := s.inspectLocked("", nil)
+	s.initializable = !snapshot.present
 	lease.mu.Unlock()
 	if err != nil {
 		_ = lease.Close()
@@ -71,8 +73,12 @@ func (s *executionJournalStore) read(afterRead func()) (executionJournal, error)
 		return executionJournal{}, err
 	}
 	if !snapshot.present {
+		if !s.initializable {
+			s.retireLocked()
+		}
 		return executionJournal{}, ErrStateDirectory
 	}
+	s.initializable = false
 	return snapshot.record, nil
 }
 
@@ -85,7 +91,7 @@ func (s *executionJournalStore) initialize(j executionJournal, wrap func(ownersh
 	if s.failed || s.lease.publicationBlocked {
 		return ErrStateUncertain
 	}
-	if s.acknowledged {
+	if s.acknowledged || !s.initializable {
 		return ErrDenied
 	}
 	if err := checkInitialExecutionJournal(j); err != nil {
@@ -97,6 +103,7 @@ func (s *executionJournalStore) initialize(j executionJournal, wrap func(ownersh
 		return err
 	}
 	if snapshot.present {
+		s.initializable = false
 		return ErrDenied
 	}
 	return s.publishLocked(j, 0, wrap)
@@ -141,11 +148,13 @@ func (s *executionJournalStore) publishLocked(j executionJournal, expected uint6
 		return err
 	}
 	predecessor := func() error {
-		snapshot, err := s.inspectLocked("", nil)
+		// Staging already exists at the second predecessor check. Namespace
+		// inspection belongs to the common pipeline, which knows its owned temp.
+		current, err := s.lease.readStateBytesLocked(executionJournalName)
 		if err != nil {
 			return err
 		}
-		if !snapshot.present || snapshot.record != s.ack || !bytes.Equal(snapshot.data, s.ackBytes) {
+		if !bytes.Equal(current, s.ackBytes) {
 			return ErrDrift
 		}
 		// The common pipeline binds original inode and full post-staging metadata.
@@ -183,6 +192,7 @@ func (s *executionJournalStore) publishLocked(j executionJournal, expected uint6
 		return ErrStateUncertain
 	}
 	s.acknowledged = true
+	s.initializable = false
 	s.ack, s.ackMetadata = j, final.metadata
 	s.ackBytes = append([]byte(nil), data...)
 	return nil

@@ -45,9 +45,12 @@ closed lifecycle or establish executor quiescence.
 
 Explicit private initialization requires an empty valid domain and generation 1,
 active owner, idle metadata/native domains and no restore barrier. Opening does
-not initialize a journal. Existing readable journals, including active records,
+not initialize a journal. The assembled caller must prove fresh provisioning;
+empty names alone are not that proof. Existing readable journals, including active records,
 remain observation-only after reopening: serialized bytes cannot reconstruct the
-original in-memory receipt or authorize overwriting initial state.
+original in-memory receipt or authorize overwriting initial state. An existing
+observation handle cannot become initializable if its record disappears; missing
+metadata from an initialized handle permanently retires writes.
 
 Only the original successful initializer can propose a strict single generation
 successor. Before publication it must observe the exact previously acknowledged
