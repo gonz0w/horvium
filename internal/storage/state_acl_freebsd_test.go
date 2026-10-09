@@ -118,6 +118,10 @@ func TestNativeStateACLProcess(t *testing.T) {
 	if err := s.PublishPropertyJob(property, 0); err != ErrStateDirectory {
 		t.Fatal("property publication bypassed kernel UID")
 	}
+	s.propertyOrigin = s
+	if c, digest, e := s.inspectExecutionCensus(executionJournalFixture().Binding, defaultStateCatalogLimits, nil); e != ErrStateDirectory || digest != "" || !reflect.DeepEqual(c, StateCatalog{}) {
+		t.Fatal("execution census bypassed kernel UID")
+	}
 	job := jobFixture()
 	if j, err := s.ReadJob(job.ID); err != ErrStateDirectory || j.ID != "" {
 		t.Fatal("ACL grant bypassed job reader kernel UID guard")
@@ -385,6 +389,10 @@ func TestNativeStateACL(t *testing.T) {
 				c, e := s.InspectState()
 				return e == ErrStateDirectory && reflect.DeepEqual(c, StateCatalog{})
 			}
+			deniedExecutionCensus := func() bool {
+				c, digest, e := s.inspectExecutionCensus(executionJournalFixture().Binding, defaultStateCatalogLimits, nil)
+				return e == ErrStateDirectory && digest == "" && reflect.DeepEqual(c, StateCatalog{})
+			}
 			preserved := func(fd int, mode uint16, want stateACL) bool {
 				var st, named unix.Stat_t
 				a, e := readStateACL(fd, model.kind)
@@ -397,6 +405,7 @@ func TestNativeStateACL(t *testing.T) {
 			check(prefix+"directory_read_denial", deniedRead())
 			check(prefix+"job_directory_denial", deniedJob())
 			check(prefix+"catalog_directory_denial", deniedCatalog())
+			check(prefix+"execution_census_directory_denial", deniedExecutionCensus())
 			check(prefix+"reservation_directory_denial", deniedReservations())
 			check(prefix+"submission_directory_denial", deniedSubmission())
 			check(prefix+"job_publish_directory_denial", deniedPublication())
@@ -426,6 +435,7 @@ func TestNativeStateACL(t *testing.T) {
 			check(prefix+"lock_read_denial", deniedRead())
 			check(prefix+"job_lock_denial", deniedJob())
 			check(prefix+"catalog_lock_denial", deniedCatalog())
+			check(prefix+"execution_census_lock_denial", deniedExecutionCensus())
 			check(prefix+"reservation_lock_denial", deniedReservations())
 			check(prefix+"submission_lock_denial", deniedSubmission())
 			check(prefix+"job_publish_lock_denial", deniedPublication())
@@ -437,6 +447,7 @@ func TestNativeStateACL(t *testing.T) {
 			setFixtureACL(t, recordFD, model.kind, bad)
 			check(prefix+"record_denial", deniedRead())
 			check(prefix+"catalog_ownership_denial", deniedCatalog())
+			check(prefix+"execution_census_ownership_denial", deniedExecutionCensus())
 			check(prefix+"reservation_ownership_denial", deniedReservations())
 			check(prefix+"submission_ownership_denial", deniedSubmission())
 			check(prefix+"job_publish_ownership_denial", deniedPublication())
@@ -448,6 +459,7 @@ func TestNativeStateACL(t *testing.T) {
 			setFixtureACL(t, jobFD, model.kind, bad)
 			check(prefix+"job_record_denial", deniedJob())
 			check(prefix+"catalog_job_denial", deniedCatalog())
+			check(prefix+"execution_census_job_denial", deniedExecutionCensus())
 			check(prefix+"reservation_job_denial", deniedReservations())
 			check(prefix+"submission_job_denial", deniedSubmission())
 			check(prefix+"job_publish_job_denial", deniedPublication())
@@ -458,6 +470,7 @@ func TestNativeStateACL(t *testing.T) {
 			bad = namedFixtureACL(propertyACL, model.kind, 0)
 			setFixtureACL(t, propertyFD, model.kind, bad)
 			check(prefix+"property_read_record_denial", deniedPropertyRead())
+			check(prefix+"execution_census_property_denial", deniedExecutionCensus())
 			check(prefix+"reservation_property_denial", deniedReservations())
 			check(prefix+"submission_property_denial", deniedSubmission())
 			check(prefix+"property_publish_record_denial", deniedPropertyPublish())
@@ -475,6 +488,7 @@ func TestNativeStateACL(t *testing.T) {
 			check(prefix+"inheritance_denial", deniedOpen(statePath))
 			check(prefix+"inheritance_read_denial", deniedRead())
 			check(prefix+"catalog_inheritance_denial", deniedCatalog())
+			check(prefix+"execution_census_inheritance_denial", deniedExecutionCensus())
 			check(prefix+"reservation_inheritance_denial", deniedReservations())
 			check(prefix+"submission_inheritance_denial", deniedSubmission())
 			check(prefix+"job_publish_inheritance_denial", deniedPublication())
@@ -531,6 +545,7 @@ func TestNativeStateACL(t *testing.T) {
 				check("kernel_uid_denial", childErr == nil)
 				check("job_kernel_uid_denial", childErr == nil)
 				check("catalog_kernel_uid_denial", childErr == nil)
+				check("execution_census_kernel_uid_denial", childErr == nil)
 				check("reservation_kernel_uid_denial", childErr == nil)
 				check("submission_kernel_uid_denial", childErr == nil)
 				check("job_publish_kernel_uid_denial", childErr == nil)
@@ -553,6 +568,8 @@ func TestNativeStateACL(t *testing.T) {
 			check(prefix+"job_restored_read", validJob())
 			catalog, e := s.InspectState()
 			check(prefix+"catalog_restored", e == nil && len(catalog.Ownership) == 1 && len(catalog.Jobs) == 2 && catalog.Bytes == uint64(len(ownershipGolden())+len(jobBytes)+len(propertyBytes)))
+			census, digest, e := s.inspectExecutionCensus(executionJournalFixture().Binding, defaultStateCatalogLimits, nil)
+			check(prefix+"execution_census_restored", e == nil && validJobDigest(digest) && reflect.DeepEqual(census, catalog))
 			check(prefix+"job_publish_restored", s.PublishJob(nextJob, 1) == nil)
 			check(prefix+"property_read_restored", validProperty())
 			check(prefix+"property_publish_restored", s.PublishPropertyJob(propertyNext, 1) == nil)

@@ -55,13 +55,18 @@ ENROLLMENT_CASES=set(['first', 'exact_bytes', 'private_file', 'copies_denied', '
 TESTS.add("TestNativeEnrollmentPublication")
 BACKING_TESTS.add("TestNativeEnrollmentPublication")
 
+EXECUTION_CENSUS_CASES=set(['empty_lock', 'published_mixed_bytes', 'same_complete_catalog', 'repeat', 'inode_preservation', 'exact_limits', 'byte_limit', 'invalid_limits', 'invalid_binding', 'binding_bytes', 'copied_handle', 'original_survives_copy', 'exact_presentation', 'published_successor', 'journal_consumes_census', 'job_drift', 'ownership_drift', 'namespace_drift', 'unknown_name', 'orphan', 'orphan_preserved', 'submission_collision', 'omission_changes_digest', 'symlink_denial', 'hardlink_denial', 'fifo_denial', 'mode_denial', 'damage_denial', 'oversize_denial', 'descriptor_anchor', 'late_lock_replacement', 'uncertainty_observed_only', 'uncertain_bytes_preserved', 'lease_close', 'closed_denial', 'inert_denial', 'foreign_preserved', 'fixture_teardown'])
+ACL_CASES.update(['execution_census_kernel_uid_denial', 'posix_execution_census_directory_denial', 'posix_execution_census_lock_denial', 'posix_execution_census_ownership_denial', 'posix_execution_census_job_denial', 'posix_execution_census_property_denial', 'posix_execution_census_inheritance_denial', 'posix_execution_census_restored', 'nfs4_execution_census_directory_denial', 'nfs4_execution_census_lock_denial', 'nfs4_execution_census_ownership_denial', 'nfs4_execution_census_job_denial', 'nfs4_execution_census_property_denial', 'nfs4_execution_census_inheritance_denial', 'nfs4_execution_census_restored'])
+TESTS.add("TestNativeExecutionCensus")
+BACKING_TESTS.add("TestNativeExecutionCensus")
+
 def validate(text):
     if len(text)>1<<20 or re.search(r'(?m)^(?:FAIL|[ \t]*--- (?:FAIL|SKIP):)',text):
         raise ValueError('state native evidence failed, skipped or oversized')
     passed=re.findall(r'(?m)^--- PASS: (Test\w+) \([0-9.]+s\)$',text)
     if len(passed)!=len(TESTS) or set(passed)!=TESTS:
         raise ValueError('complete executed lease/reader/ACL/publication/codec tests required')
-    for marker,cases in [('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES),('STATE_ACL_RESULT',ACL_CASES),('OWNERSHIP_PUBLISH_RESULT',PUBLISH_CASES),('OWNERSHIP_PUBLISH_FS_RESULT',PUBLISH_FS_CASES),('OWNERSHIP_CATALOG_RESULT',CATALOG_CASES),('OWNERSHIP_CAPACITY_RESULT',CAPACITY_CASES),('JOB_READ_RESULT',JOB_READ_CASES),('STATE_CATALOG_RESULT',STATE_CATALOG_CASES),('JOB_PUBLICATION_RESULT',JOB_PUBLICATION_CASES),('PROPERTY_JOB_STORAGE_RESULT',PROPERTY_JOB_STORAGE_CASES),('JOB_RESERVATIONS_RESULT',RESERVATION_CASES),('PROPERTY_SUBMISSION_RESULT',SUBMISSION_CASES),('STATE_SOFTUPDATES_RESULT',SOFTUPDATES_CASES),('PROPERTY_PUBLICATION_CUTS_RESULT',CUT_CASES),('ENROLLMENT_PUBLICATION_RESULT',ENROLLMENT_CASES)]:
+    for marker,cases in [('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES),('STATE_ACL_RESULT',ACL_CASES),('OWNERSHIP_PUBLISH_RESULT',PUBLISH_CASES),('OWNERSHIP_PUBLISH_FS_RESULT',PUBLISH_FS_CASES),('OWNERSHIP_CATALOG_RESULT',CATALOG_CASES),('OWNERSHIP_CAPACITY_RESULT',CAPACITY_CASES),('JOB_READ_RESULT',JOB_READ_CASES),('STATE_CATALOG_RESULT',STATE_CATALOG_CASES),('JOB_PUBLICATION_RESULT',JOB_PUBLICATION_CASES),('PROPERTY_JOB_STORAGE_RESULT',PROPERTY_JOB_STORAGE_CASES),('JOB_RESERVATIONS_RESULT',RESERVATION_CASES),('PROPERTY_SUBMISSION_RESULT',SUBMISSION_CASES),('STATE_SOFTUPDATES_RESULT',SOFTUPDATES_CASES),('PROPERTY_PUBLICATION_CUTS_RESULT',CUT_CASES),('ENROLLMENT_PUBLICATION_RESULT',ENROLLMENT_CASES),('EXECUTION_CENSUS_RESULT',EXECUTION_CENSUS_CASES)]:
         records=re.findall(marker+r' ([^\n]+)',text)
         if len(records)!=1:raise ValueError('one native result per boundary required')
         fields=records[0].split();expected={case+'=pass' for case in cases}

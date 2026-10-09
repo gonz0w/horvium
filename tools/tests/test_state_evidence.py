@@ -100,6 +100,39 @@ RESULT += 'ENROLLMENT_PUBLICATION_RESULT '+' '.join(c+'=pass' for c in ENROLLMEN
 RESULT += 'STATE_BACKING_RESULT TestNativeEnrollmentPublication filesystem=zfs softupdates=off teardown=pass\n'
 PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
 
+OLD_CENSUS_FREE_PASS=PASS
+OLD_CENSUS_FREE_RESULT=RESULT
+EXECUTION_CENSUS_CASES=['empty_lock', 'published_mixed_bytes', 'same_complete_catalog', 'repeat', 'inode_preservation', 'exact_limits', 'byte_limit', 'invalid_limits', 'invalid_binding', 'binding_bytes', 'copied_handle', 'original_survives_copy', 'exact_presentation', 'published_successor', 'journal_consumes_census', 'job_drift', 'ownership_drift', 'namespace_drift', 'unknown_name', 'orphan', 'orphan_preserved', 'submission_collision', 'omission_changes_digest', 'symlink_denial', 'hardlink_denial', 'fifo_denial', 'mode_denial', 'damage_denial', 'oversize_denial', 'descriptor_anchor', 'late_lock_replacement', 'uncertainty_observed_only', 'uncertain_bytes_preserved', 'lease_close', 'closed_denial', 'inert_denial', 'foreign_preserved', 'fixture_teardown']
+EXECUTION_CENSUS_ACL_CASES=['execution_census_kernel_uid_denial', 'posix_execution_census_directory_denial', 'posix_execution_census_lock_denial', 'posix_execution_census_ownership_denial', 'posix_execution_census_job_denial', 'posix_execution_census_property_denial', 'posix_execution_census_inheritance_denial', 'posix_execution_census_restored', 'nfs4_execution_census_directory_denial', 'nfs4_execution_census_lock_denial', 'nfs4_execution_census_ownership_denial', 'nfs4_execution_census_job_denial', 'nfs4_execution_census_property_denial', 'nfs4_execution_census_inheritance_denial', 'nfs4_execution_census_restored']
+TESTS += ['TestNativeExecutionCensus']
+BACKING_TESTS += ['TestNativeExecutionCensus']
+ACL_CASES += EXECUTION_CENSUS_ACL_CASES
+RESULT += 'EXECUTION_CENSUS_RESULT '+' '.join(c+'=pass' for c in EXECUTION_CENSUS_CASES)+'\n'
+RESULT += 'STATE_BACKING_RESULT TestNativeExecutionCensus filesystem=zfs softupdates=off teardown=pass\n'
+RESULT = RESULT.replace('STATE_ACL_RESULT ', 'STATE_ACL_RESULT '+' '.join(c+'=pass' for c in EXECUTION_CENSUS_ACL_CASES)+' ')
+PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
+
+class ExecutionCensusEvidenceTests(unittest.TestCase):
+    def module(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m);return m
+
+    def test_previous_evidence_cannot_qualify_execution_census(self):
+        with self.assertRaises(ValueError):self.module().validate(OLD_CENSUS_FREE_PASS+OLD_CENSUS_FREE_RESULT)
+        self.assertEqual(self.module().EXECUTION_CENSUS_CASES,set(EXECUTION_CENSUS_CASES))
+        self.module().validate(PASS+RESULT)
+
+    def test_every_census_control_parent_and_backing_is_required(self):
+        m=self.module()
+        line='EXECUTION_CENSUS_RESULT '+' '.join(c+'=pass' for c in EXECUTION_CENSUS_CASES)
+        for case in EXECUTION_CENSUS_CASES:
+            for value in ['',case+'=fail',case+'=pass '+case+'=pass']:
+                bad='EXECUTION_CENSUS_RESULT '+' '.join(value if c==case else c+'=pass' for c in EXECUTION_CENSUS_CASES)
+                with self.subTest(case=case,value=value),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(line,bad))
+        for case in EXECUTION_CENSUS_ACL_CASES:
+            with self.subTest(case=case),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(case+'=pass',''))
+        for line in ['--- PASS: TestNativeExecutionCensus (1.0s)\n','STATE_BACKING_RESULT TestNativeExecutionCensus filesystem=zfs softupdates=off teardown=pass\n']:
+            with self.subTest(line=line),self.assertRaises(ValueError):m.validate((PASS+RESULT).replace(line,''))
+
 class EnrollmentPublicationEvidenceTests(unittest.TestCase):
     def module(self):
         m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m);return m
