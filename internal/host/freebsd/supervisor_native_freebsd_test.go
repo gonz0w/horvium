@@ -28,7 +28,7 @@ func nativeSupervisorFixtureProcess(args []string) (bool, int) {
 		return true, 1
 	}
 	mode, dir := args[1], args[2]
-	if mode != "normal" && mode != "escaped" && mode != "normal-escaped" {
+	if mode != "normal" && mode != "escaped" && mode != "normal-escaped" && mode != "residual" {
 		return true, 1
 	}
 	request, response := supervisorPipe(3, true), supervisorPipe(4, false)
@@ -43,6 +43,20 @@ func nativeSupervisorFixtureProcess(args []string) (bool, int) {
 		}
 		if mode == "normal" {
 			return nil
+		}
+		if mode == "residual" {
+			c := exec.Command(os.Args[0], "-test.run=^TestNativePropertyControlGuardChild$", "--", dir, "child")
+			if c.Start() != nil {
+				return ErrUnavailable
+			}
+			until := time.Now().Add(time.Second)
+			for time.Now().Before(until) {
+				if _, e := os.Stat(filepath.Join(dir, "child")); e == nil {
+					return nil
+				}
+				time.Sleep(5 * time.Millisecond)
+			}
+			return ErrUnavailable
 		}
 		ctx, stop := context.WithTimeout(ctx, 4*time.Second)
 		defer stop()
@@ -130,7 +144,7 @@ func TestNativeExecutorSupervision(t *testing.T) {
 			t.Fatal("boot identity depends on civil clock")
 		}
 	})
-	for _, mode := range []string{"ready-success", "peer-before-launch", "foreign-handshake", "normal-escaped", "guard-first", "supervisor-first", "owner-death"} {
+	for _, mode := range []string{"ready-success", "residual-descendant-denied", "peer-before-launch", "foreign-handshake", "normal-escaped", "guard-first", "supervisor-first", "owner-death"} {
 		t.Run(mode, func(t *testing.T) {
 			dir := t.TempDir()
 			i := supervisorLiveIntent(t)
@@ -170,12 +184,21 @@ func TestNativeExecutorSupervision(t *testing.T) {
 				}
 				return
 			}
-			if mode == "ready-success" {
-				if e := exchangePropertySupervisor(context.Background(), i, data, owner, func(c *exec.Cmd) { c.Args = []string{os.Args[0], supervisorFixtureArgument, "normal", dir} }); e != nil {
-					t.Fatal("actual empty reaper completion", e)
+			if mode == "ready-success" || mode == "residual-descendant-denied" {
+				if e := exchangePropertySupervisor(context.Background(), i, data, owner, func(c *exec.Cmd) {
+					m := "normal"
+					if mode == "residual-descendant-denied" {
+						m = "residual"
+					}
+					c.Args = []string{os.Args[0], supervisorFixtureArgument, m, dir}
+				}); (e == nil) != (mode == "ready-success") {
+					t.Fatal("actual reaper completion classification", e)
 				}
 				if _, e := os.Stat(filepath.Join(dir, "launched")); e != nil {
 					t.Fatal("fixture consumer was not executed")
+				}
+				if mode == "residual-descendant-denied" {
+					assertProbeStopped(t, fixturePID(t, filepath.Join(dir, "child")))
 				}
 				return
 			}

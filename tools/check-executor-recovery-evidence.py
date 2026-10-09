@@ -8,7 +8,7 @@ from pathlib import Path
 BEFORE = {'fixture-preflight', 'process-observer', 'owner-death', 'stopped-guard',
           'guard-first', 'queued-cut', 'applying-cut', 'effect-cut', 'normal-completion',
           'retained-for-reboot'}
-SUPERVISOR = {'boot-identity', 'clock-independent', 'ready-success', 'peer-before-launch', 'foreign-handshake', 'normal-escaped', 'guard-first', 'supervisor-first', 'owner-death'}
+SUPERVISOR = {'boot-identity', 'clock-independent', 'ready-success', 'residual-descendant-denied', 'peer-before-launch', 'foreign-handshake', 'normal-escaped', 'guard-first', 'supervisor-first', 'owner-death'}
 
 CONTROLS = {'preflight', 'quota', 'refquota', 'no-limit', 'compression', 'expired', 'ledger-drift', 'native-drift', 'wrong-uid', 'guard-quiescence', 'preserved', 'fixture-teardown'}
 

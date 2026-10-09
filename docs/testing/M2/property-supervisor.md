@@ -34,7 +34,8 @@ the request. Missing/extra bytes or peer loss before authorization denies launch
 The isolated supervisor acquires native reaper ownership before spawning the base
 guard. Its own kernel status must identify it as owner. It waits the actual guard,
 kills/reaps residual descendants through its own kernel subtree and requires zero
-children/descendants. It repeats boot identity before reporting completion through
+children/descendants. Unexpected residual descendants are killed/reaped but still
+withhold normal completion, even if the utility itself reported success. It repeats boot identity before reporting completion through
 its original channel. The parent requires that exact report, actual supervisor
 wait and terminal EOF. An interrupted, expired, unavailable or failed exchange
 never returns success or establishes quiescence. No saved PID or global process
@@ -48,7 +49,7 @@ backend fixtures. Supervisor death can abandon descendants: a future replacement
 helper must retain pending state and deny same-boot takeover under ADR 0009.
 
 The focused disposable suite extends the actual recovery fixture: all seventeen
-prior recovery cases, nine original boot/supervisor cases and a post-reboot kernel
+prior recovery cases, ten original boot/supervisor cases and a post-reboot kernel
 identity test plus twelve retained property-control cases/two guard children
 are required by the checker. Cases use native header layout checks,
 real guest clock adjustment/restoration, root pipe exchange, pre-launch peer loss,

@@ -64,6 +64,7 @@ func nativeReaperObservation() (nativeReaperStatus, error) {
 }
 func drainNativeReaper() error {
 	deadline := time.Now().Add(2 * time.Second)
+	residual := false
 	for time.Now().Before(deadline) {
 		var status unix.WaitStatus
 		// The guard is already waited by exec.Cmd. Reap only this isolated supervisor's
@@ -85,8 +86,12 @@ func drainNativeReaper() error {
 			return err
 		}
 		if s.Children == 0 && s.Descendants == 0 {
+			if residual {
+				return ErrUnavailable
+			}
 			return nil
 		}
+		residual = true
 		k := nativeReaperKill{Signal: int32(syscall.SIGKILL)}
 		if err = ownProcctl(6, unsafe.Pointer(&k)); err != nil {
 			return err
