@@ -3,6 +3,14 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+The proposed [property runtime recovery/launch contract](../milestones/M2/property-runtime.md)
+defines the remaining path to an assembled writer on the two pinned disposable
+FreeBSD targets. No mechanism, runtime behavior, support target or new native
+result is qualified by this documentation change. All historical evidence remains
+bound to its actual source; startup clearance, shared global launch, root dispatch,
+independent workers and explicit hold resolution still need implementation and
+their listed gates.
+
 M2 [configured property client](../testing/M2/property-dial.md) adds trusted socket
 policy and one original dial/operation deadline. Three portable parents/seventeen
 children, all 104 transport cases on disposable FreeBSD 15.1 and 14.5, baseline/136
