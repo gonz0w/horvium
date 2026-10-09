@@ -21,6 +21,24 @@ class LocalQualificationTests(unittest.TestCase):
                 + ''.join('        --- PASS: '+parent+'/native-claim-source/'+n+' (0.1s)\n' for n in checker.CLAIM_CASES)
                 + 'CLAIM_PROPERTY_COLLECTION_RESULT fixture_teardown=pass\n')
 
+    def test_executor_recovery_uses_owned_disks_and_existing_cleanup_artifact(self):
+        self.assertTrue(self.module.uses_device_fixture('executor-recovery'))
+        artifact = self.module.PREBUILT['executor-recovery']
+        self.assertEqual(artifact[0], 'pool-properties-native.test')
+        self.assertEqual(artifact[1], './internal/host/freebsd')
+        packages, command = self.module.suite_command('executor-recovery', False, 'a' * 64)
+        self.assertEqual(packages, '')
+        self.assertIn('HORVIUM_RESEARCH_VM=1', command)
+        self.assertIn('research/m2-executor-recovery.sh', command)
+
+    def test_executor_recovery_boot_identity_is_strict(self):
+        import json
+        self.assertEqual(self.module.recovery_boot_identity(json.dumps({'boot_sec': 100, 'boot_usec': 1})), [100, 1])
+        for value in ['', '{}', '{"boot_sec":true,"boot_usec":1}', '{"boot_sec":0,"boot_usec":1}',
+                      '{"boot_sec":100,"boot_usec":1000000}']:
+            with self.assertRaises(ValueError):
+                self.module.recovery_boot_identity(value)
+
     def test_focused_property_suite_uses_owned_snapshot_device_fixture(self):
         for suite in ['devices','pool-properties']:
             self.assertTrue(self.module.uses_device_fixture(suite))
