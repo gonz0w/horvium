@@ -1,6 +1,6 @@
 # M2 original root property request binding
 
-Date: 2026-10-08. Status: implementation qualification pending.
+Date: 2026-10-08. Status: partial qualification passed; maintainer review pending.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 Approved [EDD](../../milestones/M2/EDD.md) and [Test Design](../../milestones/M2/TDD.md).
 Partial M2-PRIV-001/M2-PLAN-001/M2-NATIVE-001 evidence.
@@ -64,3 +64,45 @@ checker edits require fresh full portable review. Retain actual signed red/green
 sources, executable hashes, historical manifests and complete guest/artifact/
 supervisor cleanup with preserved base/runtime bytes. Actions remain disabled.
 M1 Safari/VoiceOver remains pending by maintainer choice.
+
+## Executed qualification
+
+Signed revised fixture source `ee4a997fd17eba420e6231b02c506fe90a304dde` passed two focused portable parents/six
+children and all eight native parents/131 exact cases on both disposable FreeBSD
+15.1 and 14.5 amd64 guests. Both native runs used the same checksummed executable
+and unchanged 80/90-second bounds. Baseline and 138 tooling tests passed;
+fresh full portable review ran eleven race packages and all 49 bounded fuzz
+checks in 222.215 seconds because the shared evidence checker changed.
+
+Signed denying-stub source `f774b566bb1edf18bde77a4259b1739a7a3ef647` failed original
+concrete portable retirement and all fifteen new native behavior cases, while
+all 115 older native cases passed. That record stays unqualified with its actual
+source, executable checksum and verified cleanup. Initial implementation source
+`5913fb72e887680fe24f42424c29153b218f31cf` passed every new binding case but failed
+the prior shutdown-request fixture: root could intentionally close before the
+child completed its own final negotiation checks. The repair observes the child's
+existing actual ready witness before entering and interrupting the root request
+read. Product implementation, original case inventories and deadlines stay
+identical. The initial native record and interrupted deep review remain
+unqualified; the subsequent complete runs qualify their actual revised source.
+
+Actual kernel/request/owner checks now precede metadata exposure and the listener's
+fixed refusal. Copied/reconstructed/foreign receipts preserve the original;
+synchronized disconnects and extra bytes withhold all metadata and retire the
+original slot. Extra bytes produce the actual protocol error. Thirty-two
+concurrent live checks pass without manufacturing peer/session facts. Socket
+shutdown and receipt closure prove network retirement only; they establish no
+worker/native executor quiescence or independent human/session authentication.
+No root backend, policy/plan/recovery/global launch or storage effect is exercised.
+
+All 687 owned sessions stopped with verified teardown. Disposable keys,
+executables and overlays were removed; cached base/runtime bytes were preserved.
+All 79 historical M2 manifests retain their bytes. Original peer/connection/
+client/exchange/codec/admin product inputs remain byte-identical; admitted peers
+initialize the private binding owner and the fixed-denial handler consumes it.
+Listener socket lifecycle, worker bounds and close-error ledger remain unchanged.
+See the [source-bound manifest](property-binding-manifest.json). The final
+prose/evidence commit reruns baseline checks and can reuse only successful deep
+proof with identical implementation/verification inputs. Actions remain disabled;
+M1 Safari/VoiceOver remains pending. Runtime/backend/policy/session/recovery/global
+launch and complete M2 acceptance remain open.

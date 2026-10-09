@@ -470,3 +470,11 @@ including synchronized original-store logout/Close, with full local portable
 review and verified teardown. Root typed operations still receive denial;
 independent root/backend/recovery/global admission and runtime workflows remain
 open. See the [source-bound evidence](docs/testing/M2/property-application-manifest.json).
+
+The [original root request binding](docs/testing/M2/property-binding.md) ties a
+received typed request to its original admitted kernel peer for repeated live
+checks. Both pinned releases passed all 131 transport/application/binding cases
+with local portable review and verified teardown. The denial listener checks the
+binding before its fixed refusal; root/backend/recovery/global admission and
+operator storage workflows remain open. See the
+[source-bound evidence](docs/testing/M2/property-binding-manifest.json).

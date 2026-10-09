@@ -904,8 +904,16 @@ GitHub Actions remain disabled. M1 Safari/VoiceOver remains pending.
 
 ## Original root property request binding
 
-Qualification pending on disposable FreeBSD 15.1/14.5 amd64 guests. The
+Partial qualification passed on disposable FreeBSD 15.1/14.5 amd64 guests: all
+131 actual transport/application/binding cases and verified teardown on each. The
 [request binding](../testing/M2/property-binding.md) joins original admitted
 root peer, typed request and repeated actual kernel/quiet-socket checks. The
 default listener still denies operations. This adds no policy/session/backend,
 recovery/global launch, storage effects or hardware/performance support claim.
+
+Signed source `ee4a997fd17eba420e6231b02c506fe90a304dde` passed baseline/138 tooling tests and fresh full
+portable race/fuzz review. The initial native and stopped deep records remain
+unqualified; the repaired fixture observes actual child readiness before shutdown.
+All 79 historical manifests preserve their sources/bytes; see the
+[source-bound record](../testing/M2/property-binding-manifest.json). Actions stay
+disabled; M1 Safari/VoiceOver remains pending.

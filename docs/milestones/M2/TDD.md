@@ -1508,3 +1508,15 @@ checks and nil/cancelled context. Require eight parents/131 exact cases on both
 pinned releases with unchanged 80/90-second bounds, fresh full portable review
 for shared checker edits and complete source-bound preservation/teardown. No
 human/session, policy, backend, recovery, native launch or quiescence follows.
+
+Signed revised fixture source `ee4a997fd17eba420e6231b02c506fe90a304dde` passed all 131 actual cases on both
+pinned disposable releases, two portable parents/six children, baseline/138
+tooling tests and fresh full portable review (eleven race packages/all 49 bounded
+fuzz targets in 222.215 seconds). The first implementation's native run exposed a
+prior shutdown readiness race; its new binding cases passed. The fixture now
+observes actual completed child negotiation, with unchanged product/deadlines.
+Initial native and interrupted deep records stay unqualified. All 687 owned
+sessions stopped with verified teardown; Actions remain disabled and all 79
+historical manifests retain their bytes. See the
+[source-bound record](../../testing/M2/property-binding-manifest.json).
+This is live peer/request provenance only; all other clearance/runtime gates stay open.
