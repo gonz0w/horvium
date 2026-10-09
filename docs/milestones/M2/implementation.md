@@ -1426,3 +1426,28 @@ packages and 45 bounded selected fuzz targets with verified teardown. See the
 historical manifests and existing native/helper/tooling sources retain their bytes;
 Actions remain disabled.
 No service, automatic replay, recovery authority or runtime write is added.
+
+
+## Original native execution census prerequisite
+
+PR 109 accepted the portable core at merged source
+`2fc51de735e2df4657b8a61df8ebb171c9857311`. The next
+[native census consumer](../../testing/M2/native-execution-census.md) binds its
+streaming digest to the existing descriptor-validated ledger reader, with all
+original root/record/namespace checks retained. Signed native source
+`261fdb533723055d9d1a7142c272f46c9fb4ef19` passed all 68 selected native/codec
+parents, 858 required native assertions and 1,876 codec children on each disposable
+FreeBSD/amd64 target, including all 38 census/fifteen new ACL controls. The same
+checksummed executable ran on ZFS/15.1 and UFS/14.5 without softupdates.
+Both complete guest/supervisor teardown records passed. Signed portable source
+`6662618c9206d8c9850e974af7789d9130374092` passed baseline/146 tooling tests and
+one fresh full review of eleven race packages/51 bounded fuzz targets. The signed
+stub and stale runner unittest fixture failure retain their unqualified records;
+correcting only that fixture leaves actual qualified native inputs unchanged.
+All 83 historical manifests and 141 native host/helper/command inputs retain
+their bytes; all 721 owned sessions were stopped at evidence capture. Actions
+remain disabled. See the
+[source-bound record](../../testing/M2/native-execution-census-manifest.json).
+Bindings are synthetic metadata in these fixtures, not persistent identity or
+restore proof; journal durability, provisioning/startup/global owner and actual
+backend ordering remain required before runtime use. No writer is enabled.

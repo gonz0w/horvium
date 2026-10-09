@@ -284,3 +284,11 @@ executor completion or write clearance; the original dual-lease owner must enfor
 all native ordering above. Its portable consumer/test results do not satisfy any
 journal/bootstrap/global/restore native gate. Native owner, provisioning and real
 publisher/backend integration remain required together before enabling runtime use.
+
+
+The [native census reader](../../testing/M2/native-execution-census.md) supplies a
+private exact-byte digest through the original ledger lease, retaining all existing
+final object/namespace checks and publication uncertainty. Its supplied binding is
+metadata only. Persistent identity production, dual-domain journal persistence and
+original startup/global ownership still need implementation and native gates with
+the real backend/publishers before runtime use.

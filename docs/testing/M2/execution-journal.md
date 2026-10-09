@@ -1,6 +1,6 @@
 # Execution journal record and census core
 
-Status: Portable prerequisite qualified; awaiting maintainer review; runtime denied.
+Status: Accepted portable prerequisite (PR 109); runtime denied.
 Date: 2026-10-08. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [Accepted mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -123,3 +123,8 @@ still need implementation and qualification on both disposable releases.
 Active kernel property interruption and assembled runtime/resource/client/UI
 acceptance remain open. Runtime root operations remain denied; M1 manual
 accessibility stays pending. No host service or background process is installed.
+
+
+The [native census consumer](native-execution-census.md) connects this framing to
+the existing original FreeBSD ledger reader. Its supplied binding remains metadata;
+persistent native binding producers and the independent journal owner are pending.
