@@ -1,6 +1,6 @@
 # Original-lease persistent backing observation
 
-Status: Implementation prerequisite; native qualification pending; runtime denied.
+Status: Native prerequisite qualified; awaiting maintainer review; runtime denied.
 Date: 2026-10-09. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -75,3 +75,29 @@ unchanged. The original `persistent-backing` suite and all historical manifests
 remain unchanged. Shared runner/checker maintenance requires one fresh full
 portable review; later evidence-only updates reuse its exact deep inputs while
 rerunning baseline checks. No GitHub Actions or persistent host service is used.
+
+## Qualified observations
+
+The [manifest](original-backing-manifest.json) binds the final implementation to
+signed source `a8d74d38a1a78e5ec74a15c2e71aedafcff6a753`. Both pinned
+FreeBSD/amd64 releases passed all 66 original-lease assertions and six fixture
+teardown controls, using the same native executable SHA-256
+`2d469c08900e22ec4ddc3585fbbba78694a6f2e85775ab11b02765249c1329ad`.
+The UFS/ZFS parents took 4.56/4.91 seconds on 15.1 and 4.15/5.15 seconds on 14.5;
+these small identity fixtures do not qualify production resources or performance.
+
+Both affected historical state suites passed their unchanged 76 parents, 1,054
+required native assertions and 1,930 codec children. Full portable review passed
+check, lint, test and secrets, 155 tooling tests, eleven race packages and all
+53 bounded fuzz targets. The initial native denial-stub record remains unqualified
+and source-bound; its teardown and compiled artifact removal were verified too.
+All 87 historical M2 manifests and 340 other original source inputs retained their
+bytes. The sole intentional original source refactor is the locked observer split.
+Every owned session stopped, and each runner removed its executable, disposable
+storage, process group, key and image. GitHub Actions remained disabled.
+
+This completes the individual original-lease observation prerequisite. It does
+not register a simultaneous journal-before-ledger owner, qualify system/owned-pool
+exclusion or independent restore scope, commission an installation, assemble the
+startup/global protocol or enable a storage writer. Those remain required before
+runtime use. M1 manual Safari/VoiceOver acceptance remains pending separately.
