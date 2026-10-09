@@ -1,6 +1,6 @@
 # Guarded persistent backing discovery
 
-Status: Native discovery candidate; qualification pending; runtime denied.
+Status: Native discovery prerequisite qualified; awaiting maintainer review; runtime denied.
 Date: 2026-10-09. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -103,3 +103,23 @@ and [15.1 dataset source](https://github.com/freebsd/freebsd-src/blob/e38a7085f3
 The [OpenZFS property manual](https://openzfs.github.io/openzfs-docs/man/master/7/zfsprops.7.html)
 describes GUID, type and mounted properties. Source reasoning does not replace
 the required actual two-target qualification.
+
+
+The [manifest](persistent-backing-manifest.json) records final signed source
+`7954e5b4db923e79f5ea862f45a054fb85ff4f1e`, both actual guest results and
+identical native binary SHA-256
+`63a69ae5a11e45e7f00d0be49539be0dd7e31470f7cba197f002560aeef36251`.
+Both native parents and all 30 identity/safety plus six teardown controls passed
+on each target. The final runner automatically removed its compiled executable
+as well as owned processes, devices, filesystems, keys and images. Generic prebuilt
+cleanup has a failing-first regression proving all registered filenames are removed
+without touching a foreign sentinel. Failed discovery/rename attempts, the stopped
+superseded review and earlier positive runs with incomplete compiled-artifact
+cleanup remain recorded with their actual sources; no original record was rewritten.
+The retained binaries from those earlier runs were hash-verified and removed.
+Fresh local review passed all baseline checks, 153 tooling tests, eleven race
+packages and 53 bounded fuzz targets. All 86 historical M2 manifests and 141
+existing host/helper/command inputs retained their bytes. All owned sessions
+stopped; GitHub Actions remained disabled. Production resources, original
+dual-lease integration, system exclusion, independent restore proof and
+commissioning/startup/global ownership remain required.

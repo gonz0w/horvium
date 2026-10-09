@@ -51,7 +51,9 @@ and startup/global integration remain required. Both pinned disposable FreeBSD
 targets passed the object and UFS remount gates with verified teardown;
 PR 112 accepted this prerequisite.
 The [guarded persistent backing collector](docs/testing/M2/persistent-backing.md)
-adds private native UFS/ZFS identity discovery. Native qualification is pending;
+adds private native UFS/ZFS identity discovery. Both disposable FreeBSD targets
+passed the focused identity/remount/rename and complete teardown gates;
+maintainer review is pending.
 original lease integration, system exclusion, restore independence and commissioning
 remain required.
 Completing this sequence covers the property workflow rather
