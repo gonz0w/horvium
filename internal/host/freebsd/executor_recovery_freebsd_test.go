@@ -382,12 +382,20 @@ func recoveryContainment(t *testing.T, mode, anchor string) {
 		t.Fatal("singleton reacquisition after owner death", err)
 	}
 	defer s.Close()
-	if mode != "owner-death" {
-		a, b := recoveryInspect(t, probe), recoveryInspect(t, child)
-		if !recoverySame(a, p) || !recoverySame(b, leaf) || a.Zombie || b.Zombie {
-			t.Fatal("lock reacquisition did not overlap original live descendants")
+	a, b := recoveryInspect(t, probe), recoveryInspect(t, child)
+	// Observe each original descendant independently. Stopping a process group
+	// can affect which members survive owner death; do not invent that outcome.
+	for _, pair := range [][2]recoveryProcess{{a, p}, {b, leaf}} {
+		if pair[0].Found && !pair[0].Zombie && !recoverySame(pair[0], pair[1]) {
+			t.Fatal("process observation cannot attribute original descendant")
 		}
-		t.Log("singleton reacquired while original escaped descendant remained alive; no clearance")
+	}
+	probeLive, childLive := recoverySame(a, p) && !a.Zombie, recoverySame(b, leaf) && !b.Zombie
+	if mode == "guard-first" && !probeLive && !childLive {
+		t.Fatal("guard-first counterexample did not reach original live descendant")
+	}
+	if probeLive || childLive {
+		t.Log("singleton reacquired while an original descendant remained alive; no clearance")
 	}
 	if mode == "stopped-guard" {
 		recoverySignal(t, guard, syscall.SIGCONT)
@@ -398,6 +406,19 @@ func recoveryContainment(t *testing.T, mode, anchor string) {
 	}
 	for _, pid := range []int{probe, child, guard.PID} {
 		assertProbeStopped(t, pid)
+	}
+	if !t.Failed() {
+		data, err := json.Marshal(struct {
+			Mode  string `json:"mode"`
+			Lock  bool   `json:"singleton_reacquired"`
+			Probe bool   `json:"original_probe_live"`
+			Child bool   `json:"original_child_live"`
+			Clean bool   `json:"cleanup_verified"`
+		}{mode, true, probeLive, childLive, true})
+		if err != nil {
+			t.Fatal(err)
+		}
+		fmt.Println("EXECUTOR_CONTAINMENT " + string(data))
 	}
 }
 

@@ -36,6 +36,20 @@ def validate(text):
             raise ValueError('invalid boot timeval')
     if reboot['before'] == reboot['after']:
         raise ValueError('unchanged boot is not reboot evidence')
+    observations = re.findall(r'(?m)^EXECUTOR_CONTAINMENT (\{[^\n]+\})$', text)
+    if len(observations) != 3:
+        raise ValueError('all independently observed containment scenarios required')
+    modes = set()
+    keys = {'mode', 'singleton_reacquired', 'original_probe_live', 'original_child_live', 'cleanup_verified'}
+    for raw in observations:
+        observation = json.loads(raw)
+        if (set(observation) != keys or any(type(observation[k]) is not bool for k in keys - {'mode'}) or
+                observation['mode'] not in {'owner-death', 'stopped-guard', 'guard-first'} or observation['mode'] in modes or
+                not observation['singleton_reacquired'] or not observation['cleanup_verified']):
+            raise ValueError('invalid or duplicated containment observation')
+        modes.add(observation['mode'])
+        if observation['mode'] == 'guard-first' and not (observation['original_probe_live'] or observation['original_child_live']):
+            raise ValueError('guard-first observation does not establish counterexample')
     if re.findall(r'(?m)^EXECUTOR_RECOVERY_RESULT ([^\n]+)$', text) != ['before=pass', 'after=pass']:
         raise ValueError('complete native phase results required')
 
