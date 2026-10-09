@@ -3,11 +3,17 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
-The proposed [property runtime recovery/launch contract](../milestones/M2/property-runtime.md)
+The accepted [property runtime recovery/launch contract](../milestones/M2/property-runtime.md)
 defines the remaining path to an assembled writer on the two pinned disposable
 FreeBSD targets. No mechanism, runtime behavior, support target or new native
-result is qualified by this documentation change. All historical evidence remains
-bound to its actual source; startup clearance, shared global launch, root dispatch,
+result is qualified by design acceptance in PR 105. The
+[executor recovery spike](../research/M2/executor-recovery.md) passed seventeen
+actual cases and reboot/readback on both disposable targets, using the same
+prebuilt executable. Its [manifest](../testing/M2/executor-recovery-manifest.json)
+records research observations and teardown only: guard-first death left original
+descendants alive after singleton reacquisition. Active property-command/kernel
+interruption and a runtime recovery mechanism remain unqualified. All historical
+evidence remains bound to its actual source; startup clearance, shared global launch, root dispatch,
 independent workers and explicit hold resolution still need implementation and
 their listed gates.
 

@@ -25,12 +25,16 @@ TDD means Test Design Document; implementation uses failing behavioral tests fir
 
 ## Traceability and required gates
 
-The proposed [property runtime delivery gates](property-runtime.md) map
+The accepted [property runtime delivery gates](property-runtime.md) map
 M2-RUNTIME-001 through M2-RUNTIME-006 to the existing acceptance IDs below.
 They specify an executor-recovery experiment before choosing the missing native
 clearance mechanism, then integrated startup/launch/dispatch/recovery/UI tests.
-These are required future observations, not executed evidence or an M2 acceptance
-claim; the amendment remains pending maintainer review.
+PR 105 accepted the contract and bounded experiment. The
+[executed research](../../research/M2/executor-recovery.md) passed seventeen cases
+and actual reboot/readback on each target. This is partial observation evidence:
+active property-command/kernel interruption remains untested, and the concrete
+recovery mechanism and assembled runtime gates remain required. No complete
+acceptance row below is satisfied by this experiment.
 
 | Requirement | Test ID / observable assertion | Level/environment |
 |---|---|---|

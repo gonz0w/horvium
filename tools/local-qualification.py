@@ -19,6 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ROOT / 'tools'
 SUITES = {
+    'executor-recovery': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_RESEARCH_VM=1 sh tools/research/m2-executor-recovery.sh'),
     'action-peer': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_ACTION_PEER_VM=1 sh tools/bsd-action-peer-prebuilt.sh'),
     'foundation': ('git', 'sh tools/bsd-foundation-smoke.sh FreeBSD'),
     'research': ('python314', 'env HORVIUM_RESEARCH_VM=1 sh tools/research/m1-native.sh'),
@@ -33,6 +34,7 @@ SUITES = {
 }
 
 PREBUILT = {
+    'executor-recovery': ('pool-properties-native.test', './internal/host/freebsd', 'EXECUTOR_RECOVERY_PREBUILT_SHA256', 'HORVIUM_PROPERTY_VM=1 HORVIUM_RESEARCH_VM=1', 'research/m2-executor-recovery.sh'),
     'action-peer': ('action-peer-native.test', './internal/helper', 'ACTION_PEER_PREBUILT_SHA256', 'HORVIUM_ACTION_PEER_VM=1', 'bsd-action-peer-prebuilt.sh'),
     'job-status': ('storage-job-status-native.test', './cmd/horvium', 'STORAGE_JOB_STATUS_PREBUILT_SHA256', 'HORVIUM_STATUS_VM=1', 'bsd-storage-job-status-prebuilt.sh'),
     'state': ('state-native.test', './internal/storage', 'STATE_PREBUILT_SHA256', 'HORVIUM_STATE_VM=1', 'bsd-state-prebuilt.sh'),
@@ -58,7 +60,50 @@ def suite_command(suite, source_build=False, artifact_digest=None):
 
 
 def uses_device_fixture(suite):
-    return suite in ('devices', 'pool-properties')
+    return suite in ('devices', 'pool-properties', 'executor-recovery')
+
+
+def recovery_boot_identity(text):
+    try:
+        data = json.loads(text)
+        boot = [data['boot_sec'], data['boot_usec']]
+        if any(type(v) is not int for v in boot) or boot[0] < 1 or not 0 <= boot[1] < 1000000:
+            raise ValueError('invalid observed boot timeval')
+        return boot
+    except (KeyError, TypeError, json.JSONDecodeError) as error:
+        raise ValueError('missing observed boot timeval') from error
+
+
+def run_executor_recovery(ssh, guest, remote, log):
+    """Research-only two phases in one owned guest; no service or reboot retry."""
+    subprocess.run(ssh + [remote + ' before'], stdout=log, stderr=subprocess.STDOUT, check=True, timeout=420)
+    observer = 'cd /root/work && .tools/executor-observer 1'
+    before = subprocess.run(ssh + [observer], capture_output=True, text=True, check=True, timeout=15)
+    old_boot = recovery_boot_identity(before.stdout)
+    # SSH may disconnect before shutdown returns. Only a separately observed
+    # changed boot and successful readback phase can establish completion.
+    shutdown = subprocess.run(ssh + ['/sbin/shutdown -r now'], capture_output=True, timeout=30)
+    if shutdown.returncode not in (0, 255):
+        raise ValueError('owned guest reboot request failed')
+    deadline = time.monotonic() + 300
+    new_boot = old_boot
+    while time.monotonic() < deadline:
+        if guest.poll() is not None:
+            raise ValueError('owned QEMU exited during reboot')
+        try:
+            probe = subprocess.run(ssh + [observer], capture_output=True, text=True, timeout=15)
+            if probe.returncode == 0:
+                new_boot = recovery_boot_identity(probe.stdout)
+                if new_boot != old_boot:
+                    break
+        except subprocess.TimeoutExpired:
+            pass
+        time.sleep(2)
+    if new_boot == old_boot:
+        raise ValueError('owned guest reboot was not independently observed')
+    log.write('EXECUTOR_REBOOT ' + json.dumps({'before': old_boot, 'after': new_boot}, separators=(',', ':')) + '\n')
+    log.flush()
+    subprocess.run(ssh + [remote + ' after'], stdout=log, stderr=subprocess.STDOUT, check=True, timeout=420)
 
 
 def source_identity(source):
@@ -133,6 +178,11 @@ def stop_guest(process):
 def validate_result(suite, log, complete=False):
     if '--- FAIL:' in log or '\nFAIL\n' in log:
         raise ValueError('guest test failure')
+    if suite == 'executor-recovery':
+        load_tool('check-executor-recovery-evidence').validate(log)
+        if complete and log.count('DEVICE_FIXTURE_CLEANUP pass\n') != 1:
+            raise ValueError('executor research device teardown required')
+        return
     if suite == 'action-peer':
         load_tool('check-action-peer-evidence').validate(log)
         return
@@ -310,7 +360,10 @@ def main():
             remote = 'cd /root/work && ' + ('pkg install -y ' + packages + ' && ' if packages else '') + command
             print(f'Running {args.suite} on FreeBSD {args.release}; private logs: {directory}', flush=True)
             with (directory / 'qualification.log').open('w') as log:
-                subprocess.run(ssh + [remote], stdout=log, stderr=subprocess.STDOUT, check=True, timeout=7200)
+                if args.suite == 'executor-recovery':
+                    run_executor_recovery(ssh, guest, remote, log)
+                else:
+                    subprocess.run(ssh + [remote], stdout=log, stderr=subprocess.STDOUT, check=True, timeout=7200)
             validate_result(args.suite, (directory / 'qualification.log').read_text())
             if artifact_digest:
                 validate_prebuilt((directory / 'qualification.log').read_text(), artifact_digest, args.suite)

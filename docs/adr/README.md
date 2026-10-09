@@ -21,6 +21,7 @@ M2 decisions accepted by maintainer merge of
 - [0006 Storage ownership and reviewed plans](0006-storage-ownership-and-plans.md)
 - [0007 Durable storage job records](0007-durable-storage-jobs.md)
 
-Proposed implementation decision, pending maintainer acceptance:
+M2 runtime composition accepted by maintainer merge of
+[PR 105](https://github.com/gonz0w/horvium/pull/105) on 2026-10-08:
 
 - [0008 Property runtime recovery and launch gates](0008-property-runtime-recovery-gates.md)

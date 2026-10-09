@@ -1,15 +1,18 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; implementation accepted through PR 104; runtime recovery/launch amendment proposed; Actions disabled.
+Date: 2026-10-08. Status: implementing; design approved; prerequisites accepted through PR 104; runtime recovery/launch contract accepted in PR 105; executor research observations qualified; mechanism/runtime gates open; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
-The next delivery path is the proposed
+The next delivery path is the accepted
 [property runtime contract](property-runtime.md). It connects the accepted private
 components through startup recovery, a shared launch owner, root dispatch and
 independent workers before UI/CLI exposure. Its six ordered deliverables are not
 six promised PRs; actual native findings determine implementation boundaries.
-No runtime write or new qualification is enabled by the proposed amendment.
+The amendment enables no runtime write. The approved
+[original executor recovery experiment](../../research/M2/executor-recovery.md)
+has produced native observations; the next gate is a concrete reviewed mechanism
+decision under M2-RUNTIME-001.
 
 M1 automated work and the qualification record are merged. M1 is Validating;
 Safari/manual accessibility and explicit milestone acceptance remain pending.
@@ -1349,3 +1352,28 @@ manifests preserve their bytes. See the
 [source-bound record](../../testing/M2/property-binding-manifest.json).
 Root review/submission remain denied. Policy/session/backend/recovery/global
 launch and runtime/M2 acceptance remain open.
+
+## Original executor recovery research observations
+
+The PR 105 experiment passed both phase parents and all seventeen actual cases
+on disposable 15.1 and 14.5, including real guest reboot and independently
+observed retained job/policy bytes, lock inodes, quota and conservative holds.
+Signed executed source `de3f028a8e579ece4843bcca59a8cbeb06d4588f` used the same
+prebuilt Go executable on both targets. Guard-first death left both original
+descendants live after singleton reacquisition; lock ownership cannot substitute
+for executor quiescence. See the [findings](../../research/M2/executor-recovery.md)
+and [manifest](../../testing/M2/executor-recovery-manifest.json).
+
+All 144 tooling tests, baseline checks and fresh full portable review of eleven
+race packages/49 bounded fuzz targets passed. The initial stopped-guard fixture
+assertion failure and unstarted 14.5 SSH transfer failure remain unqualified;
+all associated teardown passed. All 695 owned sessions were stopped at evidence
+capture, Actions remained disabled, existing non-test product bytes and all eighty
+historical M2 manifests were preserved.
+
+Active property-command/kernel interruption, complete executor attribution,
+restored-state provenance and concrete runtime clearance remain unqualified.
+Fixture-only clearance and seeded enrollment do not implement operator bootstrap.
+M2-RUNTIME-001 still needs its reviewed mechanism decision before the remaining
+startup/launch/dispatch/recovery/UI/qualification gates can close. Runtime writes
+remain disabled; this does not accept M2 or a NAS release.
