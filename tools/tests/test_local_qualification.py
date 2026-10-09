@@ -223,12 +223,14 @@ class LocalQualificationTests(unittest.TestCase):
         result+='PROPERTY_PUBLICATION_CUTS_RESULT '+' '.join(c+'=pass' for c in sorted(checker.CUT_CASES))+'\n'
         result+='ENROLLMENT_PUBLICATION_RESULT '+' '.join(c+'=pass' for c in sorted(checker.ENROLLMENT_CASES))+'\n'
         result+='EXECUTION_CENSUS_RESULT '+' '.join(c+'=pass' for c in sorted(checker.EXECUTION_CENSUS_CASES))+'\n'
+        result+='EXECUTION_JOURNAL_STORE_RESULT '+' '.join(c+'=pass' for c in sorted(checker.JOURNAL_STORE_CASES))+'\n'
+        result+='EXECUTION_JOURNAL_CUTS_RESULT '+' '.join(c+'=pass' for c in sorted(checker.JOURNAL_CUT_CASES))+'\n'
         result+='STATE_SOFTUPDATES_RESULT '+' '.join(c+'=pass' for c in sorted(checker.SOFTUPDATES_CASES))+'\n'
         result+=''.join('STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=zfs softupdates=off')+' teardown=pass\n' for name in sorted(checker.BACKING_TESTS))
         passed=''.join('--- PASS: '+name+' (1.0s)\n' for name in checker.TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in checker.CODEC_SUBTEST_COUNTS.items() for i in range(count))
         self.assertIn('HORVIUM_STATE_VM=1',self.module.SUITES['state'][1])
         self.module.validate_result('state',passed+result)
-        for bad in ['',passed,result,passed+result.replace('process_reaped=pass',''),passed+result.replace('fixture_teardown=pass','fixture_teardown=fail'),passed+result.replace('PROPERTY_JOB_STORAGE_RESULT','MISSING_PROPERTY_RESULT'),passed+result.replace('JOB_RESERVATIONS_RESULT','MISSING_RESERVATIONS_RESULT'),passed+result.replace('PROPERTY_SUBMISSION_RESULT','MISSING_SUBMISSION_RESULT'),passed+result.replace('PROPERTY_PUBLICATION_CUTS_RESULT','MISSING_CUTS_RESULT'),passed+result.replace('ENROLLMENT_PUBLICATION_RESULT','MISSING_ENROLLMENT_RESULT'),passed+result.replace('EXECUTION_CENSUS_RESULT','MISSING_CENSUS_RESULT')]:
+        for bad in ['',passed,result,passed+result.replace('process_reaped=pass',''),passed+result.replace('fixture_teardown=pass','fixture_teardown=fail'),passed+result.replace('PROPERTY_JOB_STORAGE_RESULT','MISSING_PROPERTY_RESULT'),passed+result.replace('JOB_RESERVATIONS_RESULT','MISSING_RESERVATIONS_RESULT'),passed+result.replace('PROPERTY_SUBMISSION_RESULT','MISSING_SUBMISSION_RESULT'),passed+result.replace('PROPERTY_PUBLICATION_CUTS_RESULT','MISSING_CUTS_RESULT'),passed+result.replace('ENROLLMENT_PUBLICATION_RESULT','MISSING_ENROLLMENT_RESULT'),passed+result.replace('EXECUTION_CENSUS_RESULT','MISSING_CENSUS_RESULT'),passed+result.replace('EXECUTION_JOURNAL_STORE_RESULT','MISSING_JOURNAL_RESULT'),passed+result.replace('EXECUTION_JOURNAL_CUTS_RESULT','MISSING_JOURNAL_CUTS_RESULT')]:
             with self.assertRaises(ValueError):self.module.validate_result('state',bad)
 
     def test_state_selectors_match_the_required_freebsd_test_inventory(self):

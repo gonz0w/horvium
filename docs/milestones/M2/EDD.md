@@ -17,6 +17,16 @@ No supplied binding is provenance; persistent identities, independent journal
 persistence and the original startup/global owner remain required together with
 real publisher/backend integration before runtime use.
 
+The [private journal persistence prerequisite](../../testing/M2/execution-journal-persistence.md)
+uses the separate fixed `execution.json` namespace and the accepted native
+sync/rename pipeline. Require a pre-existing lock, exact original receipt and
+post-directory-sync whole-domain confirmation. Reopening is observation-only;
+every failed publication permanently retires that store. No decoded/persisted
+pending transition proves native completion or startup/global eligibility. File
+qualification passed on both disposable releases; see the
+[source-bound record](../../testing/M2/execution-journal-persistence-manifest.json).
+The assembled owner/provisioning and runtime gates remain open.
+
 ## Boundaries and authority
 
 The [property runtime amendment](property-runtime.md) and

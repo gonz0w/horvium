@@ -457,6 +457,14 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 		results = append(results, name+"=pass")
 	}
 	check("ufs_publication", lease.PublishOwnership(p, 0) == nil)
+	journalStore, journalFolder := nativeJournalFixture(t, mountpoint, "journal")
+	journal := executionJournalFixture()
+	check("ufs_journal_publication", journalStore.initialize(journal, nil) == nil)
+	journalBytes, _ := encodeExecutionJournal(journal)
+	journalNext := journal
+	journalNext.Generation++
+	journalNext.Owner.State = "closed"
+
 	// Actual unsafe POSIX access ACL preserves mode bits but must block replacement.
 	record := filepath.Join(path, "ownership-100.json")
 	f, e := os.Open(record)
@@ -539,6 +547,12 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 	}
 	var fullFS unix.Statfs_t
 	check("native_enospc", full && unix.Fstatfs(int(lease.directory.Fd()), &fullFS) == nil && fullFS.Bfree == 0)
+	check("journal_full_denial", journalStore.publish(journalNext, nil) != nil)
+	journalCurrent, journalErr := os.ReadFile(filepath.Join(journalFolder, executionJournalName))
+	check("journal_full_preservation", journalErr == nil && bytes.Equal(journalCurrent, journalBytes))
+	journalEntries, journalErr := os.ReadDir(journalFolder)
+	check("journal_full_cleanup", journalErr == nil && len(journalEntries) == 2)
+
 	submitted, duplicate, submitErr = lease.PublishPropertySubmission(submission)
 	_, submitMissing := os.Stat(submissionPath)
 	check("submission_full_denial", submitErr != nil && !duplicate && reflect.DeepEqual(submitted, PropertyJob{}) && os.IsNotExist(submitMissing))
@@ -564,7 +578,7 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 			t.Fatal("owned fragment cleanup failed")
 		}
 	}
-	if os.Remove(filler) != nil || lease.Close() != nil {
+	if os.Remove(filler) != nil || lease.Close() != nil || journalStore.close() != nil {
 		t.Fatal("full fixture reset failed")
 	}
 	run("/sbin/mount", "-u", "-o", "ro", mountpoint)
@@ -586,6 +600,11 @@ func TestNativeOwnershipPublishFilesystem(t *testing.T) {
 	}
 	var fs unix.Statfs_t
 	check("native_readonly", unix.Fstatfs(int(dir.Fd()), &fs) == nil && fs.Flags&unix.MNT_RDONLY != 0)
+	journalRO, journalErr := openExecutionJournalStore(journalFolder)
+	check("journal_readonly_open_denial", journalRO == nil && errors.Is(journalErr, ErrStateDirectory))
+	journalCurrent, journalErr = os.ReadFile(filepath.Join(journalFolder, executionJournalName))
+	check("journal_readonly_preservation", journalErr == nil && bytes.Equal(journalCurrent, journalBytes))
+
 	submitted, duplicate, submitErr = ro.PublishPropertySubmission(submission)
 	_, submitMissing = os.Stat(submissionPath)
 	check("submission_readonly_denial", errors.Is(submitErr, ErrStateDirectory) && !duplicate && reflect.DeepEqual(submitted, PropertyJob{}) && os.IsNotExist(submitMissing))

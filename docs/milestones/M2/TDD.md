@@ -41,6 +41,19 @@ credential-dropped inherited-descriptor refusal and preserved uncertainty.
 Run the affected state publication/crash corpus on both disposable releases;
 partial digest evidence cannot satisfy bootstrap/global/recovery acceptance.
 
+The [private persistence qualification](../../testing/M2/execution-journal-persistence.md)
+adds failing-first namespace/initial-state tests and actual file/ACL/durability
+controls. Require all 67 store, 74 process-death, eighteen added ACL, six full/
+read-only and one softupdates assertions alongside the affected state corpus.
+Original receipt loss/drift must retire writes, copied handles must leave the
+original intact and reopen must never reconstruct authority. These file gates
+cannot satisfy persistent binding, startup/global or active kernel-cut acceptance.
+All 72 selected parents/1,024 native markers/1,897 codec children passed on both
+disposable releases with the same final binary and verified teardown. Baseline/148
+tooling tests, eleven race packages and all 52 bounded fuzz targets passed in one
+fresh full portable review; see its
+[manifest](../../testing/M2/execution-journal-persistence-manifest.json).
+
 ## Traceability and required gates
 
 The accepted [property runtime delivery gates](property-runtime.md) map

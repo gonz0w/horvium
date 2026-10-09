@@ -19,6 +19,11 @@ const stateWriterName = "writer.lock"
 // No typed records or mutation authority are produced. Other root actors and
 // remote hosts are outside this local advisory lock's protection.
 func OpenStateDirectory(path string) (*StateDirectory, error) {
+	return openStateDirectory(path, true)
+}
+
+// The independent journal requires a pre-existing lock; opening never commissions it.
+func openStateDirectory(path string, create bool) (*StateDirectory, error) {
 	if os.Geteuid() != 0 || len(path) > 4096 || !filepath.IsAbs(path) || path == "/" || filepath.Clean(path) != path || !utf8.ValidString(path) || strings.IndexFunc(path, func(r rune) bool { return r < 32 || r == 127 }) >= 0 {
 		return nil, ErrStateDirectory
 	}
@@ -65,8 +70,13 @@ func OpenStateDirectory(path string) (*StateDirectory, error) {
 	lockFlags := unix.O_RDWR | unix.O_NOFOLLOW | unix.O_NONBLOCK | unix.O_CLOEXEC
 	// O_EXCL applies only to first creation. Existing files are opened without
 	// truncation and checked independently; they are never replaced after denial.
-	fd, err := unix.Openat(dir, stateWriterName, lockFlags|unix.O_CREAT|unix.O_EXCL, 0600)
-	if err == unix.EEXIST {
+	var fd int
+	if create {
+		fd, err = unix.Openat(dir, stateWriterName, lockFlags|unix.O_CREAT|unix.O_EXCL, 0600)
+		if err == unix.EEXIST {
+			fd, err = unix.Openat(dir, stateWriterName, lockFlags, 0)
+		}
+	} else {
 		fd, err = unix.Openat(dir, stateWriterName, lockFlags, 0)
 	}
 	if err != nil {

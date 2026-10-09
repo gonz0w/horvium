@@ -147,6 +147,12 @@ func TestNativeStateSoftUpdates(t *testing.T) {
 	}
 	var fs unix.Statfs_t
 	check("enabled", unix.Statfs(anchor, &fs) == nil && fs.Flags&unix.MNT_SOFTDEP != 0)
+	journalStore, journalFolder := nativeJournalFixture(t, anchor, "journal")
+	check("journal_denial", errors.Is(journalStore.initialize(executionJournalFixture(), nil), ErrStateDirectory))
+	if journalStore.close() != nil || os.RemoveAll(journalFolder) != nil {
+		t.Fatal("owned softupdates journal close")
+	}
+
 	s, err := OpenStateDirectory(anchor)
 	if err != nil {
 		t.Fatal(err)

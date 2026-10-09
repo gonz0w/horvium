@@ -122,6 +122,32 @@ func TestNativeStateACLProcess(t *testing.T) {
 	if c, digest, e := s.inspectExecutionCensus(executionJournalFixture().Binding, defaultStateCatalogLimits, nil); e != ErrStateDirectory || digest != "" || !reflect.DeepEqual(c, StateCatalog{}) {
 		t.Fatal("execution census bypassed kernel UID")
 	}
+	journalDir := os.NewFile(5, "journal-acl-directory")
+	journalWriter := os.NewFile(6, "journal-acl-writer")
+	defer journalDir.Close()
+	defer journalWriter.Close()
+	journalLease := &StateDirectory{directory: journalDir, writer: journalWriter}
+	journalLease.propertyOrigin = journalLease
+	journalStore := &executionJournalStore{lease: journalLease}
+	journalStore.original = journalStore
+	initialJournal := executionJournalFixture()
+	if got, e := journalStore.read(nil); e != ErrStateDirectory || got != (executionJournal{}) {
+		t.Fatal("journal read bypassed kernel UID")
+	}
+	if journalStore.initialize(initialJournal, nil) != ErrStateDirectory || journalStore.publish(initialJournal, nil) != ErrStateDirectory {
+		t.Fatal("journal publication bypassed kernel UID")
+	}
+	journalFD, e := unix.Openat(5, executionJournalName, unix.O_RDONLY|unix.O_NOFOLLOW, 0)
+	if e != nil {
+		t.Fatal("actual journal grant unavailable")
+	}
+	journalFile := os.NewFile(uintptr(journalFD), "journal-acl-record")
+	defer journalFile.Close()
+	journalBytes, e := io.ReadAll(io.LimitReader(journalFile, maxStateRecordBytes+1))
+	wantJournal, _ := encodeExecutionJournal(initialJournal)
+	if e != nil || !bytes.Equal(journalBytes, wantJournal) {
+		t.Fatal("actual journal grant bytes unavailable")
+	}
 	job := jobFixture()
 	if j, err := s.ReadJob(job.ID); err != ErrStateDirectory || j.ID != "" {
 		t.Fatal("ACL grant bypassed job reader kernel UID guard")
@@ -275,6 +301,7 @@ func TestNativeStateACL(t *testing.T) {
 			}
 			var fs unix.Statfs_t
 			check(prefix+"filesystem", unix.Statfs(mountpoint, &fs) == nil && unix.ByteSliceToString(fs.Fstypename[:]) == "ufs")
+			nativeJournalACLModel(t, mountpoint, model.kind, func(name string, ok bool) { check(prefix+name, ok) })
 			statePath := filepath.Join(mountpoint, "state")
 			if os.Mkdir(statePath, 0700) != nil {
 				t.Fatal("owned directory unavailable")
@@ -504,6 +531,26 @@ func TestNativeStateACL(t *testing.T) {
 			}
 			if model.kind == 4 {
 				setFixtureACL(t, dirFD, 4, namedFixtureACL(dirACL, 4, 1))
+				journalStore, journalPath := nativeJournalFixture(t, mountpoint, "journal-kernel")
+				if journalStore.initialize(executionJournalFixture(), nil) != nil {
+					t.Fatal("owned kernel journal")
+				}
+				journalRecord, e := os.OpenFile(filepath.Join(journalPath, executionJournalName), os.O_RDWR, 0)
+				if e != nil {
+					t.Fatal(e)
+				}
+				journalDirFD, journalRecordFD := int(journalStore.lease.directory.Fd()), int(journalRecord.Fd())
+				ja, e := readStateACL(journalDirFD, 4)
+				if e != nil {
+					t.Fatal(e)
+				}
+				jr, e := readStateACL(journalRecordFD, 4)
+				if e != nil {
+					t.Fatal(e)
+				}
+				setFixtureACL(t, journalDirFD, 4, namedFixtureACL(ja, 4, 1))
+				setFixtureACL(t, journalRecordFD, 4, namedFixtureACL(jr, 4, 8))
+
 				setFixtureACL(t, recordFD, 4, namedFixtureACL(recordACL, 4, 8))
 				setFixtureACL(t, jobFD, 4, namedFixtureACL(jobACL, 4, 8))
 				setFixtureACL(t, propertyFD, 4, namedFixtureACL(propertyACL, 4, 8))
@@ -537,10 +584,15 @@ func TestNativeStateACL(t *testing.T) {
 				}
 				cmd := exec.CommandContext(ctx, binary, "-test.run=^TestNativeStateACLProcess$")
 				cmd.Env = append(os.Environ(), "HORVIUM_ACL_PROCESS=grant")
-				cmd.ExtraFiles = []*os.File{s.directory, s.writer}
+				cmd.ExtraFiles = []*os.File{s.directory, s.writer, journalStore.lease.directory, journalStore.lease.writer}
 				cmd.SysProcAttr = &syscall.SysProcAttr{Credential: &syscall.Credential{Uid: 65534, Gid: 65534, Groups: []uint32{}}}
 				cmd.Stdout, cmd.Stderr = io.Discard, io.Discard
 				childErr := cmd.Run()
+				check("journal_kernel_grant", childErr == nil)
+				check("journal_kernel_uid_denial", childErr == nil)
+				if journalRecord.Close() != nil || journalStore.close() != nil {
+					t.Fatal("owned kernel journal close")
+				}
 				check("kernel_nfs4_grant", childErr == nil)
 				check("kernel_uid_denial", childErr == nil)
 				check("job_kernel_uid_denial", childErr == nil)

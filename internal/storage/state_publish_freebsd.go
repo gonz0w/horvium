@@ -25,6 +25,12 @@ func (s *StateDirectory) publishStateLocked(name, prefix string, data []byte, ex
 // exclude only this transaction's independently verified temporary. Submission
 // publication adds full baseline/reservation checks to each actual census.
 func (s *StateDirectory) publishStateInspectedLocked(name, prefix string, data []byte, expected uint64, validate func(StateCatalog) error, predecessor func() error, inspect func(string) (StateCatalog, error), wrap func(ownershipPublication) ownershipPublication) error {
+	return s.publishStateAcknowledgedLocked(name, prefix, data, expected, validate, predecessor, inspect, nil, wrap)
+}
+
+// Journal acknowledgement runs after the actual directory sync. Existing ledger
+// publishers retain their accepted behavior through a nil acknowledgement.
+func (s *StateDirectory) publishStateAcknowledgedLocked(name, prefix string, data []byte, expected uint64, validate func(StateCatalog) error, predecessor func() error, inspect func(string) (StateCatalog, error), acknowledge func(int, string, []byte, unix.Stat_t) error, wrap func(ownershipPublication) ownershipPublication) error {
 	if s.publicationBlocked {
 		return ErrStateUncertain
 	}
@@ -202,7 +208,13 @@ func (s *StateDirectory) publishStateInspectedLocked(name, prefix string, data [
 		if err := verifyPublishedState(dir, name, data, written); err != nil {
 			return err
 		}
-		return unix.Fsync(dir)
+		if err := unix.Fsync(dir); err != nil {
+			return err
+		}
+		if acknowledge != nil {
+			return acknowledge(dir, name, data, written)
+		}
+		return nil
 	}
 	if wrap != nil {
 		tx = wrap(tx)
