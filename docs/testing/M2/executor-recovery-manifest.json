@@ -1,0 +1,368 @@
+{
+  "schema": 1,
+  "qualification_scope": "research observations only; no runtime/recovery authority or M2 acceptance",
+  "source_commit": "de3f028a8e579ece4843bcca59a8cbeb06d4588f",
+  "base_commit": "6854b5554f1104c4fc2f2ee0b4e36dd80b962a9f",
+  "approval": {
+    "pr": "https://github.com/gonz0w/horvium/pull/105",
+    "merged_source": "6854b5554f1104c4fc2f2ee0b4e36dd80b962a9f"
+  },
+  "native_research_qualified": true,
+  "runtime_recovery_qualified": false,
+  "runtime_writes_enabled": false,
+  "cases": {
+    "before": [
+      "applying-cut",
+      "effect-cut",
+      "fixture-preflight",
+      "guard-first",
+      "normal-completion",
+      "owner-death",
+      "process-observer",
+      "queued-cut",
+      "retained-for-reboot",
+      "stopped-guard"
+    ],
+    "after": [
+      "exact-fixture-import",
+      "fixture-preservation",
+      "fixture-teardown",
+      "holds-and-no-authority",
+      "independent-properties",
+      "new-boot",
+      "unchanged-ledger"
+    ]
+  },
+  "native_runs": [
+    {
+      "release": "15.1",
+      "source_commit": "de3f028a8e579ece4843bcca59a8cbeb06d4588f",
+      "private_directory": ".tools/lab-runs/executor-recovery-15.1-y_kjg999",
+      "record_sha256": "13022529b5834edfa02ff5eef977542d527e42f208aae9d0e4c0a8b4a5e6413a",
+      "log_sha256": "5d4f7fa8c6eb7f00dbe46ec91c7dc4f61ffa3f8d88ab64a7d87a6b6273e614a2",
+      "qualified_research": true,
+      "native_cases": 17,
+      "native_parents": 2,
+      "actual_versions": [
+        "15.1-RELEASE-p3",
+        "15.1-RELEASE-p3",
+        "15.1-RELEASE-p3",
+        "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+        "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0"
+      ],
+      "native_cc_version": [
+        "FreeBSD clang version 19.1.7 (https://github.com/llvm/llvm-project.git llvmorg-19.1.7-0-gcd708029e0b2)"
+      ],
+      "observed_native_files_sha256": {
+        "/usr/bin/cc": "f409cf3a9253d302818bc1283320f5426df92c2c660711012fb25a054511fb62",
+        "/usr/bin/timeout": "099b29836a7efe1270842ffe093c971c7883e646293b8906b38652901ef1673d",
+        "/sbin/zfs": "ad02488cbfbc489be74b4e8674c85d1d856758756b2a0b9a477abbf6f7c6398a",
+        "/usr/include/sys/user.h": "1fdd9bba323e78e38560d7cf1a925e41c6ea8aaccdd67d1760814464e4aa78bc",
+        "/usr/include/sys/procctl.h": "9ee67e1eb8e1bf2ac52fe0278bcc32b1e6e89d7f4b22afd1f3760f0bfd9c0bd4"
+      },
+      "kinfo_proc_bytes": 1088,
+      "containment_observations": [
+        {
+          "mode": "owner-death",
+          "singleton_reacquired": true,
+          "original_probe_live": false,
+          "original_child_live": false,
+          "cleanup_verified": true
+        },
+        {
+          "mode": "stopped-guard",
+          "singleton_reacquired": true,
+          "original_probe_live": false,
+          "original_child_live": false,
+          "cleanup_verified": true
+        },
+        {
+          "mode": "guard-first",
+          "singleton_reacquired": true,
+          "original_probe_live": true,
+          "original_child_live": true,
+          "cleanup_verified": true
+        }
+      ],
+      "reboot": {
+        "independently_observed_changed_boot": true,
+        "marker_sha256": "7eff9a8c9b2bdd4ce7d31d25ed57867655c6c7b0df2a40f84741ce8c19dcdf82"
+      },
+      "prebuilt": {
+        "source_commit": "de3f028a8e579ece4843bcca59a8cbeb06d4588f",
+        "sha256": "bbff7f1540fa6ae382bc0dd192a2201b9cbb4c777558e96b906655f7e2a2acf7",
+        "bytes": 12084042,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+        "go_sum_sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "<owned-artifact>",
+          "./internal/host/freebsd"
+        ]
+      },
+      "lab_profile": {
+        "host_os": "Darwin",
+        "host_arch": "arm64",
+        "qemu_version": "QEMU emulator version 11.1.1",
+        "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144,
+        "accelerator": "tcg",
+        "image": {
+          "release": "15.1",
+          "builder": "2.2.8",
+          "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+          "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+          "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+          "cpu_model": "qemu64",
+          "cpu_count": 2,
+          "memory_mib": 6144
+        }
+      },
+      "elapsed_seconds": 331.411363,
+      "teardown": {
+        "host_teardown": true,
+        "base_preserved": true,
+        "runtime_preserved": true,
+        "device_backings_preserved": true,
+        "device_fixture_teardown": true,
+        "supervisor_fixture_cleanup": true,
+        "supervisor_group_cleaned": true
+      },
+      "supervisor": {
+        "private_session": ".tools/process-runs/6n0t94wt",
+        "record_sha256": "dfddcecd24167d65e5d4e2bd60e94dff507a9c42d64a86b20a377568988ba8c3",
+        "completed": true,
+        "group_cleaned": true,
+        "worker_returncode": 0
+      }
+    },
+    {
+      "release": "14.5",
+      "source_commit": "de3f028a8e579ece4843bcca59a8cbeb06d4588f",
+      "private_directory": ".tools/lab-runs/executor-recovery-14.5-vc6fb8v8",
+      "record_sha256": "36b69d82b3f9e9e630f2a05cb8916b67d8b5dbd47086d71ae97741155d581d69",
+      "log_sha256": "11c80635018f027c979025108662ab5e85733848bed919bbd95f4dd3251b3f42",
+      "qualified_research": true,
+      "native_cases": 17,
+      "native_parents": 2,
+      "actual_versions": [
+        "14.5-RELEASE",
+        "14.5-RELEASE",
+        "14.5-RELEASE",
+        "zfs-2.2.9-FreeBSD_g079ba86d7",
+        "zfs-kmod-2.2.9-FreeBSD_g079ba86d7"
+      ],
+      "native_cc_version": [
+        "FreeBSD clang version 21.1.8 (https://github.com/llvm/llvm-project.git llvmorg-21.1.8-0-g2078da43e25a)"
+      ],
+      "observed_native_files_sha256": {
+        "/usr/bin/cc": "99ecaa89da16330e5ea6c406949e01e7269a12e50f52bc46fe083879f301aeac",
+        "/usr/bin/timeout": "1dadc6aaf707f8e4f7a08ea28bfa0d53bf6890ca9ea7873a72e4a051e5f9aa10",
+        "/sbin/zfs": "56272b887f21fc31c3da98a9240c5c24ce817b9477fe160972c578cfce1a1f12",
+        "/usr/include/sys/user.h": "e925f2d735f12ae2c555a7e1cad14fc01ed28056b8f6844308d10827f207ef97",
+        "/usr/include/sys/procctl.h": "f3541e67a76c75ecccf3c274535be6e2e98d3dde4e0bb19d13cb7bb746d22c62"
+      },
+      "kinfo_proc_bytes": 1088,
+      "containment_observations": [
+        {
+          "mode": "owner-death",
+          "singleton_reacquired": true,
+          "original_probe_live": false,
+          "original_child_live": false,
+          "cleanup_verified": true
+        },
+        {
+          "mode": "stopped-guard",
+          "singleton_reacquired": true,
+          "original_probe_live": false,
+          "original_child_live": false,
+          "cleanup_verified": true
+        },
+        {
+          "mode": "guard-first",
+          "singleton_reacquired": true,
+          "original_probe_live": true,
+          "original_child_live": true,
+          "cleanup_verified": true
+        }
+      ],
+      "reboot": {
+        "independently_observed_changed_boot": true,
+        "marker_sha256": "94ecf2f3a9560c8e4211b2382a4c0bf6bd481f1363128c5ecae34ed2d339ba91"
+      },
+      "prebuilt": {
+        "source_commit": "de3f028a8e579ece4843bcca59a8cbeb06d4588f",
+        "sha256": "bbff7f1540fa6ae382bc0dd192a2201b9cbb4c777558e96b906655f7e2a2acf7",
+        "bytes": 12084042,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "52a5028443c0fc64ea8805184cc9ea4eed2ccf62d98476f84300e267372a6a82",
+        "go_sum_sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "<owned-artifact>",
+          "./internal/host/freebsd"
+        ]
+      },
+      "lab_profile": {
+        "host_os": "Darwin",
+        "host_arch": "arm64",
+        "qemu_version": "QEMU emulator version 11.1.1",
+        "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144,
+        "accelerator": "tcg",
+        "image": {
+          "release": "14.5",
+          "builder": "2.2.8",
+          "compressed_sha256": "cd90489bb7d94585016e177b9e3f0084f3410454dc0af19481f44ddd5aa45257",
+          "qcow2_sha256": "6593466e8d6341eaad95755973ab594222516dd75bcd99b18239b5047e5396f4",
+          "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+          "cpu_model": "qemu64",
+          "cpu_count": 2,
+          "memory_mib": 6144
+        }
+      },
+      "elapsed_seconds": 234.566926,
+      "teardown": {
+        "host_teardown": true,
+        "base_preserved": true,
+        "runtime_preserved": true,
+        "device_backings_preserved": true,
+        "device_fixture_teardown": true,
+        "supervisor_fixture_cleanup": true,
+        "supervisor_group_cleaned": true
+      },
+      "supervisor": {
+        "private_session": ".tools/process-runs/epu6gvzo",
+        "record_sha256": "5db29016ff989f5834334a79ac78a30ff4abd4c17a2974934ab1ec28922b9d53",
+        "completed": true,
+        "group_cleaned": true,
+        "worker_returncode": 0
+      }
+    }
+  ],
+  "failed_attempts": [
+    {
+      "source_commit": "e8fab57be9f7bf52d6066770db2b3a5c660323ed",
+      "private_directory": ".tools/lab-runs/executor-recovery-15.1-9o8qovd5",
+      "record_sha256": "5eda0b1a741c8f7b8b6d3be594693d9ae7bb472ca14cc44994feda2a0a378ec4",
+      "native_log_sha256": "20bf51d5124009026893f3bf6a8cd324d5ba4d92921905f69b6f7eba5b7e99a1",
+      "qualified": false,
+      "native_before_phase_executed": true,
+      "description": "initial fixture incorrectly required both stopped-guard descendants to remain alive; nine other before cases passed; no reboot phase ran",
+      "teardown": {
+        "host_teardown": true,
+        "base_preserved": true,
+        "runtime_preserved": true,
+        "device_backings_preserved": true,
+        "device_fixture_teardown": true,
+        "supervisor_fixture_cleanup": true,
+        "supervisor_group_cleaned": true
+      },
+      "supervisor_record_sha256": "d85c627e7dde87ba14360f23db5d91feb3de716b1a7c814349818cb9477556a3"
+    },
+    {
+      "source_commit": "de3f028a8e579ece4843bcca59a8cbeb06d4588f",
+      "private_directory": ".tools/lab-runs/executor-recovery-14.5-zzlfkaew",
+      "record_sha256": "2efa4fac6e57eaf439915619b8d65f1d13830d17229696b13941919db513e879",
+      "native_log_sha256": null,
+      "qualified": false,
+      "native_before_phase_executed": false,
+      "description": "fixture SSH source transfer failed before any native test ran; unchanged source and deadlines passed on a fresh retry",
+      "teardown": {
+        "host_teardown": true,
+        "base_preserved": true,
+        "runtime_preserved": true,
+        "device_backings_preserved": true,
+        "device_fixture_teardown": true,
+        "supervisor_fixture_cleanup": true,
+        "supervisor_group_cleaned": true
+      },
+      "supervisor_record_sha256": "752566f096a9eedb2e51a9ca418cb4eb7b54d7c47a815027dd4de91833b841a3"
+    }
+  ],
+  "test_first": {
+    "description": "working-tree runner red test preceded signed contract commit 47b4bf1; 21 tests, one fixture-selection assertion failure and one absent boot-parser error; not native evidence",
+    "red_log_sha256": "4663906d31a2e6d8709737e984a0d1e3f7909ebf46b02b6c120afb9c39571f80"
+  },
+  "portable_review": {
+    "private_record": ".tools/review-runs/ctz4xqii/result.json",
+    "source_commit": "de3f028a8e579ece4843bcca59a8cbeb06d4588f",
+    "base_commit": "6854b5554f1104c4fc2f2ee0b4e36dd80b962a9f",
+    "title": "test(research): qualify property executor recovery observations",
+    "record_sha256": "5ee0ba195343694d3addad1f5533b776863888facf110357a11707243697c954",
+    "checks_log_sha256": "dac45fadf743bfeb39dc273b5c0226b832be64b9a513408d2909c32baef7430b",
+    "deep_log_sha256": "1bac0ece273bf2405b9cdc7564d44eefd88f1b5ccdbae82276089f89a9a309bd",
+    "qualified": true,
+    "baseline_tooling_tests": 144,
+    "race_packages": 11,
+    "bounded_fuzz_targets": 49,
+    "deep_executed": true,
+    "supervisors_cleaned": true
+  },
+  "preservation": {
+    "historical_m2_manifests_byte_identical": 80,
+    "existing_non_test_product_files_byte_identical": 176,
+    "owned_sessions_stopped": 695,
+    "teardown_verified": true,
+    "github_actions_enabled": false
+  },
+  "primary_source_receipts": [
+    {
+      "release": "14.5",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/sys/user.h",
+      "sha256": "e925f2d735f12ae2c555a7e1cad14fc01ed28056b8f6844308d10827f207ef97",
+      "matches_observed_native_header": true
+    },
+    {
+      "release": "14.5",
+      "url": "https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/sys/procctl.h",
+      "sha256": "f3541e67a76c75ecccf3c274535be6e2e98d3dde4e0bb19d13cb7bb746d22c62",
+      "matches_observed_native_header": true
+    },
+    {
+      "release": "15.1",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/sys/user.h",
+      "sha256": "1fdd9bba323e78e38560d7cf1a925e41c6ea8aaccdd67d1760814464e4aa78bc",
+      "matches_observed_native_header": true
+    },
+    {
+      "release": "15.1",
+      "url": "https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/sys/procctl.h",
+      "sha256": "9ee67e1eb8e1bf2ac52fe0278bcc32b1e6e89d7f4b22afd1f3760f0bfd9c0bd4",
+      "matches_observed_native_header": true
+    }
+  ],
+  "remaining_gates": [
+    "active property-command/kernel interruption",
+    "PID reuse and clock changes",
+    "complete executor enumeration/attribution",
+    "restored-state provenance",
+    "qualified runtime native adapter and durable identity design",
+    "startup clearance and shared global launch owner",
+    "root dispatcher, independent workers and hold resolution",
+    "assembled operation/resource/client/browser gates and M2 acceptance"
+  ]
+}

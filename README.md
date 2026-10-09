@@ -20,8 +20,12 @@ The next M2 work follows the accepted
 [property runtime delivery contract](docs/milestones/M2/property-runtime.md):
 qualify executor recovery, integrate startup and global launch gates, then assemble
 root admission/workers and the shared HTML/CLI workflow. PR 105 accepted the
-contract and bounded experiment; the current runtime remains read-only. Completing this sequence covers
-the property workflow rather than the entire NAS release.
+contract and bounded experiment; the current runtime remains read-only. The
+[executor recovery observations](docs/research/M2/executor-recovery.md) passed on
+both disposable targets and demonstrated that singleton lock acquisition can
+coexist with a surviving original executor. Runtime clearance still needs a
+reviewed mechanism. Completing this sequence covers the property workflow rather
+than the entire NAS release.
 
 M2 storage lifecycle design is approved in [PR 20](https://github.com/gonz0w/horvium/pull/20): [PRD](docs/milestones/M2/PRD.md),
 [EDD](docs/milestones/M2/EDD.md), [Test Design](docs/milestones/M2/TDD.md) and

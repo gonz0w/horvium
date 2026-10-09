@@ -15,8 +15,11 @@ The [property runtime amendment](property-runtime.md) and
 [ADR 0008](../../adr/0008-property-runtime-recovery-gates.md) describe the
 remaining startup/recovery, global launch and independent worker composition.
 PR 105 accepted this composition contract and its bounded native experiment.
-The specific recovery mechanism still requires findings and followup design
-review; the current runtime remains read-only until implementation is qualified.
+The [executed research](../../research/M2/executor-recovery.md) supplies native
+observations on both disposable targets, including surviving original descendants
+after singleton reacquisition. The specific recovery mechanism still requires
+followup design review; the current runtime remains read-only until implementation
+is qualified.
 
 ```mermaid
 flowchart TD

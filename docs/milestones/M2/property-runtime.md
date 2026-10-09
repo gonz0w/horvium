@@ -1,6 +1,7 @@
 # Property runtime delivery and recovery contract
 
-Status: Accepted implementation amendment; experiment/implementation gates pending.
+Status: Accepted implementation amendment; research observations recorded;
+mechanism decision and implementation gates pending.
 Date: 2026-10-08. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19), [PRD](PRD.md),
 [approved EDD](EDD.md), [Test Design](TDD.md),
