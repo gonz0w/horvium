@@ -22,6 +22,15 @@ func TestExecutionBindingIdentity(t *testing.T) {
 	if e != nil || !validExecutionJournalBinding(b) {
 		t.Fatal("valid private metadata", e)
 	}
+	// Independently calculated fixed-width/length-prefixed wire vectors keep
+	// the private v1 format stable across implementations and restarts.
+	if b != (executionJournalBinding{id,
+		"ffb5b2d64f3a5b77e09e09ed4214c0d9b635a3780a6d109cbf35f583b012cd4a",
+		"287c67753f7c21881ad4dcfb8a85ed834f6d6f8f3148cb8e62932ff793cfde55",
+		"682b6327b3c024d8566febe96555a97a9e633ee17b3d002c8f5654f8545827dd",
+		"d36815249e22f00c79303770a90d4346caf3b703bc11eebe57ff85459efb19d9"}) {
+		t.Fatal("persistent binding wire drift")
+	}
 	again, e := makeExecutionBinding(id, l, j)
 	if e != nil || again != b {
 		t.Fatal("unstable binding", e)
@@ -113,11 +122,15 @@ func TestExecutionBindingDenials(t *testing.T) {
 			case "same-zfs-dataset":
 				jj.backing = ll.backing
 			case "same-directory":
+				ll.backing = executionBackingIdentity{kind: "ufs", ufs: [2]uint32{1, 2}}
 				jj = ll
 				jj.lock.inode++
+				jj.directory.generation++
 			case "same-lock":
+				ll.backing = executionBackingIdentity{kind: "ufs", ufs: [2]uint32{1, 2}}
 				jj = ll
 				jj.directory.inode++
+				jj.lock.generation++
 			case "same-role-object":
 				ll.lock = ll.directory
 			case "zero-inode":

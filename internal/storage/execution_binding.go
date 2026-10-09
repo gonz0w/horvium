@@ -28,8 +28,13 @@ func makeExecutionBinding(installation string, ledger, journal executionDomainId
 	if !validJournalIdentity(installation) || !ledger.valid() || !journal.valid() {
 		return executionJournalBinding{}, ErrStateRecord
 	}
-	if ledger.backing == journal.backing && (ledger.backing.kind == "zfs" || ledger.directory == journal.directory || ledger.lock == journal.lock) {
-		return executionJournalBinding{}, ErrDenied
+	if ledger.backing == journal.backing {
+		// Concurrent domains cannot alias an inode on the same filesystem,
+		// regardless of supplied generation/birth metadata. ZFS domains must
+		// have distinct datasets; this alone does not prove restore independence.
+		if ledger.backing.kind == "zfs" || ledger.directory.inode == journal.directory.inode || ledger.lock.inode == journal.lock.inode || ledger.directory.inode == journal.lock.inode || ledger.lock.inode == journal.directory.inode {
+			return executionJournalBinding{}, ErrDenied
+		}
 	}
 	return executionJournalBinding{
 		Installation:   installation,

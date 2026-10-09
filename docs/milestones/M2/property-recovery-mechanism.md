@@ -299,3 +299,10 @@ final object/namespace checks and publication uncertainty. Its supplied binding 
 metadata only. Persistent identity production, dual-domain journal persistence and
 original startup/global ownership still need implementation and native gates with
 the real backend/publishers before runtime use.
+
+
+The [private binding representation/object observer](../../testing/M2/execution-bindings.md)
+defines role-framed persistent identity metadata and original descriptor
+observations. Its supplied UFS/ZFS backing identities still require a guarded
+native producer and original descriptor correspondence; there is no commissioning,
+independent restore proof, registered dual-lease owner or startup/global clearance.

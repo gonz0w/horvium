@@ -76,7 +76,7 @@ SOFTUPDATES_CASES=['enabled', 'ownership_denial', 'job_denial', 'property_denial
 BACKING_TESTS=['TestNativeStateDirectory', 'TestNativeOwnershipRead', 'TestNativeOwnershipCatalog', 'TestNativeOwnershipCapacity', 'TestNativeJobRead', 'TestNativeJobPublication', 'TestNativePropertyJobStorage', 'TestNativeJobReservations', 'TestNativeStateCatalog', 'TestNativeOwnershipPublish', 'TestNativePropertySubmission', 'TestNativeStateSoftUpdates']
 TESTS += ['TestNativeStateSoftUpdates']
 RESULT += 'STATE_SOFTUPDATES_RESULT '+' '.join(c+'=pass' for c in SOFTUPDATES_CASES)+'\n'
-RESULT += ''.join('STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=zfs softupdates=off')+' teardown=pass\n' for name in BACKING_TESTS)
+RESULT += ''.join('STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=ufs softupdates=off' if name=='TestNativeExecutionBindingRemount' else ' filesystem=zfs softupdates=off')+' teardown=pass\n' for name in BACKING_TESTS)
 PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
 
 
@@ -270,7 +270,7 @@ class SubmissionEvidenceTests(unittest.TestCase):
     def test_exact_backing_capabilities_and_teardown_are_required(self):
         m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
         for name in BACKING_TESTS:
-            record='STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=zfs softupdates=off')+' teardown=pass\n'
+            record='STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=ufs softupdates=off' if name=='TestNativeExecutionBindingRemount' else ' filesystem=zfs softupdates=off')+' teardown=pass\n'
             for replacement in ['',record+record,record.replace('teardown=pass','teardown=fail'),record.replace('softupdates=off','softupdates=on') if name!='TestNativeStateSoftUpdates' else record.replace('filesystem=ufs','filesystem=zfs')]:
                 with self.subTest(name=name,replacement=replacement),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(record,replacement))
         for case in SOFTUPDATES_CASES:
