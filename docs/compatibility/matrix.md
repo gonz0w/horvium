@@ -45,7 +45,12 @@ independent restore scope. No journal file, restart or launch authority is added
 
 The [private native journal persistence prerequisite](../testing/M2/execution-journal-persistence.md)
 requires a pre-existing journal lock and preserves original file publication
-receipts. Its native qualification is pending. Reopening grants observation only;
+receipts. All 67 store/74 process-death assertions and the affected state corpus
+passed on both disposable FreeBSD/amd64 targets using the same final binary, with
+verified UFS/ZFS backing and teardown. The [manifest](../testing/M2/execution-journal-persistence-manifest.json)
+retains unqualified attempts, original sources and final portable checks
+(148 tooling tests, eleven race packages and 52 bounded fuzz targets).
+Reopening grants observation only;
 synthetic bindings and durable bytes cannot establish startup or launch authority.
 Existing file formats and public ledger opening behavior remain unchanged.
 

@@ -41,9 +41,9 @@ persistence/bindings and startup/global ownership
 remain required; this inspection cannot enable a writer.
 PR 110 accepted that native observation prerequisite. The next
 [private journal persistence component](docs/testing/M2/execution-journal-persistence.md)
-adds a pre-existing journal lease and original durable file receipts. Qualification
-is pending; persistent bindings, startup/global ownership and integrated runtime
-ordering remain required.
+adds a pre-existing journal lease and original durable file receipts. Both disposable FreeBSD targets passed the file and process-death gates with
+verified teardown. Persistent bindings, startup/global ownership and integrated
+runtime ordering remain required; maintainer review is pending.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 

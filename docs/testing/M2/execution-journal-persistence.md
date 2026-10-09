@@ -1,6 +1,6 @@
 # Native execution journal file persistence prerequisite
 
-Status: Implemented prerequisite; qualification and maintainer review pending; runtime denied.
+Status: Native file prerequisite qualified; awaiting maintainer review; runtime denied.
 Date: 2026-10-09. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -98,3 +98,37 @@ Historical manifests retain their original bytes and source. Verify owned guest,
 QEMU and development process teardown before reporting completion. Production
 support, persistent bindings, provisioning, restore/startup/global owner, integrated
 native effects and M2/release acceptance remain pending.
+
+## Executed evidence
+
+Signed source `86cd9556d92ce548398a5a7ac199144945c6dcf0` passed all 72 selected
+parents, 1,024 required native markers and 1,897 codec children on each pinned
+FreeBSD/amd64 guest (14.5-RELEASE and 15.1-RELEASE-p3). The identical prebuilt
+executable SHA-256
+`1cff727be48107f96dea73d7eae30c473b162d51a39ae30f7dd18162ec629205`
+ran on both. Actual UFS and ZFS journal backing and the affected state safety
+corpus passed, including strict file/namespace checks and verified unmount,
+owned process, guest, image and key teardown. These small metadata fixture times
+are not hardware, commercial-scale throughput or power-loss qualification.
+
+The signed denial stub failed seven new/extended parents while 65 other parents
+passed. Subsequent native runs exposed own-staging predecessor rejection and
+initialization after an observed journal disappeared; both were corrected. A UFS
+run then passed all 67 journal assertions but failed unmount because the injected
+cleanup-failure fixture retained an open descriptor. The fixture now closes that
+descriptor while retaining the orphan; production behavior is unchanged. Four
+failed native attempts remain unqualified with verified host teardown. The earlier
+15.1 pass retains its actual source and is superseded by the final same-binary
+pair. An owned portable deep run was stopped after native failure required a fix;
+its successful baseline is not full-review evidence. See all original sources,
+record/log hashes and outcomes in the
+[source-bound manifest](execution-journal-persistence-manifest.json).
+
+The final signed implementation passed baseline checks, all 148 tooling tests,
+eleven race packages and all 52 bounded fuzz targets in one fresh full portable
+review. All 84 historical M2 manifests and 141 protected existing native host/
+helper/command inputs retain their bytes. All 735 owned development sessions were
+stopped with verified teardown at evidence capture; GitHub Actions remain disabled.
+The final prose/evidence update reruns baseline checks and reuses the exact deep
+inputs. No persistent binding, commissioning, startup/global/native clearance,
+restoration or M2/release acceptance follows from file qualification.

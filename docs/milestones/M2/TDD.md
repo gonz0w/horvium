@@ -48,6 +48,11 @@ read-only and one softupdates assertions alongside the affected state corpus.
 Original receipt loss/drift must retire writes, copied handles must leave the
 original intact and reopen must never reconstruct authority. These file gates
 cannot satisfy persistent binding, startup/global or active kernel-cut acceptance.
+All 72 selected parents/1,024 native markers/1,897 codec children passed on both
+disposable releases with the same final binary and verified teardown. Baseline/148
+tooling tests, eleven race packages and all 52 bounded fuzz targets passed in one
+fresh full portable review; see its
+[manifest](../../testing/M2/execution-journal-persistence-manifest.json).
 
 ## Traceability and required gates
 

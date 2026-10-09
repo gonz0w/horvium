@@ -1,6 +1,6 @@
 # M2 review and implementation sequence
 
-Date: 2026-10-08. Status: implementing; design approved; prerequisites accepted through PR 104; runtime contract accepted in PR 105; research observations accepted in PR 106; mechanism accepted in PR 107; private supervisor accepted in PR 108; journal core qualified for review; runtime gates open; Actions disabled.
+Date: 2026-10-09. Status: implementing; design approved; prerequisites accepted through PR 104; runtime contract accepted in PR 105; research observations accepted in PR 106; mechanism accepted in PR 107; private supervisor accepted in PR 108; journal core accepted in PR 109; native census accepted in PR 110; journal file persistence qualified for review; runtime gates open; Actions disabled.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -1459,7 +1459,14 @@ PR 110 accepted the native census prerequisite at merged source
 [private persistence component](../../testing/M2/execution-journal-persistence.md)
 requires an already provisioned lock, separate bounded domain, original volatile
 publication receipt and post-directory-sync independent confirmation. File
-qualification is pending. Reopened bytes never reconstruct writer authority;
+qualification passed on both disposable releases at signed source
+`86cd9556d92ce548398a5a7ac199144945c6dcf0`, using the same final binary.
+All 72 selected parents, 1,024 required native assertions and 1,897 codec children
+passed with verified UFS/ZFS backing and teardown; see its
+[manifest](../../testing/M2/execution-journal-persistence-manifest.json). Baseline/148
+tooling tests, eleven race packages and all 52 bounded fuzz targets passed in one
+fresh full portable review. Maintainer review is pending.
+Reopened bytes never reconstruct writer authority;
 failed publication retires the original store. Persistent identity/commissioning,
 dual-lease registration, startup/global owner, restore/reconciliation and real
 backend/supervisor composition remain required before enabling runtime writes.
