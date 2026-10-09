@@ -8,7 +8,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
-	"syscall"
 	"testing"
 	"time"
 
@@ -17,6 +16,11 @@ import (
 
 func TestNativeExecutionBindings(t *testing.T) {
 	if os.Getenv("HORVIUM_BINDING_CHILD") == "1" {
+		// Start the exact owned binary through its root-private ancestors, then
+		// drop real kernel credentials before observing inherited descriptors.
+		if unix.Setgroups([]int{}) != nil || unix.Setgid(65534) != nil || unix.Setuid(65534) != nil || os.Geteuid() != 65534 {
+			t.Fatal("native child credential drop")
+		}
 		s := &StateDirectory{directory: os.NewFile(3, "inherited-directory"), writer: os.NewFile(4, "inherited-lock")}
 		s.propertyOrigin = s
 		defer s.Close()
@@ -120,9 +124,11 @@ func TestNativeExecutionBindings(t *testing.T) {
 	cmd := exec.CommandContext(ctx, executable, "-test.v", "-test.run=^TestNativeExecutionBindings$")
 	cmd.Env = append(os.Environ(), "HORVIUM_BINDING_CHILD=1")
 	cmd.ExtraFiles = []*os.File{s.directory, s.writer}
-	cmd.SysProcAttr = &syscall.SysProcAttr{Credential: &syscall.Credential{Uid: 65534, Gid: 65534}}
 	output, e := cmd.CombinedOutput()
 	cancel()
+	if e != nil {
+		t.Fatalf("owned inherited-descriptor child: %v %s", e, output)
+	}
 	check("inherited_kernel_uid_denial", e == nil && strings.Contains(string(output), "inherited-nonroot-denied"))
 	check("child_reaped", cmd.ProcessState != nil && cmd.ProcessState.Success())
 	if os.Rename(lockPath, filepath.Join(path, "old-lock")) != nil || os.WriteFile(lockPath, nil, 0600) != nil {
