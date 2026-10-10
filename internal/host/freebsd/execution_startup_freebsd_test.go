@@ -22,6 +22,7 @@ import (
 )
 
 var startupNativeCases = map[string][]string{
+	"touch":   {"closed_registered", "ledger_touch_denied", "drift_retired", "finish_denied", "release", "closed_history_preserved", "both_locks_released", "no_commission_after_failure"},
 	"clean":   {"nil_no_creation", "cancelled_no_creation", "closed_registered", "both_locks_held", "original_observation", "repeated_observation", "copied_denied", "decoded_denied", "cancelled_observe_no_effect", "other_startup_no_creation", "other_commission_no_creation", "finish_denied", "finished_observe_denied", "closed_both_locks_released", "closed_registration_not_reset", "closed_history_preserved"},
 	"active":  {"active_denied", "active_history_preserved", "both_locks_released", "no_commission_after_failure"},
 	"missing": {"missing_denied", "no_creation", "no_commission_after_failure", "no_retry_creation"},
@@ -166,12 +167,20 @@ func TestNativeExecutionStartupChild(t *testing.T) {
 				check("closed_registration_not_reset", q == nil && e != nil)
 				after, _ := readActivationFixture(t, j)
 				check("closed_history_preserved", bytes.Equal(before, after))
-			case "drift":
-				if os.WriteFile(filepath.Join(l, "unknown-startup-entry"), []byte("owned-startup-drift"), 0600) != nil {
+			case "drift", "touch":
+				if mode == "touch" {
+					if os.Chmod(l, 0700) != nil {
+						t.Fatal("owned same-inode directory touch")
+					}
+				} else if os.WriteFile(filepath.Join(l, "unknown-startup-entry"), []byte("owned-startup-drift"), 0600) != nil {
 					t.Fatal("owned drift")
 				}
 				got, e := o.Observe(ctx)
-				check("ledger_drift_denied", e != nil && got == (storage.ExecutionDomainsObservation{}))
+				name := "ledger_drift_denied"
+				if mode == "touch" {
+					name = "ledger_touch_denied"
+				}
+				check(name, e != nil && got == (storage.ExecutionDomainsObservation{}))
 				got, e = o.Observe(ctx)
 				check("drift_retired", e != nil && got == (storage.ExecutionDomainsObservation{}))
 				check("finish_denied", o.FinishIdle(ctx) != nil)
@@ -413,7 +422,7 @@ func nativeExecutionStartupFixture(t *testing.T, ctx context.Context, kind strin
 		t.Fatal("ordinary metadata close")
 	}
 	pair = nil
-	for _, mode := range []string{"clean", "active", "missing", "drift", "uid", "boot", "system", "late"} {
+	for _, mode := range []string{"clean", "touch", "active", "missing", "drift", "uid", "boot", "system", "late"} {
 		cj, cl := j, l
 		if mode == "active" {
 			cj, cl = ja, la

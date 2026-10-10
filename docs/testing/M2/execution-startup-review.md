@@ -12,7 +12,7 @@ M2-RUNTIME-002/M2-RECOVERY-001 require fresh original startup inspection before 
 new incarnation can be published. This component reviews an existing closed
 incarnation under both original journal-first leases, using fixed actual native
 backing/system and exact raw boot producers. It retains the exact journal file
-receipt, binding and complete census for repeated inspection. Closed bytes alone,
+receipt, original directory/lock metadata, binding and complete census for repeated inspection. Closed bytes alone,
 ordinary metadata observation, matching hashes or a caller declaration cannot
 reconstruct this original review.
 
@@ -42,13 +42,13 @@ journal format, publication receipt or private persistent protocol is introduced
 T3 uses a dedicated `execution-startup` suite, retaining the existing runner's
 snapshot/device ownership and supervised cleanup. Two independently owned UFS/ZFS
 parents use actual initial activation/unused close to seed closed history and a
-separate unclean active history. Eight exact-binary children per parent use fresh
+separate unclean active history. Nine exact-binary children per parent use fresh
 production process registries, never fixture resets: clean, active, missing,
-ledger drift, actual UID drop with inherited root descriptors, and boot/system/
+ledger drift, same-inode touch between observations, actual UID drop with inherited root descriptors, and boot/system/
 late-directory fault transfers around actual native producers. Parent checks wait
 results, both released locks, exact retained history, disjoint declared metadata
 backing, original data sentinel and complete filesystem/device/mount teardown.
-Require all 82 named controls per profile and reject incomplete/old host evidence.
+Require all 93 named controls per profile and reject incomplete/old host evidence.
 Existing native suites, selectors and historical manifests remain separate.
 
 This qualifies read-only closed startup review only. Durable new-incarnation
