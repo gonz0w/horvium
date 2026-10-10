@@ -1472,3 +1472,12 @@ Reopened bytes never reconstruct writer authority;
 failed publication retires the original store. Persistent identity/commissioning,
 dual-lease registration, startup/global owner, restore/reconciliation and real
 backend/supervisor composition remain required before enabling runtime writes.
+
+## Retained-policy startup design pickup
+
+[Issue 288](https://github.com/gonz0w/horvium/issues/288) owns the next startup
+design pickup. The [proposed amendment](retained-policy-startup.md) defines one
+policy-only clean restart outcome and observable failing-first/native criteria.
+It does not change the accepted empty-only activation/retirement consumers or
+qualify retained jobs, worker shutdown, recovery, launch or runtime writes. Live
+review status and implementation dependencies belong to the GitHub issue/gate.
