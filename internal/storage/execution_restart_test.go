@@ -241,3 +241,45 @@ func TestExecutionRestartOriginalLifecycle(t *testing.T) {
 		t.Fatal("release")
 	}
 }
+func TestExecutionRestartTransferExclusion(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	entered, proceed := make(chan struct{}), make(chan struct{})
+	oldRelease, liveRelease := 0, 0
+	a := restartActivationFixture(func(context.Context) (ExecutionDomainsObservation, error) { return ExecutionDomainsObservation{}, nil }, func() error { liveRelease++; return nil })
+	r := startupReviewFixture(func(context.Context) (ExecutionDomainsObservation, error) {
+		t.Fatal("consumed review read")
+		return ExecutionDomainsObservation{}, nil
+	}, func() error { oldRelease++; return nil })
+	r.activate = func(context.Context) (*ExecutionRestartActivation, error) { close(entered); <-proceed; return a, nil }
+	transfer := make(chan error, 1)
+	go func() {
+		v, e := r.Activate(ctx)
+		if v != a && e == nil {
+			e = ErrDenied
+		}
+		transfer <- e
+	}()
+	select {
+	case <-entered:
+	case <-ctx.Done():
+		t.Fatal("transfer not entered")
+	}
+	closeResult := make(chan error, 1)
+	go func() { closeResult <- r.Close() }()
+	select {
+	case <-closeResult:
+		t.Fatal("release crossed transfer")
+	default:
+	}
+	close(proceed)
+	if e := <-transfer; e != nil {
+		t.Fatal(e)
+	}
+	if e := <-closeResult; e == nil || oldRelease != 0 || liveRelease != 0 {
+		t.Fatal("old release revoked transfer")
+	}
+	if a.Close() != nil || liveRelease != 1 {
+		t.Fatal("live release")
+	}
+}

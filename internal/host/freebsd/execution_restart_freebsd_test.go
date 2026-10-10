@@ -136,8 +136,8 @@ func TestClosedStartupOwnerChild(t *testing.T) {
 					name string
 					c    context.Context
 				}{{"nil", nil}, {"cancelled", cancelled}} {
-					q, e := activateNativeClosedExecutionOwner(x.c, j, l)
-					check(x.name+"_no_creation", q == nil && e != nil)
+					q, e := activateNativeClosedExecutionOwner(x.c, j+"-"+x.name, l+"-"+x.name)
+					check(x.name+"_no_creation", q == nil && e != nil && !activationPathExists(j+"-"+x.name) && !activationPathExists(l+"-"+x.name))
 				}
 			}
 			o, e := activateNativeClosedExecutionOwner(ctx, j, l)

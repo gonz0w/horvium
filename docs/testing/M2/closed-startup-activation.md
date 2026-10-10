@@ -36,12 +36,12 @@ HTTP/CLI route, configuration or service is enabled.
 
 T1/T2 require exact immutable successor framing and eleven negative candidates;
 original review consumption/copy/decoded/context/transfer rules; seven failed or
-uncertain transfer/lifecycle variants; original observation/release exclusion.
+uncertain transfer/lifecycle variants; original observation/release and review-transfer/release exclusion.
 Ordinary active successors retain their accepted framing and cannot resurrect a
 closed owner. Old review tests remain required.
 
 T3 publication qualification uses three exact storage parents: actual UFS and ZFS
-publication with 96 controls each, and 24 UFS process-cut controls. Nineteen error
+publication with 122 controls each, and 24 UFS process-cut controls. Twenty-three error
 variants surround entropy, original preconditions, every file pipeline stage,
 acknowledgement drift and post-publication boot/system/object/context checks.
 Four exact-binary children pause after real file sync, real directory sync, full

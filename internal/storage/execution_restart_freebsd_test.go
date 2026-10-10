@@ -6,11 +6,13 @@ import (
 	"bytes"
 	"context"
 	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"golang.org/x/sys/unix"
 	"io"
+	"math"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -21,7 +23,7 @@ import (
 	"time"
 )
 
-var restartFaults = []string{"entropy-short", "old-identity", "installation-identity", "boot-before", "system-before", "ledger-before", "journal-before", "write", "syncFile", "closeFile", "verify", "rename", "syncDirectory", "after-sync-drift", "boot-after", "system-after", "journal-after", "ledger-after", "cancel-after"}
+var restartFaults = []string{"entropy-short", "old-identity", "installation-identity", "boot-before", "system-before", "ledger-before", "journal-before", "write", "syncFile", "closeFile", "verify", "rename", "syncDirectory", "after-sync-drift", "boot-after", "system-after", "journal-after", "ledger-after", "cancel-after", "lost-ack", "after-sync-directory", "after-sync-ledger", "after-sync-lock"}
 
 func restartStorageGuard(t *testing.T) {
 	t.Helper()
@@ -75,6 +77,11 @@ func nativeClosedStartupPublication(t *testing.T, kind string) {
 	j, l, before := restartSeed(t, f, "positive")
 	r, n, e := reviewExecutionStartup(ctx, j, l, f.read, sys, activationBoot)
 	check("original_closed_review", e == nil && r != nil && n != nil && !n.pair.native.journal.acknowledged)
+	defer func() {
+		if r != nil {
+			_ = r.Close()
+		}
+	}()
 	old, _ := decodeExecutionJournal(before)
 	ledgerBefore := freshNamespaceSnapshot(t, l)
 	var phases []string
@@ -99,6 +106,9 @@ func nativeClosedStartupPublication(t *testing.T, kind string) {
 		})
 	}
 	a, e := r.Activate(ctx)
+	if a != nil {
+		defer a.Close()
+	}
 	check("original_active_receipt", e == nil && a != nil && n.pair.native.journal.acknowledged)
 	check("real_sync_order", reflect.DeepEqual(phases, []string{"file", "directory"}))
 	data, e := os.ReadFile(filepath.Join(j, executionJournalName))
@@ -144,6 +154,7 @@ func nativeClosedStartupPublication(t *testing.T, kind string) {
 		if e != nil {
 			t.Fatal(e)
 		}
+		defer func() { _ = r.Close() }()
 		entropy := io.Reader(rand.Reader)
 		record, _ := decodeExecutionJournal(b)
 		if mode == "entropy-short" {
@@ -154,9 +165,9 @@ func nativeClosedStartupPublication(t *testing.T, kind string) {
 			if mode == "installation-identity" {
 				identity = record.Binding.Installation
 			}
-			raw := make([]byte, 16)
-			for i := range raw {
-				fmt.Sscanf(identity[i*2:i*2+2], "%02x", &raw[i])
+			raw, e := hex.DecodeString(identity)
+			if e != nil {
+				t.Fatal(e)
 			}
 			entropy = bytes.NewReader(raw)
 		}
@@ -212,6 +223,23 @@ func nativeClosedStartupPublication(t *testing.T, kind string) {
 				tx.rename = func() error { return ErrDenied }
 			case "syncDirectory":
 				tx.syncDirectory = func() error { return ErrDenied }
+			case "lost-ack", "after-sync-directory", "after-sync-ledger", "after-sync-lock":
+				old := tx.syncDirectory
+				tx.syncDirectory = func() error {
+					if e := old(); e != nil {
+						return e
+					}
+					switch mode {
+					case "lost-ack":
+						return ErrDenied
+					case "after-sync-directory":
+						return os.Chmod(j, 0700)
+					case "after-sync-ledger":
+						return os.Chmod(l, 0700)
+					default:
+						return os.Chmod(filepath.Join(j, stateWriterName), 0600)
+					}
+				}
 			case "after-sync-drift":
 				old := tx.syncDirectory
 				tx.syncDirectory = func() error {
@@ -232,6 +260,47 @@ func nativeClosedStartupPublication(t *testing.T, kind string) {
 		check(mode+"_retry_preserves", e != nil && reflect.DeepEqual(bj, freshNamespaceSnapshot(t, j)) && reflect.DeepEqual(bl, freshNamespaceSnapshot(t, l)))
 		check(mode+"_release", r.Close() == nil && restartLocksReleased(t, j, l))
 		cancel()
+	}
+
+	for _, mode := range []string{"nonempty", "no-close-capacity"} {
+		j, l, b := restartSeed(t, f, "candidate-"+mode)
+		record, e := decodeExecutionJournal(b)
+		if e != nil {
+			t.Fatal(e)
+		}
+		if mode == "nonempty" {
+			state, e := openStateDirectory(l, false)
+			if e != nil {
+				t.Fatal(e)
+			}
+			if state.PublishOwnership(journaledPolicyFixture(t), 0) != nil {
+				_ = state.Close()
+				t.Fatal("controlled ownership fixture")
+			}
+			_, census, e := state.inspectExecutionCensus(record.Binding, defaultStateCatalogLimits, nil)
+			_ = state.Close()
+			if e != nil {
+				t.Fatal(e)
+			}
+			record.Census = census
+		} else {
+			record.Generation = math.MaxUint64 - 1
+		}
+		data, e := encodeExecutionJournal(record)
+		if e != nil || os.WriteFile(filepath.Join(j, executionJournalName), data, 0600) != nil {
+			t.Fatal("controlled closed fixture")
+		}
+		r, n, e := reviewExecutionStartup(ctx, j, l, f.read, sys, activationBoot)
+		check(mode+"_review_metadata_only", e == nil && r != nil)
+		if r != nil {
+			defer r.Close()
+		}
+		bj, bl := freshNamespaceSnapshot(t, j), freshNamespaceSnapshot(t, l)
+		a, e := r.Activate(ctx)
+		check(mode+"_activation_denied", e != nil && a == nil)
+		check(mode+"_retired", n.pair.blocked && n.pair.native.journal.failed && n.pair.native.ledger.publicationBlocked)
+		check(mode+"_history_preserved", reflect.DeepEqual(bj, freshNamespaceSnapshot(t, j)) && reflect.DeepEqual(bl, freshNamespaceSnapshot(t, l)))
+		check(mode+"_release", r.Close() == nil && restartLocksReleased(t, j, l))
 	}
 	t.Log("CLOSED_STARTUP_PUBLICATION_" + strings.ToUpper(kind) + "_RESULT " + strings.Join(seen, " "))
 }
