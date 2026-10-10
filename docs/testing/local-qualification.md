@@ -534,3 +534,17 @@ adds native UFS/ZFS domain system checks using the five declared snapshot disks.
 It requires complete guest fixture and host device preservation/removal evidence.
 Run both pinned guests serially and retain both affected `state` corpora; see
 [execution-domain system qualification](M2/execution-system-backing.md).
+
+
+The separate focused `execution-startup` suite cross-builds the same FreeBSD host
+package and selects exactly two new UFS/ZFS original closed-startup parents.
+Run both pinned releases serially. Require all 93 controls per filesystem, nine
+normally waited exact-binary children per filesystem, exact compiled artifact
+checksum and independent domain/data/device/host/supervisor teardown. Each parent
+has an eight-minute deadline; the two-parent process has eighteen minutes. No
+guest development packages or host services are installed. The retained
+`execution-system` and `state` suites/checkers/scripts are unchanged and remain
+bound to their prior actual source; they are not selected again for this isolated
+read-only path. Old system evidence cannot qualify the new gate. See the
+[contract and executed scope](M2/execution-startup-review.md); new-incarnation
+publication, nonempty history and unclean recovery remain separate requirements.

@@ -39,9 +39,13 @@ was accepted in PR 123 after both pinned host and affected state safety gates.
 The [original unused activation close](../testing/M2/initial-activation-retirement.md)
 was accepted in PR 124 after both pinned native targets and local review.
 The [registered fresh commissioning owner](../testing/M2/commissioned-execution-owner.md)
-passed both pinned host gates and local review, and awaits maintainer review.
+was accepted in PR 125 after both pinned host gates and local review.
 It permits one commissioning attempt per helper process before provisioning;
 failure or close cannot start another ledger lifetime in that process.
+The [original closed-incarnation startup review](../testing/M2/execution-startup-review.md)
+passed both pinned native targets with 186 controls each and awaits maintainer review.
+It retains original journal and directory/lock/mount observations under the same
+process registration, without publishing a new active incarnation.
 Configured startup/restart, journaled publication integration, global native launch,
 worker draining, backend/supervisor assembly and remaining property runtime
 acceptance precede write enablement; M2 remains Implementing.

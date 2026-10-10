@@ -418,3 +418,25 @@ startup/restart, journaled publication consumption, the global native launch per
 worker drain and backend/supervisor assembly remain open. The process registry
 cannot fence another trusted root process or establish persisted restart provenance.
 Runtime writes remain denied.
+
+
+## Original closed-incarnation startup review prerequisite
+
+The [original startup review](../../testing/M2/execution-startup-review.md) acquires
+both existing original leases journal-first and reserves the same single-use root
+helper registration before opening either namespace. Review requires a valid
+closed journal without pending metadata/native work or a restore barrier, exact
+native binding and complete ledger census, bounded generation, independent
+restore scope, repeated current boot identity and complete actual system/backing
+facts. Retain the original journal file receipt and full directory/lock/mount
+snapshots across every observation; copied or reconstructed values cannot supply
+this review. Any entered error retires observation, with explicit original release.
+
+This component creates or changes no persistent metadata. Prior closed owner boot
+is historical; current kernel boot must remain consistent. Active history always
+denies, even with a different boot. Both pinned native targets passed read-only
+review, same-inode drift, credential loss and injected native transfer failures
+with complete teardown. No old publication acknowledgement is reconstructed and
+no new active incarnation is published. Configured startup assembly, nonempty
+history, explicit unclean/changed-boot/restore recovery and global native launch
+still require their own qualified consumers. The current runtime remains denied.

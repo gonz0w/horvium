@@ -1198,3 +1198,42 @@ Warm disposable UFS/ZFS observations do not qualify hardware power loss, active
 kernel interruption, throughput, commercial scale or other hardware. Runtime
 writes, services and GitHub Actions remain disabled; owned VM/supervisor/fixture
 teardown is verified and compiled fixture artifacts were removed.
+
+
+The [original closed-incarnation startup review](../testing/M2/execution-startup-review.md)
+reviews existing closed journal/ledger history under both original leases and the
+same single-use root helper registration as commissioning. It retains exact
+journal bytes/metadata and full directory/lock/mount snapshots across the lifetime,
+using actual fixed native boot/backing/system producers. Active, pending, disarmed,
+missing, inconsistent or drifted history denies without repair or publication.
+Failure/release cannot reset registration or reconstruct an old acknowledgement.
+
+Signed source `c824a96eb58e5244fc2d61548900ab62aa89f935` passed the separate new
+suite on pinned disposable FreeBSD/amd64 15.1 and 14.5: two native UFS/ZFS parents,
+93 controls per filesystem and 186 per target. Nine exact-binary children per
+filesystem use separate production registries without resets and are waited
+normally. Parent checks independently preserve exact history/data, probe released
+locks and verify domain/data/backing teardown. Actual UID loss uses inherited root
+descriptors; boot/system/late-directory cases are injected transfers around actual
+native reads, not actual reboot evidence. One compiled artifact ran on both
+releases. Eight-minute parent and eighteen-minute two-parent deadlines apply.
+
+Four portable parents, fourteen candidate denials, three review failure variants
+and four evidence-consumer tests passed. Local baseline review passed 180 tooling
+tests, eleven race packages and all 54 bounded fuzz targets. The native denial-stub
+run and a second reproduced same-inode touch regression both failed as expected on
+UFS/ZFS before the fixes; both records remain unqualified with complete host cleanup.
+See the [source-bound manifest](../testing/M2/execution-startup-review-manifest.json).
+
+All 440 original Go inputs and 103 historical manifests (98 M2) retain exact bytes.
+The shared runner adds only this separate suite/fixture selection/validation; old
+suite values, validation branches and other helpers preserve semantics. Existing
+state/system checkers, scripts, fixtures and product implementations are unchanged;
+their prior evidence stays bound to its actual executed source, without a claim
+of a redundant rerun. This qualifies empty warm closed startup review only.
+Durable new active publication, configured startup, retained nonempty histories,
+unclean/changed-boot/restore recovery, journaled mutation consumption, global native
+launch and worker/supervisor/backend assembly remain pending. Actual reboot,
+active kernel interruption, hardware power loss, throughput and commercial scale
+are not qualified. Runtime writes, services and GitHub Actions remain disabled;
+owned fixture/VM/supervisor teardown is verified and compiled artifacts removed.
