@@ -106,8 +106,8 @@ a fresh full portable plan. All 92 historical M2 manifests and 413 original Go
 inputs retained their exact bytes. The two existing Go changes are the joint-owner
 scope comment and the original journal publisher's already-locked entry point;
 its initializer, public observation opener and runtime consumers retain their
-accepted behavior. The final prose/evidence commit reruns baseline checks and
-reuses only exact passing deep inputs.
+accepted behavior. The final prose/evidence commit reruns clean baseline checks;
+deep-input reuse requires an exact source and environment match.
 
 The test-first native source `72afe13cbbe4eb1fae50cea9158d5ab4ed9e439d` deliberately
 returned denial from the new transaction. Only the three new native parents failed,
