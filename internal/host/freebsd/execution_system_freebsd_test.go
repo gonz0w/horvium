@@ -172,7 +172,11 @@ func nativeExecutionSystemFixture(t *testing.T, ctx context.Context, kind string
 		}
 		pair, e = openNativeExecutionDomains(ctx, jp, lp)
 		if e != nil {
-			t.Fatal("pair open", e)
+			last := "initial"
+			if len(markers) > 0 {
+				last = markers[len(markers)-1]
+			}
+			t.Fatal("pair open after", last, e)
 		}
 	}
 	open()
@@ -353,7 +357,7 @@ func nativeExecutionSystemFixture(t *testing.T, ctx context.Context, kind string
 		}
 		pair = nil
 		for _, role := range []string{"journal", "ledger"} {
-			outside, e := os.MkdirTemp("", "horvium-execution-data-")
+			outside, e := os.MkdirTemp("/", "horvium-execution-data-")
 			if e != nil {
 				t.Fatal(e)
 			}
