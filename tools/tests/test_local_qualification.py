@@ -230,7 +230,7 @@ class LocalQualificationTests(unittest.TestCase):
         result+='EXECUTION_RESTORE_ZFS_RESULT '+' '.join(c+'=pass' for c in sorted(checker.RESTORE_CASES))+'\n'
         result+='JOINT_EXECUTION_JOURNAL_RESULT '+' '.join(c+'=pass' for c in sorted(checker.JOINT_JOURNAL_CASES))+'\n'
         result+='FRESH_ACTIVATION_UFS_RESULT '+' '.join(c+'=pass' for c in sorted(checker.FRESH_ACTIVATION_CASES))+'\n'
-        result+='FRESH_ACTIVATION_ZFS_RESULT '+' '.join(c+'=pass' for c in sorted(checker.FRESH_ACTIVATION_CASES))+'\n'
+        result+='FRESH_ACTIVATION_ZFS_RESULT '+' '.join(c+'=pass' for c in sorted(checker.FRESH_ACTIVATION_ZFS_CASES))+'\n'
         result+='FRESH_ACTIVATION_CUTS_RESULT '+' '.join(c+'=pass' for c in sorted(checker.FRESH_ACTIVATION_CUT_CASES))+'\n'
         result+='FRESH_EXECUTION_UFS_RESULT '+' '.join(c+'=pass' for c in sorted(checker.FRESH_EXECUTION_CASES))+'\n'
         result+='FRESH_EXECUTION_ZFS_RESULT '+' '.join(c+'=pass' for c in sorted(checker.FRESH_EXECUTION_CASES))+'\n'

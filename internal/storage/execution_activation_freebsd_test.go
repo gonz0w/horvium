@@ -128,12 +128,12 @@ func nativeFreshJournalActivation(t *testing.T, kind string) {
 		q, e := p.activate(ctx, f.read, system, activationBoot, rand.Reader, nil)
 		return q == nil && errors.Is(e, ErrDenied)
 	}())
-	got, e := a.observe(ctx, f.read, system, activationBoot)
+	got, e := a.observe(ctx)
 	check("original_observation", e == nil && got.journal == a.journal && got.systemObserved)
-	got, e = a.observe(ctx, f.read, system, activationBoot)
+	got, e = a.observe(ctx)
 	check("repeated_observation", e == nil && got.journal == a.journal)
 	copied := &freshExecutionActivation{original: a, fresh: p, journal: a.journal}
-	got, e = copied.observe(ctx, read, sys, boot)
+	got, e = copied.observe(ctx)
 	check("copied_observation_denied", e != nil && got == (ExecutionDomainsObservation{}))
 	check("copied_close_denied", errors.Is(copied.close(), ErrDenied))
 	copiedFresh := &freshExecutionDomains{original: p, pair: p.pair, anchors: p.anchors}
@@ -142,10 +142,21 @@ func nativeFreshJournalActivation(t *testing.T, kind string) {
 	serialized, we := json.Marshal(a)
 	wire := string(serialized)
 	check("serialized_receipt_inert", we == nil && wire == "{}")
+	got, e = (*freshExecutionActivation)(nil).observe(ctx)
+	check("nil_activation_denied", e != nil && got == (ExecutionDomainsObservation{}))
+	got, e = a.observe(nil)
+	check("nil_observation_context_denied", e != nil && got == (ExecutionDomainsObservation{}))
+	cancelledObserve, cancelObserve := context.WithCancel(ctx)
+	cancelObserve()
+	got, e = a.observe(cancelledObserve)
+	check("cancelled_observation_no_retirement", errors.Is(e, context.Canceled) && got == (ExecutionDomainsObservation{}) && !p.blocked)
+	second, e := activateFreshExecutionJournal(ctx, filepath.Join(f.journal, "second"), filepath.Join(f.ledger, "second"), f.read, system, activationBoot)
+	check("fixed_entropy_composition", e == nil && second != nil && second.journal.Binding.Installation != a.journal.Binding.Installation && second.journal.Owner.ID != a.journal.Owner.ID)
+	check("second_close", second.close() == nil)
 	beforeJ, beforeL := freshNamespaceSnapshot(t, filepath.Join(f.journal, "positive")), freshNamespaceSnapshot(t, filepath.Join(f.ledger, "positive"))
 	check("close_releases_only", a.close() == nil && reflect.DeepEqual(beforeJ, freshNamespaceSnapshot(t, filepath.Join(f.journal, "positive"))) && reflect.DeepEqual(beforeL, freshNamespaceSnapshot(t, filepath.Join(f.ledger, "positive"))))
 	check("repeat_close", a.close() == nil)
-	got, e = a.observe(ctx, f.read, system, activationBoot)
+	got, e = a.observe(ctx)
 	check("closed_observation_denied", e != nil && got == (ExecutionDomainsObservation{}))
 	reopened, e := OpenExecutionDomainLeases(ctx, filepath.Join(f.journal, "positive"), filepath.Join(f.ledger, "positive"))
 	if e != nil {
@@ -258,7 +269,7 @@ func nativeFreshJournalActivation(t *testing.T, kind string) {
 		a, e = p.activate(ctx, f.read, system, activationBoot, rand.Reader, nil)
 		check(name+"_retry_preserves_history", a == nil && e != nil && reflect.DeepEqual(bj, freshNamespaceSnapshot(t, filepath.Join(f.journal, name))) && reflect.DeepEqual(bl, freshNamespaceSnapshot(t, filepath.Join(f.ledger, name))))
 	}
-	for _, name := range []string{"post-boot-error", "post-system-error", "post-cancel", "journal-drift", "ledger-drift", "boot-changed"} {
+	for _, name := range []string{"post-boot-error", "post-system-error", "post-cancel", "post-directory-touch", "post-lock-touch", "post-journal-touch", "post-ledger-touch", "journal-drift", "ledger-drift", "boot-changed"} {
 		p := fresh(name)
 		b, s := activationBoot, system
 		n := 0
@@ -292,7 +303,27 @@ func nativeFreshJournalActivation(t *testing.T, kind string) {
 				return system(c)
 			}
 		}
-		a, e := p.activate(c, f.read, s, b, rand.Reader, nil)
+		if strings.HasPrefix(name, "post-") && strings.HasSuffix(name, "-touch") {
+			b = func(c context.Context) ([16]byte, error) {
+				n++
+				if n == 3 {
+					path := filepath.Join(f.journal, name)
+					switch name {
+					case "post-lock-touch":
+						path = filepath.Join(path, stateWriterName)
+					case "post-journal-touch":
+						path = filepath.Join(path, executionJournalName)
+					case "post-ledger-touch":
+						path = filepath.Join(f.ledger, name)
+					}
+					if os.Chtimes(path, time.Unix(1, 0), time.Unix(1, 0)) != nil {
+						t.Fatal("owned late touch")
+					}
+				}
+				return activationBoot(c)
+			}
+		}
+		a, e := p.activate(c, f.read, s, func(c context.Context) ([16]byte, error) { return b(c) }, rand.Reader, nil)
 		cancel()
 		if strings.HasPrefix(name, "post-") {
 			check(name+"_denied_after_ack", a == nil && e != nil && p.pair.native.journal.acknowledged)
@@ -313,10 +344,70 @@ func nativeFreshJournalActivation(t *testing.T, kind string) {
 				b = func(context.Context) ([16]byte, error) { return [16]byte{9}, nil }
 			}
 			bj, bl := freshNamespaceSnapshot(t, filepath.Join(f.journal, name)), freshNamespaceSnapshot(t, filepath.Join(f.ledger, name))
-			got, e := a.observe(ctx, f.read, system, b)
+			got, e := a.observe(ctx)
 			check(name+"_denied_preserves_history", e != nil && got == (ExecutionDomainsObservation{}) && reflect.DeepEqual(bj, freshNamespaceSnapshot(t, filepath.Join(f.journal, name))) && reflect.DeepEqual(bl, freshNamespaceSnapshot(t, filepath.Join(f.ledger, name))))
 		}
 		check(name+"_retired", p.blocked && p.pair.blocked && p.pair.native.journal.failed && p.pair.native.ledger.publicationBlocked)
+	}
+	if kind == "zfs" {
+		pool := filepath.Base(filepath.Dir(f.journal))
+		for _, role := range []string{"journal", "ledger"} {
+			name := "ancestor-" + role
+			base, other := f.journal, f.ledger
+			parentRole := "ledger"
+			if role == "ledger" {
+				base, other = f.ledger, f.journal
+				parentRole = "journal"
+			}
+			parent := filepath.Join(base, name+"-parent")
+			dataset := pool + "/" + parentRole + "/" + name
+			restoreNativeCommand(t, "/sbin/zfs", "create", "-o", "mountpoint="+parent, dataset)
+			if os.Chmod(parent, 0700) != nil {
+				t.Fatal("owned ancestor mode")
+			}
+			read := func(c context.Context, fd int) (ExecutionBackingObservation, error) {
+				var fs unix.Statfs_t
+				if c.Err() != nil {
+					return ExecutionBackingObservation{}, c.Err()
+				}
+				if unix.Fstatfs(fd, &fs) != nil {
+					return ExecutionBackingObservation{}, ErrDrift
+				}
+				if unix.ByteSliceToString(fs.Mntfromname[:]) != dataset {
+					return f.read(c, fd)
+				}
+				guid, e := strconv.ParseUint(restoreNativeCommand(t, "/sbin/zfs", "get", "-H", "-p", "-o", "value", "guid", dataset), 10, 64)
+				if e != nil {
+					return ExecutionBackingObservation{}, ErrUnavailable
+				}
+				file, e := os.Open(other)
+				if e != nil {
+					return ExecutionBackingObservation{}, e
+				}
+				id, e := f.read(c, int(file.Fd()))
+				_ = file.Close()
+				if e != nil {
+					return ExecutionBackingObservation{}, e
+				}
+				return ExecutionBackingObservation{Kind: "zfs", Pool: id.Pool, Dataset: guid}, nil
+			}
+			j, l := filepath.Join(parent, "new"), filepath.Join(other, name)
+			if role == "ledger" {
+				j, l = l, j
+			}
+			p, e := provisionFreshExecutionDomains(ctx, j, l, nil)
+			if e != nil {
+				t.Fatal(e)
+			}
+			t.Cleanup(func() { _ = p.close() })
+			use := activationSystemFixture(t, j, l, read)
+			a, e := p.activate(ctx, read, func(context.Context) (PoolSystemUse, error) { return use, nil }, activationBoot, rand.Reader, nil)
+			check(name+"_denied", a == nil && errors.Is(e, ErrDenied) && !freshPathExists(filepath.Join(j, executionJournalName)))
+			check(name+"_retired", p.blocked && p.pair.native.journal.failed && p.pair.native.ledger.publicationBlocked)
+			if p.close() != nil {
+				t.Fatal("owned ancestor close")
+			}
+		}
 	}
 	t.Log("FRESH_ACTIVATION_" + strings.ToUpper(kind) + "_RESULT " + strings.Join(markers, " "))
 }

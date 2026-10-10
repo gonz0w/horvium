@@ -88,6 +88,14 @@ func (s *executionJournalStore) initialize(j executionJournal, wrap func(ownersh
 	}
 	s.lease.mu.Lock()
 	defer s.lease.mu.Unlock()
+	return s.initializeLocked(j, wrap)
+}
+
+// Caller holds the original journal mutex, including under a fresh joint owner.
+func (s *executionJournalStore) initializeLocked(j executionJournal, wrap func(ownershipPublication) ownershipPublication) error {
+	if err := s.guard(); err != nil {
+		return err
+	}
 	if s.failed || s.lease.publicationBlocked {
 		return ErrStateUncertain
 	}

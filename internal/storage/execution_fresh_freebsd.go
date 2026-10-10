@@ -12,15 +12,16 @@ import (
 	"unicode/utf8"
 )
 
-// Exclusive namespace provenance only. This does not initialize a journal,
-// establish boot/restore provenance or register a runtime/global writer.
-// The original anchors survive until close. Never reconstruct this from disk.
+// Original exclusive namespace provenance. The private one-shot activation may
+// consume it for an initial journal receipt; provisioning alone cannot initialize
+// or register a runtime/global writer. Never reconstruct this from disk.
 type freshExecutionDomains struct {
 	mu              sync.Mutex
 	original        *freshExecutionDomains
 	pair            *ExecutionDomainLeases
 	anchors         [2]freshExecutionAnchor
 	closed, blocked bool
+	consumed        bool
 }
 type freshExecutionAnchor struct {
 	parent                          *os.File
@@ -259,7 +260,7 @@ func (f *freshExecutionDomains) inspect(ctx context.Context) error {
 	}
 	f.mu.Lock()
 	defer f.mu.Unlock()
-	if f.original != f || f.closed || f.pair == nil {
+	if f.original != f || f.closed || f.consumed || f.pair == nil {
 		return ErrDenied
 	}
 	if f.blocked {
