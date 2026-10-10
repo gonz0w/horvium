@@ -6,6 +6,7 @@
 - [Architecture baseline](architecture/baseline.md)
 - [Architecture decisions](adr/README.md)
 - [Roadmap](roadmap/milestones.md)
+- [uPlot dashboard roadmap and build pickup](roadmap/dashboards.md)
 - [UI baseline](ui/baseline.md)
 - [Compatibility matrix](compatibility/matrix.md)
 - [Ports distribution plan](../packaging/ports/README.md)
@@ -174,5 +175,6 @@
 - [M2 native repaired-checksum finding qualification](testing/M2/checksum-findings.md).
 
 - [M2 original journaled publication](testing/M2/journaled-publication.md): private
-  acknowledged dual-lease metadata transaction under native qualification;
+  acknowledged dual-lease metadata transaction qualified on both pinned FreeBSD
+  releases with full local portable review and verified teardown;
   commissioning, registered startup/global admission and runtime writes remain pending.

@@ -84,8 +84,9 @@ teardown; PR 118 accepted the fixture prerequisite. Commissioning,
 startup/global ownership and the operator restore workflow remain required.
 The [original journaled metadata publisher](docs/testing/M2/journaled-publication.md)
 connects the private original journal receipt to the original ledger under both
-leases. It is under native qualification; commissioning, registered startup/global
-ownership and runtime writes remain pending.
+leases. Both pinned FreeBSD releases passed all native gates, with local portable
+review and verified teardown; the prerequisite awaits maintainer review. Commissioning,
+registered startup/global ownership and runtime writes remain pending.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 

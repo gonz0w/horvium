@@ -1,6 +1,6 @@
 # Original journaled metadata publication
 
-Status: private prerequisite under qualification; runtime denied. Date: 2026-10-10.
+Status: private prerequisite qualified; awaiting maintainer review; runtime denied. Date: 2026-10-10.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [Accepted M2 design](../../milestones/M2/EDD.md),
 [recovery mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -84,6 +84,43 @@ All fixtures are new owned disposable data. Cleanup reaps children, destroys the
 owned pool/datasets, unmounts/removes memory backing and discards every guest and
 host artifact. No operator disks, persistent services or GitHub Actions are used.
 Shared evidence tooling requires a fresh complete portable race/fuzz plan. Native
-and portable source-bound results will be recorded before review; historical
+and portable source-bound results are recorded below; historical
 manifests retain their original bytes and scopes. Hardware/scale, commissioning,
 startup/global/restore workflow and full M2/release acceptance remain pending.
+
+
+## Executed evidence
+
+Clean signed source `83838a63bc8f2651db26a645be2202822e63fd35` passed both
+complete state corpora on pinned FreeBSD/amd64 15.1-RELEASE-p3 and 14.5-RELEASE.
+Each executed all 84 parents, 1,404 native controls and 1,945 codec children,
+including the retained 79 parents/1,170 controls and all 234 new native controls.
+All 25 backing/teardown markers were required. The same verified executable
+SHA-256 `44fed1599f6b06d4b291c49a9eada003a1c9389db7544c05f6c4692dd2eba3ab`
+ran on both guests and was removed. Each target actually killed and waited for
+three paused original children and waited for the UID-drop child.
+
+Local review passed `make check lint test secrets`, 165 tooling tests, eleven race
+packages and all 54 bounded fuzz targets. Shared evidence-tooling changes selected
+a fresh full portable plan. All 92 historical M2 manifests and 413 original Go
+inputs retained their exact bytes. The two existing Go changes are the joint-owner
+scope comment and the original journal publisher's already-locked entry point;
+its initializer, public observation opener and runtime consumers retain their
+accepted behavior. The final prose/evidence commit reruns baseline checks and
+reuses only exact passing deep inputs.
+
+The test-first native source `72afe13cbbe4eb1fae50cea9158d5ab4ed9e439d` deliberately
+returned denial from the new transaction. Only the three new native parents failed,
+at the initial cancellation/pending-cut checks; all previous state parents passed.
+Its guest and fixtures were fully removed. The portable census deny-stub and
+previous-evidence regression also failed before their respective implementations.
+Those attempts remain failures, with distinct source/log hashes in the
+[sanitized source-bound manifest](journaled-publication-manifest.json).
+The sorted insertion test was strengthened before final qualification to require
+a job inserted before an existing ownership record.
+
+No host service was enabled; GitHub Actions remain disabled. Final owned-session
+status verified stopped processes and complete teardown. This qualifies the private
+metadata transaction; fresh OS-root commissioning, registered startup/global owner,
+root restore workflow, backend/supervisor composition and operator writes remain
+required before the property workflow is complete.

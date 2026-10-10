@@ -1,6 +1,6 @@
 # Independent ledger restore prerequisite
 
-Status: Native fixture prerequisite qualified; awaiting maintainer review; runtime denied. Date: 2026-10-10.
+Status: Native fixture prerequisite accepted in PR 118; runtime denied. Date: 2026-10-10.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [Accepted mechanism](../../milestones/M2/property-recovery-mechanism.md),
 [ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md),
