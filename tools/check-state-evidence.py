@@ -79,13 +79,17 @@ JOINT_JOURNAL_CASES={'drift_retired', 'reopen_no_publisher', 'restored_observati
 TESTS.add('TestNativeJointExecutionJournal')
 BACKING_TESTS.add('TestNativeJointExecutionJournal')
 
+RESTORE_CASES=set(['barrier_ack_before_restore', 'barrier_directory_sync_before_restore', 'barrier_file_sync_before_restore', 'baseline_ledger_ack', 'current_differs_from_export', 'export_before_pending_job', 'initial_journal_ack', 'initial_pair_closed', 'interrupted_binding_preserved', 'interrupted_census_mismatch', 'interrupted_job_absent', 'interrupted_journal_preserved', 'interrupted_no_reconstructed_writer', 'interrupted_pair_closed', 'interrupted_pending_retained', 'interruption_child_killed_reaped', 'interruption_child_ready', 'job_actual_after', 'job_confirmation_ack', 'job_ledger_ack', 'job_pending_ack', 'joint_restore_equal_census', 'joint_restore_lost_pending_fact', 'joint_restore_no_reconstructed_writer', 'joint_restore_pair_closed', 'ledger_only_binding_preserved', 'ledger_only_exact_old_bytes', 'ledger_only_job_absent', 'ledger_only_journal_preserved', 'ledger_only_no_reconstructed_writer', 'ledger_only_old_census', 'ledger_only_pending_retained', 'ledger_only_repeat_observation', 'missing_journal_observation_only', 'missing_journal_pair_closed', 'missing_ledger_denial', 'missing_ledger_preserves_journal', 'native_pending_ack', 'ordinary_rearm_denied', 'original_binding', 'original_leases_closed', 'owner_actual_after', 'owner_confirmation_ack', 'owner_ledger_ack', 'owner_pending_ack', 'restored_pair_closed', 'separate_restore_domains'])
+TESTS.update({"TestNativeIndependentRestoreUFS","TestNativeIndependentRestoreZFS"})
+BACKING_TESTS.update({"TestNativeIndependentRestoreUFS","TestNativeIndependentRestoreZFS"})
+
 def validate(text):
     if len(text)>1<<20 or re.search(r'(?m)^(?:FAIL|[ \t]*--- (?:FAIL|SKIP):)',text):
         raise ValueError('state native evidence failed, skipped or oversized')
     passed=re.findall(r'(?m)^--- PASS: (Test\w+) \([0-9.]+s\)$',text)
     if len(passed)!=len(TESTS) or set(passed)!=TESTS:
         raise ValueError('complete executed lease/reader/ACL/publication/codec tests required')
-    for marker,cases in [('JOINT_EXECUTION_JOURNAL_RESULT',JOINT_JOURNAL_CASES),('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES),('STATE_ACL_RESULT',ACL_CASES),('OWNERSHIP_PUBLISH_RESULT',PUBLISH_CASES),('OWNERSHIP_PUBLISH_FS_RESULT',PUBLISH_FS_CASES),('OWNERSHIP_CATALOG_RESULT',CATALOG_CASES),('OWNERSHIP_CAPACITY_RESULT',CAPACITY_CASES),('JOB_READ_RESULT',JOB_READ_CASES),('STATE_CATALOG_RESULT',STATE_CATALOG_CASES),('JOB_PUBLICATION_RESULT',JOB_PUBLICATION_CASES),('PROPERTY_JOB_STORAGE_RESULT',PROPERTY_JOB_STORAGE_CASES),('JOB_RESERVATIONS_RESULT',RESERVATION_CASES),('PROPERTY_SUBMISSION_RESULT',SUBMISSION_CASES),('STATE_SOFTUPDATES_RESULT',SOFTUPDATES_CASES),('PROPERTY_PUBLICATION_CUTS_RESULT',CUT_CASES),('ENROLLMENT_PUBLICATION_RESULT',ENROLLMENT_CASES),('EXECUTION_CENSUS_RESULT',EXECUTION_CENSUS_CASES),('EXECUTION_JOURNAL_STORE_RESULT',JOURNAL_STORE_CASES),('EXECUTION_JOURNAL_CUTS_RESULT',JOURNAL_CUT_CASES),('EXECUTION_BINDING_RESULT',BINDING_CASES),('EXECUTION_BINDING_REMOUNT_RESULT',BINDING_REMOUNT_CASES)]:
+    for marker,cases in [('EXECUTION_RESTORE_UFS_RESULT',RESTORE_CASES),('EXECUTION_RESTORE_ZFS_RESULT',RESTORE_CASES),('JOINT_EXECUTION_JOURNAL_RESULT',JOINT_JOURNAL_CASES),('STATE_DIRECTORY_RESULT',CASES),('OWNERSHIP_READ_RESULT',READ_CASES),('STATE_ACL_RESULT',ACL_CASES),('OWNERSHIP_PUBLISH_RESULT',PUBLISH_CASES),('OWNERSHIP_PUBLISH_FS_RESULT',PUBLISH_FS_CASES),('OWNERSHIP_CATALOG_RESULT',CATALOG_CASES),('OWNERSHIP_CAPACITY_RESULT',CAPACITY_CASES),('JOB_READ_RESULT',JOB_READ_CASES),('STATE_CATALOG_RESULT',STATE_CATALOG_CASES),('JOB_PUBLICATION_RESULT',JOB_PUBLICATION_CASES),('PROPERTY_JOB_STORAGE_RESULT',PROPERTY_JOB_STORAGE_CASES),('JOB_RESERVATIONS_RESULT',RESERVATION_CASES),('PROPERTY_SUBMISSION_RESULT',SUBMISSION_CASES),('STATE_SOFTUPDATES_RESULT',SOFTUPDATES_CASES),('PROPERTY_PUBLICATION_CUTS_RESULT',CUT_CASES),('ENROLLMENT_PUBLICATION_RESULT',ENROLLMENT_CASES),('EXECUTION_CENSUS_RESULT',EXECUTION_CENSUS_CASES),('EXECUTION_JOURNAL_STORE_RESULT',JOURNAL_STORE_CASES),('EXECUTION_JOURNAL_CUTS_RESULT',JOURNAL_CUT_CASES),('EXECUTION_BINDING_RESULT',BINDING_CASES),('EXECUTION_BINDING_REMOUNT_RESULT',BINDING_REMOUNT_CASES)]:
         records=re.findall(marker+r' ([^\n]+)',text)
         if len(records)!=1:raise ValueError('one native result per boundary required')
         fields=records[0].split();expected={case+'=pass' for case in cases}
@@ -100,8 +104,10 @@ def validate(text):
         name,filesystem,soft=match.groups();names.append(name)
         if name=='TestNativeStateSoftUpdates':
             if (filesystem,soft)!=('ufs','on'):raise ValueError('actual softupdates refusal fixture required')
-        elif name in ('TestNativeExecutionBindingRemount','TestNativeJointExecutionJournal') and (filesystem,soft)!=('ufs','off'):
+        elif name in ('TestNativeExecutionBindingRemount','TestNativeJointExecutionJournal','TestNativeIndependentRestoreUFS') and (filesystem,soft)!=('ufs','off'):
             raise ValueError('actual UFS remount fixture required')
+        elif name=='TestNativeIndependentRestoreZFS' and filesystem!='zfs':
+            raise ValueError('actual ZFS dataset rollback fixture required')
         elif soft!='off':raise ValueError('qualified state backing must have softupdates disabled')
     if len(set(names))!=len(names) or set(names)!=BACKING_TESTS:raise ValueError('distinct complete native backing tests required')
     children=re.findall(r'(?m)^[ \t]+--- PASS: (Test(?:Ownership|Job|Property|Reservation|RestartPage|ExecutionJournal|ExecutionBinding)\w+)/(\S+) \([0-9.]+s\)$',text)
