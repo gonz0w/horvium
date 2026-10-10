@@ -35,3 +35,13 @@
     Do not invent future CLI flags, API routes, config schemas, or package names
     beyond the agreed project identity.
 14. Do not spawn agents unless the user explicitly requests parallel agent work.
+15. Follow docs/engineering/github-workflow.md and the stable roadmap index.
+    Inspect open PRs and unblocked Ready issues before pickup; select and name
+    one bounded owning issue, then read its requirements, design and evidence.
+    GitHub owns live status/priority/dependencies; Git owns authoritative designs
+    and receipts. Keep one status label aligned with Project Status, Phase and
+    Priority, and maintain native parent/blocker relationships manually.
+16. Use Refs for broader acceptance gates. Use Closes only when every criterion
+    of that specific issue is met. Merged components never waive pending native,
+    browser, recovery, hardware or release gates. Break broad backlog work into
+    reviewed implementation slices when picked up; add no tracking automation.

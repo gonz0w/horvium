@@ -6,13 +6,13 @@ M1 design was approved in [PR 3](https://github.com/gonz0w/horvium/pull/3):
 [PRD](../milestones/M1/PRD.md), [EDD](../milestones/M1/EDD.md),
 [Test Design](../milestones/M1/TDD.md). See [implementation status](../milestones/M1/implementation.md)
 for reviewed slices and remaining acceptance gates.
-M1's automated slices and [qualification record](../testing/M1/qualification-status.md)
-are merged; M1 is Validating with Safari/manual accessibility and explicit milestone
-acceptance pending. M2 design was approved by maintainer merge of
-[PR 20](https://github.com/gonz0w/horvium/pull/20) on 2026-10-04: [PRD](../milestones/M2/PRD.md),
+Live status, priority and dependencies are in the [shared private Project](https://github.com/users/gonz0w/projects/2)
+and [stable roadmap index](github-roadmap-index.md).
+M2 design was approved by maintainer merge of
+[PR 20](https://github.com/gonz0w/horvium/pull/20): [PRD](../milestones/M2/PRD.md),
 [EDD](../milestones/M2/EDD.md), [Test Design](../milestones/M2/TDD.md) and
-[implementation sequence](../milestones/M2/implementation.md). M2 is Implementing;
-its first scope/planning model does not waive M1's pending gates.
+[historical implementation evidence](../milestones/M2/implementation.md).
+That authorization did not waive M1's manual acceptance criteria.
 The first deployable release spans M1-M6; intermediate evidence is not a production
 claim. Each milestone links requirements, tests, and compatibility evidence.
 
@@ -59,3 +59,25 @@ Nonempty history, configured startup/restart, journaled publication integration,
 global native launch, worker draining, backend/supervisor assembly and remaining
 property runtime
 acceptance precede write enablement; M2 remains Implementing.
+
+## Planned dashboard work
+
+The maintainer selected uPlot on 2026-10-10 for progressive charting. The
+[dashboard roadmap](dashboards.md) defines the operator data story, eight views,
+BSD Classic visual/color direction, drill-down, data prerequisites and build-chat
+pickup sequence. Delivery spans existing milestones as qualified sources become
+available. The initial focus is Overview and Storage capacity; richer metrics,
+sharing and protection follow their approved contracts. Implementation is deferred
+until a reviewed PRD/EDD/Test Design packet and dependency/integration ADR exist.
+This roadmap does not change current M1/M2 acceptance or authorize new telemetry.
+
+## Proposed second release security work
+
+The [second release security roadmap](v2-security.md) proposes stronger authority,
+independent backup protection, encryption/key recovery, service confinement and
+recovery evidence against external attackers, including AI-enabled attackers.
+It also proposes a hardened FreeBSD image within M7 using the tested package and
+a [deployment security guide](../security/deployment-security.md) for software,
+image and operator responsibilities. Basic M3-M6 security, backup independence
+and restore obligations remain first-release work. This proposal assigns no release
+tag/date, changes no acceptance gate and requires reviewed implementation packets.

@@ -1,0 +1,54 @@
+name: Work item
+description: Propose a bounded Horvium outcome or acceptance gate.
+title: "[Work]: "
+labels: ["status:backlog"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Search existing issues first. Follow the GitHub workflow; triage adds type, priority, milestone, native parent/blockers and Project fields. Never include keys, host inventories or customer data; use SECURITY.md for exploitable vulnerabilities.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Work kind
+      options: [Feature, Research, Acceptance, Tracking, Documentation]
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: 1. Outcome
+      description: Concrete resulting behavior in the owning repository; research includes question and time box.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 2. Acceptance
+      description: Observable checklist criteria and evidence required to close this bounded issue.
+    validations:
+      required: true
+  - type: textarea
+    id: design
+    attributes:
+      label: 3. Design and requirements
+      description: Stable requirement IDs and authoritative PRD/EDD/Test Design, contract and ADR links; identify missing approvals.
+    validations:
+      required: true
+  - type: textarea
+    id: relationships
+    attributes:
+      label: 4. Relationships
+      description: Existing M0–M7 phase, parent gate and repository-qualified blockers; triage also sets native relationships.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 5. Existing evidence
+      description: Merged PRs and candidate-specific receipts, actual native/client/browser profiles, failures, skips and teardown. Planned tests are not passes.
+  - type: textarea
+    id: scope
+    attributes:
+      label: 6. Tracking scope
+      description: Boundaries, limitations and remaining work. Future features need reviewed implementation slices before pickup.
+    validations:
+      required: true

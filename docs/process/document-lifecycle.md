@@ -17,9 +17,13 @@ important decisions in Git rather than leaving them only in chat.
 writing failing behavioral tests before implementation, then refactoring with
 passing tests. The project practices both; do not confuse them.
 
-Milestones progress Proposed -> Researching -> Draft -> Review -> Approved ->
+Design packets progress Proposed -> Researching -> Draft -> Review -> Approved ->
 Implementing -> Validating -> Released -> Superseded. Each active milestone pins
 reference versions and creates linked PRD/EDD/TDD documents before product work.
 Do not write detailed future APIs months in advance. Templates are starting points,
 not approved designs. Every accepted requirement has stable IDs and acceptance
 evidence. Superseded docs identify successors; Git preserves their history.
+
+Live issue status, priority and dependencies use the [GitHub workflow](../engineering/github-workflow.md).
+Design approval and candidate receipts remain Git records; live task labels do not
+replace document approval or release acceptance.

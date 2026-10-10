@@ -1,5 +1,11 @@
 # Horvium
 
+Live work, acceptance gates, priority and dependencies are in the
+[shared private Project](https://github.com/users/gonz0w/projects/2) and
+[roadmap index](docs/roadmap/github-roadmap-index.md). Follow the
+[GitHub workflow](docs/engineering/github-workflow.md) for issue-driven pickup.
+The evidence summaries below retain their original candidate boundaries.
+
 **Dependable storage on FreeBSD.**
 
 Horvium is a dedicated NAS management system for FreeBSD and ZFS, designed to
@@ -7,11 +13,11 @@ remain lightweight on a 16 GB home server and grow to larger commercial storage
 systems. The HP MicroServer Gen8 is a reference configuration, not a hardware
 requirement or a limit on disks, memory, pools, or datasets.
 
-**Status:** M0 foundation and the main M1 read-only discovery/management slices
+**Historical qualification boundary:** M0 foundation and the main M1 read-only discovery/management slices
 and crash containment, native resources, HTTP abuse recovery, independent SMB/NFS
 continuity and automated Firefox qualification are accepted. The consolidated
-qualification record was accepted in PR 18. M1 is Validating; Safari/manual
-accessibility acceptance remains pending. See the
+qualification record was accepted in PR 18. At PR 18’s acceptance, Safari/manual
+accessibility observations remained pending; consult the linked live gate for current status. See the
 [M1 qualification review](docs/testing/M1/qualification-status.md) for evidence and
 remaining gates. There is no installable port, appliance image or production
 support claim.

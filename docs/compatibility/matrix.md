@@ -3,6 +3,19 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+The [second release security proposal](../roadmap/v2-security.md) and
+[deployment security guide](../security/deployment-security.md) are planning only.
+No hardened image, host firewall profile, encrypted replication, additional
+authentication/confinement control or compromise/recovery guarantee is qualified
+by these documents. Existing package-first distribution and M1-M6 gates remain;
+M7 image boot/install/update/recovery and each new security boundary need their
+own source-bound evidence before support claims.
+
+The [uPlot dashboard roadmap](../roadmap/dashboards.md) is planned direction only.
+No uPlot asset is introduced or qualified by this documentation. Native metrics,
+history, browser accessibility, chart performance and drill-down evidence remain
+required before those views gain compatibility claims; current evidence is unchanged.
+
 The accepted [property runtime recovery/launch contract](../milestones/M2/property-runtime.md)
 defines the remaining path to an assembled writer on the two pinned disposable
 FreeBSD targets. No mechanism, runtime behavior, support target or new native

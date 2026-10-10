@@ -1,30 +1,45 @@
 name: Bug report
-description: Report a reproducible defect
-title: "fix(<scope>): "
-labels: ["kind/bug"]
+description: Report a reproducible defect with sanitized evidence.
+title: "[Bug]: "
+labels: ["kind/bug", "status:backlog"]
 body:
-  - type: textarea
-    id: behavior
+  - type: markdown
     attributes:
-      label: Observed behavior
-      description: What happened?
+      value: |
+        For exploitable security issues follow SECURITY.md and request a private channel. Never attach keys, customer data, live host inventories or replication credentials. Reproduce storage defects only on disposable fixtures. Triage sets priority, type, milestone and Project fields.
+  - type: textarea
+    id: outcome
+    attributes:
+      label: 1. Outcome
+      description: Expected and actual behavior, impact, exact source/FreeBSD/client/browser versions and fixture profile.
     validations:
       required: true
   - type: textarea
-    id: expected
+    id: acceptance
     attributes:
-      label: Expected behavior
+      label: 2. Acceptance
+      description: Minimal synthetic/disposable reproduction and observable regression criteria.
     validations:
       required: true
   - type: textarea
-    id: reproduce
+    id: design
     attributes:
-      label: Reproduction
-      description: Minimal steps, versions, and environment.
-    validations:
-      required: true
+      label: 3. Design and requirements
+      description: Affected contract or requirement IDs and authoritative design links, if known.
+  - type: textarea
+    id: relationships
+    attributes:
+      label: 4. Relationships
+      description: Related issue/parent gate, proposed milestone and blockers; search existing reports first.
   - type: textarea
     id: evidence
     attributes:
-      label: Logs / request IDs / evidence
-      description: Remove secrets and customer-sensitive data.
+      label: 5. Existing evidence
+      description: Sanitized exact errors, candidate receipts, failures/skips and teardown. Distinguish native execution from cross-builds.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 6. Tracking scope
+      description: Affected data/availability boundary, limitations and remaining investigation without operator secrets.
