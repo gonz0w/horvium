@@ -104,6 +104,7 @@ func nativeFreshActivationFixture(t *testing.T, ctx context.Context, journalPare
 		check("activation_"+c.name+"_no_creation", q == nil && e != nil && !activationPathExists(pj) && !activationPathExists(pl))
 	}
 	nativeIdleRetirementFixture(t, ctx, journalParent, ledgerParent, check)
+	nativeCommissionExecutionOwnerFixture(t, ctx, journalParent, ledgerParent, check)
 	nativeActivationUIDFixture(t, ctx, j, l, filepath.Join(journalParent, "activation-uid"), filepath.Join(ledgerParent, "activation-uid"), check)
 	source, e := NewSystemUseSource()
 	if e != nil {

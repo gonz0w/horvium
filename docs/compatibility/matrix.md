@@ -1165,3 +1165,36 @@ shutdown, backend/supervisor assembly, operator restore and shared runtime
 workflows remain pending. Warm disposable observations do not qualify hardware
 power loss, active kernel exclusion, throughput or commercial scale. Runtime
 writes, services and GitHub Actions remain disabled; teardown is verified.
+
+
+The [registered fresh commissioning owner](../testing/M2/commissioned-execution-owner.md)
+reserves a single original attempt in the root helper process before the fixed
+native activation producer can provision namespaces. Another directory pair,
+failed construction or a completed unused close cannot reset registration.
+Original observation/finish/release exclude each other; copied or decoded owners
+are denied, uncertain observation and every entered finish are terminal, and
+original release occurs once even after credential loss while reporting denial.
+
+Both pinned disposable FreeBSD/amd64 releases passed six host parents and 388
+controls each: all 296 previous controls plus 46 commissioning controls per UFS/ZFS
+profile. Eight new exact-binary children per target independently use the production
+registry and are waited normally; they cover clean commissioning/close, ledger
+drift, failed construction/no retry and real UID loss with inherited root descriptors.
+Parents independently verify released locks and retained active/closed history.
+The eight-minute parent deadline is unchanged. Five portable behavioral parents,
+nine failure cases, 32 competing attempts, 32 cancellation waiters and 31 focused
+evidence-consumer tests passed. Local baseline review passed all 176 tooling
+tests, eleven race packages and 54 bounded fuzz targets. See the
+[source-bound manifest](../testing/M2/commissioned-execution-owner-manifest.json).
+
+All 434 unaffected original Go inputs and 102 historical manifests retain exact
+bytes. Storage source, state checker/selector and fixtures are unchanged; their
+accepted PR 124 state evidence remains bound to its original source, without
+a redundant state rerun or a claim of new state execution. This gate is private,
+process-local fresh commissioning registration. Configured startup/restart,
+journaled publication consumers, cross-process execution fencing, global native
+launch, workers/backend/supervisor assembly and operator workflows remain pending.
+Warm disposable UFS/ZFS observations do not qualify hardware power loss, active
+kernel interruption, throughput, commercial scale or other hardware. Runtime
+writes, services and GitHub Actions remain disabled; owned VM/supervisor/fixture
+teardown is verified and compiled fixture artifacts were removed.

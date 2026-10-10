@@ -46,3 +46,14 @@ class ExecutionSystemEvidenceTests(unittest.TestCase):
   import re
   previous=re.sub(r'retirement_[a-zA-Z0-9_-]+=pass ?', '', self.log)
   with self.assertRaises(ValueError):self.m.validate(previous)
+
+
+ def test_previous_retirement_cannot_qualify_commissioning(self):
+  import re
+  previous=re.sub(r"commission_[a-zA-Z0-9_-]+=pass ?", "", self.log)
+  with self.assertRaises(ValueError):self.m.validate(previous)
+
+ def test_commissioning_control_inventory(self):
+  expected=set(['commission_clean_child_waited', 'commission_clean_nil_no_creation', 'commission_clean_cancelled_no_creation', 'commission_clean_native_initial', 'commission_clean_exact_boot', 'commission_clean_active_receipt', 'commission_clean_both_locks_held', 'commission_clean_original_observation', 'commission_clean_copied_denied', 'commission_clean_decoded_denied', 'commission_clean_cancelled_finish_preserves', 'commission_clean_second_path_no_creation', 'commission_clean_original_idle_finish', 'commission_clean_exact_closed_receipt', 'commission_clean_finished_denied', 'commission_clean_closed_both_locks_released', 'commission_clean_closed_registration_not_reset', 'commission_clean_closed_history_preserved', 'commission_clean_parent_locks_released', 'commission_clean_parent_history', 'commission_drift_child_waited', 'commission_drift_native_initial', 'commission_drift_ledger_drift_denied', 'commission_drift_drift_permanently_retired', 'commission_drift_finish_denied', 'commission_drift_unclean_release', 'commission_drift_active_history_preserved', 'commission_drift_released_both_locks', 'commission_drift_registration_not_reset', 'commission_drift_parent_locks_released', 'commission_drift_parent_history', 'commission_factory_child_waited', 'commission_factory_failure_denied', 'commission_factory_no_creation', 'commission_factory_failure_registration_not_reset', 'commission_factory_retry_no_creation', 'commission_uid_child_waited', 'commission_uid_native_initial', 'commission_uid_actual_nonroot', 'commission_uid_inherited_root_descriptors', 'commission_uid_inherited_operations_denied', 'commission_uid_active_history_preserved', 'commission_uid_nonroot_release_denied', 'commission_uid_registration_not_reset', 'commission_uid_parent_locks_released', 'commission_uid_parent_history'])
+  self.assertEqual({c for c in self.m.CASES if c.startswith("commission_")},expected)
+  self.assertEqual(len(expected),46)

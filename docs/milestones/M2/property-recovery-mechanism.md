@@ -397,3 +397,24 @@ nonroot inherited descriptors and fixed host composition passed on both pinned
 releases with verified teardown. This is a prerequisite for the broader orderly
 shutdown described above: it does not assemble a registered startup/global owner,
 drain workers, qualify active kernel work or grant restart/native launch clearance.
+
+
+## Registered fresh commissioning owner prerequisite
+
+The [registered fresh commissioning owner](../../testing/M2/commissioned-execution-owner.md)
+connects the fixed original native activation/unused close producer to one
+process-wide root helper registration. Reserve that original registration before
+any provisioning attempt; competing directory pairs fail before creation, and
+failed construction, uncertain observation or a completed unused close cannot
+reset it. Serialize original observation, unused finish and explicit release;
+reject copies and reconstructed values before touching copied mutexes. Original
+release occurs once even after lost root, while lost credentials still report denial.
+
+Actual UFS/ZFS children use the production process registry without fixture resets
+and cover clean close, drift, failed construction and inherited root descriptors
+after a real credential drop. Both pinned host gates passed with teardown. This
+component closes fresh commissioning registration only: configured existing-state
+startup/restart, journaled publication consumption, the global native launch permit,
+worker drain and backend/supervisor assembly remain open. The process registry
+cannot fence another trusted root process or establish persisted restart provenance.
+Runtime writes remain denied.

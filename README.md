@@ -101,9 +101,15 @@ Both pinned host gates and the affected state safety corpus passed with verified
 teardown; PR 123 accepted this unregistered prerequisite. The
 [original unused activation close](docs/testing/M2/initial-activation-retirement.md)
 adds a one-time durable closed successor while retaining both original leases.
-Both pinned native targets and local review passed with verified teardown.
-Registered startup/global ownership, worker draining/general orderly shutdown and
-actual backend/supervisor assembly remain required before runtime writes.
+Both pinned native targets and local review passed with verified teardown;
+PR 124 accepted this close prerequisite. The
+[registered fresh commissioning owner](docs/testing/M2/commissioned-execution-owner.md)
+reserves one original commissioning attempt per root helper process before any
+provisioning. Competing directory pairs, failed construction and completed close
+cannot reset that registration. Both pinned host gates and local review passed
+with verified teardown; this private component awaits maintainer review.
+Configured startup/restart, journaled publication integration, global native launch,
+worker draining and backend/supervisor assembly remain required before runtime writes.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 

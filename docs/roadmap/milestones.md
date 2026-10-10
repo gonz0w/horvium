@@ -37,7 +37,11 @@ was accepted in PR 122. It joins exclusive fresh domains to an initial durable
 journal receipt. The subsequent [fixed native composition](../testing/M2/native-journal-activation.md)
 was accepted in PR 123 after both pinned host and affected state safety gates.
 The [original unused activation close](../testing/M2/initial-activation-retirement.md)
-passed both pinned native targets and local review, and awaits review.
-Registered startup/global ownership, worker draining/general orderly shutdown,
-backend/supervisor assembly and remaining property runtime acceptance precede
-write enablement; M2 remains Implementing.
+was accepted in PR 124 after both pinned native targets and local review.
+The [registered fresh commissioning owner](../testing/M2/commissioned-execution-owner.md)
+passed both pinned host gates and local review, and awaits maintainer review.
+It permits one commissioning attempt per helper process before provisioning;
+failure or close cannot start another ledger lifetime in that process.
+Configured startup/restart, journaled publication integration, global native launch,
+worker draining, backend/supervisor assembly and remaining property runtime
+acceptance precede write enablement; M2 remains Implementing.
