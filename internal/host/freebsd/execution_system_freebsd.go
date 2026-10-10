@@ -8,5 +8,9 @@ import (
 
 // Fixed native producers only. No runtime consumer or write eligibility.
 func observeNativeExecutionSystemDomains(ctx context.Context, p *storage.ExecutionDomainLeases, installation string) (storage.ExecutionDomainsObservation, error) {
-	return storage.ExecutionDomainsObservation{}, storage.ErrUnavailable
+	system, e := NewSystemUseSource()
+	if e != nil {
+		return storage.ExecutionDomainsObservation{}, e
+	}
+	return p.ObserveSystem(ctx, installation, readNativeExecutionBacking, system.Collect)
 }

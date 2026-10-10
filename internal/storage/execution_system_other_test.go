@@ -10,7 +10,7 @@ import (
 
 func TestExecutionSystemObservationUnavailableOffTarget(t *testing.T) {
 	called := false
-	for _, owner := range []*ExecutionDomainLeases{nil, {}, {}} {
+	for _, owner := range []*ExecutionDomainLeases{nil, {}} {
 		got, e := owner.ObserveSystem(context.Background(), "", func(context.Context, int) (ExecutionBackingObservation, error) {
 			called = true
 			return ExecutionBackingObservation{}, nil
