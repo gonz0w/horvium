@@ -1,6 +1,6 @@
 # Original idle activation retirement
 
-Status: private unused activation close qualified; awaiting maintainer review; runtime denied.
+Status: private unused activation close accepted in PR 124; runtime denied.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted recovery mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -78,3 +78,9 @@ service or Actions runner was enabled.
 This advances the close prerequisite only. Registered startup/global ownership,
 worker draining/general orderly shutdown, actual supervisor/backend assembly,
 explicit root recovery/restore and shared HTML/CLI workflow remain required.
+
+The subsequent [registered fresh commissioning owner](commissioned-execution-owner.md)
+consumes this original close through one process-wide commissioning attempt.
+Its host qualification is separate; this historical state/close manifest retains
+its original source and bytes. Configured startup/restart and global native launch
+remain required.

@@ -183,3 +183,6 @@
 - [M2 fixed native journal activation](testing/M2/native-journal-activation.md): actual kernel boot/backing/system composition and opaque original lifetime; both host and affected state gates passed; startup/global ownership remains pending.
 - [M2 original unused activation close](testing/M2/initial-activation-retirement.md): one-time durable close under both original leases, uncertainty preservation and real process cuts; native gates and local review passed; general runtime shutdown remains pending.
 - [M2 original fresh journal activation](testing/M2/fresh-journal-activation.md): one-shot initial durable receipt, repeated trusted facts and preserved uncertain history; native storage qualification passed on both releases; accepted in PR 122; fixed host composition has separate evidence and registered runtime ownership remains pending.
+
+- [M2 registered fresh commissioning owner](testing/M2/commissioned-execution-owner.md): one original root helper commissioning attempt reserved before provisioning, retained after failure/close; both host gates and local review passed; configured startup and global native launch remain pending.
+- [M2 registered commissioning execution manifest](testing/M2/commissioned-execution-owner-manifest.json).

@@ -1,6 +1,6 @@
 # Registered fresh commissioning owner
 
-Status: test-first private root commissioning gate; qualification pending; runtime denied.
+Status: private root commissioning gate qualified; awaiting maintainer review; runtime denied.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted recovery mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -50,3 +50,41 @@ worker drain, supervisor/backend assembly or operator route/configuration/servic
 is enabled. Existing metadata/native launch paths remain denied by the runtime.
 The single-use registry cannot detect whole-host rollback, prevent another trusted
 root process selecting another configuration, or qualify commercial scale.
+
+## Executed qualification
+
+The four initial portable behavioral parents failed against denial stubs. A
+separate regression then reproduced cancellation while waiting for registration: the
+initial implementation consumed that reservation before checking cancellation
+under the registry lock. It passed after adding the under-lock context/root checks.
+The signed native denial-stub run failed exactly the two affected system parents,
+while all four retained original/joint parents passed; its owned fixtures and VM
+were torn down. The old-evidence rejection regression failed against the previous
+consumer before requiring the new controls.
+
+Both pinned FreeBSD/amd64 targets passed six native host parents and 388 controls
+each, preserving all 296 earlier controls and adding 46 commissioning controls
+per filesystem. Eight new exact-binary children per target use separate production
+process registries, complete all declared assertions and are waited normally.
+Parents independently probe original lock release and active/closed journal history;
+UFS/ZFS backing and fixture teardown assertions remain required. The existing
+eight-minute parent deadline is unchanged. The same compiled source artifact
+ran on both releases.
+
+Five portable behavioral parents, nine failure cases, 32 competing attempts,
+32 cancelled reservation waiters and 31 focused evidence-consumer tests passed.
+Local review passed check/lint/test/secrets, all 176 tooling tests, eleven race
+packages and 54 bounded portable fuzz targets. Final prose review reruns baseline
+checks and can reuse that executed deep record only for exact unchanged
+non-prose inputs/base/environment. All 434 unaffected original Go inputs and 102
+historical manifests preserve bytes. Storage implementation, state fixtures,
+checker and selected runner retain exact bytes; PR 124's accepted state evidence
+remains historical and bound to its executed source, with no new state rerun.
+
+The [sanitized manifest](commissioned-execution-owner-manifest.json) records actual
+source, native binary/image/tool, test-first log, review and teardown hashes.
+Compiled fixture artifacts were removed; all owned supervisors, VMs, devices,
+filesystems and fixtures are stopped, removed or restored as applicable. No host
+service or GitHub Actions execution was enabled. Configured startup/restart,
+journaled publication consumption, global native launch and runtime assembly
+remain required before write enablement.
