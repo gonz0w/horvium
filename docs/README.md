@@ -185,4 +185,6 @@
 - [M2 original fresh journal activation](testing/M2/fresh-journal-activation.md): one-shot initial durable receipt, repeated trusted facts and preserved uncertain history; native storage qualification passed on both releases; accepted in PR 122; fixed host composition has separate evidence and registered runtime ownership remains pending.
 
 - [M2 registered fresh commissioning owner](testing/M2/commissioned-execution-owner.md): one original root helper commissioning attempt reserved before provisioning, retained after failure/close; both host gates and local review passed; configured startup and global native launch remain pending.
-- [M2 registered commissioning execution manifest](testing/M2/commissioned-execution-owner-manifest.json).
+- [M2 registered commissioning execution manifest](testing/M2/commissioned-execution-owner-manifest.json); prerequisite accepted in PR 125.
+- [M2 original closed-incarnation startup review](testing/M2/execution-startup-review.md): original read-only journal/ledger review and retained file/directory/lock/mount snapshots under fixed native producers and the same process registration; both pinned native targets and local review passed; new active publication and configured recovery remain pending.
+- [M2 original startup execution manifest](testing/M2/execution-startup-review-manifest.json).

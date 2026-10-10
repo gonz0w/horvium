@@ -1,6 +1,6 @@
 # Registered fresh commissioning owner
 
-Status: private root commissioning gate qualified; awaiting maintainer review; runtime denied.
+Status: private root commissioning prerequisite accepted in PR 125; runtime denied.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted recovery mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -88,3 +88,8 @@ filesystems and fixtures are stopped, removed or restored as applicable. No host
 service or GitHub Actions execution was enabled. Configured startup/restart,
 journaled publication consumption, global native launch and runtime assembly
 remain required before write enablement.
+
+The subsequent [original closed-incarnation startup review](execution-startup-review.md)
+uses the same consumed process registration for read-only existing-state review.
+Its separately source-bound qualification does not change this historical execution
+manifest or supply new-incarnation publication, recovery or native launch authority.

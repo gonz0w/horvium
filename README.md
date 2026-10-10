@@ -107,7 +107,12 @@ PR 124 accepted this close prerequisite. The
 reserves one original commissioning attempt per root helper process before any
 provisioning. Competing directory pairs, failed construction and completed close
 cannot reset that registration. Both pinned host gates and local review passed
-with verified teardown; this private component awaits maintainer review.
+with verified teardown; PR 125 accepted this prerequisite. The
+[original closed-incarnation startup review](docs/testing/M2/execution-startup-review.md)
+inspects existing closed history under both original leases and the same single-use
+root registration. Both pinned native targets passed all 186 controls with verified
+teardown; this read-only prerequisite awaits maintainer review. It retains exact
+journal and directory/lock/mount snapshots and cannot publish a new incarnation.
 Configured startup/restart, journaled publication integration, global native launch,
 worker draining and backend/supervisor assembly remain required before runtime writes.
 Completing this sequence covers the property workflow rather
