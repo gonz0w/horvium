@@ -1,6 +1,6 @@
 # Retained ownership policy startup qualification
 
-Status: implementation candidate; native acceptance pending.
+Status: draft implementation in [PR 307](https://github.com/gonz0w/horvium/pull/307); storage qualification passed on both releases; complete acceptance pending.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 Owning [issue 305](https://github.com/gonz0w/horvium/issues/305);
 Refs [M2-RUNTIME-002](https://github.com/gonz0w/horvium/issues/139).
@@ -93,3 +93,29 @@ policy-aware census/object and context boundaries. Until these and both native
 release gates have candidate-specific evidence, issue 305 remains open. Broader
 runtime integration, retained-job recovery, configured startup, browser, hardware,
 performance, client continuity and release gates remain independently open.
+
+## Recorded candidate observations
+
+The [sanitized manifest](retained-policy-startup-manifest.json) records the exact
+implemented source `941d6d9302919becd3b06490eae418ec7660057b`, base
+`7a62c66f2c8a8feba0c8ceec5831c63215cebef0`, compiler/binary/input hashes and
+original log/record digests. Full portable review passed its baseline, eleven race
+packages and 54 fuzz targets with signed/DCO/title and supervised teardown checks.
+
+Signed red source `5a3e270fc271f420363bddf84b42a86da07349f8` reached the intended
+policy-review refusal in actual FreeBSD 15.1 storage and fixed-root fixtures. Both
+are expected-red, unqualified results with verified guest/base/runtime teardown;
+the fixed-root device fixture was removed. Their passes are not asserted.
+
+The implemented storage gate passed all eight actual parents and 822 controls
+on each disposable FreeBSD/amd64 15.1 and 14.5 target, using the same checksum-bound
+artifact. That includes 278 new controls and all 544 retained controls per release.
+Actual UFS without softupdates, ZFS and process-cut fixtures completed independent
+teardown; host guest/image/key/artifact/supervisor cleanup and preserved base/runtime
+checks passed. Storage policy/physical-use/boot facts remain synthetic. Normal
+FreeBSD build file selection excludes the tagged fixture bridge.
+
+Enabled fixed-root qualification and the expanded acceptance families above remain
+pending. These storage passes do not accept issue 305, the broader runtime gate or
+M2. The PR remains draft. No private exploratory compile/stub log or earlier
+empty-ledger receipt is substituted for a missing native gate.
