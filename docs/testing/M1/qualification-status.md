@@ -1,6 +1,8 @@
 # M1 qualification review
 
-Status: qualification record accepted; M1 is Validating and unaccepted.
+Qualification record accepted in PR 18. Live acceptance actions are tracked in the
+[roadmap index](../../roadmap/github-roadmap-index.md); the historical receipt
+below retains its original pending observations and limitations.
 Owner: Cam (`@gonz0w`).
 Date: 2026-10-04. Approved [PRD](../../milestones/M1/PRD.md),
 [EDD](../../milestones/M1/EDD.md) and [Test Design](../../milestones/M1/TDD.md).
@@ -36,7 +38,7 @@ Ten thousand projected rows are not ten thousand real ZFS datasets or commercial
 qualification. Loopback file-daemon continuity is separate from macOS/Linux/BSD
 protocol interoperability, ACLs, locking, restoration and release configuration.
 
-## Open review and acceptance actions
+## Historical review and acceptance boundary
 
 On 2026-10-04 the maintainer merged [PR 13](https://github.com/gonz0w/horvium/pull/13)
 into `main`, [PR 15](https://github.com/gonz0w/horvium/pull/15) into PR 14's branch,

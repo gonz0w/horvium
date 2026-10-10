@@ -1,6 +1,8 @@
-# M2 review and implementation sequence
+# M2 implementation sequence and historical evidence
 
-Date: 2026-10-09. Status: implementing; design approved; prerequisites accepted through PR 104; runtime contract accepted in PR 105; research observations accepted in PR 106; mechanism accepted in PR 107; private supervisor accepted in PR 108; journal core accepted in PR 109; native census accepted in PR 110; journal file persistence qualified for review; runtime gates open; Actions disabled.
+Live status, priority and dependencies: [roadmap index](../../roadmap/github-roadmap-index.md). Historical status statements below describe their original evidence boundaries; consult GitHub for the current queue.
+
+Date: 2026-10-09. Historical review boundary; Actions disabled. Subsequent merged components and live acceptance are linked from the roadmap index.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md).
 
@@ -49,7 +51,7 @@ merged `main` so squash merges do not recreate the previous stacked-PR conflicts
 Research/acceptance artifacts retain their actual tested revisions and file hashes
 if commit history is rebased. Agents leave PRs open for the maintainer.
 
-## Current evidence and slice progress
+## Historical slice receipts
 
 - Primary source inspection and SHA-256 capture: complete for the documented M2 questions.
 - M2 assembled product mutation/recovery/browser/resource qualification: not started.

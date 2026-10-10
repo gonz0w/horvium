@@ -1,4 +1,6 @@
-# M1 implementation and acceptance status
+# M1 historical implementation and acceptance evidence
+
+Live status, priority and dependencies: [roadmap index](../../roadmap/github-roadmap-index.md). Historical status statements below describe their original evidence boundaries; consult GitHub for the current queue.
 
 Date: 2026-10-04. Design approved in [PR 3](https://github.com/gonz0w/horvium/pull/3).
 M1 is Validating, not accepted or released. Automated slices and the consolidated

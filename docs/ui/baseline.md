@@ -26,6 +26,10 @@ success states. Brief fades/slides may clarify changes. Honor reduced motion;
 preserve focus and stable rows during refresh. No animation engine, UI kit, SPA,
 or client-state framework. Necessary custom JavaScript needs a documented reason.
 
+The planned [uPlot dashboard story](../roadmap/dashboards.md) extends this baseline
+with progressive charts, exact-value tables, coordinated drill-down and semantic
+color roles. It records deferred work and data prerequisites, not implemented UI.
+
 Destructive workflows identify affected resources, consequences, and preconditions
 in a review step. Do not present irreversible storage operations as ordinary
 settings toggles. Long operations show durable job status and honest cancellation

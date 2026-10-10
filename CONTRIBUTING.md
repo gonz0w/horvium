@@ -2,7 +2,12 @@
 
 Read [agent instructions](AGENTS.md), the [architecture baseline](docs/architecture/baseline.md),
 and the active milestone before changing behavior. Link nontrivial work to an
-issue. Product work requires the relevant PRD, EDD, and Test Design Document;
+issue in the [shared private Project](https://github.com/users/gonz0w/projects/2).
+Follow the [GitHub workflow](docs/engineering/github-workflow.md) and
+[roadmap index](docs/roadmap/github-roadmap-index.md): inspect open PRs and
+unblocked Ready work before pickup; triage one bounded outcome with requirements,
+acceptance, milestone, priority, parent and native blockers. Keep exactly one
+status label synchronized with Project Status. Product work requires the relevant PRD, EDD, and Test Design Document;
 a research spike must identify its question and time box.
 
 ## Development and review
@@ -39,3 +44,11 @@ credentials or identifiable operator data in test evidence.
 Apply the [dependency policy](docs/engineering/dependency-policy.md). Documents
 follow the [lifecycle](docs/process/document-lifecycle.md). Use stable requirement
 and test IDs so acceptance evidence can be traced back to the design.
+
+## Issue references and acceptance
+
+Use `Refs gonz0w/horvium#number` for broader gates. Use `Closes` only if the PR
+satisfies every criterion of that bounded issue. A merged component does not
+accept an entire milestone. Link candidate receipts and preserve failed/skipped
+limits. Manually reconcile issue labels/state, Project fields and dependencies
+at pickup, PR review, merge and acceptance; tracking adds no automation.
