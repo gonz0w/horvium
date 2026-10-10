@@ -8,8 +8,9 @@ import (
 	"sync"
 )
 
-// An original read-only closed-incarnation review. It has no publication,
-// incarnation, restore, restart-clearance or native launch method. Do not copy.
+// Original closed-incarnation review. Only its native one-shot consumer can
+// publish a fresh active lifetime. It grants no recovery or native launch proof.
+// Do not copy.
 type ExecutionStartupReview struct {
 	mu              sync.Mutex
 	original        *ExecutionStartupReview
