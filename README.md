@@ -70,8 +70,9 @@ complete system/owned-pool exclusion, restore independence, commissioning,
 publication and startup/global clearance remain required; runtime writes stay denied.
 The [execution-domain system backing path](docs/testing/M2/execution-system-backing.md)
 adds complete repeated system/owned-pool checks under both original leases.
-Native qualification is pending; unresolved owned backing denies, and no
-commissioning, restore or launch authority is added.
+Both pinned native targets and the affected state safety corpus passed with
+verified teardown; it awaits maintainer review. Unresolved owned backing denies,
+and no commissioning, independent restore or launch authority is added.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 

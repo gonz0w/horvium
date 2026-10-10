@@ -107,3 +107,22 @@ runtime caches were preserved. All 34 prior M2 manifests are byte-identical to
 the base. `make lab-status` verified all 236 owned sessions stopped.
 Actual native executor recovery, reboot/power-cut durability and complete M2
 acceptance remain open.
+
+
+## Preservation investigation, 2026-10-10
+
+During execution-domain system backing work, one full FreeBSD 15.1 state run
+failed `after_directory_sync_objects_preserved`. A focused repetition later
+failed `after_return_retry_safe` after 56 passes. These are failures of the
+historical exact object comparisons, and their records remain unqualified.
+The original source-bound PR 59 manifest is unchanged.
+
+Sanitized field/role diagnostics now cover both snapshot comparisons without
+logging record values or identities. All ordinary metadata except access time
+and exact bytes remain required; no comparison or runtime behavior was relaxed.
+A subsequent 300-repeat diagnostic passed, as did separately recorded full
+reruns; focused repetition is not complete-corpus qualification. The cause
+remains unresolved and needs resolution for release acceptance. See the
+[system backing record](execution-system-backing.md) and its
+[manifest](execution-system-backing-manifest.json) for actual sources, failures,
+passing gates, diagnostic scope and teardown.
