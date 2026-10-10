@@ -35,7 +35,9 @@ not permission to ignore port constraints until then.
 The [original fresh journal activation prerequisite](../testing/M2/fresh-journal-activation.md)
 was accepted in PR 122. It joins exclusive fresh domains to an initial durable
 journal receipt. The subsequent [fixed native composition](../testing/M2/native-journal-activation.md)
-passed both pinned host and affected state safety gates and awaits review.
-Registered startup/global ownership, orderly shutdown, backend/supervisor assembly
-and remaining property runtime acceptance precede write enablement; M2 remains
-Implementing.
+was accepted in PR 123 after both pinned host and affected state safety gates.
+The [original unused activation close](../testing/M2/initial-activation-retirement.md)
+passed both pinned native targets and local review, and awaits review.
+Registered startup/global ownership, worker draining/general orderly shutdown,
+backend/supervisor assembly and remaining property runtime acceptance precede
+write enablement; M2 remains Implementing.

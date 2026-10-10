@@ -378,5 +378,22 @@ subsequent [fixed native activation composition](../../testing/M2/native-journal
 qualifies actual kernel boot identity and complete native backing/system facts
 through an opaque original lifetime. Both pinned host gates and affected state
 corpora passed with teardown. Registered startup/global ownership, orderly
-shutdown and actual supervisor/backend assembly still precede runtime use. Closing this private receipt leaves active,
-unclean metadata and cannot supply a new incarnation or launch credential.
+shutdown and actual supervisor/backend assembly still precede runtime use.
+Releasing this private receipt alone leaves active, unclean metadata and cannot
+supply a new incarnation or launch credential.
+
+
+## Original unused activation close prerequisite
+
+The [original unused activation close](../../testing/M2/initial-activation-retirement.md)
+implements the durable close transition for an original generation-one activation
+that has never admitted or launched work and retains a confirmed empty census.
+It repeats the original native/system/boot, exact receipt and namespace checks
+under both leases, publishes only the generation-two closed successor and
+permanently retires both stores on every entered outcome. Explicit release
+remains required. Copies, reopened closed metadata and an advanced/pending or
+disarmed journal cannot reconstruct this lifetime. Native publication cuts,
+nonroot inherited descriptors and fixed host composition passed on both pinned
+releases with verified teardown. This is a prerequisite for the broader orderly
+shutdown described above: it does not assemble a registered startup/global owner,
+drain workers, qualify active kernel work or grant restart/native launch clearance.

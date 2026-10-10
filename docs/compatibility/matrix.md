@@ -1141,3 +1141,27 @@ restore and runtime workflows remain pending. Equal observations are not a kerne
 fence; bounded collection may refuse large or busy environments. Hardware power
 loss, full-filesystem UFS restore, throughput and commercial scale are unqualified.
 Runtime writes, services and GitHub Actions remain disabled; teardown is verified.
+
+
+The [original unused activation close](../testing/M2/initial-activation-retirement.md)
+adds a one-time FinishIdle operation for the original generation-one active
+receipt and an independently confirmed empty census. It writes only the exact
+generation-two closed successor, retires both stores/observation on every entered
+outcome, and retains both locks until explicit release. Repeat attempts preserve
+visible history; reopening supplies metadata only, with no restart receipt.
+This extends PR 123's opaque observation/release boundary; release alone still
+leaves active metadata and the historical manifests remain unchanged.
+Both pinned FreeBSD/amd64 releases passed six fixed-host parents and 296 controls
+each, plus 90 affected state parents, 1,992 native controls, 1,945 codec children
+and 31 backing/teardown markers. The added storage UFS/ZFS cases use synthetic
+boot/physical-use transfers; the host cases use actual fixed producers. Actual
+file-sync, directory-sync, acknowledged and nonroot inherited-descriptor children
+were killed and waited, preserving every visible history and released lease.
+All 174 local tooling tests, eleven race packages and 54 bounded fuzz targets
+passed; see the [source-bound manifest](../testing/M2/initial-activation-retirement-manifest.json).
+All 426 unaffected original Go inputs and 101 historical manifests preserve
+bytes. Registered startup/global ownership, worker draining/general orderly
+shutdown, backend/supervisor assembly, operator restore and shared runtime
+workflows remain pending. Warm disposable observations do not qualify hardware
+power loss, active kernel exclusion, throughput or commercial scale. Runtime
+writes, services and GitHub Actions remain disabled; teardown is verified.
