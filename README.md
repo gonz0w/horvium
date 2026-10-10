@@ -89,7 +89,8 @@ review and verified teardown; PR 120 accepted the prerequisite. Commissioning,
 registered startup/global ownership and runtime writes remain pending.
 The [exclusive fresh-domain provisioning component](docs/testing/M2/fresh-execution-domains.md)
 creates both protected namespaces without adopting existing empty directories.
-Qualification is pending; journal activation and registered startup/global ownership
+Both pinned native state gates and local portable review passed with verified
+teardown; journal activation and registered startup/global ownership
 remain required before runtime writes.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.

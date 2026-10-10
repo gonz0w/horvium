@@ -1,6 +1,6 @@
 # Original journaled metadata publication
 
-Status: private prerequisite qualified; awaiting maintainer review; runtime denied. Date: 2026-10-10.
+Status: private prerequisite qualified; accepted in PR 120; runtime denied. Date: 2026-10-10.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [Accepted M2 design](../../milestones/M2/EDD.md),
 [recovery mechanism](../../milestones/M2/property-recovery-mechanism.md),

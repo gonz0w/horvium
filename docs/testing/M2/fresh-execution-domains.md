@@ -1,6 +1,6 @@
 # Exclusive fresh execution domains
 
-Status: private prerequisite; native qualification pending; runtime denied. Date: 2026-10-10.
+Status: private prerequisite qualified; awaiting maintainer review; runtime denied. Date: 2026-10-10.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [Accepted recovery mechanism](../../milestones/M2/property-recovery-mechanism.md),
 [ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md),
@@ -76,5 +76,38 @@ runtime consumers retain their accepted inputs/behavior. The native evidence is
 bound to the current accepted x/sys 0.49.0 dependency. Shared verification tooling
 requires a fresh complete portable race/fuzz plan. All guests, fixture children,
 pools/datasets, memory backing, mounts and compiled artifacts must be removed.
-No operator data or persistent development service is used. Executed source-bound
-results will be recorded after qualification; no acceptance is claimed here.
+No operator data or persistent development service is used. Executed results are recorded in the
+[source-bound manifest](fresh-execution-domains-manifest.json).
+
+## Executed evidence
+
+Clean signed source `42dad713aae291503c7cc9b2ba1951ad3a6ebe65`, based on
+merged main `5527bb596b1c6d345a8adb3af7f4b073072445cc`, passed both complete
+state corpora on FreeBSD/amd64 15.1-RELEASE-p3 and 14.5-RELEASE. Each ran all
+87 parents, 1,597 native controls, 1,945 codec children and 28 required backing
+markers. The same verified executable SHA-256
+`330a64c663ace04f69367b771ccf3390cef9d4a8fc6fdb7860e4c0de876cf9d4`
+ran on both guests and was removed. Each killed and waited for two paused
+original children and waited for the actual UID-drop child. Every previous
+state safety case remained required and passed.
+
+Local review passed `make check lint test secrets`, 168 tooling tests, eleven
+race packages and all 54 bounded fuzz targets. Shared native evidence tooling
+selected a fresh full portable plan. The 60 focused verifier/runner consumer
+tests passed. All 419 original Go inputs and 98 historical manifests (93 in M2)
+retained their exact bytes. All owned sessions stopped with verified teardown;
+GitHub Actions remain disabled and the concurrent dashboard planning remains
+untouched in the shared checkout.
+
+The signed failing-first source `56af5f2aac5ae780bdc90e66ef082b1e2aab78ea`
+used a denying provisioning stub. Exactly the three new native parents failed;
+all 84 previous parents passed. Its guest and fixtures were removed. The
+previous-evidence verifier regression also failed before the checker was
+extended. Those failures retain distinct source/log hashes in the manifest.
+The final prose commit reruns clean baseline checks; unchanged deep inputs may
+reuse the executed source-bound evidence only in the exact same environment.
+
+This qualifies exclusive namespace provenance. Full commissioning, active
+journal publication, registered startup/global ownership, native backend and
+supervisor composition, recovery/restore workflow and runtime writes remain
+required; the property workflow and NAS release are not complete.
