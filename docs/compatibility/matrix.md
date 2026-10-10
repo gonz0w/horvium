@@ -1084,3 +1084,18 @@ test-first failures and teardown are recorded in the
 [source-bound manifest](../testing/M2/journaled-publication-manifest.json).
 This does not qualify commissioning, registered startup/global ownership, an
 operator restore command, hardware power loss, commercial scale or runtime writes.
+
+
+The [exclusive fresh-domain provisioning component](../testing/M2/fresh-execution-domains.md)
+creates two new root-private directories and lock objects below protected existing
+local UFS/ZFS parents. Both leaf names must be absent; failures preserve partial
+creation and deny resumption. Original protected parent/path, directory and lock
+observations guard its private freshness receipt. Both pinned FreeBSD/amd64
+state corpora passed: 87 parents, 1,597 native controls, 1,945 codec children and
+28 actual backing/teardown markers each. Local review passed 168 tooling tests,
+eleven race packages and 54 bounded fuzz targets, with complete teardown.
+See the [source-bound manifest](../testing/M2/fresh-execution-domains-manifest.json);
+all 419 original Go inputs and 98 historical manifests retained their bytes.
+This does not activate a journal, establish independent restore/system backing,
+register a writer or enable startup/global/native execution. Existing observation
+openers and runtime write denial remain unchanged; no new support claim is made.

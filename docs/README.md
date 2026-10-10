@@ -177,3 +177,5 @@
   acknowledged dual-lease metadata transaction qualified on both pinned FreeBSD
   releases with full local portable review and verified teardown;
   commissioning, registered startup/global admission and runtime writes remain pending.
+
+- [M2 exclusive fresh-domain provisioning](testing/M2/fresh-execution-domains.md): original namespace provenance and preserved partial creation.

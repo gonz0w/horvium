@@ -85,8 +85,13 @@ startup/global ownership and the operator restore workflow remain required.
 The [original journaled metadata publisher](docs/testing/M2/journaled-publication.md)
 connects the private original journal receipt to the original ledger under both
 leases. Both pinned FreeBSD releases passed all native gates, with local portable
-review and verified teardown; the prerequisite awaits maintainer review. Commissioning,
+review and verified teardown; PR 120 accepted the prerequisite. Commissioning,
 registered startup/global ownership and runtime writes remain pending.
+The [exclusive fresh-domain provisioning component](docs/testing/M2/fresh-execution-domains.md)
+creates both protected namespaces without adopting existing empty directories.
+Both pinned native state gates and local portable review passed with verified
+teardown; journal activation and registered startup/global ownership
+remain required before runtime writes.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 
