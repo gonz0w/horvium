@@ -30,7 +30,7 @@ within this helper lifetime. Release alone leaves the prior active journal.
 T1/T2 tests require positive lifecycle, source count before/after every invalid
 entry, original/copy/decoded registry/owner rejection, nine failure/revocation
 modes, 32 concurrent competing attempts while the original factory is blocked,
-and observation/finish/release exclusion. These seams are private portable
+cancellation while waiting for registration, and observation/finish/release exclusion. These seams are private portable
 transfers; production fixes the one process registry, actual UID and original
 native activation. No caller boolean or serialized value supplies authority.
 

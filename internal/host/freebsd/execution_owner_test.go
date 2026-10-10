@@ -265,3 +265,40 @@ func TestCommissionExecutionOwnerExclusion(t *testing.T) {
 		t.Fatal("finish/observe/release ordering")
 	}
 }
+
+func TestCommissionExecutionOwnerCancelledReservation(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	r := newExecutionOwnerRegistry()
+	r.mu.Lock()
+	entered := make(chan struct{}, 32)
+	var made atomic.Int32
+	var wg sync.WaitGroup
+	for range 32 {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			o, e := commissionExecutionOwner(ctx, r, func() bool { entered <- struct{}{}; return true }, func(context.Context) (executionOwnerSource, error) { made.Add(1); return executionOwnerSource{}, nil })
+			if o != nil || e == nil {
+				t.Error("cancelled reservation admitted")
+			}
+		}()
+	}
+	for range 32 {
+		select {
+		case <-entered:
+		case <-time.After(time.Second):
+			r.mu.Unlock()
+			t.Fatal("root preflight not reached")
+		}
+	}
+	// All entrants have passed preflight while the actual registry is unavailable.
+	// Cancellation before releasing it must consume no commissioning lifetime.
+	time.Sleep(30 * time.Millisecond)
+	cancel()
+	r.mu.Unlock()
+	wg.Wait()
+	if r.claimed || made.Load() != 0 {
+		t.Fatal("cancellation while waiting consumed registration", made.Load())
+	}
+}

@@ -3,11 +3,20 @@ package freebsd
 
 import (
 	"context"
-	"github.com/gonz0w/horvium/internal/storage"
+	"os"
 )
 
 // Original root helper commissioning only. No configured startup, existing-state
 // recovery, metadata mutation, worker or native launch consumer is registered.
-func commissionNativeExecutionOwner(context.Context, string, string) (*commissionedExecutionOwner, error) {
-	return nil, storage.ErrDenied
+func commissionNativeExecutionOwner(ctx context.Context, journal, ledger string) (*commissionedExecutionOwner, error) {
+	if !nativeSupported {
+		return nil, ErrUnsupported
+	}
+	return commissionExecutionOwner(ctx, nativeExecutionOwners, func() bool { return os.Geteuid() == 0 }, func(c context.Context) (executionOwnerSource, error) {
+		a, e := activateNativeFreshExecutionJournal(c, journal, ledger)
+		if a == nil {
+			return executionOwnerSource{}, e
+		}
+		return executionOwnerSource{observe: a.Observe, finish: a.FinishIdle, release: a.Close}, e
+	})
 }

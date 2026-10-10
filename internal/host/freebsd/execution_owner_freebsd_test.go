@@ -174,6 +174,13 @@ func nativeCommissionExecutionOwnerFixture(t *testing.T, ctx context.Context, jo
 		cmd := exec.CommandContext(ctx, os.Args[0], "-test.v", "-test.run=^TestNativeCommissionExecutionOwnerChild$", "-test.timeout=150s")
 		cmd.Env = append(os.Environ(), "HORVIUM_COMMISSION_OWNER_CHILD="+mode, "HORVIUM_COMMISSION_JOURNAL="+j, "HORVIUM_COMMISSION_LEDGER="+l)
 		data, e := cmd.CombinedOutput()
+		if e != nil {
+			limit := len(data)
+			if limit > 16<<10 {
+				limit = 16 << 10
+			}
+			t.Logf("owned commissioning child %s: %s", mode, data[:limit])
+		}
 		check("commission_"+mode+"_child_waited", e == nil && cmd.ProcessState != nil && cmd.ProcessState.Success() && len(data) <= 16<<10)
 		prefix := "COMMISSION_OWNER_CHILD_RESULT " + mode + " "
 		found := false
