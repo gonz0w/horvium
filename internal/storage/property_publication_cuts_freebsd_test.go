@@ -151,6 +151,35 @@ func TestNativePropertyPublicationCuts(t *testing.T) {
 		}
 		return got
 	}
+	preserved := func(phase string, before, after map[string]object) bool {
+		t.Helper()
+		if !reflect.DeepEqual(before, after) {
+			if len(before) != len(after) {
+				t.Log("publication cut namespace count drift", phase)
+			}
+			for name, prior := range before {
+				next, ok := after[name]
+				role := "record"
+				if name == "writer.lock" {
+					role = "lock"
+				}
+				if !ok {
+					t.Log("publication cut missing", phase, role)
+					continue
+				}
+				a, b := reflect.ValueOf(prior.stat), reflect.ValueOf(next.stat)
+				for i := 0; i < a.NumField(); i++ {
+					if !reflect.DeepEqual(a.Field(i).Interface(), b.Field(i).Interface()) {
+						t.Log("publication cut stat drift", phase, role, a.Type().Field(i).Name)
+					}
+				}
+				if !bytes.Equal(prior.data, next.data) {
+					t.Log("publication cut bytes drift", phase, role)
+				}
+			}
+		}
+		return reflect.DeepEqual(before, after)
+	}
 	for _, phase := range []string{"before_publish", "staged_before_write", "after_write", "after_file_sync", "before_rename", "after_rename", "after_directory_sync", "after_return"} {
 		func() {
 			path := filepath.Join(anchor, phase)
@@ -200,29 +229,8 @@ func TestNativePropertyPublicationCuts(t *testing.T) {
 			check(phase+"_lock_reacquired", err == nil && s != nil)
 			defer s.Close()
 			after := snapshot(path)
-			if !reflect.DeepEqual(before, after) {
-				for name, prior := range before {
-					next, ok := after[name]
-					role := "record"
-					if name == "writer.lock" {
-						role = "lock"
-					}
-					if !ok {
-						t.Log("publication cut missing", phase, role)
-						continue
-					}
-					a, b := reflect.ValueOf(prior.stat), reflect.ValueOf(next.stat)
-					for i := 0; i < a.NumField(); i++ {
-						if !reflect.DeepEqual(a.Field(i).Interface(), b.Field(i).Interface()) {
-							t.Log("publication cut stat drift", phase, role, a.Type().Field(i).Name)
-						}
-					}
-					if !bytes.Equal(prior.data, next.data) {
-						t.Log("publication cut bytes drift", phase, role)
-					}
-				}
-			}
-			check(phase+"_objects_preserved", reflect.DeepEqual(before, after))
+
+			check(phase+"_objects_preserved", preserved(phase+"_objects", before, after))
 			view, inspectErr := s.InspectJobReservations()
 			published := phase == "after_rename" || phase == "after_directory_sync" || phase == "after_return"
 			switch {
@@ -233,12 +241,12 @@ func TestNativePropertyPublicationCuts(t *testing.T) {
 					return e == nil && len(page) == 1 && page[0].Last == p.job.History[0] && page[0].State == JobReconcileRequired && page[0].Reason == "review-expired" && len(view.Pools()) == 1
 				}())
 				got, duplicate, e := s.PublishPropertySubmission(p)
-				check(phase+"_retry_safe", e == nil && duplicate && reflect.DeepEqual(got, p) && reflect.DeepEqual(after, snapshot(path)))
+				check(phase+"_retry_safe", preserved(phase+"_retry", after, snapshot(path)) && e == nil && duplicate && reflect.DeepEqual(got, p))
 			case phase == "before_publish":
 				page, e := view.RestartPage("", 64)
 				check(phase+"_restart_safe", inspectErr == nil && e == nil && page != nil && len(page) == 0 && len(after) == 1)
 				got, duplicate, e := view.CheckPropertySubmission(p)
-				check(phase+"_retry_safe", e == nil && !duplicate && reflect.DeepEqual(got, PropertyJob{}) && reflect.DeepEqual(after, snapshot(path)))
+				check(phase+"_retry_safe", preserved(phase+"_retry", after, snapshot(path)) && e == nil && !duplicate && reflect.DeepEqual(got, PropertyJob{}))
 			default:
 				temporary := ""
 				for name := range after {
@@ -252,7 +260,7 @@ func TestNativePropertyPublicationCuts(t *testing.T) {
 				}
 				check(phase+"_restart_safe", errors.Is(inspectErr, ErrStateUncertain) && reflect.DeepEqual(view, JobReservations{}) && len(after) == 2 && temporary != "" && bytes.Equal(after[temporary].data, want))
 				got, duplicate, e := s.PublishPropertySubmission(p)
-				check(phase+"_retry_safe", errors.Is(e, ErrStateUncertain) && !duplicate && reflect.DeepEqual(got, PropertyJob{}) && reflect.DeepEqual(after, snapshot(path)))
+				check(phase+"_retry_safe", errors.Is(e, ErrStateUncertain) && !duplicate && reflect.DeepEqual(got, PropertyJob{}) && preserved(phase+"_retry", after, snapshot(path)))
 			}
 			check(phase+"_lock_close", s.Close() == nil)
 		}()
