@@ -189,4 +189,6 @@
 - [M2 original closed-incarnation startup review](testing/M2/execution-startup-review.md): original read-only journal/ledger review and retained file/directory/lock/mount snapshots under fixed native producers and the same process registration; both pinned native targets and local review passed; new active publication and configured recovery remain pending.
 - [M2 original startup execution manifest](testing/M2/execution-startup-review-manifest.json); prerequisite accepted in PR 126.
 - [M2 original closed-startup active publication](testing/M2/closed-startup-activation.md): fresh active identity from one exact original empty closed review, acknowledged durable publication and one-time lease transfer; both native releases passed 630 focused publication/root/retained-startup controls; broader history/recovery/runtime assembly remains pending.
-- [M2 closed-startup activation execution manifest](testing/M2/closed-startup-activation-manifest.json).
+- [M2 closed-startup activation execution manifest](testing/M2/closed-startup-activation-manifest.json); prerequisite accepted in PR 127.
+- [M2 original unused restarted-lifetime close](testing/M2/restart-activation-retirement.md): exact closed successor from the original new active acknowledgement; terminal observation/finish and explicit lease release; both pinned targets passed 938 affected controls with teardown.
+- [M2 restarted-lifetime close execution manifest](testing/M2/restart-activation-retirement-manifest.json).

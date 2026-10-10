@@ -27,6 +27,6 @@ func activateNativeClosedExecutionOwner(ctx context.Context, journal, ledger str
 		if e != nil {
 			return executionOwnerSource{}, errors.Join(e, r.Close())
 		}
-		return executionOwnerSource{observe: a.Observe, finish: func(context.Context) error { return storage.ErrDenied }, release: a.Close}, nil
+		return executionOwnerSource{observe: a.Observe, finish: a.FinishIdle, release: a.Close}, nil
 	})
 }

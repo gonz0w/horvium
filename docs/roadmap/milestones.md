@@ -48,10 +48,14 @@ It retains original journal and directory/lock/mount observations under the same
 process registration, without publishing a new active incarnation.
 The [original closed-startup active publisher](../testing/M2/closed-startup-activation.md)
 passed both pinned native targets: 268 durable publication/cut controls and 362
-fixed-root controls, including all 186 retained startup controls. It awaits
-maintainer review. Only a confirmed empty ledger can receive this new original
+fixed-root controls, including all 186 retained startup controls; accepted in
+PR 127. Only a confirmed empty ledger can receive this new original
 active lifetime; the old review transfers its leases once and cannot release it.
-Nonempty history, restarted-lifetime clean retirement, configured startup/restart,
-journaled publication integration, global native launch,
-worker draining, backend/supervisor assembly and remaining property runtime
+The [original unused restarted-lifetime close](../testing/M2/restart-activation-retirement.md)
+passed all 938 affected publication/root/startup controls on both pinned targets,
+with clean portable review and teardown; it awaits maintainer review. This closes
+only the unused original incarnation; general worker drain remains open.
+Nonempty history, configured startup/restart, journaled publication integration,
+global native launch, worker draining, backend/supervisor assembly and remaining
+property runtime
 acceptance precede write enablement; M2 remains Implementing.
