@@ -358,3 +358,11 @@ that receipt. This component remains unregistered and cannot commission an
 installation or supply startup/restore/global clearance. Original provisioning,
 complete native system/policy/restore proofs and supervisor/backend assembly still
 precede any runtime writer.
+
+
+The [exclusive fresh-domain provisioning component](../../testing/M2/fresh-execution-domains.md)
+implements the native namespace-creation portion of bootstrap. It retains the
+original protected parent and fresh lease objects, refuses existing names and
+preserves incomplete creation without repair. This private receipt is not journal
+activation, complete system/restore/boot provenance or registered startup/global
+clearance. Its future original consumer must establish those gates before use.

@@ -78,6 +78,40 @@ func nativeFreshExecutionDomains(t *testing.T, kind string) {
 	cancelled, cancel := context.WithCancel(ctx)
 	cancel()
 	check("cancelled_inspection_denied", errors.Is(p.inspect(cancelled), context.Canceled) && p.inspect(ctx) == nil)
+
+	j, l := paths("context")
+	q, err := provisionFreshExecutionDomains(nil, j, l, nil)
+	check("nil_creation_context_denied", q == nil && err != nil)
+	q, err = provisionFreshExecutionDomains(cancelled, j, l, nil)
+	check("cancelled_creation_denied", q == nil && errors.Is(err, context.Canceled) && !freshPathExists(j) && !freshPathExists(l))
+	for _, change := range []string{"directory_collision", "lock_collision"} {
+		j, l := paths(change)
+		q, e := provisionFreshExecutionDomains(ctx, j, l, func(role, stage string) error {
+			if role == "journal" && change == "directory_collision" && stage == "open" {
+				if os.Rename(j, j+"-original") != nil || os.Mkdir(j, 0700) != nil {
+					t.Fatal("owned creation directory collision")
+				}
+			}
+			if role == "journal" && change == "lock_collision" && stage == "lock" {
+				if os.WriteFile(filepath.Join(j, stateWriterName), []byte("sentinel"), 0600) != nil {
+					t.Fatal("owned creation lock collision")
+				}
+			}
+			return nil
+		})
+		check(change+"_denied", q == nil && e != nil)
+		check(change+"_ledger_absent", !freshPathExists(l))
+		if change == "lock_collision" {
+			data, e := os.ReadFile(filepath.Join(j, stateWriterName))
+			check("lock_collision_preserved", e == nil && string(data) == "sentinel")
+		}
+	}
+	link := filepath.Join(f.journal, "parent-link")
+	if os.Symlink(f.ledger, link) != nil {
+		t.Fatal("owned symlink parent")
+	}
+	q, err = provisionFreshExecutionDomains(ctx, filepath.Join(link, "journal"), filepath.Join(f.ledger, "link-ledger"), nil)
+	check("symlink_parent_denied", q == nil && err != nil && !freshPathExists(filepath.Join(f.ledger, "journal")) && !freshPathExists(filepath.Join(f.ledger, "link-ledger")))
 	for _, tc := range []struct{ name, j, l string }{
 		{"relative", "relative", lp + "x"}, {"unclean", jp + "/../x", lp + "x"}, {"same", jp + "x", jp + "x"}, {"nested", jp + "x", jp + "x/ledger"}, {"reverse_nested", lp + "x/journal", lp + "x"}, {"root", "/", lp + "x"}, {"control", jp + "\n", lp + "x"},
 	} {
@@ -164,9 +198,9 @@ func nativeFreshExecutionDomains(t *testing.T, kind string) {
 	check("original_close", p.close() == nil)
 	check("closed_inspection_denied", p.inspect(ctx) != nil)
 	check("repeat_close", p.close() == nil)
-	q, e := OpenExecutionDomainLeases(ctx, jp, lp)
-	check("public_reopen_observation", e == nil && q != nil && !q.native.journal.acknowledged && !q.native.journal.initializable)
-	check("public_reopen_close", q.Close() == nil)
+	reopened, e := OpenExecutionDomainLeases(ctx, jp, lp)
+	check("public_reopen_observation", e == nil && reopened != nil && !reopened.native.journal.acknowledged && !reopened.native.journal.initializable)
+	check("public_reopen_close", reopened.Close() == nil)
 	t.Log("FRESH_EXECUTION_" + strings.ToUpper(kind) + "_RESULT " + strings.Join(markers, " "))
 }
 func freshPathExists(path string) bool { _, e := os.Lstat(path); return !os.IsNotExist(e) }
