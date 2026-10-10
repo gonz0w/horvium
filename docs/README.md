@@ -179,3 +179,5 @@
   commissioning, registered startup/global admission and runtime writes remain pending.
 
 - [M2 exclusive fresh-domain provisioning](testing/M2/fresh-execution-domains.md): original namespace provenance and preserved partial creation.
+
+- [M2 original fresh journal activation](testing/M2/fresh-journal-activation.md): one-shot initial durable receipt, repeated trusted facts and preserved uncertain history; native storage qualification passed on both releases; fixed host composition and registered runtime ownership remain pending.

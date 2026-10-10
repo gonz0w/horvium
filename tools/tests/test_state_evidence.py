@@ -76,7 +76,7 @@ SOFTUPDATES_CASES=['enabled', 'ownership_denial', 'job_denial', 'property_denial
 BACKING_TESTS=['TestNativeStateDirectory', 'TestNativeOwnershipRead', 'TestNativeOwnershipCatalog', 'TestNativeOwnershipCapacity', 'TestNativeJobRead', 'TestNativeJobPublication', 'TestNativePropertyJobStorage', 'TestNativeJobReservations', 'TestNativeStateCatalog', 'TestNativeOwnershipPublish', 'TestNativePropertySubmission', 'TestNativeStateSoftUpdates']
 TESTS += ['TestNativeStateSoftUpdates']
 RESULT += 'STATE_SOFTUPDATES_RESULT '+' '.join(c+'=pass' for c in SOFTUPDATES_CASES)+'\n'
-RESULT += ''.join('STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=ufs softupdates=off' if name in ('TestNativeExecutionBindingRemount','TestNativeJointExecutionJournal','TestNativeFreshExecutionDomainsUFS','TestNativeFreshExecutionCuts') else ' filesystem=zfs softupdates=off')+' teardown=pass\n' for name in BACKING_TESTS)
+RESULT += ''.join('STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=ufs softupdates=off' if name in ('TestNativeExecutionBindingRemount','TestNativeJointExecutionJournal','TestNativeFreshExecutionDomainsUFS','TestNativeFreshExecutionCuts','TestNativeFreshJournalActivationUFS','TestNativeFreshJournalActivationCuts') else ' filesystem=zfs softupdates=off')+' teardown=pass\n' for name in BACKING_TESTS)
 PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
 
 
@@ -274,7 +274,7 @@ class SubmissionEvidenceTests(unittest.TestCase):
     def test_exact_backing_capabilities_and_teardown_are_required(self):
         m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
         for name in BACKING_TESTS:
-            record='STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=ufs softupdates=off' if name in ('TestNativeExecutionBindingRemount','TestNativeJointExecutionJournal','TestNativeFreshExecutionDomainsUFS','TestNativeFreshExecutionCuts') else ' filesystem=zfs softupdates=off')+' teardown=pass\n'
+            record='STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=ufs softupdates=off' if name in ('TestNativeExecutionBindingRemount','TestNativeJointExecutionJournal','TestNativeFreshExecutionDomainsUFS','TestNativeFreshExecutionCuts','TestNativeFreshJournalActivationUFS','TestNativeFreshJournalActivationCuts') else ' filesystem=zfs softupdates=off')+' teardown=pass\n'
             for replacement in ['',record+record,record.replace('teardown=pass','teardown=fail'),record.replace('softupdates=off','softupdates=on') if name!='TestNativeStateSoftUpdates' else record.replace('filesystem=ufs','filesystem=zfs')]:
                 with self.subTest(name=name,replacement=replacement),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(record,replacement))
         for case in SOFTUPDATES_CASES:
@@ -545,3 +545,40 @@ class FreshExecutionEvidenceTests(unittest.TestCase):
                 with self.assertRaises(ValueError):self.module().validate((PASS+RESULT).replace(token,''))
             wrong='ufs' if kind=='zfs' else 'zfs'
             with self.assertRaises(ValueError):self.module().validate((PASS+RESULT).replace('STATE_BACKING_RESULT '+parent+' filesystem='+kind,'STATE_BACKING_RESULT '+parent+' filesystem='+wrong))
+
+OLD_ACTIVATION_PASS,OLD_ACTIVATION_RESULT=PASS,RESULT
+class FreshActivationEvidenceRegressionTests(unittest.TestCase):
+    def test_previous_evidence_cannot_qualify_initial_activation(self):
+        with self.assertRaises(ValueError):
+            JournaledPublicationEvidenceTests().module().validate(OLD_ACTIVATION_PASS+OLD_ACTIVATION_RESULT)
+
+FRESH_ACTIVATION_CASES=['activation_not_repeatable', 'boot-changed_denied_preserves_history', 'boot-changed_retired', 'boot-drift_denied', 'boot-drift_retired', 'boot-error_denied', 'boot-error_retired', 'cancelled_denied_without_effect', 'cancelled_observation_no_retirement', 'canonical_durable_bytes', 'close_releases_only', 'closed_observation_denied', 'complete_empty_census', 'copied_close_denied', 'copied_fresh_denied', 'copied_observation_denied', 'entropy-short_denied', 'entropy-short_retired', 'existing_active_no_freshness', 'fixed_entropy_composition', 'fresh_distinct_identities', 'identity-collision_denied', 'identity-collision_retired', 'initial_activation', 'initial_active_record', 'journal-drift_denied_preserves_history', 'journal-drift_retired', 'late-ledger_denied', 'late-ledger_retired', 'ledger-drift_denied_preserves_history', 'ledger-drift_retired', 'native-error_denied', 'native-error_retired', 'nil-boot_denied_without_effect', 'nil-context_denied_without_effect', 'nil-entropy_denied_without_effect', 'nil-reader_denied_without_effect', 'nil-system_denied_without_effect', 'nil_activation_denied', 'nil_observation_context_denied', 'original_observation', 'original_receipt', 'post-boot-error_denied_after_ack', 'post-boot-error_retired', 'post-cancel_denied_after_ack', 'post-cancel_retired', 'post-directory-touch_denied_after_ack', 'post-directory-touch_retired', 'post-journal-touch_denied_after_ack', 'post-journal-touch_retired', 'post-ledger-touch_denied_after_ack', 'post-ledger-touch_retired', 'post-lock-touch_denied_after_ack', 'post-lock-touch_retired', 'post-system-error_denied_after_ack', 'post-system-error_retired', 'prebound_denied', 'prebound_retired', 'private_journal_file', 'publication-after-sync-drift_denied', 'publication-after-sync-drift_retired', 'publication-after-sync-drift_retry_preserves_history', 'publication-closeFile_denied', 'publication-closeFile_retired', 'publication-closeFile_retry_preserves_history', 'publication-rename_denied', 'publication-rename_retired', 'publication-rename_retry_preserves_history', 'publication-syncDirectory_denied', 'publication-syncDirectory_retired', 'publication-syncDirectory_retry_preserves_history', 'publication-syncFile_denied', 'publication-syncFile_retired', 'publication-syncFile_retry_preserves_history', 'publication-verify_denied', 'publication-verify_retired', 'publication-verify_retry_preserves_history', 'publication-write_denied', 'publication-write_retired', 'publication-write_retry_preserves_history', 'raw_boot_bound', 'reopen_close', 'reopen_initializer_denied', 'reopen_observation_only', 'repeat_close', 'repeated_native_system_boot', 'repeated_observation', 'second_close', 'serialized_receipt_inert', 'system-error_denied', 'system-error_retired', 'system-missing_denied', 'system-missing_retired']
+FRESH_ACTIVATION_ZFS_CASES=FRESH_ACTIVATION_CASES + ['ancestor-journal_denied', 'ancestor-journal_retired', 'ancestor-ledger_denied', 'ancestor-ledger_retired']
+FRESH_ACTIVATION_CUT_CASES=['acknowledged_active_without_receipt', 'acknowledged_barrier', 'acknowledged_close', 'acknowledged_history_preserved', 'acknowledged_killed_reaped', 'acknowledged_no_recommission', 'acknowledged_no_reconstructed_initializer', 'directory-sync_active_without_receipt', 'directory-sync_barrier', 'directory-sync_close', 'directory-sync_history_preserved', 'directory-sync_killed_reaped', 'directory-sync_no_recommission', 'directory-sync_no_reconstructed_initializer', 'file-sync_barrier', 'file-sync_history_preserved', 'file-sync_killed_reaped', 'file-sync_no_active_record', 'file-sync_no_recommission']
+ACTIVATION_PARENTS=['TestNativeFreshJournalActivationUFS', 'TestNativeFreshJournalActivationZFS', 'TestNativeFreshJournalActivationCuts']
+TESTS += ACTIVATION_PARENTS
+PASS += ''.join('--- PASS: '+name+' (1.0s)\n' for name in ACTIVATION_PARENTS)
+for suffix,kind,cases in [('UFS','ufs',FRESH_ACTIVATION_CASES),('ZFS','zfs',FRESH_ACTIVATION_ZFS_CASES),('CUTS','ufs',FRESH_ACTIVATION_CUT_CASES)]:
+    RESULT += 'FRESH_ACTIVATION_'+suffix+'_RESULT '+' '.join(c+'=pass' for c in cases)+'\n'
+    parent=ACTIVATION_PARENTS[['UFS','ZFS','CUTS'].index(suffix)]
+    BACKING_TESTS.append(parent)
+    RESULT += 'STATE_BACKING_RESULT '+parent+' filesystem='+kind+' softupdates=off teardown=pass\n'
+
+class FreshActivationEvidenceTests(unittest.TestCase):
+    def test_exact_inventory_and_required_controls(self):
+        m=JournaledPublicationEvidenceTests().module()
+        self.assertEqual(m.FRESH_ACTIVATION_CASES,set(FRESH_ACTIVATION_CASES))
+        self.assertEqual(m.FRESH_ACTIVATION_CUT_CASES,set(FRESH_ACTIVATION_CUT_CASES))
+        m.validate(PASS+RESULT)
+        for suffix,kind,cases in [('UFS','ufs',FRESH_ACTIVATION_CASES),('ZFS','zfs',FRESH_ACTIVATION_ZFS_CASES),('CUTS','ufs',FRESH_ACTIVATION_CUT_CASES)]:
+            marker='FRESH_ACTIVATION_'+suffix+'_RESULT'
+            line=marker+' '+' '.join(c+'=pass' for c in cases)
+            for case in cases:
+                for value in ['',case+'=fail',case+'=pass '+case+'=pass','invented=pass']:
+                    bad=marker+' '+' '.join(value if c==case else c+'=pass' for c in cases)
+                    with self.subTest(suffix=suffix,case=case,value=value),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(line,bad))
+            parent=ACTIVATION_PARENTS[['UFS','ZFS','CUTS'].index(suffix)]
+            backing='STATE_BACKING_RESULT '+parent+' filesystem='+kind+' softupdates=off teardown=pass\n'
+            for bad in ['',backing.replace('teardown=pass','teardown=fail'),backing.replace('filesystem='+kind,'filesystem='+('zfs' if kind=='ufs' else 'ufs')),backing.replace('softupdates=off','softupdates=on')]:
+                with self.subTest(suffix=suffix,backing=bad),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(backing,bad))
+            with self.assertRaises(ValueError):m.validate(PASS.replace('--- PASS: '+parent+' (1.0s)\n','')+RESULT)

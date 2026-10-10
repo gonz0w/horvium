@@ -1099,3 +1099,21 @@ all 419 original Go inputs and 98 historical manifests retained their bytes.
 This does not activate a journal, establish independent restore/system backing,
 register a writer or enable startup/global/native execution. Existing observation
 openers and runtime write denial remain unchanged; no new support claim is made.
+
+
+The [original fresh journal activation component](../testing/M2/fresh-journal-activation.md)
+consumes the original exclusive namespace receipt once, creates fresh identities
+and confirms the initial active record under both original leases. Repeated
+native/system/boot transfers and exact receipt/object checks deny drift, partial
+history and reconstructed initializers. Actual distinct ZFS datasets with an
+ancestor relationship are refused. Both pinned FreeBSD/amd64 storage corpora
+passed 90 parents, 1,806 native controls, 1,945 codec children and 31 backing/teardown
+markers each; local review passed 170 tooling tests, eleven race packages and
+54 bounded fuzz targets. See its
+[source-bound manifest](../testing/M2/fresh-journal-activation-manifest.json).
+The storage fixtures use synthetic boot/physical-use transfers; fixed native
+collector composition is still required. The component remains unregistered:
+close leaves active metadata, and startup/global ownership, restore workflow,
+actual native execution, hardware power loss and commercial scale remain unqualified.
+No runtime writer or service is enabled. All 419 unaffected original Go inputs
+and 99 historical manifests retain their bytes; teardown is verified.

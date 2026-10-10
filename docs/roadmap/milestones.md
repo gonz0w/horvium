@@ -31,3 +31,9 @@ AD, fleet management, and automatic failover need demonstrated demand and separa
 designs after the first release. Packaging research begins in M1 and build metadata
 is introduced when a real source artifact exists; M5 is its release qualification,
 not permission to ignore port constraints until then.
+
+The [original fresh journal activation prerequisite](../testing/M2/fresh-journal-activation.md)
+is qualified on both pinned storage targets and awaits review. It joins exclusive
+fresh domains to an initial durable journal receipt. Fixed native collector
+composition, registered startup/global ownership and remaining property runtime
+acceptance precede write enablement; M2 remains Implementing.
