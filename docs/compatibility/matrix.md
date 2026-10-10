@@ -3,11 +3,6 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
-The [uPlot dashboard roadmap](../roadmap/dashboards.md) is planned direction only.
-No uPlot asset is introduced or qualified by this documentation. Native metrics,
-history, browser accessibility, chart performance and drill-down evidence remain
-required before those views gain compatibility claims; current evidence is unchanged.
-
 The accepted [property runtime recovery/launch contract](../milestones/M2/property-runtime.md)
 defines the remaining path to an assembled writer on the two pinned disposable
 FreeBSD targets. No mechanism, runtime behavior, support target or new native

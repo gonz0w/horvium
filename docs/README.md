@@ -6,7 +6,6 @@
 - [Architecture baseline](architecture/baseline.md)
 - [Architecture decisions](adr/README.md)
 - [Roadmap](roadmap/milestones.md)
-- [uPlot dashboard roadmap and build pickup](roadmap/dashboards.md)
 - [UI baseline](ui/baseline.md)
 - [Compatibility matrix](compatibility/matrix.md)
 - [Ports distribution plan](../packaging/ports/README.md)

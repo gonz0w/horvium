@@ -536,6 +536,18 @@
     "unchanged_input_map_sha256": "175fd1f4e2fe59507e0c586912181f9ed313858cd2ccd159268fdf12d2de392b",
     "unchanged_original_go_inputs": 413
   },
+  "prior_document_review_attempts": [
+    {
+      "checks_log_sha256": "92ae762ee039f56e83f7dd0727429880f865c02a2eefb77f005640456ffd608d",
+      "deep_checks_executed": false,
+      "failure": "Concurrent dashboard links were inadvertently included in shared documentation while their destination was untracked; removed from this PR and preserved as unrelated workspace changes.",
+      "group_cleaned": true,
+      "private_record": ".tools/review-runs/l1cgvei1/result.json",
+      "qualified": false,
+      "record_sha256": "fbc74208d56b1dd76cb409ee34689f072b8afbc9c272933ddf6bf98a0ebfaa70",
+      "source_commit": "8c262f557fdb56e090b0cf5890ff93b5fa63e4af"
+    }
+  ],
   "recorded_at": "2026-10-10T13:22:34.839940+00:00",
   "scope": {
     "actual_child_sigkill_and_wait_at_three_directory_sync_boundaries": true,

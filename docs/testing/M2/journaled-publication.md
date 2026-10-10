@@ -124,3 +124,9 @@ status verified stopped processes and complete teardown. This qualifies the priv
 metadata transaction; fresh OS-root commissioning, registered startup/global owner,
 root restore workflow, backend/supervisor composition and operator writes remain
 required before the property workflow is complete.
+
+An isolated final review caught two concurrent dashboard links inadvertently included
+in shared documentation while their destination was untracked. Those links were
+removed from this PR and the dashboard edits preserved in the shared checkout.
+That documentation check remains failed in the manifest; native source inputs
+are unchanged. A final clean portable review is required on the corrected head.
