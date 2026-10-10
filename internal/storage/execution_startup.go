@@ -15,6 +15,8 @@ type ExecutionStartupReview struct {
 	original        *ExecutionStartupReview
 	observe         func(context.Context) (ExecutionDomainsObservation, error)
 	release         func() error
+	activate        func(context.Context) (*ExecutionRestartActivation, error)
+	transferred     bool
 	closed, blocked bool
 	closeErr        error
 }
@@ -69,6 +71,9 @@ func (r *ExecutionStartupReview) Close() error {
 	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	if r.transferred {
+		return ErrDenied
+	}
 	if !r.closed {
 		r.closed = true
 		r.blocked = true

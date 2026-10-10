@@ -4,6 +4,7 @@ package storage
 import (
 	"bytes"
 	"context"
+	"crypto/rand"
 	"errors"
 	"os"
 	"strings"
@@ -32,28 +33,32 @@ type executionStartupNative struct {
 
 // Trusted root composition; production fixes native producers. Inspection only.
 func ReviewExecutionStartup(ctx context.Context, journal, ledger string, read func(context.Context, int) (ExecutionBackingObservation, error), system func(context.Context) (PoolSystemUse, error), boot func(context.Context) ([16]byte, error)) (*ExecutionStartupReview, error) {
+	r, _, e := reviewExecutionStartup(ctx, journal, ledger, read, system, boot)
+	return r, e
+}
+func reviewExecutionStartup(ctx context.Context, journal, ledger string, read func(context.Context, int) (ExecutionBackingObservation, error), system func(context.Context) (PoolSystemUse, error), boot func(context.Context) ([16]byte, error)) (*ExecutionStartupReview, *executionStartupNative, error) {
 	if ctx == nil || read == nil || system == nil || boot == nil || os.Geteuid() != 0 {
-		return nil, ErrDenied
+		return nil, nil, ErrDenied
 	}
 	if e := ctx.Err(); e != nil {
-		return nil, e
+		return nil, nil, e
 	}
 	pair, e := OpenExecutionDomainLeases(ctx, journal, ledger)
 	if e != nil {
-		return nil, e
+		return nil, nil, e
 	}
 	n := &executionStartupNative{pair: pair, read: read, system: system, boot: boot}
 	n.original = n
 	_, snapshot, current, e := n.inspect(ctx)
 	if e != nil {
-		return nil, errors.Join(e, pair.Close())
+		return nil, nil, errors.Join(e, pair.Close())
 	}
 	n.snapshot = snapshot
 	n.currentBoot = current
 	n.reviewed = true
-	q := &ExecutionStartupReview{observe: n.observe, release: pair.Close}
+	q := &ExecutionStartupReview{observe: n.observe, release: pair.Close, activate: func(c context.Context) (*ExecutionRestartActivation, error) { return n.activate(c, rand.Reader, nil) }}
 	q.original = q
-	return q, nil
+	return q, n, nil
 }
 func (n *executionStartupNative) observe(ctx context.Context) (ExecutionDomainsObservation, error) {
 	got, _, _, e := n.inspect(ctx)

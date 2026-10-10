@@ -21,6 +21,7 @@ lint: lint-tools lint-go
 
 lint-tools:
 	.tools/bin/shellcheck tools/research/m2-executor-recovery.sh
+	.tools/bin/shellcheck tools/bsd-closed-startup-publication-prebuilt.sh tools/bsd-closed-startup-owner-prebuilt.sh
 	.tools/bin/shellcheck tools/check-repo.sh tools/bsd-foundation-smoke.sh tools/bsd-native-discovery.sh tools/bsd-performance.sh tools/bsd-continuity.sh tools/bsd-properties.sh tools/bsd-devices.sh tools/bsd-state-prebuilt.sh tools/bsd-execution-system-prebuilt.sh tools/bsd-joint-leases-prebuilt.sh tools/bsd-original-backing-prebuilt.sh tools/bsd-persistent-backing-prebuilt.sh tools/bsd-pool-properties-prebuilt.sh tools/bsd-storage-job-status-prebuilt.sh tools/bsd-action-peer-prebuilt.sh tools/research/m1-native.sh .githooks/commit-msg .githooks/pre-commit
 
 lint-go:
