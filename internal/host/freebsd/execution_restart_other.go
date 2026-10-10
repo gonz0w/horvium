@@ -1,7 +1,6 @@
 //go:build !freebsd
 
 // SPDX-License-Identifier: BSD-3-Clause
-//
 package freebsd
 
 import "context"
