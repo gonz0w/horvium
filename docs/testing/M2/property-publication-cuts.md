@@ -129,3 +129,17 @@ remains unresolved and needs resolution for release acceptance. See the
 [system backing record](execution-system-backing.md) and its
 [manifest](execution-system-backing-manifest.json) for actual sources, failures,
 passing gates, diagnostic scope and teardown.
+
+
+## Allocation-only followup, 2026-10-10
+
+A later focused repetition on merged PR 116 reproduced preservation failure with
+only `Blocks` differing; contents and other stat fields matched. The
+[correction and native regression](publication-preservation.md) exclude this
+mutable physical accounting field from the test comparison alongside access time.
+All other fields and exact namespace/bytes remain compared. Both complete native
+state gates passed with the additional snapshot contract. The
+[new manifest](publication-preservation-manifest.json) retains original failed
+records, failing-first regression, passing suites and full teardown separately.
+The original PR 59 manifest and all later historical manifests remain unchanged;
+no missing field observation is retroactively invented for earlier failures.

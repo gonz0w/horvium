@@ -1026,7 +1026,7 @@ all original/joint cases: six parents and 200 identity/system assertions per gue
 plus complete fixture and host device teardown. Both affected state corpora passed
 all 77 parents, 1,075 required assertions and 1,930 codec children. Portable review
 passed baseline checks, 160 tooling tests, eleven race packages and all 53 bounded
-fuzz targets. It awaits maintainer review; see the
+fuzz targets. PR 116 accepted this prerequisite; see the
 [source-bound record](../testing/M2/execution-system-backing-manifest.json).
 It checks both original domains
 against complete repeated system facts and all validated ownership GUIDs.
@@ -1038,8 +1038,9 @@ clearance remain unqualified. Off-target strict observation denies.
 Execution-domain system backing validation also encountered intermittent failures
 in historical publication-cut preservation checks on FreeBSD 15.1. Assertions
 remain strict, and sanitized diagnostics now cover both comparisons. Later full
-suites and 300 focused repetitions passed, but the cause is unresolved and release
-acceptance still requires resolution; see the
+suites and 300 focused repetitions passed without identifying the changed field.
+The subsequent allocation-only reproduction and correction are recorded below;
+earlier failed records retain their unknown individual differences. See the
 [preservation investigation](../testing/M2/property-publication-cuts.md#preservation-investigation-2026-10-10).
 
 
@@ -1047,4 +1048,10 @@ The [publication snapshot correction](../testing/M2/publication-preservation.md)
 addresses a reproduced FreeBSD 15.1 allocation-count-only preservation failure.
 Only test comparison excludes physical `Blocks` accounting alongside access time;
 all other native metadata and exact bytes remain required. The additional snapshot
-regression and both full state suites are pending. Production behavior is unchanged.
+regression passed on both pinned disposable FreeBSD/amd64 targets, including
+mutations of all 17 remaining stat fields. Both full state suites passed 77 parents,
+1,076 controls and 1,930 codec children each, with verified teardown. Portable review
+passed 161 tooling tests, eleven race packages and all 53 fuzz targets; it awaits
+maintainer review. See its [manifest](../testing/M2/publication-preservation-manifest.json).
+Production behavior is unchanged; earlier uninstrumented failures remain
+unattributed rather than being rewritten or counted as passing evidence.
