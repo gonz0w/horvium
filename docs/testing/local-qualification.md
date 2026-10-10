@@ -548,3 +548,27 @@ bound to their prior actual source; they are not selected again for this isolate
 read-only path. Old system evidence cannot qualify the new gate. See the
 [contract and executed scope](M2/execution-startup-review.md); new-incarnation
 publication, nonempty history and unclean recovery remain separate requirements.
+
+
+Two separate focused suites qualify closed-startup active publication. Run
+`closed-startup-publication` then `closed-startup-owner` on each pinned release,
+serially. The storage suite selects three exact parents and all 268 publication/
+process-cut controls, requiring three actual backing teardowns. It uses actual
+UFS/ZFS durability with explicitly synthetic storage physical-use/boot transfers;
+its four cut children are killed and waited only after the declared real sync,
+acknowledgement or credential-loss boundary. The process deadline is eighteen
+minutes and each cut has a forty-second parent deadline.
+
+The fixed-root suite selects four exact host parents and all 362 controls,
+including all 186 retained original startup controls and 88 new controls per
+filesystem. Its new children use actual fixed native producers and separate
+production registries without resets. Retain every original eight-minute host
+parent deadline; the four-parent process has 34 minutes. Require exact compiled
+artifact checksum, child waits, original history/locks, disjoint declared backing
+and independent domain/data/device/guest/host/supervisor teardown. No development
+package or service is installed. Old state/system/startup suite records, scripts,
+checkers and validation branches remain unchanged. See the
+[contract and source-bound execution](M2/closed-startup-activation.md); whole-store
+state suites retain their actual historical evidence rather than rerunning
+unrelated cases. Empty warm history and userspace cuts do not qualify reboot,
+power loss, active kernel work or full recovery/runtime behavior.

@@ -440,3 +440,29 @@ with complete teardown. No old publication acknowledgement is reconstructed and
 no new active incarnation is published. Configured startup assembly, nonempty
 history, explicit unclean/changed-boot/restore recovery and global native launch
 still require their own qualified consumers. The current runtime remains denied.
+
+
+## Original empty closed-startup active publication prerequisite
+
+The [original active-publication consumer](../../testing/M2/closed-startup-activation.md)
+consumes the closed review once under the same root helper registration. Keep both
+original journal-first leases through fresh native/system/boot checks, random
+owner generation, exact predecessor verification, actual file/rename/directory
+sync, new acknowledgement and repeated post-publication inspection. Preserve
+installation binding and census; reserve generation capacity for an eventual
+closed successor. Historical closed bytes never become an old acknowledgement.
+The acknowledged directory snapshot is captured inside the real sync callback,
+so later touches cannot be absorbed as an expected namespace change.
+
+Transfer the original leases into the new active lifetime only on full success;
+the consumed review cannot close them. Every entered failure retires both stores,
+retains visible old/new history and denies retry. Explicit release leaves active
+metadata; no clean shutdown or execution exclusion is inferred. Native UFS/ZFS
+pipeline/error tests, actual sync/ack/UID process cuts and fixed-root registration
+passed on both pinned targets, retaining all original startup controls and cleanup.
+
+This consumer requires the confirmed empty census. Nonempty ownership/job history,
+policy review, original restarted-lifetime clean retirement, configured startup
+and explicit unclean/changed-boot/restore decisions remain required. No runtime
+metadata publisher, global native permit, supervisor/backend, worker or operator
+route/service is connected; runtime writes remain denied.

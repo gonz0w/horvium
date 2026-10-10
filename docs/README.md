@@ -187,4 +187,6 @@
 - [M2 registered fresh commissioning owner](testing/M2/commissioned-execution-owner.md): one original root helper commissioning attempt reserved before provisioning, retained after failure/close; both host gates and local review passed; configured startup and global native launch remain pending.
 - [M2 registered commissioning execution manifest](testing/M2/commissioned-execution-owner-manifest.json); prerequisite accepted in PR 125.
 - [M2 original closed-incarnation startup review](testing/M2/execution-startup-review.md): original read-only journal/ledger review and retained file/directory/lock/mount snapshots under fixed native producers and the same process registration; both pinned native targets and local review passed; new active publication and configured recovery remain pending.
-- [M2 original startup execution manifest](testing/M2/execution-startup-review-manifest.json).
+- [M2 original startup execution manifest](testing/M2/execution-startup-review-manifest.json); prerequisite accepted in PR 126.
+- [M2 original closed-startup active publication](testing/M2/closed-startup-activation.md): fresh active identity from one exact original empty closed review, acknowledged durable publication and one-time lease transfer; both native releases passed 630 focused publication/root/retained-startup controls; broader history/recovery/runtime assembly remains pending.
+- [M2 closed-startup activation execution manifest](testing/M2/closed-startup-activation-manifest.json).

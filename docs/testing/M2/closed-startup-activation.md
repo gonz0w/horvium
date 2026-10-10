@@ -1,6 +1,6 @@
 # Original closed-startup active publication
 
-Status: failing-first private prerequisite; native qualification pending; runtime denied.
+Status: private original empty closed-startup activation qualified; awaiting maintainer review; runtime denied.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted recovery mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -78,3 +78,57 @@ seed for active denial. Each independently proves exact unchanged history and
 released locks; all five actual or uncertain new active lifetimes retain separate
 closed seeds. This removes three duplicate commissioning/unused-close sequences,
 with every case, assertion and child/deadline retained. Product code is unchanged.
+
+## Executed qualification
+
+Five new portable behavioral parents initially failed against denial stubs;
+portable green also retains all four original review parents. Native signed source
+`45032659283d9742fed65fc51930ef8195c98029` failed both new fixed-root parents while
+both original startup parents/all 186 controls passed. Its storage stub failed the
+two positive receipts and the first sync-cut barrier. That first failure exposed a
+fixture release omission and UFS backing unmount error; the outer owned VM/host
+was discarded cleanly, but no native fixture success is claimed. Corrected signed
+source `7c2e2d954ec4f20edfd1c286c292cd60fc487e40` adds deferred original release
+before failed assertions; its three deliberately failing storage parents all
+report actual backing teardown. All failed records remain unqualified.
+
+Implementation `ae2562ea0955c7130abfad35ca7b0a8df9fdacf5`, followed by qualified
+source `bb17b9505e7b05b6708d001336a93e39a50ab798`, based on merged
+`9d3e5286de41a6401d6898f7d40939957cb3de18`, passed both pinned disposable
+FreeBSD/amd64 targets. Each executed seven parents and 630 controls: three storage
+parents/268 controls and four fixed-root parents/362 controls. The earlier 15.1
+storage gate remains bound to its actual implementation source. Later changes
+format the !freebsd host fallback and optimize only the new host fixture
+seeding/documentation; all are excluded from the storage executable and its
+dependencies. Both releases used one compiled artifact per
+suite. The storage proof requires all 122 controls per filesystem, all 24 actual
+cut controls and three complete backing teardowns. The fixed-root proof requires
+all 88 new controls per filesystem, all 186 retained original startup controls,
+normal waits for every original/new child and independent history/lock/data/
+backing/domain/device teardown. No production registry is reset by a fixture.
+
+Five new/four retained portable parents, eleven unsafe successor variants, seven
+transfer/lifecycle failures and four strict evidence-consumer tests passed.
+Clean local review passed check/lint/test/secrets, all 184 tooling tests, eleven
+race packages and all 54 bounded fuzz targets. The first local review stopped on
+fallback formatting before deep tests; the signed correction removes only the
+blank line. Final prose review reruns the baseline and can reuse only exact
+matching actually executed deep inputs/base/environment.
+
+All 445 unaffected original Go files and 104 historical manifests (99 M2) retain
+bytes. The two intentional original Go changes add one-time review consumption/
+lease-transfer denial and extract native inspection under the same locks, adding
+only the exact acknowledged active mode. Both old native startup parents rerun.
+Existing formats/publishers/fixtures and state/system/startup scripts/checkers stay
+unchanged; old runner suite values, validation branches and other helpers were
+checked for preservation. Historical full state/system evidence remains bound to
+its actual source; these focused gates do not claim a redundant execution.
+
+The [sanitized manifest](closed-startup-activation-manifest.json) records exact
+source, artifact/image/tool, failing-first, review and teardown hashes. All owned
+test executables were removed, original base/runtime preserved, and guest devices,
+filesystems, data, VMs and supervisor groups were removed or restored as applicable.
+No host service or GitHub Actions execution was enabled. Concurrent dashboard
+files in the primary checkout retain original bytes. This is empty clean startup
+active publication only; no nonempty recovery, clean restarted-lifetime shutdown,
+runtime writer, native launch or full M2/release acceptance is inferred.

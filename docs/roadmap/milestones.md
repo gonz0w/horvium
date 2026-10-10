@@ -43,9 +43,15 @@ was accepted in PR 125 after both pinned host gates and local review.
 It permits one commissioning attempt per helper process before provisioning;
 failure or close cannot start another ledger lifetime in that process.
 The [original closed-incarnation startup review](../testing/M2/execution-startup-review.md)
-passed both pinned native targets with 186 controls each and awaits maintainer review.
+was accepted in PR 126 after both pinned native targets passed 186 controls each.
 It retains original journal and directory/lock/mount observations under the same
 process registration, without publishing a new active incarnation.
-Configured startup/restart, journaled publication integration, global native launch,
+The [original closed-startup active publisher](../testing/M2/closed-startup-activation.md)
+passed both pinned native targets: 268 durable publication/cut controls and 362
+fixed-root controls, including all 186 retained startup controls. It awaits
+maintainer review. Only a confirmed empty ledger can receive this new original
+active lifetime; the old review transfers its leases once and cannot release it.
+Nonempty history, restarted-lifetime clean retirement, configured startup/restart,
+journaled publication integration, global native launch,
 worker draining, backend/supervisor assembly and remaining property runtime
 acceptance precede write enablement; M2 remains Implementing.

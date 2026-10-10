@@ -1,6 +1,6 @@
 # Original closed-incarnation startup review
 
-Status: private read-only startup prerequisite qualified; awaiting maintainer review; runtime denied.
+Status: private read-only startup prerequisite accepted in PR 126; runtime denied.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted recovery mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -105,3 +105,10 @@ all declared guest devices and host artifacts. Compiled owned test artifacts wer
 removed. All owned VMs and supervisors are stopped; no host service or GitHub
 Actions execution was enabled. Concurrent dashboard work in the primary checkout
 retains its original bytes.
+
+The subsequent [original active-publication consumer](closed-startup-activation.md)
+consumes this review once for a confirmed empty ledger and retains both original
+leases in a new acknowledged active lifetime. Both original startup parents/all
+186 controls are rerun with that consumer on both targets. The historical manifest
+above remains unchanged and bound to its originally executed source. Nonempty
+history, recovery, clean retirement and runtime launch remain separate gates.
