@@ -31,3 +31,13 @@ class ExecutionSystemEvidenceTests(unittest.TestCase):
   m.validate_prebuilt('EXECUTION_SYSTEM_PREBUILT_SHA256 '+'a'*64+'\n','a'*64,'execution-system')
   with self.assertRaises(ValueError):m.validate_prebuilt('', 'a'*64,'execution-system')
   self.assertIn('bsd-execution-system-prebuilt.sh',m.suite_command('execution-system',False,'a'*64)[1])
+
+ def test_previous_system_evidence_cannot_qualify_activation(self):
+  import re
+  previous=re.sub(r'activation_[a-zA-Z0-9_-]+=pass ?', '', self.log)
+  with self.assertRaises(ValueError):self.m.validate(previous)
+
+ def test_activation_control_inventory(self):
+  expected=set("activation_boot-after_active_preserved activation_boot-after_error_denied activation_boot-after_observation_only_reopen activation_boot-after_retry_preserves_history activation_boot-before_error_denied activation_boot-before_no_active_record activation_boot-before_observation_only_reopen activation_boot-before_retry_preserves_history activation_both_leases_released activation_cancelled_no_creation activation_close_leaves_active activation_closed_no_recommission activation_closed_observation_denied activation_copied_close_denied activation_copied_observation_denied activation_drift_permanently_retired activation_drift_preserves_journal activation_exact_kernel_boot activation_fixed_native_composition activation_fresh_identities activation_initial_active_record activation_journal_lease_held activation_ledger_drift_denied activation_ledger_lease_held activation_nil_no_creation activation_no_serialized_authority activation_original_close activation_original_observation activation_private_record activation_repeated_observation activation_system-after_active_preserved activation_system-after_error_denied activation_system-after_observation_only_reopen activation_system-after_retry_preserves_history activation_uid_child_reaped activation_uid_inherited_denied activation_uid_no_creation".split())
+  self.assertEqual({c for c in self.m.CASES if c.startswith('activation_')},expected)
+  self.assertEqual(len(expected),37)

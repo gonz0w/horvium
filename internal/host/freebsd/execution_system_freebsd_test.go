@@ -396,6 +396,7 @@ func nativeExecutionSystemFixture(t *testing.T, ctx context.Context, kind string
 	check("ledger_preserved", e == nil && bytes.Equal(after, policyBytes))
 	after, e = os.ReadFile(filepath.Join(ordinary, "sentinel"))
 	check("data_sentinel_preserved", e == nil && bytes.Equal(after, sentinel))
+	nativeFreshActivationFixture(t, ctx, jp, lp, check)
 	check("domain_teardown", clean())
 	cleaned = true
 	check("mounts_restored", must("/sbin/mount", "-p") == mountsBefore)

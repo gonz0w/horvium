@@ -94,8 +94,13 @@ teardown; PR 121 accepted this prerequisite.
 The [original fresh journal activation component](docs/testing/M2/fresh-journal-activation.md)
 consumes that receipt once for an initial durable active journal acknowledgement.
 Both pinned storage gates and local review passed with verified teardown.
-Fixed host-collector composition and registered startup/global ownership
-remain required before runtime writes.
+PR 122 accepted this activation prerequisite. The subsequent
+[fixed native journal activation](docs/testing/M2/native-journal-activation.md) joins
+it to the exact kernel boot identity and complete native backing/system collectors.
+Both pinned host gates and the affected state safety corpus passed with verified
+teardown; the component remains unregistered. Registered startup/global ownership,
+orderly shutdown and actual backend/supervisor assembly remain required before
+runtime writes.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 
