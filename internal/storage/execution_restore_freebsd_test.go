@@ -271,6 +271,7 @@ func nativeIndependentRestore(t *testing.T, kind string) {
 	if e != nil {
 		t.Fatal(e)
 	}
+	t.Cleanup(func() { _ = p.Close() })
 	first, e := p.Observe(ctx, installation, f.read)
 	check("original_binding", e == nil && first.origin == p && !first.journalPresent)
 	var jst, lst unix.Stat_t
