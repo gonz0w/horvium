@@ -8,14 +8,21 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	"golang.org/x/sys/unix"
 )
 
 // Original read-only native review. Historical bytes never become an old
 // publication acknowledgement, and this handle cannot publish a new incarnation.
+type executionStartupObjects struct {
+	directory, lock unix.Stat_t
+	backing         propertyStateBacking
+}
 type executionStartupNative struct {
 	original    *executionStartupNative
 	pair        *ExecutionDomainLeases
 	snapshot    executionJournalSnapshot
+	objects     [2]executionStartupObjects
 	currentBoot [16]byte
 	reviewed    bool
 	read        func(context.Context, int) (ExecutionBackingObservation, error)
@@ -101,6 +108,17 @@ func (n *executionStartupNative) inspect(ctx context.Context) (ExecutionDomainsO
 	// Ordinary reopen must remain observation-only. Never synthesize an old ack.
 	if j.initializable || j.acknowledged {
 		return zero, empty, rawZero, ErrDenied
+	}
+	var objects [2]executionStartupObjects
+	for i, state := range []*StateDirectory{j.lease, l} {
+		value, e := readExecutionStartupObjectsLocked(state)
+		if e != nil {
+			return zero, empty, rawZero, e
+		}
+		if n.reviewed && !sameExecutionStartupObjects(value, n.objects[i]) {
+			return zero, empty, rawZero, ErrDrift
+		}
+		objects[i] = value
 	}
 	var got ExecutionDomainsObservation
 	var before executionJournalSnapshot
@@ -188,7 +206,50 @@ func (n *executionStartupNative) inspect(ctx context.Context) (ExecutionDomainsO
 	if os.Geteuid() != 0 {
 		return zero, empty, rawZero, ErrDenied
 	}
+	for i, state := range []*StateDirectory{j.lease, l} {
+		value, e := readExecutionStartupObjectsLocked(state)
+		if e != nil {
+			return zero, empty, rawZero, e
+		}
+		if !sameExecutionStartupObjects(value, objects[i]) {
+			return zero, empty, rawZero, ErrDrift
+		}
+	}
+	if e := ctx.Err(); e != nil {
+		return zero, empty, rawZero, e
+	}
+	if os.Geteuid() != 0 {
+		return zero, empty, rawZero, ErrDenied
+	}
+	if !n.reviewed {
+		n.objects = objects
+	}
 	p.binding, p.bound = got.binding, true
 	succeeded = true
 	return got, before, current, nil
+}
+
+// Called only under the original state mutex. No reopened/replacement descriptor
+// is retained. Full mutable metadata matters for this read-only review lifetime.
+func readExecutionStartupObjectsLocked(s *StateDirectory) (executionStartupObjects, error) {
+	zero := executionStartupObjects{}
+	if s == nil || s.propertyOrigin != s || os.Geteuid() != 0 {
+		return zero, ErrDenied
+	}
+	dir, e := s.ownershipDirectoryLocked()
+	if e != nil {
+		return zero, e
+	}
+	var got executionStartupObjects
+	if unix.Fstat(dir, &got.directory) != nil || unix.Fstat(int(s.writer.Fd()), &got.lock) != nil {
+		return zero, ErrStateDirectory
+	}
+	got.backing, e = propertyStateFilesystem(dir)
+	if e != nil {
+		return zero, e
+	}
+	return got, nil
+}
+func sameExecutionStartupObjects(a, b executionStartupObjects) bool {
+	return sameOwnershipMetadata(a.directory, b.directory) && sameOwnershipMetadata(a.lock, b.lock) && a.backing == b.backing
 }
