@@ -1,6 +1,6 @@
 # Independent ledger restore prerequisite
 
-Status: Native qualification pending; runtime denied. Date: 2026-10-10.
+Status: Native fixture prerequisite qualified; awaiting maintainer review; runtime denied. Date: 2026-10-10.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [Accepted mechanism](../../milestones/M2/property-recovery-mechanism.md),
 [ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md),
@@ -73,8 +73,8 @@ older logs, either missing filesystem, any omitted/duplicate/unknown/failed cont
 wrong backing and incomplete teardown. The old-evidence regression failed before
 this checker extension, then passed with the new required families.
 
-Run the existing state suite serially on both pinned disposable FreeBSD/amd64
-releases and local review from clean signed source. Remove the owned pool/datasets,
+The state suite ran serially on both pinned disposable FreeBSD/amd64 releases
+with local review from clean signed source. Teardown removed the owned pool/datasets,
 file backing or memory mount/device, child processes and all host guest artifacts.
 Historical manifests retain their original bytes and actual sources. All checks
 remain local with GitHub Actions disabled and no persistent services.
@@ -85,3 +85,37 @@ admission/draining/reconciliation, detect root tampering or joint host rollback,
 qualify power loss/VM memory resume, grant restart/global launch clearance or close
 M2/release acceptance. These remaining gates must compose the original owner and
 actual backend/supervisor before property writes can be enabled.
+
+
+## Executed evidence
+
+Signed source `df1536d8bc5a3250c81c068e37d4d3a3b912a6b0` passed both complete
+state corpora on pinned FreeBSD/amd64 15.1-RELEASE-p3 and 14.5-RELEASE. Each
+executed 79 selected parents, 1,170 native controls and 1,930 codec children,
+including all 77/1,076 retained parents/controls and 47 new restore controls per
+filesystem. The same verified executable SHA-256
+`f1a465582a9a6018cd84ed19df36309212dc35a797e1b79ba97cba8b1fcb0575`
+ran on both guests and was removed. All 22 backing/teardown markers were required.
+The actual restore child was killed and reaped on each filesystem on each target.
+This is warm process-death and explicit file/dataset restore evidence, not a
+hardware power-loss or active-kernel-interruption claim. Tiny fixture timings do
+not establish commercial-scale or physical NAS performance.
+
+Local review passed `make check lint test secrets`, 163 tooling tests, eleven race
+packages and all 53 bounded fuzz targets. Shared checker/runner maintenance
+selected a fresh full portable plan. All 91 historical M2 manifests and all 414
+original Go inputs retained their exact bytes; only a new Go test file was added.
+GitHub Actions remain disabled, no host service was enabled and every owned
+session stopped with verified teardown. The final prose/evidence update reruns
+baseline checks and reuses exact passing deep inputs.
+
+The first signed source also passed the complete 15.1 native suite. Its portable
+review caught two tooling omissions: the source-build selector and the runner's
+synthetic evidence lacked the new restore families. Both were corrected before
+the final same-source two-target qualification. An extra unpinned host-Python
+diagnostic lacked the pinned PyYAML dependency and failed nine foundation checks;
+it was not a clean-source qualification. The pinned local review passed those
+checks. Original sources, failed/passing records, log hashes, executable/compiler,
+images, native utilities and teardown receipts remain in the
+[sanitized manifest](independent-ledger-restore-manifest.json). No earlier attempt
+is rewritten or relabeled as the final qualification.

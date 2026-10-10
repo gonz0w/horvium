@@ -79,8 +79,9 @@ object/content checks. Both native state gates passed; PR 117 accepted the corre
 Production behavior and runtime write denial remain unchanged.
 The [independent ledger restore fixtures](docs/testing/M2/independent-ledger-restore.md)
 exercise UFS file-level restoration and distinct ZFS dataset rollback against a
-preserved disarmed journal. Native qualification is pending; these fixtures do
-not commission a writer or implement the operator restore workflow.
+preserved disarmed journal. Both pinned native targets passed with complete
+teardown; the fixture prerequisite awaits maintainer review. Commissioning,
+startup/global ownership and the operator restore workflow remain required.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 
