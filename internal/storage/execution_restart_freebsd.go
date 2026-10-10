@@ -60,7 +60,7 @@ func (n *executionStartupNative) activate(ctx context.Context, entropy io.Reader
 	if e != nil {
 		return nil, e
 	}
-	if got.census != empty {
+	if got.census != empty && n.policy == nil {
 		return nil, ErrDenied
 	}
 	var identity [16]byte

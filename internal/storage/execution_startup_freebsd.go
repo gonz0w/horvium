@@ -20,17 +20,19 @@ type executionStartupObjects struct {
 	backing         propertyStateBacking
 }
 type executionStartupNative struct {
-	original    *executionStartupNative
-	pair        *ExecutionDomainLeases
-	snapshot    executionJournalSnapshot
-	objects     [2]executionStartupObjects
-	currentBoot [16]byte
-	reviewed    bool
-	activated   bool
-	finished    bool
-	read        func(context.Context, int) (ExecutionBackingObservation, error)
-	system      func(context.Context) (PoolSystemUse, error)
-	boot        func(context.Context) ([16]byte, error)
+	original      *executionStartupNative
+	pair          *ExecutionDomainLeases
+	snapshot      executionJournalSnapshot
+	objects       [2]executionStartupObjects
+	currentBoot   [16]byte
+	reviewed      bool
+	activated     bool
+	finished      bool
+	policy        ExecutionStartupPolicySource
+	policyDigests map[string][32]byte
+	read          func(context.Context, int) (ExecutionBackingObservation, error)
+	system        func(context.Context) (PoolSystemUse, error)
+	boot          func(context.Context) ([16]byte, error)
 }
 
 // Trusted root composition; production fixes native producers. Inspection only.
@@ -39,6 +41,13 @@ func ReviewExecutionStartup(ctx context.Context, journal, ledger string, read fu
 	return r, e
 }
 func reviewExecutionStartup(ctx context.Context, journal, ledger string, read func(context.Context, int) (ExecutionBackingObservation, error), system func(context.Context) (PoolSystemUse, error), boot func(context.Context) ([16]byte, error)) (*ExecutionStartupReview, *executionStartupNative, error) {
+	return reviewExecutionStartupPolicy(ctx, journal, ledger, read, system, boot, nil)
+}
+func reviewExecutionStartupPolicy(ctx context.Context, journal, ledger string, read func(context.Context, int) (ExecutionBackingObservation, error), system func(context.Context) (PoolSystemUse, error), boot func(context.Context) ([16]byte, error), policy ExecutionStartupPolicySource) (*ExecutionStartupReview, *executionStartupNative, error) {
+	// Behavioral red candidate: policy startup is deliberately unavailable.
+	if policy != nil {
+		return nil, nil, ErrDenied
+	}
 	if ctx == nil || read == nil || system == nil || boot == nil || os.Geteuid() != 0 {
 		return nil, nil, ErrDenied
 	}
@@ -49,7 +58,7 @@ func reviewExecutionStartup(ctx context.Context, journal, ledger string, read fu
 	if e != nil {
 		return nil, nil, e
 	}
-	n := &executionStartupNative{pair: pair, read: read, system: system, boot: boot}
+	n := &executionStartupNative{pair: pair, read: read, system: system, boot: boot, policy: policy}
 	n.original = n
 	_, snapshot, current, e := n.inspect(ctx)
 	if e != nil {
@@ -193,6 +202,20 @@ func (n *executionStartupNative) inspectLocked(ctx context.Context) (ExecutionDo
 				}
 				if p.bound && p.binding != got.binding {
 					return ErrDrift
+				}
+				if n.policy != nil {
+					if e = n.inspectPoliciesLocked(ctx, got); e != nil {
+						return e
+					}
+					if len(n.policyDigests) != 0 {
+						final, e := p.observeLocked(ctx, before.record.Binding.Installation, n.read, n.system)
+						if e != nil {
+							return e
+						}
+						if final != got {
+							return ErrDrift
+						}
+					}
 				}
 				again, e := n.boot(ctx)
 				if e != nil {

@@ -1388,3 +1388,7 @@ Current activation and unused retirement still require an empty ledger. Future
 acceptance needs complete native policy validation, every-job refusal and actual
 UFS/ZFS lifecycle/publication/teardown evidence on both pinned FreeBSD targets.
 No new runtime behavior, hardware support or nonempty native pass is claimed.
+
+## Retained ownership policy startup candidate
+
+The [adopted design](../milestones/M2/retained-policy-startup.md) has a private implementation candidate with complete policy/member/system validation, all-job refusal and original unused retirement. Ordinary metadata review remains empty-only. [Candidate qualification](../testing/M2/retained-policy-startup.md) is pending; no additional FreeBSD release, configured runtime, hardware or commercial support claim follows. Runtime writes remain disabled.

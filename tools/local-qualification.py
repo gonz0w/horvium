@@ -19,6 +19,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ROOT / 'tools'
 SUITES = {
+    'policy-startup-publication': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_STATE_VM=1 HORVIUM_RESTART_VM=1 sh tools/bsd-policy-startup-publication-prebuilt.sh'),
+    'policy-startup-owner': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_BACKING_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_EXECUTION_STARTUP_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1 sh tools/bsd-policy-startup-owner-prebuilt.sh'),
     'closed-startup-publication': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_STATE_VM=1 HORVIUM_RESTART_VM=1 sh tools/bsd-closed-startup-publication-prebuilt.sh'),
     'closed-startup-owner': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_BACKING_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_EXECUTION_STARTUP_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1 sh tools/bsd-closed-startup-owner-prebuilt.sh'),
     'executor-recovery': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_RESEARCH_VM=1 sh tools/research/m2-executor-recovery.sh'),
@@ -41,6 +43,8 @@ SUITES = {
 }
 
 PREBUILT = {
+    'policy-startup-publication': ('policy-startup-publication-native.test', './internal/storage', 'POLICY_STARTUP_PUBLICATION_PREBUILT_SHA256', 'HORVIUM_STATE_VM=1 HORVIUM_RESTART_VM=1', 'bsd-policy-startup-publication-prebuilt.sh'),
+    'policy-startup-owner': ('policy-startup-owner-native.test', './internal/host/freebsd', 'POLICY_STARTUP_OWNER_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_EXECUTION_STARTUP_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1', 'bsd-policy-startup-owner-prebuilt.sh'),
     'closed-startup-publication': ('closed-startup-publication-native.test', './internal/storage', 'CLOSED_STARTUP_PUBLICATION_PREBUILT_SHA256', 'HORVIUM_STATE_VM=1 HORVIUM_RESTART_VM=1', 'bsd-closed-startup-publication-prebuilt.sh'),
     'closed-startup-owner': ('closed-startup-owner-native.test', './internal/host/freebsd', 'CLOSED_STARTUP_OWNER_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_EXECUTION_STARTUP_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1', 'bsd-closed-startup-owner-prebuilt.sh'),
     'execution-startup': ('execution-startup-native.test', './internal/host/freebsd', 'EXECUTION_STARTUP_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_EXECUTION_STARTUP_VM=1', 'bsd-execution-startup-prebuilt.sh'),
@@ -80,7 +84,7 @@ def suite_command(suite, source_build=False, artifact_digest=None):
 
 
 def uses_device_fixture(suite):
-    return suite in ('devices', 'pool-properties', 'executor-recovery', 'execution-system', 'execution-startup', 'closed-startup-owner')
+    return suite in ('policy-startup-owner', 'devices', 'pool-properties', 'executor-recovery', 'execution-system', 'execution-startup', 'closed-startup-owner')
 
 
 def recovery_boot_identity(text):
@@ -144,7 +148,8 @@ def build_native_binary(directory, source, suite):
     subprocess.run([go, 'mod', 'verify'], cwd=ROOT, env=env, check=True)
     filename, package, _, _, _ = PREBUILT[suite]
     binary = directory / filename
-    command = [go, 'test', '-c', '-trimpath', '-o', str(binary), package]
+    tags = ['-tags=horvium_native_fixture'] if suite == 'policy-startup-owner' else []
+    command = [go, 'test', '-c', '-trimpath', *tags, '-o', str(binary), package]
     source_identity(source)
     subprocess.run(command, cwd=ROOT, env=env, check=True)
     source_identity(source)
@@ -153,7 +158,7 @@ def build_native_binary(directory, source, suite):
             'go_pins_sha256': plan.digest(TOOLS / 'go-pins.json'),
             'go_mod_sha256': plan.digest(ROOT / 'go.mod'), 'go_sum_sha256': plan.digest(ROOT / 'go.sum'),
             'target': 'freebsd/amd64', 'goamd64': 'v1', 'cgo_enabled': False,
-            'build_arguments': ['go', 'test', '-c', '-trimpath', '-o', '<owned-artifact>', package]}
+            'build_arguments': ['go', 'test', '-c', '-trimpath', *tags, '-o', '<owned-artifact>', package]}
 
 
 def validate_prebuilt(log, artifact_digest, suite='state'):
@@ -208,6 +213,11 @@ def validate_result(suite, log, complete=False):
         return
     if suite == 'job-status':
         load_tool('check-storage-job-status-evidence').validate(log)
+        return
+    if suite in ('policy-startup-publication', 'policy-startup-owner'):
+        load_tool('check-policy-startup-evidence').validate(log, 'publication' if suite.endswith('publication') else 'owner')
+        if complete and suite == 'policy-startup-owner' and log.count('DEVICE_FIXTURE_CLEANUP pass\n') != 1:
+            raise ValueError('policy startup owner device teardown required')
         return
     if suite in ('closed-startup-publication', 'closed-startup-owner'):
         load_tool('check-closed-startup-evidence').validate(log, 'publication' if suite == 'closed-startup-publication' else 'owner')

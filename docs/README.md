@@ -200,3 +200,5 @@
 - [M2 restarted-lifetime close execution manifest](testing/M2/restart-activation-retirement-manifest.json).
 
 - [M2 proposed policy-only clean restart slice and Test Design](milestones/M2/retained-policy-startup.md)
+
+- [M2 retained-policy startup qualification](testing/M2/retained-policy-startup.md): private policy-only candidate and bounded native gate; acceptance pending.

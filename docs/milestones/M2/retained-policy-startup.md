@@ -1,6 +1,6 @@
-# Proposed slice: clean restart with retained ownership policies
+# Adopted slice: clean restart with retained ownership policies
 
-Status: Proposed; implementation requires maintainer review of this amendment.
+Status: adopted in [PR 306](https://github.com/gonz0w/horvium/pull/306); implementation and qualification tracked in [issue 305](https://github.com/gonz0w/horvium/issues/305).
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 Design pickup: [issue 288](https://github.com/gonz0w/horvium/issues/288).
 Parent: [M2-RUNTIME-002 gate](https://github.com/gonz0w/horvium/issues/139).
