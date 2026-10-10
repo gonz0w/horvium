@@ -1366,3 +1366,12 @@ unclean/changed-boot/restore decisions, journaled mutations, native launch and
 worker/supervisor/backend assembly remain pending. Runtime services/writes and
 GitHub Actions stay disabled. Performance, commercial scale, whole-host rollback
 and M1 manual accessibility remain unqualified.
+
+## Proposed retained-policy startup scope
+
+The [policy-only clean restart proposal](../milestones/M2/retained-policy-startup.md)
+is a design amendment under [issue 288](https://github.com/gonz0w/horvium/issues/288).
+Current activation and unused retirement still require an empty ledger. Future
+acceptance needs complete native policy validation, every-job refusal and actual
+UFS/ZFS lifecycle/publication/teardown evidence on both pinned FreeBSD targets.
+No new runtime behavior, hardware support or nonempty native pass is claimed.

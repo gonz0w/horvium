@@ -192,3 +192,5 @@
 - [M2 closed-startup activation execution manifest](testing/M2/closed-startup-activation-manifest.json); prerequisite accepted in PR 127.
 - [M2 original unused restarted-lifetime close](testing/M2/restart-activation-retirement.md): exact closed successor from the original new active acknowledgement; terminal observation/finish and explicit lease release; both pinned targets passed 938 affected controls with teardown.
 - [M2 restarted-lifetime close execution manifest](testing/M2/restart-activation-retirement-manifest.json).
+
+- [M2 proposed policy-only clean restart slice and Test Design](milestones/M2/retained-policy-startup.md)

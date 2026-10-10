@@ -920,3 +920,13 @@ sessions stopped with verified teardown; Actions remain disabled and all 79
 historical manifests retain their bytes. See the
 [source-bound record](../../testing/M2/property-binding-manifest.json).
 This is live peer/request provenance only; all other clearance/runtime gates stay open.
+
+## Proposed retained-policy startup amendment
+
+[Issue 288](https://github.com/gonz0w/horvium/issues/288) defines the proposed
+[policy-only clean restart slice](retained-policy-startup.md). It refines
+M2-RUNTIME-002 with complete native policy validation under the original leases,
+one-time active publication and unused retirement. Approval is pending; current
+activation/retirement still require an empty ledger. Every retained job, including
+terminal history, stays outside the proposed extension. No recovered executor,
+worker shutdown, launch authority or runtime registration is added by this design.
