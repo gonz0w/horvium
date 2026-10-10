@@ -19,7 +19,11 @@ func activateNativeClosedExecutionOwner(ctx context.Context, journal, ledger str
 		if e != nil {
 			return executionOwnerSource{}, e
 		}
-		r, e := storage.ReviewExecutionStartup(c, journal, ledger, readNativeExecutionBacking, source.Collect, readNativeActivationBoot)
+		policy, e := newExecutionStartupPolicySource()
+		if e != nil {
+			return executionOwnerSource{}, e
+		}
+		r, e := storage.ReviewExecutionPolicyStartup(c, journal, ledger, readNativeExecutionBacking, source.Collect, readNativeActivationBoot, policy)
 		if e != nil {
 			return executionOwnerSource{}, e
 		}

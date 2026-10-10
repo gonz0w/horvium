@@ -49,7 +49,7 @@ func (n *executionStartupNative) finishIdle(ctx context.Context, wrap func(owner
 	if e != nil {
 		return e
 	}
-	if got.census != empty {
+	if got.census != empty && n.policy == nil {
 		return ErrDenied
 	}
 	next, e := unusedRestartClosedSuccessor(got.journal)

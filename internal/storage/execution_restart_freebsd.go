@@ -51,7 +51,7 @@ func (n *executionStartupNative) activate(ctx context.Context, entropy io.Reader
 	if e != nil {
 		return nil, e
 	}
-	// Nonempty retained work requires its own startup policy/history consumer.
+	// Only the separately validated policy-only review may accept a nonempty census.
 	census, e := newExecutionCensus(got.binding, []string{stateWriterName}, defaultStateCatalogLimits)
 	if e != nil {
 		return nil, e
@@ -60,7 +60,7 @@ func (n *executionStartupNative) activate(ctx context.Context, entropy io.Reader
 	if e != nil {
 		return nil, e
 	}
-	if got.census != empty {
+	if got.census != empty && n.policy == nil {
 		return nil, ErrDenied
 	}
 	var identity [16]byte
@@ -180,7 +180,7 @@ func (n *executionStartupNative) publishClosedStartupLocked(next executionJourna
 }
 
 // The original lifetime checks its exact active or original closed successor
-// and confirmed empty census; this is not general recovery clearance.
+// and confirmed complete census; ordinary reviews remain empty-only.
 func (n *executionStartupNative) checkRecord(j executionJournal, b executionJournalBinding, census string) error {
 	if !n.activated {
 		return checkClosedExecutionStartup(j, b, census)

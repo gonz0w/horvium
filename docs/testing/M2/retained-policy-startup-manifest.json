@@ -1,0 +1,2024 @@
+{
+  "schema": 1,
+  "final_teardown_log_sha256": "d70a89bf35c22e4dfa2b8b4a56a94a566de41fff7a195a72b53fcaef9ea602d2",
+  "scope": "private unused policy-only startup candidate; incomplete issue-305 acceptance; runtime writes disabled",
+  "base_commit": "7a62c66f2c8a8feba0c8ceec5831c63215cebef0",
+  "red_commit": "5a3e270fc271f420363bddf84b42a86da07349f8",
+  "requirements": [
+    "M2-RUNTIME-002",
+    "M2-STATE-001",
+    "M2-RECOVERY-001",
+    "M2-OWN-001",
+    "M2-DRIFT-001",
+    "M2-PRIV-001"
+  ],
+  "portable_review": [
+    {
+      "source_commit": "941d6d9302919becd3b06490eae418ec7660057b",
+      "base_commit": "7a62c66f2c8a8feba0c8ceec5831c63215cebef0",
+      "source_tree": "cea3c543a27800e0ae0966e2c8e5f40ddbb28315",
+      "title": "feat(storage): validate retained-policy startup lifetimes",
+      "qualified": true,
+      "plan": {
+        "mode": "full",
+        "reason": "shared tooling, policy, module or packaging change",
+        "packages": [],
+        "native_review_required": true
+      },
+      "signed_commits": [
+        "941d6d9302919becd3b06490eae418ec7660057b",
+        "5a3e270fc271f420363bddf84b42a86da07349f8"
+      ],
+      "failure": null,
+      "deep_evidence": {
+        "executed": true,
+        "result": {
+          "fuzz_targets": [
+            {
+              "package": "./internal/admin",
+              "target": "FuzzConfiguration"
+            },
+            {
+              "package": "./internal/admin",
+              "target": "FuzzSessionAuthorityActions"
+            },
+            {
+              "package": "./internal/helper",
+              "target": "FuzzActionNegotiation"
+            },
+            {
+              "package": "./internal/helper",
+              "target": "FuzzPropertyReplies"
+            },
+            {
+              "package": "./internal/helper",
+              "target": "FuzzPropertyRequest"
+            },
+            {
+              "package": "./internal/helper",
+              "target": "FuzzRequest"
+            },
+            {
+              "package": "./internal/helper",
+              "target": "FuzzSnapshot"
+            },
+            {
+              "package": "./internal/host/freebsd",
+              "target": "FuzzPersistentBackingProjection"
+            },
+            {
+              "package": "./internal/host/freebsd",
+              "target": "FuzzPoolPropertyCollection"
+            },
+            {
+              "package": "./internal/host/freebsd",
+              "target": "FuzzPoolProviderCollection"
+            },
+            {
+              "package": "./internal/host/freebsd",
+              "target": "FuzzPropertyClaimSourceSelection"
+            },
+            {
+              "package": "./internal/host/freebsd",
+              "target": "FuzzPropertyControlSelection"
+            },
+            {
+              "package": "./internal/host/freebsd",
+              "target": "FuzzPropertyJobSource"
+            },
+            {
+              "package": "./internal/host/freebsd",
+              "target": "FuzzPropertyPolicyCollection"
+            },
+            {
+              "package": "./internal/host/freebsd",
+              "target": "FuzzSystemUseCollection"
+            },
+            {
+              "package": "./internal/inventory",
+              "target": "FuzzDiskAccess"
+            },
+            {
+              "package": "./internal/inventory",
+              "target": "FuzzDiskAttachments"
+            },
+            {
+              "package": "./internal/inventory",
+              "target": "FuzzDiskObservation"
+            },
+            {
+              "package": "./internal/inventory",
+              "target": "FuzzGEOM"
+            },
+            {
+              "package": "./internal/inventory",
+              "target": "FuzzPoolDiskAttachments"
+            },
+            {
+              "package": "./internal/inventory",
+              "target": "FuzzPools"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzDeviceUseReview"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzExecutionCensus"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzExecutionCensusChange"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzExecutionJournal"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzExecutionJournalNamespace"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzFilesystemSignature"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzFilesystemStates"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzIdentities"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzImportedPoolUse"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzJobRecord"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzJobReservations"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzJobRestartPage"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzOwnershipCatalogNames"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzOwnershipRecord"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPoolFeatures"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPoolLabels"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPoolScan"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPoolState"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPoolSystemUse"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPoolTopology"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzProperties"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyCoordinatorActions"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyExecutionCut"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyExecutionHandoff"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyIntent"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyJob"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyJobAssessment"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyLiveStateReceipt"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyPlan"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyPostcondition"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzPropertyViews"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzStateCatalogNames"
+            },
+            {
+              "package": "./internal/storage",
+              "target": "FuzzSystemDeviceUse"
+            }
+          ],
+          "race_packages": [
+            "./cmd/horvium",
+            "./internal/admin",
+            "./internal/client",
+            "./internal/console",
+            "./internal/eventlog",
+            "./internal/helper",
+            "./internal/host/freebsd",
+            "./internal/inventory",
+            "./internal/observation",
+            "./internal/service",
+            "./internal/storage"
+          ]
+        },
+        "log_sha256": "6f240b184d7bd84297b3e5cc6236910ddf285e14fd34fc7d8199587a52b1ff9c",
+        "reused": null
+      },
+      "supervisors_cleaned": true,
+      "record_sha256": "b110ad6811350865ce16a444236c64ac65335d14fbed73b8d56dac4621439e2c",
+      "logs_sha256": {
+        "checks.log": "af6b78c626345019e7da02d7035f3218fc22a8585520ab128f1b3b8f9aef8d05",
+        "deep.log": "6f240b184d7bd84297b3e5cc6236910ddf285e14fd34fc7d8199587a52b1ff9c"
+      }
+    }
+  ],
+  "native_runs": [
+    {
+      "source_commit": "5a3e270fc271f420363bddf84b42a86da07349f8",
+      "suite": "policy-startup-owner",
+      "release": "15.1",
+      "host_os": "Darwin",
+      "host_arch": "arm64",
+      "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+      "qemu_version": "QEMU emulator version 11.1.1",
+      "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "cpu_model": "qemu64",
+      "cpu_count": 2,
+      "memory_mib": 6144,
+      "accelerator": "tcg",
+      "qualified": false,
+      "host_teardown": true,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "device_fixture_teardown": true,
+      "device_backings_preserved": true,
+      "guest_assertions": null,
+      "execution_mode": "host-cross-built",
+      "prebuilt": {
+        "source_commit": "5a3e270fc271f420363bddf84b42a86da07349f8",
+        "sha256": "87ed79d3794e2de4585b0c827edc447eab8f11c513f9768a00204dd027f994e2",
+        "bytes": 13340049,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+        "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-tags=horvium_native_fixture",
+          "-o",
+          "<owned-artifact>",
+          "./internal/host/freebsd"
+        ]
+      },
+      "failure": "supervisor interrupted the run or worker failed",
+      "record_sha256": "a417d91cc7d7c02f8da263b6ace5213c1840724e39350b6ac9d9a990bcd94396",
+      "expected_red": true,
+      "log_sha256": "71fd714b77ea15c1c35162af9f30d607a0fc149f36b98632ac21ec29d8381302",
+      "completed_parents": [],
+      "failed_parents": [
+        [
+          "TestNativePolicyStartupOwnerUFS",
+          "28.32"
+        ]
+      ],
+      "policy_controls": []
+    },
+    {
+      "source_commit": "941d6d9302919becd3b06490eae418ec7660057b",
+      "suite": "policy-startup-publication",
+      "release": "14.5",
+      "host_os": "Darwin",
+      "host_arch": "arm64",
+      "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+      "qemu_version": "QEMU emulator version 11.1.1",
+      "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "cpu_model": "qemu64",
+      "cpu_count": 2,
+      "memory_mib": 6144,
+      "accelerator": "tcg",
+      "qualified": true,
+      "host_teardown": true,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "device_fixture_teardown": null,
+      "device_backings_preserved": null,
+      "guest_assertions": true,
+      "execution_mode": "host-cross-built",
+      "prebuilt": {
+        "source_commit": "941d6d9302919becd3b06490eae418ec7660057b",
+        "sha256": "c7e3bc4c2ee846f06243e59541921b38eb25fab593dd3086f0df8d10a843fba1",
+        "bytes": 13570587,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+        "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "<owned-artifact>",
+          "./internal/storage"
+        ]
+      },
+      "failure": null,
+      "record_sha256": "861355615d598184197613d0d16f16aa3e4124ef228277b0b18d348f30a4eea6",
+      "expected_red": false,
+      "log_sha256": "7656724cf4c8e008964a650332e2b691e09da39e61c6e4e6079748c4fb7ba128",
+      "completed_parents": [
+        [
+          "TestNativePolicyStartupUFS",
+          "6.62"
+        ],
+        [
+          "TestNativePolicyStartupZFS",
+          "119.78"
+        ],
+        [
+          "TestNativeClosedStartupPublicationUFS",
+          "2.54"
+        ],
+        [
+          "TestNativeClosedStartupPublicationZFS",
+          "39.00"
+        ],
+        [
+          "TestNativeClosedStartupPublicationCuts",
+          "0.33"
+        ],
+        [
+          "TestNativeClosedStartupRetirementUFS",
+          "1.47"
+        ],
+        [
+          "TestNativeClosedStartupRetirementZFS",
+          "46.89"
+        ],
+        [
+          "TestNativeClosedStartupRetirementCuts",
+          "0.39"
+        ]
+      ],
+      "failed_parents": [],
+      "policy_controls": [
+        "STORAGE_UFS_RESULT policy_bound=pass leases_held=pass original_observation=pass no_old_release=pass original_close=pass exact_closed=pass exact_ledger=pass finish_retired=pass original_release=pass ordinary_metadata_only=pass ordinary_activation_denied=pass collector_denied=pass collector_sticky=pass collector_preserved=pass collector_released=pass alias_denied=pass alias_sticky=pass alias_preserved=pass alias_released=pass cancel_denied=pass cancel_sticky=pass cancel_preserved=pass cancel_released=pass legacy_denied=pass legacy_sticky=pass legacy_preserved=pass legacy_released=pass scope_denied=pass scope_sticky=pass scope_preserved=pass scope_released=pass member_denied=pass member_sticky=pass member_preserved=pass member_released=pass missing-system_denied=pass missing-system_sticky=pass missing-system_preserved=pass missing-system_released=pass context-deadline_denied=pass context-deadline_sticky=pass context-deadline_preserved=pass context-deadline_released=pass activate-syncFile_denied=pass activate-syncFile_retired=pass activate-syncFile_retry_preserved=pass activate-syncFile_released=pass activate-rename_denied=pass activate-rename_retired=pass activate-rename_retry_preserved=pass activate-rename_released=pass activate-syncDirectory_denied=pass activate-syncDirectory_retired=pass activate-syncDirectory_retry_preserved=pass activate-syncDirectory_released=pass activate-post-policy_denied=pass activate-post-policy_retired=pass activate-post-policy_retry_preserved=pass activate-post-policy_released=pass activate-post-directory_denied=pass activate-post-directory_retired=pass activate-post-directory_retry_preserved=pass activate-post-directory_released=pass finish-syncFile_denied=pass finish-syncFile_retired=pass finish-syncFile_retry_preserved=pass finish-syncFile_released=pass finish-rename_denied=pass finish-rename_retired=pass finish-rename_retry_preserved=pass finish-rename_released=pass finish-syncDirectory_denied=pass finish-syncDirectory_retired=pass finish-syncDirectory_retry_preserved=pass finish-syncDirectory_released=pass finish-post-policy_denied=pass finish-post-policy_retired=pass finish-post-policy_retry_preserved=pass finish-post-policy_released=pass finish-post-directory_denied=pass finish-post-directory_retired=pass finish-post-directory_retry_preserved=pass finish-post-directory_released=pass legacy-queued_denied=pass legacy-queued_preserved=pass legacy-queued_holds=pass legacy-queued_released=pass legacy-applying_denied=pass legacy-applying_preserved=pass legacy-applying_holds=pass legacy-applying_released=pass legacy-observing_denied=pass legacy-observing_preserved=pass legacy-observing_holds=pass legacy-observing_released=pass legacy-succeeded_denied=pass legacy-succeeded_preserved=pass legacy-succeeded_holds=pass legacy-succeeded_released=pass legacy-failed_denied=pass legacy-failed_preserved=pass legacy-failed_holds=pass legacy-failed_released=pass legacy-cancelled_denied=pass legacy-cancelled_preserved=pass legacy-cancelled_holds=pass legacy-cancelled_released=pass legacy-reconcile-required_denied=pass legacy-reconcile-required_preserved=pass legacy-reconcile-required_holds=pass legacy-reconcile-required_released=pass property-queued_denied=pass property-queued_preserved=pass property-queued_holds=pass property-queued_released=pass property-applying_denied=pass property-applying_preserved=pass property-applying_holds=pass property-applying_released=pass property-observing_denied=pass property-observing_preserved=pass property-observing_holds=pass property-observing_released=pass property-succeeded_denied=pass property-succeeded_preserved=pass property-succeeded_holds=pass property-succeeded_released=pass property-failed_denied=pass property-failed_preserved=pass property-failed_holds=pass property-failed_released=pass property-cancelled_denied=pass property-cancelled_preserved=pass property-cancelled_holds=pass property-cancelled_released=pass property-reconcile-required_denied=pass property-reconcile-required_preserved=pass property-reconcile-required_holds=pass property-reconcile-required_released=pass",
+        "STORAGE_ZFS_RESULT policy_bound=pass leases_held=pass original_observation=pass no_old_release=pass original_close=pass exact_closed=pass exact_ledger=pass finish_retired=pass original_release=pass ordinary_metadata_only=pass ordinary_activation_denied=pass collector_denied=pass collector_sticky=pass collector_preserved=pass collector_released=pass alias_denied=pass alias_sticky=pass alias_preserved=pass alias_released=pass cancel_denied=pass cancel_sticky=pass cancel_preserved=pass cancel_released=pass legacy_denied=pass legacy_sticky=pass legacy_preserved=pass legacy_released=pass scope_denied=pass scope_sticky=pass scope_preserved=pass scope_released=pass member_denied=pass member_sticky=pass member_preserved=pass member_released=pass missing-system_denied=pass missing-system_sticky=pass missing-system_preserved=pass missing-system_released=pass context-deadline_denied=pass context-deadline_sticky=pass context-deadline_preserved=pass context-deadline_released=pass activate-syncFile_denied=pass activate-syncFile_retired=pass activate-syncFile_retry_preserved=pass activate-syncFile_released=pass activate-rename_denied=pass activate-rename_retired=pass activate-rename_retry_preserved=pass activate-rename_released=pass activate-syncDirectory_denied=pass activate-syncDirectory_retired=pass activate-syncDirectory_retry_preserved=pass activate-syncDirectory_released=pass activate-post-policy_denied=pass activate-post-policy_retired=pass activate-post-policy_retry_preserved=pass activate-post-policy_released=pass activate-post-directory_denied=pass activate-post-directory_retired=pass activate-post-directory_retry_preserved=pass activate-post-directory_released=pass finish-syncFile_denied=pass finish-syncFile_retired=pass finish-syncFile_retry_preserved=pass finish-syncFile_released=pass finish-rename_denied=pass finish-rename_retired=pass finish-rename_retry_preserved=pass finish-rename_released=pass finish-syncDirectory_denied=pass finish-syncDirectory_retired=pass finish-syncDirectory_retry_preserved=pass finish-syncDirectory_released=pass finish-post-policy_denied=pass finish-post-policy_retired=pass finish-post-policy_retry_preserved=pass finish-post-policy_released=pass finish-post-directory_denied=pass finish-post-directory_retired=pass finish-post-directory_retry_preserved=pass finish-post-directory_released=pass legacy-queued_denied=pass legacy-queued_preserved=pass legacy-queued_holds=pass legacy-queued_released=pass legacy-applying_denied=pass legacy-applying_preserved=pass legacy-applying_holds=pass legacy-applying_released=pass legacy-observing_denied=pass legacy-observing_preserved=pass legacy-observing_holds=pass legacy-observing_released=pass legacy-succeeded_denied=pass legacy-succeeded_preserved=pass legacy-succeeded_holds=pass legacy-succeeded_released=pass legacy-failed_denied=pass legacy-failed_preserved=pass legacy-failed_holds=pass legacy-failed_released=pass legacy-cancelled_denied=pass legacy-cancelled_preserved=pass legacy-cancelled_holds=pass legacy-cancelled_released=pass legacy-reconcile-required_denied=pass legacy-reconcile-required_preserved=pass legacy-reconcile-required_holds=pass legacy-reconcile-required_released=pass property-queued_denied=pass property-queued_preserved=pass property-queued_holds=pass property-queued_released=pass property-applying_denied=pass property-applying_preserved=pass property-applying_holds=pass property-applying_released=pass property-observing_denied=pass property-observing_preserved=pass property-observing_holds=pass property-observing_released=pass property-succeeded_denied=pass property-succeeded_preserved=pass property-succeeded_holds=pass property-succeeded_released=pass property-failed_denied=pass property-failed_preserved=pass property-failed_holds=pass property-failed_released=pass property-cancelled_denied=pass property-cancelled_preserved=pass property-cancelled_holds=pass property-cancelled_released=pass property-reconcile-required_denied=pass property-reconcile-required_preserved=pass property-reconcile-required_holds=pass property-reconcile-required_released=pass"
+      ]
+    },
+    {
+      "source_commit": "5a3e270fc271f420363bddf84b42a86da07349f8",
+      "suite": "policy-startup-publication",
+      "release": "15.1",
+      "host_os": "Darwin",
+      "host_arch": "arm64",
+      "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+      "qemu_version": "QEMU emulator version 11.1.1",
+      "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "cpu_model": "qemu64",
+      "cpu_count": 2,
+      "memory_mib": 6144,
+      "accelerator": "tcg",
+      "qualified": false,
+      "host_teardown": true,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "device_fixture_teardown": null,
+      "device_backings_preserved": null,
+      "guest_assertions": null,
+      "execution_mode": "host-cross-built",
+      "prebuilt": {
+        "source_commit": "5a3e270fc271f420363bddf84b42a86da07349f8",
+        "sha256": "b26f43abb695183c030a740db2b2cd87c0d5242fe3fe394e4b502993104a81b3",
+        "bytes": 13570211,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+        "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "<owned-artifact>",
+          "./internal/storage"
+        ]
+      },
+      "failure": "supervisor interrupted the run or worker failed",
+      "record_sha256": "3fba85429f9c64a1a0df502fb3c38bd447a51001a0a9d9d1f8a639607c13e8ae",
+      "expected_red": true,
+      "log_sha256": "670a7e253d035e4472edf590e08554be0e3aca187fed187058eb90da0abd0eb9",
+      "completed_parents": [],
+      "failed_parents": [
+        [
+          "TestNativePolicyStartupUFS",
+          "0.31"
+        ]
+      ],
+      "policy_controls": []
+    },
+    {
+      "source_commit": "941d6d9302919becd3b06490eae418ec7660057b",
+      "suite": "policy-startup-publication",
+      "release": "15.1",
+      "host_os": "Darwin",
+      "host_arch": "arm64",
+      "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+      "qemu_version": "QEMU emulator version 11.1.1",
+      "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "cpu_model": "qemu64",
+      "cpu_count": 2,
+      "memory_mib": 6144,
+      "accelerator": "tcg",
+      "qualified": true,
+      "host_teardown": true,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "device_fixture_teardown": null,
+      "device_backings_preserved": null,
+      "guest_assertions": true,
+      "execution_mode": "host-cross-built",
+      "prebuilt": {
+        "source_commit": "941d6d9302919becd3b06490eae418ec7660057b",
+        "sha256": "c7e3bc4c2ee846f06243e59541921b38eb25fab593dd3086f0df8d10a843fba1",
+        "bytes": 13570587,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+        "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "<owned-artifact>",
+          "./internal/storage"
+        ]
+      },
+      "failure": null,
+      "record_sha256": "dc3d795928f3141a788e6430b53806878591acdea7c6714afecf421b011c4f2f",
+      "expected_red": false,
+      "log_sha256": "a17c03d35303e9eb63df3534cf12cba5104f8fbf11ebe69ed70fc3693539d99e",
+      "completed_parents": [
+        [
+          "TestNativePolicyStartupUFS",
+          "3.94"
+        ],
+        [
+          "TestNativePolicyStartupZFS",
+          "91.04"
+        ],
+        [
+          "TestNativeClosedStartupPublicationUFS",
+          "1.61"
+        ],
+        [
+          "TestNativeClosedStartupPublicationZFS",
+          "49.84"
+        ],
+        [
+          "TestNativeClosedStartupPublicationCuts",
+          "0.57"
+        ],
+        [
+          "TestNativeClosedStartupRetirementUFS",
+          "2.47"
+        ],
+        [
+          "TestNativeClosedStartupRetirementZFS",
+          "86.28"
+        ],
+        [
+          "TestNativeClosedStartupRetirementCuts",
+          "0.57"
+        ]
+      ],
+      "failed_parents": [],
+      "policy_controls": [
+        "STORAGE_UFS_RESULT policy_bound=pass leases_held=pass original_observation=pass no_old_release=pass original_close=pass exact_closed=pass exact_ledger=pass finish_retired=pass original_release=pass ordinary_metadata_only=pass ordinary_activation_denied=pass collector_denied=pass collector_sticky=pass collector_preserved=pass collector_released=pass alias_denied=pass alias_sticky=pass alias_preserved=pass alias_released=pass cancel_denied=pass cancel_sticky=pass cancel_preserved=pass cancel_released=pass legacy_denied=pass legacy_sticky=pass legacy_preserved=pass legacy_released=pass scope_denied=pass scope_sticky=pass scope_preserved=pass scope_released=pass member_denied=pass member_sticky=pass member_preserved=pass member_released=pass missing-system_denied=pass missing-system_sticky=pass missing-system_preserved=pass missing-system_released=pass context-deadline_denied=pass context-deadline_sticky=pass context-deadline_preserved=pass context-deadline_released=pass activate-syncFile_denied=pass activate-syncFile_retired=pass activate-syncFile_retry_preserved=pass activate-syncFile_released=pass activate-rename_denied=pass activate-rename_retired=pass activate-rename_retry_preserved=pass activate-rename_released=pass activate-syncDirectory_denied=pass activate-syncDirectory_retired=pass activate-syncDirectory_retry_preserved=pass activate-syncDirectory_released=pass activate-post-policy_denied=pass activate-post-policy_retired=pass activate-post-policy_retry_preserved=pass activate-post-policy_released=pass activate-post-directory_denied=pass activate-post-directory_retired=pass activate-post-directory_retry_preserved=pass activate-post-directory_released=pass finish-syncFile_denied=pass finish-syncFile_retired=pass finish-syncFile_retry_preserved=pass finish-syncFile_released=pass finish-rename_denied=pass finish-rename_retired=pass finish-rename_retry_preserved=pass finish-rename_released=pass finish-syncDirectory_denied=pass finish-syncDirectory_retired=pass finish-syncDirectory_retry_preserved=pass finish-syncDirectory_released=pass finish-post-policy_denied=pass finish-post-policy_retired=pass finish-post-policy_retry_preserved=pass finish-post-policy_released=pass finish-post-directory_denied=pass finish-post-directory_retired=pass finish-post-directory_retry_preserved=pass finish-post-directory_released=pass legacy-queued_denied=pass legacy-queued_preserved=pass legacy-queued_holds=pass legacy-queued_released=pass legacy-applying_denied=pass legacy-applying_preserved=pass legacy-applying_holds=pass legacy-applying_released=pass legacy-observing_denied=pass legacy-observing_preserved=pass legacy-observing_holds=pass legacy-observing_released=pass legacy-succeeded_denied=pass legacy-succeeded_preserved=pass legacy-succeeded_holds=pass legacy-succeeded_released=pass legacy-failed_denied=pass legacy-failed_preserved=pass legacy-failed_holds=pass legacy-failed_released=pass legacy-cancelled_denied=pass legacy-cancelled_preserved=pass legacy-cancelled_holds=pass legacy-cancelled_released=pass legacy-reconcile-required_denied=pass legacy-reconcile-required_preserved=pass legacy-reconcile-required_holds=pass legacy-reconcile-required_released=pass property-queued_denied=pass property-queued_preserved=pass property-queued_holds=pass property-queued_released=pass property-applying_denied=pass property-applying_preserved=pass property-applying_holds=pass property-applying_released=pass property-observing_denied=pass property-observing_preserved=pass property-observing_holds=pass property-observing_released=pass property-succeeded_denied=pass property-succeeded_preserved=pass property-succeeded_holds=pass property-succeeded_released=pass property-failed_denied=pass property-failed_preserved=pass property-failed_holds=pass property-failed_released=pass property-cancelled_denied=pass property-cancelled_preserved=pass property-cancelled_holds=pass property-cancelled_released=pass property-reconcile-required_denied=pass property-reconcile-required_preserved=pass property-reconcile-required_holds=pass property-reconcile-required_released=pass",
+        "STORAGE_ZFS_RESULT policy_bound=pass leases_held=pass original_observation=pass no_old_release=pass original_close=pass exact_closed=pass exact_ledger=pass finish_retired=pass original_release=pass ordinary_metadata_only=pass ordinary_activation_denied=pass collector_denied=pass collector_sticky=pass collector_preserved=pass collector_released=pass alias_denied=pass alias_sticky=pass alias_preserved=pass alias_released=pass cancel_denied=pass cancel_sticky=pass cancel_preserved=pass cancel_released=pass legacy_denied=pass legacy_sticky=pass legacy_preserved=pass legacy_released=pass scope_denied=pass scope_sticky=pass scope_preserved=pass scope_released=pass member_denied=pass member_sticky=pass member_preserved=pass member_released=pass missing-system_denied=pass missing-system_sticky=pass missing-system_preserved=pass missing-system_released=pass context-deadline_denied=pass context-deadline_sticky=pass context-deadline_preserved=pass context-deadline_released=pass activate-syncFile_denied=pass activate-syncFile_retired=pass activate-syncFile_retry_preserved=pass activate-syncFile_released=pass activate-rename_denied=pass activate-rename_retired=pass activate-rename_retry_preserved=pass activate-rename_released=pass activate-syncDirectory_denied=pass activate-syncDirectory_retired=pass activate-syncDirectory_retry_preserved=pass activate-syncDirectory_released=pass activate-post-policy_denied=pass activate-post-policy_retired=pass activate-post-policy_retry_preserved=pass activate-post-policy_released=pass activate-post-directory_denied=pass activate-post-directory_retired=pass activate-post-directory_retry_preserved=pass activate-post-directory_released=pass finish-syncFile_denied=pass finish-syncFile_retired=pass finish-syncFile_retry_preserved=pass finish-syncFile_released=pass finish-rename_denied=pass finish-rename_retired=pass finish-rename_retry_preserved=pass finish-rename_released=pass finish-syncDirectory_denied=pass finish-syncDirectory_retired=pass finish-syncDirectory_retry_preserved=pass finish-syncDirectory_released=pass finish-post-policy_denied=pass finish-post-policy_retired=pass finish-post-policy_retry_preserved=pass finish-post-policy_released=pass finish-post-directory_denied=pass finish-post-directory_retired=pass finish-post-directory_retry_preserved=pass finish-post-directory_released=pass legacy-queued_denied=pass legacy-queued_preserved=pass legacy-queued_holds=pass legacy-queued_released=pass legacy-applying_denied=pass legacy-applying_preserved=pass legacy-applying_holds=pass legacy-applying_released=pass legacy-observing_denied=pass legacy-observing_preserved=pass legacy-observing_holds=pass legacy-observing_released=pass legacy-succeeded_denied=pass legacy-succeeded_preserved=pass legacy-succeeded_holds=pass legacy-succeeded_released=pass legacy-failed_denied=pass legacy-failed_preserved=pass legacy-failed_holds=pass legacy-failed_released=pass legacy-cancelled_denied=pass legacy-cancelled_preserved=pass legacy-cancelled_holds=pass legacy-cancelled_released=pass legacy-reconcile-required_denied=pass legacy-reconcile-required_preserved=pass legacy-reconcile-required_holds=pass legacy-reconcile-required_released=pass property-queued_denied=pass property-queued_preserved=pass property-queued_holds=pass property-queued_released=pass property-applying_denied=pass property-applying_preserved=pass property-applying_holds=pass property-applying_released=pass property-observing_denied=pass property-observing_preserved=pass property-observing_holds=pass property-observing_released=pass property-succeeded_denied=pass property-succeeded_preserved=pass property-succeeded_holds=pass property-succeeded_released=pass property-failed_denied=pass property-failed_preserved=pass property-failed_holds=pass property-failed_released=pass property-cancelled_denied=pass property-cancelled_preserved=pass property-cancelled_holds=pass property-cancelled_released=pass property-reconcile-required_denied=pass property-reconcile-required_preserved=pass property-reconcile-required_holds=pass property-reconcile-required_released=pass"
+      ]
+    }
+  ],
+  "focused_logs_sha256": {
+    "policy-portable-red.log": "e13cfe989408ef73d2ed061a818968375d58744bd645dc9a11b79282524b7043",
+    "policy-portable-green.log": "4f6d2d5a948292fe248252ecec1a0e519b5da1a981add9a01eef28b2071e7f9a",
+    "policy-portable-stub-red.log": "6db9f385b02119bfd728a8e4a3a032ee669811e3d1f9fa52ac13769ba12e9867"
+  },
+  "source_inputs_sha256": {
+    "cmd/horvium/filecontinuity_freebsd_test.go": {
+      "sha256": "fdee09dc563e75cb116a00de0f2dc562d77a587b848fa4a863b68ba18164feff"
+    },
+    "cmd/horvium/helper_events_freebsd_test.go": {
+      "sha256": "c39c0d7fd265addbd4a1293e862d5646c4dba518a25ed21d4722651253099ec6"
+    },
+    "cmd/horvium/http_abuse_freebsd_test.go": {
+      "sha256": "1960fe72298820377904b9ba84824d4bb8a54ac1e7e722e5d6d0414a93957344"
+    },
+    "cmd/horvium/input_other.go": {
+      "sha256": "99ff4284cad980bc32ae0f1247acfc32af030d7a421f51e25084e08f4ece34eb"
+    },
+    "cmd/horvium/input_unix.go": {
+      "sha256": "6d21b9b72a9935863d312a4f374e7157c2566ab76500c90d8bd16aa44a8815a4"
+    },
+    "cmd/horvium/input_unix_test.go": {
+      "sha256": "ac711e16ed16516eb1636582772237aed58a71c625381ec19e7c1736e8772911"
+    },
+    "cmd/horvium/lifecycle_freebsd_test.go": {
+      "sha256": "9b1048b3fbac9944da9ac898c3840f7a206bd5ba5e99763b878b1fbae220f681"
+    },
+    "cmd/horvium/main.go": {
+      "sha256": "b91d374e17bb76890013b0a1a45745a975c83ee861964e57b6a3c6915ab37475"
+    },
+    "cmd/horvium/main_test.go": {
+      "sha256": "dc1ed7c45079b879bacbe5746e456514c1ca39a30a5bd89b8e8dd8a6025e6eea"
+    },
+    "cmd/horvium/native_freebsd_test.go": {
+      "sha256": "be0354261b9d86a1fdf11ba89a6b06075653070148bff6aa42c12db437424173"
+    },
+    "cmd/horvium/performance_freebsd_test.go": {
+      "sha256": "e6407e06e4f0cfd00cdce1cf8968ccc79ade9c22232bdea70e11b040f9ce6597"
+    },
+    "cmd/horvium/performance_metrics_test.go": {
+      "sha256": "995f928a5b980f48466f983225970c9a52c6a4c62b47842bb017afb3dc072549"
+    },
+    "cmd/horvium/performance_test.go": {
+      "sha256": "476c4700f7ec498b2cefaab943de990b6afc82e2835f9e9da70677b9ffad2195"
+    },
+    "cmd/horvium/pool_checksum_freebsd_test.go": {
+      "sha256": "ed9429f9b3d110734ce2a94e83080755fc4373900477135dc2fa10a3b3d4f285"
+    },
+    "cmd/horvium/pool_health_freebsd_test.go": {
+      "sha256": "2a7fcd86a278a0cad8bac061cb26fae4da6c38100ad6d2a4fbdcddd91aa40e0e"
+    },
+    "cmd/horvium/pool_scan_freebsd_test.go": {
+      "sha256": "4128e02ea842618f7a5e1fb80a5a19f84a866c41990940943a2048cea295cab0"
+    },
+    "cmd/horvium/protocol_continuity_freebsd_test.go": {
+      "sha256": "10b8c6f1e47edda416533eb645ae633783085fb47414f48acae1bb4b5f8f129a"
+    },
+    "cmd/horvium/reader_resources_freebsd_test.go": {
+      "sha256": "b4a477d8eb264d5b9ce21e70665545450ddc97d6206a52ab3fa4543c115e9bd4"
+    },
+    "cmd/horvium/storage_assessment.go": {
+      "sha256": "bde014448113d777f4ea73ec089f996c6b23e961d3230cbd2af42742e9fa9307"
+    },
+    "cmd/horvium/storage_assessment_freebsd_test.go": {
+      "sha256": "5a6052fa77895fa58c8c3a546c9147a3ca001d1aa482b0b5197c0321ce23ce61"
+    },
+    "cmd/horvium/storage_assessment_other_test.go": {
+      "sha256": "2dfa060739ca552e7f954d51db796f5b78400ce97cbef22ac99c0478c02bf1eb"
+    },
+    "cmd/horvium/storage_assessment_test.go": {
+      "sha256": "16601cb2d1af2221ac17d4cdf99082c5052aa15516c9cdc1b2f087472330d412"
+    },
+    "cmd/horvium/storage_jobs.go": {
+      "sha256": "1d4fe42146428f8ec4ed52627cf93b08ca9d1b7af58efcdca9c86ed55bee0dfd"
+    },
+    "cmd/horvium/storage_jobs_freebsd_test.go": {
+      "sha256": "d404ae07c385dab555b766acc491669b5105f55972afca57009cdeb7829a360b"
+    },
+    "cmd/horvium/storage_jobs_test.go": {
+      "sha256": "d38847700a4440cdfe6a6cd0d452501266ca786c5c6a1fa68626f53bd1727b43"
+    },
+    "go.mod": {
+      "sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b"
+    },
+    "go.sum": {
+      "sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03"
+    },
+    "internal/admin/auth.go": {
+      "sha256": "82cc0fdc8b734d11fedd4b776632a8ad607be911faa503352ab7e98b7ab6469e"
+    },
+    "internal/admin/auth_test.go": {
+      "sha256": "f4f5438f07400421040cd56e8174471550d45907af107bc371f1e1c3eacf31ce"
+    },
+    "internal/admin/config.go": {
+      "sha256": "ac23410b7b4b576d7a63bb691a05ad3af7e7b7a2ed85a0e60346b2060cbac26b"
+    },
+    "internal/admin/config_test.go": {
+      "sha256": "02eccf315309d7f5a9f084d6f095728206db5e7dc29829348b648f54c6141360"
+    },
+    "internal/admin/files_freebsd.go": {
+      "sha256": "efffa6725bb2995deb5fccdfcbd8b7d934f1835d349c52a12e678fe4812533cd"
+    },
+    "internal/admin/files_other.go": {
+      "sha256": "d1ba82f2b61cd0a28b0819140a2d9f85bf3f0028572ab004f81ddccc2eaa3eeb"
+    },
+    "internal/admin/helper_negotiation.go": {
+      "sha256": "3b9c8833be4ca3e31c8443e2835d9f7bf9b5ffc9fa57867ba4307b3536b237b0"
+    },
+    "internal/admin/helper_negotiation_test.go": {
+      "sha256": "5a1e41cf60f1665bac79643c19fa238e187b7ab832a5e365f1bb51b16abf5842"
+    },
+    "internal/admin/helper_property.go": {
+      "sha256": "171cdb57571a0cc98b001b27c07ca535dfd90b5d34068913d9ce1e2526667550"
+    },
+    "internal/admin/helper_property_test.go": {
+      "sha256": "3ffae3f4377f2ce6e952e13c456d77955451154dbc67950cc78d93dd9dc512c1"
+    },
+    "internal/admin/http.go": {
+      "sha256": "ffd2713e52e3e46775d35a75cb15b1ae53395e449e43057e9678ea43a3dcc86e"
+    },
+    "internal/admin/http_test.go": {
+      "sha256": "c94fb6d76f8d4d903163e711beff720886d3dc692d07ed86cc4d73f4a7c1dc66"
+    },
+    "internal/admin/native_freebsd_test.go": {
+      "sha256": "7321137099d96c8933916354b2c38721ca2eaa49d0884a145ab07675b540155c"
+    },
+    "internal/admin/session_authority.go": {
+      "sha256": "37c52605e6ef3ebbe58daa5af1e9cfc6a191219d4e88ba84c0cbcaf03b52cc51"
+    },
+    "internal/admin/session_authority_test.go": {
+      "sha256": "0ba7aea59421860fdc892d814a3a90e7696548cd9848fc2feb5d1816be412254"
+    },
+    "internal/client/client.go": {
+      "sha256": "7c04854e03b43d1e488ef58bf699676229e4734d2e4dd3cee3c06a2b2b98c101"
+    },
+    "internal/client/client_test.go": {
+      "sha256": "a679c39ed7429c8029212c32fa60dd6d3f84154f984df2188cc9b8088c293f0e"
+    },
+    "internal/console/admission_test.go": {
+      "sha256": "098398334353725e889af0d22c52f6d21e75644eddcbb84f46bb5903bcffef1d"
+    },
+    "internal/console/console.go": {
+      "sha256": "d0099cf9d772f63b00d0dd83fe7beb7221dff817989c5af7e489faf02bbbbfd5"
+    },
+    "internal/console/console_test.go": {
+      "sha256": "f7a479ea1ef1425130fc4c4e10e6d30536c5cf6f384bfb781063718a71cc54f6"
+    },
+    "internal/console/performance_test.go": {
+      "sha256": "e9f49844c910b57dc17d5154d9864ed5e4feff8c60027713ad5f4cb99d5b722d"
+    },
+    "internal/console/rss_other_test.go": {
+      "sha256": "e091ce6892c536a7c937df6cc4bcfef222c516111cb19de79138579df68cd459"
+    },
+    "internal/console/rss_unix_test.go": {
+      "sha256": "d68a7f5723f788409243750a6b762a88935838f96f0402300b249d4f3717e7a1"
+    },
+    "internal/eventlog/log.go": {
+      "sha256": "b48dafe7fb5aa6d65739fdb94f35afcb6aa1be39515810ff3bae1f87e0a7ef6a"
+    },
+    "internal/eventlog/log_test.go": {
+      "sha256": "0871bf35fde44b2bbdb265f993544c02b22167afb9702776784bf14ecdb37c19"
+    },
+    "internal/helper/action_negotiation.go": {
+      "sha256": "20c714cbe5384d464956b3a32e142c37a1221cee30932fc960e8c4741dbfe373"
+    },
+    "internal/helper/action_negotiation_test.go": {
+      "sha256": "059c422a1f7be35ff74733e0b1dd5dd9272346837ec5fcbda92a89780904d7d0"
+    },
+    "internal/helper/action_peer.go": {
+      "sha256": "c75144c57f036127267e40a68b9b4b3c270ff99b79ad008337eb81923abcb00c"
+    },
+    "internal/helper/action_peer_freebsd_test.go": {
+      "sha256": "869346b8307544aee9c1a6b91e30e2281195a6bac89163036a014b38a754c679"
+    },
+    "internal/helper/action_peer_test.go": {
+      "sha256": "c6ef6a6646fc5915af3c07a7430a65cc6a1fceb87ee6261e0689fd60f0a57932"
+    },
+    "internal/helper/events.go": {
+      "sha256": "ff87a9bb45d72f183b76e4390e5dde91cc5553a0a76c80f4bcecfe1c6095871a"
+    },
+    "internal/helper/events_test.go": {
+      "sha256": "121db5d7f05fa418d9d406ad5ca46aa3725c7aea5c721e32487aa2531dccea19"
+    },
+    "internal/helper/native_freebsd.go": {
+      "sha256": "3ddac8e913f720ed717622fb80947d41ecbd970f261483218790a9a8acc50e40"
+    },
+    "internal/helper/native_freebsd_test.go": {
+      "sha256": "d689a8f35a9391969d1097436eebf98506cc57bf607ac54f8fdc59f3f33f483d"
+    },
+    "internal/helper/native_other.go": {
+      "sha256": "991e691dd0b7685c443417a1e3fe152dccbbdf08925b85fe22f8fb33860bab8f"
+    },
+    "internal/helper/peer.go": {
+      "sha256": "87fc55611f6f9320141404a90b8f47b8a642673a4d938b84ffd37266a4a4b06c"
+    },
+    "internal/helper/property_admitted.go": {
+      "sha256": "9b2e69e06210ced057ae9cd54857aae8180c6f39d1e296b09356a3a64f7a934f"
+    },
+    "internal/helper/property_admitted_freebsd_test.go": {
+      "sha256": "fe05b163aa7ad95ba4b47789af94978410aab778f666c722d15c737b4dcdb3b4"
+    },
+    "internal/helper/property_admitted_test.go": {
+      "sha256": "fa022b0fcc9f7dba94ff96381565dfd529b21b9aeb5d0b4efdb3498213f6ec5f"
+    },
+    "internal/helper/property_application_child_freebsd_test.go": {
+      "sha256": "c23c9fd14d509275cd88a306ea9e4e82bbdeef9346062a0147d1a4190f28e8ac"
+    },
+    "internal/helper/property_application_freebsd_test.go": {
+      "sha256": "30c223430db2e899c3033f0231f123fe52647eed21674557f1db55952a497576"
+    },
+    "internal/helper/property_binding.go": {
+      "sha256": "e05ca2e317a3dc3516cf61de75d4855c6212be2f62d9285421958e89ddb37355"
+    },
+    "internal/helper/property_binding_freebsd_test.go": {
+      "sha256": "c5b8eba1c00d275ff80ddd609f05b434adc6f5d25c744cf49a407b095960f7e1"
+    },
+    "internal/helper/property_binding_test.go": {
+      "sha256": "fb77c21fd69e431ae237caad164b404d44a090d2747037ff4490533d72e0dc48"
+    },
+    "internal/helper/property_client.go": {
+      "sha256": "30902cf85514209acc50648c57fa483f42485e5fbd4b64e090739ddbc8146e34"
+    },
+    "internal/helper/property_client_freebsd_test.go": {
+      "sha256": "a69d3bafe95c7f355d610e85000464b09fbac70f4299fdeab8f9b32ce9093ba8"
+    },
+    "internal/helper/property_client_test.go": {
+      "sha256": "5811ab86bc03a7976ae9187127224f3f56ad268e3ef86788b4785f34e8c27cc7"
+    },
+    "internal/helper/property_connections.go": {
+      "sha256": "753a25378bad568ccea0943cefa65f9676361f58c498129d0206f1067c3dd758"
+    },
+    "internal/helper/property_connections_test.go": {
+      "sha256": "c0fb08c6704b5cbb6b9a8c88c672ee4040de942f7e3f08851e7abed6549c76dc"
+    },
+    "internal/helper/property_dial.go": {
+      "sha256": "f9588ed6feb48116c5d7ce91ffcd5cf01703effaa82f34c1aabaf713a1d6a24c"
+    },
+    "internal/helper/property_dial_freebsd_test.go": {
+      "sha256": "e4a302e3d2ad6ebe0abc1ca96b965fb528d3d2ed3ed66fcb8a4126e1b5df995c"
+    },
+    "internal/helper/property_dial_test.go": {
+      "sha256": "0b17aba7ead42e9b3c0082df70570814ad9b906f16e76104a98d135a0f9ad8a3"
+    },
+    "internal/helper/property_exchange.go": {
+      "sha256": "a3fcce1990b9a9acbb3a382e75489bf3b5316adfad74ad410fa423ec6dcf0469"
+    },
+    "internal/helper/property_exchange_freebsd_test.go": {
+      "sha256": "8270a27bc416a510b3847ab34619ea187c2141c9b1d96575b353d41cac3df708"
+    },
+    "internal/helper/property_exchange_test.go": {
+      "sha256": "50f7547e79da2bfb6c92588b39572ecf6461c64664bdce854cada56d1ed0a8ac"
+    },
+    "internal/helper/property_reply.go": {
+      "sha256": "8d1d8a2a9559634794699c93b3fb036532cb8fe1709a7727277ef67ce6679410"
+    },
+    "internal/helper/property_reply_test.go": {
+      "sha256": "899418b91afddee6d779b5a354dad3204bac6650da4dec9f3553c2d9e2500d9c"
+    },
+    "internal/helper/property_request.go": {
+      "sha256": "8c5db65230f05fbbe38ed5c5a1ae48ba0a16cf75302c6748af9fc1990c854090"
+    },
+    "internal/helper/property_request_test.go": {
+      "sha256": "d5bff81545fd499e57d51a084aeb2d5b79209e9aca91bc6fd9313e044cfac1c1"
+    },
+    "internal/helper/property_server.go": {
+      "sha256": "d5db48102728da22786908ca4e880f331c870580c23186a4930d1b23e26a4e5a"
+    },
+    "internal/helper/property_server_freebsd_test.go": {
+      "sha256": "a825a20fe5c96ee020ce9b817f9cfe5d5d20e22bcd900d25b6ae3271aedb53d6"
+    },
+    "internal/helper/property_server_test.go": {
+      "sha256": "27858d445270150f93e87c4a7bffddde813b35d0269e72600982ac933e5f7380"
+    },
+    "internal/helper/server.go": {
+      "sha256": "ae6af0cc454947b29d8e2cb10d39814d60814afad00919006f0facbc8bf0fcda"
+    },
+    "internal/helper/server_test.go": {
+      "sha256": "59899cb4f0399e110c3ee7629b0937acbbe69f83ec1998e708eeac158b5b5980"
+    },
+    "internal/helper/validate.go": {
+      "sha256": "6d9d75bab558c985f8d47ae4cfdda87d25e3856894f0cbef6cbbef20ad869904"
+    },
+    "internal/helper/wire.go": {
+      "sha256": "5f8a5ac1a5d619435a2240a699afe3d4337bdd98ec9507bccb7e53f8ef0cbea6"
+    },
+    "internal/helper/wire_test.go": {
+      "sha256": "0c66417c090da97f31ee48fb2c175d5e345cbfe029d76a61abb613eafb70924c"
+    },
+    "internal/host/freebsd/boot_native_freebsd.go": {
+      "sha256": "d7643fe151b7f6137157758ee6c0dd0097b75905532aee63dc3c0f40e080c427"
+    },
+    "internal/host/freebsd/boot_native_other.go": {
+      "sha256": "64bcae2ba9fd808ded7f98073990648eca0f07ac686de3883625bb609c259fcc"
+    },
+    "internal/host/freebsd/boot_owner.go": {
+      "sha256": "23854bca6fc6aa2b99d342511ed7a03bf6eb5b9fce19789928c1cb7c3f978781"
+    },
+    "internal/host/freebsd/boot_owner_test.go": {
+      "sha256": "41569473a7c6620c8d15fd4c7f21119fbe0d13978d8dc39b645959a8017e02e8"
+    },
+    "internal/host/freebsd/enrollment_publication_test.go": {
+      "sha256": "6f3b7ade83f1c571524c9f78bfb2ddba397ce752127bc19942238e9b7c0d352b"
+    },
+    "internal/host/freebsd/enrollment_publish_freebsd_test.go": {
+      "sha256": "cb45473581df3f05c62d64c7d956509fe02bc5e635164668eecfbe0b7c9f117b"
+    },
+    "internal/host/freebsd/enrollment_state_freebsd_test.go": {
+      "sha256": "f59eda04252667cbed12775b336f7e85414eb54023fe89fe93b44cfc76a4e70c"
+    },
+    "internal/host/freebsd/execute.go": {
+      "sha256": "6b1aa25996f23adec5d9af6bb58708ae475a5a2291f9e994cab83e1408d0c1d8"
+    },
+    "internal/host/freebsd/execute_test.go": {
+      "sha256": "3762eea9fd0ed7beccd748596e480c885d6a17ec4279bb71a887a4183c6aab4e"
+    },
+    "internal/host/freebsd/execution_activation_freebsd.go": {
+      "sha256": "66fd508fac21378d2bc2c7fead4c956ab9874cd6e28ed57bb8a7ff52fedb53c3"
+    },
+    "internal/host/freebsd/execution_activation_freebsd_test.go": {
+      "sha256": "8c9a206a64843626176e31fa26cad3a59c1dd8ab055b499a719055fe20467d65"
+    },
+    "internal/host/freebsd/execution_owner.go": {
+      "sha256": "c3b9bb2b2b9c309947dc4f55723e3ae9ca5dcb2bac48beb77d8cd3aa1935e7ba"
+    },
+    "internal/host/freebsd/execution_owner_freebsd.go": {
+      "sha256": "11de11793e2659cb6ed63773afd3b48e3b988671007900b9a74ad3f753faca7a"
+    },
+    "internal/host/freebsd/execution_owner_freebsd_test.go": {
+      "sha256": "87bc941fc541b236e38f565aa2e4d093f5fc2c26741b490e5317babdf0a533bb"
+    },
+    "internal/host/freebsd/execution_owner_other.go": {
+      "sha256": "45465264fb2899ba07c12a63c7f6aa559b7e4f8bb9777fbb13ee43efcb29dc4e"
+    },
+    "internal/host/freebsd/execution_owner_test.go": {
+      "sha256": "5a653c47c48823bacd1d95bdad976d2a99cc2aebdb2583c1e039fa4a165a4a76"
+    },
+    "internal/host/freebsd/execution_policy.go": {
+      "sha256": "aa3dc54323a4cf354e64882a24fccb78ef1d2bd431bc8bd3cf879d12cc39e927"
+    },
+    "internal/host/freebsd/execution_policy_fixture_test.go": {
+      "sha256": "c848e1f2cb8859540ab008e9f3296f74e1cc5a49cbc48c72fbf85b9703969a80"
+    },
+    "internal/host/freebsd/execution_restart_freebsd.go": {
+      "sha256": "2c4bd0e5ff57a17d803ad59ca346cbf7094040addd6c4062ed7eb9b50330c444"
+    },
+    "internal/host/freebsd/execution_restart_freebsd_test.go": {
+      "sha256": "f69278d7967e47124f83d1864ba99a86ad06ebaef33bb09e4af72bf0ad030508"
+    },
+    "internal/host/freebsd/execution_restart_other.go": {
+      "sha256": "632b61bfc389c48708ba42cc61f84d372254a49414d92eeab67e60e9318f28fa"
+    },
+    "internal/host/freebsd/execution_retirement_freebsd_test.go": {
+      "sha256": "3416799bd81a053617cae9c152110b8005853d217e07ef6f0ab49d6267ee2885"
+    },
+    "internal/host/freebsd/execution_startup_freebsd.go": {
+      "sha256": "a5d6414ff7aebf74802e1468f650b3c8485d8ea44380ab58870d54da1ec4b0dd"
+    },
+    "internal/host/freebsd/execution_startup_freebsd_test.go": {
+      "sha256": "3333d5a50c2ff78e3c7ccf4b8b69f2867d90a8a0bff0a6f51a16319c2eda7306"
+    },
+    "internal/host/freebsd/execution_startup_other.go": {
+      "sha256": "9ce19278fd8008c4cc10a391d1877648a055c8c2e7ae00d8a25e0c9d30818e24"
+    },
+    "internal/host/freebsd/execution_system_freebsd.go": {
+      "sha256": "d02b2c1b6fac14e5ee06dd557819ece1e8ab508d603da5decb908c0c86203e9f"
+    },
+    "internal/host/freebsd/execution_system_freebsd_test.go": {
+      "sha256": "6f6d15f3cc4c1d6004f73d54b342264578b41d08b6b6fe1213b619dd57610209"
+    },
+    "internal/host/freebsd/executor_recovery_freebsd_test.go": {
+      "sha256": "80f65176e7a105236fc251be27a39b6352e6956f6397b60cf3149dc549239841"
+    },
+    "internal/host/freebsd/guard_freebsd.go": {
+      "sha256": "3093de04ed48250ad47424b14467e8e698ee264a7b2cc241e008b05191ec9c03"
+    },
+    "internal/host/freebsd/guard_freebsd_test.go": {
+      "sha256": "4c1bb4614d5ca063328be90f02584c428d27b4b5555393b19048b4faefd700e3"
+    },
+    "internal/host/freebsd/joint_execution_leases_freebsd.go": {
+      "sha256": "c583daebb2831212bfe32b875b0eb899e5b52f6d800fc462812a8596cbc0ca36"
+    },
+    "internal/host/freebsd/joint_execution_leases_freebsd_test.go": {
+      "sha256": "8f58e59a038059b131bc959984800e84aee5ff20e60641f84145318dfc60eae4"
+    },
+    "internal/host/freebsd/native_freebsd.go": {
+      "sha256": "684dacc50679d16ce0f0c99edb999ccb960ceee896db27a4618e835e02f82166"
+    },
+    "internal/host/freebsd/native_freebsd_test.go": {
+      "sha256": "6902e2ed90e148606e171633135f34c11932fdb74a05405774faca6e64a1fb62"
+    },
+    "internal/host/freebsd/native_other.go": {
+      "sha256": "d7dd08b0f750bc87466823943c7863b60008c21184cb48e2f7ec757d4fb98260"
+    },
+    "internal/host/freebsd/original_backing_freebsd.go": {
+      "sha256": "cdda575b5c3449a0788f857e2fc755b510955e49bf8563be29ec148b158a8144"
+    },
+    "internal/host/freebsd/original_backing_freebsd_test.go": {
+      "sha256": "57e55aa582975d609454d0c162d595f353055f4735d7eaf3de30ad7528e3b515"
+    },
+    "internal/host/freebsd/persistent_backing.go": {
+      "sha256": "067be07406ec23cb922e228e99a00b127b257c943a508a84f682b51ab390a0ac"
+    },
+    "internal/host/freebsd/persistent_backing_freebsd.go": {
+      "sha256": "2934f96769d2fbd560ac72fb9d9376d441285e616ee771a299d8eb67ae5ac724"
+    },
+    "internal/host/freebsd/persistent_backing_freebsd_test.go": {
+      "sha256": "0533f941574e6bc89229fa1a8fbc46296cd28a5bcc39f2af41b82eeb8106fac7"
+    },
+    "internal/host/freebsd/persistent_backing_test.go": {
+      "sha256": "4c62615716dcaf4c249aef28baa045744e12ac2f3164a5da18df5fe09fb0ec8f"
+    },
+    "internal/host/freebsd/pool_health.go": {
+      "sha256": "a52118d543f34a0cc5468bcaa051117f9ca6276e2f0018c72fa14481cdf45f1b"
+    },
+    "internal/host/freebsd/pool_health_test.go": {
+      "sha256": "7adc0c460c6d0ce8d9603f8c2a46bb3c6b5d906b855580eee4a872c2d0e897a4"
+    },
+    "internal/host/freebsd/pool_properties.go": {
+      "sha256": "3d5b066c5193199a8bbd0e0cb1f29d9080410abf9fc01281484e9d22a1ec3b85"
+    },
+    "internal/host/freebsd/pool_properties_freebsd.go": {
+      "sha256": "40ce256ac10be373b36f2992393bd0a527f76c85cbaa58c6b8b831273c37423c"
+    },
+    "internal/host/freebsd/pool_properties_freebsd_test.go": {
+      "sha256": "ed9eab00a6815888923f892743a2525b7d3b7b9a6fd34f2844a03a63390688fc"
+    },
+    "internal/host/freebsd/pool_properties_other.go": {
+      "sha256": "08b3a62c7c2bd2fc3d1c4c33f577d9b13532eea4e9456c47e6ae1f33085f2654"
+    },
+    "internal/host/freebsd/pool_properties_test.go": {
+      "sha256": "335b8f3d7dee3d0b91ada0d19a77d4c12e4c55d962bb3eef9e127a00f622b650"
+    },
+    "internal/host/freebsd/pool_providers.go": {
+      "sha256": "2aeaecda024a4a77405abec1d2662210c05657fb6c557b14c8f3628300caca37"
+    },
+    "internal/host/freebsd/pool_providers_freebsd_test.go": {
+      "sha256": "0b1033a90457cfa7b7e16413da1535a4d86a6015b4124df0b258fbd523e9d487"
+    },
+    "internal/host/freebsd/pool_providers_test.go": {
+      "sha256": "661f9576106562f131a34dcf3fc99f3e2acfed4fc7313ba56024d61088a4bfb0"
+    },
+    "internal/host/freebsd/process_other.go": {
+      "sha256": "9303e91b0cf4a551c952af0a147e3644fd09d05307ef45d96d2408e3601af774"
+    },
+    "internal/host/freebsd/process_unix.go": {
+      "sha256": "f07d3fd36304f9c20812a83bc58210293a8c1b0e8c49655972f37896136bb1a7"
+    },
+    "internal/host/freebsd/process_unix_test.go": {
+      "sha256": "43a48c718ff946937c6750ea36f931dd378dda3ab5e8ba698c9af6587d3e6e91"
+    },
+    "internal/host/freebsd/projection_freebsd_test.go": {
+      "sha256": "ba6480b4b81d96f5af97cc313ae0ba62410687a65221e26757e559dbe5717ed9"
+    },
+    "internal/host/freebsd/property_backend.go": {
+      "sha256": "0e0e26b460062357c0724ec71254443991bd1ac0ae174aa59a0d07f1680f37d2"
+    },
+    "internal/host/freebsd/property_backend_freebsd_test.go": {
+      "sha256": "618bc772ba192f11d7d42ffaa9c532f7b2e50412e9c88d3e8f715e4ce30cd624"
+    },
+    "internal/host/freebsd/property_backend_test.go": {
+      "sha256": "d358fcf5fb7d487851d67620b56c7dde354316e3f9acc7a4285928380c2bb2ff"
+    },
+    "internal/host/freebsd/property_claim_control.go": {
+      "sha256": "649692d191aed36f69eab389f22247c6feba77c7b44a29c50770478c5eb54634"
+    },
+    "internal/host/freebsd/property_claim_control_freebsd_test.go": {
+      "sha256": "ef0d3e8556213afd7227155df659c897e1ba82fd11217f93a8d2b9418e5896cf"
+    },
+    "internal/host/freebsd/property_claim_control_test.go": {
+      "sha256": "d0c4667f9ec5ee260c3ad4578bfca8334301b1bfecfcee431b646b801fb4d333"
+    },
+    "internal/host/freebsd/property_claim_source.go": {
+      "sha256": "2469908e761697d716d9217621bcc9d09b23e43525c8634bd212acd3e2c6f49e"
+    },
+    "internal/host/freebsd/property_claim_source_freebsd_test.go": {
+      "sha256": "7510a4108e8618d226c1b577068c9b4d1b3c848b3f79d01598fe3bc7489dc8ef"
+    },
+    "internal/host/freebsd/property_claim_source_test.go": {
+      "sha256": "e70099a76d4fe7aba50922905250bdec81d6ce00c0c589ef19e7a66ef2f9c48c"
+    },
+    "internal/host/freebsd/property_control.go": {
+      "sha256": "9e1a385b2998c79d987115101a7e485d8a214699593b4efba321acb0eabdbd67"
+    },
+    "internal/host/freebsd/property_control_freebsd.go": {
+      "sha256": "c4ff43e43d34de17fea66463391fe682d3fadb030d2cea17a447ffab9508f517"
+    },
+    "internal/host/freebsd/property_control_freebsd_test.go": {
+      "sha256": "e36e80f4c6bf721696ffd3688188bb5baeb1fd9d1b8e9b3df6cc20ba040162a8"
+    },
+    "internal/host/freebsd/property_control_other.go": {
+      "sha256": "8fd5c8a2711b8cea2d1f7c7d0910d8cd27d1755edecf87f35377538234aba300"
+    },
+    "internal/host/freebsd/property_control_test.go": {
+      "sha256": "e31276137a16097d08b7449ab5d0143627cc26b83dab706b71d0ddf9f8bca89d"
+    },
+    "internal/host/freebsd/property_enrollment.go": {
+      "sha256": "f864a48481843527d796624ce6f3f55c6e93300b1704241a053a1f2ba5504e2a"
+    },
+    "internal/host/freebsd/property_enrollment_freebsd_test.go": {
+      "sha256": "3b8514162f61335afb7f3701bd4476792853e3a1dfb90a76741a768b211345a9"
+    },
+    "internal/host/freebsd/property_enrollment_test.go": {
+      "sha256": "5c15759c7698ae89dbace841293854171c89600fbf2da9f2515a849aba16181a"
+    },
+    "internal/host/freebsd/property_job_source.go": {
+      "sha256": "855e7442917eb97f08e84c67359a6c165d57c6cc0a198f4670d1ee3edb2a72cd"
+    },
+    "internal/host/freebsd/property_job_source_freebsd_test.go": {
+      "sha256": "a98a284691fc3750501ee93dafcb8b975c9f3436352279badb9d46104f7868b0"
+    },
+    "internal/host/freebsd/property_job_source_test.go": {
+      "sha256": "6e380585d53b914ad0c4715fad98d15a14b076e21a98ce4a01cf500a0b79f86e"
+    },
+    "internal/host/freebsd/property_policy.go": {
+      "sha256": "5bba5b1b21cbe6c2e6faed23fc973e9b5389791ee1064fec9fee827277eeae97"
+    },
+    "internal/host/freebsd/property_policy_test.go": {
+      "sha256": "99e4117a11a49e0185f0829379d599954235256b81b5b486c831f9516248869a"
+    },
+    "internal/host/freebsd/property_postcondition_freebsd_test.go": {
+      "sha256": "cbcb3c357143eb1dd5ab597518ad16325b1fcc15b89697170db52ae505397200"
+    },
+    "internal/host/freebsd/property_safety.go": {
+      "sha256": "f9ed0a6abad46c514a7ccbffff61b1d3f5dc1f086641b89d8e6076c60c51be95"
+    },
+    "internal/host/freebsd/property_safety_test.go": {
+      "sha256": "003c37e13bb4909370d614fcd0be11d850216baf490b48b601cfabdab08e2f04"
+    },
+    "internal/host/freebsd/property_state.go": {
+      "sha256": "9d54376c230582cadad2efd52e5f643c076edd88f595e35ffed9b53511ec0a23"
+    },
+    "internal/host/freebsd/property_state_freebsd_test.go": {
+      "sha256": "75d7892e864ccc33cd3c085725ce3e7bc8140496081ca503a446bd5be5c1a79f"
+    },
+    "internal/host/freebsd/property_state_test.go": {
+      "sha256": "ff4639ea451341855a687a057d12fc73ff0e8db0cb943951cb60b41be20dafeb"
+    },
+    "internal/host/freebsd/property_system_freebsd_test.go": {
+      "sha256": "16db0d96004a050e5973aa06a621cf0e5bdde924251a7b893e2338f378040e86"
+    },
+    "internal/host/freebsd/source.go": {
+      "sha256": "fecbf11d062d711210c84c7e1df286656be5ce7a6c4d9b3a26025290e2581939"
+    },
+    "internal/host/freebsd/source_test.go": {
+      "sha256": "594b097ecc8e8e6c90e750f0112a56bde74b2604105fd2ac3430b38f757315bf"
+    },
+    "internal/host/freebsd/supervisor_entry_test.go": {
+      "sha256": "7833e6c64ae4c3d80ce7575005896b60cbf8f0d1d905f265b2f7527a7049a18d"
+    },
+    "internal/host/freebsd/supervisor_fixture_other_test.go": {
+      "sha256": "749524839ca5c4250173665d40de76a3755fd62c2c7b37ba6d5bfe5afe761121"
+    },
+    "internal/host/freebsd/supervisor_freebsd.go": {
+      "sha256": "b57bd4533f930396af3df6ce91499e35ca3d9fae3d723299a1e91cec91d84349"
+    },
+    "internal/host/freebsd/supervisor_native_freebsd_test.go": {
+      "sha256": "b05d2e18ae54a19683178901afb4092f8a6ac80e0e58c81b2ccac62601ca7a0f"
+    },
+    "internal/host/freebsd/supervisor_other.go": {
+      "sha256": "6137e6e840da115fbac8859563d8554c758d4271ff5b7eda1a5cafef3467e90b"
+    },
+    "internal/host/freebsd/supervisor_protocol.go": {
+      "sha256": "8e71d977048b7f670f6335abc65282a3ee31796be337d3ac6e5125ebf9f5fe3c"
+    },
+    "internal/host/freebsd/supervisor_protocol_test.go": {
+      "sha256": "7145d130c66e42d5171bf6435aea1941a7755e3f3b9ef1d40b0336e2ef7dc58b"
+    },
+    "internal/host/freebsd/system_use.go": {
+      "sha256": "450a4ae0ca879337d452dafa0b34b781513dc8654618e3645014a1e37d8c941e"
+    },
+    "internal/host/freebsd/system_use_freebsd.go": {
+      "sha256": "2e9ea15925e59bd1c0480d75e8856eecd15e41b8316037b0b026424d550b7d4a"
+    },
+    "internal/host/freebsd/system_use_other.go": {
+      "sha256": "e88198611e28950fcf9685bebd345811d127ae4449296235079b94878bf3de47"
+    },
+    "internal/host/freebsd/system_use_test.go": {
+      "sha256": "dae513791551d3d81e3118585e120e9369fe51c1fee6a6e7742fbced40fb9b09"
+    },
+    "internal/host/freebsd/unsupported_test.go": {
+      "sha256": "38ca006d9fa744c9ce2d26c2a56fc9aca1a662d9d59a63c4602bfc699cbbe0ea"
+    },
+    "internal/inventory/clone.go": {
+      "sha256": "3573cdbcd96b52d611c36ce84527331580dae121a21aed014a3f4b2382689b3e"
+    },
+    "internal/inventory/clone_test.go": {
+      "sha256": "e2ab5ea29b25a8e58229e9574250eb35086a74415013bff5ced58b788abdc016"
+    },
+    "internal/inventory/device_fixture_test.go": {
+      "sha256": "be7279d8ccd4f72bf7398933b38baf46cf8c73fba52af385ea5010bbe01ccf7f"
+    },
+    "internal/inventory/devices_freebsd_test.go": {
+      "sha256": "c13fc2cd2d3cec2632d08cc3dbea9315d41ee599edaf821c5d9b6ced827a0c73"
+    },
+    "internal/inventory/disk_access.go": {
+      "sha256": "923021e5a501a31e290a74a30345de3687f8b087b69c10b6f908501754744cbc"
+    },
+    "internal/inventory/disk_access_test.go": {
+      "sha256": "fa2bfcba5bb1a8d7c650ed8e80ac008cbfcedcbb8477c0aed6afcc8dd9a71d76"
+    },
+    "internal/inventory/disk_attachments.go": {
+      "sha256": "b8a4d2775f8dc28bc7706af75693a4e2507a79b73380569ed31062dc730d2ebc"
+    },
+    "internal/inventory/disk_attachments_freebsd_test.go": {
+      "sha256": "1ce7f1105059b5773886ce53efffbf95d4111a8cd13d0008d51c592b644d50bd"
+    },
+    "internal/inventory/disk_attachments_test.go": {
+      "sha256": "805de246fd562a8e1cae2d5a3da152f404805f6f0e4e6eddcc7c02b83422aa32"
+    },
+    "internal/inventory/disk_observation.go": {
+      "sha256": "d0bd389ee15a487be015e173862e00cdc01d78d44dd34489c98eb672c0646c20"
+    },
+    "internal/inventory/disk_observation_test.go": {
+      "sha256": "c5bdf8259d7e191db9fc6cc7fdd00c93e57677a579b0770d13c301270718e587"
+    },
+    "internal/inventory/model.go": {
+      "sha256": "dd531a8bb6b95e0e9fcc15a6da030fcacc86ca839420db829bcc9f8c7b600617"
+    },
+    "internal/inventory/parse.go": {
+      "sha256": "039e50c19003a3093dbaff98f26cdc7ac5fc0d3c46a012775bc29697b9faacc1"
+    },
+    "internal/inventory/parse_geom.go": {
+      "sha256": "aed24efa5d12228c1eb47a3e0552eb16a5222993e65db8581804fa23ed6de9bf"
+    },
+    "internal/inventory/parse_test.go": {
+      "sha256": "95a593626afd2b0066127c3b395d9f5184a6597105fa03c4e00f217d183872b8"
+    },
+    "internal/inventory/parse_zfs.go": {
+      "sha256": "d998da649605c8c37bffcd43b2f270e54123b8d4526aaf1ddf9b96f9c6d59577"
+    },
+    "internal/inventory/pool_attachments_test.go": {
+      "sha256": "169a8ed44c55132ab7d74f541f5e88c145a8f4dbc07087ecd56ffdc567e41f54"
+    },
+    "internal/inventory/validate.go": {
+      "sha256": "1ade407b0dc235a36fe286d98a0841dafae274030a890efd5d3b0318d0132eb4"
+    },
+    "internal/observation/events_test.go": {
+      "sha256": "e7560200182465bb0f5024868090e08c07ca0deb2bf90e3c48457ad48cb71886"
+    },
+    "internal/observation/manager.go": {
+      "sha256": "00b4001b727182f941a09400a0caf9e6bb05f8232616fc11324935d4544e92b2"
+    },
+    "internal/observation/manager_test.go": {
+      "sha256": "e7a747f59fc3d73ce613e5cc26663299af927e3905b11d858231f14b01c9871b"
+    },
+    "internal/observation/native_freebsd_test.go": {
+      "sha256": "649886f598f2b00916241b7d2e205c4847cce3215fc8e9b203994db373bda253"
+    },
+    "internal/observation/query.go": {
+      "sha256": "148d8f01b9a0bb53bc0cd952234fc6dfaab4ef72b7ddabe336f14c5021e245be"
+    },
+    "internal/service/events.go": {
+      "sha256": "b0f488de9f535e5b7772ed0d9ccc423614250b7ba901a0b18841860355866e44"
+    },
+    "internal/service/events_test.go": {
+      "sha256": "e206d6b632b99933c6ebce15dbb99fc336f5877dec3703a5d82c79d5c933afb3"
+    },
+    "internal/service/listener.go": {
+      "sha256": "c3c3fff52f75d40812497b0b73999b8f691f4a69ed01a5543cb9d63f208c5c10"
+    },
+    "internal/service/listener_bounds_test.go": {
+      "sha256": "b228c14452260370d316b125fe847029474c4d2b96c7b252db4ecac00bf79265"
+    },
+    "internal/service/listener_test.go": {
+      "sha256": "1fbc011df7437b9c50b13c4cd9ce6e861316097220c8a979ab55cafcae44da79"
+    },
+    "internal/service/service.go": {
+      "sha256": "4097069f401f39ac5a8803f61c66a7669ee7f46fbe1d31ed5891b16c5d7855ed"
+    },
+    "internal/storage/device_use.go": {
+      "sha256": "9f958fc6afc9f2119bd154e8e31c3b79096522c99f3c624765f9a8301c87fc48"
+    },
+    "internal/storage/device_use_test.go": {
+      "sha256": "a51a74c81d4534f264bc17e6f40cfa215177fd81bf793b4fccdbdc048c79ef1a"
+    },
+    "internal/storage/enrollment_publish.go": {
+      "sha256": "7c4ac1b6097d1ed1756030ba9be8256eaa471c79d0deddaf8dc13276f404727d"
+    },
+    "internal/storage/enrollment_publish_freebsd.go": {
+      "sha256": "72c04ca7d80a522a9d3620b7cf0e7bb9d4533a5a3c681ee396311df726a1eca2"
+    },
+    "internal/storage/enrollment_publish_freebsd_test.go": {
+      "sha256": "25cbe176792b91432689cc02ae4b106dea21544c6d9b19e1cce117e53937056e"
+    },
+    "internal/storage/enrollment_publish_other.go": {
+      "sha256": "b7eb1e161d4369388116d72d23be7fbe379476d6ae2141e887be208402278da2"
+    },
+    "internal/storage/enrollment_publish_other_test.go": {
+      "sha256": "fd910e5c250fa954d3cdaab6bfe3342ada475ede395c90d0c01a1a7f7212891a"
+    },
+    "internal/storage/enrollment_publish_test.go": {
+      "sha256": "c97df9ff79e29c99ae5125f03199fdae5c6671133cc85ebf7c658b9c2433b3c0"
+    },
+    "internal/storage/execution_activation.go": {
+      "sha256": "1c6e117ddad2c59a8aaba821ffb927c388f225da7a65731585c0f168c96d4e86"
+    },
+    "internal/storage/execution_activation_bridge_freebsd.go": {
+      "sha256": "4106a5a6d02e7a2e93d17042378fb003ea416e284a7a18736cc0aa3786036ced"
+    },
+    "internal/storage/execution_activation_freebsd.go": {
+      "sha256": "05a8103589e255f6fbf50c0e1d8a6c2b144865f1fed41311acd31e5c9c35d1ba"
+    },
+    "internal/storage/execution_activation_freebsd_test.go": {
+      "sha256": "27e6831f92c48df446cf6d91365fa33daaa630d3d87ee804b489bf5b31906d96"
+    },
+    "internal/storage/execution_activation_other.go": {
+      "sha256": "3e68bf73e051fa9b9b9f7e15582a95e115609391983814041b2480e14b954618"
+    },
+    "internal/storage/execution_activation_other_test.go": {
+      "sha256": "99eb7f6f4544f3c8d33d482898d3dd11e6a0b33f32a4c46781e02e431844b9bf"
+    },
+    "internal/storage/execution_activation_test.go": {
+      "sha256": "99b9b79930257fcc050dc515740c14376d4900044e3e426bb6d531e3d4dd125f"
+    },
+    "internal/storage/execution_binding.go": {
+      "sha256": "8805c58314ef621d47804bf5ac61817e917d4559bbe24eb0d31fad103fb9ce6b"
+    },
+    "internal/storage/execution_binding_freebsd.go": {
+      "sha256": "a6d549990d5855697c9774b92ba328a3146774320661624b4760946143b31f1d"
+    },
+    "internal/storage/execution_binding_freebsd_test.go": {
+      "sha256": "75e8c17d3677641029a6297421027f092b00e4eb85888e8f9cbf1a57d2bbdb9c"
+    },
+    "internal/storage/execution_binding_test.go": {
+      "sha256": "4adb56ec126b3ca4736eabdc5b091ab34b5bb156e3d41c1971d6f2302b6a2f25"
+    },
+    "internal/storage/execution_census.go": {
+      "sha256": "b670e6692d0996d65ace8d748dbb063332aa62f882becb8843f934099591828f"
+    },
+    "internal/storage/execution_census_change.go": {
+      "sha256": "4821cf04fda835ff662ab6e656dd5c154a4018c3790ab96e5e659c4a0b957e5f"
+    },
+    "internal/storage/execution_census_change_test.go": {
+      "sha256": "f982e5cb2e4bfec945dee5ec1b4328f73de1596787aae6d51ce2e761cc786ab0"
+    },
+    "internal/storage/execution_census_freebsd.go": {
+      "sha256": "370ee8b1f38ed8f50c9e8aa8173b04ee9b00f4653ddeddd7e771d2360e7a8563"
+    },
+    "internal/storage/execution_census_freebsd_test.go": {
+      "sha256": "fd46d6c57479ae359fea46b91b76a29844d962e3cf6031d700b5bfd74d379d65"
+    },
+    "internal/storage/execution_census_test.go": {
+      "sha256": "3f14369c6d85aa822631628b945bcd59c69ec74b3d5f9abfe25290ec1e52672e"
+    },
+    "internal/storage/execution_domain.go": {
+      "sha256": "9ce060a5e3eac2471f2a85ccc5426e04d0fadab5130b90a8c92a1e2b5f6f3ecc"
+    },
+    "internal/storage/execution_domain_freebsd.go": {
+      "sha256": "237179b1e73510fc345e81c72440cf52662edb41e06396d5f17e7ed900f6c5ed"
+    },
+    "internal/storage/execution_domain_other.go": {
+      "sha256": "b1ab0708289d36fe227cb128045785e78edb1e1227766f6900fcb275630bae83"
+    },
+    "internal/storage/execution_domain_other_test.go": {
+      "sha256": "69a16aedcaedc49df7f22e8d7bf68d3aa3e3f34d7708d38888d0f9b405dff393"
+    },
+    "internal/storage/execution_domain_test.go": {
+      "sha256": "aef973d62f3ebe47239ec7c9ca2c118a65ba0bdbbb42220be7ef0844c6a977e1"
+    },
+    "internal/storage/execution_domains.go": {
+      "sha256": "d8a8fffc3d7860414f0ef856bd5f3592e1523f3f97ea2a94de3c2f2d0ea40bcb"
+    },
+    "internal/storage/execution_domains_freebsd.go": {
+      "sha256": "4c117a7a2136d422eef44f936a98d4ebeac6fd52ff017d05deab619feb5571bf"
+    },
+    "internal/storage/execution_domains_freebsd_test.go": {
+      "sha256": "705d460c9c850ec915ce60c51025b8e7a921cb89db6cf657b90b848302022142"
+    },
+    "internal/storage/execution_domains_other.go": {
+      "sha256": "b62b6d7194c636b289949d254848fcf2e379d86df8c4b3195c75c4f7590a3454"
+    },
+    "internal/storage/execution_domains_other_test.go": {
+      "sha256": "c0b64a752656ed5b1a242703feb7fb4c3818ad91a75080441caecbd3526d3b0c"
+    },
+    "internal/storage/execution_domains_test.go": {
+      "sha256": "661009a9f9ef05da46d560ab4df69118b8e44b59b3f1a772eb8e8a06703352a4"
+    },
+    "internal/storage/execution_fresh_freebsd.go": {
+      "sha256": "1e1bb49c8dab549041f533e982e25072f65082219365e8665b08992aa76168f6"
+    },
+    "internal/storage/execution_fresh_freebsd_test.go": {
+      "sha256": "07531fa14d1418735dc9abeee61a3ad99a71d7bb06fb8f92940cce2e79a9baad"
+    },
+    "internal/storage/execution_journal.go": {
+      "sha256": "cdcd92e46cb42ccfb8afa47b7c188ee28adec927c4c6834cf6e076d415f9cabb"
+    },
+    "internal/storage/execution_journal_cuts_freebsd_test.go": {
+      "sha256": "d9efca5deb6fd341b752b4be1754ee78fe7ba47b88cbb1a0bbea02a23d634f0d"
+    },
+    "internal/storage/execution_journal_namespace.go": {
+      "sha256": "a866b7afd3987d87ee00f8af8a1f3593cf81f4781b0b2cbcbeac7d3c25ff3ec3"
+    },
+    "internal/storage/execution_journal_namespace_test.go": {
+      "sha256": "f0d59177bb528c84bb03edcb7b46c2ed265ba0ead5ead84ed10c075dc5e3f967"
+    },
+    "internal/storage/execution_journal_store_freebsd.go": {
+      "sha256": "8da428a4b35b062fb380faa5cce14a270884a7bac0b6a556d96cecb00c5fcdfa"
+    },
+    "internal/storage/execution_journal_store_freebsd_test.go": {
+      "sha256": "e94a6ac4fe8f9c0b42d6bc983d4e481f43241375486a70f47798d331c703c3ff"
+    },
+    "internal/storage/execution_journal_test.go": {
+      "sha256": "e045b8e6f9f6da35a7d80d0646062826b457058fca91e70cdf290e4238f95851"
+    },
+    "internal/storage/execution_policy.go": {
+      "sha256": "ae0eb67e8ee83eb50fef9c169084127e4eda5afa1f64a8cb49d9a55c61e17046"
+    },
+    "internal/storage/execution_policy_fixture_freebsd.go": {
+      "sha256": "e975f3bca4d61edbc29b8ed106a9e300b97b86b42533f232ffb56c9e22a23f40"
+    },
+    "internal/storage/execution_policy_freebsd.go": {
+      "sha256": "43f7d1152ac5c83b55ebdf0233eaa4a44cd8bb8a8f8397f22cc307dabad190ef"
+    },
+    "internal/storage/execution_policy_native_test.go": {
+      "sha256": "3cbbf7bca0b92046b72686ca48aaad85770049e5a51c78dc546c0bd767bff2fc"
+    },
+    "internal/storage/execution_policy_other.go": {
+      "sha256": "f9e27da3a42ea83758448d7a99dc3a0ebaa83cb657a3bd9debbcd2b5c7dbb043"
+    },
+    "internal/storage/execution_policy_test.go": {
+      "sha256": "134900e1440939642e712d471fdab41d2a4094fa9d339007d1716c163d23afec"
+    },
+    "internal/storage/execution_publication_freebsd.go": {
+      "sha256": "26a15b5609ea3062b55d53bf8cee18256242fa4c675c420cdd5b3f5a518abb7e"
+    },
+    "internal/storage/execution_publication_freebsd_test.go": {
+      "sha256": "17c30f9575e9c6d15a2bda36ca98d12a85b85d5ab69dffd725c5fe5e824f5194"
+    },
+    "internal/storage/execution_restart.go": {
+      "sha256": "d1295d3d440299c250009c23f72e64a8802d14efb8813d49c5e9af65b43a21d2"
+    },
+    "internal/storage/execution_restart_freebsd.go": {
+      "sha256": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241"
+    },
+    "internal/storage/execution_restart_freebsd_test.go": {
+      "sha256": "8e6453355e1533392805a377fb035cb273b14d92821d4f2588e243ff2837c412"
+    },
+    "internal/storage/execution_restart_retirement.go": {
+      "sha256": "99b4b10e40663c0af017aa41229d8a9bbece0e07b8abaf9739f3f4be3677f88b"
+    },
+    "internal/storage/execution_restart_retirement_freebsd.go": {
+      "sha256": "b191c30276157e2faa46778004dadb67ad4bef78dfe096d96f1a80c2376fd444"
+    },
+    "internal/storage/execution_restart_retirement_freebsd_test.go": {
+      "sha256": "a88bee6c67d76ee011ffa57cfa9a0e684adae0ed136147d701460e34c350bb5b"
+    },
+    "internal/storage/execution_restart_retirement_test.go": {
+      "sha256": "36b858358395cdbba9597f77f26a5738352ffd3d35fb418fd0ce5ad82e447bb6"
+    },
+    "internal/storage/execution_restart_test.go": {
+      "sha256": "d8c30d0e15f75406f6e3aa93f2ec46d8f412879191e0b21b177a0f276f85d0dd"
+    },
+    "internal/storage/execution_restore_freebsd_test.go": {
+      "sha256": "412f3758724ad189ebc156dfc24352a1066b80fbc094a563b7fe5fea228b90e1"
+    },
+    "internal/storage/execution_retirement.go": {
+      "sha256": "a4c9878ba3276632ac358ba1d6eafc245a19dd3df3fd6201184a4dba02d2b862"
+    },
+    "internal/storage/execution_retirement_freebsd.go": {
+      "sha256": "d72d7a70266cb72f60a96bd808c7eefb906611db7b35c7af5114e4175b0d779d"
+    },
+    "internal/storage/execution_retirement_freebsd_test.go": {
+      "sha256": "da8f4b84422f8f74025db4b4f40ad5eff795a58aee92e3af15be120abcb4aa7d"
+    },
+    "internal/storage/execution_retirement_test.go": {
+      "sha256": "fa7d190a9667943fe42438439840d4733f78c3bece2a8f576ee64b67c8740dbc"
+    },
+    "internal/storage/execution_startup.go": {
+      "sha256": "6bf7cfd6e8d2dd183b1add1f4abfee7a590821266c37fd02c5fc7ee08a2c62c3"
+    },
+    "internal/storage/execution_startup_freebsd.go": {
+      "sha256": "7568274947d0110a46be79758bcaf5086829f1d2e7636715b3b4c214cc80a679"
+    },
+    "internal/storage/execution_startup_other.go": {
+      "sha256": "94d9b97bd95c91d36f6bf1958f2dce029a64c21c1c6e9ee21062d0684936fe2c"
+    },
+    "internal/storage/execution_startup_test.go": {
+      "sha256": "e126ac5b713eb96e17e2da866017ec9156175d4454a2eccfbf0db7468254e175"
+    },
+    "internal/storage/execution_system.go": {
+      "sha256": "8588af7dcdb1657c9d012f5dd1e594b21b1cac441e636ac7791eff5c181d136d"
+    },
+    "internal/storage/execution_system_other_test.go": {
+      "sha256": "82a35d07113bad6ddd933f1845c037291e18b93cb3cd6dc039e80a3eb20a6ba1"
+    },
+    "internal/storage/execution_system_test.go": {
+      "sha256": "e7c3314eee221fe78005641201e801f56cf913b2e080a74757caeb1a0401458c"
+    },
+    "internal/storage/feature_names.go": {
+      "sha256": "aac75ef72a600c30b29504b66673c86d6fa2050a24dc9f10a9a61e9737e06dd1"
+    },
+    "internal/storage/features.go": {
+      "sha256": "fd4718101606afb61ec380cd6fd6b118170d32dd3dd1b8578a3c7d557c3d6512"
+    },
+    "internal/storage/features_test.go": {
+      "sha256": "a2eed88f92102cae6a17f375f45142bd1cb3c0439824e734f3cc1f2509d14eef"
+    },
+    "internal/storage/identities.go": {
+      "sha256": "407727cce1a4c7ed5ebd22fc901a94f77c92e9138a68cc9e635ea6ce57b0f3c8"
+    },
+    "internal/storage/identities_test.go": {
+      "sha256": "a61b5ad2732b53a025360f9e7289ba3f5148eb828b739ffcb3899391fe887555"
+    },
+    "internal/storage/imported_pools.go": {
+      "sha256": "a5bf82f09b696500d5f323049c65d879bbdbc9d4b7c854dedbd17f08220d833b"
+    },
+    "internal/storage/imported_pools_freebsd_test.go": {
+      "sha256": "519afdab17423a9d2625dec0823304fb053a9467d7e39e916748c70d22cdbefe"
+    },
+    "internal/storage/imported_pools_test.go": {
+      "sha256": "9cf5f067440fb8a42641912a425b5ab9f49c73b03ecda1e5fe824172f7476f44"
+    },
+    "internal/storage/job.go": {
+      "sha256": "24f893a95ca2d5a7318e1e05a636681227b2e6ea85b02f796b70bbc32d73b2f0"
+    },
+    "internal/storage/job_capacity.go": {
+      "sha256": "7bd5c0117fe0d0a09de4826cb13881c5bdb0479dd59a506b3459abac312ffca9"
+    },
+    "internal/storage/job_capacity_test.go": {
+      "sha256": "884df7f8c40425231e28cec2b0da742a6e25a9857b4fbceab2795d3c18a8d521"
+    },
+    "internal/storage/job_publish_freebsd.go": {
+      "sha256": "b0d0d1955c437eedffa0d277ce883d2a56405fe8a0efdb18c92dde78bf13f954"
+    },
+    "internal/storage/job_publish_freebsd_test.go": {
+      "sha256": "947afd605cb95256c7691ffbe08cd9381466f18469e3b5fd2a845c07f5596d8c"
+    },
+    "internal/storage/job_publish_other.go": {
+      "sha256": "86722ebecf07d5a048bf235e67a48e54d33f5edf5d9993913092c14b8060f9ba"
+    },
+    "internal/storage/job_publish_other_test.go": {
+      "sha256": "ed8672e9269e1eab85f271a22fd8dd82b5aeb2ae3dc64fc6474bd80ae5a96a76"
+    },
+    "internal/storage/job_read_freebsd.go": {
+      "sha256": "4ce4221c5d6742e57adb8d14622fc93849551f23201469be4fe1ee435500b838"
+    },
+    "internal/storage/job_read_freebsd_test.go": {
+      "sha256": "de83cd38710ee70e9d475e72de878dea823d9add3f1dc6de6186286773597d86"
+    },
+    "internal/storage/job_read_other.go": {
+      "sha256": "7247109a028629194c6a4221e3e1b958a0c72d68e21a377fc57bdb6685f72979"
+    },
+    "internal/storage/job_read_other_test.go": {
+      "sha256": "76fb3b80557a28610d56fa7645d1207096e7aa3db7ee985d589dd38c10ab2b1b"
+    },
+    "internal/storage/job_record.go": {
+      "sha256": "5e9395ef191f69a890bed62422723728427495eab675f094e6ee71740d456f88"
+    },
+    "internal/storage/job_record_test.go": {
+      "sha256": "dca1d8f13f15281cdc86bf8a11eb73de2ba46899a811e95882d7238763c87e1a"
+    },
+    "internal/storage/job_restart.go": {
+      "sha256": "b1ad7ac6be197f133308cf30cc9d0b581bda91677c65d51c1ba4e08357363213"
+    },
+    "internal/storage/job_restart_test.go": {
+      "sha256": "d6f6e985be375382ab5a50e651d8704c37b12b9c81354b360fd05b27e1b04406"
+    },
+    "internal/storage/job_successor.go": {
+      "sha256": "834e1efb6980ef8005dcc027ec23e1f4a133a8a39a3d98c349a53a8f404dd3c5"
+    },
+    "internal/storage/job_successor_test.go": {
+      "sha256": "d9474baeeed7c327e36e62dece862e650b7ea00cf0413c163b5b10b9e2fc9d3c"
+    },
+    "internal/storage/labels.go": {
+      "sha256": "5c4bf5b4f7f2491efba6891442360b694be8914f3024723a59e99be0be324520"
+    },
+    "internal/storage/labels_test.go": {
+      "sha256": "8da6c2b661cac5b00f36b36b4132c782124981338602954201204050d5cc4c9e"
+    },
+    "internal/storage/model.go": {
+      "sha256": "8b7735eca3d3395bfe32cde11a93a0b71e60ad4c24fb897ead40e66e1ac0d89a"
+    },
+    "internal/storage/ownership_capacity.go": {
+      "sha256": "5dfe1f6e470aaaf8b08d6978e65a6b85510857cfc12334cee233fa357cc7f847"
+    },
+    "internal/storage/ownership_capacity_freebsd_test.go": {
+      "sha256": "1bc6cea71404ae38914e3a20369b85b7e46fc531db86ad69abc3c15fb80d28d8"
+    },
+    "internal/storage/ownership_capacity_test.go": {
+      "sha256": "d9249143e215eba20bf84d15012348053ae5129f857ecde767e243c95b223389"
+    },
+    "internal/storage/ownership_catalog.go": {
+      "sha256": "dd1ab40c4f2cea99eb64fd5d66ee8bcec25aa419dfd65cdc2f2b765bca324872"
+    },
+    "internal/storage/ownership_catalog_freebsd.go": {
+      "sha256": "7fc15d1387194eafa3ed27b86a50771503bd6c6fbc8244eea5f818d6a0ba256c"
+    },
+    "internal/storage/ownership_catalog_freebsd_test.go": {
+      "sha256": "06c894a8fd6be4bf397c89e0fbca9cf60d30a410ed11e5d8671282acb1bc4fa0"
+    },
+    "internal/storage/ownership_catalog_other.go": {
+      "sha256": "4a4d0e6ad46f5d56e75d488c1edf2cc7c720f647520c70e49bf6ca2efd462c84"
+    },
+    "internal/storage/ownership_catalog_other_test.go": {
+      "sha256": "0c1ccb01f54fc84d34671793c67859516780c81a6f6085545f83492815708a8d"
+    },
+    "internal/storage/ownership_catalog_test.go": {
+      "sha256": "9d72a070c6a969a4a26ac4ccd34a25e3eedd6e6e9a9ed5792320fdb769a31d9f"
+    },
+    "internal/storage/ownership_members.go": {
+      "sha256": "6695397c64b09178b7d1eb2b182a2af2ae9cef15281f189621594f8ebb01baa2"
+    },
+    "internal/storage/ownership_members_test.go": {
+      "sha256": "342a658f2bc83bddd1c0018cd3d5b38fd4a20e3a1c58b5cb1885702fedcb76e2"
+    },
+    "internal/storage/ownership_publish.go": {
+      "sha256": "e69f2e6c74fd52d5a0054f5d5019ae08fc6f0c50d72d5f5762d2de7dfcbb4310"
+    },
+    "internal/storage/ownership_publish_freebsd.go": {
+      "sha256": "fee2862ffa8e5b547d91f44bc6ea47edb5ff6655b085d530d031a6206cb20e04"
+    },
+    "internal/storage/ownership_publish_freebsd_test.go": {
+      "sha256": "a7b7453e2aeb97dd0075f87d18956bc44243a50e6e14922bc09195efea644198"
+    },
+    "internal/storage/ownership_publish_other.go": {
+      "sha256": "96fef6b846ebbbe63f6c16ba66cc137903f900bf9819446a7492bb0929b8eb1b"
+    },
+    "internal/storage/ownership_publish_other_test.go": {
+      "sha256": "81a69843de456a0baebcde83a1353eceacc9cb95de31fd6ab3605529d3d5cd5d"
+    },
+    "internal/storage/ownership_publish_test.go": {
+      "sha256": "673e6602b251f0f2789a9a3123a6fff93709119b017ef9af14c93b033911718c"
+    },
+    "internal/storage/ownership_read_freebsd.go": {
+      "sha256": "bf5d34a6b73504364a5e8ac1938973012783fcafa1b3d5c830d091e1599278a6"
+    },
+    "internal/storage/ownership_read_freebsd_test.go": {
+      "sha256": "2f99f4720ac430b446954e33f15204f450afc48759ee2ba8cbbd47bbf38652f3"
+    },
+    "internal/storage/ownership_read_other.go": {
+      "sha256": "ac3d1d9eaab6b97f938783440e3df8e4f6099612eada78eca2d4ebb33ebce7be"
+    },
+    "internal/storage/ownership_read_other_test.go": {
+      "sha256": "328273b4c50eb4716c388b58645fe7b1abc1b4477d91471fce1722a540ed70f7"
+    },
+    "internal/storage/ownership_record.go": {
+      "sha256": "84238d8e21e5c18f3b12442de4fb0e4ff7f25757c5bb242db21ace1ff95c8c66"
+    },
+    "internal/storage/ownership_record_test.go": {
+      "sha256": "30286e536cc449bd85834dad33e5669db3a98f6fa2a3fa6b36fd1401c67be106"
+    },
+    "internal/storage/plan.go": {
+      "sha256": "5d86fd4d55d3ce5ae2c836b7fe617cb72933e1faa7dcd28b2646a08a79a8358c"
+    },
+    "internal/storage/plan_test.go": {
+      "sha256": "e065f0fcb21579a1a5fe4177bcddac16bfb43e6851117e8a052ba13a95c919b7"
+    },
+    "internal/storage/policy_binding_test.go": {
+      "sha256": "196cac245661c1942991e8d6b04e2c66506ce2b4bbd7be8a127bcc3a9417885c"
+    },
+    "internal/storage/pool.go": {
+      "sha256": "412dd656cdef6f8975bb332083db69bd0b2214dedb629126cd66cab16cb7f6cb"
+    },
+    "internal/storage/pool_scan.go": {
+      "sha256": "e6ef750aba539d27773fc157dc6af115720da42b2d2cdf30a73e209dfa645e2a"
+    },
+    "internal/storage/pool_scan_test.go": {
+      "sha256": "8639f745f09e29df22a3fdae375e7276455edf561150220a2938732d1a527d36"
+    },
+    "internal/storage/pool_test.go": {
+      "sha256": "1cb15c2086ed39856d876045f2321e7f00fe602e593835d8ebee1a6141664f86"
+    },
+    "internal/storage/properties.go": {
+      "sha256": "45c4b0e44fdbccab58be889bbcf4f47f388db513ec1ff71dcc5e4272c0aa06a9"
+    },
+    "internal/storage/properties_freebsd_test.go": {
+      "sha256": "d07ecf29c66cf2fd1488be60b18233e61211b449eac2f8541f0b98170a447137"
+    },
+    "internal/storage/properties_test.go": {
+      "sha256": "8f61d3ae7cd575026d97d3db21ccff99cf1fe92c2e926c62f7d51c16b9e6c738"
+    },
+    "internal/storage/property_assessment.go": {
+      "sha256": "882af418409d477a249110e329685f7de07ad5638824d8fc53f5dec971d9d5d0"
+    },
+    "internal/storage/property_assessment_read_freebsd.go": {
+      "sha256": "13f874112933c7eb662d9942c4c522304e1d00493ad6ee78b2b4e991d5af3257"
+    },
+    "internal/storage/property_assessment_read_other.go": {
+      "sha256": "fe783c5ab9fa3ea447fa90c194472c1240e6a331093832ff76763f711cb2cb9a"
+    },
+    "internal/storage/property_assessment_read_other_test.go": {
+      "sha256": "21ed71713724dfdd8b06cbc0af64cc413c4a064ffa6ce3abd12233809c8531a2"
+    },
+    "internal/storage/property_assessment_selection.go": {
+      "sha256": "0d6d07873ea1a4467c77ffb28053802e259cdfc6a19a8bfb320a92fb93b39e9a"
+    },
+    "internal/storage/property_assessment_test.go": {
+      "sha256": "77baacde0e9276c9e9eb7749e67b6c49fd0ce9ce6259da4ffa83540214badf6b"
+    },
+    "internal/storage/property_claim_ack.go": {
+      "sha256": "b05bad4be6a758654390848bf1ea5471d0f0a1eb545e7c06a9a15a438dfcfdb3"
+    },
+    "internal/storage/property_claim_ack_freebsd.go": {
+      "sha256": "b343d3e4440b6f5195b977367d4f179a4faaf154a73a54c91b5145840edb366b"
+    },
+    "internal/storage/property_claim_ack_freebsd_test.go": {
+      "sha256": "2d442da83ed7505af7d04a92356ef455d4ed33b0adef446655e01dca4341b9a8"
+    },
+    "internal/storage/property_claim_ack_other.go": {
+      "sha256": "4a2bc0428db5740fdff2692ff9db1c49dc1711c5154163d69fe3e58b0a2b0e8a"
+    },
+    "internal/storage/property_claim_ack_other_test.go": {
+      "sha256": "14ab3fa07241af7ad52e2b41af2fecb5fe337a50a1c74aefefb38f6f94a988d0"
+    },
+    "internal/storage/property_claim_ack_test.go": {
+      "sha256": "088bbc7e6a087fd1a89ccca0e0396915f8e318f8d9ae7bb0674ca72498e91f94"
+    },
+    "internal/storage/property_claim_applying.go": {
+      "sha256": "d67ce09a6c457d416a37bef318b67389613eb423743cdfd5e5dbaeb3c3079955"
+    },
+    "internal/storage/property_claim_applying_freebsd.go": {
+      "sha256": "560a0384458e243b1b14cd91f9aa332e2b9a86f8536497daf7cdc45bd1cffd36"
+    },
+    "internal/storage/property_claim_applying_freebsd_test.go": {
+      "sha256": "4f3e9126ed6b2e5a43197e7b571d80dd5ec251ececf97feff32416797c362af0"
+    },
+    "internal/storage/property_claim_applying_other.go": {
+      "sha256": "5be631df6ec982d474cfe914714538876427b3c2561a00dd766aec0e12af37ff"
+    },
+    "internal/storage/property_claim_applying_other_test.go": {
+      "sha256": "f5059841ddf1ec22fa0c054387a3437266c9b0fafbe7d35fdb3b42c89842575e"
+    },
+    "internal/storage/property_claim_applying_test.go": {
+      "sha256": "eea341297668709bc41d03a5d5e617ad4dfb469ca7f8ae1969eb3678a6b5a95f"
+    },
+    "internal/storage/property_claim_read_freebsd.go": {
+      "sha256": "2300cc9412f98867c6886c2c231b2b708ec1b441b6a3955bae0f883bbac15b27"
+    },
+    "internal/storage/property_claim_read_other.go": {
+      "sha256": "f19935dcc983ea919be8a2bbd934b8ec46c2813c7b201dc62c66823a1590183e"
+    },
+    "internal/storage/property_claim_successor.go": {
+      "sha256": "7f20dfd8fb9fdb470375512998cc273919bcac7558d4581a4c7349f342283f36"
+    },
+    "internal/storage/property_claim_successor_freebsd.go": {
+      "sha256": "ff4d6c313e871eb44c2a572381d14ae58f6ff08d072e24e838e91e58dc40ee98"
+    },
+    "internal/storage/property_claim_successor_freebsd_test.go": {
+      "sha256": "e6319ee211cf1a1a21731929799db2056f4afd4ec5d51f0fa56d1f45d0f0e9aa"
+    },
+    "internal/storage/property_claim_successor_other.go": {
+      "sha256": "82a9e43335fb8eb3cbfda1b013360a599d53ce91cf65ca063059f1233ccd4da9"
+    },
+    "internal/storage/property_claim_successor_other_test.go": {
+      "sha256": "90bced6eab52543728350f53ad7e38cbeea098c40bef80c13a6e53f686b83600"
+    },
+    "internal/storage/property_claim_successor_test.go": {
+      "sha256": "1b7c6f37e073c5b8f6dbd12f15e384a287938c74fec3b64a9a01e945b57c6e43"
+    },
+    "internal/storage/property_coordinator.go": {
+      "sha256": "973b7d6caeb663674008b479adbfc564f169ed33a4c63bb16ef41f4ce56de2ea"
+    },
+    "internal/storage/property_coordinator_test.go": {
+      "sha256": "7fc1031915fec16568fbdc58e336b06e46d31ca95e063e68d1a0a3fb0f7fbdc9"
+    },
+    "internal/storage/property_enrollment.go": {
+      "sha256": "8ffa6aac7b73f01aaed0bf8f9b3a5dc94b46a7ecbe1673b803b4584d25269328"
+    },
+    "internal/storage/property_enrollment_selection.go": {
+      "sha256": "e148c6eb7644ea2010b038b6fbe0678c7e8866c5cdf5123760b82871fdc854d2"
+    },
+    "internal/storage/property_enrollment_state.go": {
+      "sha256": "86ba5a8343b195ea9b1bf07293007d2c6ec6a8d00e0f603a63a95c93813136ea"
+    },
+    "internal/storage/property_enrollment_state_freebsd.go": {
+      "sha256": "424f4ec23d557f5b58635adda5ee13525d3db33143ee659c7bdb2d6ed35175e4"
+    },
+    "internal/storage/property_enrollment_state_other.go": {
+      "sha256": "773e2a162b6c29423e245f05bc8e39677a1285ef1e7a1c2dd7648e809afb9ebf"
+    },
+    "internal/storage/property_enrollment_state_other_test.go": {
+      "sha256": "b570a4bcd877056c9539aa08d9be6fe3bba626a73b666a4d964c8c3f1d57b671"
+    },
+    "internal/storage/property_enrollment_state_test.go": {
+      "sha256": "c7ec0c06c5c40a47c0b00c6d6d3863e934857582b02e006de31b7ff98e9d8b03"
+    },
+    "internal/storage/property_enrollment_test.go": {
+      "sha256": "2d2afe193bd5afa651e209a3e985dc6ed7c272a632352f8a9f6adbca25e80a5f"
+    },
+    "internal/storage/property_execution.go": {
+      "sha256": "581039e0b39992aafbd95d019376f80e5e0024630797e3835ed1bcc9aa4a0728"
+    },
+    "internal/storage/property_execution_authority.go": {
+      "sha256": "3434e3ff081512b614076a48295efe634bcef17ff8b3bd8de8abe6da64559b5d"
+    },
+    "internal/storage/property_execution_authority_test.go": {
+      "sha256": "e880f766e70e4de43ce0ab04263defe5a1a0ad00ca7a56d9ce786b3d7cfaf578"
+    },
+    "internal/storage/property_execution_test.go": {
+      "sha256": "46fa080bfec00aa5922d2043ac2599f698656271bfe9aff890739c8d0f69855c"
+    },
+    "internal/storage/property_handoff.go": {
+      "sha256": "1fd7e164b4a033270285c1339686f8877545db03732864ab810161f0d4f9106f"
+    },
+    "internal/storage/property_handoff_test.go": {
+      "sha256": "bf606470bbe395e956081c8a975b366289f2ea646022b811ba189d27ff138618"
+    },
+    "internal/storage/property_handoff_uncertainty_test.go": {
+      "sha256": "a393adb5fb628b622c35d5c507373816cbd9f80176055062d8d2ac5b1b84bd11"
+    },
+    "internal/storage/property_intent.go": {
+      "sha256": "b1b6cda54fc57c369f3640f14e31a5ad272829a2c18dfa0d0e025d3d0bdb0937"
+    },
+    "internal/storage/property_intent_record.go": {
+      "sha256": "a0ddf74a2a8bff916b61b722a1338646877b53451ecf2cff639cdddae0a7b76d"
+    },
+    "internal/storage/property_intent_test.go": {
+      "sha256": "10393d86dfe1e528e38e1237f342a8eaffe3c8836d5bdafaff5e5af6e7a0e175"
+    },
+    "internal/storage/property_intent_wire.go": {
+      "sha256": "89942ced4797961c0530dfa86c49c2aa237eb60352aa2dde410e912fbd58d19e"
+    },
+    "internal/storage/property_job.go": {
+      "sha256": "555b12a19b8d089aae9bed758546f5080b882d06e142e1a557fa84f93c2ddbf0"
+    },
+    "internal/storage/property_job_publish_freebsd.go": {
+      "sha256": "d0e60d4fdcdd2ba787c4c14241a9c663f06f135118d60cd713dc7a6dbd14d510"
+    },
+    "internal/storage/property_job_read_freebsd.go": {
+      "sha256": "b56ef07d6f94be0b0b06ec95838300a9cbfd122b083ee8b9977a6f42431727f0"
+    },
+    "internal/storage/property_job_record.go": {
+      "sha256": "d3f5158467f89fbf596ec758b4f3d5a321307897ddfa65efffa144a3b05177e4"
+    },
+    "internal/storage/property_job_storage_freebsd_test.go": {
+      "sha256": "34650c33c140a22aa844379f04e16d068c8742ba346fd038c8c32cebf33276ba"
+    },
+    "internal/storage/property_job_storage_other.go": {
+      "sha256": "46be698d2d5e8a38d1f52e69c15a6b52d36d817a4f3af13bf8ab87a1a1991fa3"
+    },
+    "internal/storage/property_job_storage_other_test.go": {
+      "sha256": "5ec589115a2a049e82cf6e6ee086327db3dc1b78032ac0799da97e075aef6320"
+    },
+    "internal/storage/property_job_storage_test.go": {
+      "sha256": "60756f25333fce4da2ac5e65be3bb967c82c0bcab370b6bf101c229cd012b2c1"
+    },
+    "internal/storage/property_job_test.go": {
+      "sha256": "d8eff828f5fc0208ea0a79d7bbd62d2be21f91386c5b821fe8aa23e162feb28e"
+    },
+    "internal/storage/property_live_state.go": {
+      "sha256": "4405469fef1b3ffec1ade2c16b0937c7eef10802e6f95bc75b832b89cbbfdb4e"
+    },
+    "internal/storage/property_live_state_freebsd.go": {
+      "sha256": "1ad50a16fcabe8d418a6523145cd35cdcc1c3b2eff8ce49ce22e1f3eb970fa31"
+    },
+    "internal/storage/property_live_state_freebsd_test.go": {
+      "sha256": "f04c3e0a9d142b697956ca1351c270262a545b6cb54e494907f13a0707fa5da2"
+    },
+    "internal/storage/property_live_state_other.go": {
+      "sha256": "9811916da4ee9daa0bb33178c13709dd104113704437dfec164b521594b4d64a"
+    },
+    "internal/storage/property_live_state_test.go": {
+      "sha256": "9de3786b590020b2867a30f0311dbf9122ef068d93984a292c73c149fb5e7511"
+    },
+    "internal/storage/property_members.go": {
+      "sha256": "ec89310d6f3cbe72fd4a0c4d2e4ffcfdff5acb009181bfb010b3f944d5c28649"
+    },
+    "internal/storage/property_members_test.go": {
+      "sha256": "d9874e39e48382a757e16039c46a51dd9a36df42f87374d58df96eb70495d0c1"
+    },
+    "internal/storage/property_postcondition.go": {
+      "sha256": "65496ea3ba3fb048f436d0762aca241738f076c1537c4d772423a95e2eab63bd"
+    },
+    "internal/storage/property_postcondition_test.go": {
+      "sha256": "f5d37fd585e140c92b965ba913a665b6f4f683e2ffb0c14749ab5787560198ca"
+    },
+    "internal/storage/property_publication_cuts_freebsd_test.go": {
+      "sha256": "ca96c29e1920821a71f0a77c02ae331d89956860cbd62a17bb0388ad9f6ddeca"
+    },
+    "internal/storage/property_state.go": {
+      "sha256": "d59fb18fcc86f7076e2fe98f2b3d5173cbead49abca51cb71a5be572b3c1e9e5"
+    },
+    "internal/storage/property_state_freebsd.go": {
+      "sha256": "e80d8d15487e405510e806d30d1b6be902b7fdc3bc9cde32484870be5772af72"
+    },
+    "internal/storage/property_state_other.go": {
+      "sha256": "1df3d825190bd446bb8e20cfca4e22d5d02873d8bc4cede94dc6c1755a3781c6"
+    },
+    "internal/storage/property_state_other_test.go": {
+      "sha256": "5b202d872a7d7c00a321c8d407b15a46916247ec0dee868b85f46d68b8e9f865"
+    },
+    "internal/storage/property_state_test.go": {
+      "sha256": "442e733bb60d6a4140cb9632ac3359f10d8aa10ab89548db64d44d557e5e1d82"
+    },
+    "internal/storage/property_submission_freebsd.go": {
+      "sha256": "1533636ccbff4b709f32914d378a66c751b5eb98e4992f33c12ba0de1a5ee510"
+    },
+    "internal/storage/property_submission_freebsd_test.go": {
+      "sha256": "ffbd62083ed2d6d2b65eee3def9a6da2b1cae981cd1d180bd32070c3e3593b83"
+    },
+    "internal/storage/property_submission_other.go": {
+      "sha256": "6be55a0c646d43bc01c1bef339b14fd81dfbe2a5e414076d20b7359da7a62fd0"
+    },
+    "internal/storage/property_submission_other_test.go": {
+      "sha256": "ef5a1a9a7baf11903af19d3d984a43446082810837fd061e4d1f9359c4defda3"
+    },
+    "internal/storage/property_system.go": {
+      "sha256": "488d5415c9b3bc8afe8c088d34940cc87321ed63fbfe6925acfbab98664cfc6a"
+    },
+    "internal/storage/property_system_test.go": {
+      "sha256": "e708e8955251da92cb50beeae261c542cf106e5fbc105b5f093774275a723210"
+    },
+    "internal/storage/property_views.go": {
+      "sha256": "b40c0e24a84fe56cc697a6cfdc4480e52c2bd4cfa4879f8cd538bc8a8fae5ad2"
+    },
+    "internal/storage/property_views_test.go": {
+      "sha256": "039b58886399290f813e0da6533e3d98a3e3053306732ee62dea038caf380f12"
+    },
+    "internal/storage/reservations.go": {
+      "sha256": "a14dfb486253bca8c093002f46259937b8dba218216fce3121c24e3131df0e17"
+    },
+    "internal/storage/reservations_freebsd.go": {
+      "sha256": "40431a238a842a21d751a9dc553f4f674ac4478aeb73e9fdcba6d68a9b117aeb"
+    },
+    "internal/storage/reservations_freebsd_test.go": {
+      "sha256": "c337f2f56c10360ce9c89f0dd2912776582e6156adab5e5af1ecd19161e83dbd"
+    },
+    "internal/storage/reservations_other.go": {
+      "sha256": "7ce98e11427044f904365dc50e9c86084626e46e2c16238af31496edd8444442"
+    },
+    "internal/storage/reservations_other_test.go": {
+      "sha256": "13ec91a17ef8b55b0c227fa8b9fc7f666e58c30121e66e09d16ea11fa3da6061"
+    },
+    "internal/storage/reservations_test.go": {
+      "sha256": "f9a6361728eeebcc609c8fb368134b42346826d4ea1bc1b5df9c590baaca63be"
+    },
+    "internal/storage/signatures.go": {
+      "sha256": "136d2939a7bb32a8dabbac459b38651f78d796dad99ca394661cacdcd86b2e7d"
+    },
+    "internal/storage/signatures_test.go": {
+      "sha256": "7b41c922d3bf322dc522f0846e09de22f1c198c60b0873cba33997b537ad7077"
+    },
+    "internal/storage/state.go": {
+      "sha256": "7c6145e4ee30092a4eb57b87e70d5e7b69a619991f8b8d66b06c67ba475dc368"
+    },
+    "internal/storage/state_acl.go": {
+      "sha256": "cb27728f014299a973a2305c63bf9c39815b54507b0405160690d0131fa7b2b2"
+    },
+    "internal/storage/state_acl_freebsd.go": {
+      "sha256": "24e14d1d3737bfc72d67bcfa5b26b74f79ba01a506e0f24b523be0d8d06a7466"
+    },
+    "internal/storage/state_acl_freebsd_test.go": {
+      "sha256": "2f027e3fe436b470b6985576ebd3db0c1501fa3a8626d9bfff3ec4634550137b"
+    },
+    "internal/storage/state_acl_test.go": {
+      "sha256": "4c30bf9e121123cedf92d441f4edc7b225de7ec483a4c98f6f7d6dcd1ec9f8e6"
+    },
+    "internal/storage/state_catalog.go": {
+      "sha256": "d2c20877d0108c32e26b92282fac8534c3ceda00e6aa00f71e0b33ac76302ca3"
+    },
+    "internal/storage/state_catalog_freebsd.go": {
+      "sha256": "1359c639d1ddefc5de71d5b482a629e3395f5af1dc350bc664bdc635aedcfab2"
+    },
+    "internal/storage/state_catalog_freebsd_test.go": {
+      "sha256": "478a676d702583b20393f1d01c36f784d08975599f9b7e07c59c54adcf879cd6"
+    },
+    "internal/storage/state_catalog_other.go": {
+      "sha256": "f5eeccee5ff30d80ed6936c926b6de4f56ef2ba3ace6321ee56e814b9bda061f"
+    },
+    "internal/storage/state_catalog_other_test.go": {
+      "sha256": "17b0c4cfd7eee38bbbc4443b6877a35fb65aeee05cb25870b4382b15c7c6210b"
+    },
+    "internal/storage/state_catalog_test.go": {
+      "sha256": "deed6c48ad0cd9ce78b6e1019795bc635f9a37ef930be8cb3b8d116ca1691f2c"
+    },
+    "internal/storage/state_directory.go": {
+      "sha256": "354d6075abd434d5091ba2e8da97a25e0f26f1bce972e1359c72a77b5245b62d"
+    },
+    "internal/storage/state_directory_freebsd.go": {
+      "sha256": "b701fc6282679675bf889d2ec3d40dcf4879388c04ad9d273878e895d3696368"
+    },
+    "internal/storage/state_directory_freebsd_test.go": {
+      "sha256": "8263f36aa85ed993b1478c0cfd1b97643c23429e303d2ca71e4552dc10ed2225"
+    },
+    "internal/storage/state_directory_other.go": {
+      "sha256": "2b20f62fca9968ed565c77621fc98810a01eec43a624ca6541addd5b13fbb9b9"
+    },
+    "internal/storage/state_directory_other_test.go": {
+      "sha256": "23b9230feb6c65b129b3d04bb7189bd4558c4082a3e9b31e147540c9ed2aeca1"
+    },
+    "internal/storage/state_fixture_freebsd_test.go": {
+      "sha256": "ecefd6d9ec99212d2d0737f2b2c495d31f945fdbe586ca113ac73cb17e335d3c"
+    },
+    "internal/storage/state_publish_freebsd.go": {
+      "sha256": "c2abdf1dde8957aceb9b744a7942a324a96aa5487d605986913c76b19702d483"
+    },
+    "internal/storage/state_test.go": {
+      "sha256": "5f1d13c56fb3cd4743899b4041932713fe93f6e0e7ee942c5295678f241549f9"
+    },
+    "internal/storage/system_devices.go": {
+      "sha256": "6f08af9b2610fc7b0d9332d9f111b7576c758cfb0640f961cc4a3ef50d4faadb"
+    },
+    "internal/storage/system_devices_freebsd_test.go": {
+      "sha256": "182cf512de5dc6900a607e9f45ead124c66f21dd02d9e805af8e03f21d5a4c3e"
+    },
+    "internal/storage/system_devices_test.go": {
+      "sha256": "2041a6b3159a04e881697df0b34a391cc7e42ede5300fb443d7210e2764432bf"
+    },
+    "internal/storage/topology.go": {
+      "sha256": "87ba9d454352b323926b81dc46cacb105e8150e84921e994ca7d288bec1b628d"
+    },
+    "internal/storage/topology_test.go": {
+      "sha256": "e48bc9c9e456ad6c7658d5eb25bf2a5bc9a5bb1bea8763141776f995c8369928"
+    },
+    "internal/storage/validate.go": {
+      "sha256": "d038d373a42e215769fff018cecc692f97bf8cf55313372346757354b6dbc4dd"
+    },
+    "tools/bsd-policy-startup-owner-prebuilt.sh": {
+      "sha256": "65c09ea670647c50d796355256d39a5c9dacb20731abdf79e515ae66cb318a19"
+    },
+    "tools/bsd-policy-startup-publication-prebuilt.sh": {
+      "sha256": "e79b7a7d7be61b9f824421904c41953ad0d1dd4e01b18965b15235f35a2dcc07"
+    },
+    "tools/check-closed-startup-evidence.py": {
+      "sha256": "69427cf7d8f1520370351f5a64c6667f09fe31c7d99d7cc001b7c930c0d5b4fb"
+    },
+    "tools/check-execution-startup-evidence.py": {
+      "sha256": "7cb986e3f3317f697fc66f6bc9b94b223fdb6aef7c5559421c09a49f9416568f"
+    },
+    "tools/check-policy-startup-evidence.py": {
+      "sha256": "86086285e78c49aa048e3fc7b81e9338b6cc52480cab54cfa08c39765e8f0b52"
+    },
+    "tools/device-fixture.py": {
+      "sha256": "0cb0e1f8d95e413788cf66d2d25222eb589dd21223a90f2a2710b29d9162451e"
+    },
+    "tools/go-pins.json": {
+      "sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64"
+    },
+    "tools/local-qualification.py": {
+      "sha256": "d797df1a304f01e4b7a878784e19656bc2cf172190ec4264316682458eee5695"
+    },
+    "tools/local-vm-pins.json": {
+      "sha256": "2961ca8a154f2f1fa508cfc9bcb4c68b8c5430b1e6f97ab6c8ca0ee3be648280"
+    },
+    "tools/owned-process.py": {
+      "sha256": "0dd1a0dbc5b6d175e47ae7c4d09cd9c178e32917df20f482176100b84a87c915"
+    },
+    "tools/performance-vm-pins.json": {
+      "sha256": "81f0f30e4171fed38e281c644044521a0cdc9f6693cd9b988b229ef4f85d002b"
+    },
+    "tools/research/m1-geom.go": {
+      "sha256": "a6f4cc52aaa141b05c3de938625d890b0ff8517f3915d586971fffa24c5c2c14"
+    }
+  },
+  "limitations": [
+    "Storage physical-use/policy/boot facts are synthetic; root facts use fixed actual native producers.",
+    "Fixture-only closed seed publication does not qualify shutdown after actual work.",
+    "Enabled fixed-root qualification on both releases remains pending.",
+    "Full mixed/same/other-pool, multi-policy, concurrency and expanded census/bounds acceptance remains pending.",
+    "Failed and expected-red candidates are unqualified; historical empty-ledger evidence cannot qualify this extension.",
+    "No configured startup, worker, admission, native launch, backend, public operation, release or support claim."
+  ]
+}
