@@ -1,6 +1,6 @@
 # Original unused restarted-lifetime retirement
 
-Status: failing-first private prerequisite; native qualification pending; runtime denied.
+Status: private original unused restarted-lifetime close qualified; awaiting maintainer review; runtime denied.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted recovery mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -93,3 +93,38 @@ actual callback still collects fresh native facts; no producer is cached, mocked
 or relaxed. Keep all ten original-registry children, all 104 controls, both
 independent history/lock/data/domain/device gates and every original deadline.
 Product implementation and the storage executable remain unchanged.
+
+
+## Qualification
+
+Signed implementation `8245a35986d90c2e4e7750bbfe04c0292777c970` passed the storage
+gate on both pinned disposable targets. Fixture-optimized source
+`f83050fe4d16a432f147a84853def74f42468aa4` passed the fixed-root gate on both.
+Only the host fixture and its Test Design differ; product/storage executable
+inputs stay exact. On each FreeBSD/amd64 15.1 and 14.5 target: six publication
+parents/544 controls and four fixed-root/startup parents/394 controls,
+938 total. Each suite used one exact executable on both releases. Every owned
+backing/domain/data/device/guest/host/supervisor teardown passed; original base
+and runtime hashes stayed exact and compiled artifacts were removed. See the
+[source-bound execution manifest](restart-activation-retirement-manifest.json).
+
+The signed denial-stub native run failed only the three new retirement parents;
+all three retained publication parents/268 controls passed. All six backing
+teardowns and outer cleanup passed, but the failed record remains unqualified.
+The first portable invocation failed to bind its supervisor socket in the
+sandbox before any worker/group existed; a separate permitted invocation then
+produced the actual behavioral red result. Four new portable parents, nine
+retained startup/activation parents and six strict consumer tests passed.
+Fixed-root tests compiled before implementation and executed fully afterward;
+no fixed-root native red execution is claimed.
+
+Fresh conservative local review passed check/lint/test/secrets, all 186 tooling
+tests, eleven race packages and all 54 bounded fuzz targets. Final prose review
+reruns the baseline and may reuse only that actually executed matching deep
+record. All 449 unaffected original Go files and 105 historical manifests retain
+exact bytes. The original successor publisher, initial activation close, old
+storage activation fixture, all original startup tests, qualification runner and
+state/system/startup scripts/checkers remain unchanged. The focused gates rerun
+all 268 activation controls and all 186 startup controls; unrelated full
+state/system corpora retain their accepted source-bound evidence. Prior 88-case
+root activation proof does not satisfy the current 104-case root proof.

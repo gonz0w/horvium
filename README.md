@@ -116,9 +116,13 @@ teardown; PR 126 accepted this read-only prerequisite. The subsequent
 consumes that exact original review once and publishes a fresh active identity for
 a confirmed empty ledger, retaining both original leases and exact native facts.
 Both pinned releases passed its 630 publication/root/retained-startup controls with
-verified teardown; this private prerequisite awaits maintainer review. Retained
-nonempty history, clean restarted-lifetime retirement and configured recovery
-remain required.
+verified teardown; PR 127 accepted this prerequisite. The subsequent
+[original unused restarted-lifetime close](docs/testing/M2/restart-activation-retirement.md)
+publishes an exact closed successor through the original journal pipeline, then
+retires observation/finish authority while retaining both leases until release.
+Both pinned targets passed all 938 affected publication/root/startup controls with
+verified teardown; this private close prerequisite awaits maintainer review.
+Retained nonempty history and configured recovery remain required.
 Configured startup/restart, journaled publication integration, global native launch,
 worker draining and backend/supervisor assembly remain required before runtime writes.
 Completing this sequence covers the property workflow rather

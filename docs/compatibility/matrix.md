@@ -1299,9 +1299,70 @@ Existing publisher/format/fixture implementations and state/system/startup
 scripts/checkers are unchanged. Old runner suite values/validation branches/helpers
 are preserved; two new suites and owner device selection are added. Unrelated
 full state/system corpora retain their prior actual source-bound evidence.
-Nonempty history/policy review, original restarted-lifetime clean retirement,
-configured startup, unclean/changed-boot/restore recovery, journaled mutations,
+Nonempty history/policy review, configured startup, unclean/changed-boot/restore
+recovery, journaled mutations,
 global native launch and worker/supervisor/backend assembly remain pending.
 Reboot, kernel interruption, whole-host rollback, throughput and commercial scale
 remain unqualified. Runtime writes/services/Actions stay disabled; owned VM,
 fixture/device and process teardown is verified and compiled artifacts removed.
+
+
+The [original unused restarted-lifetime close](../testing/M2/restart-activation-retirement.md)
+adds an exact generation+1 closed successor to that original unused active
+lifetime. It requires the original new acknowledgement, confirmed empty census,
+both retained leases and full repeated native/system/raw boot/object facts.
+Observation/finish authority ends on every entered outcome, including success;
+explicit original release remains available and never resets the root registry.
+Copies, serialization and nil/cancelled pre-entry calls cannot consume it.
+No historical acknowledgement, native permit, worker drain or configured runtime
+is inferred. The final reserved generation closes once and cannot restart.
+
+Signed implementation `8245a35986d90c2e4e7750bbfe04c0292777c970` passed the storage
+gate; fixture-optimized source `f83050fe4d16a432f147a84853def74f42468aa4` passed
+the fixed-root gate. Only that host fixture and its Test Design differ; all product
+and storage executable inputs stay exact. Together they passed ten parents/938
+controls per pinned disposable FreeBSD/amd64 target (15.1 and 14.5): six storage
+parents/544 controls, including all 268 original activation controls, 126 new
+retirement controls per UFS/ZFS profile and 24 retirement cut controls; four
+fixed-root parents/394 controls, including 104 per profile and all 186 original
+startup controls. Eight actual UFS cut children per target cover the retained
+activation and new retirement file-sync/directory-sync/acknowledgement/UID
+boundaries. Ten normally waited owner children per profile use original process
+registries and actual fixed native boot/backing/system collectors. A final fault
+child consumes only the earlier successful clean child's exact closed successor,
+then preserves uncertain closed history after a native post-close collector
+failure. Parent history/locks/data/domain/device gates remain mandatory.
+
+The clean root finish-denial/active-preservation expectations intentionally become
+exact closed-receipt expectations. Activation-only or incomplete evidence cannot
+qualify the extended gates. Existing eighteen-minute storage, eight-minute root
+parent and 34-minute root process deadlines remain unchanged. Filesystem and
+actual fixed-root native facts are qualified; storage physical-use/boot transfers
+remain synthetic and capacity/pending/disarmed mutations are controlled fixtures.
+These warm userspace cuts do not establish reboot/power-loss/kernel-effect proof.
+An initial implemented ZFS owner parent reached its unchanged eight-minute
+deadline in the final child; the stopped failed run retains outer cleanup and
+remains unqualified for native completion. The bounded fixture correction uses
+established original closed history, verifies its legitimate successors before
+retaining each, proves cancellation survival by the later real close, and checks
+disjointness inside fresh actual paired system collection. All controls/children/
+deadlines remain; both corrected complete root gates passed.
+
+Behavioral portable and signed storage-native red runs precede implementation;
+the fixed-root cases compile first and run fully afterward. The failed native
+record retains all six backing teardowns and outer cleanup, with old activation
+controls passing, but remains unqualified. Fresh local review passed all 186
+tooling tests, eleven race packages and 54 bounded fuzz targets. All 449
+unaffected original Go files and 105 historical manifests preserve bytes.
+The original journal publisher/initial close and state/system/startup fixtures,
+scripts/checkers/runner are unchanged. The related original activation/startup
+controls rerun fully; unrelated storage corpora retain their historical source
+proof. See the [execution manifest](../testing/M2/restart-activation-retirement-manifest.json).
+
+All owned resources are stopped and compiled artifacts removed; base/runtime
+preservation and independent backing/domain/data/device/guest/host/supervisor
+cleanup pass. Retained nonempty history/policy, configured startup, explicit
+unclean/changed-boot/restore decisions, journaled mutations, native launch and
+worker/supervisor/backend assembly remain pending. Runtime services/writes and
+GitHub Actions stay disabled. Performance, commercial scale, whole-host rollback
+and M1 manual accessibility remain unqualified.

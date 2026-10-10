@@ -462,7 +462,27 @@ pipeline/error tests, actual sync/ack/UID process cuts and fixed-root registrati
 passed on both pinned targets, retaining all original startup controls and cleanup.
 
 This consumer requires the confirmed empty census. Nonempty ownership/job history,
-policy review, original restarted-lifetime clean retirement, configured startup
-and explicit unclean/changed-boot/restore decisions remain required. No runtime
+policy review, configured startup and explicit unclean/changed-boot/restore
+decisions remain required. No runtime
 metadata publisher, global native permit, supervisor/backend, worker or operator
 route/service is connected; runtime writes remain denied.
+
+
+## Original unused restarted-lifetime close prerequisite
+
+The [original unused restarted-lifetime close](../../testing/M2/restart-activation-retirement.md)
+consumes only the new active acknowledgement from the exact original empty
+startup activation. Under the original pair/journal/ledger locks, repeat the
+complete receipt, census, native/system/raw boot and object facts, publish only
+generation+1 and active-to-closed through the existing successor pipeline, then
+repeat all facts against that exact closed successor. Capture the namespace
+inside the real directory-sync operation before outer callbacks can mutate it.
+Do not reconstruct historical acknowledgement or absorb later object drift.
+
+Every entered outcome retires both stores and further observation/finish; both
+leases remain held until explicit original release. Context/copy/serialization
+pre-entry denials have no effect. Preserve uncertain visible history and the
+single-use root registration. The final reserved generation may close but cannot
+restart. Real UFS/ZFS durability/failure/cut tests and fixed native root composition
+passed on both pinned targets with complete teardown. No nonempty recovery,
+worker drain, configured startup or runtime launch/publication is connected.

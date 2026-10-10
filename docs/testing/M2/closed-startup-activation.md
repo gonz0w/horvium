@@ -1,6 +1,6 @@
 # Original closed-startup active publication
 
-Status: private original empty closed-startup activation qualified; awaiting maintainer review; runtime denied.
+Status: private original empty closed-startup activation accepted in PR 127; runtime denied.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted recovery mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -132,3 +132,7 @@ No host service or GitHub Actions execution was enabled. Concurrent dashboard
 files in the primary checkout retain original bytes. This is empty clean startup
 active publication only; no nonempty recovery, clean restarted-lifetime shutdown,
 runtime writer, native launch or full M2/release acceptance is inferred.
+
+The subsequent [unused restarted-lifetime close](restart-activation-retirement.md)
+has separate source-bound qualification; this activation record retains its
+original scope and evidence.
