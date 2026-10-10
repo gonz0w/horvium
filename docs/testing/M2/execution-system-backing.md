@@ -1,6 +1,6 @@
 # Original execution-domain system backing
 
-Status: Native system backing gates passed; preservation investigation open; runtime denied.
+Status: Accepted observation prerequisite (PR 116); runtime denied.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -148,3 +148,11 @@ supported subset. Offline/exported ownership remains a denial. Independent resto
 fresh commissioning, registered writer ownership, acknowledged transitions and
 startup/global launch assembly remain required; runtime storage writes stay denied.
 M1 manual Safari/VoiceOver acceptance remains pending separately.
+
+
+The subsequent [publication snapshot correction](publication-preservation.md)
+reproduced an allocation-count-only preservation failure and qualified its test
+correction on both native targets. The historical manifest above retains the
+original open-investigation record and failed attempts unchanged. No missing
+individual field difference is invented for the earlier uninstrumented attempts.
+This followup changes no production observer or storage-write authority.

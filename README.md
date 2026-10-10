@@ -71,8 +71,12 @@ publication and startup/global clearance remain required; runtime writes stay de
 The [execution-domain system backing path](docs/testing/M2/execution-system-backing.md)
 adds complete repeated system/owned-pool checks under both original leases.
 Both pinned native targets and the affected state safety corpus passed with
-verified teardown; it awaits maintainer review. Unresolved owned backing denies,
+verified teardown; PR 116 accepted this prerequisite. Unresolved owned backing denies,
 and no commissioning, independent restore or launch authority is added.
+The [publication snapshot correction](docs/testing/M2/publication-preservation.md)
+resolves a reproduced test allocation-accounting failure while retaining exact
+object/content checks. Both native state gates passed; it awaits maintainer review.
+Production behavior and runtime write denial remain unchanged.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 

@@ -46,7 +46,7 @@ TESTS.add('TestNativeStateSoftUpdates')
 
 
 CUT_PHASES=('before_publish','staged_before_write','after_write','after_file_sync','before_rename','after_rename','after_directory_sync','after_return')
-CUT_CASES={phase+'_'+case for phase in CUT_PHASES for case in ('barrier','writer_denial','sigkill_reaped','lock_reacquired','objects_preserved','restart_safe','retry_safe','lock_close')} | {'foreign_preservation','fixture_teardown'}
+CUT_CASES={phase+'_'+case for phase in CUT_PHASES for case in ('barrier','writer_denial','sigkill_reaped','lock_reacquired','objects_preserved','restart_safe','retry_safe','lock_close')} | {'snapshot_metadata_contract','foreign_preservation','fixture_teardown'}
 TESTS.update({'TestNativePropertyPublicationCuts','TestRestartPageCeilingAndTraversal','TestRestartPageConcurrentReaders','TestRestartPageDenials','TestRestartPageMixedOrderAndIsolation','TestRestartPageStates'})
 BACKING_TESTS.add('TestNativePropertyPublicationCuts')
 CODEC_SUBTEST_COUNTS.update({'TestRestartPageStates':30,'TestRestartPageDenials':9})

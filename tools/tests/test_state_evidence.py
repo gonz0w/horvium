@@ -83,7 +83,7 @@ PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- P
 OLD_CUT_FREE_PASS=PASS
 OLD_CUT_FREE_RESULT=RESULT
 CUT_PHASES=['before_publish','staged_before_write','after_write','after_file_sync','before_rename','after_rename','after_directory_sync','after_return']
-CUT_CASES=[phase+'_'+case for phase in CUT_PHASES for case in ['barrier','writer_denial','sigkill_reaped','lock_reacquired','objects_preserved','restart_safe','retry_safe','lock_close']]+['foreign_preservation','fixture_teardown']
+CUT_CASES=[phase+'_'+case for phase in CUT_PHASES for case in ['barrier','writer_denial','sigkill_reaped','lock_reacquired','objects_preserved','restart_safe','retry_safe','lock_close']]+['snapshot_metadata_contract','foreign_preservation','fixture_teardown']
 TESTS += ['TestNativePropertyPublicationCuts','TestRestartPageCeilingAndTraversal','TestRestartPageConcurrentReaders','TestRestartPageDenials','TestRestartPageMixedOrderAndIsolation','TestRestartPageStates']
 SUBTESTS.update({'TestRestartPageStates':30,'TestRestartPageDenials':9})
 BACKING_TESTS += ['TestNativePropertyPublicationCuts']
@@ -235,6 +235,10 @@ class EnrollmentPublicationEvidenceTests(unittest.TestCase):
 class PublicationCutEvidenceTests(unittest.TestCase):
     def module(self):
         m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m);return m
+
+    def test_old_cut_evidence_cannot_qualify_snapshot_metadata_contract(self):
+        old=RESULT.replace('snapshot_metadata_contract=pass ', '').replace(' snapshot_metadata_contract=pass', '')
+        with self.assertRaises(ValueError):self.module().validate(PASS+old)
 
     def test_old_publication_evidence_cannot_qualify_process_cuts(self):
         with self.assertRaises(ValueError):self.module().validate(OLD_CUT_FREE_PASS+OLD_CUT_FREE_RESULT)
