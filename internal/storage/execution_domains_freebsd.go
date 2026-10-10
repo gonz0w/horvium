@@ -8,6 +8,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"os"
+	"reflect"
 	"time"
 )
 
@@ -57,6 +58,19 @@ func OpenExecutionDomainLeases(ctx context.Context, journalPath, ledgerPath stri
 // native metadata transfer and must obey the single-domain borrowing contract.
 // Installation is metadata only; formatting cannot prove fresh commissioning.
 func (p *ExecutionDomainLeases) Observe(ctx context.Context, installation string, read func(context.Context, int) (ExecutionBackingObservation, error)) (ExecutionDomainsObservation, error) {
+	return p.observe(ctx, installation, read, nil)
+}
+
+// ObserveSystem requires fresh complete system observations inside both original
+// leases. Supplied callbacks remain trusted metadata, never runtime clearance.
+func (p *ExecutionDomainLeases) ObserveSystem(ctx context.Context, installation string, read func(context.Context, int) (ExecutionBackingObservation, error), system func(context.Context) (PoolSystemUse, error)) (ExecutionDomainsObservation, error) {
+	if system == nil {
+		return ExecutionDomainsObservation{}, ErrUnavailable
+	}
+	return p.observe(ctx, installation, read, system)
+}
+
+func (p *ExecutionDomainLeases) observe(ctx context.Context, installation string, read func(context.Context, int) (ExecutionBackingObservation, error), system func(context.Context) (PoolSystemUse, error)) (ExecutionDomainsObservation, error) {
 	zero := ExecutionDomainsObservation{}
 	if p == nil || ctx == nil || read == nil || os.Geteuid() != 0 {
 		return zero, ErrStateDirectory
@@ -102,7 +116,7 @@ func (p *ExecutionDomainLeases) Observe(ctx context.Context, installation string
 	var ledgerErr, workErr error
 	_, journalErr := j.lease.inspectExecutionBindingObjectsLocked(func() {
 		_, ledgerErr = l.inspectExecutionBindingObjectsLocked(func() {
-			result, workErr = p.observeLocked(ctx, installation, read)
+			result, workErr = p.observeLocked(ctx, installation, read, system)
 		})
 	})
 	if journalErr != nil {
@@ -129,7 +143,7 @@ func (p *ExecutionDomainLeases) Observe(ctx context.Context, installation string
 }
 
 // Caller holds owner, original journal and ledger mutexes, in that order.
-func (p *ExecutionDomainLeases) observeLocked(ctx context.Context, installation string, read func(context.Context, int) (ExecutionBackingObservation, error)) (ExecutionDomainsObservation, error) {
+func (p *ExecutionDomainLeases) observeLocked(ctx context.Context, installation string, read func(context.Context, int) (ExecutionBackingObservation, error), system func(context.Context) (PoolSystemUse, error)) (ExecutionDomainsObservation, error) {
 	zero := ExecutionDomainsObservation{}
 	j, l := p.native.journal, p.native.ledger
 	before, e := j.inspectLocked("", nil)
@@ -148,9 +162,30 @@ func (p *ExecutionDomainLeases) observeLocked(ctx context.Context, installation 
 	if e != nil {
 		return zero, e
 	}
-	_, first, e := l.inspectExecutionCensusLocked(binding, defaultStateCatalogLimits, nil)
+	catalog, first, e := l.inspectExecutionCensusLocked(binding, defaultStateCatalogLimits, nil)
 	if e != nil {
 		return zero, e
+	}
+	var firstSystem PoolSystemUse
+	checkSystem := func(use PoolSystemUse) error {
+		jb, e := propertyStateFilesystem(int(j.lease.directory.Fd()))
+		if e != nil {
+			return e
+		}
+		lb, e := propertyStateFilesystem(int(l.directory.Fd()))
+		if e != nil {
+			return e
+		}
+		return checkExecutionSystemDomains(jb, lb, jj.identity.backing, ll.identity.backing, catalog, use)
+	}
+	if system != nil {
+		firstSystem, e = system(ctx)
+		if e != nil {
+			return zero, e
+		}
+		if e = checkSystem(firstSystem); e != nil {
+			return zero, e
+		}
 	}
 	againJ, e := j.lease.observeExecutionDomainLocked(ctx, read)
 	if e != nil {
@@ -162,6 +197,18 @@ func (p *ExecutionDomainLeases) observeLocked(ctx context.Context, installation 
 	}
 	if againJ != jj || againL != ll {
 		return zero, ErrDrift
+	}
+	if system != nil {
+		finalSystem, e := system(ctx)
+		if e != nil {
+			return zero, e
+		}
+		if !reflect.DeepEqual(firstSystem, finalSystem) {
+			return zero, ErrDrift
+		}
+		if e = checkSystem(finalSystem); e != nil {
+			return zero, e
+		}
 	}
 	_, last, e := l.inspectExecutionCensusLocked(binding, defaultStateCatalogLimits, nil)
 	if e != nil {
@@ -185,7 +232,7 @@ func (p *ExecutionDomainLeases) observeLocked(ctx context.Context, installation 
 		h := sha256.Sum256(after.data)
 		digest = hex.EncodeToString(h[:])
 	}
-	return ExecutionDomainsObservation{p, binding, last, digest, after.present, after.record}, nil
+	return ExecutionDomainsObservation{origin: p, binding: binding, census: last, journalDigest: digest, journalPresent: after.present, journal: after.record, systemObserved: system != nil}, nil
 }
 
 // Close excludes observation and closes ledger before journal. It preserves all

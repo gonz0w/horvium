@@ -23,6 +23,7 @@ type ExecutionDomainsObservation struct {
 	census, journalDigest string
 	journalPresent        bool
 	journal               executionJournal
+	systemObserved        bool // Observation only; no commissioning or global permit.
 }
 
 func checkExecutionDomainJournal(binding executionJournalBinding, present bool, journal executionJournal) error {

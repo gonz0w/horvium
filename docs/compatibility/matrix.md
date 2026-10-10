@@ -1019,3 +1019,10 @@ system/owned-pool exclusion, independent restore proof or startup/global/runtime
 authority is added. Off-target opening and observation deny. These disposable
 fixtures add no hardware/performance support claim. All owned sessions and compiled
 artifacts were removed; GitHub Actions remain disabled.
+
+The private [execution-domain system backing path](../testing/M2/execution-system-backing.md)
+is implemented with native qualification pending. It checks both original domains
+against complete repeated system facts and all validated ownership GUIDs.
+Unresolved/offline owned pools deny this path; ordinary joint observation remains
+available. Restore independence, commissioning, publication and startup/global
+clearance remain unqualified. Off-target strict observation denies.

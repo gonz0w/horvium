@@ -328,3 +328,9 @@ across repeated native and complete namespace observations. It neither initializ
 a journal nor registers a runtime writer. Complete system/owned-pool exclusion,
 independent restore proof, commissioning, acknowledged transitions and
 startup/global execution ownership remain required.
+
+The [strict execution-domain system observer](../../testing/M2/execution-system-backing.md)
+adds two complete system collections within the original joint owner. Both domains
+must have resolved system backing disjoint from every owned imported pool; any
+unresolved owned pool denies. This conservative observation neither proves
+independent restoration nor registers or commissions a writer.
