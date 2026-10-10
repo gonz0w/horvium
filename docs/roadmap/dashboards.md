@@ -11,6 +11,10 @@ evidence. Preserve current M1/M2 work and acceptance gates. Follow the
 [dependency policy](../engineering/dependency-policy.md) and
 [document lifecycle](../process/document-lifecycle.md).
 
+Live dashboard design pickup, priority and dependencies are in [issue #166](https://github.com/gonz0w/horvium/issues/166)
+and the [roadmap index](github-roadmap-index.md). The design obligations below
+remain authoritative planning material, not a second progress checklist.
+
 ## Operator story
 
 Each view answers one question and leads to supporting evidence:

@@ -16,6 +16,10 @@ tested package; existing FreeBSD installations remain first-class deployments.
 An image-only pivot or accelerated image schedule would require an amended ADR
 and approved PRD, EDD and Test Design Document.
 
+Live security threat-model pickup, priority and dependencies are in [issue #167](https://github.com/gonz0w/horvium/issues/167)
+and the [roadmap index](github-roadmap-index.md). The design obligations below
+remain authoritative planning material, not a second progress checklist.
+
 ## Security outcomes
 
 Protect confidentiality, recoverable history and availability separately. Define
