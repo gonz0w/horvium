@@ -15,6 +15,7 @@ type ExecutionRestartActivation struct {
 	mu              sync.Mutex
 	original        *ExecutionRestartActivation
 	observe         func(context.Context) (ExecutionDomainsObservation, error)
+	finish          func(context.Context) error
 	release         func() error
 	closed, blocked bool
 	closeErr        error

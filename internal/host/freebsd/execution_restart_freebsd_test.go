@@ -22,7 +22,8 @@ import (
 )
 
 var restartOwnerCases = map[string][]string{
-	"clean":       {"nil_no_creation", "cancelled_no_creation", "original_registered", "both_locks_held", "fresh_active_identity", "binding_census_preserved", "original_observation", "copied_denied", "decoded_denied", "cancelled_no_effect", "other_startup_denied", "other_commission_denied", "finish_denied", "finish_retires", "release_once", "active_preserved", "registration_not_reset"},
+	"close-post":  {"original_registered", "finish_uncertain", "observation_retired", "release_once", "uncertain_closed_preserved", "both_locks_released", "registration_not_reset"},
+	"clean":       {"nil_no_creation", "cancelled_no_creation", "original_registered", "both_locks_held", "fresh_active_identity", "binding_census_preserved", "original_observation", "copied_denied", "finish_copied_denied", "decoded_denied", "finish_decoded_denied", "cancelled_no_effect", "finish_nil_no_effect", "finish_cancelled_no_effect", "other_startup_denied", "other_commission_denied", "finish_closed", "closed_exact_identity", "finish_retires", "finish_retry_denied", "release_once", "closed_preserved", "registration_not_reset"},
 	"touch":       {"original_registered", "directory_drift_denied", "observation_retired", "release_once", "active_preserved", "registration_not_reset"},
 	"uid":         {"original_registered", "actual_nonroot", "inherited_root_descriptors", "inherited_operations_denied", "active_preserved", "nonroot_release_denied"},
 	"active":      {"active_denied", "active_preserved", "both_locks_released", "registration_not_reset"},
@@ -76,12 +77,13 @@ func TestClosedStartupOwnerChild(t *testing.T) {
 			check("active_preserved", bytes.Equal(before, after))
 			check("both_locks_released", !nativeActivationLockHeld(t, j) && !nativeActivationLockHeld(t, l))
 			check("registration_not_reset", alternative())
-		} else if mode == "boot" || mode == "system" || strings.HasPrefix(mode, "post-") {
+		} else if mode == "boot" || mode == "system" || strings.HasPrefix(mode, "post-") || mode == "close-post" {
 			source, e := NewSystemUseSource()
 			if e != nil {
 				t.Fatal(e)
 			}
 			bootCount := 0
+			finishing := false
 			boot := func(c context.Context) ([16]byte, error) {
 				v, e := readNativeActivationBoot(c)
 				bootCount++
@@ -94,6 +96,9 @@ func TestClosedStartupOwnerChild(t *testing.T) {
 				v, e := source.Collect(c)
 				_, r := readActivationFixture(t, j)
 				if e == nil {
+					if mode == "close-post" && finishing && r.Owner.State == "closed" {
+						return storage.PoolSystemUse{}, storage.ErrUnavailable
+					}
 					if mode == "system" && bootCount >= 3 {
 						return storage.PoolSystemUse{}, storage.ErrUnavailable
 					}
@@ -117,11 +122,23 @@ func TestClosedStartupOwnerChild(t *testing.T) {
 				if e != nil {
 					return executionOwnerSource{}, errors.Join(e, r.Close())
 				}
-				return executionOwnerSource{observe: a.Observe, finish: func(context.Context) error { return storage.ErrDenied }, release: a.Close}, nil
+				return executionOwnerSource{observe: a.Observe, finish: a.FinishIdle, release: a.Close}, nil
 			})
-			check("fault_denied", q == nil && e != nil)
+			if mode == "close-post" {
+				check("original_registered", q != nil && e == nil)
+				defer q.Close()
+				finishing = true
+				check("finish_uncertain", q.FinishIdle(ctx) != nil)
+				_, oe := q.Observe(ctx)
+				check("observation_retired", oe != nil)
+				check("release_once", q.Close() == nil && q.Close() == nil)
+			} else {
+				check("fault_denied", q == nil && e != nil)
+			}
 			after, r := readActivationFixture(t, j)
-			if strings.HasPrefix(mode, "post-") {
+			if mode == "close-post" {
+				check("uncertain_closed_preserved", r.Owner.State == "closed" && r.Generation == old.Generation+2 && r.Owner.ID != old.Owner.ID && r.Binding == old.Binding && r.Census == old.Census && !r.Metadata.Pending && !r.Native.Pending && !r.Disarmed && !bytes.Equal(before, after))
+			} else if strings.HasPrefix(mode, "post-") {
 				check("fresh_active_preserved", r.Owner.State == "active" && r.Generation == old.Generation+1 && r.Owner.ID != old.Owner.ID && r.Binding == old.Binding && r.Census == old.Census && !bytes.Equal(before, after))
 			} else {
 				check("closed_preserved", bytes.Equal(before, after))
@@ -156,25 +173,33 @@ func TestClosedStartupOwnerChild(t *testing.T) {
 				reflect.ValueOf(copy).Elem().Set(reflect.ValueOf(o).Elem())
 				_, e = copy.Observe(ctx)
 				check("copied_denied", e != nil && copy.Close() != nil)
+				check("finish_copied_denied", copy.FinishIdle(ctx) != nil)
 				wire, e := json.Marshal(o)
 				var decoded commissionedExecutionOwner
 				de := json.Unmarshal(wire, &decoded)
 				_, ce := decoded.Observe(ctx)
 				check("decoded_denied", e == nil && de == nil && string(wire) == "{}" && ce != nil && decoded.Close() != nil)
+				check("finish_decoded_denied", decoded.FinishIdle(ctx) != nil)
 				cancelled, stop := context.WithCancel(ctx)
 				stop()
 				_, e = o.Observe(cancelled)
 				_, oe := o.Observe(ctx)
 				check("cancelled_no_effect", e != nil && oe == nil)
+				unchanged := func() bool { data, _ := readActivationFixture(t, j); return bytes.Equal(data, active) }
+				check("finish_nil_no_effect", o.FinishIdle(nil) != nil && unchanged())
+				check("finish_cancelled_no_effect", o.FinishIdle(cancelled) != nil && unchanged())
 				q, e := reviewNativeExecutionStartupOwner(ctx, j+"-other", l+"-other")
 				check("other_startup_denied", q == nil && e != nil && !activationPathExists(j+"-other") && !activationPathExists(l+"-other"))
 				check("other_commission_denied", alternative())
-				check("finish_denied", o.FinishIdle(ctx) != nil)
+				check("finish_closed", o.FinishIdle(ctx) == nil)
+				closed, cr := readActivationFixture(t, j)
+				check("closed_exact_identity", cr.Owner.ID == r.Owner.ID && cr.Owner.Boot == r.Owner.Boot && cr.Generation == r.Generation+1 && cr.Owner.State == "closed" && cr.Binding == r.Binding && cr.Census == r.Census && !cr.Disarmed && !cr.Metadata.Pending && !cr.Native.Pending)
 				_, e = o.Observe(ctx)
 				check("finish_retires", e != nil)
+				check("finish_retry_denied", o.FinishIdle(ctx) != nil)
 				check("release_once", o.Close() == nil && o.Close() == nil)
 				after, _ := readActivationFixture(t, j)
-				check("active_preserved", bytes.Equal(after, active))
+				check("closed_preserved", bytes.Equal(after, closed))
 				check("registration_not_reset", alternative())
 			case "touch":
 				if os.Chmod(l, 0700) != nil {
@@ -412,18 +437,24 @@ func nativeClosedStartupOwnerFixture(t *testing.T, ctx context.Context, kind str
 	}
 	pair = nil
 
-	for _, mode := range []string{"clean", "touch", "uid", "active", "missing", "boot", "system", "post-system", "post-touch"} {
+	for _, mode := range []string{"clean", "touch", "uid", "active", "missing", "boot", "system", "post-system", "post-touch", "close-post"} {
 		cj, cl := filepath.Join(jp, "restart-"+mode), filepath.Join(lp, "restart-"+mode)
 		var before []byte
 		// Denial-only children independently prove unchanged history and released
 		// leases. Reuse those original fixtures, rather than commissioning duplicates.
-		// Every actual/new/uncertain active lifetime still gets its own closed seed.
+		// Every actual lifetime starts from established closed history; the final
+		// close-fault child consumes the successful clean child's exact successor.
 		switch mode {
 		case "boot", "system":
 			cj, cl, before = j, l, closed
 		case "active":
 			cj, cl, before = ja, la, active
 		case "missing":
+		case "close-post":
+			// Consume only the already successful clean child's closed successor.
+			// This is another original process registry, never a reset or uncertain seed.
+			cj, cl = filepath.Join(jp, "restart-clean"), filepath.Join(lp, "restart-clean")
+			before, _ = readActivationFixture(t, cj)
 		default:
 			seed, e := activateNativeFreshExecutionJournal(ctx, cj, cl)
 			if e != nil {
@@ -469,9 +500,13 @@ func nativeClosedStartupOwnerFixture(t *testing.T, ctx context.Context, kind str
 			if json.Unmarshal(before, &old) != nil {
 				t.Fatal("old history")
 			}
-			changed := mode == "clean" || mode == "touch" || mode == "uid" || strings.HasPrefix(mode, "post-")
+			changed := mode == "clean" || mode == "touch" || mode == "uid" || strings.HasPrefix(mode, "post-") || mode == "close-post"
 			if changed {
-				check(mode+"_parent_history", r.Owner.State == "active" && r.Generation == old.Generation+1 && r.Owner.ID != old.Owner.ID && r.Owner.Boot == old.Owner.Boot && r.Binding == old.Binding && r.Census == old.Census && !r.Disarmed && !r.Metadata.Pending && !r.Native.Pending)
+				state, steps := "active", uint64(1)
+				if mode == "clean" || mode == "close-post" {
+					state, steps = "closed", 2
+				}
+				check(mode+"_parent_history", r.Owner.State == state && r.Generation == old.Generation+steps && r.Owner.ID != old.Owner.ID && r.Owner.Boot == old.Owner.Boot && r.Binding == old.Binding && r.Census == old.Census && !r.Disarmed && !r.Metadata.Pending && !r.Native.Pending)
 			} else {
 				check(mode+"_parent_history", bytes.Equal(history, before))
 			}

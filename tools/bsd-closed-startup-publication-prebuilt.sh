@@ -17,7 +17,7 @@ printf 'CLOSED_STARTUP_PUBLICATION_PREBUILT_SHA256 %s\n' "$expected"
 freebsd-version -kru
 zfs version
 /sbin/sha256 /sbin/mount /sbin/umount /sbin/mdconfig /sbin/newfs /sbin/dumpfs /sbin/zfs /sbin/zpool /usr/bin/timeout /sbin/sysctl /usr/sbin/swapinfo /usr/sbin/diskinfo /bin/freebsd-version
-if ! "$binary" -test.v -test.count=1 -test.timeout=18m -test.run='^TestNativeClosedStartupPublication(UFS|ZFS|Cuts)$' > .tools/closed-startup-publication-native.log 2>&1; then
+if ! "$binary" -test.v -test.count=1 -test.timeout=18m -test.run='^TestNativeClosedStartup(Publication|Retirement)(UFS|ZFS|Cuts)$' > .tools/closed-startup-publication-native.log 2>&1; then
     cat .tools/closed-startup-publication-native.log
     exit 1
 fi
