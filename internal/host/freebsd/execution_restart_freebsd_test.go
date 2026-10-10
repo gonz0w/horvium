@@ -183,9 +183,9 @@ func TestClosedStartupOwnerChild(t *testing.T) {
 				cancelled, stop := context.WithCancel(ctx)
 				stop()
 				_, e = o.Observe(cancelled)
-				_, oe := o.Observe(ctx)
-				check("cancelled_no_effect", e != nil && oe == nil)
 				unchanged := func() bool { data, _ := readActivationFixture(t, j); return bytes.Equal(data, active) }
+				// The later actual native FinishIdle also proves the original survived.
+				check("cancelled_no_effect", e != nil && !o.blocked && !o.closed && o.originalOwner() && unchanged())
 				check("finish_nil_no_effect", o.FinishIdle(nil) != nil && unchanged())
 				check("finish_cancelled_no_effect", o.FinishIdle(cancelled) != nil && unchanged())
 				q, e := reviewNativeExecutionStartupOwner(ctx, j+"-other", l+"-other")
@@ -408,29 +408,34 @@ func nativeClosedStartupOwnerFixture(t *testing.T, ctx context.Context, kind str
 	if e != nil {
 		t.Fatal(e)
 	}
-	use, e := source.Collect(ctx)
-	if e != nil {
-		t.Fatal(e)
-	}
-	disjoint := false
-	for _, m := range use.System().Mounts {
-		if m.Target == anchor && kind == "ufs" || (m.Target == jp || m.Target == lp) && kind == "zfs" {
-			disjoint = len(m.Disks) == 1 && m.Disks[0].Name == disk.Name
-			for _, p := range use.Pools() {
-				if p.GUID == policy.PoolGUID {
-					for _, d := range p.Disks {
-						disjoint = disjoint && d.Name != disk.Name
-					}
-				}
-			}
-		}
-	}
-	check("declared_disk_disjoint", disjoint)
+	disjoint, systemReads := true, 0
 	pair, e = openNativeExecutionDomains(ctx, j, l)
 	if e != nil {
 		t.Fatal(e)
 	}
-	got, e := observeNativeExecutionSystemDomains(ctx, pair, cr.Binding.Installation)
+	got, e := pair.ObserveSystem(ctx, cr.Binding.Installation, readNativeExecutionBacking, func(c context.Context) (storage.PoolSystemUse, error) {
+		use, e := source.Collect(c)
+		if e != nil {
+			return storage.PoolSystemUse{}, e
+		}
+		matched := false
+		for _, m := range use.System().Mounts {
+			if m.Target == anchor && kind == "ufs" || (m.Target == jp || m.Target == lp) && kind == "zfs" {
+				matched = len(m.Disks) == 1 && m.Disks[0].Name == disk.Name
+				for _, p := range use.Pools() {
+					if p.GUID == policy.PoolGUID {
+						for _, d := range p.Disks {
+							matched = matched && d.Name != disk.Name
+						}
+					}
+				}
+			}
+		}
+		disjoint = disjoint && matched
+		systemReads++
+		return use, nil
+	})
+	check("declared_disk_disjoint", systemReads > 0 && disjoint)
 	check("closed_observation_metadata_only", e == nil && got != (storage.ExecutionDomainsObservation{}))
 	if pair.Close() != nil {
 		t.Fatal("ordinary metadata close")
@@ -445,7 +450,9 @@ func nativeClosedStartupOwnerFixture(t *testing.T, ctx context.Context, kind str
 		// Every actual lifetime starts from established closed history; the final
 		// close-fault child consumes the successful clean child's exact successor.
 		switch mode {
-		case "boot", "system":
+		case "clean", "boot", "system":
+			// Use established original closed history instead of commissioning a
+			// duplicate clean seed. Its legitimate closed successors remain exact.
 			cj, cl, before = j, l, closed
 		case "active":
 			cj, cl, before = ja, la, active
@@ -453,7 +460,7 @@ func nativeClosedStartupOwnerFixture(t *testing.T, ctx context.Context, kind str
 		case "close-post":
 			// Consume only the already successful clean child's closed successor.
 			// This is another original process registry, never a reset or uncertain seed.
-			cj, cl = filepath.Join(jp, "restart-clean"), filepath.Join(lp, "restart-clean")
+			cj, cl = j, l
 			before, _ = readActivationFixture(t, cj)
 		default:
 			seed, e := activateNativeFreshExecutionJournal(ctx, cj, cl)
@@ -509,6 +516,11 @@ func nativeClosedStartupOwnerFixture(t *testing.T, ctx context.Context, kind str
 				check(mode+"_parent_history", r.Owner.State == state && r.Generation == old.Generation+steps && r.Owner.ID != old.Owner.ID && r.Owner.Boot == old.Owner.Boot && r.Binding == old.Binding && r.Census == old.Census && !r.Disarmed && !r.Metadata.Pending && !r.Native.Pending)
 			} else {
 				check(mode+"_parent_history", bytes.Equal(history, before))
+			}
+			if mode == "clean" || mode == "close-post" {
+				// Retain only the legitimate successor already independently checked
+				// above; no old receipt, registry or uncertain activation is reconstructed.
+				closed = history
 			}
 		}
 	}

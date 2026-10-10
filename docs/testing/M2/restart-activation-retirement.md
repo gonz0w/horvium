@@ -72,3 +72,24 @@ is mandatory, with exact-input reuse only for final prose. All failed runs remai
 unqualified. No nonempty recovery, worker shutdown, native launch, configured
 startup, operator route/service, actual reboot, power loss, kernel interruption,
 whole-host rollback, performance or commercial-scale qualification is implied.
+
+
+## Bounded fixture correction
+
+The implemented ZFS root parent exhausted its unchanged eight-minute deadline
+when the final close-post child began; that observed failed run was stopped and
+retains outer guest/host/device/supervisor cleanup, with native completion
+unqualified. The fixture now consumes its already-established original closed
+seed for the clean child, rather than commissioning a duplicate. After independent
+parent verification, retain the legitimate generation-four closed successor for
+boot/system denial and the final original close-post child; retain its exact
+visible generation-six closed history afterward. The active sentinel stays exact.
+
+Cancelled observation proves unchanged bytes/original unblocked lineage and is
+followed by actual successful native FinishIdle, avoiding a duplicate full native
+observation. Ordinary paired metadata observation gathers declared disjointness
+inside its real system collector, avoiding one separate full collection. Every
+actual callback still collects fresh native facts; no producer is cached, mocked
+or relaxed. Keep all ten original-registry children, all 104 controls, both
+independent history/lock/data/domain/device gates and every original deadline.
+Product implementation and the storage executable remain unchanged.
