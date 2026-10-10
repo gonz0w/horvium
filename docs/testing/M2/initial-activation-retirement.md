@@ -1,6 +1,6 @@
 # Original idle activation retirement
 
-Status: test-first private prerequisite; qualification pending; runtime denied.
+Status: private unused activation close qualified; awaiting maintainer review; runtime denied.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted recovery mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -46,3 +46,35 @@ No startup/global registration, worker drain, native launch permission, recovery
 workflow, operator API/configuration or service is introduced. Closed bytes alone
 do not grant restart eligibility. Warm fixture observations cannot qualify
 hardware power loss, active kernel work, throughput or commercial scale.
+
+## Executed qualification
+
+The two new portable behavioral parents and both old-evidence rejection
+regressions failed before implementation. The signed denial-stub native run
+failed exactly the three affected fresh-activation parents; all other 87 passed.
+An earlier supervisor initialization rejected an overly long macOS socket path
+before any worker or guest started. Shortening the disposable checkout path
+resolved that local setup issue without changing product source.
+
+Both pinned FreeBSD/amd64 targets passed the complete affected state corpus: 90
+parents, 1,992 native controls, 1,945 codec children and 31 actual backing/teardown
+markers each. This retains all 1,806 previous controls and adds 79 retirement
+controls per storage filesystem plus 28 cut controls. The fixed-host corpus
+passed six parents and 296 controls per target, retaining all 274 previous
+controls and adding eleven per filesystem. Four new exact-binary children per
+target were killed and waited; no fabricated receipt or fresh recommissioning
+was accepted after any cut.
+
+Local review passed check/lint/test/secrets, 174 tooling tests, eleven race
+packages and all 54 bounded portable fuzz targets. The final prose review
+reruns baseline checks and may reuse that executed deep record only for exact
+unchanged non-prose inputs/base/environment. All 426 unaffected original Go
+inputs and 101 historical manifests retain their bytes. See the
+[sanitized source-bound manifest](initial-activation-retirement-manifest.json)
+for actual source, image, tool, log and teardown hashes. Compiled fixture
+artifacts were removed and owned supervisors/VMs/fixtures are stopped; no host
+service or Actions runner was enabled.
+
+This advances the close prerequisite only. Registered startup/global ownership,
+worker draining/general orderly shutdown, actual supervisor/backend assembly,
+explicit root recovery/restore and shared HTML/CLI workflow remain required.

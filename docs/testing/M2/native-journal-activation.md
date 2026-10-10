@@ -1,6 +1,6 @@
 # Fixed native journal activation qualification
 
-Status: private fixed native prerequisite qualified; awaiting maintainer review; runtime denied.
+Status: accepted in PR 123; historical fixed native qualification; runtime denied.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted recovery mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -106,3 +106,13 @@ remain open. Equal native views are not atomic snapshots or a kernel fence;
 busy systems. These small QEMU TCG fixtures do not qualify throughput, hardware
 power loss, full-filesystem UFS restoration or commercial scale. Runtime writes
 remain denied and the NAS release is not complete.
+
+## Subsequent unused activation close
+
+The [original unused activation close](initial-activation-retirement.md) extends
+the opaque lifetime with a one-time FinishIdle operation. The earlier
+observation/release description records PR 123's qualified behavior; its historical
+[manifest](native-journal-activation-manifest.json) remains unchanged. Release
+alone still leaves active metadata. FinishIdle requires the original unused
+initial receipt and independently confirmed empty census; it does not qualify
+worker draining, general runtime shutdown or restart/startup ownership.
