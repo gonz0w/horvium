@@ -71,8 +71,8 @@ and release. The new inventory is independently declared in
 `^TestNative((ExecutionStartup|ClosedStartupOwner)(UFS|ZFS)|PolicyStartup(Lifecycle|Denial)Owner(UFS|ZFS))$`.
 The root parent bound remains eight minutes and process bound 34 minutes. The four
 retained parents and all 394 controls remain required. Four policy parents split
-lifecycle and denial fixtures on each filesystem: lifecycle has 54 controls and
-denial has 36, totaling 180 new controls and 574 overall. All eight prior modes
+lifecycle and denial fixtures on each filesystem: lifecycle has 51 controls and
+denial has 39, totaling 180 new controls and 574 overall. All eight prior modes
 remain: clean, clean-again, legacy, member, scope, missing-pool, post-publication
 drift and actual UID-loss. Each independently checks normally waited child
 completion, exact child inventory, both released leases, visible parent journal

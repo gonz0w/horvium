@@ -33,10 +33,10 @@ publisher, seed bridge, native producer, production behavior or format changes.
 
 | Actual parent | Required controls |
 |---|---|
-| `TestNativePolicyStartupLifecycleOwnerUFS` | 54 |
-| `TestNativePolicyStartupLifecycleOwnerZFS` | 54 |
-| `TestNativePolicyStartupDenialOwnerUFS` | 36 |
-| `TestNativePolicyStartupDenialOwnerZFS` | 36 |
+| `TestNativePolicyStartupLifecycleOwnerUFS` | 51 |
+| `TestNativePolicyStartupLifecycleOwnerZFS` | 51 |
+| `TestNativePolicyStartupDenialOwnerUFS` | 39 |
+| `TestNativePolicyStartupDenialOwnerZFS` | 39 |
 | Four unchanged original review/closed-startup UFS/ZFS parents | 394 total |
 
 All eight parents and 574 controls are required per release. The exact selector

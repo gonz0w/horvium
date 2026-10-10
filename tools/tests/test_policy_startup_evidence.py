@@ -34,8 +34,8 @@ class PolicyStartupEvidence(unittest.TestCase):
         checker = module('check-policy-startup-evidence')
         text = self.fixture('owner')
         checker.validate(text, 'owner')
-        self.assertEqual(len(checker.OWNER_GROUPS['Lifecycle']), 54)
-        self.assertEqual(len(checker.OWNER_GROUPS['Denial']), 36)
+        self.assertEqual(len(checker.OWNER_GROUPS['Lifecycle']), 51)
+        self.assertEqual(len(checker.OWNER_GROUPS['Denial']), 39)
         self.assertEqual(checker.OWNER_GROUPS['Lifecycle'] | checker.OWNER_GROUPS['Denial'], checker.OWNER)
         self.assertEqual(checker.OWNER_GROUPS['Lifecycle'] & checker.OWNER_GROUPS['Denial'], {'data_sentinel_preserved', 'domain_teardown', 'mounts_restored'})
         for group in ('Lifecycle', 'Denial'):
