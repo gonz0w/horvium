@@ -19,3 +19,7 @@ func (p *ExecutionDomainLeases) Close() error {
 	}
 	return ErrUnavailable
 }
+
+func (*ExecutionDomainLeases) ObserveSystem(context.Context, string, func(context.Context, int) (ExecutionBackingObservation, error), func(context.Context) (PoolSystemUse, error)) (ExecutionDomainsObservation, error) {
+	return ExecutionDomainsObservation{}, ErrUnavailable
+}

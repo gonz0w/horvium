@@ -1011,7 +1011,7 @@ passed the focused UFS/ZFS gates on both pinned FreeBSD/amd64 guests: four paren
 147 identity/ownership assertions and twelve fixture teardown controls per target.
 The affected state corpus passed all 77 parents, 1,075 required native assertions
 and 1,930 codec children. Full portable review passed baseline checks, 158 tooling
-tests, eleven race packages and 53 bounded fuzz targets. It awaits maintainer review;
+tests, eleven race packages and 53 bounded fuzz targets. PR 115 accepted this prerequisite;
 see the [source-bound record](../testing/M2/joint-execution-leases-manifest.json).
 It owns pre-existing locks in journal-before-ledger order and keeps both original
 mutexes during observation. No journal initialization, metadata publisher, complete
@@ -1019,3 +1019,25 @@ system/owned-pool exclusion, independent restore proof or startup/global/runtime
 authority is added. Off-target opening and observation deny. These disposable
 fixtures add no hardware/performance support claim. All owned sessions and compiled
 artifacts were removed; GitHub Actions remain disabled.
+
+The private [execution-domain system backing path](../testing/M2/execution-system-backing.md)
+passed native UFS/ZFS system checks on both pinned FreeBSD/amd64 targets, retaining
+all original/joint cases: six parents and 200 identity/system assertions per guest,
+plus complete fixture and host device teardown. Both affected state corpora passed
+all 77 parents, 1,075 required assertions and 1,930 codec children. Portable review
+passed baseline checks, 160 tooling tests, eleven race packages and all 53 bounded
+fuzz targets. It awaits maintainer review; see the
+[source-bound record](../testing/M2/execution-system-backing-manifest.json).
+It checks both original domains
+against complete repeated system facts and all validated ownership GUIDs.
+Unresolved/offline owned pools deny this path; ordinary joint observation remains
+available. Restore independence, commissioning, publication and startup/global
+clearance remain unqualified. Off-target strict observation denies.
+
+
+Execution-domain system backing validation also encountered intermittent failures
+in historical publication-cut preservation checks on FreeBSD 15.1. Assertions
+remain strict, and sanitized diagnostics now cover both comparisons. Later full
+suites and 300 focused repetitions passed, but the cause is unresolved and release
+acceptance still requires resolution; see the
+[preservation investigation](../testing/M2/property-publication-cuts.md#preservation-investigation-2026-10-10).

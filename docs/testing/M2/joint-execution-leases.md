@@ -1,6 +1,6 @@
 # Original joint execution-domain leases
 
-Status: Joint observation prerequisite qualified; awaiting maintainer review; runtime denied.
+Status: Joint observation prerequisite accepted in PR 115; runtime denied.
 Date: 2026-10-09. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted mechanism](../../milestones/M2/property-recovery-mechanism.md),

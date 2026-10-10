@@ -25,6 +25,7 @@ SUITES = {
     'research': ('python314', 'env HORVIUM_RESEARCH_VM=1 sh tools/research/m1-native.sh'),
     'discovery': ('python314', 'env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh'),
     'devices': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_DEVICE_VM=1 sh tools/bsd-devices.sh'),
+    'execution-system': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_BACKING_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_EXECUTION_SYSTEM_VM=1 sh tools/bsd-execution-system-prebuilt.sh'),
     'joint-leases': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_BACKING_VM=1 sh tools/bsd-joint-leases-prebuilt.sh'),
     'original-backing': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_BACKING_VM=1 sh tools/bsd-original-backing-prebuilt.sh'),
     'persistent-backing': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_BACKING_VM=1 sh tools/bsd-persistent-backing-prebuilt.sh'),
@@ -37,6 +38,7 @@ SUITES = {
 }
 
 PREBUILT = {
+    'execution-system': ('execution-system-native.test', './internal/host/freebsd', 'EXECUTION_SYSTEM_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_EXECUTION_SYSTEM_VM=1', 'bsd-execution-system-prebuilt.sh'),
     'joint-leases': ('joint-leases-native.test', './internal/host/freebsd', 'JOINT_LEASES_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1', 'bsd-joint-leases-prebuilt.sh'),
     'original-backing': ('original-backing-native.test', './internal/host/freebsd', 'ORIGINAL_BACKING_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1', 'bsd-original-backing-prebuilt.sh'),
     'persistent-backing': ('persistent-backing-native.test', './internal/host/freebsd', 'PERSISTENT_BACKING_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1', 'bsd-persistent-backing-prebuilt.sh'),
@@ -72,7 +74,7 @@ def suite_command(suite, source_build=False, artifact_digest=None):
 
 
 def uses_device_fixture(suite):
-    return suite in ('devices', 'pool-properties', 'executor-recovery')
+    return suite in ('devices', 'pool-properties', 'executor-recovery', 'execution-system')
 
 
 def recovery_boot_identity(text):
@@ -200,6 +202,11 @@ def validate_result(suite, log, complete=False):
         return
     if suite == 'job-status':
         load_tool('check-storage-job-status-evidence').validate(log)
+        return
+    if suite == 'execution-system':
+        load_tool('check-execution-system-evidence').validate(log)
+        if complete and log.count('DEVICE_FIXTURE_CLEANUP pass\n') != 1:
+            raise ValueError('execution system device teardown required')
         return
     if suite == 'joint-leases':
         load_tool('check-joint-leases-evidence').validate(log)

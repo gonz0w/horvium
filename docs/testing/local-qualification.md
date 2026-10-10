@@ -528,3 +528,9 @@ The focused `joint-leases` suite retains both `original-backing` parents and add
 actual paired journal/ledger ownership on UFS/ZFS. It requires all four fixtures
 and their filesystem/device/directory teardown. Run both pinned releases serially
 and the affected expanded `state` corpus; see [joint-domain qualification](M2/joint-execution-leases.md).
+
+The focused `execution-system` suite retains the four original/joint parents and
+adds native UFS/ZFS domain system checks using the five declared snapshot disks.
+It requires complete guest fixture and host device preservation/removal evidence.
+Run both pinned guests serially and retain both affected `state` corpora; see
+[execution-domain system qualification](M2/execution-system-backing.md).
