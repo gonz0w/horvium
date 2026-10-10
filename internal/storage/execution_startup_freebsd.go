@@ -44,10 +44,6 @@ func reviewExecutionStartup(ctx context.Context, journal, ledger string, read fu
 	return reviewExecutionStartupPolicy(ctx, journal, ledger, read, system, boot, nil)
 }
 func reviewExecutionStartupPolicy(ctx context.Context, journal, ledger string, read func(context.Context, int) (ExecutionBackingObservation, error), system func(context.Context) (PoolSystemUse, error), boot func(context.Context) ([16]byte, error), policy ExecutionStartupPolicySource) (*ExecutionStartupReview, *executionStartupNative, error) {
-	// Behavioral red candidate: policy startup is deliberately unavailable.
-	if policy != nil {
-		return nil, nil, ErrDenied
-	}
 	if ctx == nil || read == nil || system == nil || boot == nil || os.Geteuid() != 0 {
 		return nil, nil, ErrDenied
 	}

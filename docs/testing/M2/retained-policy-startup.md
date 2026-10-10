@@ -71,7 +71,7 @@ and release. The new inventory is independently declared in
 `^TestNative((ExecutionStartup|ClosedStartupOwner)(UFS|ZFS)|PolicyStartupOwner(UFS|ZFS))$`.
 The root parent bound remains eight minutes and process bound 34 minutes. The four
 retained parents and all 394 controls remain required. Two new parents add the
-exact inventories for clean, clean-again, legacy, member, scope, missing-pool,
+87 controls per filesystem with exact inventories for clean, clean-again, legacy, member, scope, missing-pool,
 post-publication drift and actual UID-loss children. Each independently checks
 normally waited child completion, exact child inventory, both released leases,
 visible parent journal history and exact policy bytes; data sentinel, domain
