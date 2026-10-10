@@ -462,3 +462,45 @@ class IndependentRestoreCompletenessTests(unittest.TestCase):
             for bad in ['',backing.replace('teardown=pass','teardown=fail'),backing.replace('filesystem='+kind,'filesystem='+('zfs' if kind=='ufs' else 'ufs'))]:
                 with self.subTest(suffix=suffix,backing=bad),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(backing,bad))
             with self.assertRaises(ValueError):m.validate(PASS.replace('--- PASS: '+name+' (1.0s)\n','')+RESULT)
+
+OLD_JOURNALED_FREE_PASS,OLD_JOURNALED_FREE_RESULT=PASS,RESULT
+JOURNALED_PUBLICATION_CASES=['actual_sync_order', 'both_lifetime_locks_held', 'closed_owner_denial', 'confirmation-after-sync-drift_denial', 'confirmation-after-sync-drift_retirement', 'confirmation-after-sync-drift_retry_preserves_bytes', 'confirmation-closeFile_denial', 'confirmation-closeFile_retirement', 'confirmation-closeFile_retry_preserves_bytes', 'confirmation-rename_denial', 'confirmation-rename_retirement', 'confirmation-rename_retry_preserves_bytes', 'confirmation-syncDirectory_denial', 'confirmation-syncDirectory_retirement', 'confirmation-syncDirectory_retry_preserves_bytes', 'confirmation-syncFile_denial', 'confirmation-syncFile_retirement', 'confirmation-syncFile_retry_preserves_bytes', 'confirmation-verify_denial', 'confirmation-verify_retirement', 'confirmation-verify_retry_preserves_bytes', 'confirmation-write_denial', 'confirmation-write_retirement', 'confirmation-write_retry_preserves_bytes', 'confirmed_actual_census', 'copied_owner_denial', 'disarmed_denial', 'disarmed_retirement', 'fixture_native_pending_ack', 'initial_context_denial', 'job_creation', 'job_successor', 'journal-inode_denial', 'journal-inode_retirement', 'ledger-after-sync-drift_denial', 'ledger-after-sync-drift_retirement', 'ledger-after-sync-drift_retry_preserves_bytes', 'ledger-closeFile_denial', 'ledger-closeFile_retirement', 'ledger-closeFile_retry_preserves_bytes', 'ledger-rename_denial', 'ledger-rename_retirement', 'ledger-rename_retry_preserves_bytes', 'ledger-syncDirectory_denial', 'ledger-syncDirectory_retirement', 'ledger-syncDirectory_retry_preserves_bytes', 'ledger-syncFile_denial', 'ledger-syncFile_retirement', 'ledger-syncFile_retry_preserves_bytes', 'ledger-verify_denial', 'ledger-verify_retirement', 'ledger-verify_retry_preserves_bytes', 'ledger-write_denial', 'ledger-write_retirement', 'ledger-write_retry_preserves_bytes', 'ledger_bytes_before_confirmation', 'native_pending_preserved', 'nil_context_denial', 'nil_owner_denial', 'nil_reader_denial', 'original_close', 'orphan_denial', 'orphan_retirement', 'overflow_denial', 'overflow_retirement', 'ownership_creation', 'ownership_successor', 'pending-after-sync-drift_denial', 'pending-after-sync-drift_retirement', 'pending-after-sync-drift_retry_preserves_bytes', 'pending-cancel_denial', 'pending-cancel_retirement', 'pending-closeFile_denial', 'pending-closeFile_retirement', 'pending-closeFile_retry_preserves_bytes', 'pending-rename_denial', 'pending-rename_retirement', 'pending-rename_retry_preserves_bytes', 'pending-syncDirectory_denial', 'pending-syncDirectory_retirement', 'pending-syncDirectory_retry_preserves_bytes', 'pending-syncFile_denial', 'pending-syncFile_retirement', 'pending-syncFile_retry_preserves_bytes', 'pending-verify_denial', 'pending-verify_retirement', 'pending-verify_retry_preserves_bytes', 'pending-write_denial', 'pending-write_retirement', 'pending-write_retry_preserves_bytes', 'pending_ack_before_ledger', 'pending_cancel_no_ledger_effect', 'pending_retained_until_confirmation', 'reopen_close', 'reopen_exact_history_preserved', 'reopen_no_receipt_denial', 'reopen_observation', 'rollback_denial', 'rollback_retirement', 'successor_advances_twice', 'terminal_hold_preserved']
+JOURNALED_PUBLICATION_CUT_CASES=['confirmation_barrier', 'confirmation_close', 'confirmation_history_preserved', 'confirmation_killed_reaped', 'confirmation_ledger_visibility', 'confirmation_no_reconstructed_writer', 'confirmation_pending_preserved', 'confirmation_reopen_observation', 'ledger_barrier', 'ledger_close', 'ledger_history_preserved', 'ledger_killed_reaped', 'ledger_ledger_visibility', 'ledger_no_reconstructed_writer', 'ledger_pending_preserved', 'ledger_reopen_observation', 'pending_barrier', 'pending_close', 'pending_history_preserved', 'pending_killed_reaped', 'pending_ledger_visibility', 'pending_no_reconstructed_writer', 'pending_pending_preserved', 'pending_reopen_observation', 'uid_barrier', 'uid_child_reaped', 'uid_close', 'uid_history_preserved', 'uid_ledger_visibility', 'uid_no_reconstructed_writer', 'uid_pending_preserved', 'uid_reopen_observation']
+JOURNALED_PARENTS=['TestNativeJournaledPublicationUFS', 'TestNativeJournaledPublicationZFS', 'TestNativeJournaledPublicationCuts', 'TestExecutionCensusChangeExactSuccessor', 'TestExecutionCensusChangeDenials']
+TESTS += JOURNALED_PARENTS
+PASS += ''.join('--- PASS: '+name+' (1.0s)\n' for name in JOURNALED_PARENTS)
+for name,count in [('TestExecutionCensusChangeExactSuccessor',4),('TestExecutionCensusChangeDenials',11)]:
+    SUBTESTS[name]=count
+    PASS += ''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for i in range(count))
+for suffix,kind,cases in [('UFS','ufs',JOURNALED_PUBLICATION_CASES),('ZFS','zfs',JOURNALED_PUBLICATION_CASES),('Cuts','ufs',JOURNALED_PUBLICATION_CUT_CASES)]:
+    marker='JOURNALED_PUBLICATION_'+suffix.upper()+'_RESULT'
+    RESULT += marker+' '+' '.join(c+'=pass' for c in cases)+'\n'
+    RESULT += 'STATE_BACKING_RESULT TestNativeJournaledPublication'+suffix+' filesystem='+kind+' softupdates=off teardown=pass\n'
+
+class JournaledPublicationEvidenceTests(unittest.TestCase):
+    def module(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m);return m
+
+    def test_previous_evidence_cannot_qualify_journaled_publication(self):
+        with self.assertRaises(ValueError):self.module().validate(OLD_JOURNALED_FREE_PASS+OLD_JOURNALED_FREE_RESULT)
+
+    def test_every_control_parent_codec_child_backing_and_teardown_required(self):
+        m=self.module()
+        self.assertEqual(m.JOURNALED_PUBLICATION_CASES,set(JOURNALED_PUBLICATION_CASES))
+        self.assertEqual(m.JOURNALED_PUBLICATION_CUT_CASES,set(JOURNALED_PUBLICATION_CUT_CASES))
+        m.validate(PASS+RESULT)
+        for suffix,kind,cases in [('UFS','ufs',JOURNALED_PUBLICATION_CASES),('ZFS','zfs',JOURNALED_PUBLICATION_CASES),('Cuts','ufs',JOURNALED_PUBLICATION_CUT_CASES)]:
+            marker='JOURNALED_PUBLICATION_'+suffix.upper()+'_RESULT'
+            line=marker+' '+' '.join(c+'=pass' for c in cases)
+            for case in cases:
+                for value in ['',case+'=fail',case+'=pass '+case+'=pass','invented=pass']:
+                    bad=marker+' '+' '.join(value if c==case else c+'=pass' for c in cases)
+                    with self.subTest(suffix=suffix,case=case,value=value),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(line,bad))
+            backing='STATE_BACKING_RESULT TestNativeJournaledPublication'+suffix+' filesystem='+kind+' softupdates=off teardown=pass\n'
+            for bad in ['',backing.replace('teardown=pass','teardown=fail'),backing.replace('filesystem='+kind,'filesystem='+('zfs' if kind=='ufs' else 'ufs')),backing.replace('softupdates=off','softupdates=on')]:
+                with self.subTest(suffix=suffix,backing=bad),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(backing,bad))
+        for name in JOURNALED_PARENTS:
+            with self.subTest(parent=name),self.assertRaises(ValueError):m.validate(PASS.replace('--- PASS: '+name+' (1.0s)\n','')+RESULT)
+        for name,count in [('TestExecutionCensusChangeExactSuccessor',4),('TestExecutionCensusChangeDenials',11)]:
+            for i in range(count):
+                with self.subTest(parent=name,child=i),self.assertRaises(ValueError):m.validate(PASS.replace('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n','')+RESULT)

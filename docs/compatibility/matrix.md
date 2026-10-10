@@ -1070,3 +1070,12 @@ awaits maintainer review; see its
 They also exercise deliberately restored older journal bytes: equal historical
 hashes cannot reconstruct an original writer. No whole-host anti-rollback,
 commissioning, operator restore workflow or runtime write support is claimed.
+
+
+The [original journaled metadata publisher](../testing/M2/journaled-publication.md)
+is a private FreeBSD-only prerequisite under qualification. It joins pending intent,
+ledger durability and actual-census confirmation through the original acknowledged
+journal and both protected leases. Public reopened handles remain observation-only.
+Native UFS/ZFS, process-cut, kernel-UID and complete state gates remain required.
+This does not qualify commissioning, registered startup/global ownership, an
+operator restore command, hardware power loss, commercial scale or runtime writes.
