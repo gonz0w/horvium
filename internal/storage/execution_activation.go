@@ -14,6 +14,7 @@ type ExecutionJournalActivation struct {
 	original        *ExecutionJournalActivation
 	observe         func(context.Context) (ExecutionDomainsObservation, error)
 	release         func() error
+	finish          func(context.Context) error
 	closed, blocked bool
 	closeErr        error
 }

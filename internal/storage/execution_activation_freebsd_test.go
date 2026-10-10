@@ -409,6 +409,7 @@ func nativeFreshJournalActivation(t *testing.T, kind string) {
 			}
 		}
 	}
+	nativeInitialRetirement(t, f, check)
 	t.Log("FRESH_ACTIVATION_" + strings.ToUpper(kind) + "_RESULT " + strings.Join(markers, " "))
 }
 
@@ -548,5 +549,6 @@ func TestNativeFreshJournalActivationCuts(t *testing.T) {
 			}
 		}()
 	}
+	nativeInitialRetirementCuts(t, f, check)
 	t.Log("FRESH_ACTIVATION_CUTS_RESULT " + strings.Join(markers, " "))
 }

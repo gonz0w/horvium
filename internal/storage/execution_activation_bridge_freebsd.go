@@ -11,7 +11,7 @@ func ActivateFreshExecutionJournal(ctx context.Context, journal, ledger string, 
 	if e != nil {
 		return nil, e
 	}
-	a := &ExecutionJournalActivation{observe: original.observe, release: original.close}
+	a := &ExecutionJournalActivation{observe: original.observe, release: original.close, finish: func(c context.Context) error { return original.finishIdle(c, nil) }}
 	a.original = a
 	return a, nil
 }
