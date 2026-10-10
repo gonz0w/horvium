@@ -74,7 +74,7 @@ The focused `execution-system` suite retains all four original/joint parents and
 fixtures under `/root`, an independently declared enrolled data mirror, complete
 native system collection, both strict/ordinary observations, missing ownership,
 permanent retirement, errors in either system phase, same-inode record changes in
-the final phase, Close exclusion, preserved policy/data bytes, and full teardown.
+the final phase, actual unrelated data-mount drift, Close exclusion, preserved policy/data bytes, and full teardown.
 ZFS additionally denies actual metadata-pool enrollment and separately moves each
 owned domain to an ordinary data mount. The existing five snapshot disk fixture
 validates provenance, geometry and root/mount/swap exclusion before mutation.

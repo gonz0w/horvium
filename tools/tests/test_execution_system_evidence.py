@@ -21,7 +21,7 @@ class ExecutionSystemEvidenceTests(unittest.TestCase):
   for c in self.m.CASES | self.m.ZFS_CASES:
    for replacement in ['',c+'=fail',c+'=pass '+c+'=pass']:
     with self.subTest(c=c),self.assertRaises(ValueError):self.m.validate(self.log.replace(c+'=pass',replacement))
-  for bad in ['',self.log*2,self.log.replace('PASS','SKIP'),self.log.replace('PASS','FAIL'),self.log.replace('DOMAIN_TEARDOWN','missing'),self.log.replace('DATA_TEARDOWN','missing')]:
+  for bad in ['',self.log*2,self.log.replace('PASS','SKIP'),self.log.replace('PASS','FAIL'),self.log.replace('DOMAIN_TEARDOWN','missing'),self.log.replace('DATA_TEARDOWN','missing'),self.log+'EXECUTION_SYSTEM_DOMAIN_TEARDOWN ufs filesystems=pass directories=pass\n']:
    with self.assertRaises(ValueError):self.m.validate(bad)
  def test_bound_binary_and_device_teardown_required(self):
   m=module('local-qualification');self.assertTrue(m.uses_device_fixture('execution-system'))

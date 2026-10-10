@@ -14,10 +14,12 @@ import (
 
 	"github.com/gonz0w/horvium/internal/inventory"
 	"github.com/gonz0w/horvium/internal/storage"
+	"golang.org/x/sys/unix"
 )
 
-func TestNativeExecutionSystemUFS(t *testing.T) { nativeExecutionSystemParent(t, "ufs") }
+// ZFS runs before UFS so an earlier owned UFS signature never needs force-overwrite.
 func TestNativeExecutionSystemZFS(t *testing.T) { nativeExecutionSystemParent(t, "zfs") }
+func TestNativeExecutionSystemUFS(t *testing.T) { nativeExecutionSystemParent(t, "ufs") }
 
 func nativeExecutionSystemParent(t *testing.T, kind string) {
 	if os.Getenv("HORVIUM_NATIVE_VM") != "1" || os.Getenv("HORVIUM_PROPERTY_VM") != "1" || os.Getenv("HORVIUM_EXECUTION_SYSTEM_VM") != "1" {
@@ -96,8 +98,12 @@ func nativeExecutionSystemFixture(t *testing.T, ctx context.Context, kind string
 			}
 		}
 		if mounted {
-			current, e := command(c, "/sbin/mount", "-p")
-			if e != nil || !strings.Contains(current, "/dev/"+disk.Name+"\t"+anchor+"\t") && !strings.Contains(current, "/dev/"+disk.Name+" "+anchor+" ") {
+			var fs unix.Statfs_t
+			if unix.Statfs(anchor, &fs) != nil {
+				return false
+			}
+			mount := persistentMount(fs)
+			if mount.kind != "ufs" || mount.target != anchor || mount.source != "/dev/"+disk.Name {
 				return false
 			}
 			if _, e = command(c, "/sbin/umount", anchor); e != nil {
@@ -270,6 +276,34 @@ func nativeExecutionSystemFixture(t *testing.T, ctx context.Context, kind string
 	if os.WriteFile(record, policyBytes, 0600) != nil {
 		t.Fatal("owned original record restore")
 	}
+	open()
+	step = 0
+	moved, e := os.MkdirTemp("", "horvium-execution-drift-")
+	if e != nil {
+		t.Fatal(e)
+	}
+	restored := false
+	defer func() {
+		if !restored {
+			_, e := command(context.Background(), "/sbin/zfs", "set", "mountpoint="+ordinary, policy.PoolName)
+			if e != nil {
+				t.Error("owned data mount restoration", e)
+			}
+			_ = os.Remove(moved)
+		}
+	}()
+	check("system_use_drift", errors.Is(deny(ctx, pair, func(c context.Context) (storage.PoolSystemUse, error) {
+		step++
+		if step == 2 {
+			must("/sbin/zfs", "set", "mountpoint="+moved, policy.PoolName)
+		}
+		return source.Collect(c)
+	}), storage.ErrDrift) && step == 2)
+	must("/sbin/zfs", "set", "mountpoint="+ordinary, policy.PoolName)
+	if os.Remove(moved) != nil {
+		t.Fatal("owned moved data directory cleanup")
+	}
+	restored = true
 	open()
 	// Full system reads and the final census remain inside both original locks.
 	entered, release := make(chan struct{}), make(chan struct{})
