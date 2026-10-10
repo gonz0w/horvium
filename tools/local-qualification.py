@@ -25,6 +25,7 @@ SUITES = {
     'research': ('python314', 'env HORVIUM_RESEARCH_VM=1 sh tools/research/m1-native.sh'),
     'discovery': ('python314', 'env HORVIUM_NATIVE_VM=1 sh tools/bsd-native-discovery.sh'),
     'devices': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_DEVICE_VM=1 sh tools/bsd-devices.sh'),
+    'joint-leases': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_BACKING_VM=1 sh tools/bsd-joint-leases-prebuilt.sh'),
     'original-backing': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_BACKING_VM=1 sh tools/bsd-original-backing-prebuilt.sh'),
     'persistent-backing': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_BACKING_VM=1 sh tools/bsd-persistent-backing-prebuilt.sh'),
     'state': ('python314', 'env HORVIUM_NATIVE_VM=1 HORVIUM_STATE_VM=1 sh tools/bsd-state.sh'),
@@ -36,6 +37,7 @@ SUITES = {
 }
 
 PREBUILT = {
+    'joint-leases': ('joint-leases-native.test', './internal/host/freebsd', 'JOINT_LEASES_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1', 'bsd-joint-leases-prebuilt.sh'),
     'original-backing': ('original-backing-native.test', './internal/host/freebsd', 'ORIGINAL_BACKING_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1', 'bsd-original-backing-prebuilt.sh'),
     'persistent-backing': ('persistent-backing-native.test', './internal/host/freebsd', 'PERSISTENT_BACKING_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1', 'bsd-persistent-backing-prebuilt.sh'),
     'executor-recovery': ('pool-properties-native.test', './internal/host/freebsd', 'EXECUTOR_RECOVERY_PREBUILT_SHA256', 'HORVIUM_PROPERTY_VM=1 HORVIUM_RESEARCH_VM=1', 'research/m2-executor-recovery.sh'),
@@ -198,6 +200,9 @@ def validate_result(suite, log, complete=False):
         return
     if suite == 'job-status':
         load_tool('check-storage-job-status-evidence').validate(log)
+        return
+    if suite == 'joint-leases':
+        load_tool('check-joint-leases-evidence').validate(log)
         return
     if suite == 'original-backing':
         load_tool('check-original-backing-evidence').validate(log)

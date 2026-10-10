@@ -1005,3 +1005,17 @@ historical manifests and 340 other original source inputs preserve their bytes;
 see the [source-bound record](../testing/M2/original-backing-manifest.json).
 These observations do not add hardware/performance support claims. GitHub Actions
 remain disabled; M1 manual Safari/VoiceOver acceptance remains pending.
+
+The private [joint execution-domain owner](../testing/M2/joint-execution-leases.md)
+passed the focused UFS/ZFS gates on both pinned FreeBSD/amd64 guests: four parents,
+147 identity/ownership assertions and twelve fixture teardown controls per target.
+The affected state corpus passed all 77 parents, 1,075 required native assertions
+and 1,930 codec children. Full portable review passed baseline checks, 158 tooling
+tests, eleven race packages and 53 bounded fuzz targets. It awaits maintainer review;
+see the [source-bound record](../testing/M2/joint-execution-leases-manifest.json).
+It owns pre-existing locks in journal-before-ledger order and keeps both original
+mutexes during observation. No journal initialization, metadata publisher, complete
+system/owned-pool exclusion, independent restore proof or startup/global/runtime
+authority is added. Off-target opening and observation deny. These disposable
+fixtures add no hardware/performance support claim. All owned sessions and compiled
+artifacts were removed; GitHub Actions remain disabled.

@@ -76,7 +76,7 @@ SOFTUPDATES_CASES=['enabled', 'ownership_denial', 'job_denial', 'property_denial
 BACKING_TESTS=['TestNativeStateDirectory', 'TestNativeOwnershipRead', 'TestNativeOwnershipCatalog', 'TestNativeOwnershipCapacity', 'TestNativeJobRead', 'TestNativeJobPublication', 'TestNativePropertyJobStorage', 'TestNativeJobReservations', 'TestNativeStateCatalog', 'TestNativeOwnershipPublish', 'TestNativePropertySubmission', 'TestNativeStateSoftUpdates']
 TESTS += ['TestNativeStateSoftUpdates']
 RESULT += 'STATE_SOFTUPDATES_RESULT '+' '.join(c+'=pass' for c in SOFTUPDATES_CASES)+'\n'
-RESULT += ''.join('STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=ufs softupdates=off' if name=='TestNativeExecutionBindingRemount' else ' filesystem=zfs softupdates=off')+' teardown=pass\n' for name in BACKING_TESTS)
+RESULT += ''.join('STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=ufs softupdates=off' if name in ('TestNativeExecutionBindingRemount','TestNativeJointExecutionJournal') else ' filesystem=zfs softupdates=off')+' teardown=pass\n' for name in BACKING_TESTS)
 PASS=''.join('--- PASS: '+name+' (1.0s)\n' for name in TESTS)+''.join('    --- PASS: '+name+'/case_'+str(i)+' (0.0s)\n' for name,count in SUBTESTS.items() for i in range(count))
 
 
@@ -270,7 +270,7 @@ class SubmissionEvidenceTests(unittest.TestCase):
     def test_exact_backing_capabilities_and_teardown_are_required(self):
         m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
         for name in BACKING_TESTS:
-            record='STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=ufs softupdates=off' if name=='TestNativeExecutionBindingRemount' else ' filesystem=zfs softupdates=off')+' teardown=pass\n'
+            record='STATE_BACKING_RESULT '+name+(' filesystem=ufs softupdates=on' if name=='TestNativeStateSoftUpdates' else ' filesystem=ufs softupdates=off' if name in ('TestNativeExecutionBindingRemount','TestNativeJointExecutionJournal') else ' filesystem=zfs softupdates=off')+' teardown=pass\n'
             for replacement in ['',record+record,record.replace('teardown=pass','teardown=fail'),record.replace('softupdates=off','softupdates=on') if name!='TestNativeStateSoftUpdates' else record.replace('filesystem=ufs','filesystem=zfs')]:
                 with self.subTest(name=name,replacement=replacement),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(record,replacement))
         for case in SOFTUPDATES_CASES:
@@ -399,3 +399,27 @@ class ReservationEvidenceTests(unittest.TestCase):
                 with self.subTest(case=case,value=value),self.assertRaises(ValueError):m.validate(PASS+bad)
         for case in RESERVATION_ACL_CASES:
             with self.subTest(case=case),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(case+'=pass',''))
+
+
+OLD_JOINT_FREE_PASS=PASS
+OLD_JOINT_FREE_RESULT=RESULT
+JOINT_JOURNAL_CASES=['census_changed_fact', 'census_mismatch_no_authority', 'drift_retired', 'empty_pair', 'final_close', 'foreign_binding_denial', 'installation_drift', 'journal_inode_drift', 'observed_active', 'observed_both', 'observed_closed', 'observed_disarmed', 'observed_metadata', 'observed_native', 'original_receipt_absent', 'reopen_no_publisher', 'reopen_observation', 'repeat_history', 'restored_observation', 'same_record_preserved', 'separate_original_objects']
+TESTS += ['TestNativeJointExecutionJournal']
+BACKING_TESTS += ['TestNativeJointExecutionJournal']
+RESULT += 'JOINT_EXECUTION_JOURNAL_RESULT '+' '.join(c+'=pass' for c in JOINT_JOURNAL_CASES)+'\n'
+RESULT += 'STATE_BACKING_RESULT TestNativeJointExecutionJournal filesystem=ufs softupdates=off teardown=pass\n'
+PASS += '--- PASS: TestNativeJointExecutionJournal (1.0s)\n'
+
+class JointExecutionJournalEvidenceTests(unittest.TestCase):
+    def test_original_joint_journal_scope_is_required(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
+        with self.assertRaises(ValueError):m.validate(OLD_JOINT_FREE_PASS+OLD_JOINT_FREE_RESULT)
+        self.assertEqual(m.JOINT_JOURNAL_CASES,set(JOINT_JOURNAL_CASES))
+        m.validate(PASS+RESULT)
+        for case in JOINT_JOURNAL_CASES:
+            for value in ['',case+'=fail',case+'=pass '+case+'=pass']:
+                line='JOINT_EXECUTION_JOURNAL_RESULT '+' '.join(c+'=pass' for c in JOINT_JOURNAL_CASES)
+                bad='JOINT_EXECUTION_JOURNAL_RESULT '+' '.join(value if c==case else c+'=pass' for c in JOINT_JOURNAL_CASES)
+                with self.subTest(case=case,value=value),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(line,bad))
+        with self.assertRaises(ValueError):m.validate(PASS.replace('--- PASS: TestNativeJointExecutionJournal (1.0s)\n','')+RESULT)
+        with self.assertRaises(ValueError):m.validate((PASS+RESULT).replace('TestNativeJointExecutionJournal filesystem=ufs','TestNativeJointExecutionJournal filesystem=zfs'))

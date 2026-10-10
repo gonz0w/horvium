@@ -19,6 +19,15 @@ func (s *StateDirectory) ObserveExecutionDomain(ctx context.Context, read func(c
 	defer cancel()
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	return s.observeExecutionDomainLocked(ctx, read)
+}
+
+// Caller holds the original lease mutex. The fixed native collector supplies
+// its own bounded probe context when called by a joint-domain observer.
+func (s *StateDirectory) observeExecutionDomainLocked(ctx context.Context, read func(context.Context, int) (ExecutionBackingObservation, error)) (ExecutionDomainObservation, error) {
+	if ctx == nil || s == nil || read == nil || os.Geteuid() != 0 {
+		return ExecutionDomainObservation{}, ErrStateDirectory
+	}
 	if s.propertyOrigin != s {
 		return ExecutionDomainObservation{}, ErrDenied
 	}
