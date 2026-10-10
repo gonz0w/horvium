@@ -337,7 +337,6 @@ func TestClosedStartupRetirementCutChild(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	defer a.Close()
 	if mode == "acknowledged" {
 		barrier()
 	}

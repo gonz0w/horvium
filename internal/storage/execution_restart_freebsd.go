@@ -100,7 +100,7 @@ func (n *executionStartupNative) activate(ctx context.Context, entropy io.Reader
 	if _, _, _, e = n.inspectLocked(ctx); e != nil {
 		return nil, e
 	}
-	a := &ExecutionRestartActivation{observe: n.observe, release: p.Close}
+	a := &ExecutionRestartActivation{observe: n.observe, release: p.Close, finish: func(c context.Context) error { return n.finishIdle(c, nil) }}
 	a.original = a
 	success = true
 	return a, nil
@@ -179,8 +179,8 @@ func (n *executionStartupNative) publishClosedStartupLocked(next executionJourna
 	return nil
 }
 
-// The original post-publication lifetime is restricted to its exact active
-// record and confirmed empty census; this is not general recovery clearance.
+// The original lifetime checks its exact active or original closed successor
+// and confirmed empty census; this is not general recovery clearance.
 func (n *executionStartupNative) checkRecord(j executionJournal, b executionJournalBinding, census string) error {
 	if !n.activated {
 		return checkClosedExecutionStartup(j, b, census)
@@ -188,7 +188,11 @@ func (n *executionStartupNative) checkRecord(j executionJournal, b executionJour
 	if e := validateExecutionJournal(j); e != nil {
 		return e
 	}
-	if j.Owner.State != "active" || j.Metadata.Pending || j.Native.Pending || j.Disarmed {
+	state := "active"
+	if n.finished {
+		state = "closed"
+	}
+	if j.Owner.State != state || j.Metadata.Pending || j.Native.Pending || j.Disarmed {
 		return ErrDenied
 	}
 	if j != n.snapshot.record || j.Binding != b || j.Census != census {

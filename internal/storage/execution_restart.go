@@ -9,8 +9,8 @@ import (
 	"sync"
 )
 
-// Original newly published active incarnation. Observation and explicit release
-// only; no runtime publisher, shutdown, recovery or native launch authority.
+// Original newly published active incarnation. Observation, unused clean
+// retirement and explicit release only; no runtime publisher or native launch.
 type ExecutionRestartActivation struct {
 	mu              sync.Mutex
 	original        *ExecutionRestartActivation

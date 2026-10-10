@@ -27,6 +27,7 @@ type executionStartupNative struct {
 	currentBoot [16]byte
 	reviewed    bool
 	activated   bool
+	finished    bool
 	read        func(context.Context, int) (ExecutionBackingObservation, error)
 	system      func(context.Context) (PoolSystemUse, error)
 	boot        func(context.Context) ([16]byte, error)
