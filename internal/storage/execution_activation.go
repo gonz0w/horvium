@@ -7,8 +7,9 @@ import (
 )
 
 // ExecutionJournalActivation retains the original initial journal receipt through
-// an internal root boundary. Observation and release only; never startup/global
-// registration, clean shutdown or a native launch credential. Do not copy it.
+// an internal root boundary. It permits observation, finishing an unused initial
+// activation and release. It grants no startup/global registration, general
+// runtime shutdown or native launch credential. Do not copy it.
 type ExecutionJournalActivation struct {
 	mu              sync.Mutex
 	original        *ExecutionJournalActivation
@@ -48,7 +49,7 @@ func (a *ExecutionJournalActivation) Observe(ctx context.Context) (ExecutionDoma
 	return got, nil
 }
 
-// Close waits for observation, releases the original leases once and retains the
+// Close waits for observation/finish, releases the original leases once and retains the
 // original release result. It never publishes orderly shutdown or repairs state.
 func (a *ExecutionJournalActivation) Close() error {
 	if a == nil || a.original != a || a.release == nil {
