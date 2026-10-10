@@ -96,6 +96,12 @@ func TestPropertyPublicationCutProcess(t *testing.T) {
 	barrier()
 }
 
+// Snapshot comparison concerns object metadata and bytes, not read access time.
+func publicationCutSnapshotStat(st syscall.Stat_t) syscall.Stat_t {
+	st.Atimespec = syscall.Timespec{}
+	return st
+}
+
 func TestNativePropertyPublicationCuts(t *testing.T) {
 	if os.Getenv("HORVIUM_NATIVE_VM") != "1" || os.Getenv("HORVIUM_STATE_VM") != "1" {
 		t.Skip("disposable state VM required")
@@ -119,6 +125,47 @@ func TestNativePropertyPublicationCuts(t *testing.T) {
 		}
 		results = append(results, name+"=pass")
 	}
+	// An allocated-block update alone must not impersonate a changed object.
+	// Every other native field remains part of the exact metadata comparison.
+	t.Run("snapshot_metadata_contract", func(t *testing.T) {
+		original := syscall.Stat_t{}
+		accounting := original
+		accounting.Atimespec.Sec = 1
+		accounting.Blocks = 8
+		if !reflect.DeepEqual(publicationCutSnapshotStat(original), publicationCutSnapshotStat(accounting)) {
+			t.Fatal("access/allocation accounting mistaken for object mutation")
+		}
+		var mutate func(reflect.Value)
+		mutate = func(v reflect.Value) {
+			switch v.Kind() {
+			case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+				v.SetInt(v.Int() + 1)
+			case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+				v.SetUint(v.Uint() + 1)
+			case reflect.Array:
+				mutate(v.Index(0))
+			case reflect.Struct:
+				mutate(v.Field(0))
+			default:
+				t.Fatal("unsupported native stat field")
+			}
+		}
+		value := reflect.ValueOf(original)
+		for i := 0; i < value.NumField(); i++ {
+			name := value.Type().Field(i).Name
+			if name == "Atimespec" || name == "Blocks" {
+				continue
+			}
+			t.Run(name, func(t *testing.T) {
+				changed := original
+				mutate(reflect.ValueOf(&changed).Elem().Field(i))
+				if reflect.DeepEqual(publicationCutSnapshotStat(original), publicationCutSnapshotStat(changed)) {
+					t.Fatal("object metadata mutation was ignored")
+				}
+			})
+		}
+	})
+	check("snapshot_metadata_contract", !t.Failed())
 	// Snapshot independently opened regular objects, including the stable lock
 	// and any partial temporary. Ignore access time changed by our own reads.
 	type object struct {
@@ -146,7 +193,7 @@ func TestNativePropertyPublicationCuts(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			st.Atimespec = syscall.Timespec{}
+			st = publicationCutSnapshotStat(st)
 			got[entry.Name()] = object{st, value}
 		}
 		return got
