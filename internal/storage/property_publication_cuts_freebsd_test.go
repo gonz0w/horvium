@@ -200,6 +200,28 @@ func TestNativePropertyPublicationCuts(t *testing.T) {
 			check(phase+"_lock_reacquired", err == nil && s != nil)
 			defer s.Close()
 			after := snapshot(path)
+			if !reflect.DeepEqual(before, after) {
+				for name, prior := range before {
+					next, ok := after[name]
+					role := "record"
+					if name == "writer.lock" {
+						role = "lock"
+					}
+					if !ok {
+						t.Log("publication cut missing", phase, role)
+						continue
+					}
+					a, b := reflect.ValueOf(prior.stat), reflect.ValueOf(next.stat)
+					for i := 0; i < a.NumField(); i++ {
+						if !reflect.DeepEqual(a.Field(i).Interface(), b.Field(i).Interface()) {
+							t.Log("publication cut stat drift", phase, role, a.Type().Field(i).Name)
+						}
+					}
+					if !bytes.Equal(prior.data, next.data) {
+						t.Log("publication cut bytes drift", phase, role)
+					}
+				}
+			}
 			check(phase+"_objects_preserved", reflect.DeepEqual(before, after))
 			view, inspectErr := s.InspectJobReservations()
 			published := phase == "after_rename" || phase == "after_directory_sync" || phase == "after_return"
