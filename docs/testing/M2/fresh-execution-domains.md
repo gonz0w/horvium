@@ -1,6 +1,6 @@
 # Exclusive fresh execution domains
 
-Status: private prerequisite qualified; awaiting maintainer review; runtime denied. Date: 2026-10-10.
+Status: accepted in [PR 121](https://github.com/gonz0w/horvium/pull/121); runtime denied. Date: 2026-10-10.
 Owner: Cam (`@gonz0w`). [Issue 19](https://github.com/gonz0w/horvium/issues/19).
 [Accepted recovery mechanism](../../milestones/M2/property-recovery-mechanism.md),
 [ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md),
@@ -111,3 +111,7 @@ This qualifies exclusive namespace provenance. Full commissioning, active
 journal publication, registered startup/global ownership, native backend and
 supervisor composition, recovery/restore workflow and runtime writes remain
 required; the property workflow and NAS release are not complete.
+
+The next [original activation component](fresh-journal-activation.md) consumes
+this private freshness receipt for initial journal durability. Fixed host collector
+composition and registered startup/global ownership remain required.

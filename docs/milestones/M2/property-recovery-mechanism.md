@@ -366,3 +366,14 @@ original protected parent and fresh lease objects, refuses existing names and
 preserves incomplete creation without repair. This private receipt is not journal
 activation, complete system/restore/boot provenance or registered startup/global
 clearance. Its future original consumer must establish those gates before use.
+
+
+The [original fresh journal activation component](../../testing/M2/fresh-journal-activation.md)
+consumes that exclusive receipt once, creates fresh installation/helper identities
+and obtains the initial active journal acknowledgement under both original leases.
+It repeats trusted native/system/boot transfers and original receipt/object checks,
+refuses ZFS ancestor scopes and preserves uncertain history. The storage fixtures
+use synthetic physical-use/boot transfers. A fixed native collector composition,
+registered startup/global owner, orderly shutdown and actual supervisor/backend
+assembly still precede runtime use. Closing this private receipt leaves active,
+unclean metadata and cannot supply a new incarnation or launch credential.
