@@ -8,13 +8,16 @@ import (
 	"sync"
 )
 
-// An original read-only closed-incarnation review. It has no publication,
-// incarnation, restore, restart-clearance or native launch method. Do not copy.
+// Original closed-incarnation review. Only its native one-shot consumer can
+// publish a fresh active lifetime. It grants no recovery or native launch proof.
+// Do not copy.
 type ExecutionStartupReview struct {
 	mu              sync.Mutex
 	original        *ExecutionStartupReview
 	observe         func(context.Context) (ExecutionDomainsObservation, error)
 	release         func() error
+	activate        func(context.Context) (*ExecutionRestartActivation, error)
+	transferred     bool
 	closed, blocked bool
 	closeErr        error
 }
@@ -69,6 +72,9 @@ func (r *ExecutionStartupReview) Close() error {
 	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	if r.transferred {
+		return ErrDenied
+	}
 	if !r.closed {
 		r.closed = true
 		r.blocked = true

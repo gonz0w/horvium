@@ -4,6 +4,7 @@ package storage
 import (
 	"bytes"
 	"context"
+	"crypto/rand"
 	"errors"
 	"os"
 	"strings"
@@ -12,8 +13,8 @@ import (
 	"golang.org/x/sys/unix"
 )
 
-// Original read-only native review. Historical bytes never become an old
-// publication acknowledgement, and this handle cannot publish a new incarnation.
+// Original native review and its one-shot active consumer. Historical bytes
+// never become an old publication acknowledgement.
 type executionStartupObjects struct {
 	directory, lock unix.Stat_t
 	backing         propertyStateBacking
@@ -25,6 +26,7 @@ type executionStartupNative struct {
 	objects     [2]executionStartupObjects
 	currentBoot [16]byte
 	reviewed    bool
+	activated   bool
 	read        func(context.Context, int) (ExecutionBackingObservation, error)
 	system      func(context.Context) (PoolSystemUse, error)
 	boot        func(context.Context) ([16]byte, error)
@@ -32,28 +34,32 @@ type executionStartupNative struct {
 
 // Trusted root composition; production fixes native producers. Inspection only.
 func ReviewExecutionStartup(ctx context.Context, journal, ledger string, read func(context.Context, int) (ExecutionBackingObservation, error), system func(context.Context) (PoolSystemUse, error), boot func(context.Context) ([16]byte, error)) (*ExecutionStartupReview, error) {
+	r, _, e := reviewExecutionStartup(ctx, journal, ledger, read, system, boot)
+	return r, e
+}
+func reviewExecutionStartup(ctx context.Context, journal, ledger string, read func(context.Context, int) (ExecutionBackingObservation, error), system func(context.Context) (PoolSystemUse, error), boot func(context.Context) ([16]byte, error)) (*ExecutionStartupReview, *executionStartupNative, error) {
 	if ctx == nil || read == nil || system == nil || boot == nil || os.Geteuid() != 0 {
-		return nil, ErrDenied
+		return nil, nil, ErrDenied
 	}
 	if e := ctx.Err(); e != nil {
-		return nil, e
+		return nil, nil, e
 	}
 	pair, e := OpenExecutionDomainLeases(ctx, journal, ledger)
 	if e != nil {
-		return nil, e
+		return nil, nil, e
 	}
 	n := &executionStartupNative{pair: pair, read: read, system: system, boot: boot}
 	n.original = n
 	_, snapshot, current, e := n.inspect(ctx)
 	if e != nil {
-		return nil, errors.Join(e, pair.Close())
+		return nil, nil, errors.Join(e, pair.Close())
 	}
 	n.snapshot = snapshot
 	n.currentBoot = current
 	n.reviewed = true
-	q := &ExecutionStartupReview{observe: n.observe, release: pair.Close}
+	q := &ExecutionStartupReview{observe: n.observe, release: pair.Close, activate: func(c context.Context) (*ExecutionRestartActivation, error) { return n.activate(c, rand.Reader, nil) }}
 	q.original = q
-	return q, nil
+	return q, n, nil
 }
 func (n *executionStartupNative) observe(ctx context.Context) (ExecutionDomainsObservation, error) {
 	got, _, _, e := n.inspect(ctx)
@@ -91,6 +97,17 @@ func (n *executionStartupNative) inspect(ctx context.Context) (ExecutionDomainsO
 	defer j.lease.mu.Unlock()
 	l.mu.Lock()
 	defer l.mu.Unlock()
+	return n.inspectLocked(ctx)
+}
+
+// Caller holds the original pair, journal and ledger mutexes. Preserve the exact
+// closed-review checks; only its original acknowledged consumer enters active mode.
+func (n *executionStartupNative) inspectLocked(ctx context.Context) (ExecutionDomainsObservation, executionJournalSnapshot, [16]byte, error) {
+	zero := ExecutionDomainsObservation{}
+	empty := executionJournalSnapshot{}
+	rawZero := [16]byte{}
+	p := n.pair
+	j, l := p.native.journal, p.native.ledger
 	succeeded := false
 	defer func() {
 		if !succeeded {
@@ -106,8 +123,11 @@ func (n *executionStartupNative) inspect(ctx context.Context) (ExecutionDomainsO
 		return zero, empty, rawZero, ErrStateUncertain
 	}
 	// Ordinary reopen must remain observation-only. Never synthesize an old ack.
-	if j.initializable || j.acknowledged {
+	if j.initializable || j.acknowledged != n.activated {
 		return zero, empty, rawZero, ErrDenied
+	}
+	if n.activated && (j.ack != n.snapshot.record || !bytes.Equal(j.ackBytes, n.snapshot.data) || !sameOwnershipMetadata(j.ackMetadata, n.snapshot.metadata)) {
+		return zero, empty, rawZero, ErrDrift
 	}
 	var objects [2]executionStartupObjects
 	for i, state := range []*StateDirectory{j.lease, l} {
@@ -135,7 +155,7 @@ func (n *executionStartupNative) inspect(ctx context.Context) (ExecutionDomainsO
 				if !before.present {
 					return ErrDenied
 				}
-				if e = checkClosedExecutionStartup(before.record, before.record.Binding, before.record.Census); e != nil {
+				if e = n.checkRecord(before.record, before.record.Binding, before.record.Census); e != nil {
 					return e
 				}
 				if n.reviewed && (before.record != n.snapshot.record || !bytes.Equal(before.data, n.snapshot.data) || !sameOwnershipMetadata(before.metadata, n.snapshot.metadata)) {
@@ -167,7 +187,7 @@ func (n *executionStartupNative) inspect(ctx context.Context) (ExecutionDomainsO
 				if !got.journalPresent || !got.systemObserved || got.journal != before.record {
 					return ErrDrift
 				}
-				if e = checkClosedExecutionStartup(got.journal, got.binding, got.census); e != nil {
+				if e = n.checkRecord(got.journal, got.binding, got.census); e != nil {
 					return e
 				}
 				if p.bound && p.binding != got.binding {

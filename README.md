@@ -111,8 +111,14 @@ with verified teardown; PR 125 accepted this prerequisite. The
 [original closed-incarnation startup review](docs/testing/M2/execution-startup-review.md)
 inspects existing closed history under both original leases and the same single-use
 root registration. Both pinned native targets passed all 186 controls with verified
-teardown; this read-only prerequisite awaits maintainer review. It retains exact
-journal and directory/lock/mount snapshots and cannot publish a new incarnation.
+teardown; PR 126 accepted this read-only prerequisite. The subsequent
+[original closed-startup active publication](docs/testing/M2/closed-startup-activation.md)
+consumes that exact original review once and publishes a fresh active identity for
+a confirmed empty ledger, retaining both original leases and exact native facts.
+Both pinned releases passed its 630 publication/root/retained-startup controls with
+verified teardown; this private prerequisite awaits maintainer review. Retained
+nonempty history, clean restarted-lifetime retirement and configured recovery
+remain required.
 Configured startup/restart, journaled publication integration, global native launch,
 worker draining and backend/supervisor assembly remain required before runtime writes.
 Completing this sequence covers the property workflow rather

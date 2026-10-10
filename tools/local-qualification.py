@@ -19,6 +19,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ROOT / 'tools'
 SUITES = {
+    'closed-startup-publication': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_STATE_VM=1 HORVIUM_RESTART_VM=1 sh tools/bsd-closed-startup-publication-prebuilt.sh'),
+    'closed-startup-owner': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_BACKING_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_EXECUTION_STARTUP_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1 sh tools/bsd-closed-startup-owner-prebuilt.sh'),
     'executor-recovery': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_RESEARCH_VM=1 sh tools/research/m2-executor-recovery.sh'),
     'action-peer': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_ACTION_PEER_VM=1 sh tools/bsd-action-peer-prebuilt.sh'),
     'foundation': ('git', 'sh tools/bsd-foundation-smoke.sh FreeBSD'),
@@ -39,6 +41,8 @@ SUITES = {
 }
 
 PREBUILT = {
+    'closed-startup-publication': ('closed-startup-publication-native.test', './internal/storage', 'CLOSED_STARTUP_PUBLICATION_PREBUILT_SHA256', 'HORVIUM_STATE_VM=1 HORVIUM_RESTART_VM=1', 'bsd-closed-startup-publication-prebuilt.sh'),
+    'closed-startup-owner': ('closed-startup-owner-native.test', './internal/host/freebsd', 'CLOSED_STARTUP_OWNER_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_EXECUTION_STARTUP_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1', 'bsd-closed-startup-owner-prebuilt.sh'),
     'execution-startup': ('execution-startup-native.test', './internal/host/freebsd', 'EXECUTION_STARTUP_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_EXECUTION_STARTUP_VM=1', 'bsd-execution-startup-prebuilt.sh'),
     'execution-system': ('execution-system-native.test', './internal/host/freebsd', 'EXECUTION_SYSTEM_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_EXECUTION_SYSTEM_VM=1', 'bsd-execution-system-prebuilt.sh'),
     'joint-leases': ('joint-leases-native.test', './internal/host/freebsd', 'JOINT_LEASES_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1', 'bsd-joint-leases-prebuilt.sh'),
@@ -76,7 +80,7 @@ def suite_command(suite, source_build=False, artifact_digest=None):
 
 
 def uses_device_fixture(suite):
-    return suite in ('devices', 'pool-properties', 'executor-recovery', 'execution-system', 'execution-startup')
+    return suite in ('devices', 'pool-properties', 'executor-recovery', 'execution-system', 'execution-startup', 'closed-startup-owner')
 
 
 def recovery_boot_identity(text):
@@ -204,6 +208,11 @@ def validate_result(suite, log, complete=False):
         return
     if suite == 'job-status':
         load_tool('check-storage-job-status-evidence').validate(log)
+        return
+    if suite in ('closed-startup-publication', 'closed-startup-owner'):
+        load_tool('check-closed-startup-evidence').validate(log, 'publication' if suite == 'closed-startup-publication' else 'owner')
+        if complete and suite == 'closed-startup-owner' and log.count('DEVICE_FIXTURE_CLEANUP pass\n') != 1:
+            raise ValueError('closed startup owner device teardown required')
         return
     if suite == 'execution-startup':
         load_tool('check-execution-startup-evidence').validate(log)

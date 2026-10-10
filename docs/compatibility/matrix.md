@@ -1237,3 +1237,71 @@ launch and worker/supervisor/backend assembly remain pending. Actual reboot,
 active kernel interruption, hardware power loss, throughput and commercial scale
 are not qualified. Runtime writes, services and GitHub Actions remain disabled;
 owned fixture/VM/supervisor teardown is verified and compiled artifacts removed.
+
+
+The [original closed-startup active publisher](../testing/M2/closed-startup-activation.md)
+consumes one exact original closed review for a confirmed empty ledger, reserves
+generation capacity, publishes a new random owner/current boot/active lifecycle
+and transfers both original leases once. Binding and census stay exact. Only the
+new acknowledged file can become a volatile receipt; old closed metadata is never
+promoted into an acknowledgement. The old review cannot revoke the transferred
+lifetime. Entered failures retire both stores, preserve visible history and deny
+retry; release alone leaves active unclean metadata.
+
+The qualified source `bb17b9505e7b05b6708d001336a93e39a50ab798` and implementation
+`ae2562ea0955c7130abfad35ca7b0a8df9fdacf5` passed two separate focused gates on
+pinned disposable FreeBSD/amd64 15.1 and 14.5. Each target passed seven parents and
+630 controls: three storage parents/268 controls (122 per UFS/ZFS profile plus
+24 actual UFS cut controls) and four fixed-root parents/362 controls (88 new per
+profile plus all 186 retained startup controls). The earlier 15.1 storage proof is
+bound to its actual implementation source. Later changes format the !freebsd
+host fallback and optimize only the new host fixture seeding/documentation;
+all are excluded from the storage executable/dependencies. Each suite used one
+compiled artifact on both releases.
+
+Twenty-three native publisher failures cover entropy, original preconditions,
+file pipeline stages, lost acknowledgement and post-sync/boot/system/object/context
+drift. Controlled nonempty and exhausted-close-capacity records are denied without
+changing history. Storage filesystem identities and durability are actual;
+physical-use/boot transfers are synthetic fixture facts. Four exact-binary UFS
+children are killed and waited after actual file sync, directory sync,
+acknowledgement or UID loss with inherited root descriptors. These are warm
+userspace boundaries, not hardware power loss or active-kernel-effect proof.
+
+Nine new exact-binary children per filesystem qualify fixed-root production
+registration/composition, copy/context/drift, actual UID loss, active/missing denial
+and injected pre/post-publication faults around actual native reads. Independent
+parents verify exact history, released locks, data/backing preservation and complete
+domain teardown. The native storage process bound is eighteen minutes; original
+host parent deadlines remain eight minutes with a 34-minute four-parent bound.
+
+Five new portable parents and four retained review parents, eleven negative
+successor candidates, seven transfer/lifecycle failures and four evidence-consumer
+tests passed. Fresh local review passed all 184 tooling tests, eleven race packages
+and all 54 bounded fuzz targets. See the
+[source-bound manifest](../testing/M2/closed-startup-activation-manifest.json).
+Initial signed denial-stub runs remain unqualified. The first failed assertion
+exposed a missing deferred review release and UFS unmount failure; the corrected
+signed stub reports all three native backing teardowns despite intended assertion
+failures. The outer guest/host supervisor cleanup passed for both attempts. An
+initial portable review rejected fallback formatting before deep tests, then
+passed on corrected signed source. An implemented fixed-root run then exhausted
+its unchanged eight-minute parent deadline and was stopped; its outer cleanup
+passed but native completion remains unqualified. The new fixture removed three
+duplicate seeding steps while retaining every case, child, assertion and deadline;
+product code did not change. Both complete optimized gates passed independently.
+No failed record counts as qualification.
+
+All 445 unaffected original Go inputs and 104 historical manifests (99 M2)
+preserve bytes. Only the original review's transfer capability and extracted native
+inspection path change; both original native parents rerun on both targets.
+Existing publisher/format/fixture implementations and state/system/startup
+scripts/checkers are unchanged. Old runner suite values/validation branches/helpers
+are preserved; two new suites and owner device selection are added. Unrelated
+full state/system corpora retain their prior actual source-bound evidence.
+Nonempty history/policy review, original restarted-lifetime clean retirement,
+configured startup, unclean/changed-boot/restore recovery, journaled mutations,
+global native launch and worker/supervisor/backend assembly remain pending.
+Reboot, kernel interruption, whole-host rollback, throughput and commercial scale
+remain unqualified. Runtime writes/services/Actions stay disabled; owned VM,
+fixture/device and process teardown is verified and compiled artifacts removed.
