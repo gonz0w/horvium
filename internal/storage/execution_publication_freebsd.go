@@ -4,6 +4,9 @@ package storage
 import (
 	"bytes"
 	"context"
+	"math"
+	"os"
+	"time"
 )
 
 // Private metadata transaction, not commissioning/admission/execution authority.
@@ -89,7 +92,135 @@ func (r executionPublicationRecord) predecessor(data []byte) error {
 
 // Both original lease mutexes are held throughout all three durable publications.
 func (p *ExecutionDomainLeases) publishJournaledRecord(ctx context.Context, r executionPublicationRecord, read func(context.Context, int) (ExecutionBackingObservation, error), wrap func(string, ownershipPublication) ownershipPublication) error {
-	return ErrDenied
+	if p == nil || ctx == nil || read == nil || os.Geteuid() != 0 {
+		return ErrDenied
+	}
+	if ctx.Err() != nil {
+		return ctx.Err()
+	}
+	ctx, cancel := context.WithTimeout(ctx, 90*time.Second)
+	defer cancel()
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	if p.origin != p || p.closed || p.native == nil || !p.bound {
+		return ErrDenied
+	}
+	if p.blocked {
+		return ErrStateUncertain
+	}
+	j, l := p.native.journal, p.native.ledger
+	if j == nil || l == nil || j.original != j || j.lease == nil || j.lease == l {
+		return ErrDenied
+	}
+	j.lease.mu.Lock()
+	defer j.lease.mu.Unlock()
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	if !j.acknowledged {
+		return ErrDenied
+	}
+	success := false
+	defer func() {
+		if !success {
+			p.blocked = true
+			j.retireLocked()
+			l.publicationBlocked = true
+		}
+	}()
+	if j.failed || j.lease.publicationBlocked || l.publicationBlocked {
+		return ErrStateUncertain
+	}
+	if j.ack.Binding != p.binding || j.ack.Owner.State != "active" || j.ack.Disarmed || j.ack.Metadata.Pending {
+		return ErrDenied
+	}
+	if j.ack.Generation > math.MaxUint64-2 {
+		return ErrLimit
+	}
+	observe := func(expected executionJournal, census string) error {
+		if ctx.Err() != nil {
+			return ctx.Err()
+		}
+		got, e := p.observeLocked(ctx, p.binding.Installation, read, nil)
+		if e != nil {
+			return e
+		}
+		if got.binding != p.binding || !got.journalPresent || got.journal != expected || got.census != census || expected != j.ack {
+			return ErrDrift
+		}
+		receipt, e := j.inspectLocked("", nil)
+		if e != nil {
+			return e
+		}
+		if !receipt.present || receipt.record != j.ack || !bytes.Equal(receipt.data, j.ackBytes) || !sameOwnershipMetadata(receipt.metadata, j.ackMetadata) {
+			return ErrDrift
+		}
+		return nil
+	}
+	before := j.ack
+	if e := observe(before, before.Census); e != nil {
+		return e
+	}
+	plan, e := l.prepareExecutionPublicationLocked(before.Binding, r)
+	if e != nil {
+		return e
+	}
+	if plan.before != before.Census {
+		return ErrDrift
+	}
+	pending := before
+	pending.Generation++
+	pending.Metadata = executionJournalMetadata{true, plan.before, plan.after, r.name, plan.previous, executionRecordDigest(r.data)}
+	confirmed := pending
+	confirmed.Generation++
+	confirmed.Census = plan.after
+	confirmed.Metadata = executionJournalMetadata{}
+	// Reserve bounded format/generation capacity for both journal transitions before
+	// the first effect. Filesystem space/durability can still fail conservatively.
+	if _, e = encodeExecutionJournal(pending); e != nil {
+		return e
+	}
+	if _, e = encodeExecutionJournal(confirmed); e != nil {
+		return e
+	}
+	seam := func(phase string) func(ownershipPublication) ownershipPublication {
+		if wrap == nil {
+			return nil
+		}
+		return func(tx ownershipPublication) ownershipPublication { return wrap(phase, tx) }
+	}
+	if e = j.publishSuccessorLocked(pending, seam("pending")); e != nil {
+		return e
+	}
+	if e = observe(pending, plan.before); e != nil {
+		return e
+	}
+	if e = l.publishStateLocked(r.name, r.prefix, r.data, r.expected, defaultStateCatalogLimits, r.validate, func() error {
+		old, e := l.readStateBytesLocked(r.name)
+		if e != nil {
+			return e
+		}
+		oldDigest := ""
+		if len(old) != 0 {
+			oldDigest = executionRecordDigest(old)
+		}
+		if oldDigest != plan.previous {
+			return ErrDrift
+		}
+		return r.predecessor(old)
+	}, seam("ledger")); e != nil {
+		return e
+	}
+	if e = observe(pending, plan.after); e != nil {
+		return e
+	}
+	if e = j.publishSuccessorLocked(confirmed, seam("confirmation")); e != nil {
+		return e
+	}
+	if e = observe(confirmed, plan.after); e != nil {
+		return e
+	}
+	success = true
+	return nil
 }
 
 func (s *StateDirectory) prepareExecutionPublicationLocked(binding executionJournalBinding, r executionPublicationRecord) (executionPublicationPlan, error) {

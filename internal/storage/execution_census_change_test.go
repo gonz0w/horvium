@@ -27,6 +27,22 @@ func TestExecutionCensusChangeExactSuccessor(t *testing.T) {
 	jobName := "job-" + job.ID + ".json"
 	for _, name := range []string{"empty-insert", "sorted-insert", "replace", "exact-bytes"} {
 		t.Run(name, func(t *testing.T) {
+			if name == "sorted-insert" {
+				// Insert a job before an already present ownership record, rather
+				// than only exercising the append-at-end completion path.
+				b, e := newExecutionCensusChange(binding, []string{"ownership-100.json", "writer.lock"}, jobName, jobBytes, defaultStateCatalogLimits)
+				if e != nil || b.add("ownership-100.json", owner) != nil {
+					t.Fatal("sorted insertion stream", e)
+				}
+				before, after, previous, e := b.finish()
+				if e != nil || previous != "" || before != expectedExecutionCensus(binding, []string{"ownership-100.json"}, map[string][]byte{"ownership-100.json": owner}) || after != expectedExecutionCensus(binding, []string{jobName, "ownership-100.json"}, map[string][]byte{jobName: jobBytes, "ownership-100.json": owner}) {
+					t.Fatal("successor inserted before existing record", e)
+				}
+				if a, z, p, e := b.finish(); !errors.Is(e, ErrDenied) || a != "" || z != "" || p != "" {
+					t.Fatal("single insertion completion")
+				}
+				return
+			}
 			names := []string{"writer.lock"}
 			records := map[string][]byte{}
 			if name != "empty-insert" {
