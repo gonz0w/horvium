@@ -16,7 +16,8 @@ objects. Candidate paths are trusted internal OS-root inputs; no installation
 path, configuration schema, service, HTTP operation or CLI flag is selected.
 
 This is joint observation ownership, not a registered runtime writer. It has no
-publisher or launch method, journal durability receipt, startup eligibility,
+publisher or launch method in this qualified observation scope, journal durability
+receipt, startup eligibility,
 restore decision or global permit. Complete system/owned-pool exclusion,
 independent restore scope and explicit commissioning/startup/global composition
 remain required. Different candidate pairs cannot acquire write authority through
@@ -139,3 +140,10 @@ complete system/owned-pool exclusion, independent restoration, fresh commissioni
 acknowledged journal/ledger transitions and startup/global launch composition
 remain required. No runtime consumer, service or storage effect is enabled.
 M1 manual Safari/VoiceOver acceptance remains pending separately.
+
+
+The subsequent [private original journaled publication component](journaled-publication.md)
+requires an original volatile acknowledgement unavailable to this public opener.
+Its native fixture qualification does not turn observation into commissioning,
+startup/restore/global or runtime write authority. This document's historical
+observation-only evidence retains its original source and scope.

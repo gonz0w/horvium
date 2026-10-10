@@ -4,7 +4,9 @@ package storage
 import "sync"
 
 // ExecutionDomainLeases owns pre-existing journal then ledger leases. It has no
-// commissioning, publisher, startup, restore or global launch authority.
+// commissioning, startup, restore or global launch authority. The public opener
+// is observation-only; private publication additionally needs the original
+// journal acknowledgement, which cannot be recovered from disk.
 // Do not copy it. Close releases the owned leases, never their persistent files.
 type ExecutionDomainLeases struct {
 	mu              sync.Mutex

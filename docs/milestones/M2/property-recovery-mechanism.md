@@ -341,7 +341,20 @@ independent restoration nor registers or commissions a writer.
 The [independent ledger restore tests](../../testing/M2/independent-ledger-restore.md)
 exercise the accepted UFS file-level and distinct ZFS dataset procedures against
 an unchanged journal and its acknowledged disarmed barrier. Both pinned native
-targets passed the fixture gates with complete teardown; the prerequisite awaits
-maintainer review. The joint-rollback control deliberately shows that matching historical
+targets passed the fixture gates with complete teardown; PR 118 accepted the
+prerequisite. The joint-rollback control deliberately shows that matching historical
 bytes can hide lost pending state; observation cannot reconstruct authority.
 These private fixtures do not implement or commission a runtime restore consumer.
+
+
+## Original metadata transaction prerequisite
+
+The [private journaled publisher](../../testing/M2/journaled-publication.md) connects
+an original volatile journal acknowledgement to the ledger's typed successor under
+both original leases. It requires durable pending intent, exact complete after-census
+and durable confirmation, retiring both stores on uncertainty. Native pending
+launch records and recovery holds are preserved. The public opener cannot recover
+that receipt. This component remains unregistered and cannot commission an
+installation or supply startup/restore/global clearance. Original provisioning,
+complete native system/policy/restore proofs and supervisor/backend assembly still
+precede any runtime writer.

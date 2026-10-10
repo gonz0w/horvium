@@ -172,3 +172,8 @@
 - [M2 original admission handoff execution manifest](testing/M2/property-handoff-manifest.json)
 - [M2 property execution sequence](testing/M2/property-execution.md)
 - [M2 native repaired-checksum finding qualification](testing/M2/checksum-findings.md).
+
+- [M2 original journaled publication](testing/M2/journaled-publication.md): private
+  acknowledged dual-lease metadata transaction qualified on both pinned FreeBSD
+  releases with full local portable review and verified teardown;
+  commissioning, registered startup/global admission and runtime writes remain pending.

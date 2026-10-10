@@ -80,8 +80,13 @@ Production behavior and runtime write denial remain unchanged.
 The [independent ledger restore fixtures](docs/testing/M2/independent-ledger-restore.md)
 exercise UFS file-level restoration and distinct ZFS dataset rollback against a
 preserved disarmed journal. Both pinned native targets passed with complete
-teardown; the fixture prerequisite awaits maintainer review. Commissioning,
+teardown; PR 118 accepted the fixture prerequisite. Commissioning,
 startup/global ownership and the operator restore workflow remain required.
+The [original journaled metadata publisher](docs/testing/M2/journaled-publication.md)
+connects the private original journal receipt to the original ledger under both
+leases. Both pinned FreeBSD releases passed all native gates, with local portable
+review and verified teardown; the prerequisite awaits maintainer review. Commissioning,
+registered startup/global ownership and runtime writes remain pending.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 

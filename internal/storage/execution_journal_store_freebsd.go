@@ -115,6 +115,14 @@ func (s *executionJournalStore) publish(j executionJournal, wrap func(ownershipP
 	}
 	s.lease.mu.Lock()
 	defer s.lease.mu.Unlock()
+	return s.publishSuccessorLocked(j, wrap)
+}
+
+// Caller holds the original journal mutex, alone or inside the joint owner.
+func (s *executionJournalStore) publishSuccessorLocked(j executionJournal, wrap func(ownershipPublication) ownershipPublication) error {
+	if err := s.guard(); err != nil {
+		return err
+	}
 	if s.failed || s.lease.publicationBlocked {
 		return ErrStateUncertain
 	}

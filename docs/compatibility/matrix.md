@@ -1070,3 +1070,17 @@ awaits maintainer review; see its
 They also exercise deliberately restored older journal bytes: equal historical
 hashes cannot reconstruct an original writer. No whole-host anti-rollback,
 commissioning, operator restore workflow or runtime write support is claimed.
+
+
+The [original journaled metadata publisher](../testing/M2/journaled-publication.md)
+is a private FreeBSD-only prerequisite qualified on both pinned releases. It joins pending intent,
+ledger durability and actual-census confirmation through the original acknowledged
+journal and both protected leases. Public reopened handles remain observation-only.
+Native UFS/ZFS, process-cut, kernel-UID and complete state gates passed: 84 parents,
+1,404 native controls, 1,945 codec children and 25 backing/teardown markers per
+target. Full portable review passed all 165 tooling tests, eleven race packages
+and 54 fuzz targets. Exact source, executable/image/compiler/native utility hashes,
+test-first failures and teardown are recorded in the
+[source-bound manifest](../testing/M2/journaled-publication-manifest.json).
+This does not qualify commissioning, registered startup/global ownership, an
+operator restore command, hardware power loss, commercial scale or runtime writes.
