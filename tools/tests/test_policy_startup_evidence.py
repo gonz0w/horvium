@@ -5,6 +5,9 @@ import test_closed_startup_evidence as retained
 
 module = retained.module
 
+LIFECYCLE_MODES = ('clean', 'clean-again', 'late', 'uid')
+DENIAL_MODES = ('legacy', 'member', 'scope', 'missing-pool')
+
 
 class PolicyStartupEvidence(unittest.TestCase):
     def fixture(self, scope):
@@ -12,17 +15,39 @@ class PolicyStartupEvidence(unittest.TestCase):
         baseline.setUp()
         text = baseline.publication() if scope == 'publication' else baseline.owner()
         checker = module('check-policy-startup-evidence')
-        for kind in ('UFS', 'ZFS'):
-            name = 'TestNativePolicyStartup' + ('Owner' if scope == 'owner' else '') + kind
-            marker = 'POLICY_STARTUP_' + ('OWNER_' if scope == 'owner' else 'STORAGE_') + kind + '_RESULT'
-            cases = checker.OWNER if scope == 'owner' else checker.STORAGE
+        groups = ('Lifecycle', 'Denial') if scope == 'owner' else ('',)
+        for group, kind in ((group, kind) for group in groups for kind in ('UFS', 'ZFS')):
+            name = 'TestNativePolicyStartup' + (group + 'Owner' if scope == 'owner' else '') + kind
+            marker = 'POLICY_STARTUP_' + (group.upper() + '_OWNER_' if scope == 'owner' else 'STORAGE_') + kind + '_RESULT'
+            modes = LIFECYCLE_MODES if group == 'Lifecycle' else DENIAL_MODES
+            cases = ({c for c in checker.OWNER if c in ('data_sentinel_preserved', 'domain_teardown', 'mounts_restored') or any(c.startswith(mode + '_') for mode in modes)} if scope == 'owner' else checker.STORAGE)
             text += '=== RUN   ' + name + '\n' + marker + ' ' + ' '.join(c + '=pass' for c in sorted(cases)) + '\n'
             if scope == 'publication':
                 text += 'STATE_BACKING_RESULT ' + name + ' filesystem=' + kind.lower() + ' softupdates=off teardown=pass\n'
             else:
-                text += 'POLICY_STARTUP_DOMAIN_TEARDOWN ' + kind.lower() + ' filesystems=pass directories=pass\nPOLICY_STARTUP_DATA_TEARDOWN ' + kind.lower() + ' restored=pass\n'
+                text += 'POLICY_STARTUP_DOMAIN_TEARDOWN ' + group.lower() + ' ' + kind.lower() + ' filesystems=pass directories=pass\nPOLICY_STARTUP_DATA_TEARDOWN ' + group.lower() + ' ' + kind.lower() + ' restored=pass\n'
             text += '--- PASS: ' + name + ' (1.0s)\n'
         return text
+
+    def test_independent_groups_preserve_all_cases_and_cleanup(self):
+        import re
+        checker = module('check-policy-startup-evidence')
+        text = self.fixture('owner')
+        checker.validate(text, 'owner')
+        self.assertEqual(len(checker.OWNER_GROUPS['Lifecycle']), 54)
+        self.assertEqual(len(checker.OWNER_GROUPS['Denial']), 36)
+        self.assertEqual(checker.OWNER_GROUPS['Lifecycle'] | checker.OWNER_GROUPS['Denial'], checker.OWNER)
+        self.assertEqual(checker.OWNER_GROUPS['Lifecycle'] & checker.OWNER_GROUPS['Denial'], {'data_sentinel_preserved', 'domain_teardown', 'mounts_restored'})
+        for group in ('Lifecycle', 'Denial'):
+            for kind in ('UFS', 'ZFS'):
+                name = 'TestNativePolicyStartup' + group + 'Owner' + kind
+                block = re.search(r'(?ms)^=== RUN   ' + name + r'\n.*?^--- PASS: ' + name + r' \(1.0s\)\n', text).group(0)
+                for bad in (text.replace(block, ''), text + block, text.replace('DOMAIN_TEARDOWN ' + group.lower() + ' ' + kind.lower(), 'DOMAIN_TEARDOWN missing ' + kind.lower())):
+                    with self.assertRaises(ValueError):
+                        checker.validate(bad, 'owner')
+        # The earlier two-parent corpus must not stand in for these four parents.
+        with self.assertRaises(ValueError):
+            checker.validate(text.replace('LifecycleOwner', 'Owner').replace('DenialOwner', 'Owner'), 'owner')
 
     def test_each_new_and_retained_control_is_required(self):
         checker = module('check-policy-startup-evidence')

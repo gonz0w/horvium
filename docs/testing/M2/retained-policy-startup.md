@@ -1,6 +1,6 @@
 # Retained ownership policy startup qualification
 
-Status: draft implementation in [PR 307](https://github.com/gonz0w/horvium/pull/307); storage qualification passed on both releases; complete acceptance pending.
+Status: implementation merged in [PR 307](https://github.com/gonz0w/horvium/pull/307); storage qualification passed on both releases; complete acceptance pending.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 Owning [issue 305](https://github.com/gonz0w/horvium/issues/305);
 Refs [M2-RUNTIME-002](https://github.com/gonz0w/horvium/issues/139).
@@ -68,16 +68,19 @@ and release. The new inventory is independently declared in
 `tools/check-policy-startup-evidence.py` before execution.
 
 `policy-startup-owner` runs
-`^TestNative((ExecutionStartup|ClosedStartupOwner)(UFS|ZFS)|PolicyStartupOwner(UFS|ZFS))$`.
+`^TestNative((ExecutionStartup|ClosedStartupOwner)(UFS|ZFS)|PolicyStartup(Lifecycle|Denial)Owner(UFS|ZFS))$`.
 The root parent bound remains eight minutes and process bound 34 minutes. The four
-retained parents and all 394 controls remain required. Two new parents add the
-87 controls per filesystem with exact inventories for clean, clean-again, legacy, member, scope, missing-pool,
-post-publication drift and actual UID-loss children. Each independently checks
-normally waited child completion, exact child inventory, both released leases,
-visible parent journal history and exact policy bytes; data sentinel, domain
-teardown and mount restoration complete each parent. Independent owned data and
-QEMU device cleanup are mandatory. The checker rejects old-only, missing,
-duplicate, skipped, failed or partially cleaned evidence.
+retained parents and all 394 controls remain required. Four policy parents split
+lifecycle and denial fixtures on each filesystem: lifecycle has 54 controls and
+denial has 36, totaling 180 new controls and 574 overall. All eight prior modes
+remain: clean, clean-again, legacy, member, scope, missing-pool, post-publication
+drift and actual UID-loss. Each independently checks normally waited child
+completion, exact child inventory, both released leases, visible parent journal
+history and exact policy bytes. Each group independently checks data sentinel,
+domain teardown and mount restoration; independent owned data and QEMU device
+cleanup are mandatory. The checker requires all four policy parents plus the four
+unchanged retained parents and rejects old-only, missing, duplicate, skipped,
+failed or partially cleaned evidence. See [fixed-root qualification](retained-policy-root.md).
 
 ## Required review and remaining acceptance
 
@@ -117,5 +120,6 @@ FreeBSD build file selection excludes the tagged fixture bridge.
 
 Enabled fixed-root qualification and the expanded acceptance families above remain
 pending. These storage passes do not accept issue 305, the broader runtime gate or
-M2. The PR remains draft. No private exploratory compile/stub log or earlier
+M2. The merged implementation does not close those gates. No private exploratory
+compile/stub log or earlier
 empty-ledger receipt is substituted for a missing native gate.

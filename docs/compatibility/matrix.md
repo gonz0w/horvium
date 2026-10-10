@@ -1380,15 +1380,15 @@ worker/supervisor/backend assembly remain pending. Runtime services/writes and
 GitHub Actions stay disabled. Performance, commercial scale, whole-host rollback
 and M1 manual accessibility remain unqualified.
 
-## Proposed retained-policy startup scope
+## Retained-policy startup design boundary
 
-The [policy-only clean restart proposal](../milestones/M2/retained-policy-startup.md)
-is a design amendment under [issue 288](https://github.com/gonz0w/horvium/issues/288).
-Current activation and unused retirement still require an empty ledger. Future
-acceptance needs complete native policy validation, every-job refusal and actual
+The [policy-only clean restart design](../milestones/M2/retained-policy-startup.md)
+was adopted in PR 306 and implemented privately in PR 307. The ordinary
+metadata-only activation remains empty-ledger-only. The separate policy consumer
+still needs complete native policy validation, every-job refusal and actual
 UFS/ZFS lifecycle/publication/teardown evidence on both pinned FreeBSD targets.
-No new runtime behavior, hardware support or nonempty native pass is claimed.
+Merged components do not qualify configured startup or add hardware support.
 
 ## Retained ownership policy startup candidate
 
-The [adopted design](../milestones/M2/retained-policy-startup.md) has a private implementation candidate with complete policy/member/system validation, all-job refusal and original unused retirement. Ordinary metadata review remains empty-only. [Candidate qualification](../testing/M2/retained-policy-startup.md) passed the storage gates on disposable FreeBSD/amd64 15.1 and 14.5; enabled fixed-root and expanded acceptance remain pending; no additional FreeBSD release, configured runtime, hardware or commercial support claim follows. Runtime writes remain disabled.
+The [adopted design](../milestones/M2/retained-policy-startup.md) has a private implementation candidate with complete policy/member/system validation, all-job refusal and original unused retirement. Ordinary metadata review remains empty-only. [Candidate qualification](../testing/M2/retained-policy-startup.md) passed the storage gates on disposable FreeBSD/amd64 15.1 and 14.5; enabled fixed-root and expanded acceptance remain pending; the [fixed-root qualification record](../testing/M2/retained-policy-root.md) preserves the initial eight-minute fixture deadline failure and independently bounded lifecycle/denial plan; no additional FreeBSD release, configured runtime, hardware or commercial support claim follows. Runtime writes remain disabled.

@@ -158,9 +158,19 @@ func TestExecutionPolicyOwnerChild(t *testing.T) {
 	}
 	fmt.Println("POLICY_STARTUP_OWNER_CHILD_RESULT " + mode + " " + strings.Join(seen, " "))
 }
-func TestNativePolicyStartupOwnerUFS(t *testing.T) { nativePolicyStartupParent(t, "ufs") }
-func TestNativePolicyStartupOwnerZFS(t *testing.T) { nativePolicyStartupParent(t, "zfs") }
-func nativePolicyStartupParent(t *testing.T, kind string) {
+func TestNativePolicyStartupLifecycleOwnerUFS(t *testing.T) {
+	nativePolicyStartupParent(t, "ufs", "lifecycle", []string{"clean", "clean-again", "late", "uid"})
+}
+func TestNativePolicyStartupLifecycleOwnerZFS(t *testing.T) {
+	nativePolicyStartupParent(t, "zfs", "lifecycle", []string{"clean", "clean-again", "late", "uid"})
+}
+func TestNativePolicyStartupDenialOwnerUFS(t *testing.T) {
+	nativePolicyStartupParent(t, "ufs", "denial", []string{"legacy", "member", "scope", "missing-pool"})
+}
+func TestNativePolicyStartupDenialOwnerZFS(t *testing.T) {
+	nativePolicyStartupParent(t, "zfs", "denial", []string{"legacy", "member", "scope", "missing-pool"})
+}
+func nativePolicyStartupParent(t *testing.T, kind, group string, modes []string) {
 	if os.Getenv("HORVIUM_NATIVE_VM") != "1" || os.Getenv("HORVIUM_PROPERTY_VM") != "1" || os.Getenv("HORVIUM_CLOSED_STARTUP_OWNER_VM") != "1" {
 		t.Skip("owned policy fixture required")
 	}
@@ -173,14 +183,14 @@ func nativePolicyStartupParent(t *testing.T, kind string) {
 		}
 		cleaned = true
 	}, func(p storage.Policy, ordinary string, disk inventory.Provider) {
-		nativePolicyStartupFixture(t, ctx, kind, p, ordinary, disk)
+		nativePolicyStartupFixture(t, ctx, kind, group, modes, p, ordinary, disk)
 	})
 	if !cleaned {
 		t.Fatal("data fixture remains")
 	}
-	t.Log("POLICY_STARTUP_DATA_TEARDOWN " + kind + " restored=pass")
+	t.Log("POLICY_STARTUP_DATA_TEARDOWN " + group + " " + kind + " restored=pass")
 }
-func nativePolicyStartupFixture(t *testing.T, ctx context.Context, kind string, policy storage.Policy, ordinary string, disk inventory.Provider) {
+func nativePolicyStartupFixture(t *testing.T, ctx context.Context, kind, group string, modes []string, policy storage.Policy, ordinary string, disk inventory.Provider) {
 	t.Helper()
 	command := func(c context.Context, path string, args ...string) (string, error) {
 		out, e := execute(c, path, args, 1<<20)
@@ -302,7 +312,7 @@ func nativePolicyStartupFixture(t *testing.T, ctx context.Context, kind string, 
 		t.Fatal(e)
 	}
 	j, l := filepath.Join(jp, "clean"), filepath.Join(lp, "clean")
-	for _, mode := range policyOwnerModes {
+	for _, mode := range modes {
 		cj, cl := j, l
 		if mode != "clean-again" {
 			cj, cl = filepath.Join(jp, mode), filepath.Join(lp, mode)
@@ -376,8 +386,8 @@ func nativePolicyStartupFixture(t *testing.T, ctx context.Context, kind string, 
 	cleaned = clean()
 	check("domain_teardown", cleaned)
 	check("mounts_restored", must("/sbin/mount", "-p") == mountsBefore)
-	t.Log("POLICY_STARTUP_DOMAIN_TEARDOWN " + kind + " filesystems=pass directories=pass")
-	t.Log("POLICY_STARTUP_OWNER_" + strings.ToUpper(kind) + "_RESULT " + strings.Join(markers, " "))
+	t.Log("POLICY_STARTUP_DOMAIN_TEARDOWN " + group + " " + kind + " filesystems=pass directories=pass")
+	t.Log("POLICY_STARTUP_" + strings.ToUpper(group) + "_OWNER_" + strings.ToUpper(kind) + "_RESULT " + strings.Join(markers, " "))
 }
 func oldPolicyGUID(mode, guid string) string {
 	if mode == "missing-pool" {

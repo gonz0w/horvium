@@ -199,6 +199,7 @@
 - [M2 original unused restarted-lifetime close](testing/M2/restart-activation-retirement.md): exact closed successor from the original new active acknowledgement; terminal observation/finish and explicit lease release; both pinned targets passed 938 affected controls with teardown.
 - [M2 restarted-lifetime close execution manifest](testing/M2/restart-activation-retirement-manifest.json).
 
-- [M2 proposed policy-only clean restart slice and Test Design](milestones/M2/retained-policy-startup.md)
+- [M2 adopted policy-only clean restart slice and Test Design](milestones/M2/retained-policy-startup.md)
 
 - [M2 retained-policy startup qualification](testing/M2/retained-policy-startup.md): private policy-only candidate and bounded native gate; acceptance pending.
+- [M2 fixed-root policy startup qualification](testing/M2/retained-policy-root.md): independently bounded lifecycle/denial fixtures and candidate-specific receipts.
