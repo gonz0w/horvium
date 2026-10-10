@@ -415,19 +415,26 @@ func nativeClosedStartupOwnerFixture(t *testing.T, ctx context.Context, kind str
 	for _, mode := range []string{"clean", "touch", "uid", "active", "missing", "boot", "system", "post-system", "post-touch"} {
 		cj, cl := filepath.Join(jp, "restart-"+mode), filepath.Join(lp, "restart-"+mode)
 		var before []byte
-		if mode != "missing" {
+		// Denial-only children independently prove unchanged history and released
+		// leases. Reuse those original fixtures, rather than commissioning duplicates.
+		// Every actual/new/uncertain active lifetime still gets its own closed seed.
+		switch mode {
+		case "boot", "system":
+			cj, cl, before = j, l, closed
+		case "active":
+			cj, cl, before = ja, la, active
+		case "missing":
+		default:
 			seed, e := activateNativeFreshExecutionJournal(ctx, cj, cl)
 			if e != nil {
 				t.Fatal(e)
 			}
-			if mode != "active" && seed.FinishIdle(ctx) != nil {
-				t.Fatal("closed child seed")
-			}
-			if seed.Close() != nil {
-				t.Fatal("seed release")
+			if seed.FinishIdle(ctx) != nil || seed.Close() != nil {
+				t.Fatal("original closed child seed")
 			}
 			before, _ = readActivationFixture(t, cj)
 		}
+
 		cmd := exec.CommandContext(ctx, os.Args[0], "-test.v", "-test.run=^TestClosedStartupOwnerChild$", "-test.timeout=150s")
 		cmd.Env = append(os.Environ(), "HORVIUM_RESTART_OWNER_CHILD="+mode, "HORVIUM_RESTART_JOURNAL="+cj, "HORVIUM_RESTART_LEDGER="+cl)
 		data, e := cmd.CombinedOutput()

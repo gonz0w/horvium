@@ -69,3 +69,12 @@ Failed records remain unqualified. Shared tooling requires fresh full portable
 review; final prose can reuse only matching actually executed deep inputs.
 Whole-host rollback, actual reboot, hardware power loss, active kernel interruption,
 throughput, commercial scale and full M2/release acceptance remain unqualified.
+
+The first implemented fixed-root run exhausted the unchanged eight-minute ZFS
+parent deadline during its last child. That run is unqualified and was stopped
+with outer fixture/device/host/supervisor teardown. The fixture now reuses the
+original closed seed for boot/system denial-only children and the original active
+seed for active denial. Each independently proves exact unchanged history and
+released locks; all five actual or uncertain new active lifetimes retain separate
+closed seeds. This removes three duplicate commissioning/unused-close sequences,
+with every case, assertion and child/deadline retained. Product code is unchanged.
