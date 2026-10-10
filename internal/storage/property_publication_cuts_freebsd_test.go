@@ -96,9 +96,11 @@ func TestPropertyPublicationCutProcess(t *testing.T) {
 	barrier()
 }
 
-// Snapshot comparison concerns object metadata and bytes, not read access time.
+// Compare object metadata and bytes, excluding access time and mutable physical
+// allocation accounting. ZFS updates allocated blocks during transaction sync.
 func publicationCutSnapshotStat(st syscall.Stat_t) syscall.Stat_t {
 	st.Atimespec = syscall.Timespec{}
+	st.Blocks = 0
 	return st
 }
 
@@ -167,7 +169,7 @@ func TestNativePropertyPublicationCuts(t *testing.T) {
 	})
 	check("snapshot_metadata_contract", !t.Failed())
 	// Snapshot independently opened regular objects, including the stable lock
-	// and any partial temporary. Ignore access time changed by our own reads.
+	// and any partial temporary. Ignore read access and physical block accounting.
 	type object struct {
 		stat syscall.Stat_t
 		data []byte

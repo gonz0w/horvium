@@ -33,7 +33,10 @@ on-disk schemas are unchanged. Eight boundaries are required:
 Each cut proves barrier reach, actual writer contention, SIGKILL/reap, lock
 reacquisition, exact object/inode/content preservation, safe restart interpretation,
 safe metadata retry/check behavior and lease close. Independent file snapshots
-compare all ordinary native metadata except access time affected by fixture reads.
+compare all native object metadata except access time affected by fixture reads
+and physical allocated-block accounting. The latter exclusion follows the
+[allocation-only reproduction and regression](publication-preservation.md);
+exact namespace, other stat fields and contents remain required.
 Foreign sentinel bytes and complete owned backing removal are separate controls.
 
 Unpublished orphans yield no partial reservation/restart view. A submission retry
