@@ -427,3 +427,38 @@ class JointExecutionJournalEvidenceTests(unittest.TestCase):
                 with self.subTest(case=case,value=value),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(line,bad))
         with self.assertRaises(ValueError):m.validate(PASS.replace('--- PASS: TestNativeJointExecutionJournal (1.0s)\n','')+RESULT)
         with self.assertRaises(ValueError):m.validate((PASS+RESULT).replace('TestNativeJointExecutionJournal filesystem=ufs','TestNativeJointExecutionJournal filesystem=zfs'))
+
+OLD_RESTORE_FREE_PASS, OLD_RESTORE_FREE_RESULT = PASS, RESULT
+
+class IndependentRestoreEvidenceTests(unittest.TestCase):
+    def module(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m);return m
+
+    def test_previous_evidence_cannot_qualify_independent_restore(self):
+        with self.assertRaises(ValueError):self.module().validate(OLD_RESTORE_FREE_PASS+OLD_RESTORE_FREE_RESULT)
+
+RESTORE_CASES=['barrier_ack_before_restore', 'barrier_directory_sync_before_restore', 'barrier_file_sync_before_restore', 'baseline_ledger_ack', 'current_differs_from_export', 'export_before_pending_job', 'initial_journal_ack', 'initial_pair_closed', 'interrupted_binding_preserved', 'interrupted_census_mismatch', 'interrupted_job_absent', 'interrupted_journal_preserved', 'interrupted_no_reconstructed_writer', 'interrupted_pair_closed', 'interrupted_pending_retained', 'interruption_child_killed_reaped', 'interruption_child_ready', 'job_actual_after', 'job_confirmation_ack', 'job_ledger_ack', 'job_pending_ack', 'joint_restore_equal_census', 'joint_restore_lost_pending_fact', 'joint_restore_no_reconstructed_writer', 'joint_restore_pair_closed', 'ledger_only_binding_preserved', 'ledger_only_exact_old_bytes', 'ledger_only_job_absent', 'ledger_only_journal_preserved', 'ledger_only_no_reconstructed_writer', 'ledger_only_old_census', 'ledger_only_pending_retained', 'ledger_only_repeat_observation', 'missing_journal_observation_only', 'missing_journal_pair_closed', 'missing_ledger_denial', 'missing_ledger_preserves_journal', 'native_pending_ack', 'ordinary_rearm_denied', 'original_binding', 'original_leases_closed', 'owner_actual_after', 'owner_confirmation_ack', 'owner_ledger_ack', 'owner_pending_ack', 'restored_pair_closed', 'separate_restore_domains']
+for kind,suffix in [('ufs','UFS'),('zfs','ZFS')]:
+    name='TestNativeIndependentRestore'+suffix
+    TESTS.append(name)
+    PASS+='--- PASS: '+name+' (1.0s)\n'
+    RESULT+='EXECUTION_RESTORE_'+suffix+'_RESULT '+' '.join(c+'=pass' for c in RESTORE_CASES)+'\n'
+    RESULT+='STATE_BACKING_RESULT '+name+' filesystem='+kind+' softupdates=off teardown=pass\n'
+
+class IndependentRestoreCompletenessTests(unittest.TestCase):
+    def test_every_control_both_filesystems_and_teardown_required(self):
+        m=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(m)
+        self.assertEqual(m.RESTORE_CASES,set(RESTORE_CASES))
+        m.validate(PASS+RESULT)
+        for suffix,kind in [('UFS','ufs'),('ZFS','zfs')]:
+            marker='EXECUTION_RESTORE_'+suffix+'_RESULT'
+            line=marker+' '+' '.join(c+'=pass' for c in RESTORE_CASES)
+            for case in RESTORE_CASES:
+                for value in ['',case+'=fail',case+'=pass '+case+'=pass','invented=pass']:
+                    bad=marker+' '+' '.join(value if c==case else c+'=pass' for c in RESTORE_CASES)
+                    with self.subTest(suffix=suffix,case=case,value=value),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(line,bad))
+            name='TestNativeIndependentRestore'+suffix
+            backing='STATE_BACKING_RESULT '+name+' filesystem='+kind+' softupdates=off teardown=pass\n'
+            for bad in ['',backing.replace('teardown=pass','teardown=fail'),backing.replace('filesystem='+kind,'filesystem='+('zfs' if kind=='ufs' else 'ufs'))]:
+                with self.subTest(suffix=suffix,backing=bad),self.assertRaises(ValueError):m.validate(PASS+RESULT.replace(backing,bad))
+            with self.assertRaises(ValueError):m.validate(PASS.replace('--- PASS: '+name+' (1.0s)\n','')+RESULT)

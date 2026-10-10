@@ -334,3 +334,13 @@ adds two complete system collections within the original joint owner. Both domai
 must have resolved system backing disjoint from every owned imported pool; any
 unresolved owned pool denies. This conservative observation neither proves
 independent restoration nor registers or commissions a writer.
+
+
+## Independent restore fixtures
+
+The [independent ledger restore tests](../../testing/M2/independent-ledger-restore.md)
+exercise the accepted UFS file-level and distinct ZFS dataset procedures against
+an unchanged journal and its acknowledged disarmed barrier. Native qualification
+is pending. The joint-rollback control deliberately shows that matching historical
+bytes can hide lost pending state; observation cannot reconstruct authority.
+These private fixtures do not implement or commission a runtime restore consumer.

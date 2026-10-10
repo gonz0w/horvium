@@ -75,8 +75,12 @@ verified teardown; PR 116 accepted this prerequisite. Unresolved owned backing d
 and no commissioning, independent restore or launch authority is added.
 The [publication snapshot correction](docs/testing/M2/publication-preservation.md)
 resolves a reproduced test allocation-accounting failure while retaining exact
-object/content checks. Both native state gates passed; it awaits maintainer review.
+object/content checks. Both native state gates passed; PR 117 accepted the correction.
 Production behavior and runtime write denial remain unchanged.
+The [independent ledger restore fixtures](docs/testing/M2/independent-ledger-restore.md)
+exercise UFS file-level restoration and distinct ZFS dataset rollback against a
+preserved disarmed journal. Native qualification is pending; these fixtures do
+not commission a writer or implement the operator restore workflow.
 Completing this sequence covers the property workflow rather
 than the entire NAS release.
 

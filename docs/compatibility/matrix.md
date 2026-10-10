@@ -1051,7 +1051,15 @@ all other native metadata and exact bytes remain required. The additional snapsh
 regression passed on both pinned disposable FreeBSD/amd64 targets, including
 mutations of all 17 remaining stat fields. Both full state suites passed 77 parents,
 1,076 controls and 1,930 codec children each, with verified teardown. Portable review
-passed 161 tooling tests, eleven race packages and all 53 fuzz targets; it awaits
-maintainer review. See its [manifest](../testing/M2/publication-preservation-manifest.json).
+passed 161 tooling tests, eleven race packages and all 53 fuzz targets; PR 117 accepted the correction. See its [manifest](../testing/M2/publication-preservation-manifest.json).
 Production behavior is unchanged; earlier uninstrumented failures remain
 unattributed rather than being rewritten or counted as passing evidence.
+
+
+The [independent ledger restore fixtures](../testing/M2/independent-ledger-restore.md)
+add actual UFS file-level and separate ZFS dataset rollback procedures, with a
+preserved journal, durably disarmed barrier, process-death interruption and omitted
+pending-job checks. Qualification is pending on both pinned FreeBSD/amd64 targets.
+They also exercise deliberately restored older journal bytes: equal historical
+hashes cannot reconstruct an original writer. No whole-host anti-rollback,
+commissioning, operator restore workflow or runtime write support is claimed.
