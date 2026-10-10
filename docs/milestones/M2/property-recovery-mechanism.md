@@ -373,7 +373,10 @@ consumes that exclusive receipt once, creates fresh installation/helper identiti
 and obtains the initial active journal acknowledgement under both original leases.
 It repeats trusted native/system/boot transfers and original receipt/object checks,
 refuses ZFS ancestor scopes and preserves uncertain history. The storage fixtures
-use synthetic physical-use/boot transfers. A fixed native collector composition,
-registered startup/global owner, orderly shutdown and actual supervisor/backend
-assembly still precede runtime use. Closing this private receipt leaves active,
+use synthetic physical-use/boot transfers; PR 122 accepted this component. The
+subsequent [fixed native activation composition](../../testing/M2/native-journal-activation.md)
+qualifies actual kernel boot identity and complete native backing/system facts
+through an opaque original lifetime. Both pinned host gates and affected state
+corpora passed with teardown. Registered startup/global ownership, orderly
+shutdown and actual supervisor/backend assembly still precede runtime use. Closing this private receipt leaves active,
 unclean metadata and cannot supply a new incarnation or launch credential.

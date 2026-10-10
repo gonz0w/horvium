@@ -33,7 +33,9 @@ is introduced when a real source artifact exists; M5 is its release qualificatio
 not permission to ignore port constraints until then.
 
 The [original fresh journal activation prerequisite](../testing/M2/fresh-journal-activation.md)
-is qualified on both pinned storage targets and awaits review. It joins exclusive
-fresh domains to an initial durable journal receipt. Fixed native collector
-composition, registered startup/global ownership and remaining property runtime
-acceptance precede write enablement; M2 remains Implementing.
+was accepted in PR 122. It joins exclusive fresh domains to an initial durable
+journal receipt. The subsequent [fixed native composition](../testing/M2/native-journal-activation.md)
+passed both pinned host and affected state safety gates and awaits review.
+Registered startup/global ownership, orderly shutdown, backend/supervisor assembly
+and remaining property runtime acceptance precede write enablement; M2 remains
+Implementing.

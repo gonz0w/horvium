@@ -1111,9 +1111,33 @@ passed 90 parents, 1,806 native controls, 1,945 codec children and 31 backing/te
 markers each; local review passed 170 tooling tests, eleven race packages and
 54 bounded fuzz targets. See its
 [source-bound manifest](../testing/M2/fresh-journal-activation-manifest.json).
-The storage fixtures use synthetic boot/physical-use transfers; fixed native
-collector composition is still required. The component remains unregistered:
+The storage fixtures use synthetic boot/physical-use transfers; the subsequent
+[fixed native composition](../testing/M2/native-journal-activation.md) has its own
+host evidence. The component remains unregistered:
 close leaves active metadata, and startup/global ownership, restore workflow,
 actual native execution, hardware power loss and commercial scale remain unqualified.
 No runtime writer or service is enabled. All 419 unaffected original Go inputs
 and 99 historical manifests retain their bytes; teardown is verified.
+
+
+The [fixed native journal activation](../testing/M2/native-journal-activation.md)
+connects the accepted original initial receipt to the actual exact kernel boot ID,
+guarded descriptor persistent backing and complete native system-use collectors.
+Both pinned FreeBSD/amd64 releases passed six host parents and 274 controls each,
+including 37 new controls per filesystem, plus the affected 90-parent state
+corpus (1,806 native controls, 1,945 codec children, 31 backing/teardown markers).
+Actual disposable UFS/ZFS fixtures verify dual held locks, post-ack error/history
+preservation, copied/serialized refusal, metadata drift retirement and credential
+drop denial despite inherited root descriptors. The opaque original lifetime
+exposes observation/release only; release leaves an active unclean journal.
+All 172 local tooling tests, eleven race packages and 54 bounded fuzz targets
+passed; source-bound hashes and teardown are in the
+[manifest](../testing/M2/native-journal-activation-manifest.json).
+All 422 unaffected original Go inputs and 100 historical manifests preserve bytes.
+This supersedes the fixed host-composition gap in PR 122's storage-only evidence;
+that historical manifest is unchanged. The component is unregistered: startup/
+global ownership, orderly shutdown, backend/supervisor integration, operator
+restore and runtime workflows remain pending. Equal observations are not a kernel
+fence; bounded collection may refuse large or busy environments. Hardware power
+loss, full-filesystem UFS restore, throughput and commercial scale are unqualified.
+Runtime writes, services and GitHub Actions remain disabled; teardown is verified.

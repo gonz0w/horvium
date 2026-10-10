@@ -1,6 +1,6 @@
 # Fresh journal activation qualification
 
-Status: private prerequisite qualified; awaiting maintainer review; runtime denied.
+Status: Accepted private prerequisite (PR 122); runtime denied.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 [Issue 19](https://github.com/gonz0w/horvium/issues/19),
 [accepted recovery mechanism](../../milestones/M2/property-recovery-mechanism.md),
@@ -68,8 +68,10 @@ hardware power-loss or active storage-command/kernel interruption qualification.
 The fixtures use actual UFS/ZFS objects, locks, native identities, reads, syscalls
 and durability. Their physical-use and boot transfers are synthetic. The fixed
 kernel/native backing/system producers have separate accepted host gates; their
-composition with this receipt remains unqualified. QEMU TCG on Darwin/arm64 uses
-two guest CPUs and 6,144 MiB, with UFS softupdates disabled and a disposable
+composition with this receipt was unqualified by this storage-only record. The
+subsequent [fixed native composition](native-journal-activation.md) supplies its
+own host evidence; this historical manifest remains unchanged. QEMU TCG on
+Darwin/arm64 uses two guest CPUs and 6,144 MiB, with UFS softupdates disabled and a disposable
 256 MiB file-backed ZFS fixture. This is not a hardware, throughput or commercial
 scale qualification.
 
@@ -91,8 +93,8 @@ disabled.
 
 ## Remaining acceptance
 
-This component is unregistered and grants no launch authority. A fixed OS-root
-kernel/native backing/system composition, registered startup/global owner,
-orderly shutdown, actual backend/supervisor assembly, explicit recovery/restore
+This component is unregistered and grants no launch authority. The subsequent
+[fixed OS-root kernel/native backing/system composition](native-journal-activation.md)
+is separately qualified. Registered startup/global ownership, orderly shutdown, actual backend/supervisor assembly, explicit recovery/restore
 workflow and assembled property acceptance remain required. Runtime writes remain
 denied; the property workflow and NAS release are not complete.
