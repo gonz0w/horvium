@@ -56,8 +56,8 @@ metadata. Fresh diagnostics must read both original policies and no jobs.
 Pin the additional inventory in a failing-first evidence-consumer test. Missing,
 failed, duplicated or old-only controls cannot qualify. That parser red is not a
 reproduced native/product defect. Product behavior is unchanged.
-Qualification is pending until the complete checksum-bound gate passes on both
-pinned FreeBSD/amd64 15.1 and 14.5 targets with independent owned teardown.
+Require the complete checksum-bound gate on both pinned FreeBSD/amd64 15.1 and
+14.5 targets with independent owned teardown.
 
 The initial signed native candidate
 `3ca51368b613d791d159e58888c40601d53971e2` failed the UFS valid-review setup:
@@ -68,6 +68,24 @@ the complete run remains unqualified. A signed failing-first portable regression
 reproduces that fixture mismatch. The correction compares the complete strict
 canonical encodings, preserving revision/member/scope validation and rejecting
 drift; it changes no production policy validator or startup consumer.
+
+The [candidate receipt](retained-policy-native-multiple-manifest.json) records
+corrected signed source `12a1326b8b55d4810663e1a9a48f703520c82488` completing
+eight parents/990 controls on each release with the same checksum-bound artifact,
+independent fixture/host/supervisor teardown and preserved base/runtime images.
+Each policy parent completes 223 controls, including all 60 multiple-policy
+assertions. The initial native failure, its skipped 14.5 counterpart and signed
+fixture red `95e8566496889db0bdc2dfc2daaa33f91a372583` remain explicitly
+unqualified. The signed parser red `83d8b3bb1100f2ba19ffedf28f6a8226741b7079`
+and original portable component pass are preserved at their actual candidates.
+
+The corrected source passed the mandatory baseline (192 tooling tests and all
+ordinary Go tests) and full conservative review: eleven race packages and all
+54 portable fuzz targets. Shared evidence-consumer changes require that fallback;
+the fixture correction required fresh execution. Receipt-only followups rerun the
+baseline/signature/DCO/title checks and verify exact-input deep reuse. All five
+earlier accepted manifests retain their bytes; native executed sources are not
+relabeled as the final receipt-only head.
 
 ## Acceptance limits
 

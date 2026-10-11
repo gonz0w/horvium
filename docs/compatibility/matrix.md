@@ -1433,6 +1433,9 @@ remaining adopted acceptance families are separate.
 The [native multiple-policy storage slice](../testing/M2/retained-policy-native-multiple.md)
 declares two-policy lifecycle and last-policy failure checks on actual UFS/ZFS
 metadata and leases, with synthetic policy/physical-use/boot transfers. Expanded
-eight-parent/990-control qualification is pending. It changes no product runtime
+eight-parent/990-control gate passed on both pinned FreeBSD/amd64 15.1 and 14.5
+targets at signed source `12a1326b8b55d4810663e1a9a48f703520c82488`, with
+verified teardown. Its receipt preserves the failed initial fixture candidate and
+signed canonical-comparison regression. It changes no product runtime
 code and does not qualify fixed-root multiple data-pool composition or worker
 shutdown. Remaining adopted acceptance families stay separate.
