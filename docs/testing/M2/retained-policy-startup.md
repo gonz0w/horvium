@@ -143,3 +143,7 @@ Expanded multi-policy/mixed-history/concurrency/census/bounds acceptance remains
 pending. These component passes do not accept issue 305, its broader runtime gate
 or M2. No private exploratory compile/stub log or earlier empty-ledger receipt is
 substituted for a missing native gate.
+
+The subsequent [portable admission coverage](retained-policy-admission.md) adds
+supplied-fact drift and complete codec/catalog mixed-history refusal checks.
+It changes no production behavior and qualifies no new native lifecycle family.

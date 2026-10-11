@@ -204,3 +204,4 @@
 - [M2 retained-policy startup qualification](testing/M2/retained-policy-startup.md): private policy-only candidate and bounded native gate; acceptance pending.
 - [M2 fixed-root policy startup qualification](testing/M2/retained-policy-root.md): existing single-policy suite passed both pinned releases; expanded acceptance remains pending.
 - [M2 policy startup child budgets](testing/M2/retained-policy-child-budget.md): independent caller contexts, checked child profile, unchanged whole-child/product limits and complete native regression receipts.
+- [M2 portable policy admission coverage](testing/M2/retained-policy-admission.md): policy/member/system drift and codec/catalog mixed-history refusal; expanded native acceptance remains pending.

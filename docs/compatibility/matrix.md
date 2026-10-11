@@ -1412,3 +1412,9 @@ Expanded multi-policy/mixed-history/concurrency/census/bounds acceptance, real
 worker shutdown and configured runtime remain pending. These fixtures establish
 no additional release, parallel execution, performance, hardware or commercial
 support. Runtime writes remain disabled.
+
+The [portable admission coverage](../testing/M2/retained-policy-admission.md)
+checks supplied policy/member/system drift and both job formats in same-pool,
+other-pool and mixed catalogs, preserving metadata and projected holders.
+It changes no runtime behavior or native evidence. Expanded native mixed-history,
+multiple-policy, concurrency, census and bounds acceptance remains pending.
