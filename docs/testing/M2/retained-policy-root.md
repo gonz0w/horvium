@@ -26,6 +26,9 @@ lifecycle ZFS 474.53 seconds, denial UFS 140.32 seconds and denial ZFS 161.35
 seconds. These consumed over twenty minutes before retained acceptance began.
 Its retained ZFS parent also passed at 409.58 seconds. These individual
 observations do not qualify an incomplete whole run or the final revised layout.
+The combined run then exhausted its unchanged 34-minute process limit during
+retained UFS. The remaining parents did not complete. Host/device cleanup and
+base/runtime preservation passed; this whole run is unqualified.
 The initial portable count assertion incorrectly expected 54/36 rather than
 51/39 controls; its failed baseline remains attached to that source. Corrected
 source `5d7301a04a58ce9de96198fbf254cc368b40c249` passed the full portable review.
@@ -92,3 +95,22 @@ startup, retained-job recovery, workers, launch permission, public operations,
 client/browser/hardware/performance and release acceptance remain open. Runtime
 writes remain disabled. No service, deployment, hosted automation or dependency
 is added.
+
+## Recorded final correction review
+
+The [sanitized correction manifest](retained-policy-root-manifest.json) preserves
+both unqualified native runs, their completed parents and exact source/compiler/
+artifact/log/record hashes, the failed count baseline and parser regressions.
+Source `d6555e3bba46c5d6617b412d99f5ec065b91399a`, base
+`3de0cd25e2689abcc62f2b895e9870d35664b5dc`, title
+`test(host): bound retained-policy startup qualification` passed `make review`:
+`make check lint test secrets`, eleven race packages and all 54 portable fuzz
+targets, signed/DCO/title verification and supervised teardown. The fixture
+cross-build passed using pinned Go 1.27.1 for FreeBSD/amd64, ordinary build
+selection excluded the bridge, and the temporary compiled artifact was removed.
+
+The final six-parent policy/two-phase native layout has **not run** on either
+release. Cross-compilation, portable passes and completed parents from failed
+whole runs do not qualify it. PR 308 stays draft; issue 305 and its parent remain
+open. Next unblocked work is the complete final native gate on both pinned
+releases, followed by the separately outstanding expanded acceptance families.
