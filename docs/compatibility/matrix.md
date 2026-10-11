@@ -1446,7 +1446,12 @@ uses a scoped seven-disk disposable profile for two independent two-leaf mirrors
 preserving the existing five-disk default and conservative production topology
 restriction. It checks fixed pool/provider/system collectors and validators with
 actual GUID/member/scope baselines, plus copied last-policy mismatch denials.
-Qualification is pending on both pinned releases. This changes no production
+Signed source `f199a0a7c9b5df0b5ceeb07adc9a10f235f5a574` passed both
+pinned FreeBSD/amd64 15.1 and 14.5 gates with the identical checksum-bound
+artifact, one parent/one normally waited child and 21 controls per release.
+Complete fixture and host/supervisor teardown passed. Its
+[receipt](../testing/M2/retained-policy-native-facts-manifest.json) preserves both
+failed initial candidates and skipped second-release attempts. This changes no production
 code; copied codec inputs outside product state confer no enrollment/startup
 authority. Multiple-policy original leases, publication/retirement, concurrency,
 workers, hardware/capacity/performance and broader release acceptance remain open.

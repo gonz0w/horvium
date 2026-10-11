@@ -1,6 +1,6 @@
 # Native facts for two independent retained-policy pools
 
-Status: fixture inventory declared before execution; qualification pending.
+Status: native fact prerequisite passed on both pinned releases; maintainer review pending.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`).
 Refs [issue 305](https://github.com/gonz0w/horvium/issues/305) and
 [parent M2-RUNTIME-002](https://github.com/gonz0w/horvium/issues/139).
@@ -106,3 +106,33 @@ observation or retirement, lease/census/concurrency/publication faults, workers,
 launch permission, browser/client/hardware/performance or release acceptance.
 The existing single-policy root gate and its historical limitations remain
 unchanged. Issue 305 and its parent remain open; runtime writes remain disabled.
+
+## Recorded corrected qualification
+
+Signed source `f199a0a7c9b5df0b5ceeb07adc9a10f235f5a574`, base
+`be57dff5d6e3bdf661784bf6fb195a9f9f1ea0bc`, passed this focused gate
+on both pinned disposable FreeBSD/amd64 releases with identical artifact
+`79a66fe5809de9dd2f7741ecb4ffa15a274f8fdd3a6309ba292ab0ea82e52921`.
+Each release completed one parent, one normally waited child and all 21 controls.
+The 15.1 parent took 13.62 seconds; 14.5 took 12.27 seconds. These are bounded
+fixture observations, not performance or commercial capacity qualification.
+Independent pools/inputs/mounts/swap/device/guest/key/artifact/supervisor teardown
+and base/runtime preservation passed. Normal build selection excludes the tagged
+fixture.
+
+The [sanitized receipt](retained-policy-native-facts-manifest.json) binds exact
+source/base/tree/title, 597 non-prose verification inputs, compiler/artifact and
+original log/record hashes. It preserves both failed native candidates, their
+portable passes and skipped 14.5 attempts, and signed failing-first parser/profile
+regressions. All six historical retained-policy manifests are byte-for-byte
+unchanged. The successful executed source passed required `make check lint test
+secrets` through `make review`: 197 tooling tests, ordinary Go tests, eleven race
+packages and all 54 fuzz targets, signatures/DCO/title and supervised teardown.
+Receipt-only followups require fresh baseline/signature/DCO/title checks; exact
+unchanged inputs may reuse that executed deep evidence under the
+[local review policy](../../engineering/local-review.md).
+
+Next, use these proven actual independent mirrored pools in the adopted original
+root lifecycle with original leases and strict controlled commissioned/publication
+seeds. That lifecycle and the other issue-305 acceptance families remain pending;
+no prior receipt is promoted to broader acceptance by this fact prerequisite.
