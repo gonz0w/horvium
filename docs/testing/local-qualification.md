@@ -639,3 +639,12 @@ native evidence; see the [unqualified receipt](M2/retained-policy-native-lifecyc
 Do not treat this staged runner or retained-parent passes as lifecycle acceptance.
 No 14.5 attempt followed the failed 15.1 gates. Further native timing/fixture
 investigation must preserve the adopted bounds before another qualification.
+
+The focused `policy-startup-diagnostics` experiment measures nine independent
+launch/system/policy/backing stages in one eight-minute fact/data parent on the
+same one-CPU/seven-device lab; use `tools/local-qualification.py` with the declared
+release and `--run`. Require all original 21 fact/data controls, actual CPU count,
+checksum and metadata/host/device/supervisor teardown. Its private reader wrappers
+are diagnostic only and cannot supply fixed-root lifecycle acceptance; see the
+[contract](../research/M2/policy-startup-costs.md). Dry-run descriptions now use
+the selected suite CPU count instead of reporting two CPUs for every suite.

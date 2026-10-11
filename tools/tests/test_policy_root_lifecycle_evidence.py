@@ -81,7 +81,7 @@ class SerialGuestSelection(unittest.TestCase):
     def test_only_lifecycle_selects_one_cpu_and_defaults_are_preserved(self):
         m = module('local-qualification')
         for suite in m.SUITES:
-            self.assertEqual(m.cpu_count_for_suite(suite), 1 if suite == 'policy-startup-lifecycle' else 2)
+            self.assertEqual(m.cpu_count_for_suite(suite), 1 if suite in ('policy-startup-lifecycle', 'policy-startup-diagnostics') else 2)
         with self.assertRaises(ValueError):
             m.cpu_count_for_suite('unknown')
         self.assertEqual(m.qemu_command('qemu', 'base', 'code', 'vars', 1234)[6], '2')

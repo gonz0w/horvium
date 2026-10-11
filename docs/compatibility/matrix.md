@@ -1491,3 +1491,9 @@ failed runs had verified independent host teardown. The
 records source-bound failures/skips and passing portable checks separately.
 A suitable disposable native timing investigation and complete passes on both
 pinned releases remain required. Earlier accepted receipts are unchanged.
+
+The [retained-policy cost diagnostic](../research/M2/policy-startup-costs.md) is
+a declared read-only experiment for cumulative native launch/collector costs on
+the disposable amd64/TCG lab. Execution is pending; it cannot qualify the blocked
+fixed-root lifecycle, product performance or another architecture. All nine
+earlier receipts remain unchanged.
