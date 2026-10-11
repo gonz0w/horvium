@@ -1571,3 +1571,24 @@ passes a portable regression but has **not executed natively**. The candidate is
 a draft; diagnostic completeness and native acceptance remain false. No raw
 stacks were captured or copied. Neither sampler nor setup correction enables
 runtime writes or completes issue 323/305/139; 14.5 remains unattempted.
+
+
+The corrected merged source `2d78311dbf7c71678b02f48f2a3488a4c8a737fa` completed
+the focused 15.1 UFS startup diagnostic: one parent at 216.09s, two normally waited
+children and all 42 controls, with original metadata/fact and independent host/
+device/supervisor teardown and preservation. The
+[qualification receipt](../research/M2/policy-startup-stack-qualification-manifest.json)
+source-maps all three guest-only snapshots and retains all fourteen preceding
+receipts, including the unqualified original setup failure. Earlier pending/draft
+statements retain that historical candidate boundary.
+
+Actual startup still failed at 120.010624s with deadline errors and no returned
+owner. Snapshots locate review at 30s, activation's pre-publication inspection at
+75s and its post-publication inspection at 110s; final journal bytes changed from
+closed generation6 to active generation7, with original ledger/nonjournal bytes
+preserved and child leases released. No command duration, exact failing probe or
+causal performance/emulation conclusion is established. Diagnostic completeness
+is true, **native lifecycle acceptance remains false**. Only research issue323
+can complete on acceptance of its receipt; owner305/parent139, both full lifecycle
+release gates and broader acceptance remain open. No 14.5 comparison, production
+behavior/limit/guard change, retry, service or runtime writer was introduced.

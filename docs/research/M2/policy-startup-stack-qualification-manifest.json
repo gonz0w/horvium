@@ -1,0 +1,1472 @@
+{
+  "schema": 1,
+  "date": "2026-10-11",
+  "scope": "focused corrected original-startup diagnostic completeness; no native lifecycle acceptance",
+  "research_issue": 323,
+  "broader_gates": [
+    305,
+    139
+  ],
+  "executed_source_commit": "2d78311dbf7c71678b02f48f2a3488a4c8a737fa",
+  "executed_source_tree": "2d705f5b4106b1a2df562d75495c8b137354cc14",
+  "base_commit": "2d78311dbf7c71678b02f48f2a3488a4c8a737fa",
+  "adopted_method": {
+    "PR": 322,
+    "merge": "c481cbbb7b17c592f61bb7cff506f475c071cbd4"
+  },
+  "merged_implementation": {
+    "PR": 324,
+    "signed_head": "026aa9cb682516cfa951af8831fa2744437d969a",
+    "merge": "2d78311dbf7c71678b02f48f2a3488a4c8a737fa",
+    "reviewed_tree_exact": true
+  },
+  "diagnostic_complete": true,
+  "native_acceptance": false,
+  "profile": {
+    "release": "15.1",
+    "target": "freebsd/amd64",
+    "cpu_count": 1,
+    "cpu_model": "qemu64",
+    "accelerator": "tcg",
+    "memory_mib": 6144,
+    "owned_devices": 7
+  },
+  "actual_budget": {
+    "child_seconds": 150,
+    "parent_seconds": 480,
+    "phase_minutes": 18,
+    "caller_seconds": 120,
+    "product_seconds": 90,
+    "sample_seconds": [
+      30,
+      75,
+      110
+    ],
+    "snapshot_bytes": 65536,
+    "join_seconds": 5
+  },
+  "retained_outer_bounds": {
+    "cleanup_seconds": 30,
+    "child_output_bytes": 16384,
+    "remote_seconds": 7200,
+    "supervisor_seconds": 9000,
+    "grace_seconds": 15
+  },
+  "artifact": {
+    "source_commit": "2d78311dbf7c71678b02f48f2a3488a4c8a737fa",
+    "sha256": "2e84c6cce8cc2965dcddffb6039038cb46ee2685010d22eb104ddda1a06eddc5",
+    "bytes": 13672072,
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+    "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+    "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+    "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+    "target": "freebsd/amd64",
+    "goamd64": "v1",
+    "cgo_enabled": false,
+    "build_arguments": [
+      "go",
+      "test",
+      "-c",
+      "-trimpath",
+      "-tags=horvium_native_fixture",
+      "-o",
+      "<owned-artifact>",
+      "./internal/host/freebsd"
+    ]
+  },
+  "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+  "qemu_version": "QEMU emulator version 11.1.1",
+  "record_sha256": "a7fe0fac029136d68b6bc1b835dbe4aadf658822a561dea4af57486ea9af76c3",
+  "log_sha256": "ad6871ec56c7cca1c36af03dac6c7659293c1e5c1f521d125c78d232548a6987",
+  "parent_outcome": {
+    "state": "PASS",
+    "name": "TestNativeMultiplePolicyStartupTraceUFS",
+    "seconds": 216.09
+  },
+  "observations": {
+    "native_acceptance": false,
+    "summary": {
+      "return_ns": 120010623999,
+      "caller_deadline_ns": 120000000000,
+      "caller_error": "deadline",
+      "startup_error": "deadline",
+      "owner_present": false,
+      "samples": [
+        {
+          "id": 1,
+          "offset_ns": 30000000000,
+          "begin_ns": 30008717000,
+          "end_ns": 30012838000,
+          "bytes": 9647,
+          "sha256": "ecf24164da6bb9594745c1f404903a08c01db10737ed0b2af6302cf6895e4f81",
+          "status": "captured"
+        },
+        {
+          "id": 2,
+          "offset_ns": 75000000000,
+          "begin_ns": 75008147999,
+          "end_ns": 75009935999,
+          "bytes": 8693,
+          "sha256": "702624aed539d4efabf39908c6846196836bedc05378000e0c8c56224a36b927",
+          "status": "captured"
+        },
+        {
+          "id": 3,
+          "offset_ns": 110000000000,
+          "begin_ns": 110000571999,
+          "end_ns": 110002111999,
+          "bytes": 8713,
+          "sha256": "bab100827c40f5313bd563aa0e0ebe69aa0ab5647f608a9c1c27475bdba01992",
+          "status": "captured"
+        }
+      ]
+    },
+    "stacks": [
+      {
+        "id": 1,
+        "status": "located",
+        "frames": [
+          {
+            "file": "syscall/asm_unix_amd64.s",
+            "line": 39,
+            "symbol": "syscall.Syscall6"
+          },
+          {
+            "file": "os/wait6_freebsd64.go",
+            "line": 18,
+            "symbol": "os.wait6"
+          },
+          {
+            "file": "os/wait_wait6.go",
+            "line": 19,
+            "symbol": "os.(*Process).blockUntilWaitable.func1"
+          },
+          {
+            "file": "os/file_posix.go",
+            "line": 263,
+            "symbol": "os.ignoringEINTR"
+          },
+          {
+            "file": "os/wait_wait6.go",
+            "line": 18,
+            "symbol": "os.(*Process).blockUntilWaitable"
+          },
+          {
+            "file": "os/exec_unix.go",
+            "line": 45,
+            "symbol": "os.(*Process).pidWait"
+          },
+          {
+            "file": "os/exec_unix.go",
+            "line": 28,
+            "symbol": "os.(*Process).wait"
+          },
+          {
+            "file": "os/exec.go",
+            "line": 347,
+            "symbol": "os.(*Process).Wait"
+          },
+          {
+            "file": "os/exec/exec.go",
+            "line": 944,
+            "symbol": "os/exec.(*Cmd).Wait"
+          },
+          {
+            "file": "os/exec/exec.go",
+            "line": 643,
+            "symbol": "os/exec.(*Cmd).Run"
+          },
+          {
+            "file": "internal/host/freebsd/execute.go",
+            "line": 70,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executePrepared"
+          },
+          {
+            "file": "internal/host/freebsd/guard_freebsd.go",
+            "line": 17,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executeNative"
+          },
+          {
+            "file": "internal/host/freebsd/persistent_backing_freebsd.go",
+            "line": 74,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.readPersistentBackingNative"
+          },
+          {
+            "file": "internal/host/freebsd/persistent_backing.go",
+            "line": 55,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*persistentBackingCollector).collect.func1"
+          },
+          {
+            "file": "internal/host/freebsd/persistent_backing.go",
+            "line": 79,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*persistentBackingCollector).collect"
+          },
+          {
+            "file": "internal/host/freebsd/persistent_backing_freebsd.go",
+            "line": 62,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.collectNativePersistentBacking"
+          },
+          {
+            "file": "internal/host/freebsd/joint_execution_leases_freebsd.go",
+            "line": 17,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.readNativeExecutionBacking"
+          },
+          {
+            "file": "internal/storage/execution_domain_freebsd.go",
+            "line": 43,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).observeExecutionDomainLocked.func1"
+          },
+          {
+            "file": "internal/storage/execution_binding_freebsd.go",
+            "line": 52,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked"
+          },
+          {
+            "file": "internal/storage/execution_domain_freebsd.go",
+            "line": 42,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).observeExecutionDomainLocked"
+          },
+          {
+            "file": "internal/storage/execution_domains_freebsd.go",
+            "line": 157,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*ExecutionDomainLeases).observeLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 207,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1.1"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 238,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1"
+          },
+          {
+            "file": "internal/storage/execution_binding_freebsd.go",
+            "line": 52,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 154,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2"
+          },
+          {
+            "file": "internal/storage/execution_binding_freebsd.go",
+            "line": 52,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 153,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 106,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspect"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 59,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.reviewExecutionStartupPolicy"
+          },
+          {
+            "file": "internal/storage/execution_policy_freebsd.go",
+            "line": 16,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.ReviewExecutionPolicyStartup"
+          },
+          {
+            "file": "internal/host/freebsd/execution_restart_freebsd.go",
+            "line": 26,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner.func2"
+          },
+          {
+            "file": "internal/host/freebsd/execution_owner.go",
+            "line": 82,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.commissionExecutionOwner"
+          },
+          {
+            "file": "internal/host/freebsd/execution_restart_freebsd.go",
+            "line": 17,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner"
+          },
+          {
+            "file": "internal/host/freebsd/execution_policy_startup_trace_fixture_test.go",
+            "line": 99,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.TestMultiplePolicyStartupTraceChild"
+          },
+          {
+            "file": "testing/testing.go",
+            "line": 2193,
+            "symbol": "testing.tRunner"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "status": "located",
+        "frames": [
+          {
+            "file": "syscall/asm_unix_amd64.s",
+            "line": 39,
+            "symbol": "syscall.Syscall6"
+          },
+          {
+            "file": "os/wait6_freebsd64.go",
+            "line": 18,
+            "symbol": "os.wait6"
+          },
+          {
+            "file": "os/wait_wait6.go",
+            "line": 19,
+            "symbol": "os.(*Process).blockUntilWaitable.func1"
+          },
+          {
+            "file": "os/file_posix.go",
+            "line": 263,
+            "symbol": "os.ignoringEINTR"
+          },
+          {
+            "file": "os/wait_wait6.go",
+            "line": 18,
+            "symbol": "os.(*Process).blockUntilWaitable"
+          },
+          {
+            "file": "os/exec_unix.go",
+            "line": 45,
+            "symbol": "os.(*Process).pidWait"
+          },
+          {
+            "file": "os/exec_unix.go",
+            "line": 28,
+            "symbol": "os.(*Process).wait"
+          },
+          {
+            "file": "os/exec.go",
+            "line": 347,
+            "symbol": "os.(*Process).Wait"
+          },
+          {
+            "file": "os/exec/exec.go",
+            "line": 944,
+            "symbol": "os/exec.(*Cmd).Wait"
+          },
+          {
+            "file": "os/exec/exec.go",
+            "line": 643,
+            "symbol": "os/exec.(*Cmd).Run"
+          },
+          {
+            "file": "internal/host/freebsd/execute.go",
+            "line": 70,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executePrepared"
+          },
+          {
+            "file": "internal/host/freebsd/guard_freebsd.go",
+            "line": 17,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executeNative"
+          },
+          {
+            "file": "internal/host/freebsd/system_use_freebsd.go",
+            "line": 9,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.readSystemNative"
+          },
+          {
+            "file": "internal/host/freebsd/system_use.go",
+            "line": 61,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*systemCycle).capture"
+          },
+          {
+            "file": "internal/host/freebsd/system_use.go",
+            "line": 111,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*systemCycle).pass"
+          },
+          {
+            "file": "internal/host/freebsd/system_use.go",
+            "line": 96,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*SystemUseSource).Collect"
+          },
+          {
+            "file": "internal/storage/execution_domains_freebsd.go",
+            "line": 202,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*ExecutionDomainLeases).observeLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 207,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1.1"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 238,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1"
+          },
+          {
+            "file": "internal/storage/execution_binding_freebsd.go",
+            "line": 52,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 154,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2"
+          },
+          {
+            "file": "internal/storage/execution_binding_freebsd.go",
+            "line": 52,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 153,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked"
+          },
+          {
+            "file": "internal/storage/execution_restart_freebsd.go",
+            "line": 50,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).activate"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 66,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.reviewExecutionStartupPolicy.func1"
+          },
+          {
+            "file": "internal/storage/execution_restart.go",
+            "line": 62,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*ExecutionStartupReview).Activate"
+          },
+          {
+            "file": "internal/host/freebsd/execution_restart_freebsd.go",
+            "line": 30,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner.func2"
+          },
+          {
+            "file": "internal/host/freebsd/execution_owner.go",
+            "line": 82,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.commissionExecutionOwner"
+          },
+          {
+            "file": "internal/host/freebsd/execution_restart_freebsd.go",
+            "line": 17,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner"
+          },
+          {
+            "file": "internal/host/freebsd/execution_policy_startup_trace_fixture_test.go",
+            "line": 99,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.TestMultiplePolicyStartupTraceChild"
+          },
+          {
+            "file": "testing/testing.go",
+            "line": 2193,
+            "symbol": "testing.tRunner"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "status": "located",
+        "frames": [
+          {
+            "file": "syscall/asm_unix_amd64.s",
+            "line": 39,
+            "symbol": "syscall.Syscall6"
+          },
+          {
+            "file": "os/wait6_freebsd64.go",
+            "line": 18,
+            "symbol": "os.wait6"
+          },
+          {
+            "file": "os/wait_wait6.go",
+            "line": 19,
+            "symbol": "os.(*Process).blockUntilWaitable.func1"
+          },
+          {
+            "file": "os/file_posix.go",
+            "line": 263,
+            "symbol": "os.ignoringEINTR"
+          },
+          {
+            "file": "os/wait_wait6.go",
+            "line": 18,
+            "symbol": "os.(*Process).blockUntilWaitable"
+          },
+          {
+            "file": "os/exec_unix.go",
+            "line": 45,
+            "symbol": "os.(*Process).pidWait"
+          },
+          {
+            "file": "os/exec_unix.go",
+            "line": 28,
+            "symbol": "os.(*Process).wait"
+          },
+          {
+            "file": "os/exec.go",
+            "line": 347,
+            "symbol": "os.(*Process).Wait"
+          },
+          {
+            "file": "os/exec/exec.go",
+            "line": 944,
+            "symbol": "os/exec.(*Cmd).Wait"
+          },
+          {
+            "file": "os/exec/exec.go",
+            "line": 643,
+            "symbol": "os/exec.(*Cmd).Run"
+          },
+          {
+            "file": "internal/host/freebsd/execute.go",
+            "line": 70,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executePrepared"
+          },
+          {
+            "file": "internal/host/freebsd/guard_freebsd.go",
+            "line": 17,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executeNative"
+          },
+          {
+            "file": "internal/host/freebsd/system_use_freebsd.go",
+            "line": 23,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.readSystemNative"
+          },
+          {
+            "file": "internal/host/freebsd/system_use.go",
+            "line": 61,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*systemCycle).capture"
+          },
+          {
+            "file": "internal/host/freebsd/system_use.go",
+            "line": 149,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*systemCycle).pass"
+          },
+          {
+            "file": "internal/host/freebsd/system_use.go",
+            "line": 92,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*SystemUseSource).Collect"
+          },
+          {
+            "file": "internal/storage/execution_domains_freebsd.go",
+            "line": 182,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*ExecutionDomainLeases).observeLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 189,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1.1"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 238,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1"
+          },
+          {
+            "file": "internal/storage/execution_binding_freebsd.go",
+            "line": 52,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 154,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2"
+          },
+          {
+            "file": "internal/storage/execution_binding_freebsd.go",
+            "line": 52,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 153,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked"
+          },
+          {
+            "file": "internal/storage/execution_restart_freebsd.go",
+            "line": 100,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).activate"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 66,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.reviewExecutionStartupPolicy.func1"
+          },
+          {
+            "file": "internal/storage/execution_restart.go",
+            "line": 62,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*ExecutionStartupReview).Activate"
+          },
+          {
+            "file": "internal/host/freebsd/execution_restart_freebsd.go",
+            "line": 30,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner.func2"
+          },
+          {
+            "file": "internal/host/freebsd/execution_owner.go",
+            "line": 82,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.commissionExecutionOwner"
+          },
+          {
+            "file": "internal/host/freebsd/execution_restart_freebsd.go",
+            "line": 17,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner"
+          },
+          {
+            "file": "internal/host/freebsd/execution_policy_startup_trace_fixture_test.go",
+            "line": 99,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.TestMultiplePolicyStartupTraceChild"
+          },
+          {
+            "file": "testing/testing.go",
+            "line": 2193,
+            "symbol": "testing.tRunner"
+          }
+        ]
+      }
+    ],
+    "journal": {
+      "before_sha256": "c529455cd6e69db23e9fe74ef409ae169166124930341427493f07a1b5319b56",
+      "after_sha256": "baca1e16af52fb02e3200e79215417cd8b1aaaefeacfc1ad11eaed604b735857",
+      "unchanged": false,
+      "decoded": true,
+      "state": "active",
+      "generation_before": 6,
+      "generation_after": 7
+    }
+  },
+  "source_mapped_stacks": [
+    {
+      "id": 1,
+      "status": "located",
+      "frames": [
+        {
+          "file": "syscall/asm_unix_amd64.s",
+          "line": 39,
+          "symbol": "syscall.Syscall6",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/wait6_freebsd64.go",
+          "line": 18,
+          "symbol": "os.wait6",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/wait_wait6.go",
+          "line": 19,
+          "symbol": "os.(*Process).blockUntilWaitable.func1",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/file_posix.go",
+          "line": 263,
+          "symbol": "os.ignoringEINTR",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/wait_wait6.go",
+          "line": 18,
+          "symbol": "os.(*Process).blockUntilWaitable",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/exec_unix.go",
+          "line": 45,
+          "symbol": "os.(*Process).pidWait",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/exec_unix.go",
+          "line": 28,
+          "symbol": "os.(*Process).wait",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/exec.go",
+          "line": 347,
+          "symbol": "os.(*Process).Wait",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/exec/exec.go",
+          "line": 944,
+          "symbol": "os/exec.(*Cmd).Wait",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/exec/exec.go",
+          "line": 643,
+          "symbol": "os/exec.(*Cmd).Run",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "internal/host/freebsd/execute.go",
+          "line": 70,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executePrepared",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/guard_freebsd.go",
+          "line": 17,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executeNative",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/persistent_backing_freebsd.go",
+          "line": 74,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.readPersistentBackingNative",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/persistent_backing.go",
+          "line": 55,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*persistentBackingCollector).collect.func1",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/persistent_backing.go",
+          "line": 79,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*persistentBackingCollector).collect",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/persistent_backing_freebsd.go",
+          "line": 62,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.collectNativePersistentBacking",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/joint_execution_leases_freebsd.go",
+          "line": 17,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.readNativeExecutionBacking",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_domain_freebsd.go",
+          "line": 43,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).observeExecutionDomainLocked.func1",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_binding_freebsd.go",
+          "line": 52,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_domain_freebsd.go",
+          "line": 42,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).observeExecutionDomainLocked",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_domains_freebsd.go",
+          "line": 157,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*ExecutionDomainLeases).observeLocked",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 207,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1.1",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 238,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_binding_freebsd.go",
+          "line": 52,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 154,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_binding_freebsd.go",
+          "line": 52,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 153,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 106,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspect",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 59,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.reviewExecutionStartupPolicy",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_policy_freebsd.go",
+          "line": 16,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.ReviewExecutionPolicyStartup",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/execution_restart_freebsd.go",
+          "line": 26,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner.func2",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/execution_owner.go",
+          "line": 82,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.commissionExecutionOwner",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/execution_restart_freebsd.go",
+          "line": 17,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/execution_policy_startup_trace_fixture_test.go",
+          "line": 99,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.TestMultiplePolicyStartupTraceChild",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "testing/testing.go",
+          "line": 2193,
+          "symbol": "testing.tRunner",
+          "origin": "compiler-matched Go standard library"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "status": "located",
+      "frames": [
+        {
+          "file": "syscall/asm_unix_amd64.s",
+          "line": 39,
+          "symbol": "syscall.Syscall6",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/wait6_freebsd64.go",
+          "line": 18,
+          "symbol": "os.wait6",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/wait_wait6.go",
+          "line": 19,
+          "symbol": "os.(*Process).blockUntilWaitable.func1",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/file_posix.go",
+          "line": 263,
+          "symbol": "os.ignoringEINTR",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/wait_wait6.go",
+          "line": 18,
+          "symbol": "os.(*Process).blockUntilWaitable",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/exec_unix.go",
+          "line": 45,
+          "symbol": "os.(*Process).pidWait",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/exec_unix.go",
+          "line": 28,
+          "symbol": "os.(*Process).wait",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/exec.go",
+          "line": 347,
+          "symbol": "os.(*Process).Wait",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/exec/exec.go",
+          "line": 944,
+          "symbol": "os/exec.(*Cmd).Wait",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/exec/exec.go",
+          "line": 643,
+          "symbol": "os/exec.(*Cmd).Run",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "internal/host/freebsd/execute.go",
+          "line": 70,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executePrepared",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/guard_freebsd.go",
+          "line": 17,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executeNative",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/system_use_freebsd.go",
+          "line": 9,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.readSystemNative",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/system_use.go",
+          "line": 61,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*systemCycle).capture",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/system_use.go",
+          "line": 111,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*systemCycle).pass",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/system_use.go",
+          "line": 96,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*SystemUseSource).Collect",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_domains_freebsd.go",
+          "line": 202,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*ExecutionDomainLeases).observeLocked",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 207,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1.1",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 238,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_binding_freebsd.go",
+          "line": 52,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 154,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_binding_freebsd.go",
+          "line": 52,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 153,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_restart_freebsd.go",
+          "line": 50,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).activate",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 66,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.reviewExecutionStartupPolicy.func1",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_restart.go",
+          "line": 62,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*ExecutionStartupReview).Activate",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/execution_restart_freebsd.go",
+          "line": 30,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner.func2",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/execution_owner.go",
+          "line": 82,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.commissionExecutionOwner",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/execution_restart_freebsd.go",
+          "line": 17,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/execution_policy_startup_trace_fixture_test.go",
+          "line": 99,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.TestMultiplePolicyStartupTraceChild",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "testing/testing.go",
+          "line": 2193,
+          "symbol": "testing.tRunner",
+          "origin": "compiler-matched Go standard library"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "status": "located",
+      "frames": [
+        {
+          "file": "syscall/asm_unix_amd64.s",
+          "line": 39,
+          "symbol": "syscall.Syscall6",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/wait6_freebsd64.go",
+          "line": 18,
+          "symbol": "os.wait6",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/wait_wait6.go",
+          "line": 19,
+          "symbol": "os.(*Process).blockUntilWaitable.func1",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/file_posix.go",
+          "line": 263,
+          "symbol": "os.ignoringEINTR",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/wait_wait6.go",
+          "line": 18,
+          "symbol": "os.(*Process).blockUntilWaitable",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/exec_unix.go",
+          "line": 45,
+          "symbol": "os.(*Process).pidWait",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/exec_unix.go",
+          "line": 28,
+          "symbol": "os.(*Process).wait",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/exec.go",
+          "line": 347,
+          "symbol": "os.(*Process).Wait",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/exec/exec.go",
+          "line": 944,
+          "symbol": "os/exec.(*Cmd).Wait",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "os/exec/exec.go",
+          "line": 643,
+          "symbol": "os/exec.(*Cmd).Run",
+          "origin": "compiler-matched Go standard library"
+        },
+        {
+          "file": "internal/host/freebsd/execute.go",
+          "line": 70,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executePrepared",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/guard_freebsd.go",
+          "line": 17,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executeNative",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/system_use_freebsd.go",
+          "line": 23,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.readSystemNative",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/system_use.go",
+          "line": 61,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*systemCycle).capture",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/system_use.go",
+          "line": 149,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*systemCycle).pass",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/system_use.go",
+          "line": 92,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*SystemUseSource).Collect",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_domains_freebsd.go",
+          "line": 182,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*ExecutionDomainLeases).observeLocked",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 189,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1.1",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 238,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_binding_freebsd.go",
+          "line": 52,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 154,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_binding_freebsd.go",
+          "line": 52,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 153,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_restart_freebsd.go",
+          "line": 100,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).activate",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_startup_freebsd.go",
+          "line": 66,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.reviewExecutionStartupPolicy.func1",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/storage/execution_restart.go",
+          "line": 62,
+          "symbol": "github.com/gonz0w/horvium/internal/storage.(*ExecutionStartupReview).Activate",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/execution_restart_freebsd.go",
+          "line": 30,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner.func2",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/execution_owner.go",
+          "line": 82,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.commissionExecutionOwner",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/execution_restart_freebsd.go",
+          "line": 17,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "internal/host/freebsd/execution_policy_startup_trace_fixture_test.go",
+          "line": 99,
+          "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.TestMultiplePolicyStartupTraceChild",
+          "origin": "Horvium executed Git source"
+        },
+        {
+          "file": "testing/testing.go",
+          "line": 2193,
+          "symbol": "testing.tRunner",
+          "origin": "compiler-matched Go standard library"
+        }
+      ]
+    }
+  ],
+  "frame_source_hashes": {
+    "syscall/asm_unix_amd64.s": {
+      "origin": "compiler-matched Go standard library",
+      "sha256": "ab8df94a62e23a5dcc79590078ca54dd1432faed5341cc27fdab6f9ef9cd0e66"
+    },
+    "os/wait6_freebsd64.go": {
+      "origin": "compiler-matched Go standard library",
+      "sha256": "1cadc99c0d646c0daa735b2019c76c470d3bf91d3e7ea298015ea3ccb3ccc728"
+    },
+    "os/wait_wait6.go": {
+      "origin": "compiler-matched Go standard library",
+      "sha256": "78e364a18a97408cbcae5735608f687fb75ed3a028be81b4b2050f44ed79d596"
+    },
+    "os/file_posix.go": {
+      "origin": "compiler-matched Go standard library",
+      "sha256": "2e93ac5f812cd7184d3ac3a2eb9a51583911a6261cf9c27772fa7dfedcbe514f"
+    },
+    "os/exec_unix.go": {
+      "origin": "compiler-matched Go standard library",
+      "sha256": "6e5581c9945c2364c01c26ed4d8659f0b0c10cd32b4eab3000132dc98e8e92f4"
+    },
+    "os/exec.go": {
+      "origin": "compiler-matched Go standard library",
+      "sha256": "811e5ad1e525fa0b4ab9109ee003f493df79e30e2b17ea29d643686ac9c6db2b"
+    },
+    "os/exec/exec.go": {
+      "origin": "compiler-matched Go standard library",
+      "sha256": "3ec96eeef97a375aa5e39663961f8adf3177db9449dacd3c407fd258bc9a2498"
+    },
+    "internal/host/freebsd/execute.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "6b1aa25996f23adec5d9af6bb58708ae475a5a2291f9e994cab83e1408d0c1d8"
+    },
+    "internal/host/freebsd/guard_freebsd.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "3093de04ed48250ad47424b14467e8e698ee264a7b2cc241e008b05191ec9c03"
+    },
+    "internal/host/freebsd/persistent_backing_freebsd.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "2934f96769d2fbd560ac72fb9d9376d441285e616ee771a299d8eb67ae5ac724"
+    },
+    "internal/host/freebsd/persistent_backing.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "067be07406ec23cb922e228e99a00b127b257c943a508a84f682b51ab390a0ac"
+    },
+    "internal/host/freebsd/joint_execution_leases_freebsd.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "c583daebb2831212bfe32b875b0eb899e5b52f6d800fc462812a8596cbc0ca36"
+    },
+    "internal/storage/execution_domain_freebsd.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "237179b1e73510fc345e81c72440cf52662edb41e06396d5f17e7ed900f6c5ed"
+    },
+    "internal/storage/execution_binding_freebsd.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "a6d549990d5855697c9774b92ba328a3146774320661624b4760946143b31f1d"
+    },
+    "internal/storage/execution_domains_freebsd.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "4c117a7a2136d422eef44f936a98d4ebeac6fd52ff017d05deab619feb5571bf"
+    },
+    "internal/storage/execution_startup_freebsd.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "7568274947d0110a46be79758bcaf5086829f1d2e7636715b3b4c214cc80a679"
+    },
+    "internal/storage/execution_policy_freebsd.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "43f7d1152ac5c83b55ebdf0233eaa4a44cd8bb8a8f8397f22cc307dabad190ef"
+    },
+    "internal/host/freebsd/execution_restart_freebsd.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "2c4bd0e5ff57a17d803ad59ca346cbf7094040addd6c4062ed7eb9b50330c444"
+    },
+    "internal/host/freebsd/execution_owner.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "c3b9bb2b2b9c309947dc4f55723e3ae9ca5dcb2bac48beb77d8cd3aa1935e7ba"
+    },
+    "internal/host/freebsd/execution_policy_startup_trace_fixture_test.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "4d597947a1971e56869567608de5c85ca1b3127937faddac7178dc20b1c3a847"
+    },
+    "testing/testing.go": {
+      "origin": "compiler-matched Go standard library",
+      "sha256": "8d2437cfdcfb82fd8807e5063783de1d50f70e589e80cad10e17d8ef23f724d9"
+    },
+    "internal/host/freebsd/system_use_freebsd.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "2e9ea15925e59bd1c0480d75e8856eecd15e41b8316037b0b026424d550b7d4a"
+    },
+    "internal/host/freebsd/system_use.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "450a4ae0ca879337d452dafa0b34b781513dc8654618e3645014a1e37d8c941e"
+    },
+    "internal/storage/execution_restart_freebsd.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241"
+    },
+    "internal/storage/execution_restart.go": {
+      "origin": "Horvium executed Git source",
+      "sha256": "d1295d3d440299c250009c23f72e64a8802d14efb8813d49c5e9af65b43a21d2"
+    }
+  },
+  "inventory": {
+    "required_parents": 1,
+    "required_normally_waited_children": 2,
+    "required_fact_controls": 21,
+    "required_diagnostic_controls": 21,
+    "required_total_controls": 42,
+    "complete": true
+  },
+  "independent_cleanup": {
+    "host_teardown": true,
+    "base_preserved": true,
+    "runtime_preserved": true,
+    "device_backings_preserved": true,
+    "device_fixture_teardown": true,
+    "supervisor_fixture_cleanup": true,
+    "supervisor_group_cleaned": true
+  },
+  "owned_temporary_artifacts_removed": true,
+  "raw_snapshots": "guest-only; no host copy/commit; complete parent verifies original files and removes them before metadata teardown; independent re-extraction unavailable after deletion",
+  "failure": null,
+  "normal_build_exclusion_verified": true,
+  "product_fixture_and_runner_changes": "none in this qualification; executed tree exactly matches merged reviewed implementation",
+  "portable_source_equivalence": {
+    "review_source": "026aa9cb682516cfa951af8831fa2744437d969a",
+    "review_tree": "2d705f5b4106b1a2df562d75495c8b137354cc14",
+    "report_sha256": "bc986974061c087a44fae4905db4dcae91fd10379ccf3071c79c12d677bc04e9",
+    "checks_log_sha256": "c2bf1391f3ae62829e8f63d5e3e3dbecd94d0409d5127765ee19ee0a353cd5db",
+    "deep_source": "840c662264d111754400d376cc7179ae482bb389",
+    "race_packages": 11,
+    "fuzz_targets": 54,
+    "tooling_tests": 215,
+    "limits": "historical exact-tree review; this evidence-only PR requires fresh baseline/signed-source review"
+  },
+  "prior_failed_setup": {
+    "manifest": "docs/research/M2/policy-startup-stack-manifest.json",
+    "sha256": "33c3640f5cc7602735912bd6e7949cdc3a10b8ca078503a64508d1a56bf30052",
+    "source": "ec92537b281c0d4465c3a3cfda2b56979e4f93b7",
+    "parent_seconds": 14.95,
+    "startup_invoked": false,
+    "diagnostic_complete": false,
+    "native_acceptance": false,
+    "limitation": "complete guest cleanup unverified at original failed setup; later cleanup cannot retroactively qualify it"
+  },
+  "historical_receipts_unchanged": {
+    "docs/testing/M2/retained-policy-admission-manifest.json": "2e733dd5a017772ce7947913ced1c16940ee8614cde445cb9fcd0327331077c3",
+    "docs/testing/M2/retained-policy-lifecycle-budget-manifest.json": "4019d0b125d2dfbf0bc1be31f1cc0465eea1aae9bd40dc28efeeecc3bec13990",
+    "docs/testing/M2/retained-policy-native-facts-manifest.json": "e9d4a0c6eef2011b236ea69a0ff94c0adae9a9c8f2102fefe4c9ff69f1c9f499",
+    "docs/testing/M2/retained-policy-native-history-manifest.json": "0788d387d4b4c27921fd3f68ffc5206f9fe0c548270464d34c87fd6ea4b8db6d",
+    "docs/testing/M2/retained-policy-native-lifecycle-manifest.json": "43fdd1bbda87853e7d9aee336f70402bfc5f263b9b6b71304dee7133faea5ce0",
+    "docs/testing/M2/retained-policy-native-multiple-manifest.json": "294662c837cf9921dba954491b6737f84adc43de71d09d93c3747107992eb263",
+    "docs/testing/M2/retained-policy-native-review-manifest.json": "f37c74e30d2c769d87f65872303021fd5bf2640467636bd9bea499ae4abaa3cf",
+    "docs/testing/M2/retained-policy-root-manifest.json": "52bb88c0d6cc94fe031a8345adb1bdc1e5fb005634d24f4ba3eb47a59ea3366a",
+    "docs/testing/M2/retained-policy-root-qualification-manifest.json": "6d3dd07f65d88247bdd854061f811629c59168bcfda42385eab5a7cf21aac99c",
+    "docs/testing/M2/retained-policy-startup-manifest.json": "b7b248f1bfe6e197f1c8955f72f80c9fbeef0a71a641767e424059df7cfdd271",
+    "docs/research/M2/policy-lifecycle-timeout-manifest.json": "53c7a8c64b1681863e91920364e97e02f5f3a6875c72dab60269999389fcd95c",
+    "docs/research/M2/policy-startup-costs-manifest.json": "4564cee1d3e579557f6af7d187a77274183752d2af370b44d4e92eed6431ca5a",
+    "docs/research/M2/policy-startup-deadline-manifest.json": "bae3a271140cbaef0ad08d5dbc290b388cfea2645aeb634ba973fc899094d017",
+    "docs/research/M2/policy-startup-stack-manifest.json": "33c3640f5cc7602735912bd6e7949cdc3a10b8ca078503a64508d1a56bf30052"
+  },
+  "not_attempted": {
+    "14.5": "outside adopted focused one-target diagnostic; both full native lifecycle releases remain pending"
+  },
+  "limits": [
+    "Sample frames are point observations, not stage/collector durations or proof of causality/deadlock/emulation/performance/capacity",
+    "Operation result, final original bytes, diagnostic completeness and native lifecycle acceptance remain separate",
+    "Skipped/unlocated/ambiguous/overlapping samples remain explicit; no missing frames or timing inferred",
+    "Raw frames are sanitized in the owned guest and deleted before independent host teardown; post-deletion independent re-extraction is unavailable",
+    "No retry, deadline renewal/increase, CPU change, producer wrapper/cache, product/guard/registry change, services/deployment/dependencies/Actions/paid automation",
+    "Both full native lifecycle gates, second clean cycle and broader recovery/fault/mixed-history/concurrency/census/context/capacity/configured startup/workers/global launch/browser/client/hardware/performance/release acceptance remain open; runtime writes disabled"
+  ],
+  "source_interpretation_checks": [
+    {
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "line": 50,
+      "contains": "got, _, raw, e := n.inspectLocked(ctx)",
+      "source_sha256": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241"
+    },
+    {
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "line": 84,
+      "contains": "n.publishClosedStartupLocked(next, wrap)",
+      "source_sha256": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241"
+    },
+    {
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "line": 100,
+      "contains": "n.inspectLocked(ctx)",
+      "source_sha256": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241"
+    },
+    {
+      "file": "internal/host/freebsd/persistent_backing_freebsd.go",
+      "line": 74,
+      "contains": "\"/bin/freebsd-version\"",
+      "source_sha256": "2934f96769d2fbd560ac72fb9d9376d441285e616ee771a299d8eb67ae5ac724"
+    },
+    {
+      "file": "internal/host/freebsd/system_use_freebsd.go",
+      "line": 9,
+      "contains": "\"/bin/freebsd-version\"",
+      "source_sha256": "2e9ea15925e59bd1c0480d75e8856eecd15e41b8316037b0b026424d550b7d4a"
+    },
+    {
+      "file": "internal/host/freebsd/system_use_freebsd.go",
+      "line": 23,
+      "contains": "\"/sbin/zpool\"",
+      "source_sha256": "2e9ea15925e59bd1c0480d75e8856eecd15e41b8316037b0b026424d550b7d4a"
+    }
+  ],
+  "snapshot_interpretation": [
+    {
+      "id": 1,
+      "stage": "original review inspection",
+      "dispatch": "guarded persistent-backing fixed version reader",
+      "limit": "point observation, not review duration or command cause"
+    },
+    {
+      "id": 2,
+      "stage": "activation first pre-publication inspection",
+      "dispatch": "guarded system-use fixed version reader",
+      "limit": "point observation, not activation start time or preceding duration"
+    },
+    {
+      "id": 3,
+      "stage": "activation post-publication inspection",
+      "dispatch": "guarded system-use fixed pool path topology reader",
+      "limit": "point observation after original publish; not exact failing probe or command duration"
+    }
+  ]
+}
