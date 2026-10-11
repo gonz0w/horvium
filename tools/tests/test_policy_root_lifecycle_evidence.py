@@ -6,14 +6,14 @@ from test_closed_startup_evidence import module
 from test_policy_root_review_evidence import fixture as review_fixture
 from test_policy_facts_evidence import CHILD as FACT_CHILD, PARENT as FACT_PARENT
 
-CHILD = set('registered active_successor active_private_record current_boot leases_held nonjournal_unchanged original_observation observation_preserves_history copied_denied decoded_denied cancelled_no_effect closed_successor ledger_unchanged close_retains_leases retired_observation retired_finish release_once locks_released registration_consumed'.split())
+CHILD = set('cpu_affinity registered active_successor active_private_record current_boot leases_held nonjournal_unchanged original_observation observation_preserves_history copied_denied decoded_denied cancelled_no_effect closed_successor ledger_unchanged close_retains_leases retired_observation retired_finish release_once locks_released registration_consumed'.split())
 ROOT = {'seed_closed', 'domain_teardown', 'mounts_restored'}
 for mode in ('first', 'restart'):
     ROOT.update(mode + '_' + name for name in CHILD | {'child_waited', 'child_inventory', 'exact_closed', 'ledger_preserved', 'leases_released'})
 
 
 def fixture():
-    text = review_fixture() + 'POLICY_ROOT_LIFECYCLE_PHASE lifecycle begin timeout=18m\n'
+    text = review_fixture() + 'POLICY_ROOT_LIFECYCLE_PHASE lifecycle begin timeout=18m\nPOLICY_ROOT_LIFECYCLE_AFFINITY phase=lifecycle cpus=0\n'
     for kind in ('UFS', 'ZFS'):
         name = 'TestNativeMultiplePolicyLifecycle' + kind
         text += '=== RUN   ' + name + '\n'
@@ -27,14 +27,17 @@ class RootLifecycleEvidence(unittest.TestCase):
     def test_all_controls_and_independent_cleanup_are_required(self):
         m = module('check-policy-root-lifecycle-evidence')
         self.assertEqual(m.ROOT, ROOT)
-        self.assertEqual(len(CHILD), 19)
-        self.assertEqual(len(ROOT), 51)
+        self.assertEqual(len(CHILD), 20)
+        self.assertEqual(len(ROOT), 53)
         m.validate(fixture())
         for control in ROOT | FACT_CHILD | FACT_PARENT:
             for replacement in ('', control + '=fail', control + '=pass ' + control + '=pass'):
                 with self.subTest(control=control), self.assertRaises(ValueError):
                     m.validate(fixture().replace(control + '=pass', replacement))
-        for bad in ('', fixture() * 2, fixture().replace('PASS:', 'SKIP:'), fixture().replace('PASS:', 'FAIL:'),
+        for bad in (fixture().replace('POLICY_ROOT_LIFECYCLE_AFFINITY phase=lifecycle cpus=0\n', ''),
+                    fixture().replace('cpus=0', 'cpus=0,1'),
+                    fixture() + 'POLICY_ROOT_LIFECYCLE_AFFINITY phase=lifecycle cpus=0\n',
+                    '', fixture() * 2, fixture().replace('PASS:', 'SKIP:'), fixture().replace('PASS:', 'FAIL:'),
                     fixture().replace('LIFECYCLE_DOMAIN_TEARDOWN ufs', 'LIFECYCLE_DOMAIN_TEARDOWN absent'),
                     fixture() + 'POLICY_ROOT_LIFECYCLE_UFS_RESULT extra=pass\n', fixture() + '=== RUN   TestUnfinished\n',
                     fixture().replace('PASS\n', ''), fixture().replace('lifecycle done', 'lifecycle failed')):

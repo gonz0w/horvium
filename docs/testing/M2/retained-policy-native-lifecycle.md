@@ -43,7 +43,7 @@ the same full cycle with a new owner and two additional generations. The parent
 independently checks each complete successor, original ledger bytes/names and
 released locks. This is controlled unused metadata retirement, not worker draining.
 
-## Inventory and limits declared before native execution
+## Initial inventory and limits declared before native execution
 
 The new focused `policy-startup-lifecycle` runner uses one tagged host binary in
 three serial, normally completed eighteen-minute phases:
@@ -98,3 +98,37 @@ fixed-root composition, configured startup, workers/backend/global launch and
 browser/client/hardware/performance/release gates remain separate. No commercial
 capacity, physical crash, worker-shutdown or anti-rollback claim. Product behavior
 and runtime write denial remain unchanged; issues 305 and 139 remain open.
+
+## Failed initial run and bounded affinity candidate
+
+Signed source `c4591db14c44a61c33eb5e3de0f9624cf332b988` failed its FreeBSD
+15.1 UFS lifecycle child during construction: `context deadline exceeded` at
+120.02 seconds, before returning an owner. Its UFS lifecycle parent failed at
+211.28 seconds. Standalone facts and both retained reviews completed at 25.16,
+255.88 and 333.14 seconds respectively, but the whole gate remains unqualified.
+No ZFS lifecycle or 14.5 attempt completed; do not infer their result. Host/device/
+artifact/supervisor teardown and base/runtime preservation passed. No incomplete
+in-guest parent teardown is accepted. Portable review was not run for this failed
+native candidate; earlier receipts remain unchanged.
+
+Declare a fixture scheduling experiment before its execution: use FreeBSD base
+[cpuset(1)](https://man.freebsd.org/cgi/man.cgi?query=cpuset&sektion=1) to restrict
+only the new lifecycle phase's test processes and inherited native command
+children to emulated CPU 0. The two-vCPU QEMU profile, retained facts/review phases,
+GOMAXPROCS=1 root children, original fixed factory/producers and every existing
+time/byte/record bound remain unchanged. Do not modify system-wide CPU sets or
+product scheduling. Each lifecycle parent and each normally waited root child
+queries its own actual kernel affinity; any mask other than exactly CPU 0 denies.
+This does not establish causality for the failed run, production performance,
+parallel execution or commercial capacity. Qualification requires complete actual
+passes of the corrected gate, not an assumption that affinity improves timing.
+
+The corrected lifecycle child inventory adds `cpu_affinity` to all original
+nineteen controls (20 per child); each lifecycle parent retains all old controls
+and adds the two child affinity assertions (53 root controls plus 21 fact/data
+controls = 74). Corrected whole-gate inventory: **five parents, 283 controls and
+thirteen normally waited children per release**. Require exactly one affinity
+phase marker inside the normally completed lifecycle phase, checksum-bound
+`/usr/bin/cpuset` provenance, actual kernel affinity and independent teardown.
+Every existing case, assertion and bound stays required. The failed initial
+source and skipped second-release/ZFS lifecycle remain in the final receipt.
