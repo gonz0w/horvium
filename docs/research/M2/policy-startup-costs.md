@@ -1,6 +1,6 @@
 # Diagnostic: retained-policy native collection costs
 
-Status: experiment declared before execution; no lifecycle qualification.
+Status: diagnostic completed on both pinned releases; actual lifecycle remains unqualified.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`). Time box: one development session.
 Refs [issue 305](https://github.com/gonz0w/horvium/issues/305) and
 [parent 139](https://github.com/gonz0w/horvium/issues/139).
@@ -100,3 +100,71 @@ UFS on the single declared spare, avoiding the UFS-to-ZFS setup sequence without
 forcing creation, clearing devices or changing the shared metadata harness. The
 ordered stage/cleanup inventory becomes ZFS then UFS. No time limit or product
 check changes; both corrected release runs still must complete independently.
+
+## Completed diagnostic and evidence limits
+
+Signed source `e2b0360d9422ef864a4d94ab0a50eabfd3f9c968` completed all nine ordered stages,
+the original 21 fact/data controls and six independent metadata cleanup checks on
+both pinned FreeBSD/amd64 releases, using the same checksum-bound executable.
+The original system view reported ZFS root/three imported pools/28 system reads
+on 15.1 and UFS root/two imported pools/22 reads on 14.5. Both ZFS-first and UFS
+backing collection completed. Complete host/device/guest/key/artifact/supervisor
+cleanup and base/runtime preservation passed. The [receipt](policy-startup-costs-manifest.json)
+records original source/base/compiler/artifact/log/record hashes, all stage values,
+the earlier successful single-release diagnostic and both rejected candidates.
+All nine earlier retained-policy receipts remain byte-identical.
+
+| Independent stage | 15.1 seconds | 14.5 seconds |
+|---|---:|---:|
+| direct-launch | 0.167 | 0.127 |
+| guarded-launch | 0.293 | 0.208 |
+| system | 3.736 | 2.855 |
+| first-properties | 2.497 | 2.331 |
+| first-providers | 2.329 | 2.168 |
+| second-properties | 2.566 | 2.304 |
+| second-providers | 2.372 | 2.338 |
+| zfs-backing | 1.870 | 1.747 |
+| ufs-backing | 1.501 | 1.374 |
+
+
+Launch values are totals for eight fixed no-op samples. Backing stages are opaque;
+zero reader metrics mean unmeasured. The two roots and versions differ, and fixed-
+order single samples are not a controlled benchmark or production performance
+comparison. Reader wrappers forward actual native results but do not measure the
+actual fixed factory, its lock/object/publication work or the failing call's
+location. These times cannot be added and presented as measured factory runtime.
+
+### Source analysis, not execution tracing
+
+Inspection of the unchanged successful two-policy code path finds six complete
+system collections, twelve fixed backing collections, two pool-property and two
+provider collections in each policy inspection. Initial review inspects once;
+activation independently inspects three times, observation once and unused finish
+twice. For UFS metadata and the observed two/three imported pools, this implies
+244/280 guarded reader calls per inspection, or **976/1,120 for startup**. The
+estimate excludes file/ACL/boot syscalls, publication work and command-internal
+processes; it is not a measured call trace or supported-capacity claim.
+
+The primitive samples and source repetition support investigation of cumulative
+collector work. They do not prove that emulation causes the failures or that the
+base reaper alone dominates; guarded no-op samples are much shorter than complete
+collector stages. Every repeated read protects an adopted drift/publication
+boundary. Do not remove it, reuse facts, renew contexts or enlarge deadlines based
+on this diagnostic.
+
+The useful next comparison is the unchanged actual acceptance gate on a dedicated
+disposable amd64 lab. The existing runner is TCG-only; a hardware-accelerated lab
+profile requires its own declared configuration, preservation/containment checks
+and source-bound receipts before acceptance. No host or persistent runner was
+installed. ARM acceleration would be a different architecture; the existing boot
+identity implementation is explicitly amd64-only and requires separate design/
+qualification before another architecture can provide that authority.
+
+Signed clean-source local review passed 207 tooling
+tests, ordinary Go tests, all eleven race packages and 54 fuzz targets. The final
+evidence-only head requires a fresh baseline with exact-input deep reuse. This
+qualifies diagnostic completeness and the dry-run CPU-description correction only.
+Actual lifecycle, broader issue 305/139 acceptance, configured startup/workers/
+backend/global launch and browser/client/hardware/performance/release gates remain
+pending. No production behavior, time bound, guard, schema, dependency or runtime
+permission changes; runtime writes remain disabled.

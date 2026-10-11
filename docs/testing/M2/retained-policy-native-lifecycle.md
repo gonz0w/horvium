@@ -1,6 +1,6 @@
 # Original root lifecycle with two retained native policies
 
-Status: staged native gate; all three candidates failed; qualification pending. Draft review only.
+Status: fixture merged in [PR 315](https://github.com/gonz0w/horvium/pull/315); all three candidates failed and native qualification remains pending. Live status is in issue 305.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`).
 Refs [issue 305](https://github.com/gonz0w/horvium/issues/305) and
 [parent M2-RUNTIME-002](https://github.com/gonz0w/horvium/issues/139).
@@ -189,7 +189,9 @@ pass after three signed failing-first declarations. These are portable/tooling
 results, not native lifecycle acceptance. Normal native-target builds exclude
 the three tagged fixtures and the existing seed bridge.
 
-Leave the PR draft and issues 305/139 open with broader acceptance unchecked.
+The original candidate was submitted as a draft and subsequently merged as fixture
+work in PR 315; merge does not qualify the failed native gate. Issues 305/139
+remain open with broader acceptance unchecked.
 Next investigate actual fixture/native timing within the adopted bounds, separating
 emulation overhead from product behavior on a suitable disposable native lab;
 then require complete same-candidate passes on both pinned releases. No further
@@ -197,3 +199,7 @@ fixture tuning, deadline increase or assumption of scheduling causality is accep
 by this receipt. Product code and runtime write denial remain unchanged. Remaining
 multi-policy failure families, mixed history, configured startup/workers/backend/
 global launch and browser/client/hardware/performance/release gates stay open.
+
+The [independent collection diagnostic](../../research/M2/policy-startup-costs.md)
+measures native primitives and preserves these failures. It cannot substitute for
+the required actual fixed-factory lifecycle acceptance.
