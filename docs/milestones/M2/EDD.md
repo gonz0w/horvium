@@ -921,12 +921,15 @@ historical manifests retain their bytes. See the
 [source-bound record](../../testing/M2/property-binding-manifest.json).
 This is live peer/request provenance only; all other clearance/runtime gates stay open.
 
-## Proposed retained-policy startup amendment
+## Adopted retained-policy startup amendment
 
-[Issue 288](https://github.com/gonz0w/horvium/issues/288) defines the proposed
+[Issue 288](https://github.com/gonz0w/horvium/issues/288) defines the adopted
 [policy-only clean restart slice](retained-policy-startup.md). It refines
 M2-RUNTIME-002 with complete native policy validation under the original leases,
-one-time active publication and unused retirement. Approval is pending; current
-activation/retirement still require an empty ledger. Every retained job, including
-terminal history, stays outside the proposed extension. No recovered executor,
-worker shutdown, launch authority or runtime registration is added by this design.
+one-time active publication and unused retirement. [PR 306](https://github.com/gonz0w/horvium/pull/306)
+adopted the design; the private implementation and existing single-policy
+qualification are recorded under [issue 305](https://github.com/gonz0w/horvium/issues/305).
+Ordinary metadata activation/retirement remains empty-only. The separate
+policy-aware path excludes every retained job, including terminal history.
+Expanded acceptance remains open. No recovered executor, worker shutdown,
+launch authority or runtime registration is added by this design.

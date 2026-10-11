@@ -23,6 +23,8 @@ for stage in ('activate', 'finish'):
 for format in ('legacy', 'property'):
     for state in ('queued', 'applying', 'observing', 'succeeded', 'failed', 'cancelled', 'reconcile-required'):
         STORAGE.update(format + '-' + state + '_' + result for result in ('denied', 'preserved', 'holds', 'released'))
+for relation in ('same-pool', 'other-pool', 'mixed'):
+    STORAGE.update('history-' + relation + '_' + result for result in ('catalog', 'leases-held', 'denied', 'preserved', 'holds', 'released', 'reopened', 'retry'))
 OWNER = set('data_sentinel_preserved domain_teardown mounts_restored'.split())
 for mode in ('clean', 'clean-again', 'legacy', 'member', 'scope', 'missing-pool', 'late', 'uid'):
     if mode in ('clean', 'clean-again'):

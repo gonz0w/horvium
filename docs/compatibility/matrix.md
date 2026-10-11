@@ -1418,3 +1418,14 @@ checks supplied policy/member/system drift and both job formats in same-pool,
 other-pool and mixed catalogs, preserving metadata and projected holders.
 It changes no runtime behavior or native evidence. Expanded native mixed-history,
 multiple-policy, concurrency, census and bounds acceptance remains pending.
+
+The [native retained-history slice](../testing/M2/retained-policy-native-history.md)
+extends disposable UFS/ZFS storage refusal fixtures to complete same/other-pool
+and mixed ownership/job namespaces. Signed source `c883997fac4e49c52dcda888caec913c0be96112`
+passed the expanded eight-parent/870-control gate on both pinned FreeBSD/amd64
+15.1 and 14.5 releases, including ordinary-metadata positive controls and verified
+teardown; the linked receipt preserves earlier superseded passes. It changes no
+product code and preserves the distinction between
+actual native metadata/leases and synthetic policy/physical-use/boot transfers.
+Fixed-root mixed-history/multiple-policy, sparse-history combinations and the
+remaining adopted acceptance families are separate.

@@ -11,6 +11,26 @@ DENIAL_MODES = ('legacy', 'member', 'scope', 'missing-pool')
 
 
 class PolicyStartupEvidence(unittest.TestCase):
+    def test_complete_native_history_inventory_is_required(self):
+        checker = module('check-policy-startup-evidence')
+        history = {f'history-{relation}_{result}'
+                   for relation in ('same-pool', 'other-pool', 'mixed')
+                   for result in ('catalog', 'leases-held', 'denied', 'preserved', 'holds', 'released', 'reopened', 'retry')}
+        self.assertTrue(history <= checker.STORAGE)
+        self.assertEqual(len(checker.STORAGE), 139 + 24)
+        text = self.fixture('publication')
+        checker.validate(text, 'publication')
+        for control in history:
+            for replacement in ('', control + '=fail', control + '=pass ' + control + '=pass'):
+                with self.subTest(control=control), self.assertRaises(ValueError):
+                    checker.validate(text.replace(control + '=pass', replacement), 'publication')
+        # Historical single-job receipts remain valid for their original checker,
+        # but cannot satisfy this new complete mixed-namespace qualification.
+        import re
+        old = re.sub(r'history-(?:same-pool|other-pool|mixed)_[a-z-]+=pass ?', '', text)
+        with self.assertRaises(ValueError):
+            checker.validate(old, 'publication')
+
     def fixture(self, scope):
         baseline = retained.ClosedStartupEvidenceTests()
         baseline.setUp()

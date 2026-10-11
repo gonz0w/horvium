@@ -1571,14 +1571,21 @@ historical manifests retain their bytes. See the
 [source-bound record](../../testing/M2/property-binding-manifest.json).
 This is live peer/request provenance only; all other clearance/runtime gates stay open.
 
-## Proposed retained-policy startup Test Design
+## Adopted retained-policy startup Test Design
 
-The [proposal](retained-policy-startup.md#proposed-failing-first-test-design)
+The [adopted design](retained-policy-startup.md#proposed-failing-first-test-design)
 refines M2-RUNTIME-002/M2-STATE-001/M2-RECOVERY-001 with planned policy-only
 lifecycle, all-job refusal, native policy drift, original lineage, lease/lock,
 retirement, census/object, uncertainty, boot/generation and bounds cases. Require
 actual UFS/ZFS and fixed native policy composition on both pinned releases,
 retained affected startup/activation/retirement controls and verified teardown.
-Its fixture-only closed seed does not qualify shutdown after real work. Approval
-and execution are pending; the linked historical receipts retain their original
-candidates, failures and empty-history limits. This amendment claims no new pass.
+Its fixture-only closed seed does not qualify shutdown after real work.
+[PR 306](https://github.com/gonz0w/horvium/pull/306) adopted the Test Design.
+The [qualification record](../../testing/M2/retained-policy-startup.md) distinguishes
+existing storage/single-policy fixed-root passes from pending expanded acceptance
+under [issue 305](https://github.com/gonz0w/horvium/issues/305). Historical receipts
+retain their original candidates, failures and scope limits. The
+[native retained-history inventory](../../testing/M2/retained-policy-native-history.md)
+declares complete ownership/job refusal cases before execution; its linked
+candidate receipt records both native releases and preserves superseded passes.
+These bounded storage cases do not qualify the remaining families.
