@@ -3,11 +3,38 @@ package storage
 
 import (
 	"encoding/json"
+	"reflect"
 	"strings"
 	"testing"
 
 	"github.com/gonz0w/horvium/internal/inventory"
 )
+
+func multiplePolicyFixtureMatches(got, want Policy) bool {
+	return reflect.DeepEqual(got, want)
+}
+
+func TestMultiplePolicyFixtureAcceptsCanonicalRoundTripAndRejectsDrift(t *testing.T) {
+	p, _, _, _ := enrollmentFixture(t)
+	q, _, _ := secondPolicyFixture(t)
+	for _, policy := range []Policy{p, q} {
+		data, err := EncodeOwnershipRecord(policy)
+		if err != nil {
+			t.Fatal(err)
+		}
+		decoded, err := DecodeOwnershipRecord(data)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !multiplePolicyFixtureMatches(decoded, policy) {
+			t.Fatal("canonical decoded policy rejected by fixture")
+		}
+		decoded.Revision++
+		if multiplePolicyFixtureMatches(decoded, policy) {
+			t.Fatal("fixture accepted changed revision")
+		}
+	}
+}
 
 // Remap only synthetic fixture transfers, not encoded ownership/state files.
 // Independent GUIDs, names, serials and provider paths must remain consistent

@@ -95,9 +95,9 @@ func nativeMultiplePolicyCases(t *testing.T, f restoreFixture, check func(string
 				return Observation{}, nil, PoolSystemUse{}, ErrUnavailable
 			}
 			switch {
-			case reflect.DeepEqual(policy, p):
+			case multiplePolicyFixtureMatches(policy, p):
 				return o, d, use, nil
-			case reflect.DeepEqual(policy, q):
+			case multiplePolicyFixtureMatches(policy, q):
 				return other, disks, use, nil
 			default:
 				return Observation{}, nil, PoolSystemUse{}, ErrDenied
