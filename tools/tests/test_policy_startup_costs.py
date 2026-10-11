@@ -7,14 +7,17 @@ from pathlib import Path
 from test_closed_startup_evidence import module
 from test_policy_facts_evidence import CHILD, PARENT
 
-STAGES = ['direct-launch', 'guarded-launch', 'system', 'first-properties', 'first-providers', 'second-properties', 'second-providers', 'ufs-backing', 'zfs-backing']
+STAGES = ['direct-launch', 'guarded-launch', 'system', 'first-properties', 'first-providers', 'second-properties', 'second-providers', 'zfs-backing', 'ufs-backing']
 
 
-def fixture():
+def fixture(root_kind='zfs'):
+    pool_count = 3 if root_kind == 'zfs' else 2
     text = 'POLICY_STARTUP_COST_PROFILE cpu_count=1\n=== RUN   TestNativePolicyStartupCosts\n'
-    for stage, reads in zip(STAGES, [8, 8, 28, 16, 16, 16, 16, 0, 0]):
+    for stage, reads in zip(STAGES, [8, 8, 2 * (5 + 3 * pool_count), 16, 16, 16, 16, 0, 0]):
         text += f'POLICY_STARTUP_COST stage={stage} reads={reads} elapsed_ns=100000000 read_ns={0 if reads == 0 else 90000000}\n'
-    text += 'POLICY_STARTUP_COST_CLEANUP ufs filesystems=pass directories=pass mounts=pass\nPOLICY_STARTUP_COST_CLEANUP zfs filesystems=pass directories=pass mounts=pass\n'
+        if stage == 'system':
+            text += f'POLICY_STARTUP_COST_SYSTEM root_kind={root_kind} pool_count={pool_count}\n'
+    text += 'POLICY_STARTUP_COST_CLEANUP zfs filesystems=pass directories=pass mounts=pass\nPOLICY_STARTUP_COST_CLEANUP ufs filesystems=pass directories=pass mounts=pass\n'
     for marker, controls in [('POLICY_FACTS_CHILD_RESULT', CHILD), ('POLICY_FACTS_PARENT_RESULT', PARENT)]:
         text += marker + ' ' + ' '.join(c + '=pass' for c in sorted(controls)) + '\n'
     return text + '--- PASS: TestNativePolicyStartupCosts (1.0s)\nPASS\n'
@@ -25,6 +28,7 @@ class StartupCosts(unittest.TestCase):
         m = module('check-policy-startup-costs')
         self.assertEqual(m.STAGES, STAGES)
         m.validate(fixture())
+        m.validate(fixture('ufs'))
         for line in fixture().splitlines(True):
             if 'COST' in line or 'RESULT' in line or 'PASS' in line:
                 with self.subTest(line=line), self.assertRaises(ValueError):
@@ -36,6 +40,8 @@ class StartupCosts(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     m.validate(fixture().replace(control + '=pass', replacement))
         for bad in ('', fixture().replace('cpu_count=1', 'cpu_count=2'),
+                    fixture().replace('root_kind=zfs pool_count=3', 'root_kind=zfs pool_count=2'),
+                    fixture('ufs').replace('reads=22', 'reads=28'),
                     fixture().replace('PASS:', 'SKIP:'), fixture().replace('PASS:', 'FAIL:'),
                     fixture().replace('reads=28', 'reads=0'), fixture().replace('reads=16', 'reads=15'),
                     fixture().replace('elapsed_ns=100000000', 'elapsed_ns=-1'),

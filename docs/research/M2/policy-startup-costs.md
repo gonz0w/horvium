@@ -27,7 +27,7 @@ callback measures nine independent stages in a fixed order:
 3. Complete system collection with both original data pools present.
 4. First policy pool properties, then its actual provider collection.
 5. Second policy pool properties, then its actual provider collection.
-6. Actual fixed persistent-backing collection from owned UFS and ZFS directories.
+6. Actual fixed persistent-backing collection from owned ZFS then UFS directories.
 
 The five system/property/provider stages instrument only their existing private
 reader seams, forwarding every call and result to the unchanged original native
@@ -80,3 +80,23 @@ sixteen provider reads for each policy, and opaque backing counts of zero
 (unmeasured). All existing cases, deadlines, root exclusion, collector behavior
 and independent cleanup stay required. A new failing-first consumer test must
 accept the actual 28-read fixture and refuse a missing or incorrect count.
+
+## Release-specific root and metadata setup correction
+
+The corrected 15.1 diagnostic at source `b119f961a52efe630f0dad75162c28f1e740f51f`
+completed with 28 system reads. The same source's 14.5 attempt observed 22 reads
+and failed during ZFS metadata setup after the UFS stage (parent 27.60 seconds).
+Preserve the failed run and verified independent host teardown. Do not infer its
+ZFS backing or accept an incomplete in-guest parent/control vector. The command
+failure alone does not establish its underlying cause.
+
+Declare the correction before another run: require the original system collector's
+actual root mount type and complete imported-pool count, recording only those two
+scalars. The pinned profiles permit UFS root/two pools or ZFS root/three pools;
+require system reads to equal `2 * (5 + 3 * pool_count)` (22 or 28). Reject unknown
+or contradictory roots/counts; no inventory names are logged or pools omitted.
+All non-system stage counts remain exact. Run the owned ZFS backing stage before
+UFS on the single declared spare, avoiding the UFS-to-ZFS setup sequence without
+forcing creation, clearing devices or changing the shared metadata harness. The
+ordered stage/cleanup inventory becomes ZFS then UFS. No time limit or product
+check changes; both corrected release runs still must complete independently.
