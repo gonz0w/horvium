@@ -1,6 +1,6 @@
 # Adopted cumulative lifecycle fixture implementation
 
-Status: implementation candidate declared; clean-source review/native execution pending.
+Status: fixture-only implementation candidate; portable review passed, native qualification failed.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`).
 Refs [issue 305](https://github.com/gonz0w/horvium/issues/305) and
 [parent 139](https://github.com/gonz0w/horvium/issues/139).
@@ -44,3 +44,32 @@ partial stages. Runtime writes remain disabled. Initial controlled closed seeds
 do not qualify worker shutdown; remaining fault/mixed-history/concurrency/census/
 context/capacity, configured startup/workers/backend/global launch and browser/
 client/hardware/performance/release acceptance remain open.
+
+## Executed candidate and remaining gate
+
+Signed source `6c64143132bae6fdbde33c71c646ababb8987633`, based on adopted merge
+`aebfb2c8b85040154f6e70ffb3296bba543a9db9`, passed mandatory full portable
+review: 209 tooling tests, eleven race packages and 54 bounded fuzz targets.
+The [sanitized candidate receipt](retained-policy-lifecycle-budget-manifest.json)
+binds that source, artifact, actual fixture profile and original private logs.
+Failing-first consumer/profile tests and compiled portable test-only stubs are
+recorded separately from the sandbox interruption before tests.
+
+| Disposable target | Actual observation | Qualification |
+| --- | --- | --- |
+| FreeBSD/amd64 15.1, one CPU, TCG | Facts 26.81s; UFS review 291.17s; ZFS review 393.35s. UFS lifecycle parent failed at 200.22s; its first child's startup caller expired at 120.01s with `context deadline exceeded`. | Failed whole run; three completed parents are diagnostic only. No child whole-test timeout occurred. |
+| FreeBSD/amd64 14.5 | Not attempted after the first-target failure, following the adopted stop rule. | Unqualified; no inferred result. |
+
+The adopted 330/1080/40 fixture profile was recorded, but the unchanged 120-second
+startup caller failed before the enlarged whole-child limit mattered. Neither
+lifecycle parent nor the required 289-control/13-child complete release vector
+qualified. The incomplete in-guest parent teardown vector remains unverified.
+Independent host teardown, base/runtime/device preservation, disposable device
+removal and supervisor fixture/group cleanup all passed; owned temporary images,
+keys, devices and test binary were removed. All eleven historical receipts remain
+byte-identical. Normal product builds exclude fixture code.
+
+This candidate adds no caller/product deadline increase, retry, cache, CPU tuning
+or native acceptance. The next bounded work must investigate startup costs on the
+actual original factory path before proposing any separately reviewed change.
+Issues 305 and 139 stay open; runtime writes stay disabled.

@@ -1529,3 +1529,14 @@ require 289 controls on each release. Other suites retain their limits. Both
 complete native lifecycle gates remain pending; portable checks/design approval
 are not native behavior or production latency/capacity evidence. Runtime writes
 stay disabled, and all eleven earlier receipts retain their original bytes/limits.
+
+The [implementation receipt](../testing/M2/retained-policy-lifecycle-budget-manifest.json)
+records signed source `6c64143132bae6fdbde33c71c646ababb8987633`: mandatory full
+portable review passed (209 tooling tests, eleven race packages, 54 fuzz targets),
+but the FreeBSD/amd64 15.1 one-CPU TCG native run failed. Facts and both review
+parents completed; the first UFS lifecycle child's unchanged startup caller
+expired at 120.01s before the 330-second whole-child limit. FreeBSD 14.5 was not
+attempted under the adopted stop rule. No complete lifecycle vector or broader
+acceptance is claimed. Independent host teardown and preservation checks passed;
+the incomplete in-guest parent teardown remains unverified. Startup investigation
+on the actual original path remains necessary; caller/product limits stay fixed.
