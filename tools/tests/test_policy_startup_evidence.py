@@ -5,24 +5,81 @@ import test_closed_startup_evidence as retained
 
 module = retained.module
 
+LIFECYCLE_MODES = ('clean', 'clean-again')
+REVOCATION_MODES = ('late', 'uid')
+DENIAL_MODES = ('legacy', 'member', 'scope', 'missing-pool')
+
 
 class PolicyStartupEvidence(unittest.TestCase):
     def fixture(self, scope):
         baseline = retained.ClosedStartupEvidenceTests()
         baseline.setUp()
-        text = baseline.publication() if scope == 'publication' else baseline.owner()
+        old = baseline.publication() if scope == 'publication' else baseline.owner()
+        text = old if scope == 'publication' else ''
         checker = module('check-policy-startup-evidence')
-        for kind in ('UFS', 'ZFS'):
-            name = 'TestNativePolicyStartup' + ('Owner' if scope == 'owner' else '') + kind
-            marker = 'POLICY_STARTUP_' + ('OWNER_' if scope == 'owner' else 'STORAGE_') + kind + '_RESULT'
-            cases = checker.OWNER if scope == 'owner' else checker.STORAGE
+        groups = ('Lifecycle', 'Revocation', 'Denial') if scope == 'owner' else ('',)
+        for group, kind in ((group, kind) for group in groups for kind in ('UFS', 'ZFS')):
+            name = 'TestNativePolicyStartup' + (group + 'Owner' if scope == 'owner' else '') + kind
+            marker = 'POLICY_STARTUP_' + (group.upper() + '_OWNER_' if scope == 'owner' else 'STORAGE_') + kind + '_RESULT'
+            modes = {'Lifecycle': LIFECYCLE_MODES, 'Revocation': REVOCATION_MODES, 'Denial': DENIAL_MODES}.get(group, ())
+            cases = ({c for c in checker.OWNER if c in ('data_sentinel_preserved', 'domain_teardown', 'mounts_restored') or any(c.startswith(mode + '_') for mode in modes)} if scope == 'owner' else checker.STORAGE)
             text += '=== RUN   ' + name + '\n' + marker + ' ' + ' '.join(c + '=pass' for c in sorted(cases)) + '\n'
             if scope == 'publication':
                 text += 'STATE_BACKING_RESULT ' + name + ' filesystem=' + kind.lower() + ' softupdates=off teardown=pass\n'
             else:
-                text += 'POLICY_STARTUP_DOMAIN_TEARDOWN ' + kind.lower() + ' filesystems=pass directories=pass\nPOLICY_STARTUP_DATA_TEARDOWN ' + kind.lower() + ' restored=pass\n'
+                text += 'POLICY_STARTUP_DOMAIN_TEARDOWN ' + group.lower() + ' ' + kind.lower() + ' filesystems=pass directories=pass\nPOLICY_STARTUP_DATA_TEARDOWN ' + group.lower() + ' ' + kind.lower() + ' restored=pass\n'
             text += '--- PASS: ' + name + ' (1.0s)\n'
+        if scope == 'owner':
+            text = 'POLICY_STARTUP_OWNER_PHASE policy begin timeout=34m\n' + text + 'POLICY_STARTUP_OWNER_PHASE policy done\nPOLICY_STARTUP_OWNER_PHASE retained begin timeout=34m\n' + old + 'POLICY_STARTUP_OWNER_PHASE retained done\n'
         return text
+
+    def test_independent_groups_preserve_all_cases_and_cleanup(self):
+        import re
+        checker = module('check-policy-startup-evidence')
+        text = self.fixture('owner')
+        checker.validate(text, 'owner')
+        self.assertEqual(len(checker.OWNER_GROUPS['Lifecycle']), 31)
+        self.assertEqual(len(checker.OWNER_GROUPS['Revocation']), 23)
+        self.assertEqual(len(checker.OWNER_GROUPS['Denial']), 39)
+        self.assertEqual(set.union(*checker.OWNER_GROUPS.values()), checker.OWNER)
+        self.assertEqual(set.intersection(*checker.OWNER_GROUPS.values()), {'data_sentinel_preserved', 'domain_teardown', 'mounts_restored'})
+        for group in ('Lifecycle', 'Revocation', 'Denial'):
+            for kind in ('UFS', 'ZFS'):
+                name = 'TestNativePolicyStartup' + group + 'Owner' + kind
+                block = re.search(r'(?ms)^=== RUN   ' + name + r'\n.*?^--- PASS: ' + name + r' \(1.0s\)\n', text).group(0)
+                for bad in (text.replace(block, ''), text + block, text.replace('DOMAIN_TEARDOWN ' + group.lower() + ' ' + kind.lower(), 'DOMAIN_TEARDOWN missing ' + kind.lower())):
+                    with self.assertRaises(ValueError):
+                        checker.validate(bad, 'owner')
+        # Earlier corpora cannot stand in for all six independently owned parents.
+        with self.assertRaises(ValueError):
+            checker.validate(text.replace('LifecycleOwner', 'Owner').replace('RevocationOwner', 'Owner').replace('DenialOwner', 'Owner'), 'owner')
+
+    def test_both_bounded_phases_are_required(self):
+        import re
+        from pathlib import Path
+        checker = module('check-policy-startup-evidence')
+        text = self.fixture('owner')
+        checker.validate(text, 'owner')
+        markers = re.findall(r'(?m)^POLICY_STARTUP_OWNER_PHASE [^\n]+\n', text)
+        for marker in markers:
+            for bad in (text.replace(marker, ''), text.replace(marker, marker * 2), text.replace(marker, marker.replace('34m', '68m').replace('done', 'failed'))):
+                with self.assertRaises(ValueError):
+                    checker.validate(bad, 'owner')
+        with self.assertRaises(ValueError):
+            checker.validate(text.replace(markers[0], '<swap>').replace(markers[2], markers[0]).replace('<swap>', markers[2]), 'owner')
+        name = 'TestNativePolicyStartupRevocationOwnerUFS'
+        block = re.search(r'(?ms)^=== RUN   ' + name + r'\n.*?^--- PASS: ' + name + r' \(1.0s\)\n', text).group(0)
+        with self.assertRaises(ValueError):
+            checker.validate(text.replace(block, '').replace(markers[2], markers[2] + block), 'owner')
+        script = Path(checker.__file__).with_name('bsd-policy-startup-owner-prebuilt.sh').read_text()
+        selectors = re.findall(r"-test.run='([^']+)'", script)
+        self.assertEqual(len(selectors), 2)
+        self.assertEqual(script.count('-test.timeout=34m'), 2)
+        parents = {'TestNativePolicyStartup' + group + 'Owner' + kind for group in ('Lifecycle', 'Revocation', 'Denial') for kind in ('UFS', 'ZFS')} | {'TestNative' + family + kind for family in ('ExecutionStartup', 'ClosedStartupOwner') for kind in ('UFS', 'ZFS')}
+        selected = [{name for name in parents if re.fullmatch(selector, name)} for selector in selectors]
+        self.assertEqual([len(group) for group in selected], [6, 4])
+        self.assertFalse(selected[0] & selected[1])
+        self.assertEqual(selected[0] | selected[1], parents)
 
     def test_each_new_and_retained_control_is_required(self):
         checker = module('check-policy-startup-evidence')

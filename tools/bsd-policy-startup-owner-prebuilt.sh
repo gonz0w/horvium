@@ -17,9 +17,17 @@ printf 'POLICY_STARTUP_OWNER_PREBUILT_SHA256 %s\n' "$expected"
 freebsd-version -kru
 zfs version
 /sbin/sha256 /sbin/mount /sbin/umount /sbin/mdconfig /sbin/newfs /sbin/dumpfs /sbin/zfs /sbin/zpool /usr/bin/timeout /sbin/sysctl /usr/sbin/swapinfo /usr/sbin/diskinfo /bin/freebsd-version
-if ! "$binary" -test.v -test.count=1 -test.timeout=34m -test.failfast -test.run='^TestNative((ExecutionStartup|ClosedStartupOwner)(UFS|ZFS)|PolicyStartupOwner(UFS|ZFS))$' > .tools/policy-startup-owner-native.log 2>&1; then
-    cat .tools/policy-startup-owner-native.log
+log=.tools/policy-startup-owner-native.log
+printf 'POLICY_STARTUP_OWNER_PHASE policy begin timeout=34m\n' > "$log"
+if ! "$binary" -test.v -test.count=1 -test.timeout=34m -test.failfast -test.run='^TestNativePolicyStartup(Lifecycle|Revocation|Denial)Owner(UFS|ZFS)$' >> "$log" 2>&1; then
+    cat "$log"
     exit 1
 fi
-cat .tools/policy-startup-owner-native.log
+printf 'POLICY_STARTUP_OWNER_PHASE policy done\nPOLICY_STARTUP_OWNER_PHASE retained begin timeout=34m\n' >> "$log"
+if ! "$binary" -test.v -test.count=1 -test.timeout=34m -test.failfast -test.run='^TestNative(ExecutionStartup|ClosedStartupOwner)(UFS|ZFS)$' >> "$log" 2>&1; then
+    cat "$log"
+    exit 1
+fi
+printf 'POLICY_STARTUP_OWNER_PHASE retained done\n' >> "$log"
+cat "$log"
 # Complete assertions are validated by the pinned host-side evidence checker.

@@ -1,6 +1,6 @@
 # Retained ownership policy startup qualification
 
-Status: draft implementation in [PR 307](https://github.com/gonz0w/horvium/pull/307); storage qualification passed on both releases; complete acceptance pending.
+Status: implementation merged in [PR 307](https://github.com/gonz0w/horvium/pull/307); storage qualification passed on both releases; complete acceptance pending.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 Owning [issue 305](https://github.com/gonz0w/horvium/issues/305);
 Refs [M2-RUNTIME-002](https://github.com/gonz0w/horvium/issues/139).
@@ -67,17 +67,25 @@ and release; fourteen format/state job variants with denial, preservation, holds
 and release. The new inventory is independently declared in
 `tools/check-policy-startup-evidence.py` before execution.
 
-`policy-startup-owner` runs
-`^TestNative((ExecutionStartup|ClosedStartupOwner)(UFS|ZFS)|PolicyStartupOwner(UFS|ZFS))$`.
-The root parent bound remains eight minutes and process bound 34 minutes. The four
-retained parents and all 394 controls remain required. Two new parents add the
-87 controls per filesystem with exact inventories for clean, clean-again, legacy, member, scope, missing-pool,
-post-publication drift and actual UID-loss children. Each independently checks
-normally waited child completion, exact child inventory, both released leases,
-visible parent journal history and exact policy bytes; data sentinel, domain
-teardown and mount restoration complete each parent. Independent owned data and
-QEMU device cleanup are mandatory. The checker rejects old-only, missing,
-duplicate, skipped, failed or partially cleaned evidence.
+`policy-startup-owner` uses two normally waited invocations of the same
+checksum-bound binary, each with the existing 34-minute process bound:
+
+- `^TestNativePolicyStartup(Lifecycle|Revocation|Denial)Owner(UFS|ZFS)$`.
+- `^TestNative(ExecutionStartup|ClosedStartupOwner)(UFS|ZFS)$`.
+
+The root parent bound remains eight minutes. Six policy parents split clean
+lifecycle, revocation and invalid-ownership fixtures on each filesystem, with
+31, 23 and 39 controls respectively. All eight original modes remain required.
+Every group independently checks data sentinel, domain teardown and mount
+restoration. All four retained parents and their 394 controls remain required:
+ten actual parents and 580 controls per release, plus independent QEMU cleanup.
+The aggregate checker requires both phase boundaries, normally completed phase
+results and exact parent placement. Old-only, missing, duplicate, skipped, failed
+or partially cleaned receipts cannot qualify. The aggregate can take up to 68
+minutes of test time; it no longer claims the previous single-process 34-minute
+whole-suite limit. The existing host SSH/controller bound remains two hours.
+Parent, child, operation, byte and record limits are unchanged. See
+[fixed-root qualification](retained-policy-root.md).
 
 ## Required review and remaining acceptance
 
@@ -117,5 +125,6 @@ FreeBSD build file selection excludes the tagged fixture bridge.
 
 Enabled fixed-root qualification and the expanded acceptance families above remain
 pending. These storage passes do not accept issue 305, the broader runtime gate or
-M2. The PR remains draft. No private exploratory compile/stub log or earlier
+M2. The merged implementation does not close those gates. No private exploratory
+compile/stub log or earlier
 empty-ledger receipt is substituted for a missing native gate.
