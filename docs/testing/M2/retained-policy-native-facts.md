@@ -13,12 +13,14 @@ Requirements: M2-RUNTIME-002, M2-OWN-001, M2-DRIFT-001, M2-NATIVE-001.
 ## Bounded prerequisite and construction
 
 Prove the existing fixed policy fact producer and validators against **two actual
-independent data pools**, before extending the original root lifecycle. Use the
-unchanged five-device disposable QEMU profile, on pinned FreeBSD/amd64 15.1 and
-14.5. Resolve actual root, mount, swap and imported-pool use before mutation.
-Require all five declared 64 MiB disks and their exact serial/geometry classes;
-only the unique 512-byte and 4096-byte sector disks may form the two single-leaf
-data pools. Other fixture disks remain unused. This topology is a fixture, not
+independent data pools**, before extending the original root lifecycle. Use a scoped seven-device disposable QEMU profile on pinned FreeBSD/amd64
+15.1 and 14.5; the existing five-device profile remains unchanged. Resolve actual root, mount, swap and imported-pool use before mutation.
+Require all seven declared 64 MiB disks and their exact serial/geometry classes.
+Retain the five historical disks, adding only `HVM-FACTS-512` (512 logical /
+4096 physical) and `HVM-FACTS-4K` (4096 / 4096). Pair each new disk with its
+matching historical unique disk in an independent two-leaf mirror. Both mirrors
+meet the existing accepted topology restriction. Duplicate/missing-serial fixture
+disks remain unused. This topology is a fixture, not
 an operator layout recommendation or commercial capacity claim.
 
 Independently capture each new pool/filesystem GUID, actual leaf GUID, provider,
@@ -32,6 +34,24 @@ last policy's serial or scope for denial probes; never forge native observations
 Recheck original policies, record bytes and separate data sentinels afterward.
 These baselines grant no authority and are not enrolled durable product history.
 There is no commissioning seed, original lease owner or journal publication here.
+
+## Failed initial profile and bounded correction
+
+Initial source `29690051b7ca6534cf9d419ae51c96f67e28d831` passed portable
+review but failed FreeBSD 15.1 parent setup at 2.04 seconds: the existing fixed
+property collector rejects a single-leaf pool. Inspection confirms
+`VerifyPoolTopology` accepts homogeneous mirrors or RAIDZ2 groups only. No child
+completed; the run remains unqualified. Host/device/base/runtime and supervisor
+teardown passed; incomplete in-guest parent cleanup is not promoted to acceptance.
+The 14.5 attempt was not run for this failed source. Preserve that receipt.
+
+Keep the production restriction and correct only the fixture topology. The scoped
+seven-disk profile and complete independent mirror controls are declared before
+corrected native execution. Existing five-disk fixtures retain their defaults;
+no deadline, runtime requirement or hardware support claim changes. Failing-first
+profile regressions require separation of manifests, default-profile preservation,
+unknown-profile refusal and removal of all seven owned disks on preservation
+failure. The actual failed native candidate is the single-leaf regression evidence.
 
 ## Inventory and bounds declared before native execution
 
