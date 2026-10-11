@@ -19,6 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ROOT / 'tools'
 SUITES = {
+    'policy-startup-lifecycle': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_ROOT_REVIEW_VM=1 HORVIUM_POLICY_ROOT_LIFECYCLE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1 sh tools/bsd-policy-startup-lifecycle-prebuilt.sh'),
     'policy-startup-review': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_ROOT_REVIEW_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1 sh tools/bsd-policy-startup-review-prebuilt.sh'),
     'policy-startup-facts': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 sh tools/bsd-policy-startup-facts-prebuilt.sh'),
     'policy-startup-publication': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_STATE_VM=1 HORVIUM_RESTART_VM=1 sh tools/bsd-policy-startup-publication-prebuilt.sh'),
@@ -45,6 +46,7 @@ SUITES = {
 }
 
 PREBUILT = {
+    'policy-startup-lifecycle': ('policy-startup-lifecycle-native.test', './internal/host/freebsd', 'POLICY_ROOT_LIFECYCLE_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_ROOT_REVIEW_VM=1 HORVIUM_POLICY_ROOT_LIFECYCLE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1', 'bsd-policy-startup-lifecycle-prebuilt.sh'),
     'policy-startup-review': ('policy-startup-review-native.test', './internal/host/freebsd', 'POLICY_ROOT_REVIEW_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_ROOT_REVIEW_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1', 'bsd-policy-startup-review-prebuilt.sh'),
     'policy-startup-facts': ('policy-startup-facts-native.test', './internal/host/freebsd', 'POLICY_FACTS_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1', 'bsd-policy-startup-facts-prebuilt.sh'),
     'policy-startup-publication': ('policy-startup-publication-native.test', './internal/storage', 'POLICY_STARTUP_PUBLICATION_PREBUILT_SHA256', 'HORVIUM_STATE_VM=1 HORVIUM_RESTART_VM=1', 'bsd-policy-startup-publication-prebuilt.sh'),
@@ -88,7 +90,7 @@ def suite_command(suite, source_build=False, artifact_digest=None):
 
 
 def uses_device_fixture(suite):
-    return suite in ('policy-startup-review', 'policy-startup-facts', 'policy-startup-owner', 'devices', 'pool-properties', 'executor-recovery', 'execution-system', 'execution-startup', 'closed-startup-owner')
+    return suite in ('policy-startup-lifecycle', 'policy-startup-review', 'policy-startup-facts', 'policy-startup-owner', 'devices', 'pool-properties', 'executor-recovery', 'execution-system', 'execution-startup', 'closed-startup-owner')
 
 
 def recovery_boot_identity(text):
@@ -152,7 +154,7 @@ def build_native_binary(directory, source, suite):
     subprocess.run([go, 'mod', 'verify'], cwd=ROOT, env=env, check=True)
     filename, package, _, _, _ = PREBUILT[suite]
     binary = directory / filename
-    tags = ['-tags=horvium_native_fixture'] if suite in ('policy-startup-owner', 'policy-startup-facts', 'policy-startup-review') else []
+    tags = ['-tags=horvium_native_fixture'] if suite in ('policy-startup-owner', 'policy-startup-facts', 'policy-startup-review', 'policy-startup-lifecycle') else []
     command = [go, 'test', '-c', '-trimpath', *tags, '-o', str(binary), package]
     source_identity(source)
     subprocess.run(command, cwd=ROOT, env=env, check=True)
@@ -171,8 +173,16 @@ def validate_prebuilt(log, artifact_digest, suite='state'):
         raise ValueError('guest did not verify the expected executable')
 
 
-def qemu_command(qemu, base, code, variables, port):
-    return [qemu, '-machine', 'q35,accel=tcg', '-cpu', 'qemu64', '-smp', '2',
+def cpu_count_for_suite(suite):
+    if suite not in SUITES:
+        raise ValueError('unknown native suite CPU profile')
+    return 1 if suite == 'policy-startup-lifecycle' else 2
+
+
+def qemu_command(qemu, base, code, variables, port, cpu_count=2):
+    if type(cpu_count) is not int or cpu_count not in (1, 2):
+        raise ValueError('undeclared native fixture CPU count')
+    return [qemu, '-machine', 'q35,accel=tcg', '-cpu', 'qemu64', '-smp', str(cpu_count),
             '-m', '6144', '-snapshot', '-display', 'none', '-monitor', 'none',
             '-serial', 'stdio', '-drive', f'if=pflash,format=raw,readonly=on,file={code}',
             '-drive', f'if=pflash,format=raw,file={variables}',
@@ -207,6 +217,11 @@ def stop_guest(process):
 def validate_result(suite, log, complete=False):
     if '--- FAIL:' in log or '\nFAIL\n' in log:
         raise ValueError('guest test failure')
+    if suite == 'policy-startup-lifecycle':
+        load_tool('check-policy-root-lifecycle-evidence').validate(log)
+        if complete and re.findall('DEVICE_FIXTURE_CLEANUP ([^\n]+)', log) != ['pass']:
+            raise ValueError('independent lifecycle device teardown required')
+        return
     if suite == 'policy-startup-review':
         load_tool('check-policy-root-review-evidence').validate(log)
         if complete and log.count('DEVICE_FIXTURE_CLEANUP pass\n') != 1:
@@ -357,7 +372,8 @@ def main():
         raise InterruptedError('owned lab interrupted')
     signal.signal(signal.SIGTERM, interrupted)
     signal.signal(signal.SIGINT, interrupted)
-    device_profile = 'policy-facts' if args.suite in ('policy-startup-facts', 'policy-startup-review') else 'baseline'
+    device_profile = 'policy-facts' if args.suite in ('policy-startup-facts', 'policy-startup-review', 'policy-startup-lifecycle') else 'baseline'
+    cpu_count = cpu_count_for_suite(args.suite)
     guest, key = None, directory / 'fixture-key'
     record = {'source_commit': source, 'suite': args.suite, 'release': args.release,
               'started_at': datetime.now(timezone.utc).isoformat(),
@@ -365,7 +381,7 @@ def main():
               'qemu_sha256': vm.digest(Path(qemu)),
               'qemu_version': subprocess.check_output([qemu, '--version'], text=True).splitlines()[0],
               'firmware_code_sha256': vm.digest(code), 'firmware_vars_sha256': vm.digest(vars_template),
-              'cpu_model': 'qemu64', 'cpu_count': 2, 'memory_mib': 6144,
+              'cpu_model': 'qemu64', 'cpu_count': cpu_count, 'memory_mib': 6144,
               'accelerator': 'tcg', 'qualified': False, 'host_teardown': False,
               'base_preserved': False,
               'execution_mode': 'host-cross-built' if args.suite in PREBUILT and not args.source_build else 'guest-source-build'}
@@ -391,7 +407,7 @@ def main():
             listener.bind(('127.0.0.1', 0))
             port = listener.getsockname()[1]
         ssh = ssh_command(key, directory / 'known_hosts', port)
-        command = qemu_command(qemu, base, code, variables, port)
+        command = qemu_command(qemu, base, code, variables, port, cpu_count=cpu_count)
         if device_tool:
             device_tool.prepare(devices, profile=device_profile)
             record['device_profile'] = device_profile
