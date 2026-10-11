@@ -6,14 +6,14 @@ from test_closed_startup_evidence import module
 from test_policy_root_review_evidence import fixture as review_fixture
 from test_policy_facts_evidence import CHILD as FACT_CHILD, PARENT as FACT_PARENT
 
-CHILD = set('cpu_affinity registered active_successor active_private_record current_boot leases_held nonjournal_unchanged original_observation observation_preserves_history copied_denied decoded_denied cancelled_no_effect closed_successor ledger_unchanged close_retains_leases retired_observation retired_finish release_once locks_released registration_consumed'.split())
-ROOT = {'seed_closed', 'domain_teardown', 'mounts_restored'}
+CHILD = set('cpu_affinity registered active_successor active_private_record current_boot leases_held nonjournal_unchanged original_observation observation_preserves_history copied_denied decoded_denied cancelled_no_effect closed_successor ledger_unchanged close_retains_leases retired_observation retired_finish release_once locks_released registration_consumed budget_profile'.split())
+ROOT = {'seed_closed', 'domain_teardown', 'mounts_restored', 'parent_budget'}
 for mode in ('first', 'restart'):
     ROOT.update(mode + '_' + name for name in CHILD | {'child_waited', 'child_inventory', 'exact_closed', 'ledger_preserved', 'leases_released'})
 
 
 def fixture():
-    text = 'POLICY_ROOT_LIFECYCLE_CPU_PROFILE cpu_count=1\n' + review_fixture() + 'POLICY_ROOT_LIFECYCLE_PHASE lifecycle begin timeout=18m\nPOLICY_ROOT_LIFECYCLE_AFFINITY phase=lifecycle cpus=0\n'
+    text = 'POLICY_ROOT_LIFECYCLE_CPU_PROFILE cpu_count=1\n' + review_fixture() + 'POLICY_ROOT_LIFECYCLE_PHASE lifecycle begin timeout=40m\nPOLICY_ROOT_LIFECYCLE_BUDGET_PROFILE child_seconds=330 parent_work_seconds=1080 phase_minutes=40\nPOLICY_ROOT_LIFECYCLE_AFFINITY phase=lifecycle cpus=0\n'
     for kind in ('UFS', 'ZFS'):
         name = 'TestNativeMultiplePolicyLifecycle' + kind
         text += '=== RUN   ' + name + '\n'
@@ -27,8 +27,8 @@ class RootLifecycleEvidence(unittest.TestCase):
     def test_all_controls_and_independent_cleanup_are_required(self):
         m = module('check-policy-root-lifecycle-evidence')
         self.assertEqual(m.ROOT, ROOT)
-        self.assertEqual(len(CHILD), 20)
-        self.assertEqual(len(ROOT), 53)
+        self.assertEqual(len(CHILD), 21)
+        self.assertEqual(len(ROOT), 56)
         m.validate(fixture())
         for control in ROOT | FACT_CHILD | FACT_PARENT:
             for replacement in ('', control + '=fail', control + '=pass ' + control + '=pass'):
@@ -90,3 +90,32 @@ class SerialGuestSelection(unittest.TestCase):
         for count in (0, 3, True, '1', None):
             with self.assertRaises(ValueError):
                 m.qemu_command('qemu', 'base', 'code', 'vars', 1234, cpu_count=count)
+
+
+class LifecycleBudgetEvidence(unittest.TestCase):
+    def test_profile_and_old_evidence_are_refused(self):
+        m = module('check-policy-root-lifecycle-evidence')
+        text = fixture()
+        m.validate(text)
+        marker = 'POLICY_ROOT_LIFECYCLE_BUDGET_PROFILE child_seconds=330 parent_work_seconds=1080 phase_minutes=40\n'
+        for bad in (text.replace(marker, ''), text + marker,
+                    text.replace(marker, '').replace('POLICY_ROOT_REVIEW_PHASE facts begin', marker + 'POLICY_ROOT_REVIEW_PHASE facts begin'),
+                    text.replace('child_seconds=330', 'child_seconds=150'),
+                    text.replace('parent_work_seconds=1080', 'parent_work_seconds=480'),
+                    text.replace('phase_minutes=40', 'phase_minutes=18'),
+                    text.replace(marker, marker.replace('\n', ' unknown=1\n')),
+                    text.replace('lifecycle begin timeout=40m', 'lifecycle begin timeout=18m'),
+                    text.replace(marker, '').replace('lifecycle begin timeout=40m', 'lifecycle begin timeout=18m').replace('parent_budget=pass ', '').replace('first_budget_profile=pass ', '').replace('restart_budget_profile=pass ', '')):
+            with self.subTest(profile=bad), self.assertRaises(ValueError):
+                m.validate(bad)
+
+    def test_host_profile_is_fixed_and_scoped(self):
+        m = module('local-qualification')
+        for suite in m.SUITES:
+            expected = {'child_seconds': 330, 'parent_work_seconds': 1080, 'phase_minutes': 40} if suite == 'policy-startup-lifecycle' else None
+            self.assertEqual(m.lifecycle_budget_for_suite(suite), expected)
+        with self.assertRaises(ValueError):
+            m.lifecycle_budget_for_suite('unknown')
+        profile = m.lifecycle_budget_for_suite('policy-startup-lifecycle')
+        profile['child_seconds'] = 999
+        self.assertEqual(m.lifecycle_budget_for_suite('policy-startup-lifecycle')['child_seconds'], 330)
