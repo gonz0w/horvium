@@ -1460,7 +1460,11 @@ workers, hardware/capacity/performance and broader release acceptance remain ope
 The [original two-policy root review fixture](../testing/M2/retained-policy-native-review.md)
 declares read-only original registration, review/observation and last-member
 refusal on disposable UFS/ZFS metadata with two actual independent mirrors.
-Qualification is pending. The focused gate requires three parents, 135 controls
-and seven normally waited children per pinned release, retaining all previous
-fact/data controls. No production root API or activation authority is introduced;
+Signed source `88b837f026332e369fd983cd5c35dc98960d99eb` passed both pinned
+FreeBSD/amd64 15.1 and 14.5 releases with the same checksum-bound artifact:
+three parents, 135 controls and seven normally waited children per release,
+retaining all previous fact/data controls. Complete metadata/data/device/guest/
+host/supervisor teardown passed; the
+[receipt](../testing/M2/retained-policy-native-review-manifest.json) binds the
+executed source and original evidence. All seven earlier receipts remain unchanged. No production root API or activation authority is introduced;
 original multi-policy activation/retirement and broader acceptance remain open.

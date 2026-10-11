@@ -591,8 +591,13 @@ The focused `policy-startup-review` suite builds one tagged host binary and runs
 serial standalone facts and original UFS/ZFS review phases. Require three completed
 parents, 135 controls and seven normally waited children per release, exact binary
 checksum and independent metadata/data/device/guest/host/supervisor teardown.
-Run `.tools/venv/bin/python3 tools/local-qualification.py policy-startup-review
-15.1 --run`, followed by the same command for `14.5`; run releases serially.
+Run releases serially:
+
+```sh
+.tools/venv/bin/python3 tools/local-qualification.py policy-startup-review 15.1 --run
+.tools/venv/bin/python3 tools/local-qualification.py policy-startup-review 14.5 --run
+```
+
 The [pre-execution contract](M2/retained-policy-native-review.md) declares the scoped
 seven-device profile, original closed policy-only seeds and unchanged parent,
 child and shared operation bounds. It qualifies private original review and

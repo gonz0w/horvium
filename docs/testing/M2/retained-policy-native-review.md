@@ -1,6 +1,6 @@
 # Original root review of two retained native policies
 
-Status: bounded fixture inventory declared before execution; qualification pending.
+Status: bounded candidate qualified on both pinned releases; maintainer review pending.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`).
 Refs [issue 305](https://github.com/gonz0w/horvium/issues/305) and
 [parent M2-RUNTIME-002](https://github.com/gonz0w/horvium/issues/139).
@@ -97,3 +97,21 @@ launch, browser/client/hardware/performance and release gates remain separate.
 There is no anti-rollback or commercial scale claim. Existing single-policy root
 and synthetic storage receipts retain their original scope. Product behavior is
 unchanged; issue 305 and parent 139 stay open and runtime writes stay disabled.
+
+## Executed candidate
+
+Signed source `88b837f026332e369fd983cd5c35dc98960d99eb` passed both pinned
+FreeBSD/amd64 15.1 and 14.5 gates with the identical checksum-bound artifact.
+Each release completed all three parents, 135 controls and seven normally waited
+children, including independent metadata and fact/data teardown. The
+[candidate receipt](retained-policy-native-review-manifest.json) records the
+executed source/base, compiler/artifact identity, parent times, original log/record
+hashes and control inventories. All seven prior retained-policy receipts remain
+byte-identical; their historical failed/skipped limits remain intact. No native
+attempt in this bounded gate failed.
+
+Required signed clean-source `make review` passed 200 tooling tests, ordinary Go
+tests, all 11 race packages and 54 fuzz targets with supervised teardown. The
+receipt-only followup requires fresh baseline/signature/DCO/title checks; it may
+reuse deep evidence only with identical verification inputs. The preceding limits
+remain binding; these candidate results do not close issue 305 or parent 139.
