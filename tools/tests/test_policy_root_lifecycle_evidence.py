@@ -13,7 +13,7 @@ for mode in ('first', 'restart'):
 
 
 def fixture():
-    text = review_fixture() + 'POLICY_ROOT_LIFECYCLE_PHASE lifecycle begin timeout=18m\nPOLICY_ROOT_LIFECYCLE_AFFINITY phase=lifecycle cpus=0\n'
+    text = 'POLICY_ROOT_LIFECYCLE_CPU_PROFILE cpu_count=1\n' + review_fixture() + 'POLICY_ROOT_LIFECYCLE_PHASE lifecycle begin timeout=18m\nPOLICY_ROOT_LIFECYCLE_AFFINITY phase=lifecycle cpus=0\n'
     for kind in ('UFS', 'ZFS'):
         name = 'TestNativeMultiplePolicyLifecycle' + kind
         text += '=== RUN   ' + name + '\n'
@@ -34,7 +34,10 @@ class RootLifecycleEvidence(unittest.TestCase):
             for replacement in ('', control + '=fail', control + '=pass ' + control + '=pass'):
                 with self.subTest(control=control), self.assertRaises(ValueError):
                     m.validate(fixture().replace(control + '=pass', replacement))
-        for bad in (fixture().replace('POLICY_ROOT_LIFECYCLE_AFFINITY phase=lifecycle cpus=0\n', ''),
+        for bad in (fixture().replace('POLICY_ROOT_LIFECYCLE_CPU_PROFILE cpu_count=1\n', ''),
+                    fixture().replace('cpu_count=1', 'cpu_count=2'),
+                    fixture() + 'POLICY_ROOT_LIFECYCLE_CPU_PROFILE cpu_count=1\n',
+                    fixture().replace('POLICY_ROOT_LIFECYCLE_AFFINITY phase=lifecycle cpus=0\n', ''),
                     fixture().replace('cpus=0', 'cpus=0,1'),
                     fixture() + 'POLICY_ROOT_LIFECYCLE_AFFINITY phase=lifecycle cpus=0\n',
                     '', fixture() * 2, fixture().replace('PASS:', 'SKIP:'), fixture().replace('PASS:', 'FAIL:'),
@@ -72,3 +75,18 @@ class RootLifecycleEvidence(unittest.TestCase):
         for digest in (None, '', 'a' * 63, 'G' * 64):
             with self.assertRaises(ValueError):
                 m.suite_command('policy-startup-lifecycle', artifact_digest=digest)
+
+
+class SerialGuestSelection(unittest.TestCase):
+    def test_only_lifecycle_selects_one_cpu_and_defaults_are_preserved(self):
+        m = module('local-qualification')
+        for suite in m.SUITES:
+            self.assertEqual(m.cpu_count_for_suite(suite), 1 if suite == 'policy-startup-lifecycle' else 2)
+        with self.assertRaises(ValueError):
+            m.cpu_count_for_suite('unknown')
+        self.assertEqual(m.qemu_command('qemu', 'base', 'code', 'vars', 1234)[6], '2')
+        for count in (1, 2):
+            self.assertEqual(m.qemu_command('qemu', 'base', 'code', 'vars', 1234, cpu_count=count)[6], str(count))
+        for count in (0, 3, True, '1', None):
+            with self.assertRaises(ValueError):
+                m.qemu_command('qemu', 'base', 'code', 'vars', 1234, cpu_count=count)

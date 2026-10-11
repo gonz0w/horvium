@@ -132,3 +132,33 @@ phase marker inside the normally completed lifecycle phase, checksum-bound
 `/usr/bin/cpuset` provenance, actual kernel affinity and independent teardown.
 Every existing case, assertion and bound stays required. The failed initial
 source and skipped second-release/ZFS lifecycle remain in the final receipt.
+
+## Failed affinity run and serial-guest candidate
+
+Signed affinity source `5336a7b` also remains unqualified on FreeBSD 15.1:
+construction succeeded in 91.04 seconds and observation in 28.02 seconds; the
+first UFS child then exhausted its unchanged 150-second whole-process timeout
+during finish. Its parent failed at 200.18 seconds. Retained facts/UFS review/ZFS
+review completed at 19.04/257.80/185.99 seconds, but no lifecycle control vector
+qualifies. ZFS lifecycle, 14.5 and portable review were not attempted for this
+source. Independent host/device/artifact/supervisor teardown passed; incomplete
+in-guest parent cleanup is not accepted. These observations do not isolate affinity
+or another scheduling factor's contribution.
+
+Declare one final serial lab experiment before execution: this new lifecycle
+suite alone boots its whole disposable guest with **one emulated CPU**, retaining
+qemu64/TCG, 6 GiB RAM, seven owned devices, cached base image/firmware and every
+case/deadline. Existing suites and `qemu_command`'s default keep two CPUs. Strict
+suite selection refuses unknown CPU profiles; the controller records its actual
+selected count and the guest checks `hw.ncpu=1` before running any phase. Both
+lifecycle parents and four children independently require the actual one-CPU
+kernel and CPU 0 affinity; the existing phase affinity wrapper remains required.
+No system-wide CPU set, host tuning or product scheduling changes.
+
+The whole serial-guest gate still requires five parents, 283 controls and thirteen
+children per release, all original facts/review/lifecycle cases and independent
+cleanup. Require exactly one kernel CPU-profile marker before the facts phase.
+Actual passes on both pinned releases are mandatory; a timeout remains failed
+evidence. This is a serial emulated qualification profile, with no SMP/concurrency,
+throughput or commercial capacity claim. Preserve both failed candidates and all
+eight earlier manifests. No production or fixture time limit is enlarged.
