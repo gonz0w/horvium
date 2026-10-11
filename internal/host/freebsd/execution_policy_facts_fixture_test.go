@@ -48,14 +48,20 @@ func TestMultiplePolicyFactsChild(t *testing.T) {
 			t.Fatal("bounded baseline", e)
 		}
 		policies[i], e = storage.DecodeOwnershipRecord(b)
-		if e != nil || len(policies[i].Members) != 1 || len(policies[i].Scopes) != 1 {
+		if e != nil || len(policies[i].Members) != 2 || len(policies[i].Scopes) != 1 {
 			t.Fatal("baseline codec", e)
 		}
 		before[i] = b
 	}
 	check("native_baselines", policies[0].Revision == 1 && policies[1].Revision == 1)
 	check("distinct_pools", policies[0].PoolGUID != policies[1].PoolGUID && policies[0].PoolName != policies[1].PoolName && policies[0].Scopes[0].GUID != policies[1].Scopes[0].GUID)
-	check("distinct_members", policies[0].Members[0].Serial != policies[1].Members[0].Serial && policies[0].Members[0].VdevGUID != policies[1].Members[0].VdevGUID)
+	distinct := true
+	for _, first := range policies[0].Members {
+		for _, second := range policies[1].Members {
+			distinct = distinct && first.Serial != second.Serial && first.VdevGUID != second.VdevGUID
+		}
+	}
+	check("distinct_members", distinct)
 	source, e := newExecutionStartupPolicySource()
 	if e != nil {
 		t.Fatal(e)
@@ -171,7 +177,7 @@ func TestNativeMultiplePolicyFacts(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	var selected [2]inventory.Provider
+	var selected [4]inventory.Provider
 	count, duplicate, missing := 0, 0, 0
 	for _, p := range graph.Providers {
 		if p.Kind != inventory.DiskCandidate || p.MediaSize != 64<<20 {
@@ -195,10 +201,20 @@ func TestNativeMultiplePolicyFacts(t *testing.T) {
 			}
 			selected[0] = p
 		case "HVM-UNIQUE-4K":
-			if selected[1].ID != "" || p.SectorSize != 4096 || p.Identity != inventory.IdentityUnique {
+			if selected[2].ID != "" || p.SectorSize != 4096 || p.Identity != inventory.IdentityUnique {
 				t.Fatal("4K fixture")
 			}
+			selected[2] = p
+		case "HVM-FACTS-512":
+			if selected[1].ID != "" || p.SectorSize != 512 || p.Identity != inventory.IdentityUnique {
+				t.Fatal("second 512 fixture")
+			}
 			selected[1] = p
+		case "HVM-FACTS-4K":
+			if selected[3].ID != "" || p.SectorSize != 4096 || p.Identity != inventory.IdentityUnique {
+				t.Fatal("second 4K fixture")
+			}
+			selected[3] = p
 		case "HVM-DUPLICATE":
 			if p.SectorSize != 512 || p.Identity != inventory.IdentityAmbiguous {
 				t.Fatal("duplicate fixture")
@@ -213,10 +229,10 @@ func TestNativeMultiplePolicyFacts(t *testing.T) {
 			t.Fatal("foreign fixture disk")
 		}
 	}
-	if !root || count != 5 || duplicate != 2 || missing != 1 || selected[0].ID == "" || selected[1].ID == "" || selected[0].ID == selected[1].ID {
+	if !root || count != 7 || duplicate != 2 || missing != 1 || selected[0].ID == "" || selected[1].ID == "" || selected[2].ID == "" || selected[3].ID == "" || selected[0].ID == selected[1].ID || selected[2].ID == selected[3].ID {
 		t.Fatal("complete disposable disk profile required")
 	}
-	var geometry [2]inventory.DiskObservation
+	var geometry [4]inventory.DiskObservation
 	for i, p := range selected {
 		info, serial := must("/usr/sbin/diskinfo", "/dev/"+p.Name), must("/usr/sbin/diskinfo", "-s", "/dev/"+p.Name)
 		geometry[i], e = inventory.ParseDiskObservation(geom, []byte(info), []byte(serial), inventory.DefaultLimits())
@@ -271,7 +287,8 @@ func TestNativeMultiplePolicyFacts(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	for i, p := range selected {
+	for i := range names {
+		left, right := selected[i*2], selected[i*2+1]
 		names[i] = "horvium_facts_" + strings.TrimPrefix(filepath.Base(private), "horvium-policy-facts-") + fmt.Sprintf("_%d", i)
 		if storage.ValidatePoolSelection("1", names[i]) != nil {
 			t.Fatal("fixture pool name")
@@ -279,7 +296,7 @@ func TestNativeMultiplePolicyFacts(t *testing.T) {
 		if _, err := command(ctx, "/sbin/zpool", "list", "-H", names[i]); err == nil {
 			t.Fatal("fixture pool exists")
 		}
-		must("/sbin/zpool", "create", "-m", "none", "-o", "cachefile=none", "-o", "ashift=12", names[i], "/dev/"+p.Name)
+		must("/sbin/zpool", "create", "-m", "none", "-o", "cachefile=none", "-o", "ashift=12", names[i], "mirror", "/dev/"+left.Name, "/dev/"+right.Name)
 		created[i] = true
 		guids[i] = strings.TrimSpace(must("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", names[i]))
 		rootGUID := strings.TrimSpace(must("/sbin/zfs", "get", "-H", "-p", "-o", "value", "guid", names[i]))
@@ -292,17 +309,21 @@ func TestNativeMultiplePolicyFacts(t *testing.T) {
 			if v.Kind != "leaf" {
 				continue
 			}
-			if v.Address != "/dev/"+p.Name {
+			member := i * 2
+			if v.Address == "/dev/"+right.Name {
+				member++
+			} else if v.Address != "/dev/"+left.Name {
 				t.Fatal("fixture leaf address")
 			}
-			for _, id := range geometry[i].Provider.Identifiers {
+			p := selected[member]
+			for _, id := range geometry[member].Provider.Identifiers {
 				if id.Kind == "serial" {
-					policy.Members = append(policy.Members, storage.PoolMember{VdevGUID: v.GUID, Serial: id.Value, SerialSource: id.Source, MediaSize: p.MediaSize, SectorSize: p.SectorSize, StripeSize: geometry[i].StripeSize, StripeOffset: geometry[i].StripeOffset})
+					policy.Members = append(policy.Members, storage.PoolMember{VdevGUID: v.GUID, Serial: id.Value, SerialSource: id.Source, MediaSize: p.MediaSize, SectorSize: p.SectorSize, StripeSize: geometry[member].StripeSize, StripeOffset: geometry[member].StripeOffset})
 				}
 			}
 		}
-		if len(policy.Members) != 1 {
-			t.Fatal("single actual member baseline")
+		if len(policy.Members) != 2 {
+			t.Fatal("two actual mirror members required")
 		}
 		records[i], err = storage.EncodeOwnershipRecord(policy)
 		if err != nil {

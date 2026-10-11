@@ -350,6 +350,7 @@ def main():
         raise InterruptedError('owned lab interrupted')
     signal.signal(signal.SIGTERM, interrupted)
     signal.signal(signal.SIGINT, interrupted)
+    device_profile = 'policy-facts' if args.suite == 'policy-startup-facts' else 'baseline'
     guest, key = None, directory / 'fixture-key'
     record = {'source_commit': source, 'suite': args.suite, 'release': args.release,
               'started_at': datetime.now(timezone.utc).isoformat(),
@@ -385,10 +386,11 @@ def main():
         ssh = ssh_command(key, directory / 'known_hosts', port)
         command = qemu_command(qemu, base, code, variables, port)
         if device_tool:
-            device_tool.prepare(devices)
-            record['device_backings'] = device_tool.verify(devices)
+            device_tool.prepare(devices, profile=device_profile)
+            record['device_profile'] = device_profile
+            record['device_backings'] = device_tool.verify(devices, profile=device_profile)
             supervisor.write_record(directory / 'result.json', record)
-            command = [qemu] + device_tool.command(command[1:], devices)
+            command = [qemu] + device_tool.command(command[1:], devices, profile=device_profile)
         with (directory / 'serial.log').open('w') as serial:
             guest = subprocess.Popen(command,
                                      stdin=subprocess.DEVNULL, stdout=serial, stderr=serial)
@@ -437,7 +439,7 @@ def main():
         try:
             stop_guest(guest)
             if device_tool and devices.exists():
-                device_tool.cleanup(devices)
+                device_tool.cleanup(devices, profile=device_profile)
                 record['device_backings_preserved'] = True
                 record['device_fixture_teardown'] = not devices.exists()
             if base_before:

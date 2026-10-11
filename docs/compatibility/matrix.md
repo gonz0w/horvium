@@ -1442,8 +1442,9 @@ shutdown. Remaining adopted acceptance families stay separate.
 
 
 The [native two-pool fact fixture](../testing/M2/retained-policy-native-facts.md)
-uses the existing five-disk disposable profile for two independent single-leaf
-data pools. It checks fixed pool/provider/system collectors and validators with
+uses a scoped seven-disk disposable profile for two independent two-leaf mirrors,
+preserving the existing five-disk default and conservative production topology
+restriction. It checks fixed pool/provider/system collectors and validators with
 actual GUID/member/scope baselines, plus copied last-policy mismatch denials.
 Qualification is pending on both pinned releases. This changes no production
 code; copied codec inputs outside product state confer no enrollment/startup

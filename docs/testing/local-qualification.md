@@ -575,8 +575,8 @@ power loss, active kernel work or full recovery/runtime behavior.
 
 
 The focused `policy-startup-facts` suite builds the tagged host fixture package
-and selects only `^TestNativeMultiplePolicyFacts$`. It uses the unchanged owned
-five-device profile and checks both actual independent data pools in one normally
+and selects only `^TestNativeMultiplePolicyFacts$`. It uses the scoped owned seven-device profile (preserving
+the historical five-device default) and checks both actual independent data pools in one normally
 waited child. Require all 12 child and nine parent controls, checksum-bound
 artifact verification and independent pool/input/mount/swap/device/guest/host/
 supervisor teardown on each pinned release. Run releases serially. The eight-

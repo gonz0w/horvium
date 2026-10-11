@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: BSD-3-Clause
-"""Own five disposable QEMU test disks; never accepts host disk inputs."""
+"""Own fixed disposable QEMU disk profiles; never accepts host disk inputs."""
 import argparse
 import hashlib
 import json
@@ -11,6 +11,15 @@ import stat
 SIZE = 64 << 20
 DISKS = [('HVM-UNIQUE-512', 512, 4096), ('HVM-UNIQUE-4K', 4096, 4096),
          ('HVM-DUPLICATE', 512, 512), ('HVM-DUPLICATE', 512, 512), ('', 512, 512)]
+
+PROFILES = {'baseline': DISKS, 'policy-facts': DISKS + [
+    ('HVM-FACTS-512', 512, 4096), ('HVM-FACTS-4K', 4096, 4096)]}
+
+
+def profile_disks(profile):
+    if profile not in PROFILES:
+        raise ValueError('unknown disposable disk profile')
+    return PROFILES[profile]
 
 
 def directory(root):
@@ -27,11 +36,12 @@ def digest(path):
         return hashlib.file_digest(source, 'sha256').hexdigest()
 
 
-def prepare(root, size=SIZE):
+def prepare(root, size=SIZE, profile='baseline'):
+    disks = profile_disks(profile)
     root = directory(root)
     root.mkdir(mode=0o700)
     records = []
-    for i, (serial, logical, physical) in enumerate(DISKS):
+    for i, (serial, logical, physical) in enumerate(disks):
         path = root / f'disk-{i}.raw'
         with path.open('xb') as target:
             os.chmod(path, 0o600)
@@ -41,15 +51,16 @@ def prepare(root, size=SIZE):
     (root / 'disks.json').write_text(json.dumps(records, sort_keys=True) + '\n')
 
 
-def verify(root, size=SIZE):
+def verify(root, size=SIZE, profile='baseline'):
+    disks = profile_disks(profile)
     root = directory(root)
     info = root.lstat()
     if not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or info.st_mode & 0o077:
         raise ValueError('fixture directory must remain owned and private')
     expected = json.loads((root / 'disks.json').read_text())
-    if len(expected) != len(DISKS):
+    if len(expected) != len(disks):
         raise ValueError('fixture manifest incomplete')
-    for i, (serial, logical, physical) in enumerate(DISKS):
+    for i, (serial, logical, physical) in enumerate(disks):
         record = expected[i]; path = root / f'disk-{i}.raw'
         info = path.lstat()
         if not stat.S_ISREG(info.st_mode) or info.st_size != size or stat.S_IMODE(info.st_mode) != 0o600:
@@ -60,7 +71,7 @@ def verify(root, size=SIZE):
     return expected
 
 
-def command(args, root, size=SIZE):
+def command(args, root, size=SIZE, profile='baseline'):
     if args in [['--version'], ['-version'], ['-accel', 'help'], ['-cpu', 'help']]:
         return list(args)
     drives = [args[i+1] for i, a in enumerate(args[:-1]) if a == '-drive']
@@ -69,23 +80,25 @@ def command(args, root, size=SIZE):
         raise ValueError('requires one disposable snapshot boot drive')
     if any(flag in args for flag in ('-pidfile', '-blockdev', '-daemonize')):
         raise ValueError('unexpected disk/process options')
+    disks = profile_disks(profile)
     root = directory(root)
-    verify(root, size=size)
+    verify(root, size=size, profile=profile)
     extra = []
-    for i, (serial, logical, physical) in enumerate(DISKS):
+    for i, (serial, logical, physical) in enumerate(disks):
         drive = f'horvium_device_{i}'
         extra += ['-drive', f'file={root}/disk-{i}.raw,format=raw,if=none,id={drive}',
                   '-device', f'virtio-blk-pci,drive={drive},logical_block_size={logical},physical_block_size={physical}' + (f',serial={serial}' if serial else '')]
     return list(args) + extra
 
 
-def remove(root):
+def remove(root, profile='baseline'):
     """Caller must stop/reap the owned guest/group before deleting its files."""
+    disks = profile_disks(profile)
     root = directory(root)
     info = root.lstat()
     if not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or info.st_mode & 0o077:
         raise ValueError('untrusted fixture directory')
-    for i in range(len(DISKS)):
+    for i in range(len(disks)):
         (root / f'disk-{i}.raw').unlink(missing_ok=True)
     (root / 'disks.json').unlink(missing_ok=True)
     # Unknown entries are preserved and make cleanup fail; never rmtree a
@@ -93,11 +106,11 @@ def remove(root):
     root.rmdir()
 
 
-def cleanup(root, size=SIZE):
+def cleanup(root, size=SIZE, profile='baseline'):
     try:
-        verify(root, size=size)
+        verify(root, size=size, profile=profile)
     finally:
-        remove(root)
+        remove(root, profile=profile)
 
 
 def main():
