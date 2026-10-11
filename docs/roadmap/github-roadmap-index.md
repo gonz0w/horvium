@@ -242,6 +242,8 @@ separate trackers distinguish HTTP admission, native-resource recovery, Firefox 
 - [Proposal: Deliberate irreversible trust key and retention changes (#302)](https://github.com/gonz0w/horvium/issues/302)
 - [Proposal: Clean-host recovery after primary compromise (#303)](https://github.com/gonz0w/horvium/issues/303)
 
+- [M2: review cumulative native lifecycle fixture budgets (#318)](https://github.com/gonz0w/horvium/issues/318): separate design prerequisite for budget-changing work in issue 305; authoritative [proposal](../milestones/M2/retained-policy-fixture-budgets.md).
+
 ## Migration receipt
 
 See the [dated verification record](github-migration.md) for counts, preserved identities,
