@@ -100,3 +100,14 @@ This draft uses Refs for issue 323, owner 305 and parent 139. Neither incomplete
 research nor a merged sampler satisfies their remaining native acceptance.
 Runtime writes remain disabled. No caller/product/native budget, CPU profile,
 producer, registry, cache, retry, service, dependency or runtime authority changed.
+
+
+## Corrected runner portable review
+
+Corrected source `840c662264d111754400d376cc7179ae482bb389` passed a fresh full
+portable fallback: mandatory check/lint/test/secrets, ordinary Go and 215 tooling
+tests, eleven race packages and 54 fuzz targets, actual-title/signature/DCO checks
+and supervised teardown. Its [receipt](policy-startup-stack-manifest.json)
+binds the source/tree/base and review/check/deep-log hashes separately from the
+failed native source. Subsequent evidence-only head verification may reuse those
+exact unchanged inputs; it does not create corrected native evidence.

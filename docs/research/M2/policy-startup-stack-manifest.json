@@ -426,7 +426,10 @@
       "required": "HORVIUM_CLOSED_STARTUP_OWNER_VM=1",
       "absent_from_executed_registered_commands": true,
       "correction": "registered source/prebuilt commands supply original fixture opt-in; script rejects its absence before test selection; product guard unchanged",
-      "native_execution_after_correction": "not attempted; preserve one failed run and review corrected setup before next diagnostic"
+      "native_execution_after_correction": "not attempted; preserve one failed run and review corrected setup before next diagnostic",
+      "seed_guard_executed_source_sha256": "e975f3bca4d61edbc29b8ed106a9e300b97b86b42533f232ffb56c9e22a23f40",
+      "executed_registration_sha256": "6fd5f563d3f1335b58840caf23c081de5533d59e9bc3d22207348f4faaefe99a",
+      "portable_verified_corrected_source": "840c662264d111754400d376cc7179ae482bb389"
     }
   },
   "optin_regression": {
@@ -434,5 +437,40 @@
     "green_log_sha256": "e38e28587d85ab5e7516728eefe6b95880a1a02618e747f0ad6c36992885091a",
     "tests": 6,
     "scope": "synthetic runner registrations and required preflight opt-in; no native acceptance"
+  },
+  "corrected_runner_portable_review": {
+    "source_commit": "840c662264d111754400d376cc7179ae482bb389",
+    "base_commit": "c481cbbb7b17c592f61bb7cff506f475c071cbd4",
+    "source_tree": "71edea83bbc7f2d3af7bbfa507275345ac30cac8",
+    "title": "test(host): capture bounded original startup stack diagnostics",
+    "signed_commits": [
+      "840c662264d111754400d376cc7179ae482bb389",
+      "ec92537b281c0d4465c3a3cfda2b56979e4f93b7",
+      "0db84c99e52c6307468378356768ad22223eca4c",
+      "a70882b73f36a4b5588443f63fe961203c6e05de"
+    ],
+    "qualified": true,
+    "plan": {
+      "mode": "full",
+      "reason": "shared tooling, policy, module or packaging change",
+      "packages": [],
+      "native_review_required": true
+    },
+    "command": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "checks_log_sha256": "fa9ae44d559d33c6e6ed95318ef3c712dbedf1b577630dfd431c5396f4b08351",
+    "report_sha256": "d442141883d2a985c414ad0064259b97ffc3abe7146b05d47bcd01d37bd21d01",
+    "deep_log_sha256": "0b8326479c825d84295463cc15cb9fc770927c4b31b4b7853b019a493d3be7da",
+    "deep_executed": true,
+    "race_packages": 11,
+    "fuzz_targets": 54,
+    "tooling_tests": 215,
+    "supervised_teardown_verified": true,
+    "native_execution": "none at corrected source; the only native attempt remains the failed original source"
   }
 }
