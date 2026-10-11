@@ -53,6 +53,21 @@ profile regressions require separation of manifests, default-profile preservatio
 unknown-profile refusal and removal of all seven owned disks on preservation
 failure. The actual failed native candidate is the single-leaf regression evidence.
 
+The first mirrored candidate `370ea82d2fcfc3f6e27f1228735aca740e2e04c7`
+also passed portable review, but failed the 15.1 parent `child_inventory` check
+at 16.17 seconds. The child exited successfully and was normally waited; the
+parent incorrectly included Go testing's file/line log prefix when counting
+control fields. No parent completed and no control vector is promoted from that
+failed run. Host/device/base/runtime and supervisor teardown passed. The 14.5
+attempt was not run for this source. Keep this candidate unqualified too.
+
+Extract only the fields after the exact child marker, preserving the same
+12-field check and independent strict host checker. The actual failing native
+parent is the regression case; corrected qualification must pass that same
+parent on both releases. All controls, selectors, deadlines and production
+behavior remain unchanged. There is no simulated native success substituted for
+the failed candidate.
+
 ## Inventory and bounds declared before native execution
 
 The exact selector is `^TestNativeMultiplePolicyFacts$`. One parent and its one

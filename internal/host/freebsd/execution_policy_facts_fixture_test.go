@@ -350,8 +350,10 @@ func TestNativeMultiplePolicyFacts(t *testing.T) {
 	check("child_waited", err == nil && cmd.ProcessState != nil && cmd.ProcessState.Success() && len(output) <= 16<<10)
 	var rows []string
 	for _, line := range strings.Split(string(output), "\n") {
-		if strings.Contains(line, "POLICY_FACTS_CHILD_RESULT ") {
-			rows = append(rows, strings.TrimSpace(line))
+		if _, controls, ok := strings.Cut(line, "POLICY_FACTS_CHILD_RESULT "); ok {
+			// testing.T prefixes logs with file:line. Only the marker's own
+			// fields belong to the strict control inventory, not that prefix.
+			rows = append(rows, "POLICY_FACTS_CHILD_RESULT "+strings.TrimSpace(controls))
 		}
 	}
 	check("child_inventory", len(rows) == 1 && len(strings.Fields(strings.TrimPrefix(rows[0], "POLICY_FACTS_CHILD_RESULT "))) == 12)
