@@ -252,7 +252,9 @@ remain distinct from implementation and native acceptance.
 [M2: capture bounded original startup stack diagnostics (#323)](https://github.com/gonz0w/horvium/issues/323)
 owns the [adopted sampler implementation/evidence](../research/M2/policy-startup-stack.md),
 under parent 139 with satisfied prerequisite 321. Full lifecycle acceptance is
-separate under issue 305; GitHub owns live status.
+separate under issue 305; the [corrected source-bound diagnostic receipt](../research/M2/policy-startup-stack-qualification-manifest.json)
+records point observations and publication uncertainty, not lifecycle acceptance.
+GitHub owns live status.
 
 ## Migration receipt
 

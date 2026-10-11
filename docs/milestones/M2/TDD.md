@@ -1620,3 +1620,15 @@ declares one 15.1 diagnostic parent, two waited children and all 42 controls,
 fixed private snapshots and independent original cleanup. Its completeness,
 startup operation result and both native lifecycle acceptance gates remain
 separate. Research issue 323 owns implementation/evidence; runtime writes stay off.
+
+
+The [corrected qualification receipt](../../research/M2/policy-startup-stack-qualification-manifest.json)
+records actual 15.1 one-parent/two-child/42-control diagnostic completeness from
+merged source `2d78311dbf7c71678b02f48f2a3488a4c8a737fa`. All three point snapshots
+are source-mapped and original/independent cleanup is verified. Startup itself
+failed at 120.010624s after active publication; native lifecycle acceptance is
+false. Preserve the prior seed opt-in failure and all fourteen preceding receipts.
+The [interpretation and limits](../../research/M2/policy-startup-stack.md) bind
+sample stages without inventing collector durations or a failing command cause.
+This diagnostic completes only issue323's scoped research on review/acceptance;
+305/139 and both full native lifecycle releases remain separate open gates.

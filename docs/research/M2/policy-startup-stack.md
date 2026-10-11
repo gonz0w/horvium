@@ -1,7 +1,7 @@
 # Diagnostic: bounded original startup stacks
 
-Status: draft candidate; first native setup failed before startup. Corrected runner
-opt-ins are portable-tested; corrected native execution remains unverified.
+Status: corrected 15.1 diagnostic complete; original startup returned a deadline
+error after active publication. Native lifecycle acceptance remains pending.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`). Time box: one development session.
 Owning research [issue 323](https://github.com/gonz0w/horvium/issues/323);
 Refs [305](https://github.com/gonz0w/horvium/issues/305) and
@@ -60,7 +60,7 @@ Sampling overhead may change scheduling/outcome; snapshots cannot apportion the
 preceding time or establish a deadlock, performance/capacity or emulation cause.
 
 
-## First executed candidate and preserved failure
+## Historical first candidate and preserved setup failure
 
 The [sanitized receipt](policy-startup-stack-manifest.json) binds original native
 source `ec92537b281c0d4465c3a3cfda2b56979e4f93b7` and base
@@ -102,7 +102,7 @@ Runtime writes remain disabled. No caller/product/native budget, CPU profile,
 producer, registry, cache, retry, service, dependency or runtime authority changed.
 
 
-## Corrected runner portable review
+## Historical corrected runner portable review
 
 Corrected source `840c662264d111754400d376cc7179ae482bb389` passed a fresh full
 portable fallback: mandatory check/lint/test/secrets, ordinary Go and 215 tooling
@@ -111,3 +111,63 @@ and supervised teardown. Its [receipt](policy-startup-stack-manifest.json)
 binds the source/tree/base and review/check/deep-log hashes separately from the
 failed native source. Subsequent evidence-only head verification may reuse those
 exact unchanged inputs; it does not create corrected native evidence.
+
+
+## Corrected original-factory qualification
+
+PR 324 merged the correction at `2d78311dbf7c71678b02f48f2a3488a4c8a737fa`,
+whose tree exactly matches reviewed signed head
+`026aa9cb682516cfa951af8831fa2744437d969a`. This follow-up executed one focused
+15.1 UFS diagnostic from that clean merged source, with no fixture, runner,
+product, deadline or CPU change. The
+[new source-bound receipt](policy-startup-stack-qualification-manifest.json)
+preserves the earlier failed setup receipt and all fourteen preceding policy
+receipts byte-identical; historical pending/draft statements above describe only
+those earlier candidates.
+
+The parent passed at **216.09s** with both normally completed children and all
+**42 controls**, original metadata/fact cleanup, released child leases, unchanged
+ledger/nonjournal bytes, restored mounts and independent host/device/key/binary/
+supervisor teardown and base/runtime preservation. All three snapshots were
+captured, verified, source-sanitized and deleted in the owned guest. Their 97
+frames (64 Horvium / 33 compiler-matched Go) are source-mapped; no raw stack or
+argument was copied to the host or committed. Post-deletion independent raw
+re-extraction is unavailable by design.
+
+| Sample | Actual capture start/end after caller creation | Bytes | Located original path |
+| --- | --- | --- | --- |
+| 1 | 30.008717–30.012838s | 9,647 | Review inspection, guarded persistent-backing version reader (`persistent_backing_freebsd.go:74`; `execution_startup_freebsd.go:59`). |
+| 2 | 75.008148–75.009936s | 8,693 | Activation first pre-publication inspection, guarded system-use version reader (`system_use_freebsd.go:9`; `execution_restart_freebsd.go:50`). |
+| 3 | 110.000572–110.002112s | 8,713 | Activation post-publication inspection, guarded system-use pool path topology reader (`system_use_freebsd.go:23`; `execution_restart_freebsd.go:100`). |
+
+Each unique root factory goroutine was in the original native command waiting
+path. Source checks bind the observed reader branches and activation's original
+publish at line 84 before the final inspection at line 100. These are point
+observations: no internal stage boundary times, command duration, failing probe,
+deadlock, production capacity or causal emulation conclusion is inferred.
+Capture intervals exclude subsequent snapshot file writes; total observer cost
+is unmeasured and sampling can change scheduling/outcome.
+
+Original startup returned at **120.010624s**, with both caller and startup error
+classified `deadline` and **no returned owner**. Independent final journal bytes
+changed from closed generation **6** to active generation **7**; exact before/after
+hashes are in the receipt. The 110-second snapshot is already in post-publication
+inspection. This demonstrates publication before this observed startup failure;
+a nil owner/error cannot be treated as no mutation or a safe reusable closed
+seed. Original ledger/nonjournal bytes and released leases were independently
+checked. Those facts do not grant launch authority, establish restart/retirement
+acceptance or permit another startup attempt on this fixture history.
+
+**Diagnostic completeness is true; original startup success and native lifecycle
+acceptance are false.** This supports closing only bounded research issue 323
+when its evidence PR is accepted. Owner 305 and parent 139 remain open; neither
+release's full five-parent/289-control/thirteen-child lifecycle gate, second clean
+cycle or broader recovery/runtime/client/hardware/performance/release gate is
+qualified. 14.5 remains outside this adopted one-target diagnostic and was not
+attempted. Runtime writes remain disabled.
+
+The next bounded research/design work is to review the original repeated native
+inspection path and post-publication deadline/error recovery against these exact
+observations before any changed runtime or fixture contract. Preserve all drift,
+lease, publication/uncertainty and fail-closed requirements. These snapshots
+support investigation, not caching, removed checks, wider deadlines or retries.
