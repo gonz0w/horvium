@@ -119,6 +119,13 @@ func requirePolicyFactsVM(t *testing.T) {
 }
 
 func TestNativeMultiplePolicyFacts(t *testing.T) {
+	nativeMultiplePolicyFactsFixture(t, nil)
+}
+
+// The optional callback borrows only original native baselines and one declared,
+// unused metadata disk. All existing fact/data/cleanup controls remain required.
+func nativeMultiplePolicyFactsFixture(t *testing.T, run func(context.Context, []storage.Policy, inventory.Provider)) {
+	t.Helper()
 	if os.Getenv("HORVIUM_NATIVE_VM") != "1" || os.Getenv("HORVIUM_POLICY_FACTS_VM") != "1" {
 		t.Skip("owned disposable facts VM only")
 	}
@@ -178,6 +185,7 @@ func TestNativeMultiplePolicyFacts(t *testing.T) {
 		t.Fatal(e)
 	}
 	var selected [4]inventory.Provider
+	var spare inventory.Provider
 	count, duplicate, missing := 0, 0, 0
 	for _, p := range graph.Providers {
 		if p.Kind != inventory.DiskCandidate || p.MediaSize != 64<<20 {
@@ -220,6 +228,9 @@ func TestNativeMultiplePolicyFacts(t *testing.T) {
 				t.Fatal("duplicate fixture")
 			}
 			duplicate++
+			if spare.ID == "" || p.Name < spare.Name {
+				spare = p
+			}
 		case "":
 			if p.SectorSize != 512 || p.Identity != inventory.IdentityMissing {
 				t.Fatal("missing fixture")
@@ -340,6 +351,17 @@ func TestNativeMultiplePolicyFacts(t *testing.T) {
 		if err = os.WriteFile(filepath.Join(mounts[i], "sentinel"), []byte(fmt.Sprintf("independent pool sentinel %d", i)), 0600); err != nil {
 			t.Fatal(err)
 		}
+	}
+	if run != nil {
+		var baselines []storage.Policy
+		for _, data := range records {
+			p, err := storage.DecodeOwnershipRecord(data)
+			if err != nil {
+				t.Fatal("canonical callback baseline", err)
+			}
+			baselines = append(baselines, p)
+		}
+		run(ctx, baselines, spare)
 	}
 	cmd := exec.CommandContext(ctx, os.Args[0], "-test.v", "-test.run=^TestMultiplePolicyFactsChild$", "-test.timeout=150s", "-test.count=1")
 	cmd.Env = append(os.Environ(), "GOMAXPROCS=1", "HORVIUM_POLICY_FACTS_CHILD="+private)
