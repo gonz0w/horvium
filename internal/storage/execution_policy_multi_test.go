@@ -2,8 +2,8 @@
 package storage
 
 import (
+	"bytes"
 	"encoding/json"
-	"reflect"
 	"strings"
 	"testing"
 
@@ -11,7 +11,11 @@ import (
 )
 
 func multiplePolicyFixtureMatches(got, want Policy) bool {
-	return reflect.DeepEqual(got, want)
+	// The strict codec canonically orders members/scopes/properties. Compare the
+	// complete encoded policy rather than the fixture's construction slice order.
+	actual, actualErr := EncodeOwnershipRecord(got)
+	expected, expectedErr := EncodeOwnershipRecord(want)
+	return actualErr == nil && expectedErr == nil && bytes.Equal(actual, expected)
 }
 
 func TestMultiplePolicyFixtureAcceptsCanonicalRoundTripAndRejectsDrift(t *testing.T) {

@@ -59,6 +59,16 @@ reproduced native/product defect. Product behavior is unchanged.
 Qualification is pending until the complete checksum-bound gate passes on both
 pinned FreeBSD/amd64 15.1 and 14.5 targets with independent owned teardown.
 
+The initial signed native candidate
+`3ca51368b613d791d159e58888c40601d53971e2` failed the UFS valid-review setup:
+the fixture compared a canonical decoded policy against construction-order
+slices using structural equality. It returned a fixture denial before the new
+lifecycle assertions. Native cleanup and base/runtime preservation passed;
+the complete run remains unqualified. A signed failing-first portable regression
+reproduces that fixture mismatch. The correction compares the complete strict
+canonical encodings, preserving revision/member/scope validation and rejecting
+drift; it changes no production policy validator or startup consumer.
+
 ## Acceptance limits
 
 Two supplied policy facts do not qualify actual multiple data-pool composition,
