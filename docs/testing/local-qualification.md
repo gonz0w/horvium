@@ -1,5 +1,14 @@
 # Local qualification
 
+The diagnostic-only `policy-startup-trace` suite runs the adopted
+[original startup sampler](../research/M2/policy-startup-stack.md) in one owned
+15.1 UFS fixture. Its one-CPU/seven-device profile, 150-second child, 480-second
+parent and 18-minute phase preserve existing product/caller/native limits.
+Require one parent/two waited children/all 42 controls, sanitized frame hashes
+and independent cleanup. Host `qualified` describes diagnostic completeness;
+`native_acceptance` is always false. It does not execute or qualify the full
+lifecycle suite. Raw stacks are removed inside the owned guest before teardown.
+
 Status: the Mac runner executed the existing property suite on both FreeBSD
 targets on 2026-10-05, with all 51 assertions, unchanged base/runtime and owned
 cleanup. Foundation shell/DCO smoke also passed on 15.1. See the

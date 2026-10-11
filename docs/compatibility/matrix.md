@@ -1552,3 +1552,14 @@ around one original startup call, with unchanged product/caller/native limits
 and separate completeness/cleanup checks. It requires explicit adoption through
 issue 321 before implementation/execution. No new native run, runtime or fixture
 change is made; both release lifecycle gates and broader acceptance stay pending.
+
+PR 322 adopted that sampling method at merge
+`c481cbbb7b17c592f61bb7cff506f475c071cbd4`. The
+[diagnostic implementation](../research/M2/policy-startup-stack.md) adds tagged
+test-only snapshots around one original startup call on the disposable 15.1 UFS
+profile. It retains the 120-second caller, 90-second product operations, original
+native producers/guards, default 150-second child/480-second parent/18-minute
+phase and independent cleanup. One parent/two children/all 42 controls are
+required for diagnostic completeness, never native acceptance. Execution/evidence
+remain pending at declaration; neither a sampler nor its design enables runtime
+writes or completes issue 305/139. Raw stacks stay private in the owned guest.

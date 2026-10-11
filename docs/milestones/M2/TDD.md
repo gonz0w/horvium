@@ -1612,3 +1612,11 @@ strict separate diagnostic completeness and independent teardown. These tests ar
 planned, not implemented or passed. The diagnostic requires explicit adoption
 before implementation or another native attempt; review of this document does
 not change product/caller limits or satisfy issue 305/139 acceptance.
+
+PR 322 adopted that method at merge `c481cbbb7b17c592f61bb7cff506f475c071cbd4`,
+proposal source `9cbd5b01df263cc823bd53a31f3917a50832ed6f`; decision issue 321 is
+completed. The [implementation contract](../../research/M2/policy-startup-stack.md)
+declares one 15.1 diagnostic parent, two waited children and all 42 controls,
+fixed private snapshots and independent original cleanup. Its completeness,
+startup operation result and both native lifecycle acceptance gates remain
+separate. Research issue 323 owns implementation/evidence; runtime writes stay off.
