@@ -1491,3 +1491,17 @@ failed runs had verified independent host teardown. The
 records source-bound failures/skips and passing portable checks separately.
 A suitable disposable native timing investigation and complete passes on both
 pinned releases remain required. Earlier accepted receipts are unchanged.
+
+The [retained-policy cost diagnostic](../research/M2/policy-startup-costs.md) is
+a declared read-only experiment for cumulative native launch/collector costs on
+the disposable amd64/TCG lab. Both pinned releases completed the diagnostic; it cannot qualify the blocked
+fixed-root lifecycle, product performance or another architecture. All nine
+earlier receipts remain unchanged.
+
+The [source-bound diagnostic receipt](../research/M2/policy-startup-costs-manifest.json)
+preserves both rejected attempts, the previous single-release observation and the
+final same-artifact release pair with complete teardown. Actual original-system
+root/pool facts bind the release-specific read counts (22 or 28); metadata stages
+run ZFS then UFS. Normal builds exclude the tagged diagnostic fixture. This is
+not fixed-factory acceptance or a product performance result; all nine historical
+retained-policy receipts and their failures/limits remain unchanged.
