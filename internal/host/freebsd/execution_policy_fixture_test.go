@@ -16,6 +16,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"reflect"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
@@ -53,6 +54,9 @@ func TestExecutionPolicyOwnerChild(t *testing.T) {
 	}
 	if !known {
 		t.Fatal("unknown mode")
+	}
+	if runtime.GOMAXPROCS(0) != 1 {
+		t.Fatal("owned policy child requires one Go execution thread")
 	}
 	// Independent owner calls use independent caller contexts. Each call retains
 	// one deadline across its complete policy set; the child process still has
@@ -380,7 +384,7 @@ func nativePolicyStartupFixture(t *testing.T, ctx context.Context, kind, group s
 			t.Fatal(e)
 		}
 		cmd := exec.CommandContext(ctx, os.Args[0], "-test.v", "-test.run=^TestExecutionPolicyOwnerChild$", "-test.timeout=150s")
-		cmd.Env = append(os.Environ(), "HORVIUM_POLICY_OWNER_CHILD="+mode, "HORVIUM_RESTART_JOURNAL="+cj, "HORVIUM_RESTART_LEDGER="+cl)
+		cmd.Env = append(os.Environ(), "GOMAXPROCS=1", "HORVIUM_POLICY_OWNER_CHILD="+mode, "HORVIUM_RESTART_JOURNAL="+cj, "HORVIUM_RESTART_LEDGER="+cl)
 		data, e := cmd.CombinedOutput()
 		if e != nil {
 			t.Logf("policy child %s: %.16000s", mode, data)

@@ -46,6 +46,24 @@ operation exhausted the caller context.
 
 ## Regression qualification and limits
 
+The first independent-context candidate
+`fe23046685a0c54f2e1ae536ee220a6af484939a` remained unqualified on
+FreeBSD 15.1: UFS construction succeeded in 99.62 seconds, observation succeeded
+in 24.45 seconds, copied/decoded probes denied immediately, then the child hit
+its unchanged 150-second test timeout during finish. Fresh contexts alone did
+not resolve the aggregate execution time. Owned guest/device/artifact removal,
+base/runtime preservation and supervisor teardown were verified; no incomplete
+in-guest parent result is promoted to acceptance.
+
+The next fixture candidate pins `GOMAXPROCS=1` only for the normally waited
+policy child and checks that setting inside that child. This bounds Go execution
+to one thread to test whether emulation scheduling overhead can be reduced.
+It does not change the two-vCPU QEMU profile, parent/retained test processes,
+product configuration or any deadline. OS processes, actual root credentials,
+advisory locks and fixed producers remain real. This candidate must demonstrate
+complete native passes before the lab setting is treated as effective; no
+throughput, parallel execution or commercial performance claim follows.
+
 The actual failing merged-source run is the regression observation. Qualify the
 corrected artifact with the complete `policy-startup-owner` suite, serially on
 both pinned disposable FreeBSD/amd64 15.1 and 14.5 releases. Require the same
