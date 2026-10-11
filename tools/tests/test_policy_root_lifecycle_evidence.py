@@ -1,0 +1,71 @@
+# SPDX-License-Identifier: BSD-3-Clause
+"""Synthetic evidence-consumer regressions, never native proof."""
+import re
+import unittest
+from test_closed_startup_evidence import module
+from test_policy_root_review_evidence import fixture as review_fixture
+from test_policy_facts_evidence import CHILD as FACT_CHILD, PARENT as FACT_PARENT
+
+CHILD = set('registered active_successor active_private_record current_boot leases_held nonjournal_unchanged original_observation observation_preserves_history copied_denied decoded_denied cancelled_no_effect closed_successor ledger_unchanged close_retains_leases retired_observation retired_finish release_once locks_released registration_consumed'.split())
+ROOT = {'seed_closed', 'domain_teardown', 'mounts_restored'}
+for mode in ('first', 'restart'):
+    ROOT.update(mode + '_' + name for name in CHILD | {'child_waited', 'child_inventory', 'exact_closed', 'ledger_preserved', 'leases_released'})
+
+
+def fixture():
+    text = review_fixture() + 'POLICY_ROOT_LIFECYCLE_PHASE lifecycle begin timeout=18m\n'
+    for kind in ('UFS', 'ZFS'):
+        name = 'TestNativeMultiplePolicyLifecycle' + kind
+        text += '=== RUN   ' + name + '\n'
+        for marker, names in [('POLICY_ROOT_LIFECYCLE_' + kind + '_RESULT', ROOT), ('POLICY_FACTS_CHILD_RESULT', FACT_CHILD), ('POLICY_FACTS_PARENT_RESULT', FACT_PARENT)]:
+            text += marker + ' ' + ' '.join(n + '=pass' for n in sorted(names)) + '\n'
+        text += 'POLICY_ROOT_LIFECYCLE_DOMAIN_TEARDOWN ' + kind.lower() + ' filesystems=pass directories=pass\n--- PASS: ' + name + ' (1.0s)\n'
+    return text + 'PASS\nPOLICY_ROOT_LIFECYCLE_PHASE lifecycle done\n'
+
+
+class RootLifecycleEvidence(unittest.TestCase):
+    def test_all_controls_and_independent_cleanup_are_required(self):
+        m = module('check-policy-root-lifecycle-evidence')
+        self.assertEqual(m.ROOT, ROOT)
+        self.assertEqual(len(CHILD), 19)
+        self.assertEqual(len(ROOT), 51)
+        m.validate(fixture())
+        for control in ROOT | FACT_CHILD | FACT_PARENT:
+            for replacement in ('', control + '=fail', control + '=pass ' + control + '=pass'):
+                with self.subTest(control=control), self.assertRaises(ValueError):
+                    m.validate(fixture().replace(control + '=pass', replacement))
+        for bad in ('', fixture() * 2, fixture().replace('PASS:', 'SKIP:'), fixture().replace('PASS:', 'FAIL:'),
+                    fixture().replace('LIFECYCLE_DOMAIN_TEARDOWN ufs', 'LIFECYCLE_DOMAIN_TEARDOWN absent'),
+                    fixture() + 'POLICY_ROOT_LIFECYCLE_UFS_RESULT extra=pass\n', fixture() + '=== RUN   TestUnfinished\n',
+                    fixture().replace('PASS\n', ''), fixture().replace('lifecycle done', 'lifecycle failed')):
+            with self.assertRaises(ValueError):
+                m.validate(bad)
+
+    def test_all_retained_phases_and_exact_parent_placement_are_required(self):
+        m = module('check-policy-root-lifecycle-evidence')
+        text = fixture()
+        for kind in ('UFS', 'ZFS'):
+            name = 'TestNativeMultiplePolicyLifecycle' + kind
+            block = re.search(r'(?ms)^=== RUN   ' + name + r'\n.*?^--- PASS: ' + name + r' \(1.0s\)\n', text)[0]
+            for bad in (text.replace(block, ''), text.replace(block, '') + block,
+                        text.replace(block, '').replace('POLICY_ROOT_REVIEW_PHASE review done', block + 'POLICY_ROOT_REVIEW_PHASE review done')):
+                with self.assertRaises(ValueError):
+                    m.validate(bad)
+        for bad in (text.replace(review_fixture(), ''), text.replace('review done', 'review failed'), text.replace('facts done', 'facts failed')):
+            with self.assertRaises(ValueError):
+                m.validate(bad)
+
+    def test_device_checksum_and_host_cleanup_are_independent(self):
+        m = module('local-qualification')
+        self.assertTrue(m.uses_device_fixture('policy-startup-lifecycle'))
+        self.assertEqual(m.PREBUILT['policy-startup-lifecycle'][1], './internal/host/freebsd')
+        m.validate_result('policy-startup-lifecycle', fixture())
+        m.validate_result('policy-startup-lifecycle', fixture() + 'DEVICE_FIXTURE_CLEANUP pass\n', complete=True)
+        for suffix in ('', 'DEVICE_FIXTURE_CLEANUP fail\n', 'DEVICE_FIXTURE_CLEANUP pass\n' * 2):
+            with self.assertRaises(ValueError):
+                m.validate_result('policy-startup-lifecycle', fixture() + suffix, complete=True)
+        _, command = m.suite_command('policy-startup-lifecycle', artifact_digest='a' * 64)
+        self.assertIn('HORVIUM_POLICY_ROOT_LIFECYCLE_VM=1', command)
+        for digest in (None, '', 'a' * 63, 'G' * 64):
+            with self.assertRaises(ValueError):
+                m.suite_command('policy-startup-lifecycle', artifact_digest=digest)
