@@ -1602,16 +1602,16 @@ and all existing controls. Six new actual budget assertions raise the required
 inventory to 289 controls; both complete native release gates remain required.
 Adoption authorizes this fixture amendment only; research/design cannot qualify native behavior.
 
-## Proposed original startup stack diagnostic
+## Adopted original startup stack diagnostic
 
 [Research/decision issue 321](https://github.com/gonz0w/horvium/issues/321) owns the
 [exact-source startup analysis and proposed method](../../research/M2/policy-startup-deadline.md).
 M2-POLICY-STARTUP-TRACE-001–006 map the original failure's provenance, bounded
 sampling/sanitization, early-return/deadline/stop behavior, original native factory,
 strict separate diagnostic completeness and independent teardown. These tests are
-planned, not implemented or passed. The diagnostic requires explicit adoption
-before implementation or another native attempt; review of this document does
-not change product/caller limits or satisfy issue 305/139 acceptance.
+planned at proposal, with adoption recorded below. Implementation and observed
+results are bound in their own candidate receipt; design adoption does not
+change product/caller limits or satisfy issue 305/139 acceptance.
 
 PR 322 adopted that method at merge `c481cbbb7b17c592f61bb7cff506f475c071cbd4`,
 proposal source `9cbd5b01df263cc823bd53a31f3917a50832ed6f`; decision issue 321 is

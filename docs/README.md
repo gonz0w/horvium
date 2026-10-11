@@ -217,6 +217,6 @@
 
 - [Adopted cumulative lifecycle fixture budgets](milestones/M2/retained-policy-fixture-budgets.md): reviewed test envelope; [implementation and qualification](testing/M2/retained-policy-lifecycle-budget.md) remain separate from native acceptance.
 
-- [Original startup deadline analysis and proposed stack diagnostic](research/M2/policy-startup-deadline.md): exact failed source/receipt boundaries; sampling needs separate adoption before implementation.
+- [Original startup deadline analysis and adopted stack method](research/M2/policy-startup-deadline.md): exact failed source/receipt boundaries; implementation and diagnostic completeness are separate.
 
 - [Adopted original startup stack diagnostic](research/M2/policy-startup-stack.md): bounded test-only sampling; diagnostic completeness and native acceptance are separate.
