@@ -1418,3 +1418,11 @@ checks supplied policy/member/system drift and both job formats in same-pool,
 other-pool and mixed catalogs, preserving metadata and projected holders.
 It changes no runtime behavior or native evidence. Expanded native mixed-history,
 multiple-policy, concurrency, census and bounds acceptance remains pending.
+
+The [native retained-history slice](../testing/M2/retained-policy-native-history.md)
+extends disposable UFS/ZFS storage refusal fixtures to complete same/other-pool
+and mixed ownership/job namespaces. Qualification for the expanded 870-control
+gate is pending. It changes no product code and preserves the distinction between
+actual native metadata/leases and synthetic policy/physical-use/boot transfers.
+Fixed-root mixed-history/multiple-policy, sparse-history combinations and the
+remaining adopted acceptance families are separate.

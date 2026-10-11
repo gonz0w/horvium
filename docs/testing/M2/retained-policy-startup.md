@@ -147,3 +147,8 @@ substituted for a missing native gate.
 The subsequent [portable admission coverage](retained-policy-admission.md) adds
 supplied-fact drift and complete codec/catalog mixed-history refusal checks.
 It changes no production behavior and qualifies no new native lifecycle family.
+
+The subsequent [native retained-history plan](retained-policy-native-history.md)
+declares 24 additional storage assertions per filesystem for complete mixed
+ownership/job refusal, preserving all 822 existing controls in the 870-control
+gate. Candidate-specific expanded qualification is pending.

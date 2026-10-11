@@ -53,6 +53,10 @@ func policyStorageSeed(t *testing.T, f restoreFixture, name string) (string, str
 	return j, l, p, source, u
 }
 func policyJobStorageSeed(t *testing.T, f restoreFixture, name string, data []byte) (string, string) {
+	t.Helper()
+	return policyHistoryStorageSeed(t, f, name, nil, [][]byte{data})
+}
+func policyHistoryStorageSeed(t *testing.T, f restoreFixture, name string, policies []Policy, records [][]byte) (string, string) {
 	// Denial-only metadata fixture. Strict real job publishers establish history
 	// before original journal initialization/close; no worker ran or clean runtime
 	// shutdown is asserted. Never write an encoded record directly to disk.
@@ -74,25 +78,32 @@ func policyJobStorageSeed(t *testing.T, f restoreFixture, name string, data []by
 		t.Fatal(e)
 	}
 	defer ledger.Close()
-	job, e := decodeCatalogJob(data)
-	if e != nil {
-		t.Fatal(e)
+	for _, p := range policies {
+		if e = ledger.PublishOwnership(p, 0); e != nil {
+			t.Fatal("strict history ownership publisher", e)
+		}
 	}
-	prop, pe := DecodePropertyJob(data)
-	for i := range job.History {
-		prefix := job
-		prefix.History = append([]JobTransition(nil), job.History[:i+1]...)
-		if pe == nil {
-			bound, e := BindPropertyJob(prefix, prop.Intent())
-			if e != nil {
-				t.Fatal(e)
-			}
-			e = ledger.PublishPropertyJob(bound, uint64(i))
-			if e != nil {
-				t.Fatal(e)
-			}
-		} else if e = ledger.PublishJob(prefix, uint64(i)); e != nil {
+	for _, data := range records {
+		job, e := decodeCatalogJob(data)
+		if e != nil {
 			t.Fatal(e)
+		}
+		prop, pe := DecodePropertyJob(data)
+		for i := range job.History {
+			prefix := job
+			prefix.History = append([]JobTransition(nil), job.History[:i+1]...)
+			if pe == nil {
+				bound, e := BindPropertyJob(prefix, prop.Intent())
+				if e != nil {
+					t.Fatal(e)
+				}
+				e = ledger.PublishPropertyJob(bound, uint64(i))
+				if e != nil {
+					t.Fatal(e)
+				}
+			} else if e = ledger.PublishJob(prefix, uint64(i)); e != nil {
+				t.Fatal(e)
+			}
 		}
 	}
 	pair := &ExecutionDomainLeases{native: &executionDomainLeaseNative{store, ledger}}
@@ -330,5 +341,6 @@ func nativePolicyStartupStorage(t *testing.T, kind string) {
 			check(name+"_released", restartLocksReleased(t, jj, ll))
 		}
 	}
+	nativePolicyHistoryCases(t, f, check)
 	t.Log("POLICY_STARTUP_STORAGE_" + strings.ToUpper(kind) + "_RESULT " + strings.Join(seen, " "))
 }
