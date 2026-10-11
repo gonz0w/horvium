@@ -19,6 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ROOT / 'tools'
 SUITES = {
+    'policy-startup-facts': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 sh tools/bsd-policy-startup-facts-prebuilt.sh'),
     'policy-startup-publication': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_STATE_VM=1 HORVIUM_RESTART_VM=1 sh tools/bsd-policy-startup-publication-prebuilt.sh'),
     'policy-startup-owner': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_BACKING_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_EXECUTION_STARTUP_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1 sh tools/bsd-policy-startup-owner-prebuilt.sh'),
     'closed-startup-publication': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_STATE_VM=1 HORVIUM_RESTART_VM=1 sh tools/bsd-closed-startup-publication-prebuilt.sh'),
@@ -43,6 +44,7 @@ SUITES = {
 }
 
 PREBUILT = {
+    'policy-startup-facts': ('policy-startup-facts-native.test', './internal/host/freebsd', 'POLICY_FACTS_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1', 'bsd-policy-startup-facts-prebuilt.sh'),
     'policy-startup-publication': ('policy-startup-publication-native.test', './internal/storage', 'POLICY_STARTUP_PUBLICATION_PREBUILT_SHA256', 'HORVIUM_STATE_VM=1 HORVIUM_RESTART_VM=1', 'bsd-policy-startup-publication-prebuilt.sh'),
     'policy-startup-owner': ('policy-startup-owner-native.test', './internal/host/freebsd', 'POLICY_STARTUP_OWNER_PREBUILT_SHA256', 'HORVIUM_BACKING_VM=1 HORVIUM_PROPERTY_VM=1 HORVIUM_EXECUTION_STARTUP_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1', 'bsd-policy-startup-owner-prebuilt.sh'),
     'closed-startup-publication': ('closed-startup-publication-native.test', './internal/storage', 'CLOSED_STARTUP_PUBLICATION_PREBUILT_SHA256', 'HORVIUM_STATE_VM=1 HORVIUM_RESTART_VM=1', 'bsd-closed-startup-publication-prebuilt.sh'),
@@ -84,7 +86,7 @@ def suite_command(suite, source_build=False, artifact_digest=None):
 
 
 def uses_device_fixture(suite):
-    return suite in ('policy-startup-owner', 'devices', 'pool-properties', 'executor-recovery', 'execution-system', 'execution-startup', 'closed-startup-owner')
+    return suite in ('policy-startup-facts', 'policy-startup-owner', 'devices', 'pool-properties', 'executor-recovery', 'execution-system', 'execution-startup', 'closed-startup-owner')
 
 
 def recovery_boot_identity(text):
@@ -148,7 +150,7 @@ def build_native_binary(directory, source, suite):
     subprocess.run([go, 'mod', 'verify'], cwd=ROOT, env=env, check=True)
     filename, package, _, _, _ = PREBUILT[suite]
     binary = directory / filename
-    tags = ['-tags=horvium_native_fixture'] if suite == 'policy-startup-owner' else []
+    tags = ['-tags=horvium_native_fixture'] if suite in ('policy-startup-owner', 'policy-startup-facts') else []
     command = [go, 'test', '-c', '-trimpath', *tags, '-o', str(binary), package]
     source_identity(source)
     subprocess.run(command, cwd=ROOT, env=env, check=True)
@@ -203,6 +205,11 @@ def stop_guest(process):
 def validate_result(suite, log, complete=False):
     if '--- FAIL:' in log or '\nFAIL\n' in log:
         raise ValueError('guest test failure')
+    if suite == 'policy-startup-facts':
+        load_tool('check-policy-facts-evidence').validate(log)
+        if complete and log.count('DEVICE_FIXTURE_CLEANUP pass\n') != 1:
+            raise ValueError('two-pool facts device teardown required')
+        return
     if suite == 'executor-recovery':
         load_tool('check-executor-recovery-evidence').validate(log)
         if complete and log.count('DEVICE_FIXTURE_CLEANUP pass\n') != 1:

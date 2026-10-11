@@ -572,3 +572,16 @@ checkers and validation branches remain unchanged. See the
 state suites retain their actual historical evidence rather than rerunning
 unrelated cases. Empty warm history and userspace cuts do not qualify reboot,
 power loss, active kernel work or full recovery/runtime behavior.
+
+
+The focused `policy-startup-facts` suite builds the tagged host fixture package
+and selects only `^TestNativeMultiplePolicyFacts$`. It uses the unchanged owned
+five-device profile and checks both actual independent data pools in one normally
+waited child. Require all 12 child and nine parent controls, checksum-bound
+artifact verification and independent pool/input/mount/swap/device/guest/host/
+supervisor teardown on each pinned release. Run releases serially. The eight-
+minute parent, 150-second child, shared 90-second collection context and eighteen-
+minute process bounds are declared before execution in the [two-pool fact
+contract](M2/retained-policy-native-facts.md). This is a read-only collector
+prerequisite, not original root startup/activation/retirement qualification; the
+existing owner and publication suites retain their separate evidence and limits.

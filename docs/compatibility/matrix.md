@@ -1439,3 +1439,13 @@ verified teardown. Its receipt preserves the failed initial fixture candidate an
 signed canonical-comparison regression. It changes no product runtime
 code and does not qualify fixed-root multiple data-pool composition or worker
 shutdown. Remaining adopted acceptance families stay separate.
+
+
+The [native two-pool fact fixture](../testing/M2/retained-policy-native-facts.md)
+uses the existing five-disk disposable profile for two independent single-leaf
+data pools. It checks fixed pool/provider/system collectors and validators with
+actual GUID/member/scope baselines, plus copied last-policy mismatch denials.
+Qualification is pending on both pinned releases. This changes no production
+code; copied codec inputs outside product state confer no enrollment/startup
+authority. Multiple-policy original leases, publication/retirement, concurrency,
+workers, hardware/capacity/performance and broader release acceptance remain open.
