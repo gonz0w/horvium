@@ -37,7 +37,7 @@ for mode in ('clean', 'clean-again', 'legacy', 'member', 'scope', 'missing-pool'
 
 OWNER_GROUPS = {
     group: {c for c in OWNER if c in ('data_sentinel_preserved', 'domain_teardown', 'mounts_restored') or any(c.startswith(mode + '_') for mode in modes)}
-    for group, modes in [('Lifecycle', ('clean', 'clean-again', 'late', 'uid')), ('Denial', ('legacy', 'member', 'scope', 'missing-pool'))]
+    for group, modes in [('Lifecycle', ('clean', 'clean-again')), ('Revocation', ('late', 'uid')), ('Denial', ('legacy', 'member', 'scope', 'missing-pool'))]
 }
 
 
@@ -46,8 +46,17 @@ def validate(text, scope):
     found = original.chunks(text)
     if scope not in ('publication', 'owner'):
         raise ValueError('unknown policy scope')
+    if scope == 'owner' and re.findall(r'(?m)^POLICY_STARTUP_OWNER_PHASE ([^\n]+)$', text) != ['policy begin timeout=34m', 'policy done', 'retained begin timeout=34m', 'retained done']:
+        raise ValueError('two normally completed bounded owner phases required')
     wanted = ({'TestNativePolicyStartup' + group + 'Owner' + kind for group in OWNER_GROUPS for kind in ('UFS', 'ZFS')}
               if scope == 'owner' else {'TestNativePolicyStartup' + kind for kind in ('UFS', 'ZFS')})
+    if scope == 'owner':
+        policy_body = text.split('POLICY_STARTUP_OWNER_PHASE policy begin timeout=34m\n', 1)[1].split('POLICY_STARTUP_OWNER_PHASE policy done\n', 1)[0]
+        phase_parents = original.chunks(policy_body)
+        if len(phase_parents) != len(wanted) or {name for name, _, _, _ in phase_parents} != wanted:
+            raise ValueError('policy parents must complete within their own bounded phase')
+        retained_body = text.split('POLICY_STARTUP_OWNER_PHASE retained begin timeout=34m\n', 1)[1].split('POLICY_STARTUP_OWNER_PHASE retained done\n', 1)[0]
+        original.validate(retained_body, 'owner')
     new = [(n, b, e, sec) for n, b, e, sec in found if n in wanted]
     if len(new) != len(wanted) or {n for n, _, _, _ in new} != wanted:
         raise ValueError('all distinct actual policy parents required')
@@ -65,7 +74,7 @@ def validate(text, scope):
             for marker, value in [('DOMAIN', 'filesystems=pass directories=pass'), ('DATA', 'restored=pass')]:
                 if re.findall('POLICY_STARTUP_' + marker + r'_TEARDOWN ([^\n]+)', body) != [group.lower() + ' ' + kind + ' ' + value]:
                     raise ValueError('independent policy fixture teardown required')
-    for marker in (['POLICY_STARTUP_(?:STORAGE_UFS|STORAGE_ZFS)_RESULT '] if scope == 'publication' else ['POLICY_STARTUP_(?:LIFECYCLE|DENIAL)_OWNER_(?:UFS|ZFS)_RESULT ', 'POLICY_STARTUP_DOMAIN_TEARDOWN ', 'POLICY_STARTUP_DATA_TEARDOWN ']):
+    for marker in (['POLICY_STARTUP_(?:STORAGE_UFS|STORAGE_ZFS)_RESULT '] if scope == 'publication' else ['POLICY_STARTUP_(?:LIFECYCLE|REVOCATION|DENIAL)_OWNER_(?:UFS|ZFS)_RESULT ', 'POLICY_STARTUP_DOMAIN_TEARDOWN ', 'POLICY_STARTUP_DATA_TEARDOWN ']):
         if len(re.findall(marker, text)) != len(wanted):
             raise ValueError('extra/missing policy marker')
 

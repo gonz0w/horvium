@@ -67,20 +67,25 @@ and release; fourteen format/state job variants with denial, preservation, holds
 and release. The new inventory is independently declared in
 `tools/check-policy-startup-evidence.py` before execution.
 
-`policy-startup-owner` runs
-`^TestNative((ExecutionStartup|ClosedStartupOwner)(UFS|ZFS)|PolicyStartup(Lifecycle|Denial)Owner(UFS|ZFS))$`.
-The root parent bound remains eight minutes and process bound 34 minutes. The four
-retained parents and all 394 controls remain required. Four policy parents split
-lifecycle and denial fixtures on each filesystem: lifecycle has 51 controls and
-denial has 39, totaling 180 new controls and 574 overall. All eight prior modes
-remain: clean, clean-again, legacy, member, scope, missing-pool, post-publication
-drift and actual UID-loss. Each independently checks normally waited child
-completion, exact child inventory, both released leases, visible parent journal
-history and exact policy bytes. Each group independently checks data sentinel,
-domain teardown and mount restoration; independent owned data and QEMU device
-cleanup are mandatory. The checker requires all four policy parents plus the four
-unchanged retained parents and rejects old-only, missing, duplicate, skipped,
-failed or partially cleaned evidence. See [fixed-root qualification](retained-policy-root.md).
+`policy-startup-owner` uses two normally waited invocations of the same
+checksum-bound binary, each with the existing 34-minute process bound:
+
+- `^TestNativePolicyStartup(Lifecycle|Revocation|Denial)Owner(UFS|ZFS)$`.
+- `^TestNative(ExecutionStartup|ClosedStartupOwner)(UFS|ZFS)$`.
+
+The root parent bound remains eight minutes. Six policy parents split clean
+lifecycle, revocation and invalid-ownership fixtures on each filesystem, with
+31, 23 and 39 controls respectively. All eight original modes remain required.
+Every group independently checks data sentinel, domain teardown and mount
+restoration. All four retained parents and their 394 controls remain required:
+ten actual parents and 580 controls per release, plus independent QEMU cleanup.
+The aggregate checker requires both phase boundaries, normally completed phase
+results and exact parent placement. Old-only, missing, duplicate, skipped, failed
+or partially cleaned receipts cannot qualify. The aggregate can take up to 68
+minutes of test time; it no longer claims the previous single-process 34-minute
+whole-suite limit. The existing host SSH/controller bound remains two hours.
+Parent, child, operation, byte and record limits are unchanged. See
+[fixed-root qualification](retained-policy-root.md).
 
 ## Required review and remaining acceptance
 

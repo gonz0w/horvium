@@ -159,10 +159,16 @@ func TestExecutionPolicyOwnerChild(t *testing.T) {
 	fmt.Println("POLICY_STARTUP_OWNER_CHILD_RESULT " + mode + " " + strings.Join(seen, " "))
 }
 func TestNativePolicyStartupLifecycleOwnerUFS(t *testing.T) {
-	nativePolicyStartupParent(t, "ufs", "lifecycle", []string{"clean", "clean-again", "late", "uid"})
+	nativePolicyStartupParent(t, "ufs", "lifecycle", []string{"clean", "clean-again"})
 }
 func TestNativePolicyStartupLifecycleOwnerZFS(t *testing.T) {
-	nativePolicyStartupParent(t, "zfs", "lifecycle", []string{"clean", "clean-again", "late", "uid"})
+	nativePolicyStartupParent(t, "zfs", "lifecycle", []string{"clean", "clean-again"})
+}
+func TestNativePolicyStartupRevocationOwnerUFS(t *testing.T) {
+	nativePolicyStartupParent(t, "ufs", "revocation", []string{"late", "uid"})
+}
+func TestNativePolicyStartupRevocationOwnerZFS(t *testing.T) {
+	nativePolicyStartupParent(t, "zfs", "revocation", []string{"late", "uid"})
 }
 func TestNativePolicyStartupDenialOwnerUFS(t *testing.T) {
 	nativePolicyStartupParent(t, "ufs", "denial", []string{"legacy", "member", "scope", "missing-pool"})
