@@ -1540,3 +1540,15 @@ attempted under the adopted stop rule. No complete lifecycle vector or broader
 acceptance is claimed. Independent host teardown and preservation checks passed;
 the incomplete in-guest parent teardown remains unverified. Startup investigation
 on the actual original path remains necessary; caller/product limits stay fixed.
+
+The [original startup deadline analysis](../research/M2/policy-startup-deadline.md)
+verifies that exact failed source/log/result and 26 source assertions across eight
+files, with all twelve earlier policy receipts unchanged. No stack or internal
+review/activation timing was captured. A shared 120-second caller clamps nested
+90-second operations; the reported error cannot locate a probe, select an internal
+stage or prove no publication. The [sanitized witness](../research/M2/policy-startup-deadline-manifest.json)
+preserves those limits. A proposed diagnostic samples bounded private stacks
+around one original startup call, with unchanged product/caller/native limits
+and separate completeness/cleanup checks. It requires explicit adoption through
+issue 321 before implementation/execution. No new native run, runtime or fixture
+change is made; both release lifecycle gates and broader acceptance stay pending.
