@@ -212,3 +212,5 @@
 - [M2 original two-policy root lifecycle](testing/M2/retained-policy-native-lifecycle.md): fixed factory activation, observation, unused retirement and subsequent process restart; broader acceptance remains separate.
 
 - [Retained-policy collection cost diagnostic](research/M2/policy-startup-costs.md): independent native primitives; no lifecycle acceptance.
+
+- [Preserved lifecycle timeout analysis](research/M2/policy-lifecycle-timeout.md): original post-publication stack; no new native run or acceptance.

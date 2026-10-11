@@ -168,3 +168,9 @@ Actual lifecycle, broader issue 305/139 acceptance, configured startup/workers/
 backend/global launch and browser/client/hardware/performance/release gates remain
 pending. No production behavior, time bound, guard, schema, dependency or runtime
 permission changes; runtime writes remain disabled.
+
+The subsequent [preserved lifecycle stack analysis](policy-lifecycle-timeout.md)
+locates the historical whole-child timeout during revalidation after closed
+publication. It reuses exact failed log bytes and historical source, without
+another native run. It does not locate either startup-deadline failure, measure
+command latency or qualify close; all bounds and native acceptance remain intact.

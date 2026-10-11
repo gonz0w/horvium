@@ -1,6 +1,6 @@
 # Research: preserved original lifecycle timeout stack
 
-Status: bounded evidence analysis declared; no new native experiment.
+Status: bounded evidence analysis completed; original lifecycle remains unqualified.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`). Time box: one development session.
 Refs [issue 305](https://github.com/gonz0w/horvium/issues/305) and
 [parent 139](https://github.com/gonz0w/horvium/issues/139).
@@ -62,3 +62,89 @@ profile first; the current runner is TCG-only. Any proposed fixture-budget chang
 needs a separate reviewed contract amendment with cumulative operation/child/
 parent/process/controller bounds and failure/cleanup inventories, before code
 or execution. This analysis adopts neither option and changes no current bound.
+
+## Verified historical observation
+
+The [sanitized analysis receipt](policy-lifecycle-timeout-manifest.json) binds the
+original failed candidate, executable, record/log bytes, 29 extracted frames
+(19 Horvium frames), historical source-file hashes and ten source/control-flow
+assertions. The original log and record exactly match the failed lifecycle
+receipt. All ten preceding policy receipts remain byte-identical. No new native
+execution, producer wrapper or stack sampling was necessary.
+
+The one matching original lifecycle stack follows this path. Line numbers refer
+to executed source `5336a7be00c59e55cd35faeb373889ab64b9ebea`:
+
+| Historical frame | Location | What it establishes at the snapshot |
+|---|---|---|
+| `executionStartupNative.finishIdle` | `execution_restart_retirement_freebsd.go:105` | Post-publication inspection, after the closed-successor publisher, acknowledged-object checks and `n.finished = true` |
+| `executionStartupNative.inspectLocked` | `execution_startup_freebsd.go:189` | Its initial complete domain observation, before that inspection's per-policy validation |
+| `ExecutionDomainLeases.observeLocked` | `execution_domains_freebsd.go:202` | Its final system collection, following repeated journal/ledger backing checks |
+| `SystemUseSource.Collect` | `system_use.go:96` | The second native system pass |
+| `readSystemNative` | `system_use_freebsd.go:9` | The fixed `/bin/freebsd-version -kru` probe, through the unchanged native guard |
+| `executePrepared` / `os/exec.Cmd.Wait` | `execute.go:70` / Go `os/exec/exec.go:944` | Waiting for the launched guarded command; the stack continues into FreeBSD `wait6` |
+
+This locates the **whole-child** timeout during revalidation after closed
+publication. It is not the product's 90-second finish deadline or proof of a
+successful close. The child never returned its complete lifecycle control row;
+the parent did not independently validate the closed record or complete its
+cleanup inventory. Independent host/device/guest/supervisor cleanup did pass,
+as the historical receipt preserves. Publication uncertainty and original
+retirement/release rules remain authoritative.
+
+That child had already reported successful startup at 91.04 seconds and
+observation at 28.02 seconds. Subtracting these two rounded stage observations
+from the 150-second whole-child budget leaves **at most approximately 30.94
+seconds** for all other child work, including finish. This is budget accounting,
+not a measured finish duration: setup, denial checks and logging also consume
+time. No completed finish timing was recorded. The snapshot alone cannot say
+whether the current version command was unusually slow or ordinarily in flight
+when the aggregate child limit arrived.
+
+The two other 15.1 attempts expired during startup and have no equivalent stack.
+This finding cannot locate their failure or clear either complete release gate.
+The two-CPU historical profile differs from today's one-CPU lifecycle profile;
+do not silently relabel the evidence or infer a scheduling improvement.
+
+## Replay and next review boundary
+
+On the evidence-owning checkout, locate the historical
+`policy-startup-lifecycle-15.1-iyjnozpf` session under ignored `.tools/lab-runs/`.
+Keep its raw log and record private. To reproduce the analysis with standard
+Python/Git facilities:
+
+1. SHA-256 the original log and record and require equality with both this
+   manifest and the matching source entry in the unchanged failed receipt.
+   Compare source, artifact checksum, profile, failure and independent cleanup
+   fields. Require unqualified results in both records.
+2. Require one `panic: test timed out after 2m30s`; compare the startup/observe
+   stage rows with the original receipt. Split its goroutine blocks and require
+   exactly one containing `executionStartupNative).finishIdle(`.
+3. Parse that block's Go source-location lines and preceding function symbols,
+   removing argument lists, addresses and creation notices. Require the exact
+   ordered 29-frame vector in the sanitized manifest. Do not infer elapsed time
+   from goroutine IDs or wait-state annotations.
+4. Read each Horvium file with `git show <executed-source>:<relative-file>`.
+   Require its SHA-256 and each of the ten exact line/control-flow assertions
+   in the manifest. The Go standard-library locations remain tied to the
+   compiler identity recorded in the original receipt; they are not Horvium
+   source blobs. Verify all ten preceding receipt hashes against the analysis
+   base and current Git contents.
+
+These are developer-owned, independently replayable provenance checks. The
+committed sanitized witness contains no raw inventories; a reader without the
+private original log can review its source mapping and historical receipt hashes
+but cannot independently re-extract the stack.
+
+The useful next implementation pickup is a declared accelerated amd64 lab profile
+with unchanged lifecycle criteria, if suitable disposable hardware is available.
+An ARM Mac cannot accelerate this existing amd64 guest using the same architecture
+profile, and the current boot-identity implementation is amd64-only. No home-lab
+host has been selected or installed. If work stays on this Mac, a proposed
+fixture-budget amendment must first explain the aggregate deadline conflict,
+inventory every retained control and preserve caller/product bounds and cleanup;
+its review cannot be inferred from this research PR's merge. Do not rerun the
+unchanged failing full suite solely to reproduce this already-preserved timeout.
+Remaining native fault/mixed-history families, configured startup, workers,
+backend/global launch and broader client/browser/hardware/performance/release
+gates stay open.

@@ -1,0 +1,301 @@
+{
+  "schema": 1,
+  "date": "2026-10-11",
+  "scope": "offline analysis of one preserved failed original lifecycle stack; no native execution or acceptance",
+  "declaration_commit": "c55bf57825d7ed7f7d9bbb2e092ea9c2a8b67b42",
+  "analysis_base_commit": "dfa4a113b8fad174aa67c6ffd036f588cd06b180",
+  "native_qualified": false,
+  "analyzed_source_commit": "5336a7be00c59e55cd35faeb373889ab64b9ebea",
+  "release": "15.1",
+  "artifact_sha256": "27877e9e02c6f289324a2679aeb4ef7c53d4a73da1426f64c921087e1b4de6fa",
+  "record_sha256": "5561ed2626d59165654ea8502c264b5f3e26f643b0c34bb74dfae3b14aa443da",
+  "log_sha256": "c767cca25ea9a43bdf5a095713e0b8c41939f3ce1fc1c9bf21a786d763996a32",
+  "historical_receipt_sha256": "43fdd1bbda87853e7d9aee336f70402bfc5f263b9b6b71304dee7133faea5ce0",
+  "profile": {
+    "cpu_count": 2,
+    "cpu_model": "qemu64",
+    "accelerator": "tcg",
+    "memory_mib": 6144,
+    "target": "freebsd/amd64"
+  },
+  "historical_whole_child_timeout_seconds": 150,
+  "historical_startup_seconds": 91.04,
+  "historical_observation_seconds": 28.02,
+  "snapshot": "guarded version probe wait, second pass of final system collection in initial domain observation of post-publication closed revalidation",
+  "sanitized_frames": [
+    {
+      "origin": "Go standard library",
+      "file": "os/wait6_freebsd64.go",
+      "line": 18,
+      "symbol": "os.wait6"
+    },
+    {
+      "origin": "Go standard library",
+      "file": "os/wait_wait6.go",
+      "line": 19,
+      "symbol": "os.(*Process).blockUntilWaitable.func1"
+    },
+    {
+      "origin": "Go standard library",
+      "file": "os/file_posix.go",
+      "line": 263,
+      "symbol": "os.ignoringEINTR"
+    },
+    {
+      "origin": "Go standard library",
+      "file": "os/wait_wait6.go",
+      "line": 18,
+      "symbol": "os.(*Process).blockUntilWaitable"
+    },
+    {
+      "origin": "Go standard library",
+      "file": "os/exec_unix.go",
+      "line": 45,
+      "symbol": "os.(*Process).pidWait"
+    },
+    {
+      "origin": "Go standard library",
+      "file": "os/exec_unix.go",
+      "line": 28,
+      "symbol": "os.(*Process).wait"
+    },
+    {
+      "origin": "Go standard library",
+      "file": "os/exec.go",
+      "line": 347,
+      "symbol": "os.(*Process).Wait"
+    },
+    {
+      "origin": "Go standard library",
+      "file": "os/exec/exec.go",
+      "line": 944,
+      "symbol": "os/exec.(*Cmd).Wait"
+    },
+    {
+      "origin": "Go standard library",
+      "file": "os/exec/exec.go",
+      "line": 643,
+      "symbol": "os/exec.(*Cmd).Run"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/host/freebsd/execute.go",
+      "line": 70,
+      "symbol": "internal/host/freebsd.executePrepared"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/host/freebsd/guard_freebsd.go",
+      "line": 17,
+      "symbol": "internal/host/freebsd.executeNative"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/host/freebsd/system_use_freebsd.go",
+      "line": 9,
+      "symbol": "internal/host/freebsd.readSystemNative"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/host/freebsd/system_use.go",
+      "line": 61,
+      "symbol": "internal/host/freebsd.(*systemCycle).capture"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/host/freebsd/system_use.go",
+      "line": 111,
+      "symbol": "internal/host/freebsd.(*systemCycle).pass"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/host/freebsd/system_use.go",
+      "line": 96,
+      "symbol": "internal/host/freebsd.(*SystemUseSource).Collect"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/storage/execution_domains_freebsd.go",
+      "line": 202,
+      "symbol": "internal/storage.(*ExecutionDomainLeases).observeLocked"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "line": 189,
+      "symbol": "internal/storage.(*executionStartupNative).inspectLocked.func2.1.1"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "line": 238,
+      "symbol": "internal/storage.(*executionStartupNative).inspectLocked.func2.1"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/storage/execution_binding_freebsd.go",
+      "line": 52,
+      "symbol": "internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "line": 154,
+      "symbol": "internal/storage.(*executionStartupNative).inspectLocked.func2"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/storage/execution_binding_freebsd.go",
+      "line": 52,
+      "symbol": "internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "line": 153,
+      "symbol": "internal/storage.(*executionStartupNative).inspectLocked"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/storage/execution_restart_retirement_freebsd.go",
+      "line": 105,
+      "symbol": "internal/storage.(*executionStartupNative).finishIdle"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "line": 103,
+      "symbol": "internal/storage.(*executionStartupNative).activate.func2"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/storage/execution_restart_retirement.go",
+      "line": 31,
+      "symbol": "internal/storage.(*ExecutionRestartActivation).FinishIdle"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/host/freebsd/execution_owner.go",
+      "line": 170,
+      "symbol": "internal/host/freebsd.(*commissionedExecutionOwner).FinishIdle"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/host/freebsd/execution_policy_lifecycle_fixture_test.go",
+      "line": 91,
+      "symbol": "internal/host/freebsd.TestMultiplePolicyRootLifecycleChild.func2"
+    },
+    {
+      "origin": "horvium",
+      "file": "internal/host/freebsd/execution_policy_lifecycle_fixture_test.go",
+      "line": 154,
+      "symbol": "internal/host/freebsd.TestMultiplePolicyRootLifecycleChild"
+    },
+    {
+      "origin": "Go standard library",
+      "file": "testing/testing.go",
+      "line": 2193,
+      "symbol": "testing.tRunner"
+    }
+  ],
+  "historical_source_files_sha256": {
+    "internal/host/freebsd/execute.go": "6b1aa25996f23adec5d9af6bb58708ae475a5a2291f9e994cab83e1408d0c1d8",
+    "internal/host/freebsd/guard_freebsd.go": "3093de04ed48250ad47424b14467e8e698ee264a7b2cc241e008b05191ec9c03",
+    "internal/host/freebsd/system_use_freebsd.go": "2e9ea15925e59bd1c0480d75e8856eecd15e41b8316037b0b026424d550b7d4a",
+    "internal/host/freebsd/system_use.go": "450a4ae0ca879337d452dafa0b34b781513dc8654618e3645014a1e37d8c941e",
+    "internal/storage/execution_domains_freebsd.go": "4c117a7a2136d422eef44f936a98d4ebeac6fd52ff017d05deab619feb5571bf",
+    "internal/storage/execution_startup_freebsd.go": "7568274947d0110a46be79758bcaf5086829f1d2e7636715b3b4c214cc80a679",
+    "internal/storage/execution_binding_freebsd.go": "a6d549990d5855697c9774b92ba328a3146774320661624b4760946143b31f1d",
+    "internal/storage/execution_restart_retirement_freebsd.go": "b191c30276157e2faa46778004dadb67ad4bef78dfe096d96f1a80c2376fd444",
+    "internal/storage/execution_restart_freebsd.go": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241",
+    "internal/storage/execution_restart_retirement.go": "99b4b10e40663c0af017aa41229d8a9bbece0e07b8abaf9739f3f4be3677f88b",
+    "internal/host/freebsd/execution_owner.go": "c3b9bb2b2b9c309947dc4f55723e3ae9ca5dcb2bac48beb77d8cd3aa1935e7ba",
+    "internal/host/freebsd/execution_policy_lifecycle_fixture_test.go": "8e111ecb302d611231abe447bbb3ab4f8010a9e685f9bd97992ebf76a2595510"
+  },
+  "control_flow_assertions": [
+    {
+      "file": "internal/storage/execution_restart_retirement_freebsd.go",
+      "line": 85,
+      "source": "if e = j.publishSuccessorLocked(next, capture); e != nil {"
+    },
+    {
+      "file": "internal/storage/execution_restart_retirement_freebsd.go",
+      "line": 88,
+      "source": "if !captured {"
+    },
+    {
+      "file": "internal/storage/execution_restart_retirement_freebsd.go",
+      "line": 95,
+      "source": "if !sameExecutionStartupObjects(current, acknowledgedObjects) {"
+    },
+    {
+      "file": "internal/storage/execution_restart_retirement_freebsd.go",
+      "line": 104,
+      "source": "n.finished = true"
+    },
+    {
+      "file": "internal/storage/execution_restart_retirement_freebsd.go",
+      "line": 105,
+      "source": "_, _, _, e = n.inspectLocked(ctx)"
+    },
+    {
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "line": 189,
+      "source": "got, e = p.observeLocked(ctx, before.record.Binding.Installation, n.read, n.system)"
+    },
+    {
+      "file": "internal/storage/execution_domains_freebsd.go",
+      "line": 202,
+      "source": "finalSystem, e := system(ctx)"
+    },
+    {
+      "file": "internal/host/freebsd/system_use.go",
+      "line": 96,
+      "source": "after, nextRelease, err := c.pass(ctx)"
+    },
+    {
+      "file": "internal/host/freebsd/system_use_freebsd.go",
+      "line": 9,
+      "source": "return executeNative(ctx, \"/bin/freebsd-version\", []string{\"-kru\"}, limit)"
+    },
+    {
+      "file": "internal/host/freebsd/execute.go",
+      "line": 70,
+      "source": "err := cmd.Run()"
+    }
+  ],
+  "runtime_source_unchanged_at_analysis_base": {
+    "internal/host/freebsd/execute.go": true,
+    "internal/host/freebsd/guard_freebsd.go": true,
+    "internal/host/freebsd/system_use_freebsd.go": true,
+    "internal/host/freebsd/system_use.go": true,
+    "internal/storage/execution_domains_freebsd.go": true,
+    "internal/storage/execution_startup_freebsd.go": true,
+    "internal/storage/execution_binding_freebsd.go": true,
+    "internal/storage/execution_restart_retirement_freebsd.go": true,
+    "internal/storage/execution_restart_freebsd.go": true,
+    "internal/storage/execution_restart_retirement.go": true,
+    "internal/host/freebsd/execution_owner.go": true
+  },
+  "historical_host_cleanup_verified": true,
+  "historical_in_guest_parent_cleanup_verified": false,
+  "historical_receipts_unchanged": {
+    "docs/testing/M2/retained-policy-admission-manifest.json": "2e733dd5a017772ce7947913ced1c16940ee8614cde445cb9fcd0327331077c3",
+    "docs/testing/M2/retained-policy-native-facts-manifest.json": "e9d4a0c6eef2011b236ea69a0ff94c0adae9a9c8f2102fefe4c9ff69f1c9f499",
+    "docs/testing/M2/retained-policy-native-history-manifest.json": "0788d387d4b4c27921fd3f68ffc5206f9fe0c548270464d34c87fd6ea4b8db6d",
+    "docs/testing/M2/retained-policy-native-lifecycle-manifest.json": "43fdd1bbda87853e7d9aee336f70402bfc5f263b9b6b71304dee7133faea5ce0",
+    "docs/testing/M2/retained-policy-native-multiple-manifest.json": "294662c837cf9921dba954491b6737f84adc43de71d09d93c3747107992eb263",
+    "docs/testing/M2/retained-policy-native-review-manifest.json": "f37c74e30d2c769d87f65872303021fd5bf2640467636bd9bea499ae4abaa3cf",
+    "docs/testing/M2/retained-policy-root-manifest.json": "52bb88c0d6cc94fe031a8345adb1bdc1e5fb005634d24f4ba3eb47a59ea3366a",
+    "docs/testing/M2/retained-policy-root-qualification-manifest.json": "6d3dd07f65d88247bdd854061f811629c59168bcfda42385eab5a7cf21aac99c",
+    "docs/testing/M2/retained-policy-startup-manifest.json": "b7b248f1bfe6e197f1c8955f72f80c9fbeef0a71a641767e424059df7cfdd271",
+    "docs/research/M2/policy-startup-costs-manifest.json": "4564cee1d3e579557f6af7d187a77274183752d2af370b44d4e92eed6431ca5a"
+  },
+  "new_native_executions": 0,
+  "limits": [
+    "one instantaneous stack; no per-command duration or emulation/deadlock causal finding",
+    "reached post-publication inspection; final bytes, durability, successful retirement and child controls unverified",
+    "other two startup failures have no corresponding captured stack; neither release lifecycle qualifies",
+    "no time bound, safety check, architecture, fixture, product, dependency, service or runtime authority change"
+  ]
+}
