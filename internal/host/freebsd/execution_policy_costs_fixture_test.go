@@ -81,7 +81,22 @@ func TestNativePolicyStartupCosts(t *testing.T) {
 		system.read = func(c context.Context, p systemProbe, name string, limit int) (readOutput, error) {
 			return reads.measure(func() (readOutput, error) { return readSystemNative(c, p, name, limit) })
 		}
-		stage("system", reads, func() error { _, e := system.Collect(ctx); return e })
+		var use storage.PoolSystemUse
+		stage("system", reads, func() error { var e error; use, e = system.Collect(ctx); return e })
+		rootKind := ""
+		for _, m := range use.System().Mounts {
+			if m.Target == "/" {
+				if rootKind != "" {
+					t.Fatal("duplicate diagnostic root")
+				}
+				rootKind = m.Type
+			}
+		}
+		pools := len(use.Pools())
+		if !((rootKind == "ufs" && pools == 2) || (rootKind == "zfs" && pools == 3)) || reads.count != 2*(5+3*pools) {
+			t.Fatal("undeclared diagnostic root/pool profile")
+		}
+		fmt.Printf("POLICY_STARTUP_COST_SYSTEM root_kind=%s pool_count=%d\n", rootKind, pools)
 		for i, p := range policies {
 			name := []string{"first", "second"}[i]
 			pool, e := NewPoolPropertySource()
@@ -114,7 +129,7 @@ func TestNativePolicyStartupCosts(t *testing.T) {
 				return storage.ValidatePropertyMembers(p, observation, disks)
 			})
 		}
-		for _, kind := range []string{"ufs", "zfs"} {
+		for _, kind := range []string{"zfs", "ufs"} {
 			domains, mounts := nativeMultiplePolicyMetadataFixture(t, ctx, kind, disk, func(j, _ string) {
 				f, e := os.Open(j)
 				if e != nil {

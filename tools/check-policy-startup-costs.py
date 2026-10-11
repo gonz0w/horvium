@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 import sys
 
-STAGES = ['direct-launch', 'guarded-launch', 'system', 'first-properties', 'first-providers', 'second-properties', 'second-providers', 'ufs-backing', 'zfs-backing']
+STAGES = ['direct-launch', 'guarded-launch', 'system', 'first-properties', 'first-providers', 'second-properties', 'second-providers', 'zfs-backing', 'ufs-backing']
 READS = [8, 8, 28, 16, 16, 16, 16, 0, 0]
 
 
@@ -30,10 +30,17 @@ def validate(text):
     rows = re.findall(r'(?m)^POLICY_STARTUP_COST stage=([^ ]+) reads=([0-9]+) elapsed_ns=([0-9]+) read_ns=([0-9]+)$', body)
     if [r[0] for r in rows] != STAGES or text.count('POLICY_STARTUP_COST stage=') != 9:
         raise ValueError('complete ordered diagnostic stages required')
-    for (_, reads, elapsed, read_ns), expected in zip(rows, READS):
+    profile = re.findall(r'(?m)^POLICY_STARTUP_COST_SYSTEM root_kind=(ufs|zfs) pool_count=([23])$', body)
+    if profile not in [[('ufs', '2')], [('zfs', '3')]] or text.count('POLICY_STARTUP_COST_SYSTEM ') != 1:
+        raise ValueError('complete observed root/pool profile required')
+    if not body.index('stage=system ') < body.index('POLICY_STARTUP_COST_SYSTEM ') < body.index('stage=first-properties '):
+        raise ValueError('system profile must accompany original collection')
+    expected_reads = READS.copy()
+    expected_reads[2] = 2 * (5 + 3 * int(profile[0][1]))
+    for (_, reads, elapsed, read_ns), expected in zip(rows, expected_reads):
         if int(reads) != expected or not 0 < int(elapsed) <= 480000000000 or not 0 <= int(read_ns) <= int(elapsed) or (expected == 0) != (int(read_ns) == 0):
             raise ValueError('bounded elapsed/read metrics and exact counts required')
-    if re.findall(r'(?m)^POLICY_STARTUP_COST_CLEANUP ([^\n]+)$', body) != ['ufs filesystems=pass directories=pass mounts=pass', 'zfs filesystems=pass directories=pass mounts=pass'] or text.count('POLICY_STARTUP_COST_CLEANUP ') != 2:
+    if re.findall(r'(?m)^POLICY_STARTUP_COST_CLEANUP ([^\n]+)$', body) != ['zfs filesystems=pass directories=pass mounts=pass', 'ufs filesystems=pass directories=pass mounts=pass'] or text.count('POLICY_STARTUP_COST_CLEANUP ') != 2:
         raise ValueError('both independent metadata cleanups required')
     for marker, controls in [('POLICY_FACTS_CHILD_RESULT', facts.CHILD), ('POLICY_FACTS_PARENT_RESULT', facts.PARENT)]:
         closed.controls(body, marker, controls)
