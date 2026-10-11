@@ -1,6 +1,6 @@
 # Original root lifecycle with two retained native policies
 
-Status: bounded inventory declared before execution; qualification pending.
+Status: staged native gate; all three candidates failed; qualification pending. Draft review only.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`).
 Refs [issue 305](https://github.com/gonz0w/horvium/issues/305) and
 [parent M2-RUNTIME-002](https://github.com/gonz0w/horvium/issues/139).
@@ -135,7 +135,7 @@ source and skipped second-release/ZFS lifecycle remain in the final receipt.
 
 ## Failed affinity run and serial-guest candidate
 
-Signed affinity source `5336a7b` also remains unqualified on FreeBSD 15.1:
+Signed affinity source `5336a7be00c59e55cd35faeb373889ab64b9ebea` also remains unqualified on FreeBSD 15.1:
 construction succeeded in 91.04 seconds and observation in 28.02 seconds; the
 first UFS child then exhausted its unchanged 150-second whole-process timeout
 during finish. Its parent failed at 200.18 seconds. Retained facts/UFS review/ZFS
@@ -162,3 +162,38 @@ Actual passes on both pinned releases are mandatory; a timeout remains failed
 evidence. This is a serial emulated qualification profile, with no SMP/concurrency,
 throughput or commercial capacity claim. Preserve both failed candidates and all
 eight earlier manifests. No production or fixture time limit is enlarged.
+
+## Final serial candidate failed; native gate remains blocked
+
+Signed source `b9fa2deebbe88aa383f8d3cf29aab7496d17238c` ran the final
+one-CPU experiment on disposable FreeBSD/amd64 15.1. Retained facts/UFS review/
+ZFS review completed at 16.93/172.90/199.79 seconds. The first UFS lifecycle
+child returned `context deadline exceeded` from construction after 118.72
+seconds, before returning an owner; child failure completed at 118.76 seconds,
+parent failure at 176.25 seconds. No completed lifecycle vector qualifies.
+No ZFS lifecycle or 14.5 attempt followed. Returning no owner does not establish
+that no active publication occurred. Do not infer unpublished state or accepted
+in-guest parent cleanup from host teardown.
+
+The [unqualified receipt](retained-policy-native-lifecycle-manifest.json) binds
+all three actual source/compiler/artifact/log/record hashes and partial diagnostics.
+Every failed attempt's independent host/device/guest/key/artifact/supervisor
+cleanup and base/runtime preservation passed. Incomplete in-guest parent control/
+cleanup vectors remain unaccepted. All eight earlier manifests remain byte-identical;
+these failures do not alter their original scope or qualify this gate.
+
+The signed final source passed required `make check lint test secrets` and shared-
+tooling full portable review: 204 tooling tests, ordinary Go tests, all eleven
+race packages and 54 fuzz targets. Four synthetic evidence-consumer/tooling tests
+pass after three signed failing-first declarations. These are portable/tooling
+results, not native lifecycle acceptance. Normal native-target builds exclude
+the three tagged fixtures and the existing seed bridge.
+
+Leave the PR draft and issues 305/139 open with broader acceptance unchecked.
+Next investigate actual fixture/native timing within the adopted bounds, separating
+emulation overhead from product behavior on a suitable disposable native lab;
+then require complete same-candidate passes on both pinned releases. No further
+fixture tuning, deadline increase or assumption of scheduling causality is accepted
+by this receipt. Product code and runtime write denial remain unchanged. Remaining
+multi-policy failure families, mixed history, configured startup/workers/backend/
+global launch and browser/client/hardware/performance/release gates stay open.

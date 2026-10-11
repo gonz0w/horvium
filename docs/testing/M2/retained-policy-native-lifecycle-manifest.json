@@ -1,0 +1,613 @@
+{
+  "schema": 1,
+  "date": "2026-10-11",
+  "scope": "staged original fixed-root two-policy lifecycle gate; native qualification failed and remains pending; draft PR must not be treated as acceptance",
+  "native_qualified": false,
+  "base_commit": "7583f435a5a8503949967c9e04082769f37f4c06",
+  "executed_source_commit": "b9fa2deebbe88aa383f8d3cf29aab7496d17238c",
+  "source_tree": "5ca374d6cbab0699f3cabe09d4011297be38751a",
+  "requirements": [
+    "M2-RUNTIME-002",
+    "M2-STATE-001",
+    "M2-OWN-001",
+    "M2-DRIFT-001",
+    "M2-PRIV-001",
+    "M2-NATIVE-001"
+  ],
+  "behavioral_delta_sha256": {
+    "internal/host/freebsd/execution_policy_lifecycle_fixture_test.go": "5a273d1498bf72e0691128669dd70633a62d5711087b7b7ad114502c8b7769b5",
+    "internal/host/freebsd/execution_policy_review_fixture_test.go": "ffff684bb3a238590bf7c473e9e1234ba23be220bb46c6a6c5d0190cff3bd2a1",
+    "tools/bsd-policy-startup-lifecycle-prebuilt.sh": "194c353849f1701a71830f0c412c475afb544dcee8085e358b943511fe658f29",
+    "tools/check-policy-root-lifecycle-evidence.py": "7afcf49e5e90c25f7bc935c915e8994926a6753b5b361e6d6ab411466ebafdc2",
+    "tools/local-qualification.py": "666f84a8d53ef940f78b9375be6f088a3f27b9ae82284b5679c2e854c1e16cdc",
+    "tools/tests/test_policy_root_lifecycle_evidence.py": "4e5520a8bb60e4babdde01a6bcc6864d05f5a46ccb13ba28b70ca6a0f6abeee7"
+  },
+  "non_prose_verification_input_count": 605,
+  "non_prose_verification_inputs_digest": "e41b752e6dbed21e40c826b94760bace6b4a275634d66bc74b625afe15255ae3",
+  "expected_inventory": {
+    "parents_per_release": 5,
+    "controls_per_release": 283,
+    "normally_waited_children_per_release": 13,
+    "qualified_releases": []
+  },
+  "parser_red": [
+    {
+      "source_commit": "361ca2957e9950a01d62b2e801a14f3ee0e2466c",
+      "tests": 3,
+      "qualified": false,
+      "expected_failure": true,
+      "expected_summary": "FAILED (failures=1, errors=2)",
+      "log_sha256": "9d224adb2233678c5d0ac071e7438b19ad34f83b4f851ae533ba07867e22ff25",
+      "scope": "synthetic evidence-consumer/tooling regression only; not product or native proof"
+    },
+    {
+      "source_commit": "df95f55114b550c5f22b0f38b2e81437527cb482",
+      "tests": 3,
+      "qualified": false,
+      "expected_failure": true,
+      "expected_summary": "FAILED (failures=1, errors=1)",
+      "log_sha256": "c17e4cc5e7343a304cedd70dad6843e3e1f1a6d064bac2d9674d163958351108",
+      "scope": "synthetic evidence-consumer/tooling regression only; not product or native proof"
+    },
+    {
+      "source_commit": "f933483bbffca63bf9b1d9ce007bdcb7b44162d8",
+      "tests": 4,
+      "qualified": false,
+      "expected_failure": true,
+      "expected_summary": "FAILED (failures=1, errors=1)",
+      "log_sha256": "d27e60c85ca9937e3d8a6f3b9ae5bab13d651d67e1218ed6d87c8053f3a31d12",
+      "scope": "synthetic evidence-consumer/tooling regression only; not product or native proof"
+    }
+  ],
+  "parser_green": {
+    "tests": 4,
+    "source_commit": "b9fa2deebbe88aa383f8d3cf29aab7496d17238c",
+    "scope": "synthetic evidence-consumer/tooling tests only"
+  },
+  "failed_native_attempts": [
+    {
+      "source_commit": "b9fa2deebbe88aa383f8d3cf29aab7496d17238c",
+      "release": "15.1",
+      "suite": "policy-startup-lifecycle",
+      "started_at": "2026-10-11T19:59:30.605440+00:00",
+      "completed_at": "2026-10-11T20:09:36.493802+00:00",
+      "cpu_count": 1,
+      "cpu_model": "qemu64",
+      "accelerator": "tcg",
+      "memory_mib": 6144,
+      "prebuilt": {
+        "source_commit": "b9fa2deebbe88aa383f8d3cf29aab7496d17238c",
+        "sha256": "9b2b2e1835e6dd317171f58754230991b2cbd4d6e2dfbc2d95c17f498f0dc620",
+        "bytes": 13528800,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+        "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-tags=horvium_native_fixture",
+          "-o",
+          "<owned-artifact>",
+          "./internal/host/freebsd"
+        ]
+      },
+      "host_teardown": true,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "device_backings_preserved": true,
+      "device_fixture_teardown": true,
+      "supervisor_fixture_cleanup": true,
+      "supervisor_group_cleaned": true,
+      "qualified": false,
+      "failure": "supervisor interrupted the run or worker failed",
+      "record_sha256": "cd48697525208fd0e597b3863c40ff22d205007c6ea2fa2b50fd25e5b486c763",
+      "log_sha256": "e9a911ef1cb2dae2778309572c67d008f362ac59df298e953021b48bf4f70dc6",
+      "completed_parent_observations": [
+        {
+          "name": "TestNativeMultiplePolicyFacts",
+          "seconds": 16.93
+        },
+        {
+          "name": "TestNativeMultiplePolicyReviewUFS",
+          "seconds": 172.9
+        },
+        {
+          "name": "TestNativeMultiplePolicyReviewZFS",
+          "seconds": 199.79
+        }
+      ],
+      "lifecycle_stage_diagnostics": [
+        {
+          "stage": "startup",
+          "seconds": 118.72,
+          "error": "context deadline exceeded"
+        }
+      ],
+      "whole_child_timeout": false,
+      "lifecycle_parent_completed": false,
+      "in_guest_parent_teardown_unverified": true,
+      "owned_temporary_artifacts_removed": true,
+      "zfs_lifecycle_executed": false,
+      "second_release_executed": false
+    },
+    {
+      "source_commit": "5336a7be00c59e55cd35faeb373889ab64b9ebea",
+      "release": "15.1",
+      "suite": "policy-startup-lifecycle",
+      "started_at": "2026-10-11T19:39:38.876365+00:00",
+      "completed_at": "2026-10-11T19:51:36.286620+00:00",
+      "cpu_count": 2,
+      "cpu_model": "qemu64",
+      "accelerator": "tcg",
+      "memory_mib": 6144,
+      "prebuilt": {
+        "source_commit": "5336a7be00c59e55cd35faeb373889ab64b9ebea",
+        "sha256": "27877e9e02c6f289324a2679aeb4ef7c53d4a73da1426f64c921087e1b4de6fa",
+        "bytes": 13527576,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+        "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-tags=horvium_native_fixture",
+          "-o",
+          "<owned-artifact>",
+          "./internal/host/freebsd"
+        ]
+      },
+      "host_teardown": true,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "device_backings_preserved": true,
+      "device_fixture_teardown": true,
+      "supervisor_fixture_cleanup": true,
+      "supervisor_group_cleaned": true,
+      "qualified": false,
+      "failure": "supervisor interrupted the run or worker failed",
+      "record_sha256": "5561ed2626d59165654ea8502c264b5f3e26f643b0c34bb74dfae3b14aa443da",
+      "log_sha256": "c767cca25ea9a43bdf5a095713e0b8c41939f3ce1fc1c9bf21a786d763996a32",
+      "completed_parent_observations": [
+        {
+          "name": "TestNativeMultiplePolicyFacts",
+          "seconds": 19.04
+        },
+        {
+          "name": "TestNativeMultiplePolicyReviewUFS",
+          "seconds": 257.8
+        },
+        {
+          "name": "TestNativeMultiplePolicyReviewZFS",
+          "seconds": 185.99
+        }
+      ],
+      "lifecycle_stage_diagnostics": [
+        {
+          "stage": "startup",
+          "seconds": 91.04,
+          "error": "<nil>"
+        },
+        {
+          "stage": "observe",
+          "seconds": 28.02,
+          "error": "<nil>"
+        },
+        {
+          "stage": "copied",
+          "seconds": 0.0,
+          "error": "storage scope denied"
+        },
+        {
+          "stage": "copied-finish",
+          "seconds": 0.0,
+          "error": "storage scope denied"
+        },
+        {
+          "stage": "decoded",
+          "seconds": 0.0,
+          "error": "storage scope denied"
+        },
+        {
+          "stage": "decoded-finish",
+          "seconds": 0.0,
+          "error": "storage scope denied"
+        }
+      ],
+      "whole_child_timeout": true,
+      "lifecycle_parent_completed": false,
+      "in_guest_parent_teardown_unverified": true,
+      "owned_temporary_artifacts_removed": true,
+      "zfs_lifecycle_executed": false,
+      "second_release_executed": false
+    },
+    {
+      "source_commit": "c4591db14c44a61c33eb5e3de0f9624cf332b988",
+      "release": "15.1",
+      "suite": "policy-startup-lifecycle",
+      "started_at": "2026-10-11T19:20:19.367579+00:00",
+      "completed_at": "2026-10-11T19:35:03.435672+00:00",
+      "cpu_count": 2,
+      "cpu_model": "qemu64",
+      "accelerator": "tcg",
+      "memory_mib": 6144,
+      "prebuilt": {
+        "source_commit": "c4591db14c44a61c33eb5e3de0f9624cf332b988",
+        "sha256": "502e801ff49ab0359b48db3ead79c7573ef8aa77eb94d51186e31bb14b25a72f",
+        "bytes": 13525981,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+        "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-tags=horvium_native_fixture",
+          "-o",
+          "<owned-artifact>",
+          "./internal/host/freebsd"
+        ]
+      },
+      "host_teardown": true,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "device_backings_preserved": true,
+      "device_fixture_teardown": true,
+      "supervisor_fixture_cleanup": true,
+      "supervisor_group_cleaned": true,
+      "qualified": false,
+      "failure": "supervisor interrupted the run or worker failed",
+      "record_sha256": "e2d7abe1824a1521f92578bbe1dab7cc86d22e643abf6a595a652437b168863c",
+      "log_sha256": "963325134efe859d634c5a39247906b09de2bfd6cadd1ea347627983426277aa",
+      "completed_parent_observations": [
+        {
+          "name": "TestNativeMultiplePolicyFacts",
+          "seconds": 25.16
+        },
+        {
+          "name": "TestNativeMultiplePolicyReviewUFS",
+          "seconds": 255.88
+        },
+        {
+          "name": "TestNativeMultiplePolicyReviewZFS",
+          "seconds": 333.14
+        }
+      ],
+      "lifecycle_stage_diagnostics": [
+        {
+          "stage": "startup",
+          "seconds": 120.02,
+          "error": "context deadline exceeded"
+        }
+      ],
+      "whole_child_timeout": false,
+      "lifecycle_parent_completed": false,
+      "in_guest_parent_teardown_unverified": true,
+      "owned_temporary_artifacts_removed": true,
+      "zfs_lifecycle_executed": false,
+      "second_release_executed": false
+    }
+  ],
+  "portable_review": {
+    "source_commit": "b9fa2deebbe88aa383f8d3cf29aab7496d17238c",
+    "source_tree": "5ca374d6cbab0699f3cabe09d4011297be38751a",
+    "base_commit": "7583f435a5a8503949967c9e04082769f37f4c06",
+    "title": "test(host): stage original two-policy native lifecycle gate",
+    "signed_commits": [
+      "b9fa2deebbe88aa383f8d3cf29aab7496d17238c",
+      "f933483bbffca63bf9b1d9ce007bdcb7b44162d8",
+      "5336a7be00c59e55cd35faeb373889ab64b9ebea",
+      "df95f55114b550c5f22b0f38b2e81437527cb482",
+      "c4591db14c44a61c33eb5e3de0f9624cf332b988",
+      "361ca2957e9950a01d62b2e801a14f3ee0e2466c"
+    ],
+    "qualified": true,
+    "plan": {
+      "mode": "full",
+      "reason": "shared tooling, policy, module or packaging change",
+      "packages": [],
+      "native_review_required": true
+    },
+    "command": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "checks_log_sha256": "63318d83446772aabf158384cd76ac8f15f1cca54a3b3ede55464b410b8c60e4",
+    "report_sha256": "ab046b44b81b3d72c2b6e40897479759f840386b1d7128b0a293c325875e577c",
+    "deep_log_sha256": "0adcba30df9b612e4e81a7b3e00b9565f19fb863af8a5abdca7f038b2a8a5e70",
+    "deep_result": {
+      "fuzz_targets": [
+        {
+          "package": "./internal/admin",
+          "target": "FuzzConfiguration"
+        },
+        {
+          "package": "./internal/admin",
+          "target": "FuzzSessionAuthorityActions"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzActionNegotiation"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzPropertyReplies"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzPropertyRequest"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzRequest"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzSnapshot"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPersistentBackingProjection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPoolPropertyCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPoolProviderCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyClaimSourceSelection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyControlSelection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyJobSource"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyPolicyCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzSystemUseCollection"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzDiskAccess"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzDiskAttachments"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzDiskObservation"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzGEOM"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzPoolDiskAttachments"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzPools"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzDeviceUseReview"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionCensus"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionCensusChange"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionJournal"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionJournalNamespace"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemSignature"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemStates"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzIdentities"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzImportedPoolUse"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobReservations"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobRestartPage"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipCatalogNames"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolFeatures"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolLabels"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolScan"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolState"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolSystemUse"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolTopology"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzProperties"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyCoordinatorActions"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyExecutionCut"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyExecutionHandoff"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyIntent"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyJob"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyJobAssessment"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyLiveStateReceipt"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyPlan"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyPostcondition"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyViews"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzStateCatalogNames"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzSystemDeviceUse"
+        }
+      ],
+      "race_packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/eventlog",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/inventory",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ]
+    },
+    "supervised_teardown": {
+      "completed": true,
+      "group_cleaned": true,
+      "worker_returncode": 0
+    },
+    "tooling_tests": 204
+  },
+  "historical_receipts_unchanged": {
+    "retained-policy-startup-manifest.json": "b7b248f1bfe6e197f1c8955f72f80c9fbeef0a71a641767e424059df7cfdd271",
+    "retained-policy-root-manifest.json": "52bb88c0d6cc94fe031a8345adb1bdc1e5fb005634d24f4ba3eb47a59ea3366a",
+    "retained-policy-root-qualification-manifest.json": "6d3dd07f65d88247bdd854061f811629c59168bcfda42385eab5a7cf21aac99c",
+    "retained-policy-admission-manifest.json": "2e733dd5a017772ce7947913ced1c16940ee8614cde445cb9fcd0327331077c3",
+    "retained-policy-native-history-manifest.json": "0788d387d4b4c27921fd3f68ffc5206f9fe0c548270464d34c87fd6ea4b8db6d",
+    "retained-policy-native-multiple-manifest.json": "294662c837cf9921dba954491b6737f84adc43de71d09d93c3747107992eb263",
+    "retained-policy-native-facts-manifest.json": "e9d4a0c6eef2011b236ea69a0ff94c0adae9a9c8f2102fefe4c9ff69f1c9f499",
+    "retained-policy-native-review-manifest.json": "f37c74e30d2c769d87f65872303021fd5bf2640467636bd9bea499ae4abaa3cf"
+  },
+  "normal_build_exclusion": {
+    "verified": true,
+    "source_commit": "b9fa2deebbe88aa383f8d3cf29aab7496d17238c",
+    "method": "native-target go list without fixture tag",
+    "excluded": {
+      "./internal/host/freebsd": [
+        "execution_policy_facts_fixture_test.go",
+        "execution_policy_review_fixture_test.go",
+        "execution_policy_lifecycle_fixture_test.go"
+      ],
+      "./internal/storage": [
+        "execution_policy_fixture_freebsd.go"
+      ]
+    }
+  },
+  "limits": [
+    "no lifecycle parent or release qualifies; completed retained parents and partial child stages are diagnostic only",
+    "all three FreeBSD 15.1 attempts failed within unchanged caller/product/child bounds; ZFS lifecycle and 14.5 not attempted",
+    "whole final guest uses one emulated CPU; no SMP/concurrency/product scheduling/performance claim",
+    "initial original closed seed is controlled commissioning and metadata publication; no worker shutdown provenance",
+    "no deadline increase, product change, configured startup/workers/backend/global launch/public operation/service/dependency or runtime authorization",
+    "eight prior manifests remain byte-identical; issue 305 and parent 139 stay open; required native acceptance remains blocked"
+  ]
+}

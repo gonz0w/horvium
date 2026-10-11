@@ -633,3 +633,9 @@ count, the guest checks its actual count before phases, and every lifecycle pare
 child checks actual one-CPU kernel/CPU 0 affinity. All cases and time limits remain
 unchanged.
 This fixture experiment is not a product scheduling or performance claim.
+
+All three lifecycle candidates, including the final one-CPU profile, remain failed
+native evidence; see the [unqualified receipt](M2/retained-policy-native-lifecycle-manifest.json).
+Do not treat this staged runner or retained-parent passes as lifecycle acceptance.
+No 14.5 attempt followed the failed 15.1 gates. Further native timing/fixture
+investigation must preserve the adopted bounds before another qualification.

@@ -1473,7 +1473,8 @@ original multi-policy activation/retirement and broader acceptance remain open.
 The [original two-policy lifecycle fixture](../testing/M2/retained-policy-native-lifecycle.md)
 declares valid fixed-factory activation, observation and unused retirement on UFS/
 ZFS metadata, then a second process cycle from the same published closed history.
-Qualification is pending. Its focused gate retains all three fact/review parents
+All three FreeBSD 15.1 candidates failed; native qualification remains blocked
+for draft review. Its focused gate retains all three fact/review parents
 and adds two lifecycle parents: five parents, 283 controls and thirteen normally
 waited children per pinned release. The failed initial 279-control candidate
 and the second affinity candidate remain unqualified. The final serial lab
@@ -1482,3 +1483,11 @@ processes to CPU 0, with actual kernel CPU-count/affinity checks. Other suites
 retain the default two-CPU profile. Product code, time bounds and runtime write
 denial are unchanged. This adds no configured startup, worker or launch authority;
 remaining failure families and broader acceptance stay open.
+
+The final one-CPU candidate also failed construction after 118.72 seconds, before
+returning an owner; no lifecycle parent or 14.5 candidate qualifies. All three
+failed runs had verified independent host teardown. The
+[unqualified receipt](../testing/M2/retained-policy-native-lifecycle-manifest.json)
+records source-bound failures/skips and passing portable checks separately.
+A suitable disposable native timing investigation and complete passes on both
+pinned releases remain required. Earlier accepted receipts are unchanged.
