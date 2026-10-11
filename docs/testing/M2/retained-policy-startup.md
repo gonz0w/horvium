@@ -87,6 +87,13 @@ whole-suite limit. The existing host SSH/controller bound remains two hours.
 Parent, child, operation, byte and record limits are unchanged. See
 [fixed-root qualification](retained-policy-root.md).
 
+The subsequent [child operation budget correction](retained-policy-child-budget.md)
+gives independent owner calls independent bounded fixture contexts, retaining the
+150-second whole-child test limit and each 90-second product operation bound.
+The earlier shared 120-second lifecycle context failed during ZFS close. The
+corrected context/child-profile candidate now has complete existing fixed-root
+receipts on both pinned releases; expanded acceptance remains outstanding.
+
 ## Required review and remaining acceptance
 
 Run `make check lint test secrets`, signed/DCO/title review, and the existing full
@@ -123,8 +130,16 @@ teardown; host guest/image/key/artifact/supervisor cleanup and preserved base/ru
 checks passed. Storage policy/physical-use/boot facts remain synthetic. Normal
 FreeBSD build file selection excludes the tagged fixture bridge.
 
-Enabled fixed-root qualification and the expanded acceptance families above remain
-pending. These storage passes do not accept issue 305, the broader runtime gate or
-M2. The merged implementation does not close those gates. No private exploratory
-compile/stub log or earlier
-empty-ledger receipt is substituted for a missing native gate.
+At that storage candidate, enabled fixed-root qualification and expanded
+acceptance remained pending. The subsequent
+[fixed-root receipt](retained-policy-root-qualification-manifest.json) records
+corrected source `35d32e5667cfec4416884f24164c26f864714513` completing
+ten parents/580 controls on each release, with identical artifacts and verified
+teardown; see the [root qualification](retained-policy-root.md). Storage facts
+retain their synthetic-transfer limitation, and both manifests preserve their
+actual separate executed sources.
+
+Expanded multi-policy/mixed-history/concurrency/census/bounds acceptance remains
+pending. These component passes do not accept issue 305, its broader runtime gate
+or M2. No private exploratory compile/stub log or earlier empty-ledger receipt is
+substituted for a missing native gate.

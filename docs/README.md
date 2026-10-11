@@ -202,4 +202,5 @@
 - [M2 adopted policy-only clean restart slice and Test Design](milestones/M2/retained-policy-startup.md)
 
 - [M2 retained-policy startup qualification](testing/M2/retained-policy-startup.md): private policy-only candidate and bounded native gate; acceptance pending.
-- [M2 fixed-root policy startup qualification](testing/M2/retained-policy-root.md): independently bounded lifecycle/denial fixtures and candidate-specific receipts.
+- [M2 fixed-root policy startup qualification](testing/M2/retained-policy-root.md): existing single-policy suite passed both pinned releases; expanded acceptance remains pending.
+- [M2 policy startup child budgets](testing/M2/retained-policy-child-budget.md): independent caller contexts, checked child profile, unchanged whole-child/product limits and complete native regression receipts.

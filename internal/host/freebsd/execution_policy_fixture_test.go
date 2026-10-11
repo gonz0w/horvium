@@ -16,6 +16,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"reflect"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
@@ -54,8 +55,21 @@ func TestExecutionPolicyOwnerChild(t *testing.T) {
 	if !known {
 		t.Fatal("unknown mode")
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
-	defer cancel()
+	if runtime.GOMAXPROCS(0) != 1 {
+		t.Fatal("owned policy child requires one Go execution thread")
+	}
+	// Independent owner calls use independent caller contexts. Each call retains
+	// one deadline across its complete policy set; the child process still has
+	// its original 150-second test timeout. Do not let setup consume close's
+	// context budget or renew a deadline inside a product operation.
+	call := func(stage string, budget time.Duration, run func(context.Context) error) error {
+		c, stop := context.WithTimeout(context.Background(), budget)
+		defer stop()
+		start := time.Now()
+		err := run(c)
+		t.Logf("policy child stage=%s elapsed=%.2fs error=%v", stage, time.Since(start).Seconds(), err)
+		return err
+	}
 	j, l := os.Getenv("HORVIUM_RESTART_JOURNAL"), os.Getenv("HORVIUM_RESTART_LEDGER")
 	before, old := readActivationFixture(t, j)
 	var seen []string
@@ -67,7 +81,12 @@ func TestExecutionPolicyOwnerChild(t *testing.T) {
 		seen = append(seen, name)
 	}
 	consumed := func() bool {
-		q, e := activateNativeClosedExecutionOwner(ctx, j+"-other", l+"-other")
+		var q *commissionedExecutionOwner
+		e := call("registration-consumed", 90*time.Second, func(c context.Context) error {
+			var err error
+			q, err = activateNativeClosedExecutionOwner(c, j+"-other", l+"-other")
+			return err
+		})
 		return e != nil && q == nil && !activationPathExists(j+"-other") && !activationPathExists(l+"-other")
 	}
 	var o *commissionedExecutionOwner
@@ -89,38 +108,50 @@ func TestExecutionPolicyOwnerChild(t *testing.T) {
 			}
 			return obs, d, u, e
 		}
-		o, e = commissionExecutionOwner(ctx, nativeExecutionOwners, func() bool { return os.Geteuid() == 0 }, func(c context.Context) (executionOwnerSource, error) {
-			r, e := storage.ReviewExecutionPolicyStartup(c, j, l, readNativeExecutionBacking, system.Collect, readNativeActivationBoot, wrapped)
-			if e != nil {
-				return executionOwnerSource{}, e
-			}
-			a, e := r.Activate(c)
-			if e != nil {
-				return executionOwnerSource{}, errors.Join(e, r.Close())
-			}
-			return executionOwnerSource{observe: a.Observe, finish: a.FinishIdle, release: a.Close}, nil
+		e = call("startup", 2*time.Minute, func(ctx context.Context) error {
+			var err error
+			o, err = commissionExecutionOwner(ctx, nativeExecutionOwners, func() bool { return os.Geteuid() == 0 }, func(c context.Context) (executionOwnerSource, error) {
+				r, e := storage.ReviewExecutionPolicyStartup(c, j, l, readNativeExecutionBacking, system.Collect, readNativeActivationBoot, wrapped)
+				if e != nil {
+					return executionOwnerSource{}, e
+				}
+				a, e := r.Activate(c)
+				if e != nil {
+					return executionOwnerSource{}, errors.Join(e, r.Close())
+				}
+				return executionOwnerSource{observe: a.Observe, finish: a.FinishIdle, release: a.Close}, nil
+			})
+			return err
 		})
 	} else {
-		o, e = activateNativeClosedExecutionOwner(ctx, j, l)
+		e = call("startup", 2*time.Minute, func(c context.Context) error {
+			var err error
+			o, err = activateNativeClosedExecutionOwner(c, j, l)
+			return err
+		})
+	}
+	observe := func(c context.Context) error {
+		_, err := o.Observe(c)
+		return err
 	}
 	if mode == "clean" || mode == "clean-again" {
 		check("registered", e == nil && o != nil)
 		defer o.Close()
 		check("leases-held", nativeActivationLockHeld(t, j) && nativeActivationLockHeld(t, l))
-		_, e = o.Observe(ctx)
+		e = call("observe", 90*time.Second, observe)
 		check("original-observation", e == nil)
 		copied := new(commissionedExecutionOwner)
 		reflect.ValueOf(copied).Elem().Set(reflect.ValueOf(o).Elem())
-		_, e = copied.Observe(ctx)
-		check("copied-denied", e != nil && copied.FinishIdle(ctx) != nil && copied.Close() != nil)
+		e = call("copied-observe", 90*time.Second, func(c context.Context) error { _, err := copied.Observe(c); return err })
+		check("copied-denied", e != nil && call("copied-finish", 90*time.Second, copied.FinishIdle) != nil && copied.Close() != nil)
 		wire, e := json.Marshal(o)
 		var decoded commissionedExecutionOwner
-		check("decoded-denied", e == nil && string(wire) == "{}" && json.Unmarshal(wire, &decoded) == nil && decoded.FinishIdle(ctx) != nil)
-		e = o.FinishIdle(ctx)
+		check("decoded-denied", e == nil && string(wire) == "{}" && json.Unmarshal(wire, &decoded) == nil && call("decoded-finish", 90*time.Second, decoded.FinishIdle) != nil)
+		e = call("finish", 90*time.Second, o.FinishIdle)
 		_, record := readActivationFixture(t, j)
 		check("closed", e == nil && record.Owner.State == "closed" && record.Generation == old.Generation+2 && record.Owner.ID != old.Owner.ID && record.Census == old.Census && record.Binding == old.Binding)
-		_, e = o.Observe(ctx)
-		check("retired", e != nil && o.FinishIdle(ctx) != nil)
+		e = call("retired-observe", 90*time.Second, observe)
+		check("retired", e != nil && call("retired-finish", 90*time.Second, o.FinishIdle) != nil)
 		check("released", o.Close() == nil && o.Close() == nil && !nativeActivationLockHeld(t, j) && !nativeActivationLockHeld(t, l))
 		check("registration-consumed", consumed())
 	} else if mode == "uid" {
@@ -138,8 +169,8 @@ func TestExecutionPolicyOwnerChild(t *testing.T) {
 			}
 		}
 		check("inherited-root", inherited >= 2)
-		_, e = o.Observe(ctx)
-		check("operations-denied", e != nil && o.FinishIdle(ctx) != nil)
+		e = call("uid-observe", 90*time.Second, observe)
+		check("operations-denied", e != nil && call("uid-finish", 90*time.Second, o.FinishIdle) != nil)
 		check("active-preserved", o.blocked)
 		check("released", o.Close() != nil && o.closed)
 	} else {
@@ -353,7 +384,7 @@ func nativePolicyStartupFixture(t *testing.T, ctx context.Context, kind, group s
 			t.Fatal(e)
 		}
 		cmd := exec.CommandContext(ctx, os.Args[0], "-test.v", "-test.run=^TestExecutionPolicyOwnerChild$", "-test.timeout=150s")
-		cmd.Env = append(os.Environ(), "HORVIUM_POLICY_OWNER_CHILD="+mode, "HORVIUM_RESTART_JOURNAL="+cj, "HORVIUM_RESTART_LEDGER="+cl)
+		cmd.Env = append(os.Environ(), "GOMAXPROCS=1", "HORVIUM_POLICY_OWNER_CHILD="+mode, "HORVIUM_RESTART_JOURNAL="+cj, "HORVIUM_RESTART_LEDGER="+cl)
 		data, e := cmd.CombinedOutput()
 		if e != nil {
 			t.Logf("policy child %s: %.16000s", mode, data)

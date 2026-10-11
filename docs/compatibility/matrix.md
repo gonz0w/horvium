@@ -1385,10 +1385,30 @@ and M1 manual accessibility remain unqualified.
 The [policy-only clean restart design](../milestones/M2/retained-policy-startup.md)
 was adopted in PR 306 and implemented privately in PR 307. The ordinary
 metadata-only activation remains empty-ledger-only. The separate policy consumer
-still needs complete native policy validation, every-job refusal and actual
-UFS/ZFS lifecycle/publication/teardown evidence on both pinned FreeBSD targets.
+has storage and existing single-policy fixed-root receipts on both pinned FreeBSD
+targets; complete multi-policy/history/concurrency/census/bounds acceptance still
+needs candidate-specific evidence under issue 305.
 Merged components do not qualify configured startup or add hardware support.
 
 ## Retained ownership policy startup candidate
 
-The [adopted design](../milestones/M2/retained-policy-startup.md) has a private implementation candidate with complete policy/member/system validation, all-job refusal and original unused retirement. Ordinary metadata review remains empty-only. [Candidate qualification](../testing/M2/retained-policy-startup.md) passed the storage gates on disposable FreeBSD/amd64 15.1 and 14.5; enabled fixed-root and expanded acceptance remain pending; the [fixed-root qualification record](../testing/M2/retained-policy-root.md) preserves failed and partial observations; final lifecycle/revocation/denial groups and two bounded phases await native qualification on both releases; no additional FreeBSD release, configured runtime, hardware or commercial support claim follows. Runtime writes remain disabled.
+The [adopted design](../milestones/M2/retained-policy-startup.md) has a private
+implementation candidate with complete policy/member/system validation, all-job
+refusal and original unused retirement. Ordinary metadata review remains empty-only.
+[Storage qualification](../testing/M2/retained-policy-startup.md) passed on disposable
+FreeBSD/amd64 15.1 and 14.5; its policy/physical-use/boot transfers remain synthetic.
+Corrected source `35d32e5667cfec4416884f24164c26f864714513` also passed the
+complete existing single-policy fixed-root suite on both releases, with actual
+fixed positive producers, ten parents/580 controls per release, identical artifacts
+and verified teardown; see the
+[root receipt](../testing/M2/retained-policy-root-qualification-manifest.json).
+
+The [child budget contract](../testing/M2/retained-policy-child-budget.md) records
+independent contexts, the explicitly changed effective cumulative caller allowance
+from 120 to the existing 150-second whole-child limit, and checked `GOMAXPROCS=1`
+only in policy children. Each 90-second product operation and parent/process bound
+is unchanged. Failed/partial sources stay unqualified in their original records.
+Expanded multi-policy/mixed-history/concurrency/census/bounds acceptance, real
+worker shutdown and configured runtime remain pending. These fixtures establish
+no additional release, parallel execution, performance, hardware or commercial
+support. Runtime writes remain disabled.
