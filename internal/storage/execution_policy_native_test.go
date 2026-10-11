@@ -26,8 +26,16 @@ func policyStorageInputs(t *testing.T, f restoreFixture) (Policy, Observation, [
 }
 func policyStorageSeed(t *testing.T, f restoreFixture, name string) (string, string, Policy, ExecutionStartupPolicySource, PoolSystemUse) {
 	t.Helper()
-	ctx := context.Background()
 	p, o, d, u := policyStorageInputs(t, f)
+	j, l := policyOnlyStorageSeed(t, f, name, []Policy{p}, u)
+	source := func(context.Context, Policy) (Observation, []inventory.DiskObservation, PoolSystemUse, error) {
+		return o, d, u, nil
+	}
+	return j, l, p, source, u
+}
+func policyOnlyStorageSeed(t *testing.T, f restoreFixture, name string, policies []Policy, u PoolSystemUse) (string, string) {
+	t.Helper()
+	ctx := context.Background()
 	j, l := filepath.Join(f.journal, name), filepath.Join(f.ledger, name)
 	a, e := activateFreshExecutionJournal(ctx, j, l, f.read, func(context.Context) (PoolSystemUse, error) { return u, nil }, activationBoot)
 	if e != nil {
@@ -35,8 +43,10 @@ func policyStorageSeed(t *testing.T, f restoreFixture, name string) (string, str
 	}
 	defer a.fresh.close()
 	pair := a.fresh.pair
-	if e = pair.publishJournaledOwnership(ctx, p, 0, f.read, nil); e != nil {
-		t.Fatal("original policy publisher", e)
+	for _, p := range policies {
+		if e = pair.publishJournaledOwnership(ctx, p, 0, f.read, nil); e != nil {
+			t.Fatal("original policy publisher", e)
+		}
 	}
 	closed := pair.native.journal.ack
 	closed.Generation++
@@ -47,10 +57,7 @@ func policyStorageSeed(t *testing.T, f restoreFixture, name string) (string, str
 	if e = pair.Close(); e != nil {
 		t.Fatal(e)
 	}
-	source := func(context.Context, Policy) (Observation, []inventory.DiskObservation, PoolSystemUse, error) {
-		return o, d, u, nil
-	}
-	return j, l, p, source, u
+	return j, l
 }
 func policyJobStorageSeed(t *testing.T, f restoreFixture, name string, data []byte) (string, string) {
 	t.Helper()
@@ -342,5 +349,6 @@ func nativePolicyStartupStorage(t *testing.T, kind string) {
 		}
 	}
 	nativePolicyHistoryCases(t, f, check)
+	nativeMultiplePolicyCases(t, f, check)
 	t.Log("POLICY_STARTUP_STORAGE_" + strings.ToUpper(kind) + "_RESULT " + strings.Join(seen, " "))
 }

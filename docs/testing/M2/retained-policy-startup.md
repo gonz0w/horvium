@@ -157,3 +157,11 @@ eight parents/870 controls on both releases with verified teardown. Its
 superseded passes and the ordinary-metadata positive controls added before final
 qualification. These complete-history storage passes do not qualify the remaining
 multiple-policy lifecycle, fixed-root mixed-history or other adopted families.
+
+The subsequent [multiple-policy storage inventory](retained-policy-native-multiple.md)
+adds a valid two-policy lifecycle and last-policy failures before/after publication
+while retaining all 870 controls. Signed source
+`12a1326b8b55d4810663e1a9a48f703520c82488` completed all eight parents/990
+controls on both releases with verified teardown; the linked receipt preserves
+the failed initial fixture candidate. Actual fixed-root multiple-policy/mixed-history
+acceptance and remaining adopted families remain separate.
