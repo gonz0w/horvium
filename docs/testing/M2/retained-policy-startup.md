@@ -87,6 +87,12 @@ whole-suite limit. The existing host SSH/controller bound remains two hours.
 Parent, child, operation, byte and record limits are unchanged. See
 [fixed-root qualification](retained-policy-root.md).
 
+The subsequent [child operation budget correction](retained-policy-child-budget.md)
+gives independent owner calls independent bounded fixture contexts, retaining the
+150-second whole-child test limit and each 90-second product operation bound.
+The earlier shared 120-second lifecycle context failed during ZFS close; the new
+candidate requires complete native receipts on both pinned releases.
+
 ## Required review and remaining acceptance
 
 Run `make check lint test secrets`, signed/DCO/title review, and the existing full

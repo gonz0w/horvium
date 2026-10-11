@@ -203,3 +203,4 @@
 
 - [M2 retained-policy startup qualification](testing/M2/retained-policy-startup.md): private policy-only candidate and bounded native gate; acceptance pending.
 - [M2 fixed-root policy startup qualification](testing/M2/retained-policy-root.md): independently bounded lifecycle/denial fixtures and candidate-specific receipts.
+- [M2 policy startup child budgets](testing/M2/retained-policy-child-budget.md): independent caller contexts, unchanged whole-child/product limits and native regression evidence.

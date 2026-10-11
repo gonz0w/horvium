@@ -1,7 +1,7 @@
 # Fixed-root retained-policy startup qualification
 
-Status: fixture correction in [PR 308](https://github.com/gonz0w/horvium/pull/308);
-final layout awaits native qualification on both releases.
+Status: fixture correction merged in [PR 308](https://github.com/gonz0w/horvium/pull/308);
+the executed layout remains unqualified; child-context correction is pending.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 Refs [issue 305](https://github.com/gonz0w/horvium/issues/305) and
 [M2-RUNTIME-002](https://github.com/gonz0w/horvium/issues/139).
@@ -109,8 +109,13 @@ targets, signed/DCO/title verification and supervised teardown. The fixture
 cross-build passed using pinned Go 1.27.1 for FreeBSD/amd64, ordinary build
 selection excluded the bridge, and the temporary compiled artifact was removed.
 
-The final six-parent policy/two-phase native layout has **not run** on either
-release. Cross-compilation, portable passes and completed parents from failed
-whole runs do not qualify it. PR 308 stays draft; issue 305 and its parent remain
-open. Next unblocked work is the complete final native gate on both pinned
-releases, followed by the separately outstanding expanded acceptance families.
+The six-parent policy/two-phase layout ran on merged source
+`ad38166a66c233c078635c2e88dfcb32829af621` on FreeBSD 15.1. Its UFS
+lifecycle parent passed at 242.33 seconds; the ZFS clean child failed its close
+assertion after 120.02 seconds. That whole run remains unqualified and its other
+parents did not complete. Complete owned teardown passed. See the
+[child operation budget correction](retained-policy-child-budget.md) for the
+observed timing, diagnostic limitation and explicitly changed fixture context
+scope. The corrected artifact still needs complete native qualification on both
+releases; cross-compilation and partial passes do not qualify it. Issue 305 and
+its parent remain open, including the separately outstanding expanded families.
