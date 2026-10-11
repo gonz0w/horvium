@@ -1,6 +1,7 @@
 # Diagnostic: bounded original startup stacks
 
-Status: implementation candidate declared; no execution or completeness yet.
+Status: draft candidate; first native setup failed before startup. Corrected runner
+opt-ins are portable-tested; corrected native execution remains unverified.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`). Time box: one development session.
 Owning research [issue 323](https://github.com/gonz0w/horvium/issues/323);
 Refs [305](https://github.com/gonz0w/horvium/issues/305) and
@@ -57,3 +58,45 @@ and base/runtime preservation. No product source, caller/product limit, guard,
 cache, CPU experiment, runtime authority, service or dependency changes.
 Sampling overhead may change scheduling/outcome; snapshots cannot apportion the
 preceding time or establish a deadlock, performance/capacity or emulation cause.
+
+
+## First executed candidate and preserved failure
+
+The [sanitized receipt](policy-startup-stack-manifest.json) binds original native
+source `ec92537b281c0d4465c3a3cfda2b56979e4f93b7` and base
+`c481cbbb7b17c592f61bb7cff506f475c071cbd4`. The single declared 15.1 UFS parent
+failed at **14.95 seconds**, in original seed setup with `storage scope denied`.
+The startup child and original startup factory were never reached. There are no
+captured samples, caller/return observations, final journal/ledger vector or
+complete 42-control inventory. Diagnostic completeness and native acceptance are
+both **false**. This is a setup failure, not a reproduced startup timeout, early
+startup return or successful localization. 14.5 was not attempted.
+
+Executed runner registrations omitted `HORVIUM_CLOSED_STARTUP_OWNER_VM=1`.
+The original tagged seed explicitly rejects its absence before commissioning
+(`internal/storage/execution_policy_fixture_freebsd.go:17`). The candidate now
+supplies that existing opt-in in both registered commands and requires it in the
+prebuilt shell preflight. A failing-first runner regression reproduces the
+omission; all six focused consumer/profile tests pass after correction. No seed
+or product guard was weakened. **The corrected native setup has not executed**;
+review it before another separately recorded diagnostic attempt.
+
+Independent host/image/device/key/binary/supervisor cleanup and base/runtime
+preservation all passed. The incomplete guest parent supplied no complete
+metadata/fact teardown vector; that remains unverified despite host cleanup.
+Temporary native artifacts are removed. No raw stacks were captured or copied;
+all thirteen preceding policy receipts remain byte-identical.
+
+Original implementation source passed mandatory portable review: 215 tooling
+tests, ordinary Go tests, eleven race packages and 54 fuzz targets, with verified
+supervised teardown. Earlier failing-first sampler/file/sanitizer and consumer
+observations, the portable temporary-directory setup failure and rejected review
+whose CPU-selector expectation omitted the adopted one-CPU suite remain recorded.
+These portable results do not qualify native scheduling, original factory
+execution or the corrected opt-in path. The final signed head requires its own
+actual-title review; later evidence retains the executed source separately.
+
+This draft uses Refs for issue 323, owner 305 and parent 139. Neither incomplete
+research nor a merged sampler satisfies their remaining native acceptance.
+Runtime writes remain disabled. No caller/product/native budget, CPU profile,
+producer, registry, cache, retry, service, dependency or runtime authority changed.

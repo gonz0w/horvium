@@ -1,7 +1,7 @@
 #!/bin/sh
 # SPDX-License-Identifier: BSD-3-Clause
 set -eu
-if [ "${HORVIUM_POLICY_STARTUP_TRACE_VM:-}" != 1 ] || [ "${HORVIUM_NATIVE_VM:-}" != 1 ] || [ "${HORVIUM_POLICY_FACTS_VM:-}" != 1 ] || [ "$(uname -s)" != FreeBSD ] || [ "$(id -u)" != 0 ]; then
+if [ "${HORVIUM_POLICY_STARTUP_TRACE_VM:-}" != 1 ] || [ "${HORVIUM_NATIVE_VM:-}" != 1 ] || [ "${HORVIUM_POLICY_FACTS_VM:-}" != 1 ] || [ "${HORVIUM_CLOSED_STARTUP_OWNER_VM:-}" != 1 ] || [ "$(uname -s)" != FreeBSD ] || [ "$(id -u)" != 0 ]; then
     echo 'Requires owned diagnostic opt-ins, FreeBSD and root' >&2
     exit 1
 fi

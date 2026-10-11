@@ -68,6 +68,12 @@ class PolicyStartupTrace(unittest.TestCase):
         q=module('local-qualification');self.assertEqual(q.cpu_count_for_suite('policy-startup-trace'),1);self.assertTrue(q.uses_device_fixture('policy-startup-trace'))
         self.assertIsNone(q.lifecycle_budget_for_suite('policy-startup-trace'))
         _,command=q.suite_command('policy-startup-trace',artifact_digest='a'*64);self.assertIn('HORVIUM_POLICY_STARTUP_TRACE_VM=1',command)
+        for digest in (None, 'a'*64):
+            _,command=q.suite_command('policy-startup-trace',source_build=digest is None,artifact_digest=digest)
+            self.assertIn('HORVIUM_CLOSED_STARTUP_OWNER_VM=1',command)
+        from pathlib import Path
+        script=Path(q.__file__).with_name('bsd-policy-startup-trace-prebuilt.sh').read_text()
+        self.assertIn('${HORVIUM_CLOSED_STARTUP_OWNER_VM:-}',script)
         q.validate_result('policy-startup-trace',fixture())
         with self.assertRaises(ValueError):q.validate_result('policy-startup-trace',fixture(),complete=True)
         q.validate_result('policy-startup-trace',fixture()+'DEVICE_FIXTURE_CLEANUP pass\n',complete=True)

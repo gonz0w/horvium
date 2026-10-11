@@ -1560,6 +1560,14 @@ test-only snapshots around one original startup call on the disposable 15.1 UFS
 profile. It retains the 120-second caller, 90-second product operations, original
 native producers/guards, default 150-second child/480-second parent/18-minute
 phase and independent cleanup. One parent/two children/all 42 controls are
-required for diagnostic completeness, never native acceptance. Execution/evidence
-remain pending at declaration; neither a sampler nor its design enables runtime
-writes or completes issue 305/139. Raw stacks stay private in the owned guest.
+required for diagnostic completeness, never native acceptance. The first source
+`ec92537b281c0d4465c3a3cfda2b56979e4f93b7` failed original 15.1 UFS seed setup at
+14.95s: the runner omitted the original closed-startup fixture opt-in. Startup and
+sampling were not reached; no final byte/control/guest cleanup vector qualifies.
+[Sanitized failed receipt](../research/M2/policy-startup-stack-manifest.json)
+preserves that failure, complete independent host/device/supervisor teardown and
+all thirteen earlier unchanged receipts. The registration/preflight correction
+passes a portable regression but has **not executed natively**. The candidate is
+a draft; diagnostic completeness and native acceptance remain false. No raw
+stacks were captured or copied. Neither sampler nor setup correction enables
+runtime writes or completes issue 323/305/139; 14.5 remains unattempted.

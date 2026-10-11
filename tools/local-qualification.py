@@ -19,7 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ROOT / 'tools'
 SUITES = {
-    'policy-startup-trace': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_TRACE_VM=1 sh tools/bsd-policy-startup-trace-prebuilt.sh'),
+    'policy-startup-trace': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_TRACE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1 sh tools/bsd-policy-startup-trace-prebuilt.sh'),
     'policy-startup-diagnostics': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_DIAGNOSTICS_VM=1 sh tools/bsd-policy-startup-diagnostics-prebuilt.sh'),
     'policy-startup-lifecycle': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_ROOT_REVIEW_VM=1 HORVIUM_POLICY_ROOT_LIFECYCLE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1 sh tools/bsd-policy-startup-lifecycle-prebuilt.sh'),
     'policy-startup-review': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_ROOT_REVIEW_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1 sh tools/bsd-policy-startup-review-prebuilt.sh'),
@@ -48,7 +48,7 @@ SUITES = {
 }
 
 PREBUILT = {
-    'policy-startup-trace': ('policy-startup-trace-native.test', './internal/host/freebsd', 'POLICY_STARTUP_TRACE_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_TRACE_VM=1', 'bsd-policy-startup-trace-prebuilt.sh'),
+    'policy-startup-trace': ('policy-startup-trace-native.test', './internal/host/freebsd', 'POLICY_STARTUP_TRACE_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_TRACE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1', 'bsd-policy-startup-trace-prebuilt.sh'),
     'policy-startup-diagnostics': ('policy-startup-diagnostics-native.test', './internal/host/freebsd', 'POLICY_STARTUP_COST_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_DIAGNOSTICS_VM=1', 'bsd-policy-startup-diagnostics-prebuilt.sh'),
     'policy-startup-lifecycle': ('policy-startup-lifecycle-native.test', './internal/host/freebsd', 'POLICY_ROOT_LIFECYCLE_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_ROOT_REVIEW_VM=1 HORVIUM_POLICY_ROOT_LIFECYCLE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1', 'bsd-policy-startup-lifecycle-prebuilt.sh'),
     'policy-startup-review': ('policy-startup-review-native.test', './internal/host/freebsd', 'POLICY_ROOT_REVIEW_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_ROOT_REVIEW_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1', 'bsd-policy-startup-review-prebuilt.sh'),

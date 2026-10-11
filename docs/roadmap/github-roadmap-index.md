@@ -249,12 +249,12 @@ is a separately reviewed research prerequisite for unfinished issue 305, under
 parent 139. The [analysis and proposed method](../research/M2/policy-startup-deadline.md)
 remain distinct from implementation and native acceptance.
 
-## Migration receipt
-
 [M2: capture bounded original startup stack diagnostics (#323)](https://github.com/gonz0w/horvium/issues/323)
 owns the [adopted sampler implementation/evidence](../research/M2/policy-startup-stack.md),
 under parent 139 with satisfied prerequisite 321. Full lifecycle acceptance is
 separate under issue 305; GitHub owns live status.
+
+## Migration receipt
 
 See the [dated verification record](github-migration.md) for counts, preserved identities,
 evidence and recoverability. Consult GitHub for live state rather than treating that receipt as a board.
