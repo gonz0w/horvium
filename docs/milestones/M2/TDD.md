@@ -1646,3 +1646,11 @@ native limits. Existing trace 120 / 150 and full lifecycle 120 / 330 / 1080 / 40
 remain authoritative. Offline evidence proves a parent clamp in the observed call,
 not a successful new run or changed product behavior. Both complete native lifecycle
 gates and runtime authority remain pending; no tests or native run are added here.
+
+PR 327 adopted the separate fixture-only envelope at merge
+`38b69d77c1f5c4fcbb8c8a79e074ff14f76815dc`; proposed language above describes the
+review boundary. [Issue 328](https://github.com/gonz0w/horvium/issues/328) and its
+[implementation/qualification contract](../../research/M2/policy-startup-envelope.md)
+map M2-POLICY-STARTUP-ENVELOPE-001–006 to separate context/profile/evidence tests
+and one fresh 15.1 original-factory diagnostic with all 42 controls. Adoption or
+portable tests do not satisfy native completeness or lifecycle acceptance.

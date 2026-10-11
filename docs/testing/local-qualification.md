@@ -662,3 +662,13 @@ checksum and metadata/host/device/supervisor teardown. Its private reader wrappe
 are diagnostic only and cannot supply fixed-root lifecycle acceptance; see the
 [contract](../research/M2/policy-startup-costs.md). Dry-run descriptions now use
 the selected suite CPU count instead of reporting two CPUs for every suite.
+
+The separate `policy-startup-envelope` suite implements the adopted 180s absolute
+caller/210s child experiment on one fresh 15.1 two-policy UFS fixture. Retain
+parent 480s/phase 18min, product 90/90 and all original native/cleanup/CPU/device
+bounds. Require one parent, two normally waited children, all 42 controls and
+source/artifact/compiler-bound observations with independent teardown. Original
+trace 120/150 and full lifecycle profiles remain unchanged. See the
+[contract and evidence](../research/M2/policy-startup-envelope.md); operation
+result, diagnostic completeness and native lifecycle acceptance remain separate.
+No automatic second release, retry or product authority is added.

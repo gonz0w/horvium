@@ -262,6 +262,11 @@ under parent 139 with completed diagnostic 323 as prerequisite. Proposal adoptio
 fixture implementation and full lifecycle acceptance under 305 remain separate.
 GitHub owns the live decision and status.
 
+[M2: qualify separate startup caller-envelope diagnostic (#328)](https://github.com/gonz0w/horvium/issues/328)
+owns the [implementation/candidate evidence](../research/M2/policy-startup-envelope.md),
+under parent 139 after adopted review 326. Completeness is distinct from original
+startup outcome and full lifecycle acceptance under 305. GitHub owns live status.
+
 ## Migration receipt
 
 See the [dated verification record](github-migration.md) for counts, preserved identities,

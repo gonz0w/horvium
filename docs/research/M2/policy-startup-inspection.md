@@ -1,6 +1,6 @@
 # Original startup inspection review and proposed caller experiment
 
-Status: proposed; adoption requires maintainer review. Owner: Cam (`@gonz0w`).
+Status: adopted in [PR 327](https://github.com/gonz0w/horvium/pull/327); implementation/diagnostic evidence remains separate. Owner: Cam (`@gonz0w`).
 Date: 2026-10-11. Time box: one development session, offline research/design.
 Owning [issue 326](https://github.com/gonz0w/horvium/issues/326), under
 [parent 139](https://github.com/gonz0w/horvium/issues/139); broader
@@ -198,3 +198,12 @@ GitHub owns live status and dependencies; this proposal contains no duplicate
 progress checklist. A rejection leaves the original profiles/evidence authoritative.
 Adoption permits a separately bounded test slice and candidate-specific receipt,
 not a product timeout change, launch clearance or acceptance of issues 305 / 139.
+
+## Recorded adoption
+
+Maintainer merged PR 327 at `38b69d77c1f5c4fcbb8c8a79e074ff14f76815dc`,
+adopting only the separate fixture experiment and M2-POLICY-STARTUP-ENVELOPE-001–006.
+The proposal language above records the original reviewed decision boundary.
+[Issue 328](https://github.com/gonz0w/horvium/issues/328) owns the
+[implementation and candidate evidence](policy-startup-envelope.md). No original
+profile, product limit, launch authority or broader acceptance is amended.

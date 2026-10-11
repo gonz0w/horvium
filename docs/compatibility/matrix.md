@@ -1613,3 +1613,15 @@ adoption before implementation/execution and a separate strict profile/consumer.
 Original trace and full lifecycle profiles remain unchanged. No new support,
 hardware, client, full lifecycle or release acceptance is established; native
 lifecycle acceptance is false and runtime writes remain disabled.
+
+## Separate adopted startup caller-envelope candidate
+
+PR 327 adopted the [fixture-only 180/210 experiment](../research/M2/policy-startup-inspection.md).
+The [implementation contract](../research/M2/policy-startup-envelope.md) preserves
+product 90/90/native bounds, all 42 controls, one fresh 15.1 UFS seed and original
+fixed factory/producer/registry semantics. Separate strict profile/consumer and
+portable tests reject old/new evidence interchange, renewal, checksum/source
+mismatch and incomplete teardown. Original trace 120/150 and full lifecycle
+profiles and all 16 preceding receipts remain unchanged. Native completeness
+requires its own candidate receipt; no support or lifecycle acceptance follows
+from implementation/compilation. Runtime writes remain disabled.
