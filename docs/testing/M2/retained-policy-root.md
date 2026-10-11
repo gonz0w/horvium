@@ -1,7 +1,7 @@
 # Fixed-root retained-policy startup qualification
 
-Status: fixture correction merged in [PR 308](https://github.com/gonz0w/horvium/pull/308);
-the executed layout remains unqualified; child-context correction is pending.
+Status: existing single-policy fixed-root gate passed on both pinned releases;
+expanded issue-305 acceptance remains pending.
 Date: 2026-10-10. Owner: Cam (`@gonz0w`).
 Refs [issue 305](https://github.com/gonz0w/horvium/issues/305) and
 [M2-RUNTIME-002](https://github.com/gonz0w/horvium/issues/139).
@@ -41,7 +41,7 @@ group. Fixture construction still uses original fresh commissioning, journaled
 ownership publication and strict acknowledged closed successor publication. No
 publisher, seed bridge, native producer, production behavior or format changes.
 
-## Inventory and bounds declared before final execution
+## PR-308 inventory and bounds declared before execution
 
 | Actual parents, one each on UFS and ZFS | Required controls per parent |
 |---|---|
@@ -58,6 +58,14 @@ normally waited test processes. Each process keeps the 34-minute limit. Total
 test time can therefore reach 68 minutes; this deliberately replaces the prior
 single-process whole-suite limit. The existing host SSH/controller bound stays
 two hours. No runtime, byte, record, parent or child bound is enlarged.
+
+Those are the historical PR-308 context semantics. The subsequent
+[child operation budget correction](retained-policy-child-budget.md) changes the
+shared 120-second lifecycle context to independent bounded caller contexts,
+with the existing 150-second whole-child test as the effective cumulative limit.
+It also pins and checks one simultaneous Go execution thread only in policy
+children. Every original assertion, selector and product/parent/process bound
+remains required; the changed cumulative context allowance is explicit.
 
 The exact selectors are recorded in
 [the implementation qualification](retained-policy-startup.md).
@@ -113,9 +121,38 @@ The six-parent policy/two-phase layout ran on merged source
 `ad38166a66c233c078635c2e88dfcb32829af621` on FreeBSD 15.1. Its UFS
 lifecycle parent passed at 242.33 seconds; the ZFS clean child failed its close
 assertion after 120.02 seconds. That whole run remains unqualified and its other
-parents did not complete. Complete owned teardown passed. See the
+parents did not complete. Owned guest/device/artifact removal and supervisor
+teardown were verified; incomplete in-guest parent cleanup is not inferred. See the
 [child operation budget correction](retained-policy-child-budget.md) for the
 observed timing, diagnostic limitation and explicitly changed fixture context
-scope. The corrected artifact still needs complete native qualification on both
-releases; cross-compilation and partial passes do not qualify it. Issue 305 and
-its parent remain open, including the separately outstanding expanded families.
+scope. That failed source remains unqualified.
+
+## Complete existing fixed-root qualification
+
+Corrected source `35d32e5667cfec4416884f24164c26f864714513` passed all
+ten parents and 580 controls on both pinned disposable FreeBSD/amd64 15.1 and
+14.5 releases. Both bounded phases completed normally with the same artifact;
+independent domain/data/device/guest/host/artifact/supervisor teardown passed.
+The [native qualification manifest](retained-policy-root-qualification-manifest.json)
+preserves exact source/input/compiler/artifact/log/record hashes, both new failed
+attempts and source-specific context/profile limits. Earlier manifests are unchanged.
+
+| Completed parent | FreeBSD 15.1 seconds | FreeBSD 14.5 seconds |
+|---|---:|---:|
+| Policy lifecycle UFS | 232.84 | 242.27 |
+| Policy lifecycle ZFS | 268.98 | 233.10 |
+| Policy revocation UFS | 182.05 | 147.90 |
+| Policy revocation ZFS | 201.75 | 166.90 |
+| Policy denial UFS | 142.66 | 121.03 |
+| Policy denial ZFS | 167.71 | 137.24 |
+| Retained closed-startup ZFS | 384.46 | 280.97 |
+| Retained closed-startup UFS | 285.07 | 247.37 |
+| Original startup review ZFS | 126.91 | 92.56 |
+| Original startup review UFS | 120.16 | 80.84 |
+
+These are candidate-specific bounded fixture observations, not a performance or
+parallel-execution qualification. Positive policy facts came from actual fixed
+producers; late-drift injection remains denial-only. The controlled seed remains
+fixture setup, not shutdown after admitted work. Expanded multi-policy/mixed-history/
+concurrency/census/bounds acceptance remains pending in issue 305. Neither that
+issue, its parent, configured runtime nor the release is accepted by these passes.
