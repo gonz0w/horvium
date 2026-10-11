@@ -215,4 +215,4 @@
 
 - [Preserved lifecycle timeout analysis](research/M2/policy-lifecycle-timeout.md): original post-publication stack; no new native run or acceptance.
 
-- [Proposed cumulative lifecycle fixture budgets](milestones/M2/retained-policy-fixture-budgets.md): separate design review; no adopted bound or native pass.
+- [Adopted cumulative lifecycle fixture budgets](milestones/M2/retained-policy-fixture-budgets.md): reviewed test envelope; [implementation and qualification](testing/M2/retained-policy-lifecycle-budget.md) remain separate from native acceptance.

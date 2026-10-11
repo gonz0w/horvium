@@ -181,6 +181,12 @@ def cpu_count_for_suite(suite):
     return 1 if suite in ('policy-startup-lifecycle', 'policy-startup-diagnostics') else 2
 
 
+def lifecycle_budget_for_suite(suite):
+    if suite not in SUITES:
+        raise ValueError('unknown suite budget profile')
+    return {'child_seconds': 330, 'parent_work_seconds': 1080, 'phase_minutes': 40} if suite == 'policy-startup-lifecycle' else None
+
+
 def qemu_command(qemu, base, code, variables, port, cpu_count=2):
     if type(cpu_count) is not int or cpu_count not in (1, 2):
         raise ValueError('undeclared native fixture CPU count')
@@ -392,6 +398,8 @@ def main():
               'accelerator': 'tcg', 'qualified': False, 'host_teardown': False,
               'base_preserved': False,
               'execution_mode': 'host-cross-built' if args.suite in PREBUILT and not args.source_build else 'guest-source-build'}
+    if args.suite == 'policy-startup-lifecycle':
+        record['lifecycle_fixture_budget'] = lifecycle_budget_for_suite(args.suite)
     supervisor.write_record(directory / 'result.json', record)
     base_before = None
     image, variables = directory / 'image', directory / 'vars.fd'

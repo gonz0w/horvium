@@ -606,8 +606,9 @@ families and broader native acceptance remain separate.
 
 
 The focused `policy-startup-lifecycle` suite uses one tagged host binary for three
-serial facts/review/lifecycle phases, each bounded at eighteen minutes. Require
-five completed parents, 283 controls and thirteen normally waited children per
+serial facts/review/lifecycle phases, bounded at 18/18/40 minutes under the
+[adopted cumulative fixture amendment](../milestones/M2/retained-policy-fixture-budgets.md).
+Require five completed parents, 289 controls and thirteen normally waited children per
 release, exact checksum and independent metadata/data/device/guest/host/supervisor
 teardown. Run releases serially:
 
@@ -618,7 +619,11 @@ teardown. Run releases serially:
 
 The [pre-execution contract](M2/retained-policy-native-lifecycle.md) declares the
 unchanged scoped device profile, original fixed factory, two clean cycles on the
-same domains and existing child/parent/product limits. Earlier fact/review gates
+same domains. Lifecycle children use 330-second Go test deadlines and lifecycle
+parent work contexts use 1,080 seconds; caller/product/cleanup limits are unchanged.
+The host record stores `lifecycle_fixture_budget`, matched by an exact in-phase
+scalar marker and actual child/parent budget assertions. Other suites retain their
+original bounds. Earlier fact/review gates
 retain their original scripts/checkers/receipts. The new runner requires their
 actual controls in its affected artifact; historical results do not substitute.
 Remaining failure families and broader runtime acceptance stay separate.

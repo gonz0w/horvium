@@ -126,12 +126,29 @@ func TestNativeMultiplePolicyFacts(t *testing.T) {
 // unused metadata disk. All existing fact/data/cleanup controls remain required.
 func nativeMultiplePolicyFactsFixture(t *testing.T, run func(context.Context, []storage.Policy, inventory.Provider)) {
 	t.Helper()
+	if !nativeMultiplePolicyFactsFixtureWithProfile(t, policyFixtureFactsWork, run) {
+		t.Fatal("original fact fixture work deadline")
+	}
+}
+
+func nativeMultiplePolicyFactsFixtureWithProfile(t *testing.T, profile policyFixtureWorkProfile, run func(context.Context, []storage.Policy, inventory.Provider)) bool {
+	t.Helper()
 	if os.Getenv("HORVIUM_NATIVE_VM") != "1" || os.Getenv("HORVIUM_POLICY_FACTS_VM") != "1" {
 		t.Skip("owned disposable facts VM only")
 	}
 	requirePolicyFactsVM(t)
-	ctx, stop := context.WithTimeout(context.Background(), 8*time.Minute)
+	started := time.Now()
+	ctx, stop, contextErr := policyFixtureWorkContext(context.Background(), profile)
+	contextCreated := time.Now()
+	if contextErr != nil {
+		t.Fatal("fixed fixture work context", contextErr)
+	}
 	defer stop()
+	initialDeadline, bounded := ctx.Deadline()
+	budget, budgetErr := policyFixtureWorkBudget(profile)
+	if budgetErr != nil || !bounded || initialDeadline.Before(started.Add(budget)) || initialDeadline.After(contextCreated.Add(budget)) {
+		t.Fatal("actual fixed fixture work deadline")
+	}
 	command := func(c context.Context, path string, args ...string) (string, error) {
 		out, err := execute(c, path, args, 1<<20)
 		return string(out.data), err
@@ -394,4 +411,6 @@ func nativeMultiplePolicyFactsFixture(t *testing.T, run func(context.Context, []
 	_, err = os.Lstat(private)
 	check("inputs_removed", errors.Is(err, os.ErrNotExist))
 	t.Log("POLICY_FACTS_PARENT_RESULT " + strings.Join(seen, " "))
+	finalDeadline, bounded := ctx.Deadline()
+	return bounded && finalDeadline.Equal(initialDeadline) && ctx.Err() == nil
 }

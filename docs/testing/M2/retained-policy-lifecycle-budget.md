@@ -1,6 +1,6 @@
 # Adopted cumulative lifecycle fixture implementation
 
-Status: failing-first candidate declared; implementation/native execution pending.
+Status: implementation candidate declared; clean-source review/native execution pending.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`).
 Refs [issue 305](https://github.com/gonz0w/horvium/issues/305) and
 [parent 139](https://github.com/gonz0w/horvium/issues/139).

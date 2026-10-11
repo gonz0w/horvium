@@ -16,14 +16,34 @@ const (
 	policyFixtureLifecycleWork
 )
 
-// Deliberate test-only implementation-absent stubs for the signed red candidate.
-func policyFixtureWorkBudget(policyFixtureWorkProfile) (time.Duration, error) {
-	return 0, errors.New("fixture budget not implemented")
+func policyFixtureWorkBudget(profile policyFixtureWorkProfile) (time.Duration, error) {
+	switch profile {
+	case policyFixtureFactsWork:
+		return 8 * time.Minute, nil
+	case policyFixtureLifecycleWork:
+		return 18 * time.Minute, nil
+	default:
+		return 0, errors.New("unknown fixture work profile")
+	}
 }
-func policyFixtureWorkContext(context.Context, policyFixtureWorkProfile) (context.Context, context.CancelFunc, error) {
-	return nil, nil, errors.New("fixture context not implemented")
+func policyFixtureWorkContext(parent context.Context, profile policyFixtureWorkProfile) (context.Context, context.CancelFunc, error) {
+	budget, err := policyFixtureWorkBudget(profile)
+	if err != nil {
+		return nil, nil, err
+	}
+	if parent == nil {
+		return nil, nil, errors.New("missing fixture parent")
+	}
+	if err = parent.Err(); err != nil {
+		return nil, nil, err
+	}
+	ctx, cancel := context.WithTimeout(parent, budget)
+	return ctx, cancel, nil
 }
-func policyFixtureChildBudgetValid(string, time.Time, time.Time) bool { return false }
+func policyFixtureChildBudgetValid(timeoutFlag string, deadline, now time.Time) bool {
+	budget, err := time.ParseDuration(timeoutFlag)
+	return err == nil && budget == 330*time.Second && !deadline.IsZero() && deadline.After(now) && deadline.Sub(now) <= budget
+}
 
 func TestPolicyFixtureWorkBudget(t *testing.T) {
 	for _, tc := range []struct {

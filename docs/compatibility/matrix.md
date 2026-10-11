@@ -1518,11 +1518,14 @@ preceding receipts remain byte-identical. Complete original lifecycle gates on
 both releases remain pending; any accelerated lab profile or fixture-budget
 amendment needs separate declared review before use.
 
-The [cumulative lifecycle fixture budget proposal](../milestones/M2/retained-policy-fixture-budgets.md)
-requires separate maintainer adoption in issue 318 before implementation. It
-proposes 330-second lifecycle children, an 18-minute lifecycle parent work context
-and a 40-minute lifecycle process phase, preserving existing caller/product/native
-limits, cleanup contexts, lab profile and all 283 existing controls; six added
-actual budget assertions would require 289 controls on each release. This is
-unexecuted design, not qualified behavior or a production latency/capacity claim.
-Both existing native lifecycle gates remain pending; runtime writes stay disabled.
+The [cumulative lifecycle fixture budget amendment](../milestones/M2/retained-policy-fixture-budgets.md)
+was separately adopted through PR 319, merge
+`aebfb2c8b85040154f6e70ffb3296bba543a9db9`. The
+[implementation candidate](../testing/M2/retained-policy-lifecycle-budget.md) uses
+330-second lifecycle children, an 18-minute lifecycle parent work context and a
+40-minute lifecycle process phase. Existing caller/product/native limits, cleanup
+contexts, lab profile and all 283 controls remain; six actual budget assertions
+require 289 controls on each release. Other suites retain their limits. Both
+complete native lifecycle gates remain pending; portable checks/design approval
+are not native behavior or production latency/capacity evidence. Runtime writes
+stay disabled, and all eleven earlier receipts retain their original bytes/limits.
