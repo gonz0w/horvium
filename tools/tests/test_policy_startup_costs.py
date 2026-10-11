@@ -12,7 +12,7 @@ STAGES = ['direct-launch', 'guarded-launch', 'system', 'first-properties', 'firs
 
 def fixture():
     text = 'POLICY_STARTUP_COST_PROFILE cpu_count=1\n=== RUN   TestNativePolicyStartupCosts\n'
-    for stage, reads in zip(STAGES, [8, 8, 22, 16, 16, 16, 16, 0, 0]):
+    for stage, reads in zip(STAGES, [8, 8, 28, 16, 16, 16, 16, 0, 0]):
         text += f'POLICY_STARTUP_COST stage={stage} reads={reads} elapsed_ns=100000000 read_ns={0 if reads == 0 else 90000000}\n'
     text += 'POLICY_STARTUP_COST_CLEANUP ufs filesystems=pass directories=pass mounts=pass\nPOLICY_STARTUP_COST_CLEANUP zfs filesystems=pass directories=pass mounts=pass\n'
     for marker, controls in [('POLICY_FACTS_CHILD_RESULT', CHILD), ('POLICY_FACTS_PARENT_RESULT', PARENT)]:
@@ -37,7 +37,7 @@ class StartupCosts(unittest.TestCase):
                     m.validate(fixture().replace(control + '=pass', replacement))
         for bad in ('', fixture().replace('cpu_count=1', 'cpu_count=2'),
                     fixture().replace('PASS:', 'SKIP:'), fixture().replace('PASS:', 'FAIL:'),
-                    fixture().replace('reads=22', 'reads=0'), fixture().replace('reads=16', 'reads=15'),
+                    fixture().replace('reads=28', 'reads=0'), fixture().replace('reads=16', 'reads=15'),
                     fixture().replace('elapsed_ns=100000000', 'elapsed_ns=-1'),
                     fixture().replace('read_ns=90000000', 'read_ns=100000001'),
                     fixture().replace('reads=0 elapsed_ns=100000000 read_ns=0', 'reads=1 elapsed_ns=100000000 read_ns=1'),

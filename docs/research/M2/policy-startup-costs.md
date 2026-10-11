@@ -62,3 +62,21 @@ cycle remain unqualified on both releases. If primitives indicate launch overhea
 repeat the unchanged acceptance gate on a suitable disposable amd64 lab before
 changing product design. An ARM accelerated guest would be a different declared
 architecture; it cannot substitute for the existing amd64 acceptance receipts.
+
+## Rejected initial diagnostic and corrected inventory
+
+Source `d36e309c2c101135a9aebf19c3ea43e15200b4fb` completed all nine stages,
+metadata cleanup and the fact/data parent on 15.1, but the consumer rejected its
+system read count. It expected 22 reads (two pools); the declared cached guest has
+an imported root ZFS pool in addition to both data pools. The original system
+collector correctly read all three: two passes of five global probes plus three
+probes per imported pool, **28 reads**. Root exclusion does not omit root-pool
+observation. Preserve the rejected attempt as unqualified with complete host
+teardown; 14.5 and portable review were not run for that source.
+
+Before rerunning, correct only the expected diagnostic inventory to 28 system
+reads, retaining eight direct/eight guarded launch calls, sixteen property and
+sixteen provider reads for each policy, and opaque backing counts of zero
+(unmeasured). All existing cases, deadlines, root exclusion, collector behavior
+and independent cleanup stay required. A new failing-first consumer test must
+accept the actual 28-read fixture and refuse a missing or incorrect count.
