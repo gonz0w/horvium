@@ -1455,3 +1455,12 @@ failed initial candidates and skipped second-release attempts. This changes no p
 code; copied codec inputs outside product state confer no enrollment/startup
 authority. Multiple-policy original leases, publication/retirement, concurrency,
 workers, hardware/capacity/performance and broader release acceptance remain open.
+
+
+The [original two-policy root review fixture](../testing/M2/retained-policy-native-review.md)
+declares read-only original registration, review/observation and last-member
+refusal on disposable UFS/ZFS metadata with two actual independent mirrors.
+Qualification is pending. The focused gate requires three parents, 135 controls
+and seven normally waited children per pinned release, retaining all previous
+fact/data controls. No production root API or activation authority is introduced;
+original multi-policy activation/retirement and broader acceptance remain open.
