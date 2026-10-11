@@ -7,7 +7,7 @@ import re
 import sys
 
 STAGES = ['direct-launch', 'guarded-launch', 'system', 'first-properties', 'first-providers', 'second-properties', 'second-providers', 'ufs-backing', 'zfs-backing']
-READS = [8, 8, 22, 16, 16, 16, 16, 0, 0]
+READS = [8, 8, 28, 16, 16, 16, 16, 0, 0]
 
 
 def load(name):
