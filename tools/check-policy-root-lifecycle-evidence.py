@@ -6,7 +6,7 @@ import re
 import sys
 import importlib.util
 
-CHILD = set('registered active_successor active_private_record current_boot leases_held nonjournal_unchanged original_observation observation_preserves_history copied_denied decoded_denied cancelled_no_effect closed_successor ledger_unchanged close_retains_leases retired_observation retired_finish release_once locks_released registration_consumed'.split())
+CHILD = set('cpu_affinity registered active_successor active_private_record current_boot leases_held nonjournal_unchanged original_observation observation_preserves_history copied_denied decoded_denied cancelled_no_effect closed_successor ledger_unchanged close_retains_leases retired_observation retired_finish release_once locks_released registration_consumed'.split())
 ROOT = {'seed_closed', 'domain_teardown', 'mounts_restored'}
 for mode in ('first', 'restart'):
     ROOT.update(mode + '_' + name for name in CHILD | {'child_waited', 'child_inventory', 'exact_closed', 'ledger_preserved', 'leases_released'})
@@ -28,6 +28,8 @@ def validate(text):
     prefix, body = text.split('POLICY_ROOT_LIFECYCLE_PHASE lifecycle begin timeout=18m\n', 1)
     review.validate(prefix)
     body = body.split('POLICY_ROOT_LIFECYCLE_PHASE lifecycle done\n', 1)[0]
+    if re.findall(r'(?m)^POLICY_ROOT_LIFECYCLE_AFFINITY ([^\n]+)$', body) != ['phase=lifecycle cpus=0'] or text.count('POLICY_ROOT_LIFECYCLE_AFFINITY ') != 1:
+        raise ValueError('exact lifecycle CPU-affinity profile required inside its phase')
     parents = closed.chunks(body)
     wanted = ['TestNativeMultiplePolicyLifecycleUFS', 'TestNativeMultiplePolicyLifecycleZFS']
     if [n for n, _, _, _ in parents] != wanted or re.findall(r'(?m)^=== RUN   (\S+)$', body) != wanted or re.findall(r'(?m)^PASS$', body) != ['PASS']:

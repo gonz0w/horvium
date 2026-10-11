@@ -24,7 +24,27 @@ import (
 	"golang.org/x/sys/unix"
 )
 
-var multiplePolicyLifecycleControls = strings.Fields("registered active_successor active_private_record current_boot leases_held nonjournal_unchanged original_observation observation_preserves_history copied_denied decoded_denied cancelled_no_effect closed_successor ledger_unchanged close_retains_leases retired_observation retired_finish release_once locks_released registration_consumed")
+var multiplePolicyLifecycleControls = strings.Fields("cpu_affinity registered active_successor active_private_record current_boot leases_held nonjournal_unchanged original_observation observation_preserves_history copied_denied decoded_denied cancelled_no_effect closed_successor ledger_unchanged close_retains_leases retired_observation retired_finish release_once locks_released registration_consumed")
+
+// Query this disposable process, never modify a system-wide or product CPU set.
+func multiplePolicyLifecycleAffinity(t *testing.T) bool {
+	t.Helper()
+	c, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	out, e := execute(c, "/usr/bin/cpuset", []string{"-g", "-p", fmt.Sprint(os.Getpid())}, 4096)
+	if e != nil {
+		return false
+	}
+	prefix := fmt.Sprintf("pid %d mask:", os.Getpid())
+	found, exact := 0, false
+	for _, line := range strings.Split(string(out.data), "\n") {
+		if strings.HasPrefix(line, prefix) {
+			found++
+			exact = strings.TrimSpace(strings.TrimPrefix(line, prefix)) == "0"
+		}
+	}
+	return found == 1 && exact
+}
 
 func TestMultiplePolicyRootLifecycleChild(t *testing.T) {
 	mode := os.Getenv("HORVIUM_POLICY_ROOT_LIFECYCLE_CHILD")
@@ -63,6 +83,7 @@ func TestMultiplePolicyRootLifecycleChild(t *testing.T) {
 		}
 		seen = append(seen, name)
 	}
+	check("cpu_affinity", multiplePolicyLifecycleAffinity(t))
 	call := func(stage string, budget time.Duration, run func(context.Context) error) error {
 		c, cancel := context.WithTimeout(context.Background(), budget)
 		defer cancel()
@@ -171,6 +192,9 @@ func nativeMultiplePolicyLifecycleParent(t *testing.T, kind string) {
 	t.Helper()
 	if os.Getenv("HORVIUM_POLICY_ROOT_LIFECYCLE_VM") != "1" || os.Getenv("HORVIUM_POLICY_ROOT_REVIEW_VM") != "1" || os.Getenv("HORVIUM_CLOSED_STARTUP_OWNER_VM") != "1" {
 		t.Skip("owned original lifecycle fixture only")
+	}
+	if !multiplePolicyLifecycleAffinity(t) {
+		t.Fatal("owned lifecycle parent requires actual CPU 0 affinity")
 	}
 	nativeMultiplePolicyFactsFixture(t, func(ctx context.Context, policies []storage.Policy, disk inventory.Provider) {
 		var markers []string

@@ -607,7 +607,7 @@ families and broader native acceptance remain separate.
 
 The focused `policy-startup-lifecycle` suite uses one tagged host binary for three
 serial facts/review/lifecycle phases, each bounded at eighteen minutes. Require
-five completed parents, 279 controls and thirteen normally waited children per
+five completed parents, 283 controls and thirteen normally waited children per
 release, exact checksum and independent metadata/data/device/guest/host/supervisor
 teardown. Run releases serially:
 
@@ -622,3 +622,10 @@ same domains and existing child/parent/product limits. Earlier fact/review gates
 retain their original scripts/checkers/receipts. The new runner requires their
 actual controls in its affected artifact; historical results do not substitute.
 Remaining failure families and broader runtime acceptance stay separate.
+
+The initial lifecycle candidate failed its unchanged construction caller deadline
+and remains unqualified. The corrected lifecycle phase alone runs its test
+processes/inherited native command children on emulated CPU 0 using base `cpuset`.
+Every lifecycle parent/child checks actual kernel affinity. QEMU still has two
+vCPUs; facts/review scheduling, all cases and every time limit stay unchanged.
+This fixture experiment is not a product scheduling or performance claim.

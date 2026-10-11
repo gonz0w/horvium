@@ -16,7 +16,7 @@ binary=.tools/policy-startup-lifecycle-native.test
 printf 'POLICY_ROOT_LIFECYCLE_PREBUILT_SHA256 %s\n' "$expected"
 freebsd-version -kru
 zfs version
-/sbin/sha256 /sbin/mount /sbin/umount /sbin/newfs /sbin/zfs /sbin/zpool /sbin/sysctl /usr/sbin/swapinfo /usr/sbin/diskinfo /bin/freebsd-version
+/sbin/sha256 /sbin/mount /sbin/umount /sbin/newfs /sbin/zfs /sbin/zpool /sbin/sysctl /usr/sbin/swapinfo /usr/sbin/diskinfo /bin/freebsd-version /usr/bin/cpuset
 log=.tools/policy-startup-lifecycle-native.log
 printf 'POLICY_ROOT_REVIEW_PHASE facts begin timeout=18m\n' > "$log"
 if ! "$binary" -test.v -test.count=1 -test.timeout=18m -test.failfast -test.run='^TestNativeMultiplePolicyFacts$' >> "$log" 2>&1; then
@@ -29,8 +29,8 @@ if ! "$binary" -test.v -test.count=1 -test.timeout=18m -test.failfast -test.run=
     exit 1
 fi
 printf 'POLICY_ROOT_REVIEW_PHASE review done\n' >> "$log"
-printf 'POLICY_ROOT_LIFECYCLE_PHASE lifecycle begin timeout=18m\n' >> "$log"
-if ! "$binary" -test.v -test.count=1 -test.timeout=18m -test.failfast -test.run='^TestNativeMultiplePolicyLifecycle(UFS|ZFS)$' >> "$log" 2>&1; then
+printf 'POLICY_ROOT_LIFECYCLE_PHASE lifecycle begin timeout=18m\nPOLICY_ROOT_LIFECYCLE_AFFINITY phase=lifecycle cpus=0\n' >> "$log"
+if ! /usr/bin/cpuset -l 0 "$binary" -test.v -test.count=1 -test.timeout=18m -test.failfast -test.run='^TestNativeMultiplePolicyLifecycle(UFS|ZFS)$' >> "$log" 2>&1; then
     cat "$log"
     exit 1
 fi
