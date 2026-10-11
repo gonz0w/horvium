@@ -11,6 +11,20 @@ DENIAL_MODES = ('legacy', 'member', 'scope', 'missing-pool')
 
 
 class PolicyStartupEvidence(unittest.TestCase):
+    def test_multiple_policy_lifecycle_inventory_is_required(self):
+        checker = module('check-policy-startup-evidence')
+        multi = {'multi_' + result for result in ('catalog', 'reviewed', 'activated', 'observed', 'closed', 'lineage', 'ledger', 'all-policies', 'leases', 'shared-deadline', 'retired', 'reopened')}
+        for stage in ('review', 'activate', 'observe', 'finish', 'post-activate', 'post-finish'):
+            multi.update('last-' + stage + '_' + result for result in ('denied', 'last-policy', 'leases', 'deadline', 'preserved', 'sticky', 'released', 'diagnostic'))
+        self.assertTrue(multi <= checker.STORAGE)
+        self.assertEqual(len(checker.STORAGE), 163 + 60)
+        text = self.fixture('publication')
+        checker.validate(text, 'publication')
+        for control in multi:
+            for replacement in ('', control + '=fail', control + '=pass ' + control + '=pass'):
+                with self.subTest(control=control), self.assertRaises(ValueError):
+                    checker.validate(text.replace(control + '=pass', replacement), 'publication')
+
     def test_complete_native_history_inventory_is_required(self):
         checker = module('check-policy-startup-evidence')
         history = {f'history-{relation}_{result}'
