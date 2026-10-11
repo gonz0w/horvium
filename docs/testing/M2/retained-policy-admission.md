@@ -38,8 +38,25 @@ Three temporary Go overlays independently remove member validation, system
 validation or job refusal. Every mutant reaches the relevant new behavioral
 assertions and fails as expected. Overlays never modify the tracked production
 source and are never qualification candidates. All subprocesses use the existing
-owned-process supervisor. Required signed/title/DCO and affected-package review
-must be recorded against the committed candidate before handoff.
+owned-process supervisor.
+
+The [sanitized receipt](retained-policy-admission-manifest.json) binds signed
+candidate `7f0ab2b6c2fbe09ba7229a14746a5a2a9394e354`, base
+`9e19455792dfe3f6f9be32db0906bfc83764b870`, actual PR title, test-file/input/log
+hashes and completed supervised teardown. Required `make check lint test secrets`
+passed, including 190 tooling tests and ordinary Go tests. Focused review passed
+nine affected race packages and all 48 compiler-listed selected fuzz targets.
+The three mutation runs reached 13 member, seven system and 42 job-history
+refusal assertions respectively; their expected failures remain distinct from
+qualification. The original fixture-ID failure remains recorded as unqualified.
+
+A receipt-only followup requires fresh baseline/signature/DCO/title checks and
+verified exact-input deep reuse under the [local review policy](../../engineering/local-review.md).
+No new native execution is required by this test-only diff: all production code,
+native tests, fixture sources, runner/checker inputs and native evidence remain
+identical to the merged base. The review planner's conservative native-review
+flag is evaluated against this explicit scope; no expanded native criterion is
+waived or reported as passed.
 
 ## Remaining acceptance
 

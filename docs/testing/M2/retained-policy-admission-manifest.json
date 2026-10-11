@@ -1,0 +1,438 @@
+{
+  "schema": 1,
+  "date": "2026-10-11",
+  "scope": "additional portable admission coverage; no product or native fixture change",
+  "issue": "https://github.com/gonz0w/horvium/issues/305",
+  "requirements": [
+    "M2-RUNTIME-002",
+    "M2-OWN-001",
+    "M2-DRIFT-001",
+    "M2-STATE-001"
+  ],
+  "test_file_sha256": "037053baea0184b64d3e2830ed1fb784cc02d0ce827b6b3edc98f82bc47e8ab7",
+  "new_inventory": {
+    "parents": 3,
+    "drift_cases": 22,
+    "equivalent_capture_cases": 1,
+    "format_state_relation_cases": 42,
+    "mixed_ownership": 2,
+    "mixed_jobs": 14,
+    "mixed_nonterminal": 8,
+    "mixed_terminal": 6,
+    "mixed_pool_holders": [
+      7,
+      7
+    ]
+  },
+  "portable_review": {
+    "source_commit": "7f0ab2b6c2fbe09ba7229a14746a5a2a9394e354",
+    "source_tree": "c19cdaa9b0c776560c0c066b1ed04b87cfeef93c",
+    "base_commit": "9e19455792dfe3f6f9be32db0906bfc83764b870",
+    "title": "test(storage): cover retained-policy admission drift",
+    "signed_commits": [
+      "7f0ab2b6c2fbe09ba7229a14746a5a2a9394e354"
+    ],
+    "command": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "host_os": "Darwin",
+    "host_arch": "arm64",
+    "qualified": true,
+    "qualification_scope": "portable review only",
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ],
+      "native_review_required": true
+    },
+    "deep_key": {
+      "mode": "focused",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ],
+      "inputs_digest": "f598997412c5d34dc54acc1d1c1a36b4518ac641ad9fb42f7bf571047ef779c2",
+      "environment_digest": "5b9f777231fc4a41e8da364d0276a7143ab608a1a167c5566fec5b4c339abd78"
+    },
+    "checks_log_sha256": "8d59cb954eb70feeed505295dd679dfb59264bdcc9c3d5476beb4bb92328d49e",
+    "report_sha256": "42d9c93727045ef58fbfe4007ba1cb58bd9ca480c82a9773dd64c4364b1e8484",
+    "deep_log_sha256": "ba65b482120e83d442a6fae30673e8be7f945adcb05c392f6ad97a8440b9d7c2",
+    "deep_result": {
+      "fuzz_targets": [
+        {
+          "package": "./internal/admin",
+          "target": "FuzzConfiguration"
+        },
+        {
+          "package": "./internal/admin",
+          "target": "FuzzSessionAuthorityActions"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzActionNegotiation"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzPropertyReplies"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzPropertyRequest"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzRequest"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzSnapshot"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPersistentBackingProjection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPoolPropertyCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPoolProviderCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyClaimSourceSelection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyControlSelection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyJobSource"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyPolicyCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzSystemUseCollection"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzDeviceUseReview"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionCensus"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionCensusChange"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionJournal"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionJournalNamespace"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemSignature"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemStates"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzIdentities"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzImportedPoolUse"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobReservations"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobRestartPage"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipCatalogNames"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolFeatures"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolLabels"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolScan"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolState"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolSystemUse"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolTopology"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzProperties"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyCoordinatorActions"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyExecutionCut"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyExecutionHandoff"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyIntent"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyJob"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyJobAssessment"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyLiveStateReceipt"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyPlan"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyPostcondition"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyViews"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzStateCatalogNames"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzSystemDeviceUse"
+        }
+      ],
+      "race_packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ]
+    },
+    "supervised_teardown": {
+      "completed": true,
+      "group_cleaned": true,
+      "worker_returncode": 0
+    },
+    "tooling_tests": 190
+  },
+  "regression_sensitivity": [
+    {
+      "name": "members",
+      "selector": "^TestExecutionStartupPolicyFactsDrift$",
+      "expected_nonzero": true,
+      "exit_code": 1,
+      "failed_cases": [
+        "TestExecutionStartupPolicyFactsDrift",
+        "TestExecutionStartupPolicyFactsDrift/pool-name",
+        "TestExecutionStartupPolicyFactsDrift/scope-name",
+        "TestExecutionStartupPolicyFactsDrift/scope-parent",
+        "TestExecutionStartupPolicyFactsDrift/foreign-scope",
+        "TestExecutionStartupPolicyFactsDrift/empty-scope",
+        "TestExecutionStartupPolicyFactsDrift/missing-member",
+        "TestExecutionStartupPolicyFactsDrift/foreign-vdev",
+        "TestExecutionStartupPolicyFactsDrift/serial-source",
+        "TestExecutionStartupPolicyFactsDrift/media-size",
+        "TestExecutionStartupPolicyFactsDrift/sector-size",
+        "TestExecutionStartupPolicyFactsDrift/stripe-size",
+        "TestExecutionStartupPolicyFactsDrift/stripe-offset",
+        "TestExecutionStartupPolicyFactsDrift/provider-geometry"
+      ],
+      "original_sha256": "ae0eb67e8ee83eb50fef9c169084127e4eda5afa1f64a8cb49d9a55c61e17046",
+      "overlay_sha256": "d5d24951859cc2f018541e1752bca5b36b0a240444006811f9d225d9d4de8787",
+      "log_sha256": "252fb452ae565546acb8782162b9c26816f126e6484b6725fad09e5a64f6189c",
+      "supervised_teardown": {
+        "completed": true,
+        "group_cleaned": true,
+        "worker_returncode": 1,
+        "state_sha256": "a05d5d02d15e4f5bfd1588078b252d822c9c4c5c9ddf3f69e13a7a762e286704"
+      }
+    },
+    {
+      "name": "system",
+      "selector": "^TestExecutionStartupPolicyFactsDrift$",
+      "expected_nonzero": true,
+      "exit_code": 1,
+      "failed_cases": [
+        "TestExecutionStartupPolicyFactsDrift",
+        "TestExecutionStartupPolicyFactsDrift/missing-imported-pool",
+        "TestExecutionStartupPolicyFactsDrift/imported-name",
+        "TestExecutionStartupPolicyFactsDrift/system-topology",
+        "TestExecutionStartupPolicyFactsDrift/system-provider",
+        "TestExecutionStartupPolicyFactsDrift/system-mount",
+        "TestExecutionStartupPolicyFactsDrift/system-swap",
+        "TestExecutionStartupPolicyFactsDrift/other-pool-overlap"
+      ],
+      "original_sha256": "ae0eb67e8ee83eb50fef9c169084127e4eda5afa1f64a8cb49d9a55c61e17046",
+      "overlay_sha256": "246a9f99426f1a20b5276ec5f02153eac7fff2ce09132e69fe5f41ec214bd15e",
+      "log_sha256": "34874d8bd0ca566fbe0ecd15dc366fcbfe7733206a64988b42d173019753fc3c",
+      "supervised_teardown": {
+        "completed": true,
+        "group_cleaned": true,
+        "worker_returncode": 1,
+        "state_sha256": "dfc6ad80e85b55a4a6a9836470e038d79e02d69cf1a90f8ccdf716a525538db4"
+      }
+    },
+    {
+      "name": "history",
+      "selector": "^TestExecutionStartupPolicyCatalogEncodedHistory$",
+      "expected_nonzero": true,
+      "exit_code": 1,
+      "failed_cases": [
+        "TestExecutionStartupPolicyCatalogEncodedHistory",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/same-pool",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/same-pool/legacy/queued",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/same-pool/legacy/applying",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/same-pool/legacy/observing",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/same-pool/legacy/succeeded",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/same-pool/legacy/failed",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/same-pool/legacy/cancelled",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/same-pool/legacy/reconcile-required",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/same-pool/property/queued",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/same-pool/property/applying",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/same-pool/property/observing",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/same-pool/property/succeeded",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/same-pool/property/failed",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/same-pool/property/cancelled",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/same-pool/property/reconcile-required",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/other-pool",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/other-pool/legacy/queued",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/other-pool/legacy/applying",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/other-pool/legacy/observing",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/other-pool/legacy/succeeded",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/other-pool/legacy/failed",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/other-pool/legacy/cancelled",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/other-pool/legacy/reconcile-required",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/other-pool/property/queued",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/other-pool/property/applying",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/other-pool/property/observing",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/other-pool/property/succeeded",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/other-pool/property/failed",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/other-pool/property/cancelled",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/other-pool/property/reconcile-required",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/mixed",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/mixed/legacy/queued",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/mixed/legacy/applying",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/mixed/legacy/observing",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/mixed/legacy/succeeded",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/mixed/legacy/failed",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/mixed/legacy/cancelled",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/mixed/legacy/reconcile-required",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/mixed/property/queued",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/mixed/property/applying",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/mixed/property/observing",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/mixed/property/succeeded",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/mixed/property/failed",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/mixed/property/cancelled",
+        "TestExecutionStartupPolicyCatalogEncodedHistory/mixed/property/reconcile-required"
+      ],
+      "original_sha256": "ae0eb67e8ee83eb50fef9c169084127e4eda5afa1f64a8cb49d9a55c61e17046",
+      "overlay_sha256": "fd6325fbf5a8ae3428104ab9613a435ed2299c7781ef333ea9f610487926edfe",
+      "log_sha256": "a44e5ae84d49abd4a8aebf65d09423a4aa5f88bce2e2864842dd4758ab553b8f",
+      "supervised_teardown": {
+        "completed": true,
+        "group_cleaned": true,
+        "worker_returncode": 1,
+        "state_sha256": "dea8c3dcf8163fbf90da6b3218214a146d63b5b5d6db83a5bcfc153362c71d70"
+      }
+    }
+  ],
+  "initial_fixture_failure": {
+    "qualified": false,
+    "reason": "mixed property histories reused a review ID and triggered duplicate-plan refusal; not a product behavioral red",
+    "log_sha256": "f33133232d13e0f36b7e7d950534ced4d09bc9fa314284db65c02bbef606b84a"
+  },
+  "focused_development_pass": {
+    "log_sha256": "bff647df908e0dde1caf2714151fc32e96cf22837617341ec0e18a4f5d96c0d5",
+    "qualification_scope": "development loop only"
+  },
+  "native_qualification": {
+    "executed": false,
+    "reason": "only portable tests and documentation change; no production or native test/runner/fixture changes",
+    "expanded_issue_305_acceptance": "pending",
+    "historical_native_receipts": "preserved at their original candidate sources; no new native qualification inferred"
+  },
+  "limitations": [
+    "supplied synthetic facts/metadata only",
+    "no original lease or native census capture",
+    "no publication/retirement or real shutdown",
+    "no multi-policy lifecycle/concurrency/census/context-capacity acceptance",
+    "no runtime/hardware/commercial/performance/release claim"
+  ]
+}
