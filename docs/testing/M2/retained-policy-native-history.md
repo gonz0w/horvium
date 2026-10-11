@@ -41,7 +41,7 @@ The complete gate requires 870 controls, including 326 policy controls.
 
 | Control suffix | Observable assertion |
 |---|---|
-| `catalog` | The original ledger's native inspection matches every encoded ownership/job summary, total bytes and eight nonterminal/six terminal records. |
+| `catalog` | Native inspection matches every encoded ownership/job summary, total bytes and eight nonterminal/six terminal records; ordinary metadata review accepts the same complete domains/boot/system inputs and releases its leases before testing policy refusal. |
 | `leases-held` | Competing actual openers fail for both domains during the startup boot callback; that callback is reached. |
 | `denied` | Original policy review returns `ErrDenied`, no review/native handle, and never invokes a policy producer. |
 | `preserved` | Independent journal/ledger namespace snapshots retain exact objects and bytes after refusal. |

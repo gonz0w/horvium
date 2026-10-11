@@ -74,7 +74,15 @@ func nativePolicyHistoryCases(t *testing.T, f restoreFixture, check func(string,
 		}
 		catalog, originalHolds, err := readback()
 		mode := "history-" + relation
-		check(mode+"_catalog", err == nil && reflect.DeepEqual(catalog, want.catalog) && len(catalog.Jobs) == 14 && catalog.Nonterminal == 8 && catalog.Terminal == 6)
+		// A typed denial alone could pass for an unrelated backing/journal failure.
+		// Require the ordinary metadata path to accept the same complete domains,
+		// boot and system inputs before testing the separate all-job refusal gate.
+		metadata, _, metadataErr := reviewExecutionStartup(ctx, j, l, f.read, func(context.Context) (PoolSystemUse, error) { return use, nil }, activationBoot)
+		metadataValid := metadataErr == nil && metadata != nil
+		if metadata != nil {
+			metadataValid = metadata.Close() == nil && metadataValid
+		}
+		check(mode+"_catalog", err == nil && metadataValid && reflect.DeepEqual(catalog, want.catalog) && len(catalog.Jobs) == 14 && catalog.Nonterminal == 8 && catalog.Terminal == 6)
 		if !reflect.DeepEqual(originalHolds.Pools(), wantedHolds.Pools()) {
 			t.Fatal("seed omitted a retained holder")
 		}
