@@ -1,6 +1,9 @@
 # Research: original startup deadline and proposed stack diagnostic
 
-Status: offline analysis completed; diagnostic method Proposed, not adopted.
+Status: offline analysis completed; diagnostic method adopted through PR 322.
+Adoption: merge `c481cbbb7b17c592f61bb7cff506f475c071cbd4`, signed proposal
+`9cbd5b01df263cc823bd53a31f3917a50832ed6f`. Decision issue 321 is completed;
+[implementation/diagnostic record](policy-startup-stack.md) is separate.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`). Time box: one development session.
 Decision [issue 321](https://github.com/gonz0w/horvium/issues/321);
 implementation/qualification [issue 305](https://github.com/gonz0w/horvium/issues/305);
@@ -85,7 +88,7 @@ The proposed snapshots below supply the missing point observations; they do not
 optimize startup or adopt a runtime change. Unchanged full-suite retries would
 only reproduce the already bound error without resolving its location.
 
-## Proposed next diagnostic, pending explicit adoption
+## Adopted next diagnostic
 
 Run one separate diagnostic-only original-factory attempt on disposable
 FreeBSD/amd64 15.1 with the existing one-CPU qemu64/TCG, 6 GiB, seven-device profile.
@@ -158,7 +161,7 @@ not successful localization. A separately scoped 14.5 comparison can follow if
 the observation justifies it; this one-target research cannot qualify either
 release's original five-parent, 289-control, thirteen-child acceptance gate.
 
-## Proposed failing-first Test Design
+## Adopted failing-first Test Design
 
 | Test ID | Observable criterion before implementation/execution |
 | --- | --- |
@@ -171,6 +174,8 @@ release's original five-parent, 289-control, thirteen-child acceptance gate.
 
 Before implementing, the maintainer must explicitly adopt this method through
 review and merge of its design PR, recording source/merge identities in issue 321.
+That decision was made through PR 322; the preceding instruction remains the
+original adoption boundary, not a new approval request.
 Its merge accepts a research method, never native behavior or architecture.
 Concrete diagnostic-only control names and strict parser inventory must be
 declared in the implementation contract before its failing-first code and run.

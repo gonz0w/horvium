@@ -1,0 +1,476 @@
+{
+  "schema": 1,
+  "date": "2026-10-11",
+  "scope": "adopted focused test-only original startup stack diagnostic; diagnostic completeness is separate from operation success and native acceptance",
+  "diagnostic_complete": false,
+  "native_acceptance": false,
+  "executed_source_commit": "ec92537b281c0d4465c3a3cfda2b56979e4f93b7",
+  "base_commit": "c481cbbb7b17c592f61bb7cff506f475c071cbd4",
+  "adoption": {
+    "PR": 322,
+    "proposal_source": "9cbd5b01df263cc823bd53a31f3917a50832ed6f",
+    "merge_commit": "c481cbbb7b17c592f61bb7cff506f475c071cbd4",
+    "completed_design_issue": 321,
+    "research_issue": 323
+  },
+  "release": "15.1",
+  "profile": {
+    "target": "freebsd/amd64",
+    "cpu_count": 1,
+    "cpu_model": "qemu64",
+    "accelerator": "tcg",
+    "memory_mib": 6144,
+    "devices": 7
+  },
+  "actual_budget": {
+    "child_seconds": 150,
+    "parent_seconds": 480,
+    "phase_minutes": 18,
+    "caller_seconds": 120,
+    "product_seconds": 90,
+    "sample_seconds": [
+      30,
+      75,
+      110
+    ],
+    "snapshot_bytes": 65536,
+    "join_seconds": 5
+  },
+  "other_bounds": {
+    "cleanup_seconds": 30,
+    "child_output_bytes": 16384,
+    "remote_seconds": 7200,
+    "supervisor_seconds": 9000,
+    "grace_seconds": 15
+  },
+  "artifact": {
+    "source_commit": "ec92537b281c0d4465c3a3cfda2b56979e4f93b7",
+    "sha256": "2e84c6cce8cc2965dcddffb6039038cb46ee2685010d22eb104ddda1a06eddc5",
+    "bytes": 13672072,
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+    "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+    "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+    "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+    "target": "freebsd/amd64",
+    "goamd64": "v1",
+    "cgo_enabled": false,
+    "build_arguments": [
+      "go",
+      "test",
+      "-c",
+      "-trimpath",
+      "-tags=horvium_native_fixture",
+      "-o",
+      "<owned-artifact>",
+      "./internal/host/freebsd"
+    ]
+  },
+  "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+  "qemu_version": "QEMU emulator version 11.1.1",
+  "record_sha256": "cb8880a1f66f326e6159d6a0d6116e919fb4cb38e90beea7e634fff87b3ad6f5",
+  "log_sha256": "85cddd9ef906c50cea3efbf7c9e3f0227f91dd123fada9af8147a4da8f25d2c1",
+  "observations": null,
+  "source_mapped_stacks": [],
+  "frame_source_hashes": {},
+  "required_inventory": {
+    "parents": 1,
+    "normally_waited_children": 2,
+    "fact_controls": 21,
+    "diagnostic_controls": 21,
+    "total_controls": 42
+  },
+  "independent_cleanup": {
+    "host_teardown": true,
+    "base_preserved": true,
+    "runtime_preserved": true,
+    "device_backings_preserved": true,
+    "device_fixture_teardown": true,
+    "supervisor_fixture_cleanup": true,
+    "supervisor_group_cleaned": true
+  },
+  "owned_temporary_artifacts_removed": true,
+  "raw_stacks": "never copied to host or committed; original guest parent verified hashes/permissions and removed them before original metadata teardown",
+  "failure": "original seed refused setup before diagnostic child/startup; no sample/summary/final-byte/control vector and no native completeness",
+  "failing_first": {
+    "source_commit": "a70882b73f36a4b5588443f63fe961203c6e05de",
+    "portable_go_parents": 3,
+    "go_log_sha256": "659ead5eed6ff23a60b89c4659f9e1b867b2cc9751e44b95eff2a74bab4db063",
+    "consumer_tests": 6,
+    "consumer_summary": "three expected errors against absent consumer/profile registration",
+    "consumer_log_sha256": "91e91fcd9335dbed12dad3af2af8311b087fb8f8ca7b3673713e445f49c5913d"
+  },
+  "intermediate_portable_fixture_failure": {
+    "scope": "test temporary directory lacked required0700 mode; fixture setup corrected without weakening private-directory check",
+    "log_sha256": "719b434dd0dc720b3093e384a6df59d5591578fa2e9d8c6c5fc6980f6a08349e"
+  },
+  "rejected_portable_review": {
+    "source_commit": "0db84c99e52c6307468378356768ad22223eca4c",
+    "qualified": false,
+    "record_sha256": "bf397a3048b403ad6f439b462dd302459f7360530ee1f6b9546cba095a1e1e2f",
+    "checks_log_sha256": "1b327fad7bfc967d1f20bf30a8525120e69e1fae6542ae6f48fc61e118434272",
+    "reason": "retained suite-wide CPU selector test omitted adopted one-CPU trace; expectation corrected; no native execution at rejected source"
+  },
+  "portable_review": {
+    "source_commit": "ec92537b281c0d4465c3a3cfda2b56979e4f93b7",
+    "source_tree": "77932c89d778fa81516ec7ec2f3de3dc8cb81005",
+    "base_commit": "c481cbbb7b17c592f61bb7cff506f475c071cbd4",
+    "title": "test(host): capture bounded original startup stack diagnostics",
+    "signed_commits": [
+      "ec92537b281c0d4465c3a3cfda2b56979e4f93b7",
+      "0db84c99e52c6307468378356768ad22223eca4c",
+      "a70882b73f36a4b5588443f63fe961203c6e05de"
+    ],
+    "qualified": true,
+    "plan": {
+      "mode": "full",
+      "reason": "shared tooling, policy, module or packaging change",
+      "packages": [],
+      "native_review_required": true
+    },
+    "command": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "checks_log_sha256": "57bb8965ba92c9f2c93547bae308031caa50f16543e6c891d1e9dcb2bda2f86a",
+    "report_sha256": "5618fd624081000dc27cb6c8cb2d34790e023dc71722eddc4abbec889ac1bf0d",
+    "deep_log_sha256": "f0e4156546c7acf19c873afeca0703c47baaa7ea84dfe0ad0ccb10c56f0789ce",
+    "deep_result": {
+      "fuzz_targets": [
+        {
+          "package": "./internal/admin",
+          "target": "FuzzConfiguration"
+        },
+        {
+          "package": "./internal/admin",
+          "target": "FuzzSessionAuthorityActions"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzActionNegotiation"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzPropertyReplies"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzPropertyRequest"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzRequest"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzSnapshot"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPersistentBackingProjection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPoolPropertyCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPoolProviderCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyClaimSourceSelection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyControlSelection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyJobSource"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyPolicyCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzSystemUseCollection"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzDiskAccess"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzDiskAttachments"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzDiskObservation"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzGEOM"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzPoolDiskAttachments"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzPools"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzDeviceUseReview"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionCensus"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionCensusChange"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionJournal"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionJournalNamespace"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemSignature"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemStates"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzIdentities"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzImportedPoolUse"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobReservations"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobRestartPage"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipCatalogNames"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolFeatures"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolLabels"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolScan"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolState"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolSystemUse"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolTopology"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzProperties"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyCoordinatorActions"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyExecutionCut"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyExecutionHandoff"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyIntent"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyJob"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyJobAssessment"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyLiveStateReceipt"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyPlan"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyPostcondition"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyViews"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzStateCatalogNames"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzSystemDeviceUse"
+        }
+      ],
+      "race_packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/eventlog",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/inventory",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ]
+    },
+    "tooling_tests": 215,
+    "supervised_teardown_verified": true
+  },
+  "normal_build_exclusion": {
+    "verified": true,
+    "tagged_fixture_excluded_from_normal_tests": true,
+    "portable_support_is_test_only": true
+  },
+  "product_source_unchanged": true,
+  "historical_receipts_unchanged": {
+    "docs/testing/M2/retained-policy-admission-manifest.json": "2e733dd5a017772ce7947913ced1c16940ee8614cde445cb9fcd0327331077c3",
+    "docs/testing/M2/retained-policy-lifecycle-budget-manifest.json": "4019d0b125d2dfbf0bc1be31f1cc0465eea1aae9bd40dc28efeeecc3bec13990",
+    "docs/testing/M2/retained-policy-native-facts-manifest.json": "e9d4a0c6eef2011b236ea69a0ff94c0adae9a9c8f2102fefe4c9ff69f1c9f499",
+    "docs/testing/M2/retained-policy-native-history-manifest.json": "0788d387d4b4c27921fd3f68ffc5206f9fe0c548270464d34c87fd6ea4b8db6d",
+    "docs/testing/M2/retained-policy-native-lifecycle-manifest.json": "43fdd1bbda87853e7d9aee336f70402bfc5f263b9b6b71304dee7133faea5ce0",
+    "docs/testing/M2/retained-policy-native-multiple-manifest.json": "294662c837cf9921dba954491b6737f84adc43de71d09d93c3747107992eb263",
+    "docs/testing/M2/retained-policy-native-review-manifest.json": "f37c74e30d2c769d87f65872303021fd5bf2640467636bd9bea499ae4abaa3cf",
+    "docs/testing/M2/retained-policy-root-manifest.json": "52bb88c0d6cc94fe031a8345adb1bdc1e5fb005634d24f4ba3eb47a59ea3366a",
+    "docs/testing/M2/retained-policy-root-qualification-manifest.json": "6d3dd07f65d88247bdd854061f811629c59168bcfda42385eab5a7cf21aac99c",
+    "docs/testing/M2/retained-policy-startup-manifest.json": "b7b248f1bfe6e197f1c8955f72f80c9fbeef0a71a641767e424059df7cfdd271",
+    "docs/research/M2/policy-lifecycle-timeout-manifest.json": "53c7a8c64b1681863e91920364e97e02f5f3a6875c72dab60269999389fcd95c",
+    "docs/research/M2/policy-startup-costs-manifest.json": "4564cee1d3e579557f6af7d187a77274183752d2af370b44d4e92eed6431ca5a",
+    "docs/research/M2/policy-startup-deadline-manifest.json": "bae3a271140cbaef0ad08d5dbc290b388cfea2645aeb634ba973fc899094d017"
+  },
+  "not_attempted": {
+    "14.5": "not part of this adopted one-target diagnostic; both full native lifecycle acceptance releases remain pending"
+  },
+  "limits": [
+    "Snapshots are points, not measured collector/phase durations or a causal performance/deadlock/emulation finding",
+    "Original startup success/error, diagnostic completeness and native lifecycle acceptance remain separate",
+    "Raw snapshots were source-sanitized inside the owned guest; independent re-extraction after mandatory deletion is unavailable",
+    "Early/skipped/unlocated/ambiguous/overlapping samples remain explicit; none supply guessed frames or authority",
+    "No producer wrappers, cache, retries, deadline renewal/increase, CPU tuning, runtime APIs/authority, dependency, service, deployment or paid automation",
+    "Issue305/139 and complete original two-release lifecycle/restart, broader fault/mixed-history/concurrency/census/context/capacity, configured startup/workers/backend/global launch and browser/client/hardware/performance/release gates stay open; writes disabled"
+  ],
+  "failed_observation": {
+    "parent": "TestNativeMultiplePolicyStartupTraceUFS",
+    "parent_seconds": 14.95,
+    "failure_source": {
+      "file": "internal/host/freebsd/execution_policy_startup_trace_fixture_test.go",
+      "line": 182
+    },
+    "message": "original trace seed storage scope denied",
+    "startup_invoked": false,
+    "diagnostic_child_started": false,
+    "stacks_captured": false,
+    "normally_waited_facts_child": false,
+    "complete_controls": false,
+    "in_guest_parent_teardown": "complete independent vector absent; unverified despite host cleanup",
+    "optin_analysis": {
+      "seed_guard_file": "internal/storage/execution_policy_fixture_freebsd.go",
+      "seed_guard_line": 17,
+      "required": "HORVIUM_CLOSED_STARTUP_OWNER_VM=1",
+      "absent_from_executed_registered_commands": true,
+      "correction": "registered source/prebuilt commands supply original fixture opt-in; script rejects its absence before test selection; product guard unchanged",
+      "native_execution_after_correction": "not attempted; preserve one failed run and review corrected setup before next diagnostic",
+      "seed_guard_executed_source_sha256": "e975f3bca4d61edbc29b8ed106a9e300b97b86b42533f232ffb56c9e22a23f40",
+      "executed_registration_sha256": "6fd5f563d3f1335b58840caf23c081de5533d59e9bc3d22207348f4faaefe99a",
+      "portable_verified_corrected_source": "840c662264d111754400d376cc7179ae482bb389"
+    }
+  },
+  "optin_regression": {
+    "red_log_sha256": "a714ef2a115479858b7c8387582db791d7908e239b7888c085bdf7ce979bad93",
+    "green_log_sha256": "e38e28587d85ab5e7516728eefe6b95880a1a02618e747f0ad6c36992885091a",
+    "tests": 6,
+    "scope": "synthetic runner registrations and required preflight opt-in; no native acceptance"
+  },
+  "corrected_runner_portable_review": {
+    "source_commit": "840c662264d111754400d376cc7179ae482bb389",
+    "base_commit": "c481cbbb7b17c592f61bb7cff506f475c071cbd4",
+    "source_tree": "71edea83bbc7f2d3af7bbfa507275345ac30cac8",
+    "title": "test(host): capture bounded original startup stack diagnostics",
+    "signed_commits": [
+      "840c662264d111754400d376cc7179ae482bb389",
+      "ec92537b281c0d4465c3a3cfda2b56979e4f93b7",
+      "0db84c99e52c6307468378356768ad22223eca4c",
+      "a70882b73f36a4b5588443f63fe961203c6e05de"
+    ],
+    "qualified": true,
+    "plan": {
+      "mode": "full",
+      "reason": "shared tooling, policy, module or packaging change",
+      "packages": [],
+      "native_review_required": true
+    },
+    "command": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "checks_log_sha256": "fa9ae44d559d33c6e6ed95318ef3c712dbedf1b577630dfd431c5396f4b08351",
+    "report_sha256": "d442141883d2a985c414ad0064259b97ffc3abe7146b05d47bcd01d37bd21d01",
+    "deep_log_sha256": "0b8326479c825d84295463cc15cb9fc770927c4b31b4b7853b019a493d3be7da",
+    "deep_executed": true,
+    "race_packages": 11,
+    "fuzz_targets": 54,
+    "tooling_tests": 215,
+    "supervised_teardown_verified": true,
+    "native_execution": "none at corrected source; the only native attempt remains the failed original source"
+  }
+}

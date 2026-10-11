@@ -1552,3 +1552,22 @@ around one original startup call, with unchanged product/caller/native limits
 and separate completeness/cleanup checks. It requires explicit adoption through
 issue 321 before implementation/execution. No new native run, runtime or fixture
 change is made; both release lifecycle gates and broader acceptance stay pending.
+
+PR 322 adopted that sampling method at merge
+`c481cbbb7b17c592f61bb7cff506f475c071cbd4`. The
+[diagnostic implementation](../research/M2/policy-startup-stack.md) adds tagged
+test-only snapshots around one original startup call on the disposable 15.1 UFS
+profile. It retains the 120-second caller, 90-second product operations, original
+native producers/guards, default 150-second child/480-second parent/18-minute
+phase and independent cleanup. One parent/two children/all 42 controls are
+required for diagnostic completeness, never native acceptance. The first source
+`ec92537b281c0d4465c3a3cfda2b56979e4f93b7` failed original 15.1 UFS seed setup at
+14.95s: the runner omitted the original closed-startup fixture opt-in. Startup and
+sampling were not reached; no final byte/control/guest cleanup vector qualifies.
+[Sanitized failed receipt](../research/M2/policy-startup-stack-manifest.json)
+preserves that failure, complete independent host/device/supervisor teardown and
+all thirteen earlier unchanged receipts. The registration/preflight correction
+passes a portable regression but has **not executed natively**. The candidate is
+a draft; diagnostic completeness and native acceptance remain false. No raw
+stacks were captured or copied. Neither sampler nor setup correction enables
+runtime writes or completes issue 323/305/139; 14.5 remains unattempted.
