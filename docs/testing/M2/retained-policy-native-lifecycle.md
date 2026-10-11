@@ -209,3 +209,9 @@ identifies the second candidate's whole-child timeout during post-publication
 revalidation. Its sanitized source-bound witness preserves this failed receipt
 unchanged. No successful close/control vector or new native qualification follows;
 this contract's selectors, inventory and bounds are unchanged.
+
+The [proposed cumulative fixture budget amendment](../../milestones/M2/retained-policy-fixture-budgets.md)
+is a separate design decision under issue 318. Pending explicit adoption, this
+contract's current limits remain in force. The proposal explains the changed
+child/parent-work/process hierarchy, exact retained/new controls and stop rules;
+no existing failed receipt is rewritten or promoted to acceptance.

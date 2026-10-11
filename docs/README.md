@@ -214,3 +214,5 @@
 - [Retained-policy collection cost diagnostic](research/M2/policy-startup-costs.md): independent native primitives; no lifecycle acceptance.
 
 - [Preserved lifecycle timeout analysis](research/M2/policy-lifecycle-timeout.md): original post-publication stack; no new native run or acceptance.
+
+- [Proposed cumulative lifecycle fixture budgets](milestones/M2/retained-policy-fixture-budgets.md): separate design review; no adopted bound or native pass.
