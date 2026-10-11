@@ -1505,3 +1505,15 @@ root/pool facts bind the release-specific read counts (22 or 28); metadata stage
 run ZFS then UFS. Normal builds exclude the tagged diagnostic fixture. This is
 not fixed-factory acceptance or a product performance result; all nine historical
 retained-policy receipts and their failures/limits remain unchanged.
+
+The [preserved lifecycle timeout analysis](../research/M2/policy-lifecycle-timeout.md)
+locates the historical two-CPU 15.1 whole-child timeout in post-closed-publication
+revalidation, waiting on the original guarded version probe. Its
+[sanitized witness](../research/M2/policy-lifecycle-timeout-manifest.json) matches
+the original failed log/record and executed source. This single snapshot verifies
+no command duration, final journal bytes, completed close, released leases or
+native acceptance; the other startup failures remain unlocated. No new VM run,
+fixture/product change, deadline increase or architecture support claim. All ten
+preceding receipts remain byte-identical. Complete original lifecycle gates on
+both releases remain pending; any accelerated lab profile or fixture-budget
+amendment needs separate declared review before use.

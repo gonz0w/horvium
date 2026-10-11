@@ -203,3 +203,9 @@ global launch and browser/client/hardware/performance/release gates stay open.
 The [independent collection diagnostic](../../research/M2/policy-startup-costs.md)
 measures native primitives and preserves these failures. It cannot substitute for
 the required actual fixed-factory lifecycle acceptance.
+
+The [offline historical stack analysis](../../research/M2/policy-lifecycle-timeout.md)
+identifies the second candidate's whole-child timeout during post-publication
+revalidation. Its sanitized source-bound witness preserves this failed receipt
+unchanged. No successful close/control vector or new native qualification follows;
+this contract's selectors, inventory and bounds are unchanged.
