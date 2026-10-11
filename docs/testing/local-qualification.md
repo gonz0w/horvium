@@ -603,3 +603,22 @@ seven-device profile, original closed policy-only seeds and unchanged parent,
 child and shared operation bounds. It qualifies private original review and
 observation, plus last-member denial. Activation/retirement, other failure
 families and broader native acceptance remain separate.
+
+
+The focused `policy-startup-lifecycle` suite uses one tagged host binary for three
+serial facts/review/lifecycle phases, each bounded at eighteen minutes. Require
+five completed parents, 279 controls and thirteen normally waited children per
+release, exact checksum and independent metadata/data/device/guest/host/supervisor
+teardown. Run releases serially:
+
+```sh
+.tools/venv/bin/python3 tools/local-qualification.py policy-startup-lifecycle 15.1 --run
+.tools/venv/bin/python3 tools/local-qualification.py policy-startup-lifecycle 14.5 --run
+```
+
+The [pre-execution contract](M2/retained-policy-native-lifecycle.md) declares the
+unchanged scoped device profile, original fixed factory, two clean cycles on the
+same domains and existing child/parent/product limits. Earlier fact/review gates
+retain their original scripts/checkers/receipts. The new runner requires their
+actual controls in its affected artifact; historical results do not substitute.
+Remaining failure families and broader runtime acceptance stay separate.

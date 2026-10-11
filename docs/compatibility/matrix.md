@@ -1468,3 +1468,13 @@ host/supervisor teardown passed; the
 [receipt](../testing/M2/retained-policy-native-review-manifest.json) binds the
 executed source and original evidence. All seven earlier receipts remain unchanged. No production root API or activation authority is introduced;
 original multi-policy activation/retirement and broader acceptance remain open.
+
+
+The [original two-policy lifecycle fixture](../testing/M2/retained-policy-native-lifecycle.md)
+declares valid fixed-factory activation, observation and unused retirement on UFS/
+ZFS metadata, then a second process cycle from the same published closed history.
+Qualification is pending. Its focused gate retains all three fact/review parents
+and adds two lifecycle parents: five parents, 279 controls and thirteen normally
+waited children per pinned release. Product code, time bounds and runtime write
+denial are unchanged. This adds no configured startup, worker or launch authority;
+remaining failure families and broader acceptance stay open.

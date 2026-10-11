@@ -209,3 +209,4 @@
 - [M2 native multiple-policy storage startup](testing/M2/retained-policy-native-multiple.md): two-policy original publication/retirement and last-policy failures; supplied policy facts remain synthetic and fixed-root composition is separate.
 - [M2 native two-pool facts](testing/M2/retained-policy-native-facts.md): independent disposable pools and fixed native collectors; a prerequisite to the separate original root lifecycle.
 - [M2 original two-policy root review](testing/M2/retained-policy-native-review.md): fixed native facts under original leases on UFS/ZFS, with last-member refusal; activation and retirement remain separate.
+- [M2 original two-policy root lifecycle](testing/M2/retained-policy-native-lifecycle.md): fixed factory activation, observation, unused retirement and subsequent process restart; broader acceptance remains separate.

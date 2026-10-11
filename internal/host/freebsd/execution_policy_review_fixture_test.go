@@ -200,7 +200,7 @@ func nativeMultiplePolicyReviewParent(t *testing.T, kind string) {
 	})
 }
 
-func nativeMultiplePolicyReviewFixture(t *testing.T, ctx context.Context, kind string, policies []storage.Policy, disk inventory.Provider) {
+func nativeMultiplePolicyMetadataFixture(t *testing.T, ctx context.Context, kind string, disk inventory.Provider, run func(string, string)) (bool, bool) {
 	t.Helper()
 	command := func(c context.Context, path string, args ...string) (string, error) {
 		out, e := execute(c, path, args, 1<<20)
@@ -300,6 +300,13 @@ func nativeMultiplePolicyReviewFixture(t *testing.T, ctx context.Context, kind s
 			t.Fatal("metadata parent mode")
 		}
 	}
+	run(jp, lp)
+	cleaned = cleanup()
+	return cleaned, must("/sbin/mount", "-p") == mountsBefore
+}
+
+func nativeMultiplePolicyReviewFixture(t *testing.T, ctx context.Context, kind string, policies []storage.Policy, disk inventory.Provider) {
+	t.Helper()
 	var markers []string
 	check := func(name string, ok bool) {
 		t.Helper()
@@ -308,73 +315,74 @@ func nativeMultiplePolicyReviewFixture(t *testing.T, ctx context.Context, kind s
 		}
 		markers = append(markers, name+"=pass")
 	}
-	sort.Slice(policies, func(i, j int) bool {
-		return "ownership-"+policies[i].PoolGUID+".json" < "ownership-"+policies[j].PoolGUID+".json"
+	domains, mounts := nativeMultiplePolicyMetadataFixture(t, ctx, kind, disk, func(jp, lp string) {
+		sort.Slice(policies, func(i, j int) bool {
+			return "ownership-"+policies[i].PoolGUID+".json" < "ownership-"+policies[j].PoolGUID+".json"
+		})
+		system, e := NewSystemUseSource()
+		if e != nil {
+			t.Fatal(e)
+		}
+		for _, mode := range []string{"clean", "last-member"} {
+			var seed []storage.Policy
+			for _, p := range policies {
+				b, e := storage.EncodeOwnershipRecord(p)
+				if e != nil {
+					t.Fatal(e)
+				}
+				q, e := storage.DecodeOwnershipRecord(b)
+				if e != nil {
+					t.Fatal(e)
+				}
+				seed = append(seed, q)
+			}
+			if mode == "last-member" {
+				seed[1].Members[0].Serial = "HVM-DRIFT-DENIAL"
+			}
+			j, l := filepath.Join(jp, mode), filepath.Join(lp, mode)
+			if e = storage.SeedExecutionPolicyFixture(ctx, j, l, readNativeExecutionBacking, system.Collect, readNativeActivationBoot, seed); e != nil {
+				t.Fatal("original two-policy seed", e)
+			}
+			before, record := readActivationFixture(t, j)
+			journalBefore, ledgerBefore := multiplePolicyReviewFiles(t, j), multiplePolicyReviewFiles(t, l)
+			check(mode+"_seed_closed", record.Owner.State == "closed" && !record.Metadata.Pending && !record.Native.Pending && !record.Disarmed && len(ledgerBefore) == 3 && !nativeActivationLockHeld(t, j) && !nativeActivationLockHeld(t, l))
+			cmd := exec.CommandContext(ctx, os.Args[0], "-test.v", "-test.run=^TestMultiplePolicyRootReviewChild$", "-test.timeout=150s", "-test.count=1")
+			cmd.Env = append(os.Environ(), "GOMAXPROCS=1", "HORVIUM_POLICY_ROOT_REVIEW_CHILD="+mode, "HORVIUM_RESTART_JOURNAL="+j, "HORVIUM_RESTART_LEDGER="+l)
+			data, err := cmd.CombinedOutput()
+			if err != nil {
+				t.Logf("bounded root review child: %.16384s", data)
+			}
+			check(mode+"_child_waited", err == nil && cmd.ProcessState != nil && cmd.ProcessState.Success() && len(data) <= 16<<10)
+			expected := multiplePolicyReviewClean
+			if mode == "last-member" {
+				expected = multiplePolicyReviewDenial
+			}
+			prefix := "POLICY_ROOT_REVIEW_CHILD_RESULT " + mode + " "
+			var rows []string
+			for _, line := range strings.Split(string(data), "\n") {
+				if strings.HasPrefix(line, prefix) {
+					rows = append(rows, strings.TrimPrefix(line, prefix))
+				}
+			}
+			good := len(rows) == 1
+			if good {
+				names := strings.Fields(rows[0])
+				sort.Strings(names)
+				want := append([]string(nil), expected...)
+				sort.Strings(want)
+				good = reflect.DeepEqual(names, want)
+			}
+			check(mode+"_child_inventory", good)
+			for _, name := range expected {
+				check(mode+"_"+name, true)
+			}
+			after, last := readActivationFixture(t, j)
+			check(mode+"_exact_history", bytes.Equal(before, after) && last == record && reflect.DeepEqual(journalBefore, multiplePolicyReviewFiles(t, j)) && reflect.DeepEqual(ledgerBefore, multiplePolicyReviewFiles(t, l)))
+			check(mode+"_leases_released", !nativeActivationLockHeld(t, j) && !nativeActivationLockHeld(t, l))
+		}
 	})
-	system, e := NewSystemUseSource()
-	if e != nil {
-		t.Fatal(e)
-	}
-	for _, mode := range []string{"clean", "last-member"} {
-		var seed []storage.Policy
-		for _, p := range policies {
-			b, e := storage.EncodeOwnershipRecord(p)
-			if e != nil {
-				t.Fatal(e)
-			}
-			q, e := storage.DecodeOwnershipRecord(b)
-			if e != nil {
-				t.Fatal(e)
-			}
-			seed = append(seed, q)
-		}
-		if mode == "last-member" {
-			seed[1].Members[0].Serial = "HVM-DRIFT-DENIAL"
-		}
-		j, l := filepath.Join(jp, mode), filepath.Join(lp, mode)
-		if e = storage.SeedExecutionPolicyFixture(ctx, j, l, readNativeExecutionBacking, system.Collect, readNativeActivationBoot, seed); e != nil {
-			t.Fatal("original two-policy seed", e)
-		}
-		before, record := readActivationFixture(t, j)
-		journalBefore, ledgerBefore := multiplePolicyReviewFiles(t, j), multiplePolicyReviewFiles(t, l)
-		check(mode+"_seed_closed", record.Owner.State == "closed" && !record.Metadata.Pending && !record.Native.Pending && !record.Disarmed && len(ledgerBefore) == 3 && !nativeActivationLockHeld(t, j) && !nativeActivationLockHeld(t, l))
-		cmd := exec.CommandContext(ctx, os.Args[0], "-test.v", "-test.run=^TestMultiplePolicyRootReviewChild$", "-test.timeout=150s", "-test.count=1")
-		cmd.Env = append(os.Environ(), "GOMAXPROCS=1", "HORVIUM_POLICY_ROOT_REVIEW_CHILD="+mode, "HORVIUM_RESTART_JOURNAL="+j, "HORVIUM_RESTART_LEDGER="+l)
-		data, err := cmd.CombinedOutput()
-		if err != nil {
-			t.Logf("bounded root review child: %.16384s", data)
-		}
-		check(mode+"_child_waited", err == nil && cmd.ProcessState != nil && cmd.ProcessState.Success() && len(data) <= 16<<10)
-		expected := multiplePolicyReviewClean
-		if mode == "last-member" {
-			expected = multiplePolicyReviewDenial
-		}
-		prefix := "POLICY_ROOT_REVIEW_CHILD_RESULT " + mode + " "
-		var rows []string
-		for _, line := range strings.Split(string(data), "\n") {
-			if strings.HasPrefix(line, prefix) {
-				rows = append(rows, strings.TrimPrefix(line, prefix))
-			}
-		}
-		good := len(rows) == 1
-		if good {
-			names := strings.Fields(rows[0])
-			sort.Strings(names)
-			want := append([]string(nil), expected...)
-			sort.Strings(want)
-			good = reflect.DeepEqual(names, want)
-		}
-		check(mode+"_child_inventory", good)
-		for _, name := range expected {
-			check(mode+"_"+name, true)
-		}
-		after, last := readActivationFixture(t, j)
-		check(mode+"_exact_history", bytes.Equal(before, after) && last == record && reflect.DeepEqual(journalBefore, multiplePolicyReviewFiles(t, j)) && reflect.DeepEqual(ledgerBefore, multiplePolicyReviewFiles(t, l)))
-		check(mode+"_leases_released", !nativeActivationLockHeld(t, j) && !nativeActivationLockHeld(t, l))
-	}
-	cleaned = cleanup()
-	check("domain_teardown", cleaned)
-	check("mounts_restored", must("/sbin/mount", "-p") == mountsBefore)
+	check("domain_teardown", domains)
+	check("mounts_restored", mounts)
 	t.Log("POLICY_ROOT_REVIEW_DOMAIN_TEARDOWN " + kind + " filesystems=pass directories=pass")
 	t.Log("POLICY_ROOT_REVIEW_" + strings.ToUpper(kind) + "_RESULT " + strings.Join(markers, " "))
 }
