@@ -1,6 +1,8 @@
-# Proposal: cumulative two-policy lifecycle fixture budgets
+# Adopted amendment: cumulative two-policy lifecycle fixture budgets
 
-Status: Proposed; separate maintainer adoption required before implementation.
+Status: Adopted through [PR 319](https://github.com/gonz0w/horvium/pull/319),
+merge `aebfb2c8b85040154f6e70ffb3296bba543a9db9`, proposal source
+`0802767509a23ec6309980462773ef8f6f034283`. Native qualification remains pending.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`). Time box: one design/review session.
 Design decision: [issue 318](https://github.com/gonz0w/horvium/issues/318).
 Implementation/qualification: [issue 305](https://github.com/gonz0w/horvium/issues/305).
@@ -213,3 +215,8 @@ remain fixture setup, not worker shutdown provenance. Fault/mixed-history,
 credential/lineage/concurrency/census/publication/context/capacity families,
 configured startup/workers/backend/global launch and broader browser/client/
 hardware/performance/release acceptance remain separate and open.
+
+Design issue 318 is completed after that reviewed adoption. Its native dependency
+remains attached to issue 305 as a satisfied prerequisite; implementation and
+qualification do not inherit a native pass from the design decision. Historical
+proposal wording above retains the decision and its original review boundaries.

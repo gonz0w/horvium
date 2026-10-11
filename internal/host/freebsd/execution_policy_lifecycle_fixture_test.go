@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/hex"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"os"
 	"os/exec"
@@ -24,7 +25,7 @@ import (
 	"golang.org/x/sys/unix"
 )
 
-var multiplePolicyLifecycleControls = strings.Fields("cpu_affinity registered active_successor active_private_record current_boot leases_held nonjournal_unchanged original_observation observation_preserves_history copied_denied decoded_denied cancelled_no_effect closed_successor ledger_unchanged close_retains_leases retired_observation retired_finish release_once locks_released registration_consumed")
+var multiplePolicyLifecycleControls = strings.Fields("cpu_affinity registered active_successor active_private_record current_boot leases_held nonjournal_unchanged original_observation observation_preserves_history copied_denied decoded_denied cancelled_no_effect closed_successor ledger_unchanged close_retains_leases retired_observation retired_finish release_once locks_released registration_consumed budget_profile")
 
 // Query this disposable process, never modify a system-wide or product CPU set.
 func multiplePolicyLifecycleAffinity(t *testing.T) bool {
@@ -88,6 +89,9 @@ func TestMultiplePolicyRootLifecycleChild(t *testing.T) {
 		seen = append(seen, name)
 	}
 	check("cpu_affinity", multiplePolicyLifecycleAffinity(t))
+	deadline, bounded := t.Deadline()
+	timeoutFlag := flag.Lookup("test.timeout")
+	check("budget_profile", bounded && timeoutFlag != nil && policyFixtureChildBudgetValid(timeoutFlag.Value.String(), deadline, time.Now()))
 	call := func(stage string, budget time.Duration, run func(context.Context) error) error {
 		c, cancel := context.WithTimeout(context.Background(), budget)
 		defer cancel()
@@ -200,15 +204,15 @@ func nativeMultiplePolicyLifecycleParent(t *testing.T, kind string) {
 	if !multiplePolicyLifecycleAffinity(t) {
 		t.Fatal("owned lifecycle parent requires actual CPU 0 affinity")
 	}
-	nativeMultiplePolicyFactsFixture(t, func(ctx context.Context, policies []storage.Policy, disk inventory.Provider) {
-		var markers []string
-		check := func(name string, ok bool) {
-			t.Helper()
-			if !ok {
-				t.Fatal("root lifecycle parent", kind, name)
-			}
-			markers = append(markers, name+"=pass")
+	var markers []string
+	check := func(name string, ok bool) {
+		t.Helper()
+		if !ok {
+			t.Fatal("root lifecycle parent", kind, name)
 		}
+		markers = append(markers, name+"=pass")
+	}
+	budgetOK := nativeMultiplePolicyFactsFixtureWithProfile(t, policyFixtureLifecycleWork, func(ctx context.Context, policies []storage.Policy, disk inventory.Provider) {
 		domains, mounts := nativeMultiplePolicyMetadataFixture(t, ctx, kind, disk, func(jp, lp string) {
 			j, l := filepath.Join(jp, "lifecycle"), filepath.Join(lp, "lifecycle")
 			system, e := NewSystemUseSource()
@@ -223,7 +227,7 @@ func nativeMultiplePolicyLifecycleParent(t *testing.T, kind string) {
 			check("seed_closed", seed.Owner.State == "closed" && !seed.Metadata.Pending && !seed.Native.Pending && !seed.Disarmed && len(ledgerBefore) == 3 && !nativeActivationLockHeld(t, j) && !nativeActivationLockHeld(t, l))
 			for _, mode := range []string{"first", "restart"} {
 				_, before := readActivationFixture(t, j)
-				cmd := exec.CommandContext(ctx, os.Args[0], "-test.v", "-test.run=^TestMultiplePolicyRootLifecycleChild$", "-test.timeout=150s", "-test.count=1")
+				cmd := exec.CommandContext(ctx, os.Args[0], "-test.v", "-test.run=^TestMultiplePolicyRootLifecycleChild$", "-test.timeout=330s", "-test.count=1")
 				cmd.Env = append(os.Environ(), "GOMAXPROCS=1", "HORVIUM_POLICY_ROOT_LIFECYCLE_CHILD="+mode, "HORVIUM_RESTART_JOURNAL="+j, "HORVIUM_RESTART_LEDGER="+l)
 				data, err := cmd.CombinedOutput()
 				if err != nil {
@@ -262,6 +266,7 @@ func nativeMultiplePolicyLifecycleParent(t *testing.T, kind string) {
 		check("domain_teardown", domains)
 		check("mounts_restored", mounts)
 		t.Log("POLICY_ROOT_LIFECYCLE_DOMAIN_TEARDOWN " + kind + " filesystems=pass directories=pass")
-		t.Log("POLICY_ROOT_LIFECYCLE_" + strings.ToUpper(kind) + "_RESULT " + strings.Join(markers, " "))
 	})
+	check("parent_budget", budgetOK)
+	t.Log("POLICY_ROOT_LIFECYCLE_" + strings.ToUpper(kind) + "_RESULT " + strings.Join(markers, " "))
 }

@@ -6,8 +6,8 @@ import re
 import sys
 import importlib.util
 
-CHILD = set('cpu_affinity registered active_successor active_private_record current_boot leases_held nonjournal_unchanged original_observation observation_preserves_history copied_denied decoded_denied cancelled_no_effect closed_successor ledger_unchanged close_retains_leases retired_observation retired_finish release_once locks_released registration_consumed'.split())
-ROOT = {'seed_closed', 'domain_teardown', 'mounts_restored'}
+CHILD = set('cpu_affinity registered active_successor active_private_record current_boot leases_held nonjournal_unchanged original_observation observation_preserves_history copied_denied decoded_denied cancelled_no_effect closed_successor ledger_unchanged close_retains_leases retired_observation retired_finish release_once locks_released registration_consumed budget_profile'.split())
+ROOT = {'seed_closed', 'domain_teardown', 'mounts_restored', 'parent_budget'}
 for mode in ('first', 'restart'):
     ROOT.update(mode + '_' + name for name in CHILD | {'child_waited', 'child_inventory', 'exact_closed', 'ledger_preserved', 'leases_released'})
 
@@ -24,14 +24,16 @@ def validate(text):
     found = closed.chunks(text)
     if re.findall(r'(?m)^POLICY_ROOT_LIFECYCLE_CPU_PROFILE ([^\n]+)$', text) != ['cpu_count=1'] or text.index('POLICY_ROOT_LIFECYCLE_CPU_PROFILE ') > text.index('POLICY_ROOT_REVIEW_PHASE facts begin'):
         raise ValueError('verified serial guest CPU profile required before phases')
-    phases = [('REVIEW', 'facts begin timeout=18m'), ('REVIEW', 'facts done'), ('REVIEW', 'review begin timeout=18m'), ('REVIEW', 'review done'), ('LIFECYCLE', 'lifecycle begin timeout=18m'), ('LIFECYCLE', 'lifecycle done')]
+    phases = [('REVIEW', 'facts begin timeout=18m'), ('REVIEW', 'facts done'), ('REVIEW', 'review begin timeout=18m'), ('REVIEW', 'review done'), ('LIFECYCLE', 'lifecycle begin timeout=40m'), ('LIFECYCLE', 'lifecycle done')]
     if re.findall(r'(?m)^POLICY_ROOT_(REVIEW|LIFECYCLE)_PHASE ([^\n]+)$', text) != phases:
         raise ValueError('three normally completed bounded phases required')
-    prefix, body = text.split('POLICY_ROOT_LIFECYCLE_PHASE lifecycle begin timeout=18m\n', 1)
+    prefix, body = text.split('POLICY_ROOT_LIFECYCLE_PHASE lifecycle begin timeout=40m\n', 1)
     review.validate(prefix)
     body = body.split('POLICY_ROOT_LIFECYCLE_PHASE lifecycle done\n', 1)[0]
     if re.findall(r'(?m)^POLICY_ROOT_LIFECYCLE_AFFINITY ([^\n]+)$', body) != ['phase=lifecycle cpus=0'] or text.count('POLICY_ROOT_LIFECYCLE_AFFINITY ') != 1:
         raise ValueError('exact lifecycle CPU-affinity profile required inside its phase')
+    if re.findall(r'(?m)^POLICY_ROOT_LIFECYCLE_BUDGET_PROFILE ([^\n]+)$', body) != ['child_seconds=330 parent_work_seconds=1080 phase_minutes=40'] or text.count('POLICY_ROOT_LIFECYCLE_BUDGET_PROFILE ') != 1:
+        raise ValueError('exact adopted lifecycle budget profile required inside its phase')
     parents = closed.chunks(body)
     wanted = ['TestNativeMultiplePolicyLifecycleUFS', 'TestNativeMultiplePolicyLifecycleZFS']
     if [n for n, _, _, _ in parents] != wanted or re.findall(r'(?m)^=== RUN   (\S+)$', body) != wanted or re.findall(r'(?m)^PASS$', body) != ['PASS']:

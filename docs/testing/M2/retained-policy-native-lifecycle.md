@@ -210,8 +210,12 @@ revalidation. Its sanitized source-bound witness preserves this failed receipt
 unchanged. No successful close/control vector or new native qualification follows;
 this contract's selectors, inventory and bounds are unchanged.
 
-The [proposed cumulative fixture budget amendment](../../milestones/M2/retained-policy-fixture-budgets.md)
-is a separate design decision under issue 318. Pending explicit adoption, this
-contract's current limits remain in force. The proposal explains the changed
-child/parent-work/process hierarchy, exact retained/new controls and stop rules;
+The [cumulative fixture budget amendment](../../milestones/M2/retained-policy-fixture-budgets.md)
+was separately adopted through PR 319 at merge
+`aebfb2c8b85040154f6e70ffb3296bba543a9db9`; design issue 318 is completed.
+The [implementation contract](retained-policy-lifecycle-budget.md) uses only its
+330-second lifecycle children, 18-minute lifecycle parent work contexts and a
+40-minute lifecycle process phase, retaining every caller/product/native/cleanup
+bound and all 283 existing controls plus six actual profile assertions (289).
+These supersede the historical fixture limits above for new candidates only;
 no existing failed receipt is rewritten or promoted to acceptance.

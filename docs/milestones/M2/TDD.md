@@ -1590,13 +1590,14 @@ declares complete ownership/job refusal cases before execution; its linked
 candidate receipt records both native releases and preserves superseded passes.
 These bounded storage cases do not qualify the remaining families.
 
-## Proposed cumulative two-policy fixture budget amendment
+## Adopted cumulative two-policy fixture budget amendment
 
-The [fixture-only proposal](retained-policy-fixture-budgets.md), tracked in
-[design issue 318](https://github.com/gonz0w/horvium/issues/318), requires separate
-maintainer adoption before implementation under issue 305. It proposes explicit
+The [fixture-only amendment](retained-policy-fixture-budgets.md), tracked in
+[design issue 318](https://github.com/gonz0w/horvium/issues/318), was adopted through
+[PR 319](https://github.com/gonz0w/horvium/pull/319) at merge
+`aebfb2c8b85040154f6e70ffb3296bba543a9db9`. Implementation under issue 305 uses
 330-second lifecycle children, 18-minute lifecycle parent work contexts and a
 40-minute lifecycle process phase, retaining all caller/product/cleanup bounds
-and all existing controls. Six new actual budget assertions raise the proposed
+and all existing controls. Six new actual budget assertions raise the required
 inventory to 289 controls; both complete native release gates remain required.
-Prepared Test Design and research do not adopt limits or qualify native behavior.
+Adoption authorizes this fixture amendment only; research/design cannot qualify native behavior.
