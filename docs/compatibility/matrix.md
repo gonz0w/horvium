@@ -1429,3 +1429,10 @@ product code and preserves the distinction between
 actual native metadata/leases and synthetic policy/physical-use/boot transfers.
 Fixed-root mixed-history/multiple-policy, sparse-history combinations and the
 remaining adopted acceptance families are separate.
+
+The [native multiple-policy storage slice](../testing/M2/retained-policy-native-multiple.md)
+declares two-policy lifecycle and last-policy failure checks on actual UFS/ZFS
+metadata and leases, with synthetic policy/physical-use/boot transfers. Expanded
+eight-parent/990-control qualification is pending. It changes no product runtime
+code and does not qualify fixed-root multiple data-pool composition or worker
+shutdown. Remaining adopted acceptance families stay separate.

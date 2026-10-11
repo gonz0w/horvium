@@ -206,3 +206,4 @@
 - [M2 policy startup child budgets](testing/M2/retained-policy-child-budget.md): independent caller contexts, checked child profile, unchanged whole-child/product limits and complete native regression receipts.
 - [M2 portable policy admission coverage](testing/M2/retained-policy-admission.md): policy/member/system drift and codec/catalog mixed-history refusal; expanded native acceptance remains pending.
 - [M2 native retained-history refusal](testing/M2/retained-policy-native-history.md): complete same/other-pool and mixed ownership/job namespaces, exact histories/holders and original native lease checks.
+- [M2 native multiple-policy storage startup](testing/M2/retained-policy-native-multiple.md): two-policy original publication/retirement and last-policy failures; supplied policy facts remain synthetic and fixed-root composition is separate.

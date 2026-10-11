@@ -25,6 +25,9 @@ for format in ('legacy', 'property'):
         STORAGE.update(format + '-' + state + '_' + result for result in ('denied', 'preserved', 'holds', 'released'))
 for relation in ('same-pool', 'other-pool', 'mixed'):
     STORAGE.update('history-' + relation + '_' + result for result in ('catalog', 'leases-held', 'denied', 'preserved', 'holds', 'released', 'reopened', 'retry'))
+STORAGE.update('multi_' + result for result in ('catalog', 'reviewed', 'activated', 'observed', 'closed', 'lineage', 'ledger', 'all-policies', 'leases', 'shared-deadline', 'retired', 'reopened'))
+for stage in ('review', 'activate', 'observe', 'finish', 'post-activate', 'post-finish'):
+    STORAGE.update('last-' + stage + '_' + result for result in ('denied', 'last-policy', 'leases', 'deadline', 'preserved', 'sticky', 'released', 'diagnostic'))
 OWNER = set('data_sentinel_preserved domain_teardown mounts_restored'.split())
 for mode in ('clean', 'clean-again', 'legacy', 'member', 'scope', 'missing-pool', 'late', 'uid'):
     if mode in ('clean', 'clean-again'):

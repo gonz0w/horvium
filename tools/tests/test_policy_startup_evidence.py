@@ -31,7 +31,7 @@ class PolicyStartupEvidence(unittest.TestCase):
                    for relation in ('same-pool', 'other-pool', 'mixed')
                    for result in ('catalog', 'leases-held', 'denied', 'preserved', 'holds', 'released', 'reopened', 'retry')}
         self.assertTrue(history <= checker.STORAGE)
-        self.assertEqual(len(checker.STORAGE), 139 + 24)
+        self.assertEqual(len(checker.STORAGE), 139 + 24 + 60)
         text = self.fixture('publication')
         checker.validate(text, 'publication')
         for control in history:
