@@ -1476,7 +1476,9 @@ ZFS metadata, then a second process cycle from the same published closed history
 Qualification is pending. Its focused gate retains all three fact/review parents
 and adds two lifecycle parents: five parents, 283 controls and thirteen normally
 waited children per pinned release. The failed initial 279-control candidate
-remains unqualified; the declared correction restricts only lifecycle fixture
-processes to emulated CPU 0, with actual kernel affinity checks. Product code, time bounds and runtime write
+and the second affinity candidate remain unqualified. The final serial lab
+experiment boots this suite alone with one emulated CPU and restricts lifecycle
+processes to CPU 0, with actual kernel CPU-count/affinity checks. Other suites
+retain the default two-CPU profile. Product code, time bounds and runtime write
 denial are unchanged. This adds no configured startup, worker or launch authority;
 remaining failure families and broader acceptance stay open.

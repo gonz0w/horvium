@@ -22,6 +22,8 @@ def load(name):
 def validate(text):
     closed, facts, review = load('check-closed-startup-evidence'), load('check-policy-facts-evidence'), load('check-policy-root-review-evidence')
     found = closed.chunks(text)
+    if re.findall(r'(?m)^POLICY_ROOT_LIFECYCLE_CPU_PROFILE ([^\n]+)$', text) != ['cpu_count=1'] or text.index('POLICY_ROOT_LIFECYCLE_CPU_PROFILE ') > text.index('POLICY_ROOT_REVIEW_PHASE facts begin'):
+        raise ValueError('verified serial guest CPU profile required before phases')
     phases = [('REVIEW', 'facts begin timeout=18m'), ('REVIEW', 'facts done'), ('REVIEW', 'review begin timeout=18m'), ('REVIEW', 'review done'), ('LIFECYCLE', 'lifecycle begin timeout=18m'), ('LIFECYCLE', 'lifecycle done')]
     if re.findall(r'(?m)^POLICY_ROOT_(REVIEW|LIFECYCLE)_PHASE ([^\n]+)$', text) != phases:
         raise ValueError('three normally completed bounded phases required')

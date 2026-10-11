@@ -17,6 +17,8 @@ printf 'POLICY_ROOT_LIFECYCLE_PREBUILT_SHA256 %s\n' "$expected"
 freebsd-version -kru
 zfs version
 /sbin/sha256 /sbin/mount /sbin/umount /sbin/newfs /sbin/zfs /sbin/zpool /sbin/sysctl /usr/sbin/swapinfo /usr/sbin/diskinfo /bin/freebsd-version /usr/bin/cpuset
+[ "$(/sbin/sysctl -n hw.ncpu)" = 1 ] || { echo 'Requires declared serial emulated guest' >&2; exit 1; }
+printf 'POLICY_ROOT_LIFECYCLE_CPU_PROFILE cpu_count=1\n'
 log=.tools/policy-startup-lifecycle-native.log
 printf 'POLICY_ROOT_REVIEW_PHASE facts begin timeout=18m\n' > "$log"
 if ! "$binary" -test.v -test.count=1 -test.timeout=18m -test.failfast -test.run='^TestNativeMultiplePolicyFacts$' >> "$log" 2>&1; then

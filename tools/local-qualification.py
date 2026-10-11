@@ -173,8 +173,16 @@ def validate_prebuilt(log, artifact_digest, suite='state'):
         raise ValueError('guest did not verify the expected executable')
 
 
-def qemu_command(qemu, base, code, variables, port):
-    return [qemu, '-machine', 'q35,accel=tcg', '-cpu', 'qemu64', '-smp', '2',
+def cpu_count_for_suite(suite):
+    if suite not in SUITES:
+        raise ValueError('unknown native suite CPU profile')
+    return 1 if suite == 'policy-startup-lifecycle' else 2
+
+
+def qemu_command(qemu, base, code, variables, port, cpu_count=2):
+    if type(cpu_count) is not int or cpu_count not in (1, 2):
+        raise ValueError('undeclared native fixture CPU count')
+    return [qemu, '-machine', 'q35,accel=tcg', '-cpu', 'qemu64', '-smp', str(cpu_count),
             '-m', '6144', '-snapshot', '-display', 'none', '-monitor', 'none',
             '-serial', 'stdio', '-drive', f'if=pflash,format=raw,readonly=on,file={code}',
             '-drive', f'if=pflash,format=raw,file={variables}',
@@ -365,6 +373,7 @@ def main():
     signal.signal(signal.SIGTERM, interrupted)
     signal.signal(signal.SIGINT, interrupted)
     device_profile = 'policy-facts' if args.suite in ('policy-startup-facts', 'policy-startup-review', 'policy-startup-lifecycle') else 'baseline'
+    cpu_count = cpu_count_for_suite(args.suite)
     guest, key = None, directory / 'fixture-key'
     record = {'source_commit': source, 'suite': args.suite, 'release': args.release,
               'started_at': datetime.now(timezone.utc).isoformat(),
@@ -372,7 +381,7 @@ def main():
               'qemu_sha256': vm.digest(Path(qemu)),
               'qemu_version': subprocess.check_output([qemu, '--version'], text=True).splitlines()[0],
               'firmware_code_sha256': vm.digest(code), 'firmware_vars_sha256': vm.digest(vars_template),
-              'cpu_model': 'qemu64', 'cpu_count': 2, 'memory_mib': 6144,
+              'cpu_model': 'qemu64', 'cpu_count': cpu_count, 'memory_mib': 6144,
               'accelerator': 'tcg', 'qualified': False, 'host_teardown': False,
               'base_preserved': False,
               'execution_mode': 'host-cross-built' if args.suite in PREBUILT and not args.source_build else 'guest-source-build'}
@@ -398,7 +407,7 @@ def main():
             listener.bind(('127.0.0.1', 0))
             port = listener.getsockname()[1]
         ssh = ssh_command(key, directory / 'known_hosts', port)
-        command = qemu_command(qemu, base, code, variables, port)
+        command = qemu_command(qemu, base, code, variables, port, cpu_count=cpu_count)
         if device_tool:
             device_tool.prepare(devices, profile=device_profile)
             record['device_profile'] = device_profile

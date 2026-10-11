@@ -624,8 +624,12 @@ actual controls in its affected artifact; historical results do not substitute.
 Remaining failure families and broader runtime acceptance stay separate.
 
 The initial lifecycle candidate failed its unchanged construction caller deadline
-and remains unqualified. The corrected lifecycle phase alone runs its test
+and remains unqualified. The second candidate's lifecycle phase alone ran its test
 processes/inherited native command children on emulated CPU 0 using base `cpuset`.
-Every lifecycle parent/child checks actual kernel affinity. QEMU still has two
-vCPUs; facts/review scheduling, all cases and every time limit stay unchanged.
+That candidate also failed its whole-child bound during finish, remaining
+unqualified. The final serial experiment boots this new suite alone with one
+emulated CPU; other suites/defaults keep two. The controller records the chosen
+count, the guest checks its actual count before phases, and every lifecycle parent/
+child checks actual one-CPU kernel/CPU 0 affinity. All cases and time limits remain
+unchanged.
 This fixture experiment is not a product scheduling or performance claim.

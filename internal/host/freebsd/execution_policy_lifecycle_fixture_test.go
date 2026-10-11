@@ -31,6 +31,10 @@ func multiplePolicyLifecycleAffinity(t *testing.T) bool {
 	t.Helper()
 	c, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
+	cpus, e := execute(c, "/sbin/sysctl", []string{"-n", "hw.ncpu"}, 4096)
+	if e != nil || strings.TrimSpace(string(cpus.data)) != "1" {
+		return false
+	}
 	out, e := execute(c, "/usr/bin/cpuset", []string{"-g", "-p", fmt.Sprint(os.Getpid())}, 4096)
 	if e != nil {
 		return false
