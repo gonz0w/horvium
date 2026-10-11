@@ -1,0 +1,1313 @@
+{
+  "schema": 1,
+  "date": "2026-10-11",
+  "scope": "native complete retained-history refusal only; issue 305 remains open; runtime writes disabled",
+  "base_commit": "ef59bbfe7fce74082826be534939657d8f910552",
+  "executed_source_commit": "c883997fac4e49c52dcda888caec913c0be96112",
+  "source_tree": "b845e60eb883365c7a0bd4ee4238ed0362c02033",
+  "requirements": [
+    "M2-RUNTIME-002",
+    "M2-STATE-001",
+    "M2-OWN-001",
+    "M2-RECOVERY-001"
+  ],
+  "behavioral_delta_sha256": {
+    "internal/storage/execution_policy_history_freebsd_test.go": "d4f74d8ba466ee2cb126fe19c5f7483d107b644de969a313b573a67c4bb8a8ca",
+    "internal/storage/execution_policy_native_test.go": "46c045e02e88abf2b027c5d1de7f8e214306fa90278a93c2c664cf6966d737e9",
+    "tools/check-policy-startup-evidence.py": "7d34c9470d8c314d8623306221d3beb52a53e0759a5d1467d6b82d8e397783f7",
+    "tools/tests/test_policy_startup_evidence.py": "4a71ca016f47493c2893a8fae08370857b1bf6aa29c22f12333c6bec6b4ccf22"
+  },
+  "non_prose_verification_input_count": 591,
+  "non_prose_verification_inputs_digest": "f2cf35a5cf4dca919b8578260ad342fdfe954e981da94f9416161d25a74f7f9b",
+  "verification_method": "recompute input_fingerprint with pinned tools/review-plan.py at executed source; original private report retained and checksum-bound below",
+  "parser_red": {
+    "source_commit": "57f9cbcf5bcf080f96e37364b0f76298f0ec76ff",
+    "expected_failure": true,
+    "qualified": false,
+    "failure": "new history inventory missing from unchanged checker; not a product/native defect",
+    "log_sha256": "a4c581923d1cf842580f566b53ce1409a19b18b1edb7103ce3e8f4d6256d028f"
+  },
+  "parser_green": {
+    "source_commit": "a8c5b8640d631b82f2a21c5989936b9a0b3342fd",
+    "tests": 5,
+    "log_sha256": "d3abde27ca1a9e7415e0e19124c4f9873cfb116849037f420b21c149fc0032ab",
+    "scope": "synthetic evidence-consumer regressions only"
+  },
+  "portable_review": {
+    "source_commit": "c883997fac4e49c52dcda888caec913c0be96112",
+    "source_tree": "b845e60eb883365c7a0bd4ee4238ed0362c02033",
+    "base_commit": "ef59bbfe7fce74082826be534939657d8f910552",
+    "title": "test(storage): qualify complete retained startup histories",
+    "signed_commits": [
+      "c883997fac4e49c52dcda888caec913c0be96112",
+      "a8c5b8640d631b82f2a21c5989936b9a0b3342fd",
+      "57f9cbcf5bcf080f96e37364b0f76298f0ec76ff"
+    ],
+    "qualified": true,
+    "plan": {
+      "mode": "full",
+      "reason": "shared tooling, policy, module or packaging change",
+      "packages": [],
+      "native_review_required": true
+    },
+    "command": [
+      "make",
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "checks_log_sha256": "881080f6e12ce027cdde6915c5d2256fb653ad43799f06ad1c8c7a7b95073413",
+    "report_sha256": "5fc6b785ab21ab024732d08fa6540565061a6604f50dbe2d69af787bf4d640bf",
+    "deep_log_sha256": "02fd3bee8659a47fff21a14a875fca7b9fcd76a1213cff88b869b3de0e6a0046",
+    "deep_result": {
+      "fuzz_targets": [
+        {
+          "package": "./internal/admin",
+          "target": "FuzzConfiguration"
+        },
+        {
+          "package": "./internal/admin",
+          "target": "FuzzSessionAuthorityActions"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzActionNegotiation"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzPropertyReplies"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzPropertyRequest"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzRequest"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzSnapshot"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPersistentBackingProjection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPoolPropertyCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPoolProviderCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyClaimSourceSelection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyControlSelection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyJobSource"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyPolicyCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzSystemUseCollection"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzDiskAccess"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzDiskAttachments"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzDiskObservation"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzGEOM"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzPoolDiskAttachments"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzPools"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzDeviceUseReview"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionCensus"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionCensusChange"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionJournal"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionJournalNamespace"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemSignature"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemStates"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzIdentities"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzImportedPoolUse"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobReservations"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobRestartPage"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipCatalogNames"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolFeatures"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolLabels"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolScan"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolState"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolSystemUse"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolTopology"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzProperties"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyCoordinatorActions"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyExecutionCut"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyExecutionHandoff"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyIntent"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyJob"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyJobAssessment"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyLiveStateReceipt"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyPlan"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyPostcondition"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyViews"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzStateCatalogNames"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzSystemDeviceUse"
+        }
+      ],
+      "race_packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/eventlog",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/inventory",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ]
+    },
+    "supervised_teardown": {
+      "completed": true,
+      "group_cleaned": true,
+      "worker_returncode": 0
+    },
+    "tooling_tests": 191
+  },
+  "native_qualification": [
+    {
+      "source_commit": "c883997fac4e49c52dcda888caec913c0be96112",
+      "suite": "policy-startup-publication",
+      "release": "15.1",
+      "started_at": "2026-10-11T12:39:43.042824+00:00",
+      "completed_at": "2026-10-11T12:44:39.128807+00:00",
+      "host_os": "Darwin",
+      "host_arch": "arm64",
+      "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+      "qemu_version": "QEMU emulator version 11.1.1",
+      "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "cpu_model": "qemu64",
+      "cpu_count": 2,
+      "memory_mib": 6144,
+      "accelerator": "tcg",
+      "execution_mode": "host-cross-built",
+      "prebuilt": {
+        "source_commit": "c883997fac4e49c52dcda888caec913c0be96112",
+        "sha256": "17d9b1223ca0ade9e3a4828d686a202f45c768d8377fb3e48f6340804d4eaf95",
+        "bytes": 13648333,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+        "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "<owned-artifact>",
+          "./internal/storage"
+        ]
+      },
+      "image": {
+        "release": "15.1",
+        "builder": "2.2.8",
+        "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+        "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+        "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144
+      },
+      "qualified": true,
+      "guest_assertions": true,
+      "host_teardown": true,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "supervisor_fixture_cleanup": true,
+      "supervisor_group_cleaned": true,
+      "record_sha256": "249622bcca1ba11a5ec546d9fc1531dd2280c6ef906b93d04df2e3ae400abfb4",
+      "log_sha256": "99c54cecb06b5f682b76426635a7b005cc6c726719266c523c242ed8c0cdea3a",
+      "required_parents": 8,
+      "required_controls": 870,
+      "retained_controls": 822,
+      "new_controls": 48,
+      "completed_parents": [
+        {
+          "name": "TestNativePolicyStartupUFS",
+          "seconds": 18.9,
+          "completed_controls": 163,
+          "marker": "POLICY_STARTUP_STORAGE_UFS_RESULT",
+          "control_marker_sha256": "11dc6bd122a6d48628d4cff7821b1bee5c9a32590217a544b89e6bdaa8437d49",
+          "new_history_controls": [
+            "history-same-pool_catalog=pass",
+            "history-same-pool_leases-held=pass",
+            "history-same-pool_denied=pass",
+            "history-same-pool_preserved=pass",
+            "history-same-pool_released=pass",
+            "history-same-pool_holds=pass",
+            "history-same-pool_reopened=pass",
+            "history-same-pool_retry=pass",
+            "history-other-pool_catalog=pass",
+            "history-other-pool_leases-held=pass",
+            "history-other-pool_denied=pass",
+            "history-other-pool_preserved=pass",
+            "history-other-pool_released=pass",
+            "history-other-pool_holds=pass",
+            "history-other-pool_reopened=pass",
+            "history-other-pool_retry=pass",
+            "history-mixed_catalog=pass",
+            "history-mixed_leases-held=pass",
+            "history-mixed_denied=pass",
+            "history-mixed_preserved=pass",
+            "history-mixed_released=pass",
+            "history-mixed_holds=pass",
+            "history-mixed_reopened=pass",
+            "history-mixed_retry=pass"
+          ]
+        },
+        {
+          "name": "TestNativePolicyStartupZFS",
+          "seconds": 133.95,
+          "completed_controls": 163,
+          "marker": "POLICY_STARTUP_STORAGE_ZFS_RESULT",
+          "control_marker_sha256": "bed4080d13ef743776c5f570e26b140a7c696fcd8aa1d7a3a3a8c9722887a79f",
+          "new_history_controls": [
+            "history-same-pool_catalog=pass",
+            "history-same-pool_leases-held=pass",
+            "history-same-pool_denied=pass",
+            "history-same-pool_preserved=pass",
+            "history-same-pool_released=pass",
+            "history-same-pool_holds=pass",
+            "history-same-pool_reopened=pass",
+            "history-same-pool_retry=pass",
+            "history-other-pool_catalog=pass",
+            "history-other-pool_leases-held=pass",
+            "history-other-pool_denied=pass",
+            "history-other-pool_preserved=pass",
+            "history-other-pool_released=pass",
+            "history-other-pool_holds=pass",
+            "history-other-pool_reopened=pass",
+            "history-other-pool_retry=pass",
+            "history-mixed_catalog=pass",
+            "history-mixed_leases-held=pass",
+            "history-mixed_denied=pass",
+            "history-mixed_preserved=pass",
+            "history-mixed_released=pass",
+            "history-mixed_holds=pass",
+            "history-mixed_reopened=pass",
+            "history-mixed_retry=pass"
+          ]
+        },
+        {
+          "name": "TestNativeClosedStartupPublicationUFS",
+          "seconds": 2.08,
+          "completed_controls": 122,
+          "marker": "CLOSED_STARTUP_PUBLICATION_UFS_RESULT",
+          "control_marker_sha256": "d52f57adb18892f5dbd5c656ba1c474fe5a4aa8f109d7efae654355e18980ccf",
+          "new_history_controls": []
+        },
+        {
+          "name": "TestNativeClosedStartupPublicationZFS",
+          "seconds": 48.26,
+          "completed_controls": 122,
+          "marker": "CLOSED_STARTUP_PUBLICATION_ZFS_RESULT",
+          "control_marker_sha256": "b79debb5d54990a6b4b9cfae6acf2c6bb44651101a44d2a1f6627a1fb320efc0",
+          "new_history_controls": []
+        },
+        {
+          "name": "TestNativeClosedStartupPublicationCuts",
+          "seconds": 0.34,
+          "completed_controls": 24,
+          "marker": "CLOSED_STARTUP_CUT_RESULT",
+          "control_marker_sha256": "7b290fba08925fbf75a800d7ea5035bcbb8886978e6151fac224c2f303bcddd2",
+          "new_history_controls": []
+        },
+        {
+          "name": "TestNativeClosedStartupRetirementUFS",
+          "seconds": 1.57,
+          "completed_controls": 126,
+          "marker": "CLOSED_STARTUP_RETIREMENT_UFS_RESULT",
+          "control_marker_sha256": "91ec1ea7919a67e6fdff5e40db992ca52b8bcf4b96c385e1584d2d032b025ff0",
+          "new_history_controls": []
+        },
+        {
+          "name": "TestNativeClosedStartupRetirementZFS",
+          "seconds": 51.62,
+          "completed_controls": 126,
+          "marker": "CLOSED_STARTUP_RETIREMENT_ZFS_RESULT",
+          "control_marker_sha256": "48858862b66b94dc73f7cc819e8d6bded09338ec15c2c8301237eee68612d967",
+          "new_history_controls": []
+        },
+        {
+          "name": "TestNativeClosedStartupRetirementCuts",
+          "seconds": 0.39,
+          "completed_controls": 24,
+          "marker": "CLOSED_STARTUP_RETIRE_CUT_RESULT",
+          "control_marker_sha256": "ade729f44a9dd5c4f04beeb0421b07f6222cfdaf60a0f371b9ac63a1686f1093",
+          "new_history_controls": []
+        }
+      ],
+      "owned_temporary_artifacts_removed": true
+    },
+    {
+      "source_commit": "c883997fac4e49c52dcda888caec913c0be96112",
+      "suite": "policy-startup-publication",
+      "release": "14.5",
+      "started_at": "2026-10-11T12:44:51.570931+00:00",
+      "completed_at": "2026-10-11T12:48:14.666160+00:00",
+      "host_os": "Darwin",
+      "host_arch": "arm64",
+      "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+      "qemu_version": "QEMU emulator version 11.1.1",
+      "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "cpu_model": "qemu64",
+      "cpu_count": 2,
+      "memory_mib": 6144,
+      "accelerator": "tcg",
+      "execution_mode": "host-cross-built",
+      "prebuilt": {
+        "source_commit": "c883997fac4e49c52dcda888caec913c0be96112",
+        "sha256": "17d9b1223ca0ade9e3a4828d686a202f45c768d8377fb3e48f6340804d4eaf95",
+        "bytes": 13648333,
+        "go_version": "go version go1.27.1 darwin/arm64",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+        "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+        "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "build_arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-o",
+          "<owned-artifact>",
+          "./internal/storage"
+        ]
+      },
+      "image": {
+        "release": "14.5",
+        "builder": "2.2.8",
+        "compressed_sha256": "cd90489bb7d94585016e177b9e3f0084f3410454dc0af19481f44ddd5aa45257",
+        "qcow2_sha256": "6593466e8d6341eaad95755973ab594222516dd75bcd99b18239b5047e5396f4",
+        "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144
+      },
+      "qualified": true,
+      "guest_assertions": true,
+      "host_teardown": true,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "supervisor_fixture_cleanup": true,
+      "supervisor_group_cleaned": true,
+      "record_sha256": "567c0ca31d334a8d0e03d4913aebb969f3700ae25eb7a1d48fbce44999bc1262",
+      "log_sha256": "e81adf052cbb6154a2133ef35f2daacd00b1713e3c71277e444be4f5f31e5cea",
+      "required_parents": 8,
+      "required_controls": 870,
+      "retained_controls": 822,
+      "new_controls": 48,
+      "completed_parents": [
+        {
+          "name": "TestNativePolicyStartupUFS",
+          "seconds": 12.08,
+          "completed_controls": 163,
+          "marker": "POLICY_STARTUP_STORAGE_UFS_RESULT",
+          "control_marker_sha256": "11dc6bd122a6d48628d4cff7821b1bee5c9a32590217a544b89e6bdaa8437d49",
+          "new_history_controls": [
+            "history-same-pool_catalog=pass",
+            "history-same-pool_leases-held=pass",
+            "history-same-pool_denied=pass",
+            "history-same-pool_preserved=pass",
+            "history-same-pool_released=pass",
+            "history-same-pool_holds=pass",
+            "history-same-pool_reopened=pass",
+            "history-same-pool_retry=pass",
+            "history-other-pool_catalog=pass",
+            "history-other-pool_leases-held=pass",
+            "history-other-pool_denied=pass",
+            "history-other-pool_preserved=pass",
+            "history-other-pool_released=pass",
+            "history-other-pool_holds=pass",
+            "history-other-pool_reopened=pass",
+            "history-other-pool_retry=pass",
+            "history-mixed_catalog=pass",
+            "history-mixed_leases-held=pass",
+            "history-mixed_denied=pass",
+            "history-mixed_preserved=pass",
+            "history-mixed_released=pass",
+            "history-mixed_holds=pass",
+            "history-mixed_reopened=pass",
+            "history-mixed_retry=pass"
+          ]
+        },
+        {
+          "name": "TestNativePolicyStartupZFS",
+          "seconds": 80.61,
+          "completed_controls": 163,
+          "marker": "POLICY_STARTUP_STORAGE_ZFS_RESULT",
+          "control_marker_sha256": "bed4080d13ef743776c5f570e26b140a7c696fcd8aa1d7a3a3a8c9722887a79f",
+          "new_history_controls": [
+            "history-same-pool_catalog=pass",
+            "history-same-pool_leases-held=pass",
+            "history-same-pool_denied=pass",
+            "history-same-pool_preserved=pass",
+            "history-same-pool_released=pass",
+            "history-same-pool_holds=pass",
+            "history-same-pool_reopened=pass",
+            "history-same-pool_retry=pass",
+            "history-other-pool_catalog=pass",
+            "history-other-pool_leases-held=pass",
+            "history-other-pool_denied=pass",
+            "history-other-pool_preserved=pass",
+            "history-other-pool_released=pass",
+            "history-other-pool_holds=pass",
+            "history-other-pool_reopened=pass",
+            "history-other-pool_retry=pass",
+            "history-mixed_catalog=pass",
+            "history-mixed_leases-held=pass",
+            "history-mixed_denied=pass",
+            "history-mixed_preserved=pass",
+            "history-mixed_released=pass",
+            "history-mixed_holds=pass",
+            "history-mixed_reopened=pass",
+            "history-mixed_retry=pass"
+          ]
+        },
+        {
+          "name": "TestNativeClosedStartupPublicationUFS",
+          "seconds": 1.16,
+          "completed_controls": 122,
+          "marker": "CLOSED_STARTUP_PUBLICATION_UFS_RESULT",
+          "control_marker_sha256": "d52f57adb18892f5dbd5c656ba1c474fe5a4aa8f109d7efae654355e18980ccf",
+          "new_history_controls": []
+        },
+        {
+          "name": "TestNativeClosedStartupPublicationZFS",
+          "seconds": 34.8,
+          "completed_controls": 122,
+          "marker": "CLOSED_STARTUP_PUBLICATION_ZFS_RESULT",
+          "control_marker_sha256": "b79debb5d54990a6b4b9cfae6acf2c6bb44651101a44d2a1f6627a1fb320efc0",
+          "new_history_controls": []
+        },
+        {
+          "name": "TestNativeClosedStartupPublicationCuts",
+          "seconds": 0.34,
+          "completed_controls": 24,
+          "marker": "CLOSED_STARTUP_CUT_RESULT",
+          "control_marker_sha256": "7b290fba08925fbf75a800d7ea5035bcbb8886978e6151fac224c2f303bcddd2",
+          "new_history_controls": []
+        },
+        {
+          "name": "TestNativeClosedStartupRetirementUFS",
+          "seconds": 1.53,
+          "completed_controls": 126,
+          "marker": "CLOSED_STARTUP_RETIREMENT_UFS_RESULT",
+          "control_marker_sha256": "91ec1ea7919a67e6fdff5e40db992ca52b8bcf4b96c385e1584d2d032b025ff0",
+          "new_history_controls": []
+        },
+        {
+          "name": "TestNativeClosedStartupRetirementZFS",
+          "seconds": 46.92,
+          "completed_controls": 126,
+          "marker": "CLOSED_STARTUP_RETIREMENT_ZFS_RESULT",
+          "control_marker_sha256": "48858862b66b94dc73f7cc819e8d6bded09338ec15c2c8301237eee68612d967",
+          "new_history_controls": []
+        },
+        {
+          "name": "TestNativeClosedStartupRetirementCuts",
+          "seconds": 0.39,
+          "completed_controls": 24,
+          "marker": "CLOSED_STARTUP_RETIRE_CUT_RESULT",
+          "control_marker_sha256": "ade729f44a9dd5c4f04beeb0421b07f6222cfdaf60a0f371b9ac63a1686f1093",
+          "new_history_controls": []
+        }
+      ],
+      "owned_temporary_artifacts_removed": true
+    }
+  ],
+  "historical_receipts_unchanged": {
+    "retained-policy-startup-manifest.json": "b7b248f1bfe6e197f1c8955f72f80c9fbeef0a71a641767e424059df7cfdd271",
+    "retained-policy-root-manifest.json": "52bb88c0d6cc94fe031a8345adb1bdc1e5fb005634d24f4ba3eb47a59ea3366a",
+    "retained-policy-root-qualification-manifest.json": "6d3dd07f65d88247bdd854061f811629c59168bcfda42385eab5a7cf21aac99c",
+    "retained-policy-admission-manifest.json": "2e733dd5a017772ce7947913ced1c16940ee8614cde445cb9fcd0327331077c3"
+  },
+  "limitations": [
+    "controlled denial-only metadata, not worker shutdown or execution provenance",
+    "actual UFS/ZFS metadata, leases/census/sync; synthetic policy/physical-use/boot transfers",
+    "combined complete histories, not all sparse history combinations",
+    "no fixed-root multi-policy/mixed-history or valid multi-policy lifecycle/last-policy acceptance",
+    "remaining concurrency/census/context/capacity families pending",
+    "no configured startup/native launch/client/browser/performance/hardware/release claim"
+  ],
+  "superseded_passes": {
+    "source_commit": "a8c5b8640d631b82f2a21c5989936b9a0b3342fd",
+    "receipt_sha256": "20d08c75db008cd643074f654ac90178d4465ce4a8e225e12346c2f5048fe15a",
+    "reason": "ordinary metadata startup positive control added after these passes; they are historical component evidence, not qualification of the strengthened final assertions",
+    "portable_review": {
+      "source_commit": "a8c5b8640d631b82f2a21c5989936b9a0b3342fd",
+      "source_tree": "f5cbf5385357c75870d0b0a4db6968214f6c949b",
+      "base_commit": "ef59bbfe7fce74082826be534939657d8f910552",
+      "title": "test(storage): qualify complete retained startup histories",
+      "signed_commits": [
+        "a8c5b8640d631b82f2a21c5989936b9a0b3342fd",
+        "57f9cbcf5bcf080f96e37364b0f76298f0ec76ff"
+      ],
+      "qualified": true,
+      "plan": {
+        "mode": "full",
+        "reason": "shared tooling, policy, module or packaging change",
+        "packages": [],
+        "native_review_required": true
+      },
+      "command": [
+        "make",
+        "check",
+        "lint",
+        "test",
+        "secrets"
+      ],
+      "checks_log_sha256": "8c330796725252e90b3a3ed7b14563d1c27cd329980d3bae6167e71ad9871dc5",
+      "report_sha256": "d8fc6b4aabf620d8e4cb68a7e3893c25ea43a1b109f502dfe474013b7c6f884e",
+      "deep_log_sha256": "92652258d89025859e2b8fdc53e6e03cae8e9abbf3d410b6e0ea63611e2ecaad",
+      "deep_result": {
+        "fuzz_targets": [
+          {
+            "package": "./internal/admin",
+            "target": "FuzzConfiguration"
+          },
+          {
+            "package": "./internal/admin",
+            "target": "FuzzSessionAuthorityActions"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzActionNegotiation"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzPropertyReplies"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzPropertyRequest"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzRequest"
+          },
+          {
+            "package": "./internal/helper",
+            "target": "FuzzSnapshot"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPersistentBackingProjection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPoolPropertyCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPoolProviderCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyClaimSourceSelection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyControlSelection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyJobSource"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzPropertyPolicyCollection"
+          },
+          {
+            "package": "./internal/host/freebsd",
+            "target": "FuzzSystemUseCollection"
+          },
+          {
+            "package": "./internal/inventory",
+            "target": "FuzzDiskAccess"
+          },
+          {
+            "package": "./internal/inventory",
+            "target": "FuzzDiskAttachments"
+          },
+          {
+            "package": "./internal/inventory",
+            "target": "FuzzDiskObservation"
+          },
+          {
+            "package": "./internal/inventory",
+            "target": "FuzzGEOM"
+          },
+          {
+            "package": "./internal/inventory",
+            "target": "FuzzPoolDiskAttachments"
+          },
+          {
+            "package": "./internal/inventory",
+            "target": "FuzzPools"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzDeviceUseReview"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzExecutionCensus"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzExecutionCensusChange"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzExecutionJournal"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzExecutionJournalNamespace"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzFilesystemSignature"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzFilesystemStates"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzIdentities"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzImportedPoolUse"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzJobRecord"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzJobReservations"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzJobRestartPage"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzOwnershipCatalogNames"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzOwnershipRecord"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolFeatures"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolLabels"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolScan"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolState"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolSystemUse"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPoolTopology"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzProperties"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyCoordinatorActions"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyExecutionCut"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyExecutionHandoff"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyIntent"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyJob"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyJobAssessment"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyLiveStateReceipt"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyPlan"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyPostcondition"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzPropertyViews"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzStateCatalogNames"
+          },
+          {
+            "package": "./internal/storage",
+            "target": "FuzzSystemDeviceUse"
+          }
+        ],
+        "race_packages": [
+          "./cmd/horvium",
+          "./internal/admin",
+          "./internal/client",
+          "./internal/console",
+          "./internal/eventlog",
+          "./internal/helper",
+          "./internal/host/freebsd",
+          "./internal/inventory",
+          "./internal/observation",
+          "./internal/service",
+          "./internal/storage"
+        ]
+      },
+      "supervised_teardown": {
+        "completed": true,
+        "group_cleaned": true,
+        "worker_returncode": 0
+      },
+      "tooling_tests": 191
+    },
+    "native_qualification": [
+      {
+        "source_commit": "a8c5b8640d631b82f2a21c5989936b9a0b3342fd",
+        "suite": "policy-startup-publication",
+        "release": "15.1",
+        "started_at": "2026-10-11T12:26:04.333855+00:00",
+        "completed_at": "2026-10-11T12:29:56.327145+00:00",
+        "host_os": "Darwin",
+        "host_arch": "arm64",
+        "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+        "qemu_version": "QEMU emulator version 11.1.1",
+        "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+        "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144,
+        "accelerator": "tcg",
+        "execution_mode": "host-cross-built",
+        "prebuilt": {
+          "source_commit": "a8c5b8640d631b82f2a21c5989936b9a0b3342fd",
+          "sha256": "1c524ec98937753b222e21b09a8de8e3b0f039909b23d4f24efec7392366d6f3",
+          "bytes": 13647715,
+          "go_version": "go version go1.27.1 darwin/arm64",
+          "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+          "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+          "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+          "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+          "target": "freebsd/amd64",
+          "goamd64": "v1",
+          "cgo_enabled": false,
+          "build_arguments": [
+            "go",
+            "test",
+            "-c",
+            "-trimpath",
+            "-o",
+            "<owned-artifact>",
+            "./internal/storage"
+          ]
+        },
+        "image": {
+          "release": "15.1",
+          "builder": "2.2.8",
+          "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+          "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+          "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+          "cpu_model": "qemu64",
+          "cpu_count": 2,
+          "memory_mib": 6144
+        },
+        "qualified": true,
+        "guest_assertions": true,
+        "host_teardown": true,
+        "base_preserved": true,
+        "runtime_preserved": true,
+        "supervisor_fixture_cleanup": true,
+        "supervisor_group_cleaned": true,
+        "record_sha256": "236e683cd73e6d59ffb3edf36a83201c6fc3d5608603f8dd74beaf992f13cc40",
+        "log_sha256": "48bfd13f6bc7968cddbf0a07f46f8d7d42779cf8e899a825bacf3d5c4d65f032",
+        "required_parents": 8,
+        "required_controls": 870,
+        "retained_controls": 822,
+        "new_controls": 48,
+        "completed_parents": [
+          {
+            "name": "TestNativePolicyStartupUFS",
+            "seconds": 13.37,
+            "completed_controls": 163,
+            "marker": "POLICY_STARTUP_STORAGE_UFS_RESULT",
+            "control_marker_sha256": "11dc6bd122a6d48628d4cff7821b1bee5c9a32590217a544b89e6bdaa8437d49",
+            "new_history_controls": [
+              "history-same-pool_catalog=pass",
+              "history-same-pool_leases-held=pass",
+              "history-same-pool_denied=pass",
+              "history-same-pool_preserved=pass",
+              "history-same-pool_released=pass",
+              "history-same-pool_holds=pass",
+              "history-same-pool_reopened=pass",
+              "history-same-pool_retry=pass",
+              "history-other-pool_catalog=pass",
+              "history-other-pool_leases-held=pass",
+              "history-other-pool_denied=pass",
+              "history-other-pool_preserved=pass",
+              "history-other-pool_released=pass",
+              "history-other-pool_holds=pass",
+              "history-other-pool_reopened=pass",
+              "history-other-pool_retry=pass",
+              "history-mixed_catalog=pass",
+              "history-mixed_leases-held=pass",
+              "history-mixed_denied=pass",
+              "history-mixed_preserved=pass",
+              "history-mixed_released=pass",
+              "history-mixed_holds=pass",
+              "history-mixed_reopened=pass",
+              "history-mixed_retry=pass"
+            ]
+          },
+          {
+            "name": "TestNativePolicyStartupZFS",
+            "seconds": 89.04,
+            "completed_controls": 163,
+            "marker": "POLICY_STARTUP_STORAGE_ZFS_RESULT",
+            "control_marker_sha256": "bed4080d13ef743776c5f570e26b140a7c696fcd8aa1d7a3a3a8c9722887a79f",
+            "new_history_controls": [
+              "history-same-pool_catalog=pass",
+              "history-same-pool_leases-held=pass",
+              "history-same-pool_denied=pass",
+              "history-same-pool_preserved=pass",
+              "history-same-pool_released=pass",
+              "history-same-pool_holds=pass",
+              "history-same-pool_reopened=pass",
+              "history-same-pool_retry=pass",
+              "history-other-pool_catalog=pass",
+              "history-other-pool_leases-held=pass",
+              "history-other-pool_denied=pass",
+              "history-other-pool_preserved=pass",
+              "history-other-pool_released=pass",
+              "history-other-pool_holds=pass",
+              "history-other-pool_reopened=pass",
+              "history-other-pool_retry=pass",
+              "history-mixed_catalog=pass",
+              "history-mixed_leases-held=pass",
+              "history-mixed_denied=pass",
+              "history-mixed_preserved=pass",
+              "history-mixed_released=pass",
+              "history-mixed_holds=pass",
+              "history-mixed_reopened=pass",
+              "history-mixed_retry=pass"
+            ]
+          },
+          {
+            "name": "TestNativeClosedStartupPublicationUFS",
+            "seconds": 1.29,
+            "completed_controls": 122,
+            "marker": "CLOSED_STARTUP_PUBLICATION_UFS_RESULT",
+            "control_marker_sha256": "d52f57adb18892f5dbd5c656ba1c474fe5a4aa8f109d7efae654355e18980ccf",
+            "new_history_controls": []
+          },
+          {
+            "name": "TestNativeClosedStartupPublicationZFS",
+            "seconds": 38.45,
+            "completed_controls": 122,
+            "marker": "CLOSED_STARTUP_PUBLICATION_ZFS_RESULT",
+            "control_marker_sha256": "b79debb5d54990a6b4b9cfae6acf2c6bb44651101a44d2a1f6627a1fb320efc0",
+            "new_history_controls": []
+          },
+          {
+            "name": "TestNativeClosedStartupPublicationCuts",
+            "seconds": 0.35,
+            "completed_controls": 24,
+            "marker": "CLOSED_STARTUP_CUT_RESULT",
+            "control_marker_sha256": "7b290fba08925fbf75a800d7ea5035bcbb8886978e6151fac224c2f303bcddd2",
+            "new_history_controls": []
+          },
+          {
+            "name": "TestNativeClosedStartupRetirementUFS",
+            "seconds": 1.65,
+            "completed_controls": 126,
+            "marker": "CLOSED_STARTUP_RETIREMENT_UFS_RESULT",
+            "control_marker_sha256": "91ec1ea7919a67e6fdff5e40db992ca52b8bcf4b96c385e1584d2d032b025ff0",
+            "new_history_controls": []
+          },
+          {
+            "name": "TestNativeClosedStartupRetirementZFS",
+            "seconds": 50.2,
+            "completed_controls": 126,
+            "marker": "CLOSED_STARTUP_RETIREMENT_ZFS_RESULT",
+            "control_marker_sha256": "48858862b66b94dc73f7cc819e8d6bded09338ec15c2c8301237eee68612d967",
+            "new_history_controls": []
+          },
+          {
+            "name": "TestNativeClosedStartupRetirementCuts",
+            "seconds": 0.42,
+            "completed_controls": 24,
+            "marker": "CLOSED_STARTUP_RETIRE_CUT_RESULT",
+            "control_marker_sha256": "ade729f44a9dd5c4f04beeb0421b07f6222cfdaf60a0f371b9ac63a1686f1093",
+            "new_history_controls": []
+          }
+        ],
+        "owned_temporary_artifacts_removed": true
+      },
+      {
+        "source_commit": "a8c5b8640d631b82f2a21c5989936b9a0b3342fd",
+        "suite": "policy-startup-publication",
+        "release": "14.5",
+        "started_at": "2026-10-11T12:30:44.834975+00:00",
+        "completed_at": "2026-10-11T12:34:08.175357+00:00",
+        "host_os": "Darwin",
+        "host_arch": "arm64",
+        "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+        "qemu_version": "QEMU emulator version 11.1.1",
+        "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+        "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+        "cpu_model": "qemu64",
+        "cpu_count": 2,
+        "memory_mib": 6144,
+        "accelerator": "tcg",
+        "execution_mode": "host-cross-built",
+        "prebuilt": {
+          "source_commit": "a8c5b8640d631b82f2a21c5989936b9a0b3342fd",
+          "sha256": "1c524ec98937753b222e21b09a8de8e3b0f039909b23d4f24efec7392366d6f3",
+          "bytes": 13647715,
+          "go_version": "go version go1.27.1 darwin/arm64",
+          "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+          "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+          "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+          "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+          "target": "freebsd/amd64",
+          "goamd64": "v1",
+          "cgo_enabled": false,
+          "build_arguments": [
+            "go",
+            "test",
+            "-c",
+            "-trimpath",
+            "-o",
+            "<owned-artifact>",
+            "./internal/storage"
+          ]
+        },
+        "image": {
+          "release": "14.5",
+          "builder": "2.2.8",
+          "compressed_sha256": "cd90489bb7d94585016e177b9e3f0084f3410454dc0af19481f44ddd5aa45257",
+          "qcow2_sha256": "6593466e8d6341eaad95755973ab594222516dd75bcd99b18239b5047e5396f4",
+          "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+          "cpu_model": "qemu64",
+          "cpu_count": 2,
+          "memory_mib": 6144
+        },
+        "qualified": true,
+        "guest_assertions": true,
+        "host_teardown": true,
+        "base_preserved": true,
+        "runtime_preserved": true,
+        "supervisor_fixture_cleanup": true,
+        "supervisor_group_cleaned": true,
+        "record_sha256": "e2c4515e7b25438af59dad9a5d786b59d990c972c03a39ae98ce5b9666f8a50f",
+        "log_sha256": "0af81978e672267bd1b3e2f7b4dd109b0da00444e2f7cd10499f294b64d4e362",
+        "required_parents": 8,
+        "required_controls": 870,
+        "retained_controls": 822,
+        "new_controls": 48,
+        "completed_parents": [
+          {
+            "name": "TestNativePolicyStartupUFS",
+            "seconds": 11.37,
+            "completed_controls": 163,
+            "marker": "POLICY_STARTUP_STORAGE_UFS_RESULT",
+            "control_marker_sha256": "11dc6bd122a6d48628d4cff7821b1bee5c9a32590217a544b89e6bdaa8437d49",
+            "new_history_controls": [
+              "history-same-pool_catalog=pass",
+              "history-same-pool_leases-held=pass",
+              "history-same-pool_denied=pass",
+              "history-same-pool_preserved=pass",
+              "history-same-pool_released=pass",
+              "history-same-pool_holds=pass",
+              "history-same-pool_reopened=pass",
+              "history-same-pool_retry=pass",
+              "history-other-pool_catalog=pass",
+              "history-other-pool_leases-held=pass",
+              "history-other-pool_denied=pass",
+              "history-other-pool_preserved=pass",
+              "history-other-pool_released=pass",
+              "history-other-pool_holds=pass",
+              "history-other-pool_reopened=pass",
+              "history-other-pool_retry=pass",
+              "history-mixed_catalog=pass",
+              "history-mixed_leases-held=pass",
+              "history-mixed_denied=pass",
+              "history-mixed_preserved=pass",
+              "history-mixed_released=pass",
+              "history-mixed_holds=pass",
+              "history-mixed_reopened=pass",
+              "history-mixed_retry=pass"
+            ]
+          },
+          {
+            "name": "TestNativePolicyStartupZFS",
+            "seconds": 79.56,
+            "completed_controls": 163,
+            "marker": "POLICY_STARTUP_STORAGE_ZFS_RESULT",
+            "control_marker_sha256": "bed4080d13ef743776c5f570e26b140a7c696fcd8aa1d7a3a3a8c9722887a79f",
+            "new_history_controls": [
+              "history-same-pool_catalog=pass",
+              "history-same-pool_leases-held=pass",
+              "history-same-pool_denied=pass",
+              "history-same-pool_preserved=pass",
+              "history-same-pool_released=pass",
+              "history-same-pool_holds=pass",
+              "history-same-pool_reopened=pass",
+              "history-same-pool_retry=pass",
+              "history-other-pool_catalog=pass",
+              "history-other-pool_leases-held=pass",
+              "history-other-pool_denied=pass",
+              "history-other-pool_preserved=pass",
+              "history-other-pool_released=pass",
+              "history-other-pool_holds=pass",
+              "history-other-pool_reopened=pass",
+              "history-other-pool_retry=pass",
+              "history-mixed_catalog=pass",
+              "history-mixed_leases-held=pass",
+              "history-mixed_denied=pass",
+              "history-mixed_preserved=pass",
+              "history-mixed_released=pass",
+              "history-mixed_holds=pass",
+              "history-mixed_reopened=pass",
+              "history-mixed_retry=pass"
+            ]
+          },
+          {
+            "name": "TestNativeClosedStartupPublicationUFS",
+            "seconds": 1.18,
+            "completed_controls": 122,
+            "marker": "CLOSED_STARTUP_PUBLICATION_UFS_RESULT",
+            "control_marker_sha256": "d52f57adb18892f5dbd5c656ba1c474fe5a4aa8f109d7efae654355e18980ccf",
+            "new_history_controls": []
+          },
+          {
+            "name": "TestNativeClosedStartupPublicationZFS",
+            "seconds": 35.35,
+            "completed_controls": 122,
+            "marker": "CLOSED_STARTUP_PUBLICATION_ZFS_RESULT",
+            "control_marker_sha256": "b79debb5d54990a6b4b9cfae6acf2c6bb44651101a44d2a1f6627a1fb320efc0",
+            "new_history_controls": []
+          },
+          {
+            "name": "TestNativeClosedStartupPublicationCuts",
+            "seconds": 0.36,
+            "completed_controls": 24,
+            "marker": "CLOSED_STARTUP_CUT_RESULT",
+            "control_marker_sha256": "7b290fba08925fbf75a800d7ea5035bcbb8886978e6151fac224c2f303bcddd2",
+            "new_history_controls": []
+          },
+          {
+            "name": "TestNativeClosedStartupRetirementUFS",
+            "seconds": 1.65,
+            "completed_controls": 126,
+            "marker": "CLOSED_STARTUP_RETIREMENT_UFS_RESULT",
+            "control_marker_sha256": "91ec1ea7919a67e6fdff5e40db992ca52b8bcf4b96c385e1584d2d032b025ff0",
+            "new_history_controls": []
+          },
+          {
+            "name": "TestNativeClosedStartupRetirementZFS",
+            "seconds": 48.12,
+            "completed_controls": 126,
+            "marker": "CLOSED_STARTUP_RETIREMENT_ZFS_RESULT",
+            "control_marker_sha256": "48858862b66b94dc73f7cc819e8d6bded09338ec15c2c8301237eee68612d967",
+            "new_history_controls": []
+          },
+          {
+            "name": "TestNativeClosedStartupRetirementCuts",
+            "seconds": 0.4,
+            "completed_controls": 24,
+            "marker": "CLOSED_STARTUP_RETIRE_CUT_RESULT",
+            "control_marker_sha256": "ade729f44a9dd5c4f04beeb0421b07f6222cfdaf60a0f371b9ac63a1686f1093",
+            "new_history_controls": []
+          }
+        ],
+        "owned_temporary_artifacts_removed": true
+      }
+    ],
+    "final_candidate_qualification": false
+  }
+}

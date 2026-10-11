@@ -1586,5 +1586,6 @@ existing storage/single-policy fixed-root passes from pending expanded acceptanc
 under [issue 305](https://github.com/gonz0w/horvium/issues/305). Historical receipts
 retain their original candidates, failures and scope limits. The
 [native retained-history inventory](../../testing/M2/retained-policy-native-history.md)
-adds planned complete ownership/job refusal cases; declaration is not execution
-evidence and does not qualify the remaining families.
+declares complete ownership/job refusal cases before execution; its linked
+candidate receipt records both native releases and preserves superseded passes.
+These bounded storage cases do not qualify the remaining families.

@@ -54,8 +54,27 @@ Pin the expanded inventory in a failing-first evidence-consumer regression;
 old-only, missing, failed or duplicated history controls must not qualify.
 That parser red is not a reproduced product defect. Product implementation is
 unchanged; native cases extend evidence for already implemented all-job refusal.
-Qualification remains pending until the entire checksum-bound gate completes on
-both pinned FreeBSD/amd64 15.1 and 14.5 targets with independent owned teardown.
+The [candidate receipt](retained-policy-native-history-manifest.json) records
+signed source `c883997fac4e49c52dcda888caec913c0be96112` completing the entire
+checksum-bound gate on both pinned FreeBSD/amd64 15.1 and 14.5 targets: eight
+parents and 870 controls per release, using the same compiler/artifact and
+independently verified owned teardown. Each policy parent completes 163 controls,
+including all 24 new history assertions. The selector and process bound remain
+unchanged.
+
+That source passed the mandatory baseline (191 tooling tests and all ordinary
+Go tests) and full conservative portable review: eleven race packages and all
+54 fuzz targets. The shared evidence-consumer change requires this full fallback.
+Receipt-only followups use fresh baseline/signature/DCO/title checks and verified
+exact-input deep reuse; executed native sources retain their original identity.
+
+The expected parser red at signed source
+`57f9cbcf5bcf080f96e37364b0f76298f0ec76ff` rejects the missing history inventory.
+Earlier source `a8c5b8640d631b82f2a21c5989936b9a0b3342fd` passed its declared
+portable and two-release native gate, but lacked the ordinary-metadata positive
+control. Its passes remain historical component evidence in the receipt and do
+not qualify the strengthened final assertions. Both releases were rerun after
+that assertion was added. Earlier accepted manifests remain byte-identical.
 
 ## Acceptance limits
 
