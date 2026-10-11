@@ -98,3 +98,41 @@ class DeviceFixtureTests(unittest.TestCase):
             m.prepare(root, size=4096)
             with self.assertRaises(ValueError):
                 m.command(['-snapshot', '-drive', 'file=/fixture/base', '-daemonize'], root, size=4096)
+
+    def test_policy_facts_profile_adds_only_two_unique_disks_and_cleans_all_seven(self):
+        m = self.module()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve() / 'devices'
+            m.prepare(root, size=4096, profile='policy-facts')
+            records = m.verify(root, size=4096, profile='policy-facts')
+            self.assertEqual(len(records), 7)
+            self.assertEqual([(r['serial'], r['logical'], r['physical']) for r in records[:5]], m.DISKS)
+            self.assertEqual([(r['serial'], r['logical'], r['physical']) for r in records[5:]],
+                             [('HVM-FACTS-512', 512, 4096), ('HVM-FACTS-4K', 4096, 4096)])
+            args = ['-snapshot', '-drive', 'file=/fixture/base.qcow2,format=qcow2']
+            command = m.command(args, root, size=4096, profile='policy-facts')
+            self.assertEqual(command.count('-device'), 7)
+            self.assertEqual(command[:len(args)], args)
+            with self.assertRaises(ValueError):
+                m.verify(root, size=4096)
+            m.cleanup(root, size=4096, profile='policy-facts')
+            self.assertFalse(root.exists())
+            baseline = Path(tmp).resolve() / 'baseline'
+            m.prepare(baseline, size=4096)
+            self.assertEqual(len(m.verify(baseline, size=4096)), 5)
+            with self.assertRaises(ValueError):
+                m.verify(baseline, size=4096, profile='policy-facts')
+            m.cleanup(baseline, size=4096)
+
+    def test_scoped_profile_failure_cleanup_and_unknown_profiles_remain_safe(self):
+        m = self.module()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve() / 'devices'
+            with self.assertRaises(ValueError):
+                m.prepare(root, size=4096, profile='unknown')
+            self.assertFalse(root.exists())
+            m.prepare(root, size=4096, profile='policy-facts')
+            (root / 'disk-6.raw').write_bytes(b'x' * 4096)
+            with self.assertRaises(ValueError):
+                m.cleanup(root, size=4096, profile='policy-facts')
+            self.assertFalse(root.exists())
