@@ -216,3 +216,5 @@
 - [Preserved lifecycle timeout analysis](research/M2/policy-lifecycle-timeout.md): original post-publication stack; no new native run or acceptance.
 
 - [Adopted cumulative lifecycle fixture budgets](milestones/M2/retained-policy-fixture-budgets.md): reviewed test envelope; [implementation and qualification](testing/M2/retained-policy-lifecycle-budget.md) remain separate from native acceptance.
+
+- [Original startup deadline analysis and proposed stack diagnostic](research/M2/policy-startup-deadline.md): exact failed source/receipt boundaries; sampling needs separate adoption before implementation.

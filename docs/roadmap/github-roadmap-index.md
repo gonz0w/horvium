@@ -244,6 +244,11 @@ separate trackers distinguish HTTP admission, native-resource recovery, Firefox 
 
 - [M2: review cumulative native lifecycle fixture budgets (#318)](https://github.com/gonz0w/horvium/issues/318): separate design prerequisite for budget-changing work in issue 305; authoritative [proposal](../milestones/M2/retained-policy-fixture-budgets.md).
 
+[M2: review original startup deadline evidence and stack diagnostic contract (#321)](https://github.com/gonz0w/horvium/issues/321)
+is a separately reviewed research prerequisite for unfinished issue 305, under
+parent 139. The [analysis and proposed method](../research/M2/policy-startup-deadline.md)
+remain distinct from implementation and native acceptance.
+
 ## Migration receipt
 
 See the [dated verification record](github-migration.md) for counts, preserved identities,

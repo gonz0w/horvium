@@ -1,6 +1,6 @@
 # Research: original startup deadline and proposed stack diagnostic
 
-Status: offline analysis declared; diagnostic method Proposed, not adopted.
+Status: offline analysis completed; diagnostic method Proposed, not adopted.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`). Time box: one development session.
 Decision [issue 321](https://github.com/gonz0w/horvium/issues/321);
 implementation/qualification [issue 305](https://github.com/gonz0w/horvium/issues/305);
@@ -34,6 +34,56 @@ research witness without raw arguments, stack addresses, device/pool names,
 inventory or private paths. No new VM, instrumentation or product/fixture change
 is included in this research PR. Mandatory signed local review and owned-session
 teardown remain required.
+
+## Verified observation and source boundaries
+
+The [sanitized witness](policy-startup-deadline-manifest.json) verifies the original
+failed result/log bytes, artifact/profile, 26 source assertions across eight
+historical files and all twelve unchanged preceding receipts. No new native run
+was performed. The original 15.1 prerequisites passed at 26.81s (facts), 291.17s
+(UFS review) and 393.35s (ZFS review). The first UFS lifecycle parent failed at
+200.22s after its child reported `startup` at 120.01s with
+`context deadline exceeded` and failed the `registered` assertion. There was no
+whole-child timeout, captured goroutine stack or internal review/activation
+timing. Neither complete lifecycle control vector appeared. 14.5 was skipped.
+Independent host/preservation/device/supervisor cleanup passed; incomplete
+in-guest parent teardown remains unverified.
+
+The following locations are from **executed source**
+`6c64143132bae6fdbde33c71c646ababb8987633`; they describe code, not an observed
+trace of this failing call:
+
+| Historical source | Verified behavior |
+| --- | --- |
+| `internal/host/freebsd/execution_policy_lifecycle_fixture_test.go:104` | One 120-second caller covers the actual original factory, followed by the combined error/nonnil-owner assertion at line 110. |
+| `internal/host/freebsd/execution_restart_freebsd.go:26` | Original policy review and activation (line 30) receive the same context `c`; activation failure joins the original review's `Close` at line 32. |
+| `internal/host/freebsd/execution_owner.go:79` | The process registry is reserved before `factory(ctx)` at line 82; the result joins caller context error at line 87. Failed construction never resets registration. |
+| `internal/storage/execution_startup_freebsd.go:59` | Review performs original inspection; its inspection context is clamped to 90 seconds at line 87. Failed review joins pair release at line 61. |
+| `internal/storage/execution_restart_freebsd.go:23` | Activation has one 90-second child of its received caller; complete inspections occur at lines 50, 75 and 100, around original publication at line 84. |
+| `internal/storage/execution_restart.go:63` | Activation joins its error with the received context error; the error does not retain internal timing or location. |
+| `internal/host/freebsd/execute.go:78` | A failed native command propagates context error after its original cleanup, without returning captured output on error. |
+
+The compiler-matched pinned Go context source confirms that a child timeout cannot
+extend an earlier parent deadline. If activation starts at time `A` relative to
+original caller creation, its effective deadline is at most
+`min(120 seconds, A + 90 seconds)`. The caller permits 120 seconds for the combined
+review/activation work, not 90 + 90 seconds independently. For example, activation
+starting at 40 seconds can have at most 80 seconds remaining; this is hypothetical
+budget accounting, **not an observed review duration**.
+
+The 120.01-second stage report is consistent with the original caller ceiling,
+but it does not select review, activation, a particular native probe, publication
+revalidation or error cleanup as the cause. Nested operations propagate the same
+error; synchronous cleanup can consume time after another context has expired.
+No caller-context observation or stack was separately captured. Source permits
+activation failure after publication, so a failed registration/nil returned owner
+does not establish that the journal stayed closed or that leases released. The
+failed parent supplied no independent final-byte/hold vector. Do not transfer the
+different historical finish stack or primitive collection timings onto this call.
+
+The proposed snapshots below supply the missing point observations; they do not
+optimize startup or adopt a runtime change. Unchanged full-suite retries would
+only reproduce the already bound error without resolving its location.
 
 ## Proposed next diagnostic, pending explicit adoption
 
@@ -126,3 +176,29 @@ Concrete diagnostic-only control names and strict parser inventory must be
 declared in the implementation contract before its failing-first code and run.
 Any remedy to product/caller budgets, collectors, guard, caching or runtime
 authority needs a distinct adopted design and relevant evidence.
+
+## Replay
+
+On the evidence-owning checkout, locate the ignored original
+`policy-startup-lifecycle-15.1-2qvd59c1` session. Keep its raw files private.
+SHA-256 `result.json` and `qualification.log` and require equality with the witness
+and the unchanged PR-320 receipt. Compare source, prebuilt artifact/compiler,
+one-CPU profile, fixture bounds, failure and all seven independent cleanup flags;
+verify removal of owned image/key/devices/binary. Require the exact three passed
+parents, one failed UFS parent and single startup/error row recorded above, absent
+whole-test panic, goroutine stack and completed lifecycle vectors.
+
+For every `historical_sources` file, read `git show <analyzed-source>:<file>` and
+verify its Git blob and SHA-256. Match all 26 exact line/count assertions; verify
+review precedes activation, registry reservation precedes the factory and the
+three activation inspections surround original publication. Match the recorded
+Go command checksum to the native compiler identity before checking its pinned
+local `src/context/context.go` hash and parent-deadline rule. That rule describes
+context semantics, not the failed call's stage timing. Verify all twelve previous
+receipt bytes/hashes against analysis base
+`139f193fe18aa62785a925b518e88aca309cd143` and the current checkout.
+
+These standard Python/Git provenance checks need no new VM. Without the original
+private log/result a reviewer can inspect source assertions and Git receipts,
+but cannot independently re-extract the raw observation. No current status,
+proposal approval or broader acceptance can be inferred from the sanitized file.
