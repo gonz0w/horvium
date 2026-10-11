@@ -1632,3 +1632,17 @@ The [interpretation and limits](../../research/M2/policy-startup-stack.md) bind
 sample stages without inventing collector durations or a failing command cause.
 This diagnostic completes only issue323's scoped research on review/acceptance;
 305/139 and both full native lifecycle releases remain separate open gates.
+
+## Proposed separate startup caller experiment
+
+[Review issue 326](https://github.com/gonz0w/horvium/issues/326) owns the
+[offline inspection review and proposed Test Design](../../research/M2/policy-startup-inspection.md#proposed-failing-first-test-design).
+M2-POLICY-STARTUP-ENVELOPE-001–006 cover absolute caller/profile isolation, strict
+evidence, unchanged sampling, one original factory/facts child, independent
+post-publication preservation/release and complete teardown/provenance. These
+criteria are proposed and require explicit adoption before implementation/execution.
+The separate test caller 180 / child 210 experiment would retain product 90 / 90 and all
+native limits. Existing trace 120 / 150 and full lifecycle 120 / 330 / 1080 / 40min profiles
+remain authoritative. Offline evidence proves a parent clamp in the observed call,
+not a successful new run or changed product behavior. Both complete native lifecycle
+gates and runtime authority remain pending; no tests or native run are added here.

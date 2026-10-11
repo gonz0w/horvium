@@ -1,0 +1,616 @@
+{
+  "schema": 1,
+  "date": "2026-10-11",
+  "scope": "offline original startup composition/failure review and proposed caller-envelope experiment; no implementation or new native execution",
+  "research_issue": 326,
+  "base_commit": "72f1058e8ab4968470fe43db258fea29518d6c85",
+  "executed_native_source": "2d78311dbf7c71678b02f48f2a3488a4c8a737fa",
+  "diagnostic_PR": 325,
+  "diagnostic_merge": "72f1058e8ab4968470fe43db258fea29518d6c85",
+  "witness_sha256": "9512fbd6286228d5a417247602c6812b02b33a1385fa51c8292245c99fcfde5a",
+  "original_record_sha256": "a7fe0fac029136d68b6bc1b835dbe4aadf658822a561dea4af57486ea9af76c3",
+  "original_log_sha256": "ad6871ec56c7cca1c36af03dac6c7659293c1e5c1f521d125c78d232548a6987",
+  "artifact": {
+    "source_commit": "2d78311dbf7c71678b02f48f2a3488a4c8a737fa",
+    "sha256": "2e84c6cce8cc2965dcddffb6039038cb46ee2685010d22eb104ddda1a06eddc5",
+    "bytes": 13672072,
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+    "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+    "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+    "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+    "target": "freebsd/amd64",
+    "goamd64": "v1",
+    "cgo_enabled": false,
+    "build_arguments": [
+      "go",
+      "test",
+      "-c",
+      "-trimpath",
+      "-tags=horvium_native_fixture",
+      "-o",
+      "<owned-artifact>",
+      "./internal/host/freebsd"
+    ]
+  },
+  "original_diagnostic_complete": true,
+  "native_lifecycle_acceptance": false,
+  "observed_summary": {
+    "return_ns": 120010623999,
+    "caller_deadline_ns": 120000000000,
+    "caller_error": "deadline",
+    "startup_error": "deadline",
+    "owner_present": false,
+    "samples": [
+      {
+        "id": 1,
+        "offset_ns": 30000000000,
+        "begin_ns": 30008717000,
+        "end_ns": 30012838000,
+        "bytes": 9647,
+        "sha256": "ecf24164da6bb9594745c1f404903a08c01db10737ed0b2af6302cf6895e4f81",
+        "status": "captured"
+      },
+      {
+        "id": 2,
+        "offset_ns": 75000000000,
+        "begin_ns": 75008147999,
+        "end_ns": 75009935999,
+        "bytes": 8693,
+        "sha256": "702624aed539d4efabf39908c6846196836bedc05378000e0c8c56224a36b927",
+        "status": "captured"
+      },
+      {
+        "id": 3,
+        "offset_ns": 110000000000,
+        "begin_ns": 110000571999,
+        "end_ns": 110002111999,
+        "bytes": 8713,
+        "sha256": "bab100827c40f5313bd563aa0e0ebe69aa0ab5647f608a9c1c27475bdba01992",
+        "status": "captured"
+      }
+    ]
+  },
+  "observed_final_journal": {
+    "before_sha256": "c529455cd6e69db23e9fe74ef409ae169166124930341427493f07a1b5319b56",
+    "after_sha256": "baca1e16af52fb02e3200e79215417cd8b1aaaefeacfc1ad11eaed604b735857",
+    "unchanged": false,
+    "decoded": true,
+    "state": "active",
+    "generation_before": 6,
+    "generation_after": 7
+  },
+  "rebound_frames": {
+    "samples": 3,
+    "total_frames": 97,
+    "project_frames": 64,
+    "compiler_matched_frames": 33
+  },
+  "source_checks": [
+    {
+      "id": 1,
+      "file": "internal/host/freebsd/execution_restart_freebsd.go",
+      "lines": [
+        26
+      ],
+      "contains": "storage.ReviewExecutionPolicyStartup(c,",
+      "count": 1,
+      "source_sha256": "2c4bd0e5ff57a17d803ad59ca346cbf7094040addd6c4062ed7eb9b50330c444"
+    },
+    {
+      "id": 2,
+      "file": "internal/host/freebsd/execution_restart_freebsd.go",
+      "lines": [
+        30
+      ],
+      "contains": "r.Activate(c)",
+      "count": 1,
+      "source_sha256": "2c4bd0e5ff57a17d803ad59ca346cbf7094040addd6c4062ed7eb9b50330c444"
+    },
+    {
+      "id": 3,
+      "file": "internal/host/freebsd/execution_restart_freebsd.go",
+      "lines": [
+        32
+      ],
+      "contains": "errors.Join(e, r.Close())",
+      "count": 1,
+      "source_sha256": "2c4bd0e5ff57a17d803ad59ca346cbf7094040addd6c4062ed7eb9b50330c444"
+    },
+    {
+      "id": 4,
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "lines": [
+        59,
+        71
+      ],
+      "contains": "n.inspect(ctx)",
+      "count": 2,
+      "source_sha256": "7568274947d0110a46be79758bcaf5086829f1d2e7636715b3b4c214cc80a679"
+    },
+    {
+      "id": 5,
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "lines": [
+        87
+      ],
+      "contains": "context.WithTimeout(ctx, 90*time.Second)",
+      "count": 1,
+      "source_sha256": "7568274947d0110a46be79758bcaf5086829f1d2e7636715b3b4c214cc80a679"
+    },
+    {
+      "id": 6,
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "lines": [
+        102
+      ],
+      "contains": "j.lease.mu.Lock()",
+      "count": 1,
+      "source_sha256": "7568274947d0110a46be79758bcaf5086829f1d2e7636715b3b4c214cc80a679"
+    },
+    {
+      "id": 7,
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "lines": [
+        104
+      ],
+      "contains": "l.mu.Lock()",
+      "count": 1,
+      "source_sha256": "7568274947d0110a46be79758bcaf5086829f1d2e7636715b3b4c214cc80a679"
+    },
+    {
+      "id": 8,
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "lines": [
+        189,
+        207
+      ],
+      "contains": "p.observeLocked(ctx, before.record.Binding.Installation, n.read, n.system)",
+      "count": 2,
+      "source_sha256": "7568274947d0110a46be79758bcaf5086829f1d2e7636715b3b4c214cc80a679"
+    },
+    {
+      "id": 9,
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "lines": [
+        203
+      ],
+      "contains": "n.inspectPoliciesLocked(ctx, got)",
+      "count": 1,
+      "source_sha256": "7568274947d0110a46be79758bcaf5086829f1d2e7636715b3b4c214cc80a679"
+    },
+    {
+      "id": 10,
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "lines": [
+        206
+      ],
+      "contains": "len(n.policyDigests) != 0",
+      "count": 1,
+      "source_sha256": "7568274947d0110a46be79758bcaf5086829f1d2e7636715b3b4c214cc80a679"
+    },
+    {
+      "id": 11,
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "lines": [
+        23
+      ],
+      "contains": "context.WithTimeout(ctx, 90*time.Second)",
+      "count": 1,
+      "source_sha256": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241"
+    },
+    {
+      "id": 12,
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "lines": [
+        50,
+        75,
+        100
+      ],
+      "contains": "n.inspectLocked(ctx)",
+      "count": 3,
+      "source_sha256": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241"
+    },
+    {
+      "id": 13,
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "lines": [
+        84
+      ],
+      "contains": "n.publishClosedStartupLocked(next, wrap)",
+      "count": 1,
+      "source_sha256": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241"
+    },
+    {
+      "id": 14,
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "lines": [
+        99
+      ],
+      "contains": "n.activated = true",
+      "count": 1,
+      "source_sha256": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241"
+    },
+    {
+      "id": 15,
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "lines": [
+        103
+      ],
+      "contains": "a := &ExecutionRestartActivation",
+      "count": 1,
+      "source_sha256": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241"
+    },
+    {
+      "id": 16,
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "lines": [
+        121
+      ],
+      "contains": "j.retireLocked()",
+      "count": 1,
+      "source_sha256": "7568274947d0110a46be79758bcaf5086829f1d2e7636715b3b4c214cc80a679"
+    },
+    {
+      "id": 17,
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "lines": [
+        122
+      ],
+      "contains": "l.publicationBlocked = true",
+      "count": 1,
+      "source_sha256": "7568274947d0110a46be79758bcaf5086829f1d2e7636715b3b4c214cc80a679"
+    },
+    {
+      "id": 18,
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "lines": [
+        43
+      ],
+      "contains": "j.retireLocked()",
+      "count": 1,
+      "source_sha256": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241"
+    },
+    {
+      "id": 19,
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "lines": [
+        44
+      ],
+      "contains": "l.publicationBlocked = true",
+      "count": 1,
+      "source_sha256": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241"
+    },
+    {
+      "id": 20,
+      "file": "internal/storage/execution_journal_store_freebsd.go",
+      "lines": [
+        155
+      ],
+      "contains": "s.failed = true",
+      "count": 1,
+      "source_sha256": "8da428a4b35b062fb380faa5cce14a270884a7bac0b6a556d96cecb00c5fcdfa"
+    },
+    {
+      "id": 21,
+      "file": "internal/storage/execution_journal_store_freebsd.go",
+      "lines": [
+        156
+      ],
+      "contains": "s.lease.publicationBlocked = true",
+      "count": 1,
+      "source_sha256": "8da428a4b35b062fb380faa5cce14a270884a7bac0b6a556d96cecb00c5fcdfa"
+    },
+    {
+      "id": 22,
+      "file": "internal/storage/execution_startup.go",
+      "lines": [
+        81
+      ],
+      "contains": "r.closeErr = r.release()",
+      "count": 1,
+      "source_sha256": "6bf7cfd6e8d2dd183b1add1f4abfee7a590821266c37fd02c5fc7ee08a2c62c3"
+    },
+    {
+      "id": 23,
+      "file": "internal/storage/execution_domains_freebsd.go",
+      "lines": [
+        252
+      ],
+      "contains": "p.closed, p.blocked = true, true",
+      "count": 1,
+      "source_sha256": "4c117a7a2136d422eef44f936a98d4ebeac6fd52ff017d05deab619feb5571bf"
+    },
+    {
+      "id": 24,
+      "file": "internal/storage/execution_domains_freebsd.go",
+      "lines": [
+        260
+      ],
+      "contains": "le = n.ledger.Close()",
+      "count": 1,
+      "source_sha256": "4c117a7a2136d422eef44f936a98d4ebeac6fd52ff017d05deab619feb5571bf"
+    },
+    {
+      "id": 25,
+      "file": "internal/storage/execution_domains_freebsd.go",
+      "lines": [
+        263
+      ],
+      "contains": "je = n.journal.close()",
+      "count": 1,
+      "source_sha256": "4c117a7a2136d422eef44f936a98d4ebeac6fd52ff017d05deab619feb5571bf"
+    },
+    {
+      "id": 26,
+      "file": "internal/host/freebsd/execution_owner.go",
+      "lines": [
+        79
+      ],
+      "contains": "r.claimed = true",
+      "count": 1,
+      "source_sha256": "c3b9bb2b2b9c309947dc4f55723e3ae9ca5dcb2bac48beb77d8cd3aa1935e7ba"
+    },
+    {
+      "id": 27,
+      "file": "internal/host/freebsd/execution_owner.go",
+      "lines": [
+        97
+      ],
+      "contains": "return nil, errors.Join(e, o.closeErr)",
+      "count": 1,
+      "source_sha256": "c3b9bb2b2b9c309947dc4f55723e3ae9ca5dcb2bac48beb77d8cd3aa1935e7ba"
+    },
+    {
+      "id": 28,
+      "file": "internal/storage/execution_domains_freebsd.go",
+      "lines": [
+        153,
+        157,
+        190,
+        194
+      ],
+      "contains": "observeExecutionDomainLocked(ctx, read)",
+      "count": 4,
+      "source_sha256": "4c117a7a2136d422eef44f936a98d4ebeac6fd52ff017d05deab619feb5571bf"
+    },
+    {
+      "id": 29,
+      "file": "internal/storage/execution_domains_freebsd.go",
+      "lines": [
+        182,
+        202
+      ],
+      "contains": "system(ctx)",
+      "count": 2,
+      "source_sha256": "4c117a7a2136d422eef44f936a98d4ebeac6fd52ff017d05deab619feb5571bf"
+    },
+    {
+      "id": 30,
+      "file": "internal/storage/execution_policy_freebsd.go",
+      "lines": [
+        55
+      ],
+      "contains": "n.policy(ctx, borrowed)",
+      "count": 1,
+      "source_sha256": "43f7d1152ac5c83b55ebdf0233eaa4a44cd8bb8a8f8397f22cc307dabad190ef"
+    },
+    {
+      "id": 31,
+      "file": "internal/storage/execution_policy_freebsd.go",
+      "lines": [
+        70,
+        74
+      ],
+      "contains": "observeExecutionDomainLocked(ctx, n.read)",
+      "count": 2,
+      "source_sha256": "43f7d1152ac5c83b55ebdf0233eaa4a44cd8bb8a8f8397f22cc307dabad190ef"
+    },
+    {
+      "id": 32,
+      "file": "internal/host/freebsd/execution_policy.go",
+      "lines": [
+        37
+      ],
+      "contains": "system.Collect(ctx)",
+      "count": 1,
+      "source_sha256": "aa3dc54323a4cf354e64882a24fccb78ef1d2bd431bc8bd3cf879d12cc39e927"
+    },
+    {
+      "id": 33,
+      "file": "internal/host/freebsd/persistent_backing.go",
+      "lines": [
+        71
+      ],
+      "contains": "pass < 2",
+      "count": 1,
+      "source_sha256": "067be07406ec23cb922e228e99a00b127b257c943a508a84f682b51ab390a0ac"
+    },
+    {
+      "id": 34,
+      "file": "internal/host/freebsd/system_use.go",
+      "lines": [
+        92,
+        96
+      ],
+      "contains": "c.pass(ctx)",
+      "count": 2,
+      "source_sha256": "450a4ae0ca879337d452dafa0b34b781513dc8654618e3645014a1e37d8c941e"
+    },
+    {
+      "id": 35,
+      "file": "internal/host/freebsd/system_use.go",
+      "lines": [
+        44
+      ],
+      "contains": "totalTimeout: 45 * time.Second",
+      "count": 1,
+      "source_sha256": "450a4ae0ca879337d452dafa0b34b781513dc8654618e3645014a1e37d8c941e"
+    },
+    {
+      "id": 36,
+      "file": "internal/host/freebsd/system_use.go",
+      "lines": [
+        44
+      ],
+      "contains": "commandTimeout: 10 * time.Second",
+      "count": 1,
+      "source_sha256": "450a4ae0ca879337d452dafa0b34b781513dc8654618e3645014a1e37d8c941e"
+    },
+    {
+      "id": 37,
+      "file": "internal/host/freebsd/persistent_backing_freebsd.go",
+      "lines": [
+        26
+      ],
+      "contains": "commandTimeout: 10 * time.Second, totalTimeout: 45 * time.Second",
+      "count": 1,
+      "source_sha256": "2934f96769d2fbd560ac72fb9d9376d441285e616ee771a299d8eb67ae5ac724"
+    },
+    {
+      "id": 38,
+      "file": "internal/host/freebsd/execution_policy_startup_trace_fixture_test.go",
+      "lines": [
+        89
+      ],
+      "contains": "context.WithTimeout(context.Background(), 120*time.Second)",
+      "count": 1,
+      "source_sha256": "4d597947a1971e56869567608de5c85ca1b3127937faddac7178dc20b1c3a847"
+    },
+    {
+      "id": 39,
+      "file": "internal/host/freebsd/execution_policy_lifecycle_fixture_test.go",
+      "lines": [
+        104
+      ],
+      "contains": "call(\"startup\", 2*time.Minute",
+      "count": 1,
+      "source_sha256": "8a4db65f2e1d8d2284c240e15dfe4585e8072f8ae5c295210eb056e80ebd9870"
+    }
+  ],
+  "source_hashes": {
+    "internal/host/freebsd/execution_restart_freebsd.go": "2c4bd0e5ff57a17d803ad59ca346cbf7094040addd6c4062ed7eb9b50330c444",
+    "internal/storage/execution_startup_freebsd.go": "7568274947d0110a46be79758bcaf5086829f1d2e7636715b3b4c214cc80a679",
+    "internal/storage/execution_restart_freebsd.go": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241",
+    "internal/storage/execution_journal_store_freebsd.go": "8da428a4b35b062fb380faa5cce14a270884a7bac0b6a556d96cecb00c5fcdfa",
+    "internal/storage/execution_startup.go": "6bf7cfd6e8d2dd183b1add1f4abfee7a590821266c37fd02c5fc7ee08a2c62c3",
+    "internal/storage/execution_domains_freebsd.go": "4c117a7a2136d422eef44f936a98d4ebeac6fd52ff017d05deab619feb5571bf",
+    "internal/host/freebsd/execution_owner.go": "c3b9bb2b2b9c309947dc4f55723e3ae9ca5dcb2bac48beb77d8cd3aa1935e7ba",
+    "internal/storage/execution_policy_freebsd.go": "43f7d1152ac5c83b55ebdf0233eaa4a44cd8bb8a8f8397f22cc307dabad190ef",
+    "internal/host/freebsd/execution_policy.go": "aa3dc54323a4cf354e64882a24fccb78ef1d2bd431bc8bd3cf879d12cc39e927",
+    "internal/host/freebsd/persistent_backing.go": "067be07406ec23cb922e228e99a00b127b257c943a508a84f682b51ab390a0ac",
+    "internal/host/freebsd/system_use.go": "450a4ae0ca879337d452dafa0b34b781513dc8654618e3645014a1e37d8c941e",
+    "internal/host/freebsd/persistent_backing_freebsd.go": "2934f96769d2fbd560ac72fb9d9376d441285e616ee771a299d8eb67ae5ac724",
+    "internal/host/freebsd/execution_policy_startup_trace_fixture_test.go": "4d597947a1971e56869567608de5c85ca1b3127937faddac7178dc20b1c3a847",
+    "internal/host/freebsd/execution_policy_lifecycle_fixture_test.go": "8a4db65f2e1d8d2284c240e15dfe4585e8072f8ae5c295210eb056e80ebd9870",
+    "internal/host/freebsd/execute.go": "6b1aa25996f23adec5d9af6bb58708ae475a5a2291f9e994cab83e1408d0c1d8",
+    "internal/host/freebsd/guard_freebsd.go": "3093de04ed48250ad47424b14467e8e698ee264a7b2cc241e008b05191ec9c03",
+    "internal/host/freebsd/joint_execution_leases_freebsd.go": "c583daebb2831212bfe32b875b0eb899e5b52f6d800fc462812a8596cbc0ca36",
+    "internal/storage/execution_domain_freebsd.go": "237179b1e73510fc345e81c72440cf52662edb41e06396d5f17e7ed900f6c5ed",
+    "internal/storage/execution_binding_freebsd.go": "a6d549990d5855697c9774b92ba328a3146774320661624b4760946143b31f1d",
+    "internal/host/freebsd/system_use_freebsd.go": "2e9ea15925e59bd1c0480d75e8856eecd15e41b8316037b0b026424d550b7d4a",
+    "internal/storage/execution_restart.go": "d1295d3d440299c250009c23f72e64a8802d14efb8813d49c5e9af65b43a21d2"
+  },
+  "static_success_path_model": {
+    "activation_inspection_lines": [
+      50,
+      75,
+      100
+    ],
+    "publication_line": 84,
+    "activation_object_creation_line": 103,
+    "total_full_inspection_calls": 4,
+    "callback_examples": [
+      {
+        "retained_policies": 1,
+        "backing_callbacks_per_inspection": 10,
+        "domain_and_policy_system_callbacks_per_inspection": 5,
+        "backing_callbacks_four_complete_inspections": 40,
+        "domain_and_policy_system_callbacks_four_complete_inspections": 20
+      },
+      {
+        "retained_policies": 2,
+        "backing_callbacks_per_inspection": 12,
+        "domain_and_policy_system_callbacks_per_inspection": 6,
+        "backing_callbacks_four_complete_inspections": 48,
+        "domain_and_policy_system_callbacks_four_complete_inspections": 24
+      }
+    ],
+    "limits": "conditional successful nonempty policy path only; no actual invocation/probe/syscall/command counts or timings; the final observed inspection was incomplete"
+  },
+  "timeout_inference": {
+    "kind": "source-and-point-observation interval deduction; not measured phase boundary",
+    "activation_timeout_creation_ns_after_caller_lower_exclusive": 30008717000,
+    "activation_timeout_creation_ns_after_caller_upper_inclusive": 75009935999,
+    "nominal_activation_deadline_ns_lower_exclusive": 120008717000,
+    "nominal_activation_deadline_ns_upper_inclusive": 165009935999,
+    "actual_parent_deadline_ns": 120000000000,
+    "parent_clips_activation_90s_context": true,
+    "limits": "proves parent clamp in this observed call; does not select earliest nested timeout, exact failing probe or cause; new run may enter activation at a different time"
+  },
+  "compiler_context_source": {
+    "file": "context/context.go",
+    "sha256": "971f00ffa375b79d3f65e6da33cca3a493cc3fce091c589233abfb4283e29b7d",
+    "deadline_clamp_line": 637,
+    "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598"
+  },
+  "post_publication_failure": {
+    "final_active_generation": 7,
+    "no_returned_owner": true,
+    "registry_consumed_and_stores_blocked": "source-backed failure semantics; not an independent future retry/restart native gate",
+    "explicit_release_not_closed_publication": true,
+    "observed_child_leases_released": true,
+    "no_clean_retirement_or_retry_clearance": true
+  },
+  "proposed_experiment": {
+    "status": "not adopted; review decision pending",
+    "fixture_caller_seconds": 180,
+    "child_seconds": 210,
+    "parent_seconds": 480,
+    "phase_minutes": 18,
+    "product_review_seconds": 90,
+    "product_activation_seconds": 90,
+    "sample_seconds": [
+      30,
+      75,
+      110
+    ],
+    "snapshot_bytes": 65536,
+    "sample_join_seconds": 5,
+    "initial_release": "15.1",
+    "original_factory_calls": 1,
+    "required_controls": 42,
+    "requires_separate_fixed_profile_and_strict_consumer": true,
+    "original_profiles_unchanged": true,
+    "limits": "hypothesis test only; opening/transfer/cleanup cost and earlier nested/product deadlines may still fail; does not alter full lifecycle acceptance"
+  },
+  "historical_receipts_unchanged": {
+    "docs/testing/M2/retained-policy-admission-manifest.json": "2e733dd5a017772ce7947913ced1c16940ee8614cde445cb9fcd0327331077c3",
+    "docs/testing/M2/retained-policy-lifecycle-budget-manifest.json": "4019d0b125d2dfbf0bc1be31f1cc0465eea1aae9bd40dc28efeeecc3bec13990",
+    "docs/testing/M2/retained-policy-native-facts-manifest.json": "e9d4a0c6eef2011b236ea69a0ff94c0adae9a9c8f2102fefe4c9ff69f1c9f499",
+    "docs/testing/M2/retained-policy-native-history-manifest.json": "0788d387d4b4c27921fd3f68ffc5206f9fe0c548270464d34c87fd6ea4b8db6d",
+    "docs/testing/M2/retained-policy-native-lifecycle-manifest.json": "43fdd1bbda87853e7d9aee336f70402bfc5f263b9b6b71304dee7133faea5ce0",
+    "docs/testing/M2/retained-policy-native-multiple-manifest.json": "294662c837cf9921dba954491b6737f84adc43de71d09d93c3747107992eb263",
+    "docs/testing/M2/retained-policy-native-review-manifest.json": "f37c74e30d2c769d87f65872303021fd5bf2640467636bd9bea499ae4abaa3cf",
+    "docs/testing/M2/retained-policy-root-manifest.json": "52bb88c0d6cc94fe031a8345adb1bdc1e5fb005634d24f4ba3eb47a59ea3366a",
+    "docs/testing/M2/retained-policy-root-qualification-manifest.json": "6d3dd07f65d88247bdd854061f811629c59168bcfda42385eab5a7cf21aac99c",
+    "docs/testing/M2/retained-policy-startup-manifest.json": "b7b248f1bfe6e197f1c8955f72f80c9fbeef0a71a641767e424059df7cfdd271",
+    "docs/research/M2/policy-lifecycle-timeout-manifest.json": "53c7a8c64b1681863e91920364e97e02f5f3a6875c72dab60269999389fcd95c",
+    "docs/research/M2/policy-startup-costs-manifest.json": "4564cee1d3e579557f6af7d187a77274183752d2af370b44d4e92eed6431ca5a",
+    "docs/research/M2/policy-startup-deadline-manifest.json": "bae3a271140cbaef0ad08d5dbc290b388cfea2645aeb634ba973fc899094d017",
+    "docs/research/M2/policy-startup-stack-manifest.json": "33c3640f5cc7602735912bd6e7949cdc3a10b8ca078503a64508d1a56bf30052",
+    "docs/research/M2/policy-startup-stack-qualification-manifest.json": "9512fbd6286228d5a417247602c6812b02b33a1385fa51c8292245c99fcfde5a"
+  },
+  "no_new_native_run": true,
+  "product_fixture_runner_unchanged": true,
+  "limits": [
+    "No collector/command duration, actual full-path counts, exact final failing probe, deadlock, production or causal emulation/capacity claim",
+    "No erased active history, synthesized clean retirement, registry reset, old ack/cached inventory or retry authority",
+    "No runtime change, wider product/native limits, producer wrappers/caches/removal, API/flags/schemas/packages, services/deployment/dependencies/Actions/paid automation",
+    "Proposed fixture caller change requires maintainer adoption before implementation/execution; native acceptance and runtime writes remain pending"
+  ],
+  "intermediate_replay_rejection": {
+    "log_sha256": "b404076909bd36b1d8e739546444aaafec6cae916bff5f9e46395991423d03de",
+    "reason": "Private source assertion expected three j.retireLocked calls in activation file; exact receiver occurs once. Corrected to one; other s.retireLocked calls are distinct. Subsequent 39 source assertions passed. No product change, native run or behavioral test failure."
+  }
+}

@@ -1592,3 +1592,24 @@ is true, **native lifecycle acceptance remains false**. Only research issue323
 can complete on acceptance of its receipt; owner305/parent139, both full lifecycle
 release gates and broader acceptance remain open. No 14.5 comparison, production
 behavior/limit/guard change, retry, service or runtime writer was introduced.
+
+## Original startup inspection and proposed caller envelope
+
+The [offline review](../research/M2/policy-startup-inspection.md) and
+[source-bound manifest](../research/M2/policy-startup-inspection-manifest.json)
+replay completed PR 325 diagnostic evidence without a new native run. All fifteen
+prior receipts are byte-identical. Source ordering and point capture intervals
+prove that the existing 120s caller clipped activation's own 90s allowance in that
+observed call. Four full inspections on a complete-success policy path protect
+different drift intervals; static callback counts are not actual failed-run
+command counts or durations. Final active journal/no returned owner remains
+post-publication failure with explicit lease release, not clean retirement or
+retry clearance. No exact failing probe, causal emulation or performance claim.
+
+Issue 326 proposes a separate test-only 180s caller/210s child on the unchanged
+pinned 15.1 one-CPU QEMU/TCG UFS fixture, with all 42 diagnostic controls and
+unchanged product 90 / 90/native/cleanup limits. It requires explicit maintainer
+adoption before implementation/execution and a separate strict profile/consumer.
+Original trace and full lifecycle profiles remain unchanged. No new support,
+hardware, client, full lifecycle or release acceptance is established; native
+lifecycle acceptance is false and runtime writes remain disabled.
