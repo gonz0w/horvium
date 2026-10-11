@@ -171,3 +171,9 @@ inspection path and post-publication deadline/error recovery against these exact
 observations before any changed runtime or fixture contract. Preserve all drift,
 lease, publication/uncertainty and fail-closed requirements. These snapshots
 support investigation, not caching, removed checks, wider deadlines or retries.
+
+The subsequent [offline inspection review](policy-startup-inspection.md) maps
+repeated guards and fail-closed release, and derives the parent deadline clamp
+from these source-bound point intervals. Its separate caller experiment is a
+proposal requiring maintainer adoption; original profiles and this receipt remain
+unchanged. It establishes no new execution or native lifecycle acceptance.

@@ -256,6 +256,12 @@ separate under issue 305; the [corrected source-bound diagnostic receipt](../res
 records point observations and publication uncertainty, not lifecycle acceptance.
 GitHub owns live status.
 
+[M2: review original startup inspections and caller envelope (#326)](https://github.com/gonz0w/horvium/issues/326)
+owns the [offline source review and proposed separate experiment](../research/M2/policy-startup-inspection.md),
+under parent 139 with completed diagnostic 323 as prerequisite. Proposal adoption,
+fixture implementation and full lifecycle acceptance under 305 remain separate.
+GitHub owns the live decision and status.
+
 ## Migration receipt
 
 See the [dated verification record](github-migration.md) for counts, preserved identities,

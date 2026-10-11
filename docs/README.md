@@ -220,3 +220,5 @@
 - [Original startup deadline analysis and adopted stack method](research/M2/policy-startup-deadline.md): exact failed source/receipt boundaries; implementation and diagnostic completeness are separate.
 
 - [Adopted original startup stack diagnostic](research/M2/policy-startup-stack.md): bounded test-only sampling; diagnostic completeness and native acceptance are separate.
+
+- [Original startup inspection and proposed caller experiment](research/M2/policy-startup-inspection.md): source/point-observation review; adoption, implementation and native acceptance remain separate.
