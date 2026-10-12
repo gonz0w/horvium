@@ -1700,3 +1700,15 @@ qualification remain planned, not executed. The offline review replays the old
 second-cycle failure and two earlier diagnostics, preserving eighteen preceding
 receipts. No new native run, implementation, timeout change or acceptance occurs
 in this design PR; issues 305/139 and the research decision remain open.
+
+## Adopted original lifecycle caller implementation
+
+PR 332 adopted M2-POLICY-LIFECYCLE-CALLER-001–006 above with merge
+`d5bdf24d4ef5df480ae960b985365de8610cc274`. The
+[implementation and source-bound qualification](../../testing/M2/retained-policy-lifecycle-caller.md)
+retain one original 180-second startup caller, 390-second children, 1200-second
+parent work and 44-minute lifecycle phase. Five parents/293 controls/thirteen
+normally waited children and forty ordered pre-cancel scalar observations per
+release are required. Failed partial rows never qualify the gate. Historical
+proposal/replay and failed candidates remain authoritative for their own source.
+Product/native/cleanup budgets and original guards remain unchanged.

@@ -188,7 +188,7 @@ def cpu_count_for_suite(suite):
 def lifecycle_budget_for_suite(suite):
     if suite not in SUITES:
         raise ValueError('unknown suite budget profile')
-    return {'child_seconds': 330, 'parent_work_seconds': 1080, 'phase_minutes': 40} if suite == 'policy-startup-lifecycle' else None
+    return {'caller_seconds': 180, 'child_seconds': 390, 'parent_work_seconds': 1200, 'phase_minutes': 44} if suite == 'policy-startup-lifecycle' else None
 
 
 def startup_envelope_budget_for_suite(suite):

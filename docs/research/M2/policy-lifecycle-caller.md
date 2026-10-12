@@ -1,6 +1,8 @@
 # Original lifecycle caller composition review
 
-Status: proposed fixture-only amendment; adoption pending, no implementation or new native run.
+Status: adopted fixture-only amendment through [PR 332](https://github.com/gonz0w/horvium/pull/332),
+merge `d5bdf24d4ef5df480ae960b985365de8610cc274`. The original proposal/replay
+below performs no native run; [implementation and qualification](../../testing/M2/retained-policy-lifecycle-caller.md) are separate.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`). Time box: one offline development session.
 Owning [issue 331](https://github.com/gonz0w/horvium/issues/331), under
 [parent 139](https://github.com/gonz0w/horvium/issues/139), coordinating
@@ -186,3 +188,12 @@ global launch and browser/client/hardware/performance/release acceptance stay op
 Controlled initial seeds are not worker shutdown provenance. Runtime writes remain
 disabled. This proposal performs no native run or deployment and grants no retry,
 clean retirement or launch authority.
+
+## Recorded adoption
+
+The maintainer merged PR 332 on 2026-10-12 UTC, adopting the fixed fixture
+hierarchy and M2-POLICY-LIFECYCLE-CALLER-001–006 requirements above. Issue 331
+is closed for that decision; implementation and qualification belong to issue
+305 under parent 139. Proposal wording and its immutable replay retain the
+original evidence boundary. Adoption does not accept either native release gate
+or authorize a product timeout, retry, profile change or runtime writer.

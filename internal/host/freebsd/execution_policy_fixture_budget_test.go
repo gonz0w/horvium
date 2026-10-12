@@ -21,7 +21,7 @@ func policyFixtureWorkBudget(profile policyFixtureWorkProfile) (time.Duration, e
 	case policyFixtureFactsWork:
 		return 8 * time.Minute, nil
 	case policyFixtureLifecycleWork:
-		return 18 * time.Minute, nil
+		return 20 * time.Minute, nil
 	default:
 		return 0, errors.New("unknown fixture work profile")
 	}
@@ -42,7 +42,7 @@ func policyFixtureWorkContext(parent context.Context, profile policyFixtureWorkP
 }
 func policyFixtureChildBudgetValid(timeoutFlag string, deadline, now time.Time) bool {
 	budget, err := time.ParseDuration(timeoutFlag)
-	return err == nil && budget == 330*time.Second && !deadline.IsZero() && deadline.After(now) && deadline.Sub(now) <= budget
+	return err == nil && budget == 390*time.Second && !deadline.IsZero() && deadline.After(now) && deadline.Sub(now) <= budget
 }
 
 func TestPolicyFixtureWorkBudget(t *testing.T) {

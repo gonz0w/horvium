@@ -13,6 +13,11 @@ Authority: [approved PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md),
 Requirements: M2-RUNTIME-002, M2-STATE-001, M2-RECOVERY-001, M2-OWN-001,
 M2-DRIFT-001, M2-PRIV-001 and M2-NATIVE-001.
 
+The subsequent [caller composition amendment](../../research/M2/policy-lifecycle-caller.md)
+was adopted through PR 332. Its 180/390/1200/44 profile applies only to subsequent
+full-lifecycle candidates; the original adopted rows and historical receipts below
+retain their own limits and outcomes. See the [implementation](../../testing/M2/retained-policy-lifecycle-caller.md).
+
 ## Problem and proposed outcome
 
 The original two-policy fixture charges startup, observation, unused retirement,

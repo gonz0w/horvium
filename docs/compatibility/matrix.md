@@ -1683,3 +1683,18 @@ No new profile or observation is implemented or qualified. All eighteen historic
 receipts remain exact; failed/skipped/unverified boundaries and issues 305/139
 stay open. Explicit decision through issue 331's reviewed PR is required before
 implementation/execution. No runtime/support/performance or infrastructure change.
+
+## Adopted original lifecycle caller fixture implementation
+
+PR 332 adopted the fixture-only 180/390/1200/44 profile. The
+[implementation and candidate evidence](../testing/M2/retained-policy-lifecycle-caller.md)
+add original caller budget assertions, ordered sanitized scalar observations
+before cancellation, successful child extraction and interrupted executable
+cleanup. Strict acceptance requires both pinned FreeBSD/amd64 releases, five
+parents/293 controls/thirteen normal children and forty stage observations each.
+Native qualification is pending for this implementation candidate. Product
+90-second operations, collector/cleanup limits, other diagnostic profiles and
+normal runtime builds remain unchanged. All nineteen preceding policy receipts
+retain their failed/skipped/unverified boundaries. Issues 305/139, fault families,
+worker provenance, runtime writes and release/hardware/performance gates remain
+separate. No support claim follows from the fixture amendment.
