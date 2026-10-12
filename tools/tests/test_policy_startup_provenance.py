@@ -31,7 +31,7 @@ def fixture(record=None, operation=None):
     s = summary()
     s.update(return_ns=122000000000, caller_error='none')
     if record and record.get('frames'):
-        s['return_ns'] = max(s['return_ns'], max(f.get('end_ns', 0) for f in record['frames'] if type(f.get('end_ns')) is int) + 1)
+        s['return_ns'] = max(s['return_ns'], max((f.get('end_ns', 0) for f in record['frames'] if type(f) is dict and type(f.get('end_ns')) is int), default=0) + 1)
         if s['return_ns'] >= 180000000000:
             s['caller_error'] = 'deadline'
     if operation:
@@ -173,3 +173,58 @@ class PolicyStartupProvenance(unittest.TestCase):
                     log.replace('"generation_after": 2', '"generation_after": false')]:
             with self.assertRaises(ValueError):
                 self.validate(bad)
+
+    def test_scalar_recursion_nonfinite_and_parent_duration_rejected(self):
+        log = fixture()
+        for bad in [log.replace('"bytes": 100', '"bytes": NaN'),
+                    log.replace('"bytes": 100', '"bytes": Infinity'),
+                    log.replace('"bytes": 100', '"bytes": ' + '[' * 1100 + '0' + ']' * 1100),
+                    log.replace('(200.0s)', '(1.0s)'), log.replace('(200.0s)', '(1081.0s)')]:
+            with self.assertRaises(ValueError):
+                self.validate(bad)
+        for value in [None, 'private', [], {'unknown': True}]:
+            self.reject_trace({'status': 'complete', 'frames': [value]})
+
+    def test_reused_provider_scope_and_inherited_unresolved_canceled_frames(self):
+        # Original command errors can propagate while their containing collector
+        # and activation contexts are still live; attribution is observation only.
+        root = frame(child_before='none', child_after='none', constraint='unresolved')
+        provider = frame('provider-collector', 'collection', allowance_ns=45000000000,
+                         child_deadline_ns=45000000000, parent_deadline_ns=90000000000,
+                         child_before='none', child_after='none', constraint='unresolved',
+                         begin_ns=120000000000, end_ns=120000000001)
+        command = frame('system-command', 'capture', allowance_ns=10000000000,
+                        child_deadline_ns=10000000000, parent_deadline_ns=45000000000,
+                        begin_ns=119000000000, end_ns=119000000001)
+        self.assertTrue(self.validate(fixture({'status': 'complete', 'frames': [command, provider, root]}))['diagnostic_complete'])
+        for changes in [dict(child_deadline_ns=180000000000, child_before='none', child_after='none', constraint='inherited'),
+                        dict(child_before='canceled', child_after='canceled', constraint='canceled'),
+                        dict(child_before='none', child_after='none', constraint='unresolved')]:
+            self.assertTrue(self.validate(fixture({'status': 'complete', 'frames': [frame(**changes)]}))['diagnostic_complete'])
+        branches = [frame(branch='0.0'), frame(branch='0.1')]
+        result = self.validate(fixture({'status': 'ambiguous', 'frames': branches}))
+        self.assertEqual(result['trace']['frames'], branches)
+        self.assertFalse(result['diagnostic_complete'])
+
+    def test_cli_records_incomplete_result_without_success_exit(self):
+        import subprocess
+        import sys
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as name:
+            path = Path(name) / 'synthetic.txt'
+            command = [sys.executable, self.m.__file__, str(path), '--source-commit', SOURCE,
+                       '--compiler-sha256', COMPILER, '--artifact-sha256', ARTIFACT]
+            for text, code, complete in [(fixture(), 0, True),
+                                         (fixture({'status': 'unattributed', 'frames': []}), 1, False),
+                                         ('raw inventory', 2, None)]:
+                path.write_text(text)
+                result = subprocess.run(command, capture_output=True, text=True, timeout=10)
+                self.assertEqual(result.returncode, code)
+                if complete is not None:
+                    record = json.loads(result.stdout)
+                    self.assertEqual(record['diagnostic_complete'], complete)
+                    self.assertFalse(record['native_acceptance'])
+                else:
+                    self.assertEqual(result.stdout, '')
+                    self.assertNotIn('raw inventory', result.stderr)

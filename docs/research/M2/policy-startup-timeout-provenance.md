@@ -7,7 +7,9 @@ retain their historical review boundaries. The separate
 [issue 337](https://github.com/gonz0w/horvium/issues/337), implements the
 prerequisite only. [Original-return integration](../../testing/M2/deadline-return-sites.md)
 is separately owned by [issue 339](https://github.com/gonz0w/horvium/issues/339);
-the strict fixture and native execution remain under 305.
+[The strict offline consumer](../../testing/M2/deadline-provenance-consumer.md)
+is separately owned by [issue 341](https://github.com/gonz0w/horvium/issues/341).
+The tagged fixture/runner and native execution remain under 305.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`). Time box: one offline development session.
 Owning [research issue 335](https://github.com/gonz0w/horvium/issues/335), under
 [parent 139](https://github.com/gonz0w/horvium/issues/139), coordinating

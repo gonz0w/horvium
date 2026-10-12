@@ -245,3 +245,5 @@
 - [Deadline-provenance design replay](research/M2/policy-startup-timeout-provenance-manifest.json): offline verification of PR 334 and twenty-one immutable receipts; no new native execution.
 
 - [Original startup deadline return sites](testing/M2/deadline-return-sites.md): issue 339; existing context integration and portable placement checks, with native qualification pending.
+
+- [Strict deadline provenance consumer](testing/M2/deadline-provenance-consumer.md): issue 341; exact 50-control transcript contract and offline parser, with fixture/native execution pending.

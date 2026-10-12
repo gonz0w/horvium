@@ -1786,3 +1786,17 @@ remain intact. Strict 50-control fixture/consumer and one fresh 15.1 diagnostic
 remain pending, along with both complete lifecycle gates and all broader runtime,
 client/browser, recovery, hardware/performance and release acceptance. No VM or
 service is started for this bounded component; runtime writes stay disabled.
+
+## Strict deadline provenance consumer
+
+[Issue 341's offline component](../testing/M2/deadline-provenance-consumer.md)
+requires the adopted 50 controls and externally supplied source/compiler/artifact
+checksums for one canonical sanitized transcript. It independently checks scalar
+trace semantics and original scope/deadline ordering, then reuses the unchanged
+envelope consumer for original samples, journal and teardown. Incomplete states
+are retained with diagnostic completeness false; native acceptance is always
+false. Synthetic parser and CLI tests establish no native observation or support.
+All 24 preceding receipts, original product/fixture/runner/consumer sources and
+timers remain unchanged. Native fixture/runner, one fresh 15.1 diagnostic, both
+complete lifecycle gates and all broader runtime/client/browser/recovery/hardware/
+performance/release acceptance remain pending. No VM or service is started.

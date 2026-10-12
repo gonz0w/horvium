@@ -301,3 +301,8 @@ and one fresh diagnostic remain distinct work; portable passes do not satisfy th
 owns the [bounded integration](../testing/M2/deadline-return-sites.md), under #305
 after merged adapter #337. Portable placement/source review and cross-builds do
 not accept the separate strict fixture, native diagnostic or lifecycle gates.
+
+[Strict deadline consumer (#341)](https://github.com/gonz0w/horvium/issues/341)
+owns the [offline transcript contract and parser](../testing/M2/deadline-provenance-consumer.md),
+under #305 after merged return-site #339. Native fixture/runner and the one fresh
+diagnostic remain separate; GitHub owns live status.
