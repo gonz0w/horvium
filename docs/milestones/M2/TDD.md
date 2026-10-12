@@ -1760,3 +1760,11 @@ inspection/publication phases require source review and normal/tagged FreeBSD
 cross-builds here; actual native observations remain with the separate 50-control
 fixture/consumer and one fresh diagnostic. Original allowances and all wider
 safety/recovery acceptance remain required.
+
+[Strict consumer (#341)](../../testing/M2/deadline-provenance-consumer.md) tests
+the adopted M2-POLICY-DEADLINE-PROVENANCE-003/004/006 consumer subsets using
+synthetic scalar transcripts. The exact 13-child/29-parent/21-fact control inventory
+and candidate binding are declared before fixture execution. Well-formed incomplete
+traces stay unqualified; native acceptance is always false. Actual normally waited
+children, source isolation, guest/host preservation and one fresh diagnostic remain
+requirements of the separately reviewed native fixture/runner.
