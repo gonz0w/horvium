@@ -335,3 +335,46 @@ func TestDeadlineProvenanceRealCancellationRetention(t *testing.T) {
 		t.Fatal("original effective deadline changed")
 	}
 }
+
+type deadlineFuzzWrap struct{ original error }
+
+func (*deadlineFuzzWrap) Error() string   { return "synthetic wrapper" }
+func (e *deadlineFuzzWrap) Unwrap() error { return e.original }
+
+func FuzzDeadlineProvenanceBoundedGraphs(f *testing.F) {
+	f.Add([]byte{0, 1, 2, 3, 4, 5})
+	f.Add(bytes.Repeat([]byte{0}, 16))
+	f.Add(bytes.Repeat([]byte{2}, 32))
+	f.Fuzz(func(t *testing.T, data []byte) {
+		if len(data) > 64 {
+			data = data[:64]
+		}
+		_, _, parent, child := deadlineContexts()
+		var err error = context.DeadlineExceeded
+		for _, step := range data {
+			switch step % 6 {
+			case 0:
+				err = annotateDeadline(child, parent, err)
+			case 1:
+				err = &deadlineFuzzWrap{err}
+			case 2:
+				err = errors.Join(err, context.DeadlineExceeded)
+			case 3:
+				err = errors.Join(err, err)
+			case 4:
+				err = AnnotateDeadlineReturn(child, parent, err, 255, DeadlineInspect, time.Second)
+			case 5:
+				err = errors.Join(err, &cyclicDeadlineError{})
+			}
+		}
+		trace := ExtractDeadlineProvenance(err)
+		encoded := EncodeDeadlineProvenance(err)
+		if len(trace.Frames) > 12 || len(encoded) > 8192 || !json.Valid(encoded) || bytes.Contains(encoded, []byte("private")) {
+			t.Fatalf("unbounded or raw evidence: %+v", trace)
+		}
+		var decoded DeadlineProvenance
+		if json.Unmarshal(encoded, &decoded) != nil || !reflect.DeepEqual(trace, decoded) {
+			t.Fatal("extraction and scalar encoding disagree")
+		}
+	})
+}
