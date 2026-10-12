@@ -1800,3 +1800,18 @@ All 24 preceding receipts, original product/fixture/runner/consumer sources and
 timers remain unchanged. Native fixture/runner, one fresh 15.1 diagnostic, both
 complete lifecycle gates and all broader runtime/client/browser/recovery/hardware/
 performance/release acceptance remain pending. No VM or service is started.
+
+## Deadline provenance runner input binding
+
+[Issue 343's offline helper](../testing/M2/deadline-provenance-candidate.md)
+checks clean signed/DCO source before and after validation, hashes actual opened
+compiler/artifact/transcript files and uses the unchanged strict 50-control
+consumer. Incomplete required traces retain sanitized evidence and fail the
+runner boundary; native acceptance remains false. Portable tests use disposable
+synthetic files only. Source/file identity is not build or native execution
+attestation. All 25 prior policy receipts and existing product/fixture/consumer/
+qualification-runner sources are unchanged. Tagged fixture, independent build,
+source isolation and full runner wiring precede the one adopted fresh 15.1
+diagnostic. No new native suite, VM, service or runtime interface is added; both
+full lifecycle gates and all broader acceptance remain pending, with runtime
+writes disabled.
