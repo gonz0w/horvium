@@ -269,5 +269,11 @@ startup outcome and full lifecycle acceptance under 305. GitHub owns live status
 
 ## Migration receipt
 
+[M2: review original lifecycle startup caller composition (#331)](https://github.com/gonz0w/horvium/issues/331)
+owns the [offline review and fixture-only proposal](../research/M2/policy-lifecycle-caller.md),
+under parent 139 after completed prerequisite 328. The unchanged-profile second-cycle
+failure, proposed profile adoption and later implementation/qualification under 305
+remain distinct. GitHub owns live status and the review decision.
+
 See the [dated verification record](github-migration.md) for counts, preserved identities,
 evidence and recoverability. Consult GitHub for live state rather than treating that receipt as a board.

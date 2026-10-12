@@ -229,3 +229,6 @@
 
 - [Original lifecycle qualification follow-up](testing/M2/retained-policy-lifecycle-qualification.md): unchanged-profile 15.1 UFS second-cycle startup failure; first-cycle source-order observation and completed prefix remain partial, with independent host teardown and unverified incomplete guest vectors.
 - [Lifecycle follow-up receipt](testing/M2/retained-policy-lifecycle-qualification-manifest.json): exact native source/artifact, failed/skipped release boundaries and all seventeen prior policy receipts preserved.
+
+- [Original lifecycle caller review](research/M2/policy-lifecycle-caller.md): proposed fixture-only 180/390/1200/44-minute hierarchy and scalar stage evidence; explicit adoption required, no new native run.
+- [Caller review replay](research/M2/policy-lifecycle-caller-manifest.json): original second-cycle failure and two earlier diagnostic receipts rebound to source; eighteen historical receipts stay immutable.

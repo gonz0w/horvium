@@ -1661,3 +1661,25 @@ the incomplete lifecycle guest cleanup vectors remain unverified. All seventeen
 prior policy receipts remain byte-identical. Both full five-parent/289-control/
 thirteen-child release gates and issues 305/139 remain open; no hardware,
 performance, support or runtime write claim is added.
+
+## Proposed original lifecycle caller composition amendment
+
+[Issue 331's offline review](../research/M2/policy-lifecycle-caller.md) and
+[source-bound replay](../research/M2/policy-lifecycle-caller-manifest.json) preserve
+the original second-cycle failure and both earlier diagnostic candidates without
+a new native run. Same source/factory in both cycles does not prove equal duration.
+The current helper lacks a separate pre-cancellation caller-error observation and
+retained successful stage output; the earliest expired context and failed second
+cycle's publication state remain unresolved. The earlier sampled call proves
+clamping only in that call, and the separate 180/210 success before 120 seconds
+does not establish a causal wider-caller fix.
+
+The unadopted fixture-only proposal is one absolute startup caller 180s, lifecycle
+child 390s, parent work 1200s and process phase 44m, retaining product/native limits,
+guards and existing profiles elsewhere. Four actual new caller assertions would
+raise the complete inventory from 289 to 293, with the same five parents/thirteen
+children and forty ordered sanitized scalar stage observations per release.
+No new profile or observation is implemented or qualified. All eighteen historical
+receipts remain exact; failed/skipped/unverified boundaries and issues 305/139
+stay open. Explicit decision through issue 331's reviewed PR is required before
+implementation/execution. No runtime/support/performance or infrastructure change.
