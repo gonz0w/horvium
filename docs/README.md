@@ -283,3 +283,7 @@
 - [Current-dashboard native fixture bindings](testing/dashboards/native-fixture-bindings.md):
   four test-only modes, independent original observations and retained phase outcomes;
   execution remains gated pending full host receipt bindings and both-release evidence.
+
+- [Per-mode dashboard resource measurement records](testing/dashboards/resource-measurement-records.md):
+  observed CPU/wall/RSS/warm-up and complete phases; native execution stays gated
+  pending independent candidate/control/teardown bindings.

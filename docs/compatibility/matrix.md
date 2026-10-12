@@ -26,15 +26,18 @@ and exact-value fallback. This additional cached read needs fresh resource evide
 before qualified Overview acceptance. The [resource Test Design supplement](../design/dashboards/resource-qualification.md)
 was adopted in PR 357. The [portable request-driver slice](../testing/dashboards/resource-request-driver.md)
 implements scheduling, bounded response reads and per-case timing accounting in
-test-only code. It remains inactive in the native suite; the [HTML-predicate slice](../testing/dashboards/resource-html-predicates.md)
+test-only code. Its original receipt is portable only; the [HTML-predicate slice](../testing/dashboards/resource-html-predicates.md)
 validates actual portable console pages against declared inventory. The [offline receipt validator](../testing/dashboards/resource-receipt-validator.md)
 adds strict candidate/release/workload accounting with synthetic transcript tests.
 The [prepared workload/receipt adapter](../testing/dashboards/workload-receipt-adapter.md)
 binds those portable components and retains actual body sizes and strict phase JSON.
 The [native fixture bindings](../testing/dashboards/native-fixture-bindings.md) now use
 the prepared five-case workload in all four test-only modes. The existing performance
-entry points are gated pending full independent host receipt bindings; no native
-execution or fresh resource measurements are claimed. Historical receipts and support claims are unchanged. Dashboard browser/accessibility,
+entry points are gated pending full independent host receipt bindings. The
+[per-mode measurement record slice](../testing/dashboards/resource-measurement-records.md)
+binds actual warm-up, separate displayed CPU counters, individual RSS peaks and
+complete phase observations in test-only fixtures. No native execution or fresh
+resource measurements are claimed. Historical receipts and support claims are unchanged. Dashboard browser/accessibility,
 fresh native service/performance, uPlot behavior and identity-bound history remain
 unqualified. Inspected upstream hashes
 and compressed input sizes in [ADR 0010](../adr/0010-progressive-dashboard-charts.md)
