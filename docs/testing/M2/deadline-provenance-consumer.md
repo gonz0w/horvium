@@ -123,3 +123,25 @@ remain pending. Both complete lifecycle and all broader native safety/recovery,
 worker/backend/global launch, manual browser/client, hardware/performance and
 release gates remain open. Runtime writes remain disabled. Failed, skipped and
 unverified prior limits remain bound to their original candidates.
+
+## Recorded candidate
+
+Signed implementation `41996bd1b1b0db193910cdf392c9279d372ce4ec`, merge base `c54ae5a6ce6dd15f8a3a314ea8852b38551e857b`,
+passed all eleven focused consumer/CLI tests. Signed red `d5c3de9d58363710802defd570cf83919c587c26`
+reproduces eight expected absent-consumer errors across seven test methods;
+the disposable signed archive was removed. The actual-title `make review` passed
+239 tooling tests, eleven portable race packages and 54 compiler-listed fuzz
+targets under the shared-tooling full fallback. All 24 preceding receipts and
+product/fixture/runner/existing consumer sources remain byte-identical. The
+[source-bound receipt](deadline-provenance-consumer-manifest.json) records executed
+results and verified supervisor teardown. A final receipt-only head requires
+fresh baseline and verified exact-input deep reuse. Native fixture/runner and
+actual diagnostic evidence remain pending.
+
+An earlier portable review passed at `8890fc4424acd7acaa6a7cb380767a38b1bff3b8`,
+but subsequent source review found forged live-parent and collector guard frames
+could qualify as complete. Signed regression `d391bfd43fcd2c123a72eb0f7b8e3311d64880ec`
+reproduces both failures. The final source requires original pre-child guard sites
+and their expired parent; all eleven focused tests and the fresh complete portable
+review passed after this fix. The earlier pass remains source-bound in the receipt;
+it is not substituted for final behavior. Both signed archives were removed.
