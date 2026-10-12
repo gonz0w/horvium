@@ -59,7 +59,12 @@ error test helper missing Unwrap; the second signed red corrects that helper.
 The [receipt](deadline-provenance-core-manifest.json) preserves both actual failures.
 Later regressions add disabled allocation, malformed-frame and inconsistent
 expired-deadline checks, plus actual
-immediately expired child/live parent cancellation retention. No slow sleep or
+immediately expired child/live parent cancellation retention. The first supplemental run passed its selected checks, but subsequent review
+found an interface field holding a slice could panic in cycle detection. Signed
+regression source `1b81279b36f7de04513d6af2a817ac70d14990a7` reproduces that
+behavioral failure. Traversal now checks actual value comparability before using
+error map keys; the case is also a tagged fuzz seed. The earlier interrupted local
+review remains unqualified in the receipt. No slow sleep or
 fabricated failure of an unchanged native product path is used.
 
 Verification runs the ordinary identity case, all tagged storage tests, focused

@@ -213,7 +213,7 @@ func (w *deadlineWalk) visit(err error, branch string) {
 	}
 	w.nodes++
 	value := reflect.ValueOf(err)
-	if w.nodes > deadlineTraversalLimit || !reflect.TypeOf(err).Comparable() || w.active[err] || (value.Kind() == reflect.Pointer && value.IsNil()) {
+	if w.nodes > deadlineTraversalLimit || !value.Comparable() || w.active[err] || (value.Kind() == reflect.Pointer && value.IsNil()) {
 		w.invalid = true
 		return
 	}
