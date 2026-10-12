@@ -277,3 +277,8 @@ remain distinct. GitHub owns live status and the review decision.
 
 See the [dated verification record](github-migration.md) for counts, preserved identities,
 evidence and recoverability. Consult GitHub for live state rather than treating that receipt as a board.
+
+The [focused original startup operation timeout investigation](../research/M2/policy-startup-operation-timeout.md)
+reuses the adopted separate diagnostic under [owner #305](https://github.com/gonz0w/horvium/issues/305).
+Its source review and candidate evidence remain separate from full lifecycle
+acceptance; GitHub owns live status and priority.

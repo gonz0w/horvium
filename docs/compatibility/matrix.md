@@ -1705,3 +1705,15 @@ normal runtime builds remain unchanged. All nineteen preceding policy receipts
 retain their failed/skipped/unverified boundaries. Issues 305/139, fault families,
 worker provenance, runtime writes and release/hardware/performance gates remain
 separate. No support claim follows from the fixture amendment.
+
+## Focused original startup operation timeout investigation
+
+The [investigation](../research/M2/policy-startup-operation-timeout.md) reuses the
+already adopted separate 180/210 caller-envelope diagnostic once on fresh 15.1
+fixtures, under issue 305. PR 333's actual operation deadline with its original
+caller still live does not identify a nested timer or final publication state.
+Product, fixture, native producer and lab profiles remain unchanged. The existing
+42-control diagnostic consumer, sanitized source samples, independent final
+journal readback and complete teardown are required; execution remains pending.
+This cannot qualify either complete 293-control lifecycle release gate, infer
+causal performance or accept runtime writes, hardware or production support.
