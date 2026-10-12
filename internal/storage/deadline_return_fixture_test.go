@@ -220,6 +220,10 @@ func TestDeadlineProvenanceBoundsAndBranches(t *testing.T) {
 }
 
 // Unknown custom classification must not be treated as a proven nondeadline.
+type mixedDeadlineError struct{ payload any }
+
+func (mixedDeadlineError) Error() string { return "private mixed error" }
+
 type customDeadlineClassifier struct{}
 
 func (*customDeadlineClassifier) Error() string        { return "private classification" }
@@ -237,6 +241,7 @@ func TestDeadlineProvenanceMalformedEvidence(t *testing.T) {
 		err  error
 	}{
 		{"typed-nil", (*cyclicDeadlineError)(nil)},
+		{"dynamic-uncomparable", mixedDeadlineError{[]int{1}}},
 		{"custom-classifier", &customDeadlineClassifier{}},
 		{"oversized-join", &oversizedDeadlineJoin{}},
 	}
@@ -345,6 +350,7 @@ func FuzzDeadlineProvenanceBoundedGraphs(f *testing.F) {
 	f.Add([]byte{0, 1, 2, 3, 4, 5})
 	f.Add(bytes.Repeat([]byte{0}, 16))
 	f.Add(bytes.Repeat([]byte{2}, 32))
+	f.Add([]byte{6})
 	f.Fuzz(func(t *testing.T, data []byte) {
 		if len(data) > 64 {
 			data = data[:64]
@@ -352,7 +358,7 @@ func FuzzDeadlineProvenanceBoundedGraphs(f *testing.F) {
 		_, _, parent, child := deadlineContexts()
 		var err error = context.DeadlineExceeded
 		for _, step := range data {
-			switch step % 6 {
+			switch step % 7 {
 			case 0:
 				err = annotateDeadline(child, parent, err)
 			case 1:
@@ -365,6 +371,8 @@ func FuzzDeadlineProvenanceBoundedGraphs(f *testing.F) {
 				err = AnnotateDeadlineReturn(child, parent, err, 255, DeadlineInspect, time.Second)
 			case 5:
 				err = errors.Join(err, &cyclicDeadlineError{})
+			case 6:
+				err = errors.Join(err, mixedDeadlineError{[]int{1}})
 			}
 		}
 		trace := ExtractDeadlineProvenance(err)
