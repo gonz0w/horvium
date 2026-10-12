@@ -1837,3 +1837,14 @@ and timers are preserved. No VM or service is started by this offline slice.
 The one fresh reviewed 15.1 diagnostic, both full lifecycle gates and every wider
 native/client/browser/recovery/hardware/performance/release gate remain pending;
 runtime writes remain disabled.
+
+## One fresh startup return-path diagnostic
+
+[Issue 347's candidate](../research/M2/policy-startup-return-path.md) records the
+adopted one fresh prebuilt FreeBSD 15.1 return-path observation after merged
+fixture/runner PR 346. Preserve the one-CPU/6GiB/seven-device 180/210/480/18
+profile, original operation and exact 50-control contract. Source/build binding,
+diagnostic completeness and independent teardown remain separate from original
+startup success and native lifecycle acceptance. Failed or incomplete evidence
+remains unqualified. No other release, retry, runtime behavior or support claim
+is introduced; both complete lifecycle and broader release gates remain open.

@@ -318,3 +318,9 @@ owns the [50-control implementation and isolated build prerequisite](../testing/
 under #305 after merged input binding #343. Offline implementation and cross-build
 receipts do not complete the one adopted native diagnostic or lifecycle gates.
 GitHub owns live status, priority and native dependencies.
+
+[One return-path diagnostic (#347)](https://github.com/gonz0w/horvium/issues/347)
+owns the [single-candidate evidence record](../research/M2/policy-startup-return-path.md),
+under #305 after merged fixture #345. Recording a complete or unsuccessful
+diagnostic does not accept either full lifecycle release gate. GitHub owns live
+status, priority and native dependencies.
