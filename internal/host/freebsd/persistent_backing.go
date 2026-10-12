@@ -8,6 +8,8 @@ import (
 	"strings"
 	"time"
 	"unicode/utf8"
+
+	"github.com/gonz0w/horvium/internal/storage"
 )
 
 // Private read-only facts. This collector does not own the original state lease,
@@ -40,12 +42,13 @@ func (s *persistentBackingCollector) collect(ctx context.Context) (persistentBac
 	if s.bytes <= 0 || s.bytes > 64<<10 {
 		return persistentBackingIdentity{}, ErrLimit
 	}
+	parent := ctx
 	ctx, cancel := context.WithTimeout(ctx, s.totalTimeout)
 	defer cancel()
 	remaining := s.bytes
 	capture := func(probe, name string) ([]byte, error) {
 		if e := ctx.Err(); e != nil {
-			return nil, e
+			return nil, storage.AnnotateDeadlineReturn(nil, ctx, e, storage.DeadlineBackingCommand, storage.DeadlineGuard, 0)
 		}
 		if remaining <= 0 {
 			return nil, ErrLimit
@@ -58,10 +61,10 @@ func (s *persistentBackingCollector) collect(ctx context.Context) (persistentBac
 		}
 		remaining -= out.consumed
 		if e != nil {
-			return nil, e
+			return nil, storage.AnnotateDeadlineReturn(child, ctx, e, storage.DeadlineBackingCommand, storage.DeadlineCapture, s.commandTimeout)
 		}
 		if e = child.Err(); e != nil {
-			return nil, e
+			return nil, storage.AnnotateDeadlineReturn(child, ctx, e, storage.DeadlineBackingCommand, storage.DeadlineCapture, s.commandTimeout)
 		}
 		return out.data, nil
 	}
@@ -71,14 +74,14 @@ func (s *persistentBackingCollector) collect(ctx context.Context) (persistentBac
 	for pass := 0; pass < 2; pass++ {
 		m, e := s.observe()
 		if e != nil {
-			return persistentBackingIdentity{}, e
+			return persistentBackingIdentity{}, storage.AnnotateDeadlineReturn(ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout)
 		}
 		if !validPersistentMount(m) {
 			return persistentBackingIdentity{}, ErrUnavailable
 		}
 		v, e := capture("versions", "")
 		if e != nil {
-			return persistentBackingIdentity{}, e
+			return persistentBackingIdentity{}, storage.AnnotateDeadlineReturn(ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout)
 		}
 		if !persistentVersions(v) {
 			return persistentBackingIdentity{}, ErrUnavailable
@@ -87,11 +90,11 @@ func (s *persistentBackingCollector) collect(ctx context.Context) (persistentBac
 		if m.kind == "ufs" {
 			data, e := capture("ufs-id", m.source)
 			if e != nil {
-				return persistentBackingIdentity{}, e
+				return persistentBackingIdentity{}, storage.AnnotateDeadlineReturn(ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout)
 			}
 			id.ufs, e = parsePersistentUFS(data)
 			if e != nil {
-				return persistentBackingIdentity{}, e
+				return persistentBackingIdentity{}, storage.AnnotateDeadlineReturn(ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout)
 			}
 			if id.ufs != ([2]uint32{uint32(m.fsid[0]), uint32(m.fsid[1])}) {
 				return persistentBackingIdentity{}, ErrUnavailable
@@ -99,16 +102,16 @@ func (s *persistentBackingCollector) collect(ctx context.Context) (persistentBac
 		} else {
 			data, e := capture("zfs-id", m.source)
 			if e != nil {
-				return persistentBackingIdentity{}, e
+				return persistentBackingIdentity{}, storage.AnnotateDeadlineReturn(ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout)
 			}
 			id.dataset, e = parsePersistentZFS(data, m.source, m.target)
 			if e != nil {
-				return persistentBackingIdentity{}, e
+				return persistentBackingIdentity{}, storage.AnnotateDeadlineReturn(ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout)
 			}
 			pool := strings.Split(m.source, "/")[0]
 			data, e = capture("pool-id", pool)
 			if e != nil {
-				return persistentBackingIdentity{}, e
+				return persistentBackingIdentity{}, storage.AnnotateDeadlineReturn(ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout)
 			}
 			id.pool, e = persistentNumber(strings.TrimSuffix(string(data), "\n"))
 			if e != nil || strings.Count(string(data), "\n") != 1 || len(data) == 0 || data[len(data)-1] != '\n' {
@@ -117,7 +120,7 @@ func (s *persistentBackingCollector) collect(ctx context.Context) (persistentBac
 		}
 		after, e := s.observe()
 		if e != nil {
-			return persistentBackingIdentity{}, e
+			return persistentBackingIdentity{}, storage.AnnotateDeadlineReturn(ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout)
 		}
 		if after != m {
 			return persistentBackingIdentity{}, ErrUnavailable
@@ -131,7 +134,7 @@ func (s *persistentBackingCollector) collect(ctx context.Context) (persistentBac
 		}
 	}
 	if e := ctx.Err(); e != nil {
-		return persistentBackingIdentity{}, e
+		return persistentBackingIdentity{}, storage.AnnotateDeadlineReturn(ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout)
 	}
 	return first, nil
 }

@@ -71,19 +71,20 @@ func (s *PoolProviderSource) Collect(ctx context.Context, o storage.Observation)
 		return nil, ErrLimit
 	}
 	sort.Strings(names)
+	parent := ctx
 	ctx, cancel := context.WithTimeout(ctx, r.totalTimeout)
 	defer cancel()
 	c := systemCycle{source: r, bytes: r.bytes, lines: r.records}
 	before, release, err := providerPass(ctx, &c, o, names)
 	if err != nil {
-		return nil, err
+		return nil, storage.AnnotateDeadlineReturn(ctx, parent, err, storage.DeadlineProviderCollector, storage.DeadlineCollection, r.totalTimeout)
 	}
 	after, next, err := providerPass(ctx, &c, o, names)
 	if err != nil {
-		return nil, err
+		return nil, storage.AnnotateDeadlineReturn(ctx, parent, err, storage.DeadlineProviderCollector, storage.DeadlineCollection, r.totalTimeout)
 	}
 	if err = ctx.Err(); err != nil {
-		return nil, err
+		return nil, storage.AnnotateDeadlineReturn(ctx, parent, err, storage.DeadlineProviderCollector, storage.DeadlineCollection, r.totalTimeout)
 	}
 	if release != next || !reflect.DeepEqual(before, after) {
 		return nil, storage.ErrDrift

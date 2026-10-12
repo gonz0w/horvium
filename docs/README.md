@@ -243,3 +243,5 @@
 - [Adopted startup deadline return-path diagnostic](research/M2/policy-startup-timeout-provenance.md): PR 336 adopted the bounded fixture-only method and Test Design; native integration remains pending.
 - [Portable deadline provenance adapter](testing/M2/deadline-provenance-core.md): issue 337; identity, immutable return snapshots and bounded extraction prerequisite, without native qualification.
 - [Deadline-provenance design replay](research/M2/policy-startup-timeout-provenance-manifest.json): offline verification of PR 334 and twenty-one immutable receipts; no new native execution.
+
+- [Original startup deadline return sites](testing/M2/deadline-return-sites.md): issue 339; existing context integration and portable placement checks, with native qualification pending.

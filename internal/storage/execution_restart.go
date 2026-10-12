@@ -48,12 +48,12 @@ func (r *ExecutionStartupReview) Activate(ctx context.Context) (*ExecutionRestar
 		return nil, ErrDenied
 	}
 	if e := ctx.Err(); e != nil {
-		return nil, e
+		return nil, AnnotateDeadlineReturn(nil, ctx, e, DeadlineActivation, DeadlineGuard, 0)
 	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	if e := ctx.Err(); e != nil {
-		return nil, e
+		return nil, AnnotateDeadlineReturn(nil, ctx, e, DeadlineActivation, DeadlineGuard, 0)
 	}
 	if r.closed || r.blocked || r.transferred {
 		return nil, ErrDenied

@@ -51,7 +51,7 @@ type systemCycle struct {
 
 func (c *systemCycle) capture(ctx context.Context, p systemProbe, name string) ([]byte, error) {
 	if err := ctx.Err(); err != nil {
-		return nil, err
+		return nil, storage.AnnotateDeadlineReturn(nil, ctx, err, storage.DeadlineSystemCommand, storage.DeadlineGuard, 0)
 	}
 	if c.bytes <= 0 || c.lines <= 0 {
 		return nil, ErrLimit
@@ -64,10 +64,10 @@ func (c *systemCycle) capture(ctx context.Context, p systemProbe, name string) (
 	}
 	c.bytes -= out.consumed
 	if err != nil {
-		return nil, err
+		return nil, storage.AnnotateDeadlineReturn(child, ctx, err, storage.DeadlineSystemCommand, storage.DeadlineCapture, c.source.commandTimeout)
 	}
 	if err = child.Err(); err != nil {
-		return nil, err
+		return nil, storage.AnnotateDeadlineReturn(child, ctx, err, storage.DeadlineSystemCommand, storage.DeadlineCapture, c.source.commandTimeout)
 	}
 	lines := strings.Count(string(out.data), "\n")
 	if lines > c.lines {
@@ -86,19 +86,20 @@ func (s *SystemUseSource) Collect(ctx context.Context) (storage.PoolSystemUse, e
 	if s.bytes <= 0 || s.bytes > 64<<20 || s.records < 8 || s.records > 100000 {
 		return storage.PoolSystemUse{}, ErrLimit
 	}
+	parent := ctx
 	ctx, cancel := context.WithTimeout(ctx, s.totalTimeout)
 	defer cancel()
 	c := systemCycle{source: s, bytes: s.bytes, lines: s.records}
 	before, release, err := c.pass(ctx)
 	if err != nil {
-		return storage.PoolSystemUse{}, err
+		return storage.PoolSystemUse{}, storage.AnnotateDeadlineReturn(ctx, parent, err, storage.DeadlineSystemCollector, storage.DeadlineCollection, s.totalTimeout)
 	}
 	after, nextRelease, err := c.pass(ctx)
 	if err != nil {
-		return storage.PoolSystemUse{}, err
+		return storage.PoolSystemUse{}, storage.AnnotateDeadlineReturn(ctx, parent, err, storage.DeadlineSystemCollector, storage.DeadlineCollection, s.totalTimeout)
 	}
 	if err = ctx.Err(); err != nil {
-		return storage.PoolSystemUse{}, err
+		return storage.PoolSystemUse{}, storage.AnnotateDeadlineReturn(ctx, parent, err, storage.DeadlineSystemCollector, storage.DeadlineCollection, s.totalTimeout)
 	}
 	if release != nextRelease || !reflect.DeepEqual(before, after) {
 		return storage.PoolSystemUse{}, storage.ErrDrift
