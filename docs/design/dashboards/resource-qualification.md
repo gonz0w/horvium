@@ -46,7 +46,11 @@ Implement the fixture/validator in bounded reviewed slices with failing behavior
 tests for workload and receipt contracts. The first [portable request-driver slice](../../testing/dashboards/resource-request-driver.md),
 [issue 358](https://github.com/gonz0w/horvium/issues/358), remains inactive in the
 native suite until original-inventory HTML predicates, strict candidate/release
-receipt validation and native wiring have been reviewed. Leave
+receipt validation and native wiring have been reviewed. The
+[HTML-predicate slice](../../testing/dashboards/resource-html-predicates.md),
+[issue 360](https://github.com/gonz0w/horvium/issues/360), prepares detached
+expectations and validates real portable console responses; it does not activate
+the native suite or produce measurements. Leave
 runtime, source model limits, collectors and file-service separation unchanged.
 Then select one clean signed assembled candidate, actual PR title and pinned Go
 compiler/artifacts for native execution. A failed candidate is retained with its

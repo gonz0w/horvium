@@ -71,8 +71,9 @@ Owned test sessions still require verified teardown.
 
 ## Remaining work and rollback
 
-Next review original-inventory HTML predicates and their mutation regressions,
-then the complete candidate/transcript/release receipt validator and integration
+The [HTML-predicate slice](resource-html-predicates.md) supplies original-inventory
+checks and actual-console mutation regressions. Next review the complete
+candidate/transcript/release receipt validator and integration
 with all four native modes. Only after fixture review run a clean signed assembled
 candidate on both pinned releases, preserving warm-up/idle, replacements, native
 crash/cap-recovery, paired RSS/CPU and disposable teardown requirements. Historical

@@ -82,8 +82,9 @@ based solely on one successful image or console silence.
 The [current-dashboard resource supplement](resource-qualification.md) is a
 refinement of stage-A workload coverage and strict receipts adopted in PR 357.
 The [portable request driver](../../testing/dashboards/resource-request-driver.md) is
-the first fixture slice; complete HTML predicates, receipt validation, native wiring
-and fresh both-release execution remain required. Adoption is not qualification.
+the first fixture slice, followed by [original-inventory HTML predicates](../../testing/dashboards/resource-html-predicates.md).
+Receipt validation, native wiring and fresh both-release execution remain required.
+Adoption and portable regressions are not qualification.
 
 A reruns affected console/cache checks plus fresh assembled service measurements
 for its candidate using existing small/large native resource procedure on both

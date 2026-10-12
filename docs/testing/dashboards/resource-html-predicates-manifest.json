@@ -1,0 +1,143 @@
+{
+  "schema": 1,
+  "date": "2026-10-12",
+  "owning_issue": "https://github.com/gonz0w/horvium/issues/360",
+  "parent_gate": "https://github.com/gonz0w/horvium/issues/131",
+  "qualification_scope": "portable inactive original-inventory HTML predicates only",
+  "source_commit": "dcd6df529a10d4e3c3fa4c271947a170ccd082de",
+  "base_commit": "0efe0aa1cedec644bca1fb2716f5f9498c924387",
+  "design_approval": {
+    "pr": 357,
+    "merge_commit": "82cce76f85fed1640388ea1c77c954171ba5f1e8"
+  },
+  "driver_foundation": {
+    "pr": 359,
+    "merge_commit": "0efe0aa1cedec644bca1fb2716f5f9498c924387"
+  },
+  "requirements": [
+    "DASH-REQ-006",
+    "DASH-PERF-001",
+    "DASH-STORY-001",
+    "DASH-DATA-001",
+    "DASH-DRILL-001",
+    "DASH-SAFETY-001"
+  ],
+  "review": {
+    "title": "test(dashboards): validate resource workload HTML",
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium"
+      ],
+      "native_review_required": true
+    },
+    "record": ".tools/review-runs/ctl59ezz/result.json",
+    "record_sha256": "293d2fc776cf054f747989fee7e81509d93c0c4d386d0b2525bebb262f8eb11a",
+    "checks_log_sha256": "980b592803e59b1526128564224fe50b774e7fb5586a05943ca10a446019f9aa",
+    "baseline_checks_passed": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "tooling_tests": 258,
+    "race_packages": [
+      "./cmd/horvium"
+    ],
+    "fuzz_targets": [],
+    "deep_log_sha256": "464fc8fa7d58ed9f611b90052d188aa44c73ad6a529f8ea2bb57c8c213245cbb",
+    "input_digest": "5f3f998e7d3446bcf99765021260f3518485052a5280d6cab5b626b2a6056f82",
+    "elapsed_seconds": 65.19
+  },
+  "failing_first": {
+    "log_sha256": "8f48f4bcf067fe792ef81ca7b9a8397e19396c4abb034a16cacdbc544ec952f8",
+    "observed_failure": "newDashboardHTMLPredicate undefined before implementation; compilation failed",
+    "development_fixture_corrections": "refresh API use, mutation preconditions and incoming-request transport form corrected before passing review"
+  },
+  "behavioral_tests": [
+    "TestDashboardHTMLValidatesActualFiveCasePages",
+    "TestDashboardHTMLRejectsSemanticResponseMutations",
+    "TestDashboardHTMLHonestEmptyUnavailableZeroAndStale",
+    "TestDashboardHTMLRequiresSafeActualExpiry",
+    "TestDashboardHTMLPreparationAndParserFailClosed",
+    "TestDashboardHTMLPredicateRunsThroughReviewedDriver",
+    "TestDashboardHTMLParserEnforcesActualBoundaries"
+  ],
+  "fixtures": {
+    "input": "declared generated typed inventory; actual console/authentication/observation manager",
+    "rich_pool_count": 610,
+    "rich_dataset_count": 610,
+    "exact_table_default_limit": 100,
+    "exact_table_maximum_limit": 500,
+    "comparison_row_limit": 20,
+    "integer_boundaries": [
+      "9007199254740993",
+      "18446744073709551615"
+    ],
+    "original_inventory_copy": "validated detached snapshot; no response-derived expected values",
+    "ratio_reference": "Go standard-library arbitrary-precision integers; no product ratio helper",
+    "freshness_scope": "response-specific generation/timestamp syntax and presentation agreement; no independent native clock/staleness qualification",
+    "zero_empty_unavailable_stale": true,
+    "expiry_fixture": "actual expired-generation response after two manager replacements; no timing-race claim",
+    "driver_integration": {
+      "transport": "in-memory incoming HTTP requests through actual authenticated console handler",
+      "requests": 1000,
+      "workers": 10,
+      "successful_requests_per_case": 200,
+      "hidden_api_requests": 0,
+      "network_or_process_resource_measurements": false
+    }
+  },
+  "parser_bounds": {
+    "body_bytes": 33554432,
+    "elements": 20000,
+    "depth": 64,
+    "decoded_attribute_bytes": 8192,
+    "limits_and_limit_plus_one_tested": true,
+    "browser_dom_claim": false
+  },
+  "freebsd_cross_build": {
+    "target": "FreeBSD/amd64/v1",
+    "source_commit": "dcd6df529a10d4e3c3fa4c271947a170ccd082de",
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "cgo_enabled": false,
+    "bytes": 18397191,
+    "sha256": "b7c86a3d38beea0f153e14a5136e28a198aa38790cbc561364cb627eec8de44c",
+    "executed": false,
+    "removed": true
+  },
+  "teardown": {
+    "owned_records_stopped_verified": 194,
+    "status_log_sha256": "373a27fab32cc092fc60c3c6fa28bc6d355f7412ab3d1a8d4cecedad87c125dd",
+    "cross_build_artifact_removed": true,
+    "new_html_fixture_host_listener": false,
+    "vm_started": false,
+    "host_service_enabled": false
+  },
+  "preservation": {
+    "historical_manifests_byte_identical": 138,
+    "runtime_native_fixtures_driver_legacy_validator_tooling_modules_and_workflows_unchanged": true
+  },
+  "acceptance": {
+    "portable_slice": true,
+    "native_procedure_activated": false,
+    "dashboard_delivery": false,
+    "native_execution": false,
+    "native_resource_performance": false,
+    "safari_firefox_manual_accessibility": false,
+    "hardware_commercial_scale": false,
+    "runtime_writes": false
+  },
+  "limits": [
+    "Only the portable original-inventory HTML predicate component is qualified.",
+    "No fresh native RSS, CPU, warm-up, replacement, service latency, crash or cap-recovery measurements were made.",
+    "Strict candidate/transcript/release resource validation and native workload wiring remain pending.",
+    "Original native observations and constant fixture values must be established by future reviewed wiring, not inferred from response HTML.",
+    "Response-specific metadata checks establish presentation agreement, not independent clock/staleness/source attestation.",
+    "The controller parser is bounded template inspection, not a browser DOM, accessibility or security qualification.",
+    "The conservative review plan flags native review; cross-compilation did not execute that gate.",
+    "Historical failures/skips and the unexplained startup deadline remain; lifecycle #305/#139 is open.",
+    "Browser/manual, continuity, hardware/commercial and release acceptance remain separate; runtime writes stay disabled."
+  ]
+}
