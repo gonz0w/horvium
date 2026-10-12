@@ -1,6 +1,6 @@
 # Test Design supplement: current-dashboard resource qualification
 
-Status: Proposed Test Design; awaiting maintainer review. Date: 2026-10-12.
+Status: Approved Test Design; execution remains candidate-specific. Date: 2026-10-12.
 Owner: Cam (`@gonz0w`), [issue 356](https://github.com/gonz0w/horvium/issues/356),
 under [M2 gate 131](https://github.com/gonz0w/horvium/issues/131).
 Delivery gates: [Overview 289](https://github.com/gonz0w/horvium/issues/289) and
@@ -9,9 +9,10 @@ Authority: adopted [PRD](PRD.md), [EDD](EDD.md), [Test Design](TDD.md),
 [ADR 0010](../../adr/0010-progressive-dashboard-charts.md),
 [M1 performance procedure](../../testing/M1/performance.md) and
 [native reader procedure](../../testing/M1/native-resources.md).
-This proposal refines DASH-REQ-006 / DASH-PERF-001 for stage A only. It changes no
-product contract, budget or approval of stage B/C. Merge review adopts the stated
-future fixture/receipt procedure; it does not produce measurement or acceptance.
+This supplement refines DASH-REQ-006 / DASH-PERF-001 for stage A only. It changes no
+product contract, budget or approval of stage B/C. Maintainer merge of [PR 357](https://github.com/gonz0w/horvium/pull/357), source
+`82cce76f85fed1640388ea1c77c954171ba5f1e8`, adopts the future fixture/receipt
+procedure; it does not produce measurement or acceptance.
 
 ## Observed gap and source boundaries
 
@@ -41,8 +42,11 @@ No merged component or successful cross-build is fresh resource evidence.
 
 ## Candidate and fixture procedure
 
-After this supplement is adopted, pick one bounded fixture/validator implementation
-issue with failing behavioral tests for its workload and receipt contract. Leave
+Implement the fixture/validator in bounded reviewed slices with failing behavioral
+tests for workload and receipt contracts. The first [portable request-driver slice](../../testing/dashboards/resource-request-driver.md),
+[issue 358](https://github.com/gonz0w/horvium/issues/358), remains inactive in the
+native suite until original-inventory HTML predicates, strict candidate/release
+receipt validation and native wiring have been reviewed. Leave
 runtime, source model limits, collectors and file-service separation unchanged.
 Then select one clean signed assembled candidate, actual PR title and pinned Go
 compiler/artifacts for native execution. A failed candidate is retained with its
@@ -52,7 +56,7 @@ relabelling or silently rerunning to obtain a pass.
 Use the existing local `performance` suite only after its workload/validator has
 been extended and reviewed. Run both pinned FreeBSD/amd64 releases sequentially
 on the Mac's disposable QEMU lab, using existing image/runtime/tool/firmware pins,
-qemu64/two CPUs/6144 MiB/TCG and verified snapshot teardown. This proposal names no
+qemu64/two CPUs/6144 MiB/TCG and verified snapshot teardown. This supplement names no
 new runner flag, suite, config or package and installs no host service or package.
 Capture actual guest kernel/userland/ZFS/compiler and host/QEMU versions instead
 of assuming the image label proves their values. Preserve base/runtime hashes.
@@ -203,13 +207,13 @@ operator host services or use live storage/history as fixtures.
 
 Approval of this supplement is followed by a bounded harness/validator PR, then
 candidate-specific execution/receipt review. GitHub owns those live statuses and
-native dependencies; this document owns the proposed procedure. Do not add duplicate
+native dependencies; this document owns the adopted procedure. Do not add duplicate
 progress checklists, Actions, paid automation, runner services or synchronization.
 
 Browser/Safari/Firefox/manual assistive-technology, zoom/contrast, browser lifecycle/
 retained memory and file-daemon continuity remain separate gates. Manual M1
 accessibility remains pending by maintainer choice. Stage B synthetic uPlot/CSP
 research and stage C operator history/native-source contracts are outside this
-proposal. Historical failed/skipped observations and the unexplained startup
+supplement. Historical failed/skipped observations and the unexplained startup
 deadline remain; full native lifecycle #305/#139 stays open, and writes stay disabled.
 No hardware/commercial scale, whole-NAS performance or production support follows.

@@ -266,4 +266,7 @@
   bounded first-by-name coverage, exact table and intervening-eviction denial.
 
 - [Current-dashboard resource Test Design supplement](design/dashboards/resource-qualification.md):
-  proposed five-case workload and candidate receipt rules; execution remains separate.
+  adopted five-case workload and candidate receipt rules; execution remains separate.
+
+- [Portable dashboard resource request driver](testing/dashboards/resource-request-driver.md):
+  test-only scheduling, complete response reads and separate success/expiry timings; native wiring remains pending.
