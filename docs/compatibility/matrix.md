@@ -27,9 +27,9 @@ before qualified Overview acceptance. The [resource Test Design supplement](../d
 was adopted in PR 357. The [portable request-driver slice](../testing/dashboards/resource-request-driver.md)
 implements scheduling, bounded response reads and per-case timing accounting in
 test-only code. It remains inactive in the native suite; the [HTML-predicate slice](../testing/dashboards/resource-html-predicates.md)
-validates actual portable console pages against declared inventory. Strict
-candidate/release receipt validation, native wiring and fresh measurements remain
-pending. Historical receipts and support claims are unchanged. Dashboard browser/accessibility,
+validates actual portable console pages against declared inventory. The [offline receipt validator](../testing/dashboards/resource-receipt-validator.md)
+adds strict candidate/release/workload accounting with synthetic transcript tests.
+It is inactive in the runner; native wiring and fresh measurements remain pending. Historical receipts and support claims are unchanged. Dashboard browser/accessibility,
 fresh native service/performance, uPlot behavior and identity-bound history remain
 unqualified. Inspected upstream hashes
 and compressed input sizes in [ADR 0010](../adr/0010-progressive-dashboard-charts.md)

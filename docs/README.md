@@ -273,3 +273,6 @@
 
 - [Original-inventory dashboard resource HTML predicates](testing/dashboards/resource-html-predicates.md):
   actual portable console/driver integration and semantic mutation denial; native workload remains inactive.
+
+- [Offline dashboard resource-receipt validator](testing/dashboards/resource-receipt-validator.md):
+  strict candidate/release/workload accounting; native wiring and measurement remain separate.
