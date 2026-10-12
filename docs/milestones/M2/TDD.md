@@ -1682,3 +1682,21 @@ remain exact. M2-POLICY-FIXTURE-BUDGET-004 and both complete release gates remai
 pending. No new implementation, deadlines, retry or fabricated behavioral red;
 evidence-only review requires a fresh signed baseline without repeating deep tests.
 Issues 305/139 and runtime authority remain open.
+
+## Proposed original lifecycle caller composition Test Design
+
+[Research issue 331](https://github.com/gonz0w/horvium/issues/331) owns the
+[offline proposal and planned M2-POLICY-LIFECYCLE-CALLER-001–006 cases](../../research/M2/policy-lifecycle-caller.md),
+with a [source-bound replay receipt](../../research/M2/policy-lifecycle-caller-manifest.json).
+Explicit maintainer adoption is required before changing the original full-lifecycle
+fixture. Proposed limits are startup caller 180s / child 390s / parent work 1200s /
+phase 44m, with product/native/cleanup limits and all original checks retained.
+Four actual caller-budget assertions would produce five parents/293 controls/
+thirteen normal children per release. Forty ordered scalar helper-call observations
+would retain successful first/restart timing, original deadlines and separate
+pre-cancel caller/operation errors; partial failed rows never qualify a release.
+Portable failing-first context/profile/consumer/scalar tests and actual both-release
+qualification remain planned, not executed. The offline review replays the old
+second-cycle failure and two earlier diagnostics, preserving eighteen preceding
+receipts. No new native run, implementation, timeout change or acceptance occurs
+in this design PR; issues 305/139 and the research decision remain open.
