@@ -80,3 +80,16 @@ Original-return integration, strict fixture/consumer, one fresh 15.1 diagnostic,
 both complete lifecycle release gates and all wider native/client/browser/recovery/
 hardware/performance/release gates remain open. Historical limitations remain
 bound to their actual candidates; this adapter adds no support claim.
+
+## Recorded candidate
+
+Signed implementation `a02758170d44e4efb412ab0f80651723acb190b9`, adoption base `37402d6a017dc28fb7fb6528fc9b92516fda1cfb`,
+passed all six supplemental checks and the actual-title focused portable review: 228
+tooling tests, 9 affected race packages and 48 ordinary compiler-listed fuzz
+targets. The tagged error-graph fuzz check is additional and runs three seconds
+with two workers. Both normal/tagged FreeBSD storage artifacts compiled and were
+removed. All 22 preceding policy receipts remain unchanged; tagged-check and
+red-replay supervisors verified teardown. The earlier interrupted review is
+retained as unqualified. Final evidence-only changes require fresh baseline
+review and only verified exact-input deep reuse; neither source qualifies native
+return integration or acceptance.
