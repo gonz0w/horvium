@@ -110,8 +110,8 @@ logs; their corrected inputs retain valid containing observation intervals.
 
 ## Remaining scope and rollback
 
-The runtime, native performance/reader fixtures, runner and historical validator
-remain unchanged. No native VM, service, product flag/route/schema, dependency,
+At this adapter's recorded source, the runtime, native performance/reader
+fixtures, runner and historical validator were unchanged. No native VM, service, product flag/route/schema, dependency,
 Actions workflow or operator storage is introduced. Historical source-bound receipts
 remain unchanged. Removing these test-only helpers and sample metadata reverses
 the adapter without changing product behavior.

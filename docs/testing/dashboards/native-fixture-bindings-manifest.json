@@ -1,0 +1,314 @@
+{
+  "schema": 1,
+  "date": "2026-10-12",
+  "scope": "test-only native dashboard fixture wiring and fail-closed entry points; no native execution",
+  "source_commit": "2ed8e9b50a76a04b29895c1a8b483bb079f53300",
+  "base_commit": "146b6f73c6027170668b28777ae4e58c5a89750f",
+  "actual_pr_title": "test(dashboards): wire prepared workloads into native fixtures",
+  "review": {
+    "qualified": true,
+    "mode": "full",
+    "report_sha256": "5c7e9a4985bb657dadc9b0ab3517e3692364fc4cbcc433920aefed3b696e1f70",
+    "checks_log_sha256": "e4f56ac6995bb37ac76239fb1deadb1a48e10f6690c403dac0915c8614581430",
+    "deep_log_sha256": "b4025707d4ebee9bbacdab961c0672d4a3ef293450243e49f528225b218410e2",
+    "required_check_lint_test_secrets": true,
+    "tooling_tests": 271,
+    "ordinary_go_tests": true,
+    "race_packages": [
+      "./cmd/horvium",
+      "./internal/admin",
+      "./internal/client",
+      "./internal/console",
+      "./internal/eventlog",
+      "./internal/helper",
+      "./internal/host/freebsd",
+      "./internal/inventory",
+      "./internal/observation",
+      "./internal/service",
+      "./internal/storage"
+    ],
+    "fuzz_targets": [
+      {
+        "package": "./internal/admin",
+        "target": "FuzzConfiguration"
+      },
+      {
+        "package": "./internal/admin",
+        "target": "FuzzSessionAuthorityActions"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzActionNegotiation"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzPropertyReplies"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzPropertyRequest"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzRequest"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzSnapshot"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPersistentBackingProjection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPoolPropertyCollection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPoolProviderCollection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPropertyClaimSourceSelection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPropertyControlSelection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPropertyJobSource"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPropertyPolicyCollection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzSystemUseCollection"
+      },
+      {
+        "package": "./internal/inventory",
+        "target": "FuzzDiskAccess"
+      },
+      {
+        "package": "./internal/inventory",
+        "target": "FuzzDiskAttachments"
+      },
+      {
+        "package": "./internal/inventory",
+        "target": "FuzzDiskObservation"
+      },
+      {
+        "package": "./internal/inventory",
+        "target": "FuzzGEOM"
+      },
+      {
+        "package": "./internal/inventory",
+        "target": "FuzzPoolDiskAttachments"
+      },
+      {
+        "package": "./internal/inventory",
+        "target": "FuzzPools"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzDeviceUseReview"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzExecutionCensus"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzExecutionCensusChange"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzExecutionJournal"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzExecutionJournalNamespace"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzFilesystemSignature"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzFilesystemStates"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzIdentities"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzImportedPoolUse"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzJobRecord"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzJobReservations"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzJobRestartPage"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzOwnershipCatalogNames"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzOwnershipRecord"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolFeatures"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolLabels"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolScan"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolState"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolSystemUse"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolTopology"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzProperties"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyCoordinatorActions"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyExecutionCut"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyExecutionHandoff"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyIntent"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyJob"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyJobAssessment"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyLiveStateReceipt"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyPlan"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyPostcondition"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyViews"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzStateCatalogNames"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzSystemDeviceUse"
+      }
+    ],
+    "native_review_required": true
+  },
+  "behavioral_tests": {
+    "controller_parents": 8,
+    "entry_point_regressions": 2,
+    "independent_owned_name_guid_and_integer_values": true,
+    "immutable_native_originals_and_dataset_only_projection": true,
+    "three_completed_overlapping_replacements_required": true,
+    "late_control_and_initial_failures_retain_raw_outcomes": true,
+    "replacement_control_completion_denial_and_cancellation": true,
+    "partial_and_legacy_result_rejected": true,
+    "vm_preparation_not_reached": true,
+    "guest_build_not_reached": true,
+    "dry_run_preserved": true,
+    "first_red": "undefined prepared-native/controller helpers, missing replacement control helper and runner rejection mismatch; private red logs retained",
+    "development_failures": "An unused native generation variable failed an early cross-build; the replacement JSON test used dataset_count instead of actual DatasetCount. Both corrected before the signed source. Sandboxed supervisor socket attempts failed before execution; subsequent owned runs passed."
+  },
+  "freebsd_cross_build": {
+    "target": "FreeBSD/amd64/v1",
+    "source_commit": "2ed8e9b50a76a04b29895c1a8b483bb079f53300",
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "bytes": 18677408,
+    "sha256": "3231d6a9d47ae565ef0f684427795b12fe7a0c26ade2eafc4e7e118b609862d6",
+    "cgo_enabled": false,
+    "executed": false,
+    "removed": true
+  },
+  "preservation": {
+    "base": "146b6f73c6027170668b28777ae4e58c5a89750f",
+    "historical_manifests_byte_identical": 141,
+    "cap_recovery_body_sha256": "81be9c5694904bb5aa74b3ff5a80d3a69205b0910ba99148a1b53a67930d1787",
+    "native_crash_cleanup_body_sha256": "f097354c855803eee327e8f4352074a8157848804df780c3c17a0a1685eb1f85",
+    "sampler_metrics_projection_and_validators_unchanged": true,
+    "runtime_modules_workflows_unchanged": true,
+    "historical_and_strict_validators_unchanged": true
+  },
+  "teardown": {
+    "owned_records_stopped_verified": 221,
+    "status_log_sha256": "f2f50719411e733e1da00caf65b4460c0b13fdeb9511acd2d112975e664d62f7",
+    "vm_started": false,
+    "host_service_enabled": false,
+    "source_cross_build_removed": true
+  },
+  "acceptance": {
+    "portable_controller_component": true,
+    "native_fixture_wiring_implementation": true,
+    "native_fixture_behavior_qualification": false,
+    "full_resource_receipt_publication": false,
+    "host_runner_binding": false,
+    "native_execution": false,
+    "native_resource_performance": false,
+    "dashboard_delivery": false,
+    "browser_manual_accessibility": false,
+    "hardware_commercial_scale": false,
+    "runtime_writes": false
+  },
+  "limits": [
+    "Eight controller parents and mocked guest guards are portable semantics, not native command/storage execution.",
+    "Original native facts and exactly 100 independently parsed owned witnesses are captured outside measured requests after warm-up/idle; real accounting drift must fail rather than rebaseline.",
+    "Replacement load must remain active through three completions; no pacing, shortened observations or retry of measured requests is added.",
+    "DASHBOARD_WORKLOAD is partial observation only; full resource/control/provenance/teardown publication and independent host binding remain.",
+    "Performance execution/result entry points are temporarily gated; the historical validator and manifests retain their original scope.",
+    "Controller collection and predicates remain outside paired PIDs; no whole-NAS or commercial scale claim.",
+    "Cross-compilation did not execute FreeBSD; native crash/cap controls were preserved in source, not newly qualified.",
+    "Lifecycle 305/139, historical startup uncertainty, browser/manual, continuity, hardware and release gates remain open."
+  ]
+}

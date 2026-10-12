@@ -107,3 +107,20 @@ execution on the reviewed assembled candidate. [Overview 289](https://github.com
 [Capacity 290](https://github.com/gonz0w/horvium/issues/290), lifecycle #305/#139,
 historical startup uncertainty, browser/manual accessibility, continuity,
 hardware/commercial and release gates remain open. Runtime writes stay disabled.
+
+## Recorded source candidate
+
+[Receipt](native-fixture-bindings-manifest.json): signed source
+`2ed8e9b50a76a04b29895c1a8b483bb079f53300`, base
+`146b6f73c6027170668b28777ae4e58c5a89750f`, actual title
+`test(dashboards): wire prepared workloads into native fixtures`.
+Required checks passed with 271 tooling tests, ordinary Go tests, fresh full portable
+race checks in 11 packages and 54 bounded fuzz targets. Eight controller behavioral
+parents and two execution/result guard regressions passed. The source-bound FreeBSD
+cross-build was not executed and was removed; owned teardown was verified. All 141
+historical manifests remain byte-identical. Early failed compilation/test-fixture
+attempts remain in private development logs and are not native candidate results.
+
+A signed documentation-only followup requires a clean current-head review and may
+reuse only this completed exact-input deep evidence. No native measurement or
+broader acceptance follows from this fixture component.
