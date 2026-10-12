@@ -1,0 +1,288 @@
+{
+  "schema": 1,
+  "date": "2026-10-12",
+  "scope": "offline inactive dashboard resource receipt verification only",
+  "source_commit": "ef54d33f914ef0eb8297dd8b2eecddbb63a55ef5",
+  "base_commit": "8bfcfacc74c39d8e39fff92b9d3beed139493cdf",
+  "actual_pr_title": "test(dashboards): validate resource coverage receipts",
+  "review": {
+    "qualified": true,
+    "mode": "full",
+    "reason": "shared tooling, policy, module or packaging change",
+    "report_sha256": "b46afdce3f828a361a1fee799f05da3ea0123a7298fd842400fcf2bb8f88451d",
+    "checks_log_sha256": "11305a98e603bc0d5db70005ca20e13ca7735fdeaa9e5c9bc6c5f02f20784358",
+    "deep_log_sha256": "adfa48cfcbcaed9b6a6b80744929aa36ede6841f5f88b519c3e13135c5329274",
+    "required_check_lint_test_secrets": true,
+    "tooling_tests": 269,
+    "ordinary_go_tests": true,
+    "race_packages": [
+      "./cmd/horvium",
+      "./internal/admin",
+      "./internal/client",
+      "./internal/console",
+      "./internal/eventlog",
+      "./internal/helper",
+      "./internal/host/freebsd",
+      "./internal/inventory",
+      "./internal/observation",
+      "./internal/service",
+      "./internal/storage"
+    ],
+    "fuzz_targets": [
+      {
+        "package": "./internal/admin",
+        "target": "FuzzConfiguration"
+      },
+      {
+        "package": "./internal/admin",
+        "target": "FuzzSessionAuthorityActions"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzActionNegotiation"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzPropertyReplies"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzPropertyRequest"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzRequest"
+      },
+      {
+        "package": "./internal/helper",
+        "target": "FuzzSnapshot"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPersistentBackingProjection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPoolPropertyCollection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPoolProviderCollection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPropertyClaimSourceSelection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPropertyControlSelection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPropertyJobSource"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzPropertyPolicyCollection"
+      },
+      {
+        "package": "./internal/host/freebsd",
+        "target": "FuzzSystemUseCollection"
+      },
+      {
+        "package": "./internal/inventory",
+        "target": "FuzzDiskAccess"
+      },
+      {
+        "package": "./internal/inventory",
+        "target": "FuzzDiskAttachments"
+      },
+      {
+        "package": "./internal/inventory",
+        "target": "FuzzDiskObservation"
+      },
+      {
+        "package": "./internal/inventory",
+        "target": "FuzzGEOM"
+      },
+      {
+        "package": "./internal/inventory",
+        "target": "FuzzPoolDiskAttachments"
+      },
+      {
+        "package": "./internal/inventory",
+        "target": "FuzzPools"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzDeviceUseReview"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzExecutionCensus"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzExecutionCensusChange"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzExecutionJournal"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzExecutionJournalNamespace"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzFilesystemSignature"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzFilesystemStates"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzIdentities"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzImportedPoolUse"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzJobRecord"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzJobReservations"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzJobRestartPage"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzOwnershipCatalogNames"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzOwnershipRecord"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolFeatures"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolLabels"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolScan"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolState"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolSystemUse"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPoolTopology"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzProperties"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyCoordinatorActions"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyExecutionCut"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyExecutionHandoff"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyIntent"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyJob"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyJobAssessment"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyLiveStateReceipt"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyPlan"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyPostcondition"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzPropertyViews"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzStateCatalogNames"
+      },
+      {
+        "package": "./internal/storage",
+        "target": "FuzzSystemDeviceUse"
+      }
+    ],
+    "native_review_required": true
+  },
+  "behavioral_tests": {
+    "groups": 11,
+    "input": "explicitly synthetic two-release transcripts; no native execution",
+    "scheduled_outcomes_per_complete_fixture": 16000,
+    "first_red": "validator module absent before implementation",
+    "completion_scoping_regression": "preceding discovery-suite PASS rejected before correction; positive/missing/out-of-order regressions now pass",
+    "candidate_mutations": "well-formed source/base/title/compiler/archive/artifact identities cannot reuse another receipt",
+    "new_runner_activation": false
+  },
+  "preservation": {
+    "base": "8bfcfacc74c39d8e39fff92b9d3beed139493cdf",
+    "historical_manifests_byte_identical": 139,
+    "runtime_native_fixtures_runner_legacy_validator_modules_workflows_unchanged": true
+  },
+  "teardown": {
+    "owned_records_stopped_verified": 199,
+    "status_log_sha256": "e80598da9250a123d608996be0c03229a32a388a8b7706dc15463a3323ed9903",
+    "vm_started": false,
+    "host_service_enabled": false
+  },
+  "acceptance": {
+    "offline_component": true,
+    "native_wiring": false,
+    "native_execution": false,
+    "native_resource_performance": false,
+    "dashboard_delivery": false,
+    "browser_manual_accessibility": false,
+    "hardware_commercial_scale": false,
+    "runtime_writes": false
+  },
+  "limits": [
+    "Inputs/flags are developer controlled; the caller must independently verify signed clean source, artifacts, fixture observations, runtime pins and actual supervisor association.",
+    "The parser neither executes FreeBSD nor authenticates developer assertions; synthetic transcripts are not measurement evidence.",
+    "Historical measurements retain their original source and workload; all 139 historical manifests are unchanged.",
+    "Future reviewed native wiring must produce complete actual source-bound receipts before both-release execution.",
+    "Native lifecycle 305/139 and historical startup uncertainty, browser/manual, continuity and release gates remain open."
+  ]
+}

@@ -153,3 +153,21 @@ hardware/commercial and release gates remain open; runtime writes stay disabled.
 Rollback removes the inactive module/tests/docs without changing runtime or old
 receipts. No runtime dependency, Actions workflow, host service or operator storage
 is added or used.
+
+## Recorded portable candidate
+
+[Receipt](resource-receipt-validator-manifest.json): signed corrected behavioral
+source `ef54d33f914ef0eb8297dd8b2eecddbb63a55ef5`, base
+`8bfcfacc74c39d8e39fff92b9d3beed139493cdf`, actual title
+`test(dashboards): validate resource coverage receipts`. Required check/lint/test/
+secrets passed with 269 tooling tests and ordinary Go tests. The conservative
+shared-tool review freshly executed race checks for all 11 portable packages and
+54 discovered portable fuzz targets. Eleven new behavioral groups use explicitly
+synthetic transcripts; no FreeBSD or resource measurements occurred.
+
+The reproduced discovery-output completion regression was corrected before this
+candidate's successful review. The source receipt records verified owned teardown
+and preservation of all 139 historical manifests and runtime/native/runner/legacy
+validator/module/workflow inputs. Its documentation-only followup requires a new
+clean signed review and may reuse this exact-input deep execution; it does not
+upgrade native, browser, lifecycle, hardware or release acceptance.
