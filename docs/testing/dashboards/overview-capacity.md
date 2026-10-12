@@ -79,3 +79,27 @@ Rollback restores the prior Overview composition and embedded presentation;
 no storage, configuration, journal or schema migration. Development previews use
 labelled synthetic inventory with supervised process/tab teardown, never operator
 pools, datasets, backup history or host service activation.
+
+## Recorded portable candidate
+
+[Receipt](overview-capacity-manifest.json): signed implementation `bcb50419eb31838e5e36a01cc3c8dc34369d99fc`,
+merged base `84913b3ea10ed0b4a9834868f017d73b1deeea2a`, actual title
+`feat(console): compare generation-bound Overview pools`. Required check/lint/test/secrets passed,
+including 258 tooling tests and ordinary Go tests. Fresh focused race checks passed
+for console, service and command consumers; these packages have no portable fuzz
+targets. Four Overview behavioral parents passed, including five intervening-read
+subcases. Pool/dataset regressions also passed. No full milestone suite selected.
+All 136 historical manifests and collector/cache/native/privilege/storage/tooling/
+module/workflow inputs preserve their original bytes.
+
+Console/command tests cross-compiled FreeBSD/amd64/v1 with pinned Go 1.27.1 and
+cgo disabled; checksummed artifacts were removed without execution. Limited
+labelled in-app synthetic light inspection at 1280 pixels showed exact pool values,
+33.3%/66.7% ratios and 333/667 coordinates; client/scroll widths were both 1280.
+Keyboard Enter reached the original GUID/generation on Pools and retained comparison
+focus, with no warning/error console entries observed. Browser engine/version was
+not captured; this is not Safari/Firefox/manual accessibility or resource acceptance.
+Screenshot is private/checksummed. Owned tab/preview closed/stopped, build artifacts
+removed and 172 owned records stopped with verified teardown. Final receipt-only
+review reruns required baseline checks; deep reuse requires unchanged behavioral
+inputs from the original implementation source.
