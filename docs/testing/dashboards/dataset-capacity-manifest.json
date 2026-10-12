@@ -1,0 +1,154 @@
+{
+  "schema": 1,
+  "date": "2026-10-12",
+  "owning_issue": "https://github.com/gonz0w/horvium/issues/352",
+  "parent_gate": "https://github.com/gonz0w/horvium/issues/290",
+  "qualification_scope": "portable bounded dataset-page Used implementation only",
+  "source_commit": "37f81f7b8db83f519d8a06cb18ffbc5ad5fa2e02",
+  "base_commit": "a5e2668546e7a78579df8520653c0a623b9406ee",
+  "design_approval": {
+    "pr": 349,
+    "merge_commit": "4713aef87cca23183b949ba2ed5a56130b3b3186"
+  },
+  "foundation": {
+    "pr": 351,
+    "merge_commit": "a5e2668546e7a78579df8520653c0a623b9406ee"
+  },
+  "requirements": [
+    "DASH-REQ-001",
+    "DASH-REQ-002",
+    "DASH-REQ-003",
+    "DASH-REQ-004",
+    "DASH-REQ-005",
+    "DASH-REQ-006",
+    "DASH-REQ-007"
+  ],
+  "review": {
+    "title": "feat(console): compare bounded current dataset Used",
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/console",
+        "./internal/service"
+      ],
+      "native_review_required": false
+    },
+    "record": ".tools/review-runs/cp8d41kv/result.json",
+    "record_sha256": "fb4078c4adf35aa31f0bd009efc293944fe3df15791cd28b39663a886d2af47a",
+    "checks_log_sha256": "6e3154c80a3121dc8e83a6aecff487310f7830772cd7fd0dfebce6477dc7a87c",
+    "baseline_checks_passed": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "tooling_tests": 258,
+    "race_packages": [
+      "./cmd/horvium",
+      "./internal/console",
+      "./internal/service"
+    ],
+    "fuzz_targets": [],
+    "deep_log_sha256": "8c65bcffd325075ef347c971d46eec26c3d5f67402cafaa3a6073670f209fbeb",
+    "input_digest": "c032581e286dc1ca4a7c4b5362ebe6b5d9d927b4afce70c3fa6a56cafbc77d15",
+    "elapsed_seconds": 43.001
+  },
+  "failing_first": {
+    "log_sha256": "71183fa64c7a538cb29cf390d04710f9f64fc62d48b0dfb9c8454f59b2029e74",
+    "observed_failure": "missing comparisons before implementation",
+    "fixture_validation_failures": 0
+  },
+  "behavioral_tests": [
+    "TestDatasetCapacityExactAccounting",
+    "TestDatasetCapacityPageScaleAndBound",
+    "TestDatasetCapacityZeroEmptyAndFreshness",
+    "TestDatasetCapacityGenerationAndDenials",
+    "TestDatasetCapacityNonSuccessProjection"
+  ],
+  "freebsd_cross_build": {
+    "source_commit": "37f81f7b8db83f519d8a06cb18ffbc5ad5fa2e02",
+    "target": "FreeBSD/amd64/v1",
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "cgo_enabled": false,
+    "artifacts": [
+      {
+        "package": "./internal/console",
+        "bytes": 16546699,
+        "sha256": "a31e3e4a47cd570ab65aaf5b60586992d9378597d6751cf1abb1be3a231d0dd7",
+        "executed": false,
+        "removed": true
+      },
+      {
+        "package": "./cmd/horvium",
+        "bytes": 17997741,
+        "sha256": "919e9fb002ab17b0879c4ff3880e283e69f521e03d7159dceb4f32e8616c7f8c",
+        "executed": false,
+        "removed": true
+      }
+    ],
+    "native_execution": false
+  },
+  "supplementary_browser": {
+    "candidate_source": "37f81f7b8db83f519d8a06cb18ffbc5ad5fa2e02",
+    "browser": "Codex in-app browser; engine/version not captured",
+    "fixture": "existing explicitly labelled synthetic TestBrowserPreview",
+    "viewport_width": 1280,
+    "appearance": "light",
+    "document_client_width": 1280,
+    "document_scroll_width": 1280,
+    "scale_bytes": "123",
+    "observed_ratios": [
+      "8.1%",
+      "100.0%"
+    ],
+    "observed_svg_widths": [
+      81,
+      1000
+    ],
+    "keyboard_drill_down": "original GUID/generation preserved; focus returned to comparison link",
+    "console_warning_error_entries_observed": 0,
+    "screenshot_sha256": "2048d69d54db12016b7889302edead2a2e9864387d003048e1e2f7ccaa516b24",
+    "owned_tab_closed": true,
+    "qualification": false
+  },
+  "teardown": {
+    "owned_records_stopped_verified": 164,
+    "status_log_sha256": "78663f926e18da00b7a2b0435b1d853a889a7de3db3d4e918d3413b1236251e1",
+    "preview_stopped": true,
+    "cross_build_artifacts_removed": true
+  },
+  "preservation": {
+    "historical_manifests_byte_identical": 135,
+    "collector_cache_native_privilege_storage_tooling_modules_and_workflows_unchanged": true
+  },
+  "bounds": {
+    "comparison_rows": 20,
+    "page_default": 100,
+    "page_max": 500,
+    "scale_scope": "largest individual Used on the same detached table page, including rows beyond the 20 comparisons",
+    "additional_native_queries": 0,
+    "additional_browser_timers": 0,
+    "durable_history_samples": 0,
+    "new_runtime_dependencies": 0
+  },
+  "acceptance": {
+    "portable_slice": true,
+    "dashboard_delivery": false,
+    "native_execution": false,
+    "native_resource_performance": false,
+    "safari_firefox_manual_accessibility": false,
+    "hardware_commercial_scale": false,
+    "runtime_writes": false
+  },
+  "limits": [
+    "Overview remains a separate implementation slice.",
+    "uPlot, operator history and new telemetry are absent.",
+    "Dataset accounting is independent and can overlap; page scale is not pool usage, utilization or quota headroom.",
+    "In-app preview is not the required browser/accessibility matrix or measured browser performance.",
+    "Cross-compilation did not execute FreeBSD behavior.",
+    "Earlier startup deadline remains unexplained; full native lifecycle gates 305/139 remain open.",
+    "Existing failed/skipped historical evidence retains its original scope."
+  ]
+}

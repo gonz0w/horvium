@@ -58,3 +58,35 @@ func poolComparisons(p observation.Page[inventory.Pool], q observation.Query) *p
 	}
 	return c
 }
+
+type datasetComparison struct {
+	Name, GUID, URL string
+	Used            capacityMeasure
+}
+type datasetCapacity struct {
+	Rows              []datasetComparison
+	Start, End, Total int
+	Maximum           uint64
+}
+
+// Used values can overlap across datasets. This scale is the largest individual
+// Used on this detached page, not a sum, pool utilization or quota headroom.
+func datasetComparisons(p observation.Page[inventory.Dataset], q observation.Query) *datasetCapacity {
+	if p.Freshness.Status != inventory.OK {
+		return nil
+	}
+	n := min(len(p.Rows), maxCapacityRows)
+	c := &datasetCapacity{Rows: make([]datasetComparison, n), Total: p.Total}
+	for _, d := range p.Rows {
+		c.Maximum = max(c.Maximum, d.Used)
+	}
+	if n > 0 {
+		c.Start = p.Offset + 1
+		c.End = p.Offset + n
+	}
+	q.Generation = p.Generation
+	for i, d := range p.Rows[:n] {
+		c.Rows[i] = datasetComparison{Name: d.Name, GUID: d.GUID, URL: queryURL("/storage/datasets", q, d.GUID), Used: capacityRatio(d.Used, c.Maximum)}
+	}
+	return c
+}

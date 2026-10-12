@@ -47,6 +47,7 @@ type view struct {
 	Detail                                                                                        *row
 	Overview                                                                                      *observation.Overview
 	Capacity                                                                                      *poolCapacity
+	DatasetCapacity                                                                               *datasetCapacity
 	State                                                                                         observation.State
 	Freshness                                                                                     observation.Freshness
 }
@@ -373,6 +374,7 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		case "/storage/datasets":
 			p, err := a.manager.Datasets(r.Context(), q)
 			e = err
+			v.DatasetCapacity = datasetComparisons(p, q)
 			v.Generation = p.Generation
 			v.Total = p.Total
 			v.Freshness = p.Freshness

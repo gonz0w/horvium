@@ -186,6 +186,7 @@
 <a class="reload" href="{{.Path}}">Current generation</a>
 </form>
 {{if .Capacity}}{{template "capacity" .}}{{end}}
+{{if .DatasetCapacity}}{{template "dataset-capacity" .}}{{end}}
 <div class="resource-layout">
 <section class="resource-list">
 <div class="table-scroll">
@@ -235,5 +236,26 @@ Section read {{time .Freshness.FinishedAt}}; last successful read {{time .Freshn
 <rect class="capacity-free" x="0" y="20" width="{{.Free.Width}}" height="16"/>
 </svg>
 <p class="capacity-values"><span>Allocated · approximately {{.Allocated.Percent}}</span><span>Free · approximately {{.Free.Percent}}</span></p>{{end}}</div>
+</li>{{end}}</ol>
+</section>{{end}}
+
+{{define "dataset-capacity"}}<section class="capacity-section" aria-labelledby="capacity-title">
+<div class="section-heading">
+<h2 id="capacity-title">Dataset Used comparisons</h2>
+<span class="badge">{{status .Freshness}}</span>
+</div>
+<p class="muted">Dataset accounting can overlap; Used, Available and Referenced are independent values. These comparisons do not measure pool utilization or quota headroom. Approximate percentages compare Used with a local scale, rounded to 0.1%; exact byte values are in the table below. These are current observations, not capacity history.</p>
+<p class="capacity-coverage">{{if .DatasetCapacity.Rows}}Showing {{.DatasetCapacity.Start}}–{{.DatasetCapacity.End}} of {{.DatasetCapacity.Total}} matching datasets (up to 20 comparisons per page).{{else}}No comparisons on this page · {{.DatasetCapacity.Total}} matching datasets.{{end}}
+Observation <code>{{.Generation}}</code> · Filter: {{if .Filter}}{{.Filter}}{{else}}None{{end}} · Sort: {{.Sort}} · {{if same .Desc "true"}}Descending{{else}}Ascending{{end}}.
+Section read {{time .Freshness.FinishedAt}}; last successful read {{time .Freshness.LastSuccessfulAt}}.</p>
+{{if .DatasetCapacity.Rows}}<p class="muted">Scale: largest Used on this page · {{bytes .DatasetCapacity.Maximum}}. The scale includes table rows beyond the comparisons and may change with filtering, ordering or pagination.</p>
+{{if .DatasetCapacity.Maximum}}{{else}}<p class="muted">Scale unavailable: every Used value on this page is zero.</p>{{end}}{{end}}
+<ol class="capacity-list">{{range .DatasetCapacity.Rows}}<li>
+<a id="capacity-{{.GUID}}" href="{{.URL}}" hx-get="{{.URL}}" hx-target="#workspace" hx-swap="outerHTML" hx-push-url="true">{{.Name}}</a>
+<div>{{if $.DatasetCapacity.Maximum}}<svg class="capacity-plot capacity-single" viewBox="0 0 1000 16" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+<rect class="capacity-track" x="0" y="0" width="1000" height="16"/>
+<rect class="capacity-used" x="0" y="0" width="{{.Used.Width}}" height="16"/>
+</svg>
+<p class="capacity-values"><span>Used · approximately {{.Used.Percent}} of page scale</span></p>{{else}}<p class="muted">Used · 0 B; no nonzero page scale.</p>{{end}}</div>
 </li>{{end}}</ol>
 </section>{{end}}
