@@ -35,6 +35,9 @@ func (c *observedDeadlineContext) Err() error {
 }
 
 type originalDeadlineError struct{ error }
+
+func (e *originalDeadlineError) Unwrap() error { return e.error }
+
 type cyclicDeadlineError struct{}
 
 func (e *cyclicDeadlineError) Error() string { return "private raw error" }
@@ -211,4 +214,58 @@ func TestDeadlineProvenanceBoundsAndBranches(t *testing.T) {
 			t.Fatal(got)
 		}
 	})
+}
+
+// Unknown custom classification must not be treated as a proven nondeadline.
+type customDeadlineClassifier struct{}
+
+func (*customDeadlineClassifier) Error() string        { return "private classification" }
+func (*customDeadlineClassifier) Is(target error) bool { return target == context.DeadlineExceeded }
+
+type oversizedDeadlineJoin struct{}
+
+func (*oversizedDeadlineJoin) Error() string   { return "private join" }
+func (*oversizedDeadlineJoin) Unwrap() []error { return make([]error, 49) }
+
+func TestDeadlineProvenanceMalformedEvidence(t *testing.T) {
+	_, _, parent, child := deadlineContexts()
+	cases := []struct {
+		name string
+		err  error
+	}{
+		{"typed-nil", (*cyclicDeadlineError)(nil)},
+		{"custom-classifier", &customDeadlineClassifier{}},
+		{"oversized-join", &oversizedDeadlineJoin{}},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := ExtractDeadlineProvenance(tc.err)
+			if got.Status != "invalid" || bytes.Contains(EncodeDeadlineProvenance(tc.err), []byte("private")) {
+				t.Fatalf("unknown evidence accepted: %+v", got)
+			}
+		})
+	}
+	t.Run("repeated-annotation", func(t *testing.T) {
+		err := annotateDeadline(child, parent, context.DeadlineExceeded)
+		if got := ExtractDeadlineProvenance(errors.Join(err, err)); got.Status != "invalid" {
+			t.Fatalf("duplicate annotation accepted: %+v", got)
+		}
+	})
+	for _, tc := range []struct {
+		name      string
+		site      DeadlineSite
+		phase     DeadlinePhase
+		allowance time.Duration
+	}{
+		{"wrong-allowance", DeadlineReview, DeadlineInspect, time.Second},
+		{"wrong-phase", DeadlineReview, DeadlineCapture, 90 * time.Second},
+		{"child-guard", DeadlineReview, DeadlineGuard, 0},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			got := ExtractDeadlineProvenance(AnnotateDeadlineReturn(child, parent, context.DeadlineExceeded, tc.site, tc.phase, tc.allowance))
+			if got.Status != "invalid" {
+				t.Fatalf("unreviewed scope accepted: %+v", got)
+			}
+		})
+	}
 }
