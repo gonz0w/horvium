@@ -75,3 +75,21 @@ The [candidate receipt](deadline-provenance-candidate-manifest.json) records the
 signed red/green source, mandatory actual-title review, immutable prior receipts
 and owned-process teardown. Final receipt-only changes require fresh baseline
 and verified exact-input deep reuse.
+
+## Recorded candidate
+
+Signed implementation `d61015cffc205047b9ccc893a7712fa177ea3926`, merge base `5599bd241c711c16a350ef0257f129387e420cfb`,
+passed ten focused tests. Signed red `acc3f71b8b96cee186df067f18f8b8176ac8b981` reproduces
+one missing-CLI failure and 25 absent-verification errors across nine test methods;
+its disposable signed archive was removed. Three supplementary CLI cases verified
+the real clean signed source and pinned compiler file, with a disposable synthetic
+artifact never executed. Complete, incomplete and invalid inputs returned 0, 1
+and 2 respectively. Both CLI fixtures and red archive were removed.
+
+The actual-title `make review` passed 249 tooling tests, eleven portable race
+packages and 54 compiler-listed fuzz targets under the shared-tooling fallback.
+All 25 prior receipts and existing product/fixture/consumer/qualification-runner
+sources remain byte-identical. The receipt records exact source and verified
+supervisor teardown. Final receipt-only changes require fresh baseline and
+verified exact-input deep reuse. Native build/fixture/runner integration and actual
+diagnostic execution remain pending.
