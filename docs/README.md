@@ -264,3 +264,6 @@
 
 - [Generation-bound Overview pool comparisons](testing/dashboards/overview-capacity.md):
   bounded first-by-name coverage, exact table and intervening-eviction denial.
+
+- [Current-dashboard resource Test Design supplement](design/dashboards/resource-qualification.md):
+  proposed five-case workload and candidate receipt rules; execution remains separate.

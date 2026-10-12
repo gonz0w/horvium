@@ -79,6 +79,10 @@ based solely on one successful image or console silence.
 
 ## Resource procedure and missing instrumentation
 
+The [current-dashboard resource supplement](resource-qualification.md) is a
+proposed refinement of stage-A workload coverage and strict receipts. It awaits
+maintainer review; no new workload execution or acceptance follows from the proposal.
+
 A reruns affected console/cache checks plus fresh assembled service measurements
 for its candidate using existing small/large native resource procedure on both
 pinned disposable FreeBSD/amd64 releases before dashboard qualification. Preserve
