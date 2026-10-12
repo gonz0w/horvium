@@ -31,3 +31,8 @@ M2 mechanism decision accepted by maintainer merge of
 `02a995e5681f38b4a40141402dd2d0a9f0244933`:
 
 - [0009 Property executor supervision and recovery provenance](0009-property-executor-recovery-mechanism.md)
+
+Proposed, awaiting maintainer adoption (no implementation/qualification claim):
+
+- [0010 Progressive dashboard charts](0010-progressive-dashboard-charts.md):
+  current observations first; separately bounded uPlot fixture and history gates.

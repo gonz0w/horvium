@@ -15,6 +15,13 @@ Live dashboard design pickup, priority and dependencies are in [issue #166](http
 and the [roadmap index](github-roadmap-index.md). The design obligations below
 remain authoritative planning material, not a second progress checklist.
 
+The first [Overview/Capacity review packet](../design/dashboards/PRD.md) inventories
+[current public facts](../design/dashboards/inventory.md), proposes the
+[presentation contract](../design/dashboards/EDD.md), [Test Design](../design/dashboards/TDD.md)
+and [uPlot pin/integration ADR](../adr/0010-progressive-dashboard-charts.md). It
+is not approved implementation or dashboard qualification. Current comparisons
+precede a labelled synthetic chart fixture; real history needs separate review.
+
 ## Operator story
 
 Each view answers one question and leads to supporting evidence:
