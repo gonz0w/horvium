@@ -31,7 +31,10 @@ validates actual portable console pages against declared inventory. The [offline
 adds strict candidate/release/workload accounting with synthetic transcript tests.
 The [prepared workload/receipt adapter](../testing/dashboards/workload-receipt-adapter.md)
 binds those portable components and retains actual body sizes and strict phase JSON.
-It is inactive in the runner; native/host bindings and fresh measurements remain pending. Historical receipts and support claims are unchanged. Dashboard browser/accessibility,
+The [native fixture bindings](../testing/dashboards/native-fixture-bindings.md) now use
+the prepared five-case workload in all four test-only modes. The existing performance
+entry points are gated pending full independent host receipt bindings; no native
+execution or fresh resource measurements are claimed. Historical receipts and support claims are unchanged. Dashboard browser/accessibility,
 fresh native service/performance, uPlot behavior and identity-bound history remain
 unqualified. Inspected upstream hashes
 and compressed input sizes in [ADR 0010](../adr/0010-progressive-dashboard-charts.md)

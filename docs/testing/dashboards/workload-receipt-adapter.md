@@ -116,8 +116,9 @@ Actions workflow or operator storage is introduced. Historical source-bound rece
 remain unchanged. Removing these test-only helpers and sample metadata reverses
 the adapter without changing product behavior.
 
-Actual native fixture bindings and complete independent host-runner receipts must
-be reviewed before both-release resource execution. Native observations may fail
+The [native fixture binding slice](native-fixture-bindings.md) follows this
+portable adapter. Complete independent host-runner receipts must still be reviewed
+before both-release resource execution. Native observations may fail
 if the constant-inventory assumption does not hold; retain that failure rather
 than disabling a check. #131/#289/#290, lifecycle #305/#139 and historical startup
 uncertainty, browser/manual, continuity, hardware/commercial and release gates

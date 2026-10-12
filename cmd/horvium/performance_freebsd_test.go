@@ -17,7 +17,6 @@ import (
 	"os/exec"
 	"os/signal"
 	"path/filepath"
-	"slices"
 	"strconv"
 	"sync"
 	"syscall"
@@ -241,48 +240,42 @@ func (s *performanceSession) ready(t *testing.T, count int, previous string) str
 	})
 	return generation
 }
-func (s *performanceSession) load(t *testing.T, count int) ([]time.Duration, error) {
+
+// Publish sanitized partial fixture observations even on a failed phase. These
+// cannot qualify the full resource contract or replace independently bound host records.
+func measureDashboardFixture(t *testing.T, p *performancePair, prepared *dashboardPreparedFixture) dashboardWireQuantiles {
 	t.Helper()
-	return s.loadExpected(t, count, func(offset int) string { return fmt.Sprintf("vault/dataset-%06d", offset) })
-}
-func (s *performanceSession) loadExpected(t *testing.T, count int, expectedRow func(int) string) ([]time.Duration, error) {
-	t.Helper()
-	latencies := make([]time.Duration, 1000)
-	failures := make(chan error, 10)
-	var wg sync.WaitGroup
-	start := make(chan struct{})
-	for worker := 0; worker < 10; worker++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			<-start
-			for i := worker * 100; i < (worker+1)*100; i++ {
-				offset := (i * 100) % count
-				started := time.Now()
-				r, e := s.http.Get(s.base + fmt.Sprintf("/storage/datasets?sort=name&offset=%d&limit=100", offset))
-				if e != nil {
-					failures <- fmt.Errorf("fixture page transport failure")
-					return
-				}
-				b, e := io.ReadAll(io.LimitReader(r.Body, 1<<20))
-				r.Body.Close()
-				latencies[i] = time.Since(started)
-				expected := expectedRow(offset)
-				if e != nil || r.StatusCode != 200 || !bytes.Contains(b, []byte(expected)) {
-					failures <- fmt.Errorf("fixture page contract failure")
-					return
-				}
-			}
-		}()
+	previous := p.session.overview(t).Generation // controller read before timed phases
+	result, err := dashboardMeasureWorkload(func(phase string) (*dashboardPhaseReceipt, []dashboardSample, error) {
+		return prepared.load(p.session.http, p.session.base, phase)
+	}, func() error {
+		ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+		defer cancel()
+		generation, err := dashboardReplaceGeneration(ctx, p.session.http, p.session.base, p.session.csrf, prepared.count, previous)
+		if err == nil {
+			previous = generation
+		}
+		return err
+	})
+	record := struct {
+		Mode           string                    `json:"mode"`
+		Fixture        dashboardFixtureReceipt   `json:"fixture"`
+		Phases         dashboardMeasuredWorkload `json:"phases"`
+		InitialRaw     []dashboardWireSample     `json:"initial_raw"`
+		ReplacementRaw []dashboardWireSample     `json:"replacement_raw"`
+		WorkloadPassed bool                      `json:"workload_passed"`
+	}{prepared.mode, prepared.fixture, result, dashboardRawWire(result.InitialRaw), dashboardRawWire(result.ReplacementRaw), err == nil}
+	encoded, e := json.Marshal(record)
+	if e != nil {
+		t.Fatal("dashboard workload observation encoding")
 	}
-	close(start)
-	wg.Wait()
-	close(failures)
-	for e := range failures {
-		return nil, e
+	t.Log("DASHBOARD_WORKLOAD " + string(encoded))
+	if err != nil {
+		t.Fatal(err)
 	}
-	return latencies, nil
+	return *result.Initial.Summary["all"].SuccessLatency
 }
+
 func performancePause(t *testing.T, d time.Duration, label string) {
 	t.Helper()
 	started := time.Now()
@@ -430,25 +423,14 @@ func TestNativePerformanceBudgets(t *testing.T) {
 					t.Fatal(e)
 				}
 			}
-			latencies, e := p.session.load(t, count)
+			prepared, e := newDashboardPreparedFixture("synthetic-"+strconv.Itoa(count), performanceSnapshot(count, 0), nil)
 			if e != nil {
 				t.Fatal(e)
 			}
-			// Replace generations while the same ten-reader workload is active.
-			done := make(chan error, 1)
-			go func() { _, e := p.session.load(t, count); done <- e }()
-			previous := p.session.overview(t).Generation
-			for iteration := 0; iteration < 3; iteration++ {
-				p.session.refresh(t)
-				previous = p.session.ready(t, count, previous)
-			}
-			if e := <-done; e != nil {
-				t.Fatal(e)
-			}
+			latency := measureDashboardFixture(t, p, prepared)
 			sampled, peak, samples, gap := p.stop(t)
 			budgetPeak := max(sampled, peak)
-			slices.Sort(latencies)
-			p50, p95, p99 := latencies[499], latencies[949], latencies[989]
+			p50, p95, p99 := time.Duration(latency.P50NS), time.Duration(latency.P95NS), time.Duration(latency.P99NS)
 			record := map[string]any{"datasets": count, "clients": 10, "session_count": 1, "requests": 1000, "replacement_requests": 1000, "replacements": 3, "warmup_seconds": 60, "idle_seconds": 0, "idle_cpu_percent_one_core": idle, "sampled_combined_peak_rss_bytes": sampled, "conservative_combined_high_water_rss_bytes": peak, "budget_peak_rss_bytes": budgetPeak, "rss_samples": samples, "max_sample_gap_ms": float64(gap.Microseconds()) / 1000, "p50_ms": float64(p50.Microseconds()) / 1000, "p95_ms": float64(p95.Microseconds()) / 1000, "p99_ms": float64(p99.Microseconds()) / 1000}
 			if count == 100 {
 				record["idle_seconds"] = 300

@@ -5,6 +5,12 @@ if [ "${HORVIUM_NATIVE_VM:-}" != 1 ] || [ "${HORVIUM_PERF_VM:-}" != 1 ] || [ "$(
     echo 'Requires explicit disposable FreeBSD performance VM opt-in and root' >&2
     exit 1
 fi
+# Fail before build or storage execution until full host receipt binding is reviewed.
+require_dashboard_bindings() {
+    echo 'Requires reviewed independent dashboard resource/control/provenance/teardown bindings before execution' >&2
+    return 1
+}
+require_dashboard_bindings
 root=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$root"
 export GOTOOLCHAIN=local GOENV=off CGO_ENABLED=0

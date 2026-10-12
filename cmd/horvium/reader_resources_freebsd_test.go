@@ -6,20 +6,19 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"html"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"slices"
 	"strconv"
 	"strings"
 	"syscall"
 	"testing"
 	"time"
 
+	"github.com/gonz0w/horvium/internal/host/freebsd"
 	"github.com/gonz0w/horvium/internal/inventory"
 	"github.com/gonz0w/horvium/internal/observation"
 )
@@ -181,7 +180,6 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 		t.Run(mode, func(t *testing.T) {
 			count, owned := 10000, 0
 			var expected ownedFixture
-			expectedRow := func(offset int) string { return fmt.Sprintf("fixture/dataset-%06d", offset) }
 			if mode == "native-small" {
 				expected = nativeStorageFixture(t)
 				// Root + existing data + 98 fresh, unmounted filesystems = 100 owned.
@@ -194,7 +192,6 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 				}
 				names := strings.Fields(string(readerFixtureCommand(t, "/sbin/zfs", "list", "-H", "-t", "filesystem", "-o", "name", "-s", "name")))
 				count = len(names)
-				expectedRow = func(offset int) string { return html.EscapeString(names[offset]) }
 			}
 			c, path, token := nativeRuntimeConfig(t)
 			c.IntervalSeconds, c.TimeoutSeconds = 30, 45
@@ -238,7 +235,7 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 			t.Cleanup(monitor.close)
 			p := &performancePair{config: c, path: path, helper: helper, management: management, monitor: monitor}
 			p.session = newPerformanceSession(t, c, token)
-			previous := p.session.ready(t, count, "")
+			p.session.ready(t, count, "")
 			if owned != 0 {
 				r, e := p.session.http.Get(p.session.base + "/api/datasets?filter=" + url.QueryEscape(expected.Pool+"/data"))
 				if e != nil {
@@ -269,19 +266,27 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 					t.Fatal("native reader idle CPU budget")
 				}
 			}
-			latencies, err := p.session.loadExpected(t, count, expectedRow)
-			if err != nil {
-				t.Fatal(err)
-			}
-			done := make(chan error, 1)
-			go func() { _, e := p.session.loadExpected(t, count, expectedRow); done <- e }()
-			for i := 0; i < 3; i++ {
-				p.session.refresh(t)
-				previous = p.session.ready(t, count, previous)
-			}
-			if e := <-done; e != nil {
+			// Independently collect original native facts after warm-up/idle.
+			// Do not obtain expectations from management responses or refresh them.
+			source, e := freebsd.New(c.InventoryLimits())
+			if e != nil {
 				t.Fatal(e)
 			}
+			ctx, cancel := context.WithTimeout(context.Background(), 45*time.Second)
+			original := source.Collect(ctx)
+			cancel()
+			var ownedTSV []byte
+			if mode == "native-small" {
+				ownedTSV = readerFixtureCommand(t, "/sbin/zfs", "list", "-H", "-p", "-t", "filesystem", "-o", "name,guid,used,available,referenced", "-r", expected.Pool)
+			}
+			prepared, e := dashboardPrepareNativeInputs(mode, original, ownedTSV)
+			if e != nil {
+				t.Fatal(e)
+			}
+			if prepared.count != count || prepared.fixture.OwnedDatasets != owned {
+				t.Fatal("original native fixture scope changed")
+			}
+			latency := measureDashboardFixture(t, p, prepared)
 			sampled, samples, gap := monitor.finish(t)
 			var highWater uint64
 			if mode == "native-small" {
@@ -324,15 +329,14 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 			if mode == "native-small" {
 				t.Log("NATIVE_READER_CRASH captured_native_command=pass subtree_exit=pass stale_retention=pass recovery=pass boot_state=unchanged")
 			}
-			slices.Sort(latencies)
 			budget := uint64(256 << 20)
 			if mode == "native-small" {
 				budget = 128 << 20
 			}
-			if max(sampled, highWater) > budget || mode == "projection-10000" && latencies[949] >= 250*time.Millisecond {
+			if max(sampled, highWater) > budget || mode == "projection-10000" && time.Duration(latency.P95NS) >= 250*time.Millisecond {
 				t.Fatal("native reader resource/latency budget")
 			}
-			record := map[string]any{"mode": mode, "datasets": count, "owned_datasets": owned, "clients": 10, "requests": 1000, "replacement_requests": 1000, "replacements": 3, "warmup_seconds": 60, "idle_seconds": 0, "idle_cpu_percent_one_core": idle, "sampled_combined_peak_rss_bytes": sampled, "conservative_combined_high_water_rss_bytes": highWater, "budget_peak_rss_bytes": max(sampled, highWater), "rss_samples": samples, "max_sample_gap_ms": float64(gap.Microseconds()) / 1000, "p50_ms": float64(latencies[499].Microseconds()) / 1000, "p95_ms": float64(latencies[949].Microseconds()) / 1000, "p99_ms": float64(latencies[989].Microseconds()) / 1000}
+			record := map[string]any{"mode": mode, "datasets": count, "owned_datasets": owned, "clients": 10, "requests": 1000, "replacement_requests": 1000, "replacements": 3, "warmup_seconds": 60, "idle_seconds": 0, "idle_cpu_percent_one_core": idle, "sampled_combined_peak_rss_bytes": sampled, "conservative_combined_high_water_rss_bytes": highWater, "budget_peak_rss_bytes": max(sampled, highWater), "rss_samples": samples, "max_sample_gap_ms": float64(gap.Microseconds()) / 1000, "p50_ms": float64(time.Duration(latency.P50NS).Microseconds()) / 1000, "p95_ms": float64(time.Duration(latency.P95NS).Microseconds()) / 1000, "p99_ms": float64(time.Duration(latency.P99NS).Microseconds()) / 1000}
 			if mode == "native-small" {
 				record["idle_seconds"] = 300
 			}
