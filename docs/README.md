@@ -11,6 +11,9 @@
 - [Dated migration verification](roadmap/github-migration.md)
 - [Proposed second release security roadmap](roadmap/v2-security.md)
 - [uPlot dashboard roadmap and build pickup](roadmap/dashboards.md)
+- Overview/Capacity packet for review: [public facts](design/dashboards/inventory.md),
+  [PRD](design/dashboards/PRD.md), [EDD](design/dashboards/EDD.md),
+  [Test Design](design/dashboards/TDD.md), [proposed ADR](adr/0010-progressive-dashboard-charts.md)
 - [UI baseline](ui/baseline.md)
 - [Compatibility matrix](compatibility/matrix.md)
 - [Ports distribution plan](../packaging/ports/README.md)

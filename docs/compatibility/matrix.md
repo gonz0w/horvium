@@ -15,6 +15,12 @@ The [uPlot dashboard roadmap](../roadmap/dashboards.md) is planned direction onl
 No uPlot asset is introduced or qualified by this documentation. Native metrics,
 history, browser accessibility, chart performance and drill-down evidence remain
 required before those views gain compatibility claims; current evidence is unchanged.
+The [Overview/Capacity packet](../design/dashboards/PRD.md) and
+[public fact inventory](../design/dashboards/inventory.md) are review proposals.
+Current comparisons, uPlot CSP/lifecycle/browser/resource behavior and later
+identity-bound history are unimplemented/unqualified. Inspected upstream hashes
+and compressed input sizes in [ADR 0010](../adr/0010-progressive-dashboard-charts.md)
+are provenance only; no runtime asset, new native result or support claim follows.
 
 The accepted [property runtime recovery/launch contract](../milestones/M2/property-runtime.md)
 defines the remaining path to an assembled writer on the two pinned disposable
