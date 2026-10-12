@@ -65,7 +65,7 @@ crash recovery, provenance or teardown; those existing requirements remain.
 Run `make test-focus PKG=./cmd/horvium TEST='^TestDashboard'` for development.
 Final signed review runs `make check lint test secrets` and affected-package
 race/fuzz checks via `make review`; a FreeBSD/amd64 test cross-build verifies
-compilation only. The source-bound receipt is added after actual review execution.
+compilation only. The source-bound [receipt](resource-request-driver-manifest.json) records actual review execution.
 No VM, browser, helper process, management service or operator storage is needed.
 Owned test sessions still require verified teardown.
 
@@ -83,3 +83,21 @@ manual/browser/accessibility and file-daemon continuity remain independent.
 Runtime writes remain disabled. This adds no hardware/commercial support claim.
 Rollback removes the two test files and this documentation; product/native fixture
 behavior and old receipt validation are unchanged.
+
+## Recorded portable candidate
+
+[Receipt](resource-request-driver-manifest.json): signed implementation `0d632b0b74e7deba5f3db7f75032ec18524d0bd3`,
+merged base `82cce76f85fed1640388ea1c77c954171ba5f1e8`, actual title
+`test(dashboards): add the portable resource request driver`. Required check/lint/test/secrets
+passed, including 258 tooling tests and ordinary Go tests. Nine behavioral parents
+passed, followed by fresh affected-package race checking for `./cmd/horvium`;
+there are no portable fuzz targets in that package. The conservative plan marks
+native review required; this inactive portable slice does not satisfy that gate.
+
+FreeBSD/amd64/v1 test compilation passed with pinned Go 1.27.1 and cgo disabled;
+the checksummed artifact was removed without execution. All 137 historical
+manifests and runtime/native fixtures/legacy validator/tooling/module/workflow
+inputs preserve their original bytes. 181 owned records were stopped with verified
+teardown. No VM, browser, native helper/management pair or host service was started.
+Final receipt-only review reruns the baseline; deep reuse must match the original
+implementation inputs and completed supervisor evidence.

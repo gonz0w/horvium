@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "date": "2026-10-12",
+  "owning_issue": "https://github.com/gonz0w/horvium/issues/358",
+  "parent_gate": "https://github.com/gonz0w/horvium/issues/131",
+  "qualification_scope": "portable inactive resource request driver only",
+  "source_commit": "0d632b0b74e7deba5f3db7f75032ec18524d0bd3",
+  "base_commit": "82cce76f85fed1640388ea1c77c954171ba5f1e8",
+  "design_approval": {
+    "pr": 357,
+    "merge_commit": "82cce76f85fed1640388ea1c77c954171ba5f1e8"
+  },
+  "requirements": [
+    "DASH-REQ-006",
+    "DASH-PERF-001"
+  ],
+  "review": {
+    "title": "test(dashboards): add the portable resource request driver",
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium"
+      ],
+      "native_review_required": true
+    },
+    "record": ".tools/review-runs/opr9cgup/result.json",
+    "record_sha256": "c772384a9d5d02208cc251668a2fa08e30f414c140c4348ea07b561814c3c00c",
+    "checks_log_sha256": "1fbce61bd514d25a91300095679979489baf3f631b274cd481db619504044917",
+    "baseline_checks_passed": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "tooling_tests": 258,
+    "race_packages": [
+      "./cmd/horvium"
+    ],
+    "fuzz_targets": [],
+    "deep_log_sha256": "3693d252e8d3d420bc2420325bd9414e43ff1044b1823228ba042fac5c797232",
+    "input_digest": "8b2d7c81fc4dc5881eca2e152a786eb86c1177a7023578a5fb6779d382da705e",
+    "elapsed_seconds": 64.478
+  },
+  "failing_first": {
+    "log_sha256": "8151261052ebc970dbc3bb57c8a8b469e4b9fcfeb7552c3a7a290950c8c8f3bd",
+    "observed_failure": "undefined dashboard helpers before implementation; owned focused command failed at compilation"
+  },
+  "behavioral_tests": [
+    "TestDashboardWorkloadPlanCoversFiveCases",
+    "TestDashboardBodyRequiresCompleteReadAndClose",
+    "TestDashboardSummaryRecomputesPerCaseAndSeparatesExpiry",
+    "TestDashboardSummaryRejectsIncompleteOrMisclassifiedObservations",
+    "TestDashboardLargeLatencyBudgetCannotHideSlowCase",
+    "TestDashboardDriverRecordsAllRequestsAndRequiresPredicate",
+    "TestDashboardDriverRejectsChangedScheduleAndOriginBeforeHTTP",
+    "TestDashboardDriverUsesTenReadersAndDoesNotFollowLogin",
+    "TestDashboardDriverDoesNotValidateOrQualifyFailedBodies"
+  ],
+  "http_fixture": {
+    "kind": "portable loopback httptest and in-memory HTTP transports",
+    "requests_per_phase": 1000,
+    "workers": 10,
+    "requests_per_worker": 100,
+    "requests_per_case": 200,
+    "cases": [
+      "overview",
+      "pools-default",
+      "pools-maximum",
+      "datasets-default",
+      "datasets-maximum"
+    ],
+    "declared_counts": [
+      1,
+      100,
+      137,
+      10000
+    ],
+    "body_ceiling_bytes": 33554432,
+    "retry_count": 0,
+    "hidden_api_requests": 0,
+    "mandatory_response_predicate": true,
+    "actual_console_html_predicates_implemented": false,
+    "resource_measurements": false
+  },
+  "freebsd_cross_build": {
+    "target": "FreeBSD/amd64/v1",
+    "source_commit": "0d632b0b74e7deba5f3db7f75032ec18524d0bd3",
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "cgo_enabled": false,
+    "bytes": 18111264,
+    "sha256": "515031aa16ae33980953ae573941a369ab970f86b267eea4ee35eab2033747c3",
+    "executed": false,
+    "removed": true
+  },
+  "teardown": {
+    "owned_records_stopped_verified": 181,
+    "status_log_sha256": "15f8d08aad1641415b785006c766934cc250becd7335090e265f6eeeb8b33442",
+    "cross_build_artifact_removed": true,
+    "vm_started": false,
+    "host_service_enabled": false
+  },
+  "preservation": {
+    "historical_manifests_byte_identical": 137,
+    "runtime_native_fixtures_legacy_validator_tooling_modules_and_workflows_unchanged": true
+  },
+  "acceptance": {
+    "portable_slice": true,
+    "native_procedure_activated": false,
+    "dashboard_delivery": false,
+    "native_execution": false,
+    "native_resource_performance": false,
+    "safari_firefox_manual_accessibility": false,
+    "hardware_commercial_scale": false,
+    "runtime_writes": false
+  },
+  "limits": [
+    "Scheduling HTTP fixtures use explicit canned predicates, not original-inventory console HTML validators.",
+    "Candidate/transcript/release resource validation and native workload wiring remain unimplemented.",
+    "No fresh RSS, CPU, warm-up, replacement, service latency, native crash or cap-recovery measurements were made.",
+    "FreeBSD cross-compilation is build evidence only; the artifact was not executed.",
+    "The conservative review plan flags native review; native resource acceptance remains a separate open gate after fixture review.",
+    "Historical failures/skips and the unexplained startup deadline remain; full lifecycle #305/#139 stays open.",
+    "Browser/manual, continuity, hardware/commercial scale and release acceptance are not qualified."
+  ]
+}
