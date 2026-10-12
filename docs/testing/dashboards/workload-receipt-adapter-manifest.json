@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "date": "2026-10-12",
+  "scope": "portable prepared workload and strict phase-receipt adapter only",
+  "source_commit": "0bfc8cf7159fbde4e22f10a81af18813b9b62c9c",
+  "base_commit": "dfa6686fed3936587738ed80ca8b78c738dcf920",
+  "actual_pr_title": "test(dashboards): bind workload samples to receipt phases",
+  "review": {
+    "qualified": true,
+    "mode": "focused",
+    "packages": [
+      "./cmd/horvium"
+    ],
+    "report_sha256": "3ce4815b66ba46f2f37b67d36981fa0209cf1348d1f1ff90b8460cbff4481c19",
+    "checks_log_sha256": "c0eec7320f0729c98a9e6dea74f9502c6bb57a87467779b11dca64208ae9df91",
+    "deep_log_sha256": "a9b759696955e7e155ce601d44ebe5dc5a231e57162e95d59f6889cb4360bed4",
+    "required_check_lint_test_secrets": true,
+    "tooling_tests": 269,
+    "ordinary_go_tests": true,
+    "race_packages": [
+      "./cmd/horvium"
+    ],
+    "fuzz_targets": [],
+    "native_review_required": true
+  },
+  "behavioral_tests": {
+    "parents": 10,
+    "four_mode_preparation": true,
+    "original_typed_values_and_owned_guid_membership": true,
+    "detached_input_and_output": true,
+    "canonical_digest_including_opaque_geom_ids": true,
+    "real_handler_phases": {
+      "transport": "incoming in-memory HTTP requests through actual authenticated console handler",
+      "requests": 2000,
+      "phases": 2,
+      "successful_requests_per_case_per_phase": 200,
+      "hidden_api_requests": 0,
+      "real_native_or_network_measurement": false
+    },
+    "changed_accounting": {
+      "raw_outcomes_retained": 1000,
+      "failed_predicates": 600,
+      "passing_receipt_emitted": false
+    },
+    "actual_safe_expiry": {
+      "source": "real manager eviction response injected into alternating Overview requests; no timing-race claim",
+      "expiry": 100,
+      "overview_success": 100
+    },
+    "go_json_accepted_by_independent_python_phase_validator": true,
+    "first_red": "undefined adapter and absent raw body/predicate fields",
+    "development_failures": "invalid containing timestamp intervals in the digest fixture corrected; preserved private failed logs"
+  },
+  "freebsd_cross_build": {
+    "target": "FreeBSD/amd64/v1",
+    "source_commit": "0bfc8cf7159fbde4e22f10a81af18813b9b62c9c",
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "cgo_enabled": false,
+    "bytes": 18627981,
+    "sha256": "0e34c43a8e44272417d5f565fbda26c288643273b0b43663373b24257a1d549a",
+    "executed": false,
+    "removed": true
+  },
+  "preservation": {
+    "base": "dfa6686fed3936587738ed80ca8b78c738dcf920",
+    "historical_manifests_byte_identical": 140,
+    "runtime_native_fixtures_runner_validators_tooling_modules_workflows_unchanged": true
+  },
+  "teardown": {
+    "owned_records_stopped_verified": 208,
+    "status_log_sha256": "ff64bec26a12606cc1d87182403f0e3cc02918f18f016855eecbc512df5c890e",
+    "vm_started": false,
+    "host_service_enabled": false
+  },
+  "acceptance": {
+    "portable_component": true,
+    "native_fixture_wiring": false,
+    "host_runner_binding": false,
+    "native_execution": false,
+    "native_resource_performance": false,
+    "dashboard_delivery": false,
+    "browser_manual_accessibility": false,
+    "hardware_commercial_scale": false,
+    "runtime_writes": false
+  },
+  "limits": [
+    "Native inputs/witnesses are supplied by the future controller; typed values do not attest to actual native commands.",
+    "Original values are fixed throughout both phases; changed accounting fails and is not rebaselined from HTML.",
+    "The adapter supplies fixture metadata and phase JSON only; measured RSS/CPU/warm-up/replacements/crash/cap controls and candidate/release/host bindings remain.",
+    "In-memory authenticated handler requests and deterministic expiry are portable semantics, not measured FreeBSD performance or native timing races.",
+    "Cross-compilation did not execute FreeBSD; conservative review native flag remains a separate gate.",
+    "All 140 historical manifests and runtime/native/runner/validator/tooling/module/workflow inputs are unchanged.",
+    "Lifecycle 305/139, historical startup uncertainty, browser/manual, continuity, hardware and release gates remain open."
+  ]
+}

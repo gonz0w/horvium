@@ -145,8 +145,9 @@ cleanup. Test fixtures use a boundary pair above the normal budget to preserve i
 separate scope; they are not observed FreeBSD performance values.
 
 Required checks and conservative shared-tool portable review follow the existing
-[local review gate](../../engineering/local-review.md). Native wiring must be a
-subsequent reviewed slice. Only then run a clean assembled candidate sequentially
+[local review gate](../../engineering/local-review.md). The [prepared workload/phase adapter](workload-receipt-adapter.md) checks Go-produced
+phase JSON against this contract with actual portable handler integration. Full
+native fixture and host-runner wiring remain subsequent reviewed slices. Only then run a clean assembled candidate sequentially
 on both pinned disposable releases, retaining failures and verifying teardown.
 Broader #131/#289/#290, native lifecycle #305/#139, browser/manual, continuity,
 hardware/commercial and release gates remain open; runtime writes stay disabled.

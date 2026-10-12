@@ -23,6 +23,10 @@ is floor(index/5) times limit modulo the declared count. Overview has no query.
 Invalid counts, changed plans or non-loopback HTTP origins fail before requests.
 The declared count comes from a fixture, never a hidden request in the timed loop.
 
+The [prepared workload/receipt adapter](workload-receipt-adapter.md) adds complete
+body-size and passed-predicate metadata to raw observations and strict phase JSON;
+native fixture/host wiring remains inactive.
+
 Every scheduled request gets an index, case, HTTP status, outcome and monotonic
 request/read/close duration. Complete bodies up to the existing 32 MiB console
 ceiling are read and closed; limit+1, read/close/transport failures and redirects

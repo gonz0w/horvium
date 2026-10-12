@@ -53,7 +53,9 @@ expectations and validates real portable console responses; it does not activate
 the native suite or produce measurements. The
 [offline receipt validator](../../testing/dashboards/resource-receipt-validator.md)
 checks a distinct development evidence contract using synthetic transcript tests;
-its runner wiring and actual both-release execution remain separate reviews. Leave
+its runner wiring and actual both-release execution remain separate reviews. The
+[prepared controller/phase adapter](../../testing/dashboards/workload-receipt-adapter.md)
+binds original inputs and raw observations without activating native fixtures. Leave
 runtime, source model limits, collectors and file-service separation unchanged.
 Then select one clean signed assembled candidate, actual PR title and pinned Go
 compiler/artifacts for native execution. A failed candidate is retained with its

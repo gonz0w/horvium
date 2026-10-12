@@ -29,7 +29,9 @@ implements scheduling, bounded response reads and per-case timing accounting in
 test-only code. It remains inactive in the native suite; the [HTML-predicate slice](../testing/dashboards/resource-html-predicates.md)
 validates actual portable console pages against declared inventory. The [offline receipt validator](../testing/dashboards/resource-receipt-validator.md)
 adds strict candidate/release/workload accounting with synthetic transcript tests.
-It is inactive in the runner; native wiring and fresh measurements remain pending. Historical receipts and support claims are unchanged. Dashboard browser/accessibility,
+The [prepared workload/receipt adapter](../testing/dashboards/workload-receipt-adapter.md)
+binds those portable components and retains actual body sizes and strict phase JSON.
+It is inactive in the runner; native/host bindings and fresh measurements remain pending. Historical receipts and support claims are unchanged. Dashboard browser/accessibility,
 fresh native service/performance, uPlot behavior and identity-bound history remain
 unqualified. Inspected upstream hashes
 and compressed input sizes in [ADR 0010](../adr/0010-progressive-dashboard-charts.md)
