@@ -50,7 +50,7 @@ introduced. Only explicit tagged fixture enablement can collect diagnostic frame
 
 ## Failing-first and verification
 
-Signed red source `d74e903` compiles deterministic tests against the original
+Signed red source `d74e9035d9c89d314066dda8662507980fb27059` compiles deterministic tests against the original
 unannotated sites and fails on missing collector/command and activation-guard
 frames. An initial pre-commit attempt also found an unused test import, which
 was removed before the signed behavioral red. Ordinary identity cases passed
@@ -87,3 +87,17 @@ complete lifecycle, native safety/recovery, worker/backend/global launch, manual
 browser/client, hardware/performance and release gates remain open. Runtime writes
 remain disabled. Earlier failed, skipped and unverified candidate limits remain
 unchanged; portable passes and source review establish no native support claim.
+
+## Recorded candidate
+
+Signed implementation `770dbe35c9d78b13be660c3418f75fa550bb8d7d`, merge base `36b00d992610c25fb53c869af1135649720740f5`,
+passed all seven supplemental checks: ordinary identity, all tagged tests in both
+changed packages, focused tagged race and four normal/tagged FreeBSD cross-builds.
+Signed red archive replay reproduced the expected missing annotations; its archive
+and all temporary cross-build artifacts were removed. The actual-title focused
+portable review passed 228 tooling tests, nine affected race packages and 48
+compiler-listed ordinary fuzz targets. All 23 preceding policy receipts remain
+byte-identical. The [source-bound receipt](deadline-return-sites-manifest.json)
+records these executed results and supervised teardown. A final receipt-only head
+requires fresh baseline checks and verified exact-input deep reuse; native
+placement and the separate diagnostic remain pending.
