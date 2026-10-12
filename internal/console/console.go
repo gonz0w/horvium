@@ -46,6 +46,7 @@ type view struct {
 	Options                                                                                       []option
 	Detail                                                                                        *row
 	Overview                                                                                      *observation.Overview
+	Capacity                                                                                      *poolCapacity
 	State                                                                                         observation.State
 	Freshness                                                                                     observation.Freshness
 }
@@ -359,6 +360,7 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		case "/storage/pools":
 			p, err := a.manager.Pools(r.Context(), q)
 			e = err
+			v.Capacity = poolComparisons(p, q)
 			v.Generation = p.Generation
 			v.Total = p.Total
 			v.Freshness = p.Freshness

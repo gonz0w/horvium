@@ -1,11 +1,16 @@
 # ADR 0010: progressive dashboard charts
 
-Status: Proposed for review; not adopted. Date: 2026-10-12. Owner: Cam (`@gonz0w`).
+Status: Accepted scoped decision; qualification pending. Date: 2026-10-12. Owner: Cam (`@gonz0w`).
 Refs [issue 166](https://github.com/gonz0w/horvium/issues/166).
 [PRD](../design/dashboards/PRD.md), [EDD](../design/dashboards/EDD.md),
 [Test Design](../design/dashboards/TDD.md), [source inventory](../design/dashboards/inventory.md).
 The [maintainer's uPlot preference](../roadmap/dashboards.md) is settled; this
-record proposes a concrete dependency/integration boundary for review.
+record defines the adopted scoped dependency/integration boundary.
+
+Approval: maintainer merge of [PR 349](https://github.com/gonz0w/horvium/pull/349),
+source `4713aef87cca23183b949ba2ed5a56130b3b3186`, on 2026-10-12.
+Adoption authorizes the scoped stage-A design and separately bounded stage-B
+research, not dashboard/native/browser/resource or release acceptance.
 
 ## Context and alternatives
 
@@ -20,7 +25,7 @@ keyboard/no-JavaScript access must survive an unavailable chart enhancement.
 | SPA/UI kit, second chart engine or telemetry service | No requirement justifies additional architecture/runtime cost |
 | Render operator trend charts from two cached generations | No qualified history/identity/time contract; misleading persistence and coverage |
 
-## Proposed decision and pin
+## Adopted scoped decision and pin
 
 Deliver stage A with owned presentation and exact tables. Investigate uPlot only
 in a separately scoped, labelled stage B synthetic fixture. Do not load uPlot into
@@ -96,6 +101,5 @@ meet CSP/accessibility/resource targets, a security issue cannot be addressed,
 new interaction requires additional plugins or a real history contract changes
 scope. No pan gesture, telemetry storage, public schema or shared library is chosen.
 
-Maintainer review/merge must record adoption before bounded implementation.
-An accepted ADR would authorize its stated design/slices only; actual browser,
+Maintainer merge of PR 349 records adoption of this stated design/slices only; actual browser,
 resource/native, manual accessibility and broad dashboard/release gates stay open.

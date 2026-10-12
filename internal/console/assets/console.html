@@ -185,6 +185,7 @@
 <button id="apply-filters" type="submit">Apply</button>
 <a class="reload" href="{{.Path}}">Current generation</a>
 </form>
+{{if .Capacity}}{{template "capacity" .}}{{end}}
 <div class="resource-layout">
 <section class="resource-list">
 <div class="table-scroll">
@@ -215,3 +216,24 @@
 
 {{define "refresh"}}<p id="refresh-status" role="status" aria-live="polite">{{if .Error}}{{.Error}}{{else}}Collection requested. This view remains on its displayed generation.{{end}} <a href="{{.Path}}">Load current observation</a>
 </p>{{end}}
+
+{{define "capacity"}}<section class="capacity-section" aria-labelledby="capacity-title">
+<div class="section-heading">
+<h2 id="capacity-title">Pool capacity comparisons</h2>
+<span class="badge">{{status .Freshness}}</span>
+</div>
+<p class="muted">Allocated and free are measured separately against each pool’s reported size. Approximate percentages are rounded to 0.1%; exact byte values are in the table below. These are current observations, not capacity history or a health guarantee.</p>
+<p class="capacity-coverage">{{if .Capacity.Rows}}Showing {{.Capacity.Start}}–{{.Capacity.End}} of {{.Capacity.Total}} matching pools (up to 20 comparisons per page).{{else}}No comparisons on this page · {{.Capacity.Total}} matching pools.{{end}}
+Observation <code>{{.Generation}}</code> · Filter: {{if .Filter}}{{.Filter}}{{else}}None{{end}} · Sort: {{.Sort}} · {{if same .Desc "true"}}Descending{{else}}Ascending{{end}}.
+Section read {{time .Freshness.FinishedAt}}; last successful read {{time .Freshness.LastSuccessfulAt}}.</p>
+<ol class="capacity-list">{{range .Capacity.Rows}}<li>
+<a id="capacity-{{.GUID}}" href="{{.URL}}" hx-get="{{.URL}}" hx-target="#workspace" hx-swap="outerHTML" hx-push-url="true">{{.Name}}</a>
+<div>{{if .ZeroSize}}<p class="muted">Ratio unavailable: reported size is zero.</p>{{else}}<svg class="capacity-plot" viewBox="0 0 1000 36" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+<rect class="capacity-track" x="0" y="0" width="1000" height="16"/>
+<rect class="capacity-allocated" x="0" y="0" width="{{.Allocated.Width}}" height="16"/>
+<rect class="capacity-track" x="0" y="20" width="1000" height="16"/>
+<rect class="capacity-free" x="0" y="20" width="{{.Free.Width}}" height="16"/>
+</svg>
+<p class="capacity-values"><span>Allocated · approximately {{.Allocated.Percent}}</span><span>Free · approximately {{.Free.Percent}}</span></p>{{end}}</div>
+</li>{{end}}</ol>
+</section>{{end}}
