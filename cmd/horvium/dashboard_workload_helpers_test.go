@@ -70,6 +70,8 @@ type dashboardSample struct {
 	Index         int
 	Case, Outcome string
 	Status        int
+	BodyBytes     int
+	Predicate     string
 	Duration      time.Duration
 }
 type dashboardQuantiles struct{ P50, P95, P99 time.Duration }
@@ -214,10 +216,13 @@ func dashboardLoad(client *http.Client, base string, count int, plan []dashboard
 					body, bodyErr = dashboardReadBody(response.Body)
 				}
 				sample.Duration = time.Since(started)
+				sample.BodyBytes = len(body)
 				if transportErr == nil && bodyErr == nil && (sample.Status == 200 || phase == "replacement" && request.Case == "overview" && sample.Status == 409) && predicate(request, sample.Status, body) == nil {
 					sample.Outcome = "success"
+					sample.Predicate = "original-inventory"
 					if sample.Status == 409 {
 						sample.Outcome = "expiry"
+						sample.Predicate = "safe-expiry"
 					}
 				}
 				samples[i] = sample

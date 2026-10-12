@@ -84,7 +84,9 @@ refinement of stage-A workload coverage and strict receipts adopted in PR 357.
 The [portable request driver](../../testing/dashboards/resource-request-driver.md) is
 the first fixture slice, followed by [original-inventory HTML predicates](../../testing/dashboards/resource-html-predicates.md).
 The [offline receipt validator](../../testing/dashboards/resource-receipt-validator.md)
-adds the strict development evidence contract. Native wiring and fresh both-release
+adds the strict development evidence contract. The
+[prepared controller/phase adapter](../../testing/dashboards/workload-receipt-adapter.md)
+binds these portable components. Native wiring and fresh both-release
 execution remain required.
 Adoption and portable regressions are not qualification.
 

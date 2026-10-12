@@ -276,3 +276,6 @@
 
 - [Offline dashboard resource-receipt validator](testing/dashboards/resource-receipt-validator.md):
   strict candidate/release/workload accounting; native wiring and measurement remain separate.
+
+- [Prepared dashboard workload/receipt adapter](testing/dashboards/workload-receipt-adapter.md):
+  immutable originals and strict raw phase serialization; native/runner bindings remain separate.
