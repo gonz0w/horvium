@@ -19,6 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ROOT / 'tools'
 SUITES = {
+    'policy-startup-provenance': ('', 'requires externally bound reviewed prebuilt receipt'),
     'policy-startup-envelope': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_ENVELOPE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1 sh tools/bsd-policy-startup-envelope-prebuilt.sh'),
     'policy-startup-trace': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_TRACE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1 sh tools/bsd-policy-startup-trace-prebuilt.sh'),
     'policy-startup-diagnostics': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_DIAGNOSTICS_VM=1 sh tools/bsd-policy-startup-diagnostics-prebuilt.sh'),
@@ -49,6 +50,7 @@ SUITES = {
 }
 
 PREBUILT = {
+    'policy-startup-provenance': ('policy-startup-provenance-native.test', './internal/host/freebsd', 'POLICY_STARTUP_PROVENANCE_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_PROVENANCE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1', 'bsd-policy-startup-provenance-prebuilt.sh'),
     'policy-startup-envelope': ('policy-startup-envelope-native.test', './internal/host/freebsd', 'POLICY_STARTUP_ENVELOPE_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_ENVELOPE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1', 'bsd-policy-startup-envelope-prebuilt.sh'),
     'policy-startup-trace': ('policy-startup-trace-native.test', './internal/host/freebsd', 'POLICY_STARTUP_TRACE_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_TRACE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1', 'bsd-policy-startup-trace-prebuilt.sh'),
     'policy-startup-diagnostics': ('policy-startup-diagnostics-native.test', './internal/host/freebsd', 'POLICY_STARTUP_COST_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_DIAGNOSTICS_VM=1', 'bsd-policy-startup-diagnostics-prebuilt.sh'),
@@ -74,7 +76,7 @@ PREBUILT = {
 
 def cleanup_prebuilt(directory):
     # Only fixed registered executable names in this owned run directory.
-    for filename in {record[0] for record in PREBUILT.values()}:
+    for filename in {record[0] for record in PREBUILT.values()} | {'policy-startup-provenance-normal.test'}:
         (directory / filename).unlink(missing_ok=True)
 
 
@@ -85,7 +87,11 @@ def load_tool(name):
     return module
 
 
-def suite_command(suite, source_build=False, artifact_digest=None):
+def suite_command(suite, source_build=False, artifact_digest=None, candidate=None):
+    if suite == 'policy-startup-provenance':
+        if source_build or type(candidate) is not dict or artifact_digest != candidate.get('sha256'):
+            raise ValueError('separate provenance suite requires bound reviewed prebuilt receipt')
+        return load_tool('policy-provenance-runner').command(candidate)
     if suite in PREBUILT and not source_build:
         if not isinstance(artifact_digest, str) or not re.fullmatch('[a-f0-9]{64}', artifact_digest):
             raise ValueError('prebuilt suite requires an exact artifact checksum')
@@ -96,7 +102,7 @@ def suite_command(suite, source_build=False, artifact_digest=None):
 
 
 def uses_device_fixture(suite):
-    return suite in ('policy-startup-envelope', 'policy-startup-trace', 'policy-startup-diagnostics', 'policy-startup-lifecycle', 'policy-startup-review', 'policy-startup-facts', 'policy-startup-owner', 'devices', 'pool-properties', 'executor-recovery', 'execution-system', 'execution-startup', 'closed-startup-owner')
+    return suite in ('policy-startup-provenance', 'policy-startup-envelope', 'policy-startup-trace', 'policy-startup-diagnostics', 'policy-startup-lifecycle', 'policy-startup-review', 'policy-startup-facts', 'policy-startup-owner', 'devices', 'pool-properties', 'executor-recovery', 'execution-system', 'execution-startup', 'closed-startup-owner')
 
 
 def recovery_boot_identity(text):
@@ -160,17 +166,29 @@ def build_native_binary(directory, source, suite):
     subprocess.run([go, 'mod', 'verify'], cwd=ROOT, env=env, check=True)
     filename, package, _, _, _ = PREBUILT[suite]
     binary = directory / filename
-    tags = ['-tags=horvium_native_fixture'] if suite in ('policy-startup-envelope', 'policy-startup-trace', 'policy-startup-owner', 'policy-startup-facts', 'policy-startup-review', 'policy-startup-lifecycle', 'policy-startup-diagnostics') else []
+    isolation = None
+    if suite == 'policy-startup-provenance':
+        diagnostic = load_tool('policy-provenance-runner')
+        compiler_before, _ = diagnostic.candidate.read_verified_file(Path(go), 128 << 20, executable=True)
+        isolation = diagnostic.build_isolation(go, env, directory, source)
+    tags = ['-tags=horvium_native_fixture'] if suite in ('policy-startup-provenance', 'policy-startup-envelope', 'policy-startup-trace', 'policy-startup-owner', 'policy-startup-facts', 'policy-startup-review', 'policy-startup-lifecycle', 'policy-startup-diagnostics') else []
     command = [go, 'test', '-c', '-trimpath', *tags, '-o', str(binary), package]
     source_identity(source)
     subprocess.run(command, cwd=ROOT, env=env, check=True)
     source_identity(source)
-    return {'source_commit': source, 'sha256': plan.digest(binary), 'bytes': binary.stat().st_size,
+    record = {'source_commit': source, 'sha256': plan.digest(binary), 'bytes': binary.stat().st_size,
             'go_version': version, 'compiler_sha256': plan.digest(Path(go)),
             'go_pins_sha256': plan.digest(TOOLS / 'go-pins.json'),
             'go_mod_sha256': plan.digest(ROOT / 'go.mod'), 'go_sum_sha256': plan.digest(ROOT / 'go.sum'),
             'target': 'freebsd/amd64', 'goamd64': 'v1', 'cgo_enabled': False,
             'build_arguments': ['go', 'test', '-c', '-trimpath', *tags, '-o', '<owned-artifact>', package]}
+    if isolation is not None:
+        if record['compiler_sha256'] != compiler_before:
+            raise ValueError('compiler changed during independent provenance build')
+        record['source_isolation'] = isolation
+        diagnostic.check_build(record)
+        diagnostic.candidate.verify_source(ROOT, source)
+    return record
 
 
 def validate_prebuilt(log, artifact_digest, suite='state'):
@@ -182,7 +200,7 @@ def validate_prebuilt(log, artifact_digest, suite='state'):
 def cpu_count_for_suite(suite):
     if suite not in SUITES:
         raise ValueError('unknown native suite CPU profile')
-    return 1 if suite in ('policy-startup-envelope', 'policy-startup-trace', 'policy-startup-lifecycle', 'policy-startup-diagnostics') else 2
+    return 1 if suite in ('policy-startup-provenance', 'policy-startup-envelope', 'policy-startup-trace', 'policy-startup-lifecycle', 'policy-startup-diagnostics') else 2
 
 
 def lifecycle_budget_for_suite(suite):
@@ -194,7 +212,7 @@ def lifecycle_budget_for_suite(suite):
 def startup_envelope_budget_for_suite(suite):
     if suite not in SUITES:
         raise ValueError('unknown suite envelope profile')
-    if suite != 'policy-startup-envelope':
+    if suite not in ('policy-startup-provenance', 'policy-startup-envelope'):
         return None
     return {'child_seconds': 210, 'parent_seconds': 480, 'phase_minutes': 18,
             'caller_seconds': 180, 'product_seconds': 90, 'sample_seconds': [30, 75, 110],
@@ -236,9 +254,11 @@ def stop_guest(process):
         process.wait(timeout=10)
 
 
-def validate_result(suite, log, complete=False):
+def validate_result(suite, log, complete=False, candidate=None):
     if '--- FAIL:' in log or '\nFAIL\n' in log:
         raise ValueError('guest test failure')
+    if suite == 'policy-startup-provenance':
+        return load_tool('policy-provenance-runner').validate(log, candidate, complete)
     if suite == 'policy-startup-envelope':
         load_tool('check-policy-startup-envelope').validate(log)
         if complete and re.findall('DEVICE_FIXTURE_CLEANUP ([^\n]+)', log) != ['pass']:
@@ -362,6 +382,8 @@ def main():
     parser.add_argument('--owned-directory', type=Path, help=argparse.SUPPRESS)
     parser.add_argument('--run', action='store_true', help='Explicitly opt into this disposable guest')
     args = parser.parse_args()
+    if args.suite == 'policy-startup-provenance' and (args.release != '15.1' or args.source_build):
+        raise ValueError('adopted provenance diagnostic is one fresh prebuilt 15.1 candidate only')
     if args.source_build and args.suite != 'state':
         raise ValueError('--source-build applies only to the state suite')
     if not args.run:
@@ -400,7 +422,10 @@ def main():
         result = json.loads((directory / 'result.json').read_text())
         if status or not result.get('qualified') or not process.record()['group_cleaned']:
             raise ValueError('qualification failed or interrupted; inspect private records')
-        print('PASS: native assertions, preserved base/runtime and supervised teardown', flush=True)
+        if args.suite == 'policy-startup-provenance':
+            print('PASS: diagnostic completeness, preserved base/runtime and supervised teardown; native acceptance false', flush=True)
+        else:
+            print('PASS: native assertions, preserved base/runtime and supervised teardown', flush=True)
         return
     directory = supervisor.private_directory(args.owned_directory)
     if directory.parent != runs:
@@ -409,7 +434,7 @@ def main():
         raise InterruptedError('owned lab interrupted')
     signal.signal(signal.SIGTERM, interrupted)
     signal.signal(signal.SIGINT, interrupted)
-    device_profile = 'policy-facts' if args.suite in ('policy-startup-envelope', 'policy-startup-trace', 'policy-startup-facts', 'policy-startup-review', 'policy-startup-lifecycle', 'policy-startup-diagnostics') else 'baseline'
+    device_profile = 'policy-facts' if args.suite in ('policy-startup-provenance', 'policy-startup-envelope', 'policy-startup-trace', 'policy-startup-facts', 'policy-startup-review', 'policy-startup-lifecycle', 'policy-startup-diagnostics') else 'baseline'
     cpu_count = cpu_count_for_suite(args.suite)
     guest, key = None, directory / 'fixture-key'
     record = {'source_commit': source, 'suite': args.suite, 'release': args.release,
@@ -424,6 +449,10 @@ def main():
               'execution_mode': 'host-cross-built' if args.suite in PREBUILT and not args.source_build else 'guest-source-build'}
     if args.suite == 'policy-startup-lifecycle':
         record['lifecycle_fixture_budget'] = lifecycle_budget_for_suite(args.suite)
+    if args.suite == 'policy-startup-provenance':
+        record['native_acceptance'] = False
+        record['qualification_scope'] = 'separate return-path diagnostic completeness only; no lifecycle acceptance'
+        record['startup_envelope_budget'] = startup_envelope_budget_for_suite(args.suite)
     if args.suite == 'policy-startup-envelope':
         record['native_acceptance'] = False
         record['qualification_scope'] = 'separate caller-envelope diagnostic completeness only; no lifecycle acceptance'
@@ -489,7 +518,10 @@ def main():
                 with (directory / filename).open('rb') as binary:
                     subprocess.run(ssh + ['umask 077; mkdir -p /root/work/.tools && cat > /root/work/.tools/' + filename + ' && chmod 700 /root/work/.tools/' + filename],
                                    stdin=binary, check=True, timeout=180)
-            packages, command = suite_command(args.suite, args.source_build, artifact_digest)
+            if args.suite == 'policy-startup-provenance':
+                packages, command = suite_command(args.suite, args.source_build, artifact_digest, record['prebuilt'])
+            else:
+                packages, command = suite_command(args.suite, args.source_build, artifact_digest)
             remote = 'cd /root/work && ' + ('pkg install -y ' + packages + ' && ' if packages else '') + command
             print(f'Running {args.suite} on FreeBSD {args.release}; private logs: {directory}', flush=True)
             with (directory / 'qualification.log').open('w') as log:
@@ -497,12 +529,20 @@ def main():
                     run_executor_recovery(ssh, guest, remote, log)
                 else:
                     subprocess.run(ssh + [remote], stdout=log, stderr=subprocess.STDOUT, check=True, timeout=7200)
-            validate_result(args.suite, (directory / 'qualification.log').read_text())
+            full_log = (directory / 'qualification.log').read_text()
+            if args.suite == 'policy-startup-provenance':
+                record['deadline_provenance'] = load_tool('policy-provenance-runner').verify_run(directory, record['prebuilt'], full_log)
+                record['prebuilt']['validated_transcript_sha256'] = record['deadline_provenance']['transcript_sha256']
+                validate_result(args.suite, full_log, candidate=record['prebuilt'])
+            else:
+                validate_result(args.suite, full_log)
             if artifact_digest:
                 validate_prebuilt((directory / 'qualification.log').read_text(), artifact_digest, args.suite)
             source_identity(source)
             record['guest_assertions'] = True
     except BaseException as error:
+        if args.suite == 'policy-startup-provenance' and hasattr(error, 'evidence'):
+            record['deadline_provenance'] = error.evidence
         record['failure'] = type(error).__name__ + ': ' + str(error)
         raise
     finally:
@@ -534,7 +574,10 @@ def main():
                     raise ValueError('device preservation/teardown incomplete')
                 with (directory / 'qualification.log').open('a') as log:
                     log.write('DEVICE_FIXTURE_CLEANUP pass\n')
-                validate_result(args.suite, (directory / 'qualification.log').read_text(), complete=True)
+                if args.suite == 'policy-startup-provenance':
+                    validate_result(args.suite, (directory / 'qualification.log').read_text(), complete=True, candidate=record['prebuilt'])
+                else:
+                    validate_result(args.suite, (directory / 'qualification.log').read_text(), complete=True)
             record['qualified'] = bool(record.get('guest_assertions') and record['base_preserved']
                                        and record['host_teardown'] and not record.get('failure'))
         except BaseException as error:

@@ -1815,3 +1815,25 @@ source isolation and full runner wiring precede the one adopted fresh 15.1
 diagnostic. No new native suite, VM, service or runtime interface is added; both
 full lifecycle gates and all broader acceptance remain pending, with runtime
 writes disabled.
+
+## Separate tagged deadline provenance fixture and runner
+
+[Issue 345's implementation](../testing/M2/deadline-provenance-fixture.md)
+adds a separate FreeBSD/native-tag-only parent and diagnostic child around the
+one original factory call. The original facts child, all 42 prior controls and
+adopted bounds remain; five checked child and three parent controls make the
+declared 50-control inventory. Original contexts and immutable pre-cancel frames
+are retained. A bounded tag-only Error/Is/As verifier and exact child/scalar
+codecs do not enable a runtime interface.
+
+The local runner independently cross-builds ordinary/tagged FreeBSD binaries with
+compiler file-selection proof, binds actual files/source to the strict consumer,
+retains the entire framed parent and refuses incomplete attribution. Normal and
+interruption cleanup include both new owned executable names. Diagnostic
+completeness never accepts native lifecycle behavior. Portable helper/runner,
+race/fuzz and cross-build evidence remain separate from actual native execution.
+All 26 preceding receipts, original product/fixture/consumer/caller/sampler sources
+and timers are preserved. No VM or service is started by this offline slice.
+The one fresh reviewed 15.1 diagnostic, both full lifecycle gates and every wider
+native/client/browser/recovery/hardware/performance/release gate remain pending;
+runtime writes remain disabled.

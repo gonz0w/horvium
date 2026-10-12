@@ -1776,3 +1776,13 @@ hashes, clean signed/DCO source before/after, bounded stable reads and failed
 incomplete-trace outcomes are required. Matching source/files do not establish
 independent build or native execution attestation. Tagged fixture/build/source
 isolation, full runner wiring and the one fresh diagnostic remain separate.
+
+[Tagged fixture/runner (#345)](../../testing/M2/deadline-provenance-fixture.md)
+implements the 50-control inventory, actual original factory/facts/sampler path,
+bounded immutable error checks/codecs, normal/tagged source-selection cross-builds,
+strict whole-parent framing, actual-file binding and normal/interruption cleanup.
+Failing-first portable helper/runner tests, tagged race/decoder fuzz checks and
+offline cross-builds cover implementation prerequisites only. No test ID's native
+execution or broader lifecycle acceptance is completed by them. The one adopted
+fresh 15.1 candidate follows fixture/runner review and requires all actual
+guest/host/device/base/runtime/process observations, with incomplete traces failed.
