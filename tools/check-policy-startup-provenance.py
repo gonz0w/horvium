@@ -113,6 +113,8 @@ def validate_frame(f, returned):
             raise ValueError('original effective child deadline required')
     elif f['phase'] != 'guard' or f['allowance_ns'] != 0 or f['child_deadline'] or f['child_deadline_ns'] != 0 or f['child_before'] != 'absent' or f['child_after'] != 'absent':
         raise ValueError('parent-only guard cannot invent a child')
+    if not f['child_present'] and (f['site'] not in {'review', 'activation', 'backing-command', 'pool-command', 'system-command'} or f['parent_before'] != 'deadline' or f['parent_after'] != 'deadline'):
+        raise ValueError('original pre-child guard requires its expired parent')
     if not f['parent_deadline']:
         raise ValueError('original bounded caller ancestry required')
     classes = {'none', 'deadline', 'canceled', 'other'}

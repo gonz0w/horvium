@@ -75,7 +75,10 @@ one parent/two children. The parser does not execute that fixture. Existing
 [deadlineFrame](../../../internal/storage/deadline_return_fixture.go), with fixed
 site/phase/class identifiers, original 90/45/10-second allowances, explicit child
 presence, bounded branch identity and relative monotonic values. Parent-only
-pre-child guards have zero allowance and absent child observations.
+pre-child guards have zero allowance and absent child observations. Only original
+review/activation and command sites have such guards; their actual parent error
+must remain deadline-expired. Collector guard frames and live-parent guard
+claims are rejected.
 
 The consumer independently checks deadlines, capture bounds, monotonic context
 error classes and constraint classification. Complete traces have one unambiguous
