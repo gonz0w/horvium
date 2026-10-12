@@ -1,6 +1,7 @@
 # Original startup operation timeout investigation
 
-Status: declared focused diagnostic; execution evidence pending.
+Status: completed diagnostic; startup failed after publication.
+Native lifecycle acceptance remains false; maintainer review pending.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`). One development session.
 Owning [issue 305](https://github.com/gonz0w/horvium/issues/305),
 Refs [parent 139](https://github.com/gonz0w/horvium/issues/139).
@@ -98,3 +99,72 @@ second clean cycle, retained fault families, worker provenance, backend/global
 launch, manual browser/client, hardware/performance and release acceptance remain
 open under 305/139. Runtime writes remain disabled. No service, deployment,
 dependency, infrastructure or hosted automation is added.
+
+## Executed candidate and observations
+
+The [source-bound receipt](policy-startup-operation-timeout-manifest.json) binds
+signed protocol/native source `c63ad0614c4922a5edcf67d8a3dad23bba6e944a`, base
+`647912303c660529292bac9be44a81e383b07ebc`, pinned Go 1.27.1, QEMU/firmware/base
+hashes and original profiles. The tagged binary SHA256
+`e816430ce0bbfd40e03838e345e97f656d3c4ea29a5db233c587409de7f302d4` is identical
+to PR 333's failed lifecycle binary. No product, fixture or tooling source changed.
+This fresh standalone candidate does not reproduce the full suite's preceding
+facts/review workload or reconstruct its failed seed.
+
+The single UFS parent completed at **200.29 seconds**, with two normally waited
+children and all **42 diagnostic controls**. Startup itself failed at
+**121.635881999 seconds**: deadline operation error, caller error `none`, unchanged
+absolute 180-second caller and no returned owner. Diagnostic completeness is
+true; operation success and native lifecycle acceptance are false.
+
+| Sample | Capture start/end after caller creation | Bytes | Source-located work |
+| --- | --- | --- | --- |
+| 1 | 30.008719–30.017926s | 8,789 | Original review inspection, domain system version reader (`execution_startup_freebsd.go:207`, `system_use_freebsd.go:9`). |
+| 2 | 75.004420999–75.006222999s | 9,545 | Activation second pre-publication inspection, domain backing version reader (`execution_restart_freebsd.go:75`, `persistent_backing_freebsd.go:74`). |
+| 3 | 110.002551999–110.003725999s | 10,153 | Activation post-publication inspection, per-policy journal backing version reader (`execution_restart_freebsd.go:100`, `execution_policy_freebsd.go:70`, `persistent_backing_freebsd.go:74`). |
+
+All three samples were captured and uniquely located: 103 frames across 26 files,
+70 project frames and 33 compiler-matched Go frames. At each point the original
+factory goroutine was waiting on the fixed `/bin/freebsd-version -kru` command
+path. Exact branches select that version probe at these points, but do not
+identify the final failing command, same invocation or duration. Raw guest
+snapshots were independently verified, sanitized and removed.
+
+Source order plus the first two samples place activation context creation after
+30.008719s and no later than 75.006222999s. Its nominal 90-second deadline is
+therefore after 120.008719s and no later than 165.006222999s, before the original
+180-second caller. **This caller did not clip activation's own context in this
+observed call.** This is a conservative point/source deduction, not a measured
+phase boundary or identification of the earliest expired activation/collector/
+command timer. Publication occurs between the second pre-publication and third
+post-publication observations, not at an independently measured timestamp.
+
+Independent final journal readback found **active generation 7**, changed from
+closed generation 6, with exact hashes in the receipt. Original ledger/nonjournal
+bytes were preserved and child locks released. The unsuccessful attempt reached
+activation's post-publication inspection. There is no returned owner, durable
+idle retirement or retry authority; fail-closed registration/store handling and
+lease release remain distinct from clean shutdown. These observations establish
+this candidate's final state, not the earlier full-lifecycle failure's state.
+
+The offline replay verifies 43 source assertions across 15 files, the prior
+actual failed scalar/log/artifact and two earlier strict diagnostic receipts. All
+twenty historical policy manifests remain byte-identical. Their failed, skipped
+and unverified limits are preserved. Tagged native compilation and normal runtime
+fixture exclusion were verified. Initial actual-title documentation `make review`
+passed mandatory check/lint/test/secrets, all 228 tooling tests, ordinary Go tests,
+signatures and DCO with clean supervised teardown. No unchanged race/fuzz suite
+was rerun. The final evidence head requires fresh current-title baseline review.
+
+Original metadata/fact teardown and independent host/device/image/key/executable/
+supervisor cleanup, base/runtime/device-backing preservation all passed. Before
+final evidence review, `make lab-stop` and `make lab-status` verified all 108 owned
+records stopped. Historical incomplete lifecycle guest vectors remain unverified.
+No automatic repeat, second release or full-lifecycle attempt followed.
+
+Next bounded work is a reviewed diagnostic design for timeout provenance within
+activation's post-publication checks. Distinguish the activation allowance from
+nested collector/command expiry before changing product limits or optimizing
+repeated safety checks. Preserve original producers, fail-closed publication,
+registration and teardown. Both full native lifecycle gates and broader 305/139
+acceptance remain pending; this evidence uses Refs only.
