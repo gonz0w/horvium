@@ -261,3 +261,6 @@
 
 - [Bounded dataset-page Used comparisons](testing/dashboards/dataset-capacity.md):
   exact current page scale and independent accounting; broader qualification remains separate.
+
+- [Generation-bound Overview pool comparisons](testing/dashboards/overview-capacity.md):
+  bounded first-by-name coverage, exact table and intervening-eviction denial.
