@@ -1683,7 +1683,7 @@ pending. No new implementation, deadlines, retry or fabricated behavioral red;
 evidence-only review requires a fresh signed baseline without repeating deep tests.
 Issues 305/139 and runtime authority remain open.
 
-## Proposed original lifecycle caller composition Test Design
+## Original lifecycle caller composition historical proposal
 
 [Research issue 331](https://github.com/gonz0w/horvium/issues/331) owns the
 [offline proposal and planned M2-POLICY-LIFECYCLE-CALLER-001–006 cases](../../research/M2/policy-lifecycle-caller.md),
@@ -1712,3 +1712,12 @@ normally waited children and forty ordered pre-cancel scalar observations per
 release are required. Failed partial rows never qualify the gate. Historical
 proposal/replay and failed candidates remain authoritative for their own source.
 Product/native/cleanup budgets and original guards remain unchanged.
+
+The implementation candidate's receipt records actual portable failing-first and
+full fallback passes. On 15.1, the facts/review prefix passed (135 controls/seven
+children), but the first UFS startup returned a deadline error at 126.708 seconds
+with its original 180-second caller still unexpired and no returned owner. One
+actual partial scalar is retained; later stages/restart/ZFS lifecycle and 14.5
+were not attempted. Complete M2-POLICY-LIFECYCLE-CALLER-005 remains pending;
+independent host cleanup passed, incomplete guest vectors remain unverified.
+No earliest nested expiry, final publication state or causal performance claim.

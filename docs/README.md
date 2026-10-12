@@ -233,4 +233,5 @@
 - [Original lifecycle caller review](research/M2/policy-lifecycle-caller.md): fixture-only 180/390/1200/44-minute hierarchy adopted in PR 332; immutable offline replay remains separate from native acceptance.
 - [Caller review replay](research/M2/policy-lifecycle-caller-manifest.json): original second-cycle failure and two earlier diagnostic receipts rebound to source; eighteen historical receipts stay immutable.
 
-- [Adopted lifecycle caller implementation](testing/M2/retained-policy-lifecycle-caller.md): fixed original caller, pre-cancel scalar observations, strict 293-control inventory and interruption cleanup; candidate qualification remains separate.
+- [Adopted lifecycle caller implementation](testing/M2/retained-policy-lifecycle-caller.md): fixed original caller, pre-cancel scalar observations, strict 293-control inventory and interruption cleanup; actual 15.1 first-startup operation deadline failure with caller still unexpired.
+- [Lifecycle caller candidate receipt](testing/M2/retained-policy-lifecycle-caller-manifest.json): signed red/green/full portable review, actual partial scalar, failed/skipped native gates and independent host cleanup; all nineteen prior receipts remain immutable.

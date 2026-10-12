@@ -1,6 +1,7 @@
 # Adopted original lifecycle caller fixture
 
-Status: implementation candidate; native qualification pending.
+Status: fixture implementation reviewed locally; first-target native qualification failed.
+Both complete release gates remain pending.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`).
 Refs [issue 305](https://github.com/gonz0w/horvium/issues/305),
 [parent 139](https://github.com/gonz0w/horvium/issues/139) and adopted
@@ -63,12 +64,68 @@ Both complete release vectors and independent guest/host teardown are required.
 All nineteen preceding policy receipts remain immutable. Final evidence-only
 changes need a fresh baseline with verified exact-input deep reuse where valid.
 
-## Qualification boundary
+## Actual candidate and result
 
-Native results will be recorded against their actual executed source, compiler,
-artifact, lab profile and log/result digests. At this implementation stage no new
-native result is claimed. Historical failures and skipped/unverified cleanup
-remain preserved; later clean teardown cannot retroactively qualify them.
+The [candidate receipt](retained-policy-lifecycle-caller-manifest.json) binds signed
+implementation source `ea50080bec1a66bab614ae000e45b2b71ee08217`, adoption base
+`d5bdf24d4ef5df480ae960b985365de8610cc274`, pinned compiler and native binary
+`e816430ce0bbfd40e03838e345e97f656d3c4ea29a5db233c587409de7f302d4`,
+QEMU/firmware/base hashes and original profile. Normal FreeBSD runtime file
+selection excludes these fixture helpers; tagged compilation passed.
+
+Actual-title `make review` passed `make check lint test secrets`, all 228 tooling
+tests and ordinary Go tests, followed by the shared-tooling full fallback:
+**eleven race packages and all fifty-four fuzz targets**, with two clean supervised
+steps. The receipt records signed red source and private red/green log digests;
+portable green includes six Go parents, nine strict consumer methods, interrupted
+cleanup and all twenty-five unchanged diagnostic methods. The later evidence-only
+head requires a fresh baseline; exact-input deep reuse must be verified against
+this successful original execution, not assumed.
+
+| Actual FreeBSD/amd64 15.1 parent | Result | Seconds |
+| --- | --- | ---: |
+| Standalone multiple-policy facts | Passed | 29.02 |
+| Original UFS review | Passed | 320.26 |
+| Original ZFS review | Passed | 249.78 |
+| Original UFS lifecycle | Failed at `first_child_waited` | 201.58 |
+| Original ZFS lifecycle | Not attempted after failure | — |
+
+The strict facts/review prefix completed three parents, **135 controls and seven
+normally waited children**. The full release consumer rejects the run. No complete
+lifecycle control vector or 293-control gate is established.
+
+The failed first child's actual startup scalar records **126.708043619 seconds**,
+a selected/unchanged 180-second deadline, `operation_error=deadline`,
+`caller_error=none` and `owner_present=false`, captured before deferred
+cancellation. Child failure followed at 126.75 seconds. This returned operation
+deadline error occurred while the original caller had not expired; this
+candidate remains failed under the adopted wider caller. The row does not identify which
+nested context or native probe failed, or establish performance/emulation/capacity
+causality. No 390-second whole-child, 1200-second parent or 44-minute phase timeout
+is shown. No final independent metadata readback establishes the failed startup's
+publication state.
+
+Only that one actual completed scalar row is retained. Later first-cycle stages,
+restart and ZFS lifecycle are absent, not invented. Under the adopted stop rule,
+**14.5 was not attempted**. No retry, reseed, changed limit, guard removal, alternate
+producer or CPU profile followed the failure. Two bounded read-only inspections
+of existing guest log progress did not alter fixture source/state or run new
+native collectors; the final source-bound transcript supplies the evidence.
+
+## Preservation, teardown and next work
+
+All nineteen prior policy receipts and six original trace/separate diagnostic
+source/consumer inputs remain byte-identical. Independent host/device/image/key/
+executable and supervisor cleanup, base/runtime/device-backing preservation and
+owned-artifact removal passed. The incomplete lifecycle guest vectors remain
+**unverified**; independent host cleanup does not satisfy them. `make lab-stop` and
+`make lab-status` verified all 105 owned sessions stopped before final evidence
+review, which has its own supervisor/teardown. Later clean teardown cannot
+retroactively qualify historical failed/skipped/unverified candidates.
+
+Next bounded work is source/evidence review of this narrower operation timeout
+before any new experiment, product limit, collector instrumentation or accelerated
+lab profile is proposed. Both complete native release gates remain pending.
 
 This bounded fixture does not close issues 305/139. Mixed/fault history,
 credential/lineage/concurrency/census/publication/context/capacity families,
