@@ -20,7 +20,10 @@ The [Overview/Capacity packet](../design/dashboards/PRD.md) and
 The first [pool-page comparison slice](../testing/dashboards/pool-capacity.md)
 adds bounded current-observation SVG presentation. The [dataset Used slice](../testing/dashboards/dataset-capacity.md)
 adds page-local comparisons without summing overlapping accounting or implying
-quota headroom; its exact table and JSON remain unchanged. Dashboard browser/accessibility,
+quota headroom; its exact table and JSON remain unchanged. The [Overview slice](../testing/dashboards/overview-capacity.md)
+composes one same-generation bounded pool page, with explicit intervening eviction
+and exact-value fallback. This additional cached read needs fresh resource evidence
+before qualified Overview acceptance. Dashboard browser/accessibility,
 fresh native service/performance, uPlot behavior and identity-bound history remain
 unqualified. Inspected upstream hashes
 and compressed input sizes in [ADR 0010](../adr/0010-progressive-dashboard-charts.md)

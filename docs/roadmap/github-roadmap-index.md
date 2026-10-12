@@ -194,6 +194,7 @@ separate trackers distinguish HTTP admission, native-resource recovery, Firefox 
 - [M2: close an original unused restarted lifetime (#287)](https://github.com/gonz0w/horvium/issues/287)
 - [M2: define the next retained-history startup recovery slice (#288)](https://github.com/gonz0w/horvium/issues/288)
 - [M2: deliver the qualified Overview dashboard (#289)](https://github.com/gonz0w/horvium/issues/289)
+- [M2: add generation-bound Overview pool comparisons (#354)](https://github.com/gonz0w/horvium/issues/354) — [slice contract/evidence](../testing/dashboards/overview-capacity.md)
 - [M2: deliver the qualified Storage capacity dashboard (#290)](https://github.com/gonz0w/horvium/issues/290)
 - [M2: add bounded pool-page capacity comparisons (#350)](https://github.com/gonz0w/horvium/issues/350) — [slice contract/evidence](../testing/dashboards/pool-capacity.md)
 - [M2: add bounded dataset-page Used comparisons (#352)](https://github.com/gonz0w/horvium/issues/352) — [slice contract/evidence](../testing/dashboards/dataset-capacity.md)

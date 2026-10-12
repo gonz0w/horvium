@@ -153,6 +153,7 @@
 </table>
 </div>
 </section>
+{{if .Capacity}}{{template "capacity" .}}{{end}}
 <section class="section">
 <h2>Not collected</h2>
 <p class="muted">Shares, file services, users, SMART, protection and jobs are outside this observation. Pool state is not a disk-health or backup guarantee.</p>
@@ -220,11 +221,11 @@
 
 {{define "capacity"}}<section class="capacity-section" aria-labelledby="capacity-title">
 <div class="section-heading">
-<h2 id="capacity-title">Pool capacity comparisons</h2>
+<h2 id="capacity-title">{{if .Overview}}Observed pool capacity{{else}}Pool capacity comparisons{{end}}</h2>
 <span class="badge">{{status .Freshness}}</span>
 </div>
 <p class="muted">Allocated and free are measured separately against each pool’s reported size. Approximate percentages are rounded to 0.1%; exact byte values are in the table below. These are current observations, not capacity history or a health guarantee.</p>
-<p class="capacity-coverage">{{if .Capacity.Rows}}Showing {{.Capacity.Start}}–{{.Capacity.End}} of {{.Capacity.Total}} matching pools (up to 20 comparisons per page).{{else}}No comparisons on this page · {{.Capacity.Total}} matching pools.{{end}}
+<p class="capacity-coverage">{{if .Overview}}First {{len .Capacity.Rows}} pools by name in observation <code>{{.Generation}}</code>; {{.Capacity.Total}} observed pools{{if .OverviewPoolsMore}}; more available{{end}}. At most 20 comparisons from one 100-row page.{{if .Capacity.Rows}}{{else}} No pool comparisons in this observation.{{end}}{{else}}{{if .Capacity.Rows}}Showing {{.Capacity.Start}}–{{.Capacity.End}} of {{.Capacity.Total}} matching pools (up to 20 comparisons per page).{{else}}No comparisons on this page · {{.Capacity.Total}} matching pools.{{end}}{{end}}
 Observation <code>{{.Generation}}</code> · Filter: {{if .Filter}}{{.Filter}}{{else}}None{{end}} · Sort: {{.Sort}} · {{if same .Desc "true"}}Descending{{else}}Ascending{{end}}.
 Section read {{time .Freshness.FinishedAt}}; last successful read {{time .Freshness.LastSuccessfulAt}}.</p>
 <ol class="capacity-list">{{range .Capacity.Rows}}<li>
@@ -237,6 +238,13 @@ Section read {{time .Freshness.FinishedAt}}; last successful read {{time .Freshn
 </svg>
 <p class="capacity-values"><span>Allocated · approximately {{.Allocated.Percent}}</span><span>Free · approximately {{.Free.Percent}}</span></p>{{end}}</div>
 </li>{{end}}</ol>
+{{if .Overview}}<div class="table-scroll">
+<table>
+<caption>Pool capacity in this observation · first {{len .Rows}} pools by name; exact byte values</caption>
+<thead><tr><th scope="col">Name</th><th scope="col">GUID</th><th scope="col">Size</th><th scope="col">Allocated</th><th scope="col">Free</th><th scope="col">Pool state</th></tr></thead>
+<tbody>{{range .Rows}}<tr><th scope="row"><a href="{{.URL}}">{{.Name}}</a></th>{{range .Cells}}<td class="mono">{{.}}</td>{{end}}</tr>{{else}}<tr><td colspan="6">No observed pools in this generation.</td></tr>{{end}}</tbody>
+</table>
+</div>{{end}}
 </section>{{end}}
 
 {{define "dataset-capacity"}}<section class="capacity-section" aria-labelledby="capacity-title">

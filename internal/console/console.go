@@ -48,6 +48,7 @@ type view struct {
 	Overview                                                                                      *observation.Overview
 	Capacity                                                                                      *poolCapacity
 	DatasetCapacity                                                                               *datasetCapacity
+	OverviewPoolsMore                                                                             bool
 	State                                                                                         observation.State
 	Freshness                                                                                     observation.Freshness
 }
@@ -342,12 +343,19 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 			a.fail(w, r, observation.ErrQuery, false, v)
 			return
 		}
-		o, e := a.manager.Overview(r.Context(), q.Generation)
+		o, p, e := overviewPoolPage(r.Context(), a.manager, q.Generation)
 		if e != nil {
 			a.fail(w, r, e, false, v)
 			return
 		}
 		v.Overview = &o
+		poolQuery := observation.Query{Generation: o.Generation, Sort: "name", Limit: 100}
+		v.Capacity = poolComparisons(p, poolQuery)
+		v.Freshness = p.Freshness
+		v.OverviewPoolsMore = p.More || len(p.Rows) > maxCapacityRows
+		for _, pool := range p.Rows[:min(len(p.Rows), maxCapacityRows)] {
+			v.Rows = append(v.Rows, row{Key: pool.GUID, Name: pool.Name, URL: queryURL("/storage/pools", poolQuery, pool.GUID), Cells: []string{pool.GUID, bytesValue(pool.Size), bytesValue(pool.Allocated), bytesValue(pool.Free), pool.Health}})
+		}
 		v.Generation = o.Generation
 		v.Facts = []fact{{"Installed kernel", known(o.Host.InstalledKernel)}, {"Running kernel", known(o.Host.RunningKernel)}, {"Userland", known(o.Host.Userland)}, {"Architecture", known(o.Host.Architecture)}, {"ZFS userland", known(o.Host.ZFSUserland)}, {"ZFS module", known(o.Host.ZFSKernel)}}
 		if o.Host.PhysicalMemory != nil {

@@ -1,0 +1,173 @@
+{
+  "schema": 1,
+  "date": "2026-10-12",
+  "owning_issue": "https://github.com/gonz0w/horvium/issues/354",
+  "parent_gate": "https://github.com/gonz0w/horvium/issues/289",
+  "qualification_scope": "portable bounded generation-bound Overview pool implementation only",
+  "source_commit": "bcb50419eb31838e5e36a01cc3c8dc34369d99fc",
+  "base_commit": "84913b3ea10ed0b4a9834868f017d73b1deeea2a",
+  "design_approval": {
+    "pr": 349,
+    "merge_commit": "4713aef87cca23183b949ba2ed5a56130b3b3186"
+  },
+  "foundation": {
+    "pr": 353,
+    "merge_commit": "84913b3ea10ed0b4a9834868f017d73b1deeea2a"
+  },
+  "requirements": [
+    "DASH-REQ-001",
+    "DASH-REQ-002",
+    "DASH-REQ-003",
+    "DASH-REQ-004",
+    "DASH-REQ-005",
+    "DASH-REQ-006",
+    "DASH-REQ-007"
+  ],
+  "review": {
+    "title": "feat(console): compare generation-bound Overview pools",
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/console",
+        "./internal/service"
+      ],
+      "native_review_required": false
+    },
+    "record": ".tools/review-runs/d7457ocy/result.json",
+    "record_sha256": "ccb0256e5709abfb315ef4e5f762a43c6444b9ad93cea170542f66c54640a528",
+    "checks_log_sha256": "2c613f04f9524ff9113ec9ec4ddf4b46fc04646a0e25efae5e433e721adb8e5d",
+    "baseline_checks_passed": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "tooling_tests": 258,
+    "race_packages": [
+      "./cmd/horvium",
+      "./internal/console",
+      "./internal/service"
+    ],
+    "fuzz_targets": [],
+    "deep_log_sha256": "e8f5e99b1829f5ad632d0b9108a0dec505b34fb331059b585c990fb45234ce5c",
+    "input_digest": "a9092565ab3c3c3ed34c18392560c9f9fa4dbe070ddf6807a72eb1237e5866be",
+    "elapsed_seconds": 45.234
+  },
+  "failing_first": {
+    "log_sha256": "8aa1a0c43d8eb3a9989c954c425167c49372408f92b69afde81d17d04f4c193d",
+    "observed_failure": "missing comparisons before implementation",
+    "fixture_validation_failures": 0
+  },
+  "behavioral_tests": [
+    "TestOverviewCapacityBoundAndExactLinks",
+    "TestOverviewCapacityEmptyUnavailableAndStale",
+    "TestOverviewCapacityDenials",
+    "TestOverviewCapacityInterleavedReads"
+  ],
+  "generation_interleaving": {
+    "reader": "private test reader delegating both calls to actual observation.Manager",
+    "overview_calls": 1,
+    "pool_calls_after_successful_overview": 1,
+    "query": {
+      "generation": "exact Overview-returned generation",
+      "sort": "name",
+      "limit": 100,
+      "offset": 0,
+      "filter": ""
+    },
+    "replacements_0_1": "original generation retained",
+    "replacements_2": "ErrExpired and both projections discarded, no retry",
+    "initial_expiry": "no pool call",
+    "cancellation_between": "both projections discarded"
+  },
+  "freebsd_cross_build": {
+    "source_commit": "bcb50419eb31838e5e36a01cc3c8dc34369d99fc",
+    "target": "FreeBSD/amd64/v1",
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "cgo_enabled": false,
+    "artifacts": [
+      {
+        "package": "./internal/console",
+        "bytes": 16583753,
+        "sha256": "6edffacb1c986052a69e0e1137d5fec78491de8dfcddcac5716b94a8895f2162",
+        "executed": false,
+        "removed": true
+      },
+      {
+        "package": "./cmd/horvium",
+        "bytes": 18001409,
+        "sha256": "813f66d7f526e7fefa9e527f99eedc9fd605b93b910c2d1092edf9f87b3c223c",
+        "executed": false,
+        "removed": true
+      }
+    ],
+    "native_execution": false
+  },
+  "supplementary_browser": {
+    "candidate_source": "bcb50419eb31838e5e36a01cc3c8dc34369d99fc",
+    "browser": "Codex in-app browser; engine/version not captured",
+    "fixture": "existing explicitly labelled synthetic TestBrowserPreview",
+    "viewport_width": 1280,
+    "appearance": "light",
+    "document_client_width": 1280,
+    "document_scroll_width": 1280,
+    "observed_ratios": [
+      "33.3%",
+      "66.7%"
+    ],
+    "observed_svg_widths": [
+      333,
+      667
+    ],
+    "exact_table_bytes": [
+      "3000000000000",
+      "1000000000000",
+      "2000000000000"
+    ],
+    "keyboard_drill_down": "same original GUID/generation on Pools; focus on comparison link",
+    "console_warning_error_entries_observed": 0,
+    "screenshot_sha256": "f28527e908d0c6c80d5da6c4aa41b8135a35d89ce93c9154512dd2f5e31d8eb9",
+    "owned_tab_closed": true,
+    "qualification": false
+  },
+  "teardown": {
+    "owned_records_stopped_verified": 172,
+    "status_log_sha256": "dd0c8402482615fc8d0ba16cbecd18c727e4552a6e51db5b4c4b80f77a862aa3",
+    "preview_stopped": true,
+    "cross_build_artifacts_removed": true
+  },
+  "preservation": {
+    "historical_manifests_byte_identical": 136,
+    "collector_cache_native_privilege_storage_tooling_modules_and_workflows_unchanged": true
+  },
+  "bounds": {
+    "comparison_and_exact_table_rows": 20,
+    "pool_page_limit": 100,
+    "overview_reads": 1,
+    "pool_page_reads": 1,
+    "additional_native_queries": 0,
+    "additional_browser_timers": 0,
+    "durable_history_samples": 0,
+    "new_runtime_dependencies": 0
+  },
+  "acceptance": {
+    "portable_slice": true,
+    "dashboard_delivery": false,
+    "native_execution": false,
+    "native_resource_performance": false,
+    "safari_firefox_manual_accessibility": false,
+    "hardware_commercial_scale": false,
+    "runtime_writes": false
+  },
+  "limits": [
+    "A current first-by-name page cannot identify every degraded pool or global capacity ranking.",
+    "The new bounded cached pool read needs fresh native service/resource measurements before broad acceptance.",
+    "uPlot, operator history and new telemetry are absent.",
+    "In-app preview is not the required browser/accessibility matrix or measured browser performance.",
+    "Cross-compilation did not execute FreeBSD behavior.",
+    "Earlier startup deadline remains unexplained; full native lifecycle gates 305/139 remain open.",
+    "Existing failed/skipped historical evidence retains its original scope."
+  ]
+}
