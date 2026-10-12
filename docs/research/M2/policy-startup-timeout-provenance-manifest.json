@@ -1,0 +1,838 @@
+{
+  "schema": 1,
+  "date": "2026-10-11",
+  "scope": "offline source/evidence replay and proposed deadline return-path diagnostic/Test Design; no implementation or new native execution",
+  "research_issue": 335,
+  "coordinating_acceptance_issue": 305,
+  "parent_gate": 139,
+  "review_base_commit": "df47fe999210e6b2f602778bdbbc8b052321c5c1",
+  "original_executed_source_commit": "c63ad0614c4922a5edcf67d8a3dad23bba6e944a",
+  "original_witness": {
+    "path": "docs/research/M2/policy-startup-operation-timeout-manifest.json",
+    "sha256": "9ba85d24fdd70b1c745c3f19aff063126bbafaf61d94bea02bf3faa8f04e29d8",
+    "record_sha256": "e5bb0bb8d5cd2e6840536d7b8e277cea688dc8d1e94ec2121e6f43b5635b51a9",
+    "log_sha256": "bb3f9aaabe1ce48e155dfb0e4e6aae4a5552186677ebb234bd81f47d2e1185ca",
+    "artifact": {
+      "source_commit": "c63ad0614c4922a5edcf67d8a3dad23bba6e944a",
+      "sha256": "e816430ce0bbfd40e03838e345e97f656d3c4ea29a5db233c587409de7f302d4",
+      "bytes": 13746671,
+      "go_version": "go version go1.27.1 darwin/arm64",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+      "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+      "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+      "target": "freebsd/amd64",
+      "goamd64": "v1",
+      "cgo_enabled": false,
+      "build_arguments": [
+        "go",
+        "test",
+        "-c",
+        "-trimpath",
+        "-tags=horvium_native_fixture",
+        "-o",
+        "<owned-artifact>",
+        "./internal/host/freebsd"
+      ]
+    },
+    "strict_diagnostic_replay_passed": true,
+    "native_acceptance": false,
+    "operation_success": false,
+    "observed_summary": {
+      "return_ns": 121635881999,
+      "caller_deadline_ns": 180000000000,
+      "caller_error": "none",
+      "startup_error": "deadline",
+      "owner_present": false,
+      "samples": [
+        {
+          "id": 1,
+          "offset_ns": 30000000000,
+          "begin_ns": 30008719000,
+          "end_ns": 30017926000,
+          "bytes": 8789,
+          "sha256": "4ad68e73d0aaf428c47b9a1c0d064fd6db1feda475d51b4f5e9b56cc40d5933e",
+          "status": "captured"
+        },
+        {
+          "id": 2,
+          "offset_ns": 75000000000,
+          "begin_ns": 75004420999,
+          "end_ns": 75006222999,
+          "bytes": 9545,
+          "sha256": "2cfccf1f6acbc352e8f1ea0d3d784d20f73e24342abe0a321eaeb2f340a16a47",
+          "status": "captured"
+        },
+        {
+          "id": 3,
+          "offset_ns": 110000000000,
+          "begin_ns": 110002551999,
+          "end_ns": 110003725999,
+          "bytes": 10153,
+          "sha256": "2de60f3c89f4466bf190f46d66c4959ad2816a6bdba5f3117e9768748de48dd8",
+          "status": "captured"
+        }
+      ]
+    },
+    "observed_final_journal": {
+      "before_sha256": "e6a60aab5bf3f6179f796d8b1a060396819852ec389dd3d618d1c969fa3106f3",
+      "after_sha256": "2e2be6111b843ef875a3bb514e3ed84e93c1ab3045d785e794fdd4af520f833e",
+      "unchanged": false,
+      "decoded": true,
+      "state": "active",
+      "generation_before": 6,
+      "generation_after": 7
+    },
+    "inventory": {
+      "parents": 1,
+      "normally_waited_children": 2,
+      "fact_controls": 21,
+      "diagnostic_controls": 21,
+      "total_controls": 42,
+      "complete": true
+    },
+    "cleanup": {
+      "host_teardown": true,
+      "base_preserved": true,
+      "runtime_preserved": true,
+      "device_backings_preserved": true,
+      "device_fixture_teardown": true,
+      "supervisor_fixture_cleanup": true,
+      "supervisor_group_cleaned": true
+    },
+    "original_artifacts_still_removed": true,
+    "limits": "previous candidate only; no new execution or acceptance; historical incomplete lifecycle guest vectors remain unverified"
+  },
+  "frame_replay": {
+    "counts": {
+      "frames": 103,
+      "project_frames": 70,
+      "compiler_frames": 33
+    },
+    "source_files": 26,
+    "bindings": {
+      "syscall/asm_unix_amd64.s": {
+        "sha256": "ab8df94a62e23a5dcc79590078ca54dd1432faed5341cc27fdab6f9ef9cd0e66",
+        "origin": "compiler-matched Go source"
+      },
+      "os/wait6_freebsd64.go": {
+        "sha256": "1cadc99c0d646c0daa735b2019c76c470d3bf91d3e7ea298015ea3ccb3ccc728",
+        "origin": "compiler-matched Go source"
+      },
+      "os/wait_wait6.go": {
+        "sha256": "78e364a18a97408cbcae5735608f687fb75ed3a028be81b4b2050f44ed79d596",
+        "origin": "compiler-matched Go source"
+      },
+      "os/file_posix.go": {
+        "sha256": "2e93ac5f812cd7184d3ac3a2eb9a51583911a6261cf9c27772fa7dfedcbe514f",
+        "origin": "compiler-matched Go source"
+      },
+      "os/exec_unix.go": {
+        "sha256": "6e5581c9945c2364c01c26ed4d8659f0b0c10cd32b4eab3000132dc98e8e92f4",
+        "origin": "compiler-matched Go source"
+      },
+      "os/exec.go": {
+        "sha256": "811e5ad1e525fa0b4ab9109ee003f493df79e30e2b17ea29d643686ac9c6db2b",
+        "origin": "compiler-matched Go source"
+      },
+      "os/exec/exec.go": {
+        "sha256": "3ec96eeef97a375aa5e39663961f8adf3177db9449dacd3c407fd258bc9a2498",
+        "origin": "compiler-matched Go source"
+      },
+      "internal/host/freebsd/execute.go": {
+        "sha256": "6b1aa25996f23adec5d9af6bb58708ae475a5a2291f9e994cab83e1408d0c1d8",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/host/freebsd/guard_freebsd.go": {
+        "sha256": "3093de04ed48250ad47424b14467e8e698ee264a7b2cc241e008b05191ec9c03",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/host/freebsd/system_use_freebsd.go": {
+        "sha256": "2e9ea15925e59bd1c0480d75e8856eecd15e41b8316037b0b026424d550b7d4a",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/host/freebsd/system_use.go": {
+        "sha256": "450a4ae0ca879337d452dafa0b34b781513dc8654618e3645014a1e37d8c941e",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/storage/execution_domains_freebsd.go": {
+        "sha256": "4c117a7a2136d422eef44f936a98d4ebeac6fd52ff017d05deab619feb5571bf",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/storage/execution_startup_freebsd.go": {
+        "sha256": "7568274947d0110a46be79758bcaf5086829f1d2e7636715b3b4c214cc80a679",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/storage/execution_binding_freebsd.go": {
+        "sha256": "a6d549990d5855697c9774b92ba328a3146774320661624b4760946143b31f1d",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/storage/execution_policy_freebsd.go": {
+        "sha256": "43f7d1152ac5c83b55ebdf0233eaa4a44cd8bb8a8f8397f22cc307dabad190ef",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/host/freebsd/execution_restart_freebsd.go": {
+        "sha256": "2c4bd0e5ff57a17d803ad59ca346cbf7094040addd6c4062ed7eb9b50330c444",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/host/freebsd/execution_owner.go": {
+        "sha256": "c3b9bb2b2b9c309947dc4f55723e3ae9ca5dcb2bac48beb77d8cd3aa1935e7ba",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/host/freebsd/execution_policy_startup_envelope_fixture_test.go": {
+        "sha256": "bc3dca34e1592a20fb6b91dbaf6b9984be299174c1e8b0ff910c5b77223a7133",
+        "origin": "executed Horvium Git source"
+      },
+      "testing/testing.go": {
+        "sha256": "8d2437cfdcfb82fd8807e5063783de1d50f70e589e80cad10e17d8ef23f724d9",
+        "origin": "compiler-matched Go source"
+      },
+      "internal/host/freebsd/persistent_backing_freebsd.go": {
+        "sha256": "2934f96769d2fbd560ac72fb9d9376d441285e616ee771a299d8eb67ae5ac724",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/host/freebsd/persistent_backing.go": {
+        "sha256": "067be07406ec23cb922e228e99a00b127b257c943a508a84f682b51ab390a0ac",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/host/freebsd/joint_execution_leases_freebsd.go": {
+        "sha256": "c583daebb2831212bfe32b875b0eb899e5b52f6d800fc462812a8596cbc0ca36",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/storage/execution_domain_freebsd.go": {
+        "sha256": "237179b1e73510fc345e81c72440cf52662edb41e06396d5f17e7ed900f6c5ed",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/storage/execution_restart_freebsd.go": {
+        "sha256": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/storage/execution_restart.go": {
+        "sha256": "d1295d3d440299c250009c23f72e64a8802d14efb8813d49c5e9af65b43a21d2",
+        "origin": "executed Horvium Git source"
+      },
+      "internal/storage/state_catalog_freebsd.go": {
+        "sha256": "1359c639d1ddefc5de71d5b482a629e3395f5af1dc350bc664bdc635aedcfab2",
+        "origin": "executed Horvium Git source"
+      }
+    },
+    "limits": "all original sanitized frame vectors rebound to executed source, unchanged review base and compiler; originals remain in prior immutable receipt"
+  },
+  "original_point_inferences_replayed": {
+    "kind": "executed-source and point-sample deductions; no exact phase boundaries or timer provenance",
+    "activation_context_creation_ns_lower_exclusive": 30008719000,
+    "activation_context_creation_ns_upper_inclusive": 75006222999,
+    "nominal_activation_deadline_ns_lower_exclusive": 120008719000,
+    "nominal_activation_deadline_ns_upper_inclusive": 165006222999,
+    "original_caller_deadline_ns": 180000000000,
+    "original_caller_clips_activation_context": false,
+    "publication_ns_lower_exclusive": 75004420999,
+    "publication_ns_upper_inclusive": 110003725999,
+    "unsuccessful_startup_reached_post_publication_inspection": true,
+    "earliest_expired_nested_context": "not identified",
+    "fixed_version_reader_at_each_sample": "source branch /bin/freebsd-version -kru; not necessarily final failed command or same invocation"
+  },
+  "source_assertions": [
+    {
+      "id": 1,
+      "file": "internal/host/freebsd/execution_restart_freebsd.go",
+      "lines": [
+        26
+      ],
+      "contains": "storage.ReviewExecutionPolicyStartup(c,",
+      "count": 1
+    },
+    {
+      "id": 2,
+      "file": "internal/host/freebsd/execution_restart_freebsd.go",
+      "lines": [
+        30
+      ],
+      "contains": "r.Activate(c)",
+      "count": 1
+    },
+    {
+      "id": 3,
+      "file": "internal/host/freebsd/execution_restart_freebsd.go",
+      "lines": [
+        32
+      ],
+      "contains": "errors.Join(e, r.Close())",
+      "count": 1
+    },
+    {
+      "id": 4,
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "lines": [
+        53
+      ],
+      "contains": "OpenExecutionDomainLeases(ctx,",
+      "count": 1
+    },
+    {
+      "id": 5,
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "lines": [
+        59,
+        71
+      ],
+      "contains": "n.inspect(ctx)",
+      "count": 2
+    },
+    {
+      "id": 6,
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "lines": [
+        87
+      ],
+      "contains": "context.WithTimeout(ctx, 90*time.Second)",
+      "count": 1
+    },
+    {
+      "id": 7,
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "lines": [
+        23
+      ],
+      "contains": "context.WithTimeout(ctx, 90*time.Second)",
+      "count": 1
+    },
+    {
+      "id": 8,
+      "file": "internal/host/freebsd/persistent_backing.go",
+      "lines": [
+        43
+      ],
+      "contains": "context.WithTimeout(ctx, s.totalTimeout)",
+      "count": 1
+    },
+    {
+      "id": 9,
+      "file": "internal/host/freebsd/persistent_backing.go",
+      "lines": [
+        53
+      ],
+      "contains": "context.WithTimeout(ctx, s.commandTimeout)",
+      "count": 1
+    },
+    {
+      "id": 10,
+      "file": "internal/host/freebsd/pool_properties.go",
+      "lines": [
+        96
+      ],
+      "contains": "context.WithTimeout(ctx, s.totalTimeout)",
+      "count": 1
+    },
+    {
+      "id": 11,
+      "file": "internal/host/freebsd/pool_properties.go",
+      "lines": [
+        61
+      ],
+      "contains": "context.WithTimeout(ctx, c.source.commandTimeout)",
+      "count": 1
+    },
+    {
+      "id": 12,
+      "file": "internal/host/freebsd/pool_providers.go",
+      "lines": [
+        74
+      ],
+      "contains": "context.WithTimeout(ctx, r.totalTimeout)",
+      "count": 1
+    },
+    {
+      "id": 13,
+      "file": "internal/host/freebsd/system_use.go",
+      "lines": [
+        89
+      ],
+      "contains": "context.WithTimeout(ctx, s.totalTimeout)",
+      "count": 1
+    },
+    {
+      "id": 14,
+      "file": "internal/host/freebsd/system_use.go",
+      "lines": [
+        59
+      ],
+      "contains": "context.WithTimeout(ctx, c.source.commandTimeout)",
+      "count": 1
+    },
+    {
+      "id": 15,
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "lines": [
+        50,
+        75,
+        100
+      ],
+      "contains": "n.inspectLocked(ctx)",
+      "count": 3
+    },
+    {
+      "id": 16,
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "lines": [
+        84
+      ],
+      "contains": "n.publishClosedStartupLocked(next, wrap)",
+      "count": 1
+    },
+    {
+      "id": 17,
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "lines": [
+        103
+      ],
+      "contains": "a := &ExecutionRestartActivation",
+      "count": 1
+    },
+    {
+      "id": 18,
+      "file": "internal/host/freebsd/pool_properties.go",
+      "lines": [
+        46
+      ],
+      "contains": "commandTimeout: 10 * time.Second, totalTimeout: 45 * time.Second",
+      "count": 1
+    },
+    {
+      "id": 19,
+      "file": "internal/host/freebsd/pool_properties.go",
+      "lines": [
+        62,
+        97
+      ],
+      "contains": "defer cancel()",
+      "count": 2
+    },
+    {
+      "id": 20,
+      "file": "internal/host/freebsd/pool_properties.go",
+      "lines": [
+        71
+      ],
+      "contains": "child.Err()",
+      "count": 1
+    },
+    {
+      "id": 21,
+      "file": "internal/host/freebsd/system_use.go",
+      "lines": [
+        44
+      ],
+      "contains": "commandTimeout: 10 * time.Second, totalTimeout: 45 * time.Second",
+      "count": 1
+    },
+    {
+      "id": 22,
+      "file": "internal/host/freebsd/system_use.go",
+      "lines": [
+        60,
+        90
+      ],
+      "contains": "defer cancel()",
+      "count": 2
+    },
+    {
+      "id": 23,
+      "file": "internal/host/freebsd/system_use.go",
+      "lines": [
+        69
+      ],
+      "contains": "child.Err()",
+      "count": 1
+    },
+    {
+      "id": 24,
+      "file": "internal/host/freebsd/persistent_backing_freebsd.go",
+      "lines": [
+        26
+      ],
+      "contains": "commandTimeout: 10 * time.Second, totalTimeout: 45 * time.Second",
+      "count": 1
+    },
+    {
+      "id": 25,
+      "file": "internal/host/freebsd/persistent_backing.go",
+      "lines": [
+        54
+      ],
+      "contains": "defer stop()",
+      "count": 1
+    },
+    {
+      "id": 26,
+      "file": "internal/host/freebsd/persistent_backing.go",
+      "lines": [
+        63
+      ],
+      "contains": "child.Err()",
+      "count": 1
+    },
+    {
+      "id": 27,
+      "file": "internal/host/freebsd/persistent_backing.go",
+      "lines": [
+        55
+      ],
+      "contains": "s.read(child, probe, name, remaining)",
+      "count": 1
+    },
+    {
+      "id": 28,
+      "file": "internal/host/freebsd/pool_providers.go",
+      "lines": [
+        76
+      ],
+      "contains": "c := systemCycle{source: r,",
+      "count": 1
+    },
+    {
+      "id": 29,
+      "file": "internal/host/freebsd/pool_providers.go",
+      "lines": [
+        106,
+        159,
+        163
+      ],
+      "contains": "c.capture(ctx,",
+      "count": 3
+    },
+    {
+      "id": 30,
+      "file": "internal/host/freebsd/system_use.go",
+      "lines": [
+        61
+      ],
+      "contains": "c.source.read(child,",
+      "count": 1
+    },
+    {
+      "id": 31,
+      "file": "internal/host/freebsd/pool_properties.go",
+      "lines": [
+        63
+      ],
+      "contains": "c.source.read(child,",
+      "count": 1
+    },
+    {
+      "id": 32,
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "lines": [
+        189,
+        207
+      ],
+      "contains": "p.observeLocked(ctx,",
+      "count": 2
+    },
+    {
+      "id": 33,
+      "file": "internal/storage/execution_policy_freebsd.go",
+      "lines": [
+        70,
+        74
+      ],
+      "contains": "observeExecutionDomainLocked(ctx, n.read)",
+      "count": 2
+    },
+    {
+      "id": 34,
+      "file": "internal/storage/execution_domains_freebsd.go",
+      "lines": [
+        153,
+        157,
+        190,
+        194
+      ],
+      "contains": "observeExecutionDomainLocked(ctx, read)",
+      "count": 4
+    },
+    {
+      "id": 35,
+      "file": "internal/storage/execution_domain_freebsd.go",
+      "lines": [
+        43
+      ],
+      "contains": "b, e := read(ctx,",
+      "count": 1
+    },
+    {
+      "id": 36,
+      "file": "internal/host/freebsd/joint_execution_leases_freebsd.go",
+      "lines": [
+        17
+      ],
+      "contains": "collectNativePersistentBacking(ctx, fd)",
+      "count": 1
+    },
+    {
+      "id": 37,
+      "file": "internal/storage/execution_domains_freebsd.go",
+      "lines": [
+        84
+      ],
+      "contains": "context.WithTimeout(ctx, 90*time.Second)",
+      "count": 1
+    },
+    {
+      "id": 38,
+      "file": "internal/storage/execution_domain_freebsd.go",
+      "lines": [
+        18
+      ],
+      "contains": "context.WithTimeout(ctx, 45*time.Second)",
+      "count": 1
+    },
+    {
+      "id": 39,
+      "file": "internal/host/freebsd/execute.go",
+      "lines": [
+        57
+      ],
+      "contains": "child, cancel := context.WithCancel(ctx)",
+      "count": 1
+    },
+    {
+      "id": 40,
+      "file": "internal/host/freebsd/execute.go",
+      "lines": [
+        70
+      ],
+      "contains": "cmd.Run()",
+      "count": 1
+    },
+    {
+      "id": 41,
+      "file": "internal/host/freebsd/execute.go",
+      "lines": [
+        71
+      ],
+      "contains": "cleanupErr := finish()",
+      "count": 1
+    },
+    {
+      "id": 42,
+      "file": "internal/host/freebsd/execute.go",
+      "lines": [
+        79
+      ],
+      "contains": "return result, ctx.Err()",
+      "count": 1
+    },
+    {
+      "id": 43,
+      "file": "internal/host/freebsd/execution_owner.go",
+      "lines": [
+        87,
+        142,
+        171
+      ],
+      "contains": "e = errors.Join(e, ctx.Err())",
+      "count": 3
+    },
+    {
+      "id": 44,
+      "file": "internal/storage/execution_restart.go",
+      "lines": [
+        63,
+        96
+      ],
+      "contains": "e = errors.Join(e, ctx.Err())",
+      "count": 2
+    },
+    {
+      "id": 45,
+      "file": "internal/host/freebsd/execution_policy_startup_envelope_fixture_test.go",
+      "lines": [
+        76
+      ],
+      "contains": "callerError := policyTraceError(c.Err())",
+      "count": 1
+    },
+    {
+      "id": 46,
+      "file": "internal/host/freebsd/execution_policy_startup_envelope_fixture_test.go",
+      "lines": [
+        74
+      ],
+      "contains": "activateNativeClosedExecutionOwner(c, j, l)",
+      "count": 1
+    }
+  ],
+  "source_hashes": {
+    "internal/host/freebsd/execution_restart_freebsd.go": "2c4bd0e5ff57a17d803ad59ca346cbf7094040addd6c4062ed7eb9b50330c444",
+    "internal/storage/execution_startup_freebsd.go": "7568274947d0110a46be79758bcaf5086829f1d2e7636715b3b4c214cc80a679",
+    "internal/storage/execution_restart_freebsd.go": "89cfdededb1c656b2894ed06e4f4be8be7b604bceb823219c075206af2443241",
+    "internal/host/freebsd/persistent_backing.go": "067be07406ec23cb922e228e99a00b127b257c943a508a84f682b51ab390a0ac",
+    "internal/host/freebsd/pool_properties.go": "3d5b066c5193199a8bbd0e0cb1f29d9080410abf9fc01281484e9d22a1ec3b85",
+    "internal/host/freebsd/pool_providers.go": "2aeaecda024a4a77405abec1d2662210c05657fb6c557b14c8f3628300caca37",
+    "internal/host/freebsd/system_use.go": "450a4ae0ca879337d452dafa0b34b781513dc8654618e3645014a1e37d8c941e",
+    "internal/host/freebsd/persistent_backing_freebsd.go": "2934f96769d2fbd560ac72fb9d9376d441285e616ee771a299d8eb67ae5ac724",
+    "internal/storage/execution_policy_freebsd.go": "43f7d1152ac5c83b55ebdf0233eaa4a44cd8bb8a8f8397f22cc307dabad190ef",
+    "internal/storage/execution_domains_freebsd.go": "4c117a7a2136d422eef44f936a98d4ebeac6fd52ff017d05deab619feb5571bf",
+    "internal/storage/execution_domain_freebsd.go": "237179b1e73510fc345e81c72440cf52662edb41e06396d5f17e7ed900f6c5ed",
+    "internal/host/freebsd/joint_execution_leases_freebsd.go": "c583daebb2831212bfe32b875b0eb899e5b52f6d800fc462812a8596cbc0ca36",
+    "internal/host/freebsd/execute.go": "6b1aa25996f23adec5d9af6bb58708ae475a5a2291f9e994cab83e1408d0c1d8",
+    "internal/host/freebsd/execution_owner.go": "c3b9bb2b2b9c309947dc4f55723e3ae9ca5dcb2bac48beb77d8cd3aa1935e7ba",
+    "internal/storage/execution_restart.go": "d1295d3d440299c250009c23f72e64a8802d14efb8813d49c5e9af65b43a21d2",
+    "internal/host/freebsd/execution_policy_startup_envelope_fixture_test.go": "bc3dca34e1592a20fb6b91dbaf6b9984be299174c1e8b0ff910c5b77223a7133"
+  },
+  "original_43_assertions_replayed": true,
+  "startup_timer_constructor_sites": [
+    {
+      "file": "internal/storage/execution_startup_freebsd.go",
+      "line": 87,
+      "role": "review inspection",
+      "configured_seconds": 90
+    },
+    {
+      "file": "internal/storage/execution_restart_freebsd.go",
+      "line": 23,
+      "role": "activation shared context",
+      "configured_seconds": 90
+    },
+    {
+      "file": "internal/host/freebsd/persistent_backing.go",
+      "line": 43,
+      "role": "backing collection",
+      "configured_seconds": 45
+    },
+    {
+      "file": "internal/host/freebsd/persistent_backing.go",
+      "line": 53,
+      "role": "backing command",
+      "configured_seconds": 10
+    },
+    {
+      "file": "internal/host/freebsd/pool_properties.go",
+      "line": 96,
+      "role": "pool collection",
+      "configured_seconds": 45
+    },
+    {
+      "file": "internal/host/freebsd/pool_properties.go",
+      "line": 61,
+      "role": "pool command",
+      "configured_seconds": 10
+    },
+    {
+      "file": "internal/host/freebsd/pool_providers.go",
+      "line": 74,
+      "role": "provider collection",
+      "configured_seconds": 45
+    },
+    {
+      "file": "internal/host/freebsd/system_use.go",
+      "line": 89,
+      "role": "system collection",
+      "configured_seconds": 45
+    },
+    {
+      "file": "internal/host/freebsd/system_use.go",
+      "line": 59,
+      "role": "system/provider command",
+      "configured_seconds": 10
+    }
+  ],
+  "unused_public_observer_timers": [
+    {
+      "file": "internal/storage/execution_domains_freebsd.go",
+      "line": 84,
+      "seconds": 90,
+      "reason": "public joint-domain observe; startup directly uses observeLocked without creating this context"
+    },
+    {
+      "file": "internal/storage/execution_domain_freebsd.go",
+      "line": 18,
+      "seconds": 45,
+      "reason": "public single-domain observe; startup directly uses observeExecutionDomainLocked; native backing collector supplies its own context"
+    }
+  ],
+  "proposed_method": {
+    "status": "requires explicit maintainer adoption/rejection",
+    "annotation_enabled_only": "native fixture tag plus dedicated disposable caller enablement",
+    "ordinary_and_disabled_adapter": "exact original error identity; ordinary adapter has no context inspection or evidence allocation",
+    "original_timeouts_and_producers": "unchanged; no new context, timeout cause, timer, collector wrapper, cache or guard deletion",
+    "maximum_frames": 12,
+    "maximum_encoded_trace_bytes": 8192,
+    "native_profile": {
+      "release": "15.1",
+      "cpu_count": 1,
+      "cpu_model": "qemu64",
+      "accelerator": "tcg",
+      "memory_mib": 6144,
+      "owned_devices": 7
+    },
+    "budgets": {
+      "child_seconds": 210,
+      "parent_seconds": 480,
+      "phase_minutes": 18,
+      "caller_seconds": 180,
+      "product_seconds": 90,
+      "sample_seconds": [
+        30,
+        75,
+        110
+      ],
+      "snapshot_bytes": 65536,
+      "join_seconds": 5
+    },
+    "inventory": {
+      "parents": 1,
+      "normally_waited_children": 2,
+      "child_controls": 13,
+      "diagnostic_parent_controls": 29,
+      "original_fact_controls": 21,
+      "total_controls": 50,
+      "original_controls_retained": 42,
+      "new_parent_carried_child_controls": 5,
+      "new_parent_controls": 3
+    },
+    "test_design_ids": [
+      "M2-POLICY-DEADLINE-PROVENANCE-001",
+      "M2-POLICY-DEADLINE-PROVENANCE-002",
+      "M2-POLICY-DEADLINE-PROVENANCE-003",
+      "M2-POLICY-DEADLINE-PROVENANCE-004",
+      "M2-POLICY-DEADLINE-PROVENANCE-005",
+      "M2-POLICY-DEADLINE-PROVENANCE-006"
+    ],
+    "executed": false
+  },
+  "historical_receipts_unchanged": {
+    "docs/testing/M2/retained-policy-admission-manifest.json": "2e733dd5a017772ce7947913ced1c16940ee8614cde445cb9fcd0327331077c3",
+    "docs/testing/M2/retained-policy-lifecycle-budget-manifest.json": "4019d0b125d2dfbf0bc1be31f1cc0465eea1aae9bd40dc28efeeecc3bec13990",
+    "docs/testing/M2/retained-policy-lifecycle-caller-manifest.json": "ce438292ee672027e896d4f8476635c2ad271d9fb29364ad6babae97428e2475",
+    "docs/testing/M2/retained-policy-lifecycle-qualification-manifest.json": "43d7724e44af147a619eac167b1b13cbd703c69b43809b358e0318a5499cd66e",
+    "docs/testing/M2/retained-policy-native-facts-manifest.json": "e9d4a0c6eef2011b236ea69a0ff94c0adae9a9c8f2102fefe4c9ff69f1c9f499",
+    "docs/testing/M2/retained-policy-native-history-manifest.json": "0788d387d4b4c27921fd3f68ffc5206f9fe0c548270464d34c87fd6ea4b8db6d",
+    "docs/testing/M2/retained-policy-native-lifecycle-manifest.json": "43fdd1bbda87853e7d9aee336f70402bfc5f263b9b6b71304dee7133faea5ce0",
+    "docs/testing/M2/retained-policy-native-multiple-manifest.json": "294662c837cf9921dba954491b6737f84adc43de71d09d93c3747107992eb263",
+    "docs/testing/M2/retained-policy-native-review-manifest.json": "f37c74e30d2c769d87f65872303021fd5bf2640467636bd9bea499ae4abaa3cf",
+    "docs/testing/M2/retained-policy-root-manifest.json": "52bb88c0d6cc94fe031a8345adb1bdc1e5fb005634d24f4ba3eb47a59ea3366a",
+    "docs/testing/M2/retained-policy-root-qualification-manifest.json": "6d3dd07f65d88247bdd854061f811629c59168bcfda42385eab5a7cf21aac99c",
+    "docs/testing/M2/retained-policy-startup-manifest.json": "b7b248f1bfe6e197f1c8955f72f80c9fbeef0a71a641767e424059df7cfdd271",
+    "docs/research/M2/policy-lifecycle-caller-manifest.json": "1a7febc154a2dd9542f50a43bdc7acafd69485c39d423810bd04f2bca708610f",
+    "docs/research/M2/policy-lifecycle-timeout-manifest.json": "53c7a8c64b1681863e91920364e97e02f5f3a6875c72dab60269999389fcd95c",
+    "docs/research/M2/policy-startup-costs-manifest.json": "4564cee1d3e579557f6af7d187a77274183752d2af370b44d4e92eed6431ca5a",
+    "docs/research/M2/policy-startup-deadline-manifest.json": "bae3a271140cbaef0ad08d5dbc290b388cfea2645aeb634ba973fc899094d017",
+    "docs/research/M2/policy-startup-envelope-manifest.json": "08a17cec903d3d16e9d816b6ccd99ee84883c9aa87a3d272f84a4e4692def459",
+    "docs/research/M2/policy-startup-inspection-manifest.json": "3abf2f117b3fd66779cc04a7d07e15c3a2777199d327d997fd8c8e421001bdfc",
+    "docs/research/M2/policy-startup-operation-timeout-manifest.json": "9ba85d24fdd70b1c745c3f19aff063126bbafaf61d94bea02bf3faa8f04e29d8",
+    "docs/research/M2/policy-startup-stack-manifest.json": "33c3640f5cc7602735912bd6e7949cdc3a10b8ca078503a64508d1a56bf30052",
+    "docs/research/M2/policy-startup-stack-qualification-manifest.json": "9512fbd6286228d5a417247602c6812b02b33a1385fa51c8292245c99fcfde5a"
+  },
+  "new_native_executions": 0,
+  "new_product_or_fixture_implementation": false,
+  "new_behavioral_tests": false,
+  "decision": "pending maintainer review; no instrumentation/altered method run until adoption",
+  "limits": [
+    "Observed pre-cancel return path and effective deadlines cannot prove earliest timer delivery or exact performance/emulation/deadlock causality",
+    "Instrumented candidate would have observation overhead; it cannot become uninstrumented production timing or reconstruct earlier failed state",
+    "No new native/portable behavioral acceptance; ordinary local baseline review still required",
+    "Both full 293-control native lifecycle release gates and broader runtime/release acceptance remain open"
+  ]
+}

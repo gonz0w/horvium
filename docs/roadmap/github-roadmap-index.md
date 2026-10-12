@@ -282,3 +282,11 @@ The [focused original startup operation timeout investigation](../research/M2/po
 reuses the adopted separate diagnostic under [owner #305](https://github.com/gonz0w/horvium/issues/305).
 Its source review and candidate evidence remain separate from full lifecycle
 acceptance; GitHub owns live status and priority.
+
+[Startup deadline provenance design (#335)](https://github.com/gonz0w/horvium/issues/335)
+owns the [proposed fixture-only method/Test Design](../research/M2/policy-startup-timeout-provenance.md),
+a native decision prerequisite for [owner #305](https://github.com/gonz0w/horvium/issues/305)
+under [parent #139](https://github.com/gonz0w/horvium/issues/139). The
+[offline replay](../research/M2/policy-startup-timeout-provenance-manifest.json)
+preserves prior candidate limits. Implementation, native diagnostic completeness
+and both full lifecycle release gates remain separate; GitHub owns live status.

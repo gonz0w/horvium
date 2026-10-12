@@ -239,3 +239,6 @@
 - [Original startup operation timeout investigation](research/M2/policy-startup-operation-timeout.md): exact-source review and one unchanged adopted diagnostic under issue 305; broader native acceptance remains pending.
 
 - [Startup operation timeout receipt](research/M2/policy-startup-operation-timeout-manifest.json): complete 42-control diagnostic with unsuccessful startup after publication; twenty preceding receipts preserved.
+
+- [Proposed startup deadline return-path diagnostic](research/M2/policy-startup-timeout-provenance.md): research issue 335; bounded pre-cancel original-context evidence and planned Test Design require explicit adoption.
+- [Deadline-provenance design replay](research/M2/policy-startup-timeout-provenance-manifest.json): offline verification of PR 334 and twenty-one immutable receipts; no new native execution.
