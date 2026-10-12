@@ -228,3 +228,17 @@ class PolicyStartupProvenance(unittest.TestCase):
                 else:
                     self.assertEqual(result.stdout, '')
                     self.assertNotIn('raw inventory', result.stderr)
+
+    def test_guard_requires_an_actual_guard_site_and_expired_parent(self):
+        guard = frame('review', 'guard', allowance_ns=0, child_present=False, child_deadline=False,
+                      child_deadline_ns=0, child_before='absent', child_after='absent',
+                      constraint='parent-only')
+        # A parent-only deadline guard can only return its original expired Err.
+        with self.subTest(case='live parent'):
+            self.reject_trace({'status': 'complete', 'frames': [guard]})
+        # Collectors always create their original child before their error check;
+        # only command captures and review/activation have pre-child guards.
+        guard.update(site='backing-collector', parent_deadline_ns=90000000000,
+                     parent_before='deadline', parent_after='deadline', begin_ns=120000000000, end_ns=120000000001)
+        with self.subTest(case='invented collector guard'):
+            self.reject_trace({'status': 'complete', 'frames': [guard, frame()]})
