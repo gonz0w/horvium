@@ -69,3 +69,28 @@ Rollback restores the original pool page/embedded CSS and removes the private
 presentation helper; no storage state, journal, schema or configuration migration.
 Development previews use labelled generated inventory with owned process teardown.
 Do not enable host services or use operator disks/datasets/backups for validation.
+
+## Recorded portable candidate
+
+[Receipt](pool-capacity-manifest.json): signed source `f3c2d99d4ad648cdc0a9d081414918167b419038`,
+base `4713aef87cca23183b949ba2ed5a56130b3b3186`, actual title
+`feat(console): compare bounded current pool capacity`. Mandatory check/lint/test/
+secrets and 258 tooling tests passed. Focused race checks passed for console,
+service and command consumers; those packages expose no portable fuzz targets.
+Five pool-capacity behavioral parents (including rounding/denial subcases) passed.
+No full milestone suite was selected. All 134 historical manifests and existing
+collector/native/storage/privilege/tooling/module/workflow inputs retain their bytes.
+
+The console and command test packages compiled for FreeBSD/amd64/v1 with pinned
+Go 1.27.1 and cgo disabled; checksummed artifacts were removed without execution.
+A supplementary Codex in-app light preview at 1280 pixels showed separate
+33.3%/66.7% bars and exact table values. Keyboard Enter selected the original
+GUID/generation and retained focus on its comparison link; no warning/error console
+entries were observed. Client/scroll widths were both 1280. Browser engine/version
+was not captured; this is limited synthetic inspection, not Safari/Firefox/manual
+accessibility, narrow/zoom/contrast or browser resource qualification. The screenshot
+stays private and is checksummed in the receipt. Owned browser tab and preview
+closed/stopped; cross-build supervisors cleaned up. Final lab-stop/status verified
+157 owned records stopped. Failed preliminary fixture/sandbox attempts are retained
+without qualifying behavior. Final receipt-only changes require current signed
+baseline review; deep evidence may reuse only exact unchanged behavioral inputs.
