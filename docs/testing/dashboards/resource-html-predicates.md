@@ -98,7 +98,7 @@ No helper, VM, browser, host listener/service or operator storage is used.
 Use `make test-focus PKG=./cmd/horvium TEST='^TestDashboardHTML'` during development.
 Signed clean review runs required check/lint/test/secrets and affected-package
 race/fuzz checks. FreeBSD test cross-compilation is build evidence only. The
-source-bound receipt records actual review execution after it completes.
+source-bound [receipt](resource-html-predicates-manifest.json) records actual review execution.
 
 ## Remaining gates and rollback
 
@@ -116,3 +116,21 @@ acceptance remain open. Runtime writes remain disabled. Rollback removes the two
 test files and their documentation; runtime, native fixtures and old validators
 are unchanged. No dependency, public route/flag/config/schema, Action or service
 is introduced.
+
+## Recorded portable candidate
+
+[Receipt](resource-html-predicates-manifest.json): signed implementation `dcd6df529a10d4e3c3fa4c271947a170ccd082de`,
+merged base `0efe0aa1cedec644bca1fb2716f5f9498c924387`, actual title
+`test(dashboards): validate resource workload HTML`. Required check/lint/test/secrets
+passed, including 258 tooling tests and ordinary Go tests. Seven HTML behavioral parents
+passed, followed by fresh affected command-package race checking. No portable
+fuzz targets exist in that package. The conservative plan marks native review
+required; this inactive portable slice does not satisfy native resource acceptance.
+
+FreeBSD/amd64/v1 test compilation passed with pinned Go 1.27.1 and cgo disabled;
+the checksummed artifact was removed without execution. All 138 historical
+manifests and runtime/native fixture/driver/legacy validator/tooling/module/workflow
+inputs preserve their original bytes. 194 owned records were stopped with verified
+teardown. The new HTML fixtures use in-memory HTTP; no VM/browser/helper/management
+pair or host service was started. Final receipt-only review reruns the baseline;
+deep reuse must match these original implementation inputs and supervisor evidence.
