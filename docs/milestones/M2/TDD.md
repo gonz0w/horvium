@@ -1752,3 +1752,11 @@ snapshots and bounded scalar extraction. It implements only portable parts of
 M2-POLICY-DEADLINE-PROVENANCE-001–003/006. Actual return-site placement, strict
 50-control native fixture/consumer and the one fresh 15.1 diagnostic remain
 required; no broader test ID or native acceptance is completed by this component.
+
+[Original return-site integration (#339)](../../testing/M2/deadline-return-sites.md)
+adds deterministic collector/command and pre-child activation-guard placement
+coverage for the adopted provenance method. Native review and three activation
+inspection/publication phases require source review and normal/tagged FreeBSD
+cross-builds here; actual native observations remain with the separate 50-control
+fixture/consumer and one fresh diagnostic. Original allowances and all wider
+safety/recovery acceptance remain required.

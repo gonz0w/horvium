@@ -18,8 +18,9 @@ func (n *executionStartupNative) activate(ctx context.Context, entropy io.Reader
 		return nil, ErrDenied
 	}
 	if e := ctx.Err(); e != nil {
-		return nil, e
+		return nil, AnnotateDeadlineReturn(nil, ctx, e, DeadlineActivation, DeadlineGuard, 0)
 	}
+	parent := ctx
 	ctx, cancel := context.WithTimeout(ctx, 90*time.Second)
 	defer cancel()
 	p := n.pair
@@ -49,7 +50,7 @@ func (n *executionStartupNative) activate(ctx context.Context, entropy io.Reader
 	}
 	got, _, raw, e := n.inspectLocked(ctx)
 	if e != nil {
-		return nil, e
+		return nil, AnnotateDeadlineReturn(ctx, parent, e, DeadlineActivation, DeadlineFirstInspection, 90*time.Second)
 	}
 	// Only the separately validated policy-only review may accept a nonempty census.
 	census, e := newExecutionCensus(got.binding, []string{stateWriterName}, defaultStateCatalogLimits)
@@ -73,16 +74,16 @@ func (n *executionStartupNative) activate(ctx context.Context, entropy io.Reader
 	}
 	// Entropy collection and other original transfers cannot absorb drift.
 	if _, _, _, e = n.inspectLocked(ctx); e != nil {
-		return nil, e
+		return nil, AnnotateDeadlineReturn(ctx, parent, e, DeadlineActivation, DeadlineSecondInspection, 90*time.Second)
 	}
 	if e = ctx.Err(); e != nil {
-		return nil, e
+		return nil, AnnotateDeadlineReturn(ctx, parent, e, DeadlineActivation, DeadlinePublication, 90*time.Second)
 	}
 	if os.Geteuid() != 0 {
 		return nil, ErrDenied
 	}
 	if e = n.publishClosedStartupLocked(next, wrap); e != nil {
-		return nil, e
+		return nil, AnnotateDeadlineReturn(ctx, parent, e, DeadlineActivation, DeadlinePublication, 90*time.Second)
 	}
 	// Capture only the original pipeline's acknowledged namespace mutation,
 	// before post-publication producers can change any retained object.
@@ -98,7 +99,7 @@ func (n *executionStartupNative) activate(ctx context.Context, entropy io.Reader
 	n.snapshot = executionJournalSnapshot{present: true, record: j.ack, data: append([]byte(nil), j.ackBytes...), metadata: j.ackMetadata}
 	n.activated = true
 	if _, _, _, e = n.inspectLocked(ctx); e != nil {
-		return nil, e
+		return nil, AnnotateDeadlineReturn(ctx, parent, e, DeadlineActivation, DeadlineFinalInspection, 90*time.Second)
 	}
 	a := &ExecutionRestartActivation{observe: n.observe, release: p.Close, finish: func(c context.Context) error { return n.finishIdle(c, nil) }}
 	a.original = a

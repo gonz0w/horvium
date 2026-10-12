@@ -5,8 +5,9 @@ Status: method and Test Design adopted by merged PR 336
 retain their historical review boundaries. The separate
 [portable adapter slice](../../testing/M2/deadline-provenance-core.md), owned by
 [issue 337](https://github.com/gonz0w/horvium/issues/337), implements the
-prerequisite only; original-return instrumentation and native execution remain
-under 305.
+prerequisite only. [Original-return integration](../../testing/M2/deadline-return-sites.md)
+is separately owned by [issue 339](https://github.com/gonz0w/horvium/issues/339);
+the strict fixture and native execution remain under 305.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`). Time box: one offline development session.
 Owning [research issue 335](https://github.com/gonz0w/horvium/issues/335), under
 [parent 139](https://github.com/gonz0w/horvium/issues/139), coordinating

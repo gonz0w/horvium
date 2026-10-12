@@ -1764,10 +1764,25 @@ errors/deadlines or clocks and allocate no records. Normal builds exclude the
 annotation/enablement/serialization types. FreeBSD cross-compilation verifies
 build selection; it is not native execution.
 
-No original product return sites call the adapter yet. Existing native factory,
+In issue 337's prerequisite, no original product return sites called the adapter. Existing native factory,
 registration, producers, timers, fixtures, consumers and 22 prior policy receipts
 are preserved. Native instrumentation and the separate strict 50-control fixture
 still need implementation, review and the one adopted fresh 15.1 diagnostic.
 Both full lifecycle release gates, runtime writes, client/browser, hardware,
 performance and release acceptance remain pending. No lab VM or service is started
 for this portable prerequisite; existing failed/skipped/unverified evidence remains.
+
+## Original deadline return-site integration
+
+[Issue 339's bounded component](../testing/M2/deadline-return-sites.md) connects the
+merged adapter to the nine original review/activation/collector/command scopes.
+Ordinary and tagged-disabled errors retain identity. Explicit enabled return
+snapshots precede cancellation; guard frames invent no child, and provider reads
+retain their original system-command scope. Existing timers, producers, budgets,
+leases, publication, registry and release remain unchanged. Portable placement
+tests and normal/tagged FreeBSD host/storage cross-builds are separate from native
+execution. All 23 preceding policy receipts and native fixture/consumer sources
+remain intact. Strict 50-control fixture/consumer and one fresh 15.1 diagnostic
+remain pending, along with both complete lifecycle gates and all broader runtime,
+client/browser, recovery, hardware/performance and release acceptance. No VM or
+service is started for this bounded component; runtime writes stay disabled.

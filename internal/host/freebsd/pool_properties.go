@@ -53,7 +53,7 @@ type poolCycle struct {
 
 func (c *poolCycle) capture(ctx context.Context, p poolProbe, name string) ([]byte, error) {
 	if err := ctx.Err(); err != nil {
-		return nil, err
+		return nil, storage.AnnotateDeadlineReturn(nil, ctx, err, storage.DeadlinePoolCommand, storage.DeadlineGuard, 0)
 	}
 	if c.bytes <= 0 {
 		return nil, ErrLimit
@@ -66,10 +66,10 @@ func (c *poolCycle) capture(ctx context.Context, p poolProbe, name string) ([]by
 	}
 	c.bytes -= out.consumed
 	if err != nil {
-		return nil, err
+		return nil, storage.AnnotateDeadlineReturn(child, ctx, err, storage.DeadlinePoolCommand, storage.DeadlineCapture, c.source.commandTimeout)
 	}
 	if err = child.Err(); err != nil {
-		return nil, err
+		return nil, storage.AnnotateDeadlineReturn(child, ctx, err, storage.DeadlinePoolCommand, storage.DeadlineCapture, c.source.commandTimeout)
 	}
 	return out.data, nil
 }
@@ -93,19 +93,20 @@ func (s *PoolPropertySource) Collect(ctx context.Context, guid, name string) (st
 	if s.bytes <= 0 || s.bytes > 64<<20 || s.records <= 0 || s.records > 100000 {
 		return storage.Observation{}, ErrLimit
 	}
+	parent := ctx
 	ctx, cancel := context.WithTimeout(ctx, s.totalTimeout)
 	defer cancel()
 	c := poolCycle{source: s, bytes: s.bytes, records: s.records}
 	before, release, err := c.pass(ctx, guid, name)
 	if err != nil {
-		return storage.Observation{}, err
+		return storage.Observation{}, storage.AnnotateDeadlineReturn(ctx, parent, err, storage.DeadlinePoolCollector, storage.DeadlineCollection, s.totalTimeout)
 	}
 	after, nextRelease, err := c.pass(ctx, guid, name)
 	if err != nil {
-		return storage.Observation{}, err
+		return storage.Observation{}, storage.AnnotateDeadlineReturn(ctx, parent, err, storage.DeadlinePoolCollector, storage.DeadlineCollection, s.totalTimeout)
 	}
 	if err = ctx.Err(); err != nil {
-		return storage.Observation{}, err
+		return storage.Observation{}, storage.AnnotateDeadlineReturn(ctx, parent, err, storage.DeadlinePoolCollector, storage.DeadlineCollection, s.totalTimeout)
 	}
 	if release != nextRelease || !reflect.DeepEqual(before, after) {
 		return storage.Observation{}, storage.ErrDrift

@@ -296,3 +296,8 @@ owns the [bounded annotation/extraction prerequisite](../testing/M2/deadline-pro
 It is a native sub-issue of #305 with adopted decision #335 as its prerequisite.
 Original-return instrumentation, the separate strict 50-control fixture/consumer
 and one fresh diagnostic remain distinct work; portable passes do not satisfy them.
+
+[Original deadline return sites (#339)](https://github.com/gonz0w/horvium/issues/339)
+owns the [bounded integration](../testing/M2/deadline-return-sites.md), under #305
+after merged adapter #337. Portable placement/source review and cross-builds do
+not accept the separate strict fixture, native diagnostic or lifecycle gates.

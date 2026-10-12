@@ -48,7 +48,7 @@ func reviewExecutionStartupPolicy(ctx context.Context, journal, ledger string, r
 		return nil, nil, ErrDenied
 	}
 	if e := ctx.Err(); e != nil {
-		return nil, nil, e
+		return nil, nil, AnnotateDeadlineReturn(nil, ctx, e, DeadlineReview, DeadlineGuard, 0)
 	}
 	pair, e := OpenExecutionDomainLeases(ctx, journal, ledger)
 	if e != nil {
@@ -82,8 +82,9 @@ func (n *executionStartupNative) inspect(ctx context.Context) (ExecutionDomainsO
 		return zero, empty, rawZero, ErrDenied
 	}
 	if e := ctx.Err(); e != nil {
-		return zero, empty, rawZero, e
+		return zero, empty, rawZero, AnnotateDeadlineReturn(nil, ctx, e, DeadlineReview, DeadlineGuard, 0)
 	}
+	parent := ctx
 	ctx, cancel := context.WithTimeout(ctx, 90*time.Second)
 	defer cancel()
 	p := n.pair
@@ -103,7 +104,8 @@ func (n *executionStartupNative) inspect(ctx context.Context) (ExecutionDomainsO
 	defer j.lease.mu.Unlock()
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	return n.inspectLocked(ctx)
+	got, snapshot, raw, e := n.inspectLocked(ctx)
+	return got, snapshot, raw, AnnotateDeadlineReturn(ctx, parent, e, DeadlineReview, DeadlineInspect, 90*time.Second)
 }
 
 // Caller holds the original pair, journal and ledger mutexes. Preserve the exact

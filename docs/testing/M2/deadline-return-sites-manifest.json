@@ -1,0 +1,447 @@
+{
+  "schema": 1,
+  "scope": "existing original deadline return sites; portable placement, source audit and cross-build only",
+  "native_execution": false,
+  "native_acceptance": false,
+  "source_commit": "770dbe35c9d78b13be660c3418f75fa550bb8d7d",
+  "base_commit": "36b00d992610c25fb53c869af1135649720740f5",
+  "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+  "requirements": [
+    "M2-POLICY-DEADLINE-PROVENANCE-001 return-site subset",
+    "M2-POLICY-DEADLINE-PROVENANCE-002 portable placement subset",
+    "M2-POLICY-DEADLINE-PROVENANCE-003 return-path subset; strict consumer pending",
+    "M2-POLICY-DEADLINE-PROVENANCE-006 portable subset"
+  ],
+  "failing_first": {
+    "source_commit": "d74e9035d9c89d314066dda8662507980fb27059",
+    "signature": "G",
+    "archive_sha256": "52548097915102120a4fb40bc2b5f202083307e394b427c4479e27dcb0fc45d2",
+    "command": [
+      "go",
+      "test",
+      "-tags=horvium_native_fixture",
+      "./internal/host/freebsd",
+      "./internal/storage",
+      "-run",
+      "^TestDeadlineReturn",
+      "-count=1",
+      "-v"
+    ],
+    "returncode": 1,
+    "expected_behavioral_failure": "missing collector/command and parent-only activation-guard annotations",
+    "ordinary_disabled_identity_passed": true,
+    "log_sha256": "fe08d7b0559a9edf3358dcbd0f6e057ac0bcbe3319bef4d5e5a2a1aa7dfe566e",
+    "disposable_archive_removed": true
+  },
+  "initial_precommit_limit": "initial attempt failed compilation due to unused test import; corrected before signed behavioral red",
+  "supplemental_verification": {
+    "schema": 1,
+    "source_commit": "770dbe35c9d78b13be660c3418f75fa550bb8d7d",
+    "base_commit": "36b00d992610c25fb53c869af1135649720740f5",
+    "native_execution": false,
+    "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+    "checks": [
+      {
+        "name": "ordinary",
+        "command": [
+          "go",
+          "test",
+          "./internal/host/freebsd",
+          "./internal/storage",
+          "-run",
+          "^TestDeadlineReturn",
+          "-count=1",
+          "-v"
+        ],
+        "returncode": 0,
+        "log_sha256": "41488d47e2b0c0ce59b39c635ddbf7d90fb93e08d8151920c2522d0bfe2bcd9d"
+      },
+      {
+        "name": "tagged-packages",
+        "command": [
+          "go",
+          "test",
+          "-tags=horvium_native_fixture",
+          "./internal/host/freebsd",
+          "./internal/storage",
+          "-count=1",
+          "-v"
+        ],
+        "returncode": 0,
+        "log_sha256": "d58377fe0fbd5e913009f0fea37e97296f26a042bb59b18d0cffa95bba569294"
+      },
+      {
+        "name": "tagged-race",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-tags=horvium_native_fixture",
+          "./internal/host/freebsd",
+          "./internal/storage",
+          "-run",
+          "^TestDeadline(Return|Provenance)",
+          "-count=1",
+          "-v"
+        ],
+        "returncode": 0,
+        "log_sha256": "24db6cee75524c90eb82fda80f5a82a355198e6b86f06b06b35d88d733f5fcf3"
+      },
+      {
+        "name": "freebsd-ordinary-storage",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tools/bin/deadline-returns-freebsd-ordinary-storage.test",
+          "./internal/storage"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "freebsd-ordinary-host-freebsd",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tools/bin/deadline-returns-freebsd-ordinary-host-freebsd.test",
+          "./internal/host/freebsd"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "freebsd-tagged-storage",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-tags=horvium_native_fixture",
+          "-o",
+          ".tools/bin/deadline-returns-freebsd-tagged-storage.test",
+          "./internal/storage"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "freebsd-tagged-host-freebsd",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-tags=horvium_native_fixture",
+          "-o",
+          ".tools/bin/deadline-returns-freebsd-tagged-host-freebsd.test",
+          "./internal/host/freebsd"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "build_selection": {
+      "host-ordinary-storage": [
+        "deadline_activation_guard_test.go",
+        "deadline_return.go",
+        "deadline_return_plain.go",
+        "deadline_return_plain_test.go"
+      ],
+      "host-ordinary-host/freebsd": [
+        "deadline_return_test.go"
+      ],
+      "host-tagged-storage": [
+        "deadline_activation_guard_fixture_test.go",
+        "deadline_activation_guard_test.go",
+        "deadline_return.go",
+        "deadline_return_fixture.go",
+        "deadline_return_fixture_test.go"
+      ],
+      "host-tagged-host/freebsd": [
+        "deadline_return_fixture_test.go",
+        "deadline_return_test.go"
+      ],
+      "freebsd-ordinary-storage": [
+        "deadline_activation_guard_test.go",
+        "deadline_return.go",
+        "deadline_return_plain.go",
+        "deadline_return_plain_test.go",
+        "execution_restart_freebsd.go",
+        "execution_startup_freebsd.go"
+      ],
+      "freebsd-ordinary-host/freebsd": [
+        "deadline_return_test.go",
+        "execution_restart_freebsd.go",
+        "execution_startup_freebsd.go"
+      ],
+      "freebsd-tagged-storage": [
+        "deadline_activation_guard_fixture_test.go",
+        "deadline_activation_guard_test.go",
+        "deadline_return.go",
+        "deadline_return_fixture.go",
+        "deadline_return_fixture_test.go",
+        "execution_restart_freebsd.go",
+        "execution_startup_freebsd.go"
+      ],
+      "freebsd-tagged-host/freebsd": [
+        "deadline_return_fixture_test.go",
+        "deadline_return_test.go",
+        "execution_restart_freebsd.go",
+        "execution_startup_freebsd.go"
+      ],
+      "freebsd-ordinary-storage_artifact_sha256": "bd3b54eaccbf05e0eea889c605e1a2373a8767c0c02864031c87a574807fa584",
+      "freebsd-ordinary-host-freebsd_artifact_sha256": "eb687bf30fbda93adf21e98e67c13a21f0b8db705bccb104d31749c25ac46b75",
+      "freebsd-tagged-storage_artifact_sha256": "43980c905c24b2d9cd44d8bbc5335bae5d0870043bf83425813b8805218e4643",
+      "freebsd-tagged-host-freebsd_artifact_sha256": "68995c40766442a738c8b77882408390250479814fd13df17f011f6c47216d12"
+    },
+    "preserved_policy_receipts": {
+      "docs/research/M2/policy-lifecycle-caller-manifest.json": "1a7febc154a2dd9542f50a43bdc7acafd69485c39d423810bd04f2bca708610f",
+      "docs/research/M2/policy-lifecycle-timeout-manifest.json": "53c7a8c64b1681863e91920364e97e02f5f3a6875c72dab60269999389fcd95c",
+      "docs/research/M2/policy-startup-costs-manifest.json": "4564cee1d3e579557f6af7d187a77274183752d2af370b44d4e92eed6431ca5a",
+      "docs/research/M2/policy-startup-deadline-manifest.json": "bae3a271140cbaef0ad08d5dbc290b388cfea2645aeb634ba973fc899094d017",
+      "docs/research/M2/policy-startup-envelope-manifest.json": "08a17cec903d3d16e9d816b6ccd99ee84883c9aa87a3d272f84a4e4692def459",
+      "docs/research/M2/policy-startup-inspection-manifest.json": "3abf2f117b3fd66779cc04a7d07e15c3a2777199d327d997fd8c8e421001bdfc",
+      "docs/research/M2/policy-startup-operation-timeout-manifest.json": "9ba85d24fdd70b1c745c3f19aff063126bbafaf61d94bea02bf3faa8f04e29d8",
+      "docs/research/M2/policy-startup-stack-manifest.json": "33c3640f5cc7602735912bd6e7949cdc3a10b8ca078503a64508d1a56bf30052",
+      "docs/research/M2/policy-startup-stack-qualification-manifest.json": "9512fbd6286228d5a417247602c6812b02b33a1385fa51c8292245c99fcfde5a",
+      "docs/research/M2/policy-startup-timeout-provenance-manifest.json": "76b1f07aedbe4db9557c63c480d2de3aba37fceb9f404c1acd00c77e25bcc4cc",
+      "docs/testing/M2/deadline-provenance-core-manifest.json": "f952b3bee5872374ce7e669e117352cf34f7ee20fe567b9d3c64678aebaf9cd9",
+      "docs/testing/M2/retained-policy-admission-manifest.json": "2e733dd5a017772ce7947913ced1c16940ee8614cde445cb9fcd0327331077c3",
+      "docs/testing/M2/retained-policy-lifecycle-budget-manifest.json": "4019d0b125d2dfbf0bc1be31f1cc0465eea1aae9bd40dc28efeeecc3bec13990",
+      "docs/testing/M2/retained-policy-lifecycle-caller-manifest.json": "ce438292ee672027e896d4f8476635c2ad271d9fb29364ad6babae97428e2475",
+      "docs/testing/M2/retained-policy-lifecycle-qualification-manifest.json": "43d7724e44af147a619eac167b1b13cbd703c69b43809b358e0318a5499cd66e",
+      "docs/testing/M2/retained-policy-native-facts-manifest.json": "e9d4a0c6eef2011b236ea69a0ff94c0adae9a9c8f2102fefe4c9ff69f1c9f499",
+      "docs/testing/M2/retained-policy-native-history-manifest.json": "0788d387d4b4c27921fd3f68ffc5206f9fe0c548270464d34c87fd6ea4b8db6d",
+      "docs/testing/M2/retained-policy-native-lifecycle-manifest.json": "43fdd1bbda87853e7d9aee336f70402bfc5f263b9b6b71304dee7133faea5ce0",
+      "docs/testing/M2/retained-policy-native-multiple-manifest.json": "294662c837cf9921dba954491b6737f84adc43de71d09d93c3747107992eb263",
+      "docs/testing/M2/retained-policy-native-review-manifest.json": "f37c74e30d2c769d87f65872303021fd5bf2640467636bd9bea499ae4abaa3cf",
+      "docs/testing/M2/retained-policy-root-manifest.json": "52bb88c0d6cc94fe031a8345adb1bdc1e5fb005634d24f4ba3eb47a59ea3366a",
+      "docs/testing/M2/retained-policy-root-qualification-manifest.json": "6d3dd07f65d88247bdd854061f811629c59168bcfda42385eab5a7cf21aac99c",
+      "docs/testing/M2/retained-policy-startup-manifest.json": "b7b248f1bfe6e197f1c8955f72f80c9fbeef0a71a641767e424059df7cfdd271"
+    },
+    "source_audit_sha256": "07b01149cbe25f87bf231349852a6747dd3e76f99daf2a9d9994319ce62586b3",
+    "qualified": true,
+    "temporary_artifacts_removed": true
+  },
+  "source_audit": {
+    "base_commit": "36b00d992610c25fb53c869af1135649720740f5",
+    "method": "exact source normalization of only adapter calls, saved-parent locals, storage import and inspection return tuple",
+    "files": {
+      "internal/host/freebsd/persistent_backing.go": {
+        "normalized_equals_base": true,
+        "annotation_calls": 12,
+        "sha256": "43c55dedb5b332add94f12f5def5f75f061a9ced2cc8fb07fd52f6b00ea392ca",
+        "call_sites": [
+          "nil, ctx, e, storage.DeadlineBackingCommand, storage.DeadlineGuard, 0",
+          "child, ctx, e, storage.DeadlineBackingCommand, storage.DeadlineCapture, s.commandTimeout",
+          "child, ctx, e, storage.DeadlineBackingCommand, storage.DeadlineCapture, s.commandTimeout",
+          "ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout",
+          "ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout",
+          "ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout",
+          "ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout",
+          "ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout",
+          "ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout",
+          "ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout",
+          "ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout",
+          "ctx, parent, e, storage.DeadlineBackingCollector, storage.DeadlineCollection, s.totalTimeout"
+        ]
+      },
+      "internal/host/freebsd/pool_properties.go": {
+        "normalized_equals_base": true,
+        "annotation_calls": 6,
+        "sha256": "17619a66a0dbe2e07f6e20b7a78c006d3cf121d2d1c7d61cdd437c4c5d374a67",
+        "call_sites": [
+          "nil, ctx, err, storage.DeadlinePoolCommand, storage.DeadlineGuard, 0",
+          "child, ctx, err, storage.DeadlinePoolCommand, storage.DeadlineCapture, c.source.commandTimeout",
+          "child, ctx, err, storage.DeadlinePoolCommand, storage.DeadlineCapture, c.source.commandTimeout",
+          "ctx, parent, err, storage.DeadlinePoolCollector, storage.DeadlineCollection, s.totalTimeout",
+          "ctx, parent, err, storage.DeadlinePoolCollector, storage.DeadlineCollection, s.totalTimeout",
+          "ctx, parent, err, storage.DeadlinePoolCollector, storage.DeadlineCollection, s.totalTimeout"
+        ]
+      },
+      "internal/host/freebsd/pool_providers.go": {
+        "normalized_equals_base": true,
+        "annotation_calls": 3,
+        "sha256": "dc1355bcb333dfb393074f0068ac2368b0b0ec210b7f89b1727725b0c0260a79",
+        "call_sites": [
+          "ctx, parent, err, storage.DeadlineProviderCollector, storage.DeadlineCollection, r.totalTimeout",
+          "ctx, parent, err, storage.DeadlineProviderCollector, storage.DeadlineCollection, r.totalTimeout",
+          "ctx, parent, err, storage.DeadlineProviderCollector, storage.DeadlineCollection, r.totalTimeout"
+        ]
+      },
+      "internal/host/freebsd/system_use.go": {
+        "normalized_equals_base": true,
+        "annotation_calls": 6,
+        "sha256": "e69b980578d502872bcc482485381409b0eb7abf3c7cad4ecb25297b505d725d",
+        "call_sites": [
+          "nil, ctx, err, storage.DeadlineSystemCommand, storage.DeadlineGuard, 0",
+          "child, ctx, err, storage.DeadlineSystemCommand, storage.DeadlineCapture, c.source.commandTimeout",
+          "child, ctx, err, storage.DeadlineSystemCommand, storage.DeadlineCapture, c.source.commandTimeout",
+          "ctx, parent, err, storage.DeadlineSystemCollector, storage.DeadlineCollection, s.totalTimeout",
+          "ctx, parent, err, storage.DeadlineSystemCollector, storage.DeadlineCollection, s.totalTimeout",
+          "ctx, parent, err, storage.DeadlineSystemCollector, storage.DeadlineCollection, s.totalTimeout"
+        ]
+      },
+      "internal/storage/execution_restart.go": {
+        "normalized_equals_base": true,
+        "annotation_calls": 2,
+        "sha256": "06dd4de534850432d618cd6d60d60277e4012effb40208bd3d52deca4e8d7b26",
+        "call_sites": [
+          "nil, ctx, e, DeadlineActivation, DeadlineGuard, 0",
+          "nil, ctx, e, DeadlineActivation, DeadlineGuard, 0"
+        ]
+      },
+      "internal/storage/execution_startup_freebsd.go": {
+        "normalized_equals_base": true,
+        "annotation_calls": 3,
+        "sha256": "f12c8c9e1a2ae251680ae1637cf407612c39f1c2e8259461111fdba69c2ec8b8",
+        "call_sites": [
+          "nil, ctx, e, DeadlineReview, DeadlineGuard, 0",
+          "nil, ctx, e, DeadlineReview, DeadlineGuard, 0",
+          "ctx, parent, e, DeadlineReview, DeadlineInspect, 90*time.Second"
+        ]
+      },
+      "internal/storage/execution_restart_freebsd.go": {
+        "normalized_equals_base": true,
+        "annotation_calls": 6,
+        "sha256": "44cfc4b56ff09bdb5865e792d8c047301ee64903dc851a343ea68e0c02caff0b",
+        "call_sites": [
+          "nil, ctx, e, DeadlineActivation, DeadlineGuard, 0",
+          "ctx, parent, e, DeadlineActivation, DeadlineFirstInspection, 90*time.Second",
+          "ctx, parent, e, DeadlineActivation, DeadlineSecondInspection, 90*time.Second",
+          "ctx, parent, e, DeadlineActivation, DeadlinePublication, 90*time.Second",
+          "ctx, parent, e, DeadlineActivation, DeadlinePublication, 90*time.Second",
+          "ctx, parent, e, DeadlineActivation, DeadlineFinalInspection, 90*time.Second"
+        ]
+      }
+    },
+    "timers": [
+      {
+        "file": "internal/host/freebsd/persistent_backing.go",
+        "original": "ctx, cancel := context.WithTimeout(ctx, s.totalTimeout)\n\tdefer cancel()"
+      },
+      {
+        "file": "internal/host/freebsd/persistent_backing.go",
+        "original": "child, stop := context.WithTimeout(ctx, s.commandTimeout)\n\t\tdefer stop()"
+      },
+      {
+        "file": "internal/host/freebsd/pool_properties.go",
+        "original": "child, cancel := context.WithTimeout(ctx, c.source.commandTimeout)\n\tdefer cancel()"
+      },
+      {
+        "file": "internal/host/freebsd/pool_properties.go",
+        "original": "ctx, cancel := context.WithTimeout(ctx, s.totalTimeout)\n\tdefer cancel()"
+      },
+      {
+        "file": "internal/host/freebsd/pool_providers.go",
+        "original": "ctx, cancel := context.WithTimeout(ctx, r.totalTimeout)\n\tdefer cancel()"
+      },
+      {
+        "file": "internal/host/freebsd/system_use.go",
+        "original": "child, cancel := context.WithTimeout(ctx, c.source.commandTimeout)\n\tdefer cancel()"
+      },
+      {
+        "file": "internal/host/freebsd/system_use.go",
+        "original": "ctx, cancel := context.WithTimeout(ctx, s.totalTimeout)\n\tdefer cancel()"
+      },
+      {
+        "file": "internal/storage/execution_startup_freebsd.go",
+        "original": "ctx, cancel := context.WithTimeout(ctx, 90*time.Second)\n\tdefer cancel()"
+      },
+      {
+        "file": "internal/storage/execution_restart_freebsd.go",
+        "original": "ctx, cancel := context.WithTimeout(ctx, 90*time.Second)\n\tdefer cancel()"
+      }
+    ],
+    "excluded_observers": [
+      "internal/storage/execution_domains_freebsd.go",
+      "internal/storage/execution_domain_freebsd.go"
+    ],
+    "all_other_internal_and_tool_sources_unchanged": true,
+    "existing_native_fixtures_adapter_and_tools_unchanged": true
+  },
+  "source_audit_sha256": "4bf6b2eddd998b506973731938543c7ec708ea19eeb59d6168ce65081709e85c",
+  "supplemental_supervisors": {
+    "verify-deadline-returns.py": {
+      "session": "tpbdy53u",
+      "record_sha256": "809fd774e5bd4992102c9d67e112dee1e5975650ba35f4f3e1a4cb79333852f8",
+      "completed": true,
+      "group_cleaned": true,
+      "worker_returncode": 0
+    },
+    "replay-deadline-returns-red.py": {
+      "session": "r98wh4qb",
+      "record_sha256": "9c4145c48ecfa91dc3760c98f2220dceca9d66dfd6fd3eeada37030fd2a42c4b",
+      "completed": true,
+      "group_cleaned": true,
+      "worker_returncode": 0
+    }
+  },
+  "portable_review": {
+    "source_commit": "770dbe35c9d78b13be660c3418f75fa550bb8d7d",
+    "base_commit": "36b00d992610c25fb53c869af1135649720740f5",
+    "title": "test(freebsd): observe original startup deadline returns",
+    "qualified": true,
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ],
+      "native_review_required": true
+    },
+    "report_sha256": "cff82c09dafaed8ffae770d1be0c4eab917867f486970e482a1631dd06f00511",
+    "checks_log_sha256": "9f6d0984f49860fd11ea773b16d79681274559fa92e1ca4b17c4c2d9d5a2d21a",
+    "tooling_tests": 228,
+    "race_packages": 9,
+    "fuzz_targets": 48,
+    "deep_log_sha256": "3f4c5aa886579c7279faf8636387437847d5c4f1c0d086f0230777f9d5d89562",
+    "deep_executed": true,
+    "supervisors_completed": true,
+    "supervisors_group_cleaned": true
+  },
+  "preserved_policy_receipts": {
+    "docs/research/M2/policy-lifecycle-caller-manifest.json": "1a7febc154a2dd9542f50a43bdc7acafd69485c39d423810bd04f2bca708610f",
+    "docs/research/M2/policy-lifecycle-timeout-manifest.json": "53c7a8c64b1681863e91920364e97e02f5f3a6875c72dab60269999389fcd95c",
+    "docs/research/M2/policy-startup-costs-manifest.json": "4564cee1d3e579557f6af7d187a77274183752d2af370b44d4e92eed6431ca5a",
+    "docs/research/M2/policy-startup-deadline-manifest.json": "bae3a271140cbaef0ad08d5dbc290b388cfea2645aeb634ba973fc899094d017",
+    "docs/research/M2/policy-startup-envelope-manifest.json": "08a17cec903d3d16e9d816b6ccd99ee84883c9aa87a3d272f84a4e4692def459",
+    "docs/research/M2/policy-startup-inspection-manifest.json": "3abf2f117b3fd66779cc04a7d07e15c3a2777199d327d997fd8c8e421001bdfc",
+    "docs/research/M2/policy-startup-operation-timeout-manifest.json": "9ba85d24fdd70b1c745c3f19aff063126bbafaf61d94bea02bf3faa8f04e29d8",
+    "docs/research/M2/policy-startup-stack-manifest.json": "33c3640f5cc7602735912bd6e7949cdc3a10b8ca078503a64508d1a56bf30052",
+    "docs/research/M2/policy-startup-stack-qualification-manifest.json": "9512fbd6286228d5a417247602c6812b02b33a1385fa51c8292245c99fcfde5a",
+    "docs/research/M2/policy-startup-timeout-provenance-manifest.json": "76b1f07aedbe4db9557c63c480d2de3aba37fceb9f404c1acd00c77e25bcc4cc",
+    "docs/testing/M2/deadline-provenance-core-manifest.json": "f952b3bee5872374ce7e669e117352cf34f7ee20fe567b9d3c64678aebaf9cd9",
+    "docs/testing/M2/retained-policy-admission-manifest.json": "2e733dd5a017772ce7947913ced1c16940ee8614cde445cb9fcd0327331077c3",
+    "docs/testing/M2/retained-policy-lifecycle-budget-manifest.json": "4019d0b125d2dfbf0bc1be31f1cc0465eea1aae9bd40dc28efeeecc3bec13990",
+    "docs/testing/M2/retained-policy-lifecycle-caller-manifest.json": "ce438292ee672027e896d4f8476635c2ad271d9fb29364ad6babae97428e2475",
+    "docs/testing/M2/retained-policy-lifecycle-qualification-manifest.json": "43d7724e44af147a619eac167b1b13cbd703c69b43809b358e0318a5499cd66e",
+    "docs/testing/M2/retained-policy-native-facts-manifest.json": "e9d4a0c6eef2011b236ea69a0ff94c0adae9a9c8f2102fefe4c9ff69f1c9f499",
+    "docs/testing/M2/retained-policy-native-history-manifest.json": "0788d387d4b4c27921fd3f68ffc5206f9fe0c548270464d34c87fd6ea4b8db6d",
+    "docs/testing/M2/retained-policy-native-lifecycle-manifest.json": "43fdd1bbda87853e7d9aee336f70402bfc5f263b9b6b71304dee7133faea5ce0",
+    "docs/testing/M2/retained-policy-native-multiple-manifest.json": "294662c837cf9921dba954491b6737f84adc43de71d09d93c3747107992eb263",
+    "docs/testing/M2/retained-policy-native-review-manifest.json": "f37c74e30d2c769d87f65872303021fd5bf2640467636bd9bea499ae4abaa3cf",
+    "docs/testing/M2/retained-policy-root-manifest.json": "52bb88c0d6cc94fe031a8345adb1bdc1e5fb005634d24f4ba3eb47a59ea3366a",
+    "docs/testing/M2/retained-policy-root-qualification-manifest.json": "6d3dd07f65d88247bdd854061f811629c59168bcfda42385eab5a7cf21aac99c",
+    "docs/testing/M2/retained-policy-startup-manifest.json": "b7b248f1bfe6e197f1c8955f72f80c9fbeef0a71a641767e424059df7cfdd271"
+  },
+  "limits": [
+    "Portable injected reader errors demonstrate annotation placement, not actual native command expiry",
+    "Original caller/domain-opening failures can remain unannotated; original joins preserve ambiguity",
+    "All other internal/tool sources, native fixtures, consumers, runner and merged adapter bytes are unchanged",
+    "Normal/tagged FreeBSD host/storage cross-compilation is not native execution or acceptance",
+    "Strict separate 50-control fixture/consumer and one fresh 15.1 diagnostic remain pending",
+    "Both complete lifecycle release gates and all wider recovery/client/browser/hardware/performance/release gates remain open; runtime writes disabled",
+    "Final receipt-only head requires fresh baseline, verified exact-input deep reuse and owned-session teardown"
+  ]
+}
