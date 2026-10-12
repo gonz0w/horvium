@@ -129,7 +129,9 @@ records, model cap/exhaustion/recovery and native crash/stale/recovery/boot-stat
 markers. Their counts, resources and initial aggregate percentiles must agree with
 new reports, retaining legacy microsecond truncation. The original boundary marker
 must include matching raw RSS/high-water/count/gap observations. Both native parent
-RUN/PASS markers and complete suite PASS must occur exactly once; any FAIL/SKIP or
+RUN/PASS markers must occur exactly once in order, followed by exactly one resource
+suite PASS. Earlier discovery-suite output remains intact and cannot complete
+the resource suite; any FAIL/SKIP in the complete transcript or
 unknown/malformed dashboard record rejects coverage. A green VM exit alone fails.
 
 ## Behavioral validation and remaining gates

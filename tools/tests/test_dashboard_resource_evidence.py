@@ -368,6 +368,40 @@ class DashboardResourceEvidenceTests(unittest.TestCase):
         bind(runs)
         self.reject(candidate, runs)
 
+    def test_preceding_discovery_pass_does_not_complete_or_duplicate_resource_suite(self):
+        candidate, runs = fixture()
+        prefix = b'=== RUN   TestNativeDiscovery\n--- PASS: TestNativeDiscovery (1.00s)\nPASS\nok fixture/discovery 1s\n'
+        for run in runs:
+            run['transcript'] = prefix + run['transcript']
+        bind(runs)
+        self.assertEqual(self.module.validate(candidate, runs)['scheduled'], 16000)
+        original = copy.deepcopy(runs)
+        runs[0]['transcript'] = runs[0]['transcript'].removesuffix(b'PASS')
+        bind(runs)
+        self.reject(candidate, runs)
+        runs = copy.deepcopy(original)
+        runs[0]['transcript'] = runs[0]['transcript'].replace(b'=== RUN   TestNativePerformanceBudgets', b'PASS\n=== RUN   TestNativePerformanceBudgets').removesuffix(b'PASS')
+        bind(runs)
+        self.reject(candidate, runs)
+        runs = copy.deepcopy(original)
+        runs[0]['transcript'] = b'--- SKIP: TestDiscovery (0.00s)\n' + runs[0]['transcript']
+        bind(runs)
+        self.reject(candidate, runs)
+
+    def test_well_formed_different_candidate_and_artifact_cannot_reuse_receipt(self):
+        candidate, runs = fixture()
+        replacements = {'source_commit': '8' * 40, 'base_commit': '9' * 40,
+                        'compiler_sha256': 'a' * 64, 'archive_sha256': 'b' * 64,
+                        'pr_title': 'test(dashboards): a different proposed title', 'go_version': 'go1.27.2'}
+        for key, value in replacements.items():
+            with self.subTest(key=key):
+                expected = copy.deepcopy(candidate)
+                expected[key] = value
+                self.reject(expected, runs)
+        expected = copy.deepcopy(candidate)
+        expected['artifacts']['15.1']['management'] = 'c' * 64
+        self.reject(expected, runs)
+
     def test_boundary_evidence_legacy_types_and_predicate_origin_cannot_be_forged(self):
         candidate, original = fixture()
         for marker, mutate in [('PERFORMANCE_RESULT', lambda r: r.update(p95_ms='100')),

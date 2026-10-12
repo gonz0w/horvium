@@ -199,10 +199,17 @@ def records(log):
 
 def preserved_controls(log, rows, summaries):
     require(not re.search(r'(?:--- (?:SKIP|FAIL):|^FAIL(?:\s|$))', log, re.MULTILINE), 'failed/skipped native suite')
+    run_positions, pass_positions = [], []
     for parent in PARENTS:
-        require(len(re.findall(r'^=== RUN\s+' + parent + r'\s*$', log, re.MULTILINE)) == 1, 'native parent execution missing/duplicate')
-        require(len(re.findall(r'^--- PASS: ' + parent + r' \([0-9.]+s\)$', log, re.MULTILINE)) == 1, 'native parent pass missing/duplicate')
-    require(len(re.findall(r'^PASS$', log, re.MULTILINE)) == 1, 'complete native suite pass missing/duplicate')
+        starts = list(re.finditer(r'^=== RUN\s+' + parent + r'\s*$', log, re.MULTILINE))
+        ends = list(re.finditer(r'^--- PASS: ' + parent + r' \([0-9.]+s\)$', log, re.MULTILINE))
+        require(len(starts) == len(ends) == 1 and starts[0].start() < ends[0].start(), 'native parent execution/pass missing, duplicate or out of order')
+        run_positions.append(starts[0].start())
+        pass_positions.append(ends[0].end())
+    # The existing performance runner first executes discovery suites. Retain
+    # their output; their PASS cannot complete the resource suite.
+    completions = [m for m in re.finditer(r'^PASS$', log, re.MULTILINE) if m.start() >= min(run_positions)]
+    require(len(completions) == 1 and completions[0].start() > max(pass_positions), 'complete native suite pass missing/duplicate/out of order')
     for marker in ('PERFORMANCE_LIMITS ', 'NATIVE_READER_CRASH '):
         require(sum(marker in line for line in log.splitlines()) == 1, 'native control missing/duplicate')
     # Preserve its behavior and old records; add strict new coverage alongside it.
