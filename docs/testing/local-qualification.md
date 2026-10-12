@@ -672,3 +672,16 @@ trace 120/150 and full lifecycle profiles remain unchanged. See the
 [contract and evidence](../research/M2/policy-startup-envelope.md); operation
 result, diagnostic completeness and native lifecycle acceptance remain separate.
 No automatic second release, retry or product authority is added.
+
+The separate `policy-startup-provenance` suite wires the adopted return-path
+method into a new tagged 50-control parent/two-child fixture. It preserves the
+envelope's caller/child/parent/process bounds, one-CPU/6GiB/seven-device profile
+and original native factory, facts, samples, final journal and teardown. The host
+requires clean signed/DCO source, pinned compiler, ordinary/tagged file-selection
+and cross-build proof, externally bound prebuilt identities, an unfiltered framed
+parent and actual-file transcript binding. Normal and supervisor cleanup include
+both new owned binary names; incomplete trace records stay failed, and native
+acceptance is always false. See the [implementation contract](M2/deadline-provenance-fixture.md).
+Only the one adopted fresh prebuilt 15.1 candidate is permitted after fixture/
+runner review; no 14.5, guest source build, automatic retry or lifecycle comparison.
+This slice records offline implementation/build checks and executes no VM.

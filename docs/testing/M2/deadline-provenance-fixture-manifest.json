@@ -1,0 +1,6 @@
+{
+  "schema": 1,
+  "scope": "separate tagged fixture/runner implementation; offline evidence pending",
+  "native_execution": false,
+  "native_acceptance": false
+}

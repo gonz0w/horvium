@@ -312,3 +312,9 @@ owns the [offline candidate verification boundary](../testing/M2/deadline-proven
 under #305 after merged strict consumer #341. File/source identity does not
 complete build attestation, tagged fixture, runner integration or native
 execution; GitHub owns live status and dependencies.
+
+[Tagged deadline fixture/runner (#345)](https://github.com/gonz0w/horvium/issues/345)
+owns the [50-control implementation and isolated build prerequisite](../testing/M2/deadline-provenance-fixture.md),
+under #305 after merged input binding #343. Offline implementation and cross-build
+receipts do not complete the one adopted native diagnostic or lifecycle gates.
+GitHub owns live status, priority and native dependencies.

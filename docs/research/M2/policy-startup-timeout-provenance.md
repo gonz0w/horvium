@@ -11,7 +11,9 @@ is separately owned by [issue 339](https://github.com/gonz0w/horvium/issues/339)
 is separately owned by [issue 341](https://github.com/gonz0w/horvium/issues/341).
 The [runner input binding](../../testing/M2/deadline-provenance-candidate.md)
 is separately owned by [issue 343](https://github.com/gonz0w/horvium/issues/343).
-Tagged fixture/build/full runner wiring and native execution remain under 305.
+The [tagged fixture/runner implementation](../../testing/M2/deadline-provenance-fixture.md)
+is separately owned by [issue 345](https://github.com/gonz0w/horvium/issues/345).
+The one adopted native execution remains under 305 after implementation review.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`). Time box: one offline development session.
 Owning [research issue 335](https://github.com/gonz0w/horvium/issues/335), under
 [parent 139](https://github.com/gonz0w/horvium/issues/139), coordinating

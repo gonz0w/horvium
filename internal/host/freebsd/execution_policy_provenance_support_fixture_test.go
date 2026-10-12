@@ -67,3 +67,34 @@ func TestPolicyProvenanceTraceSanitizationAndOriginalContexts(t *testing.T) {
 		}
 	}
 }
+
+func FuzzPolicyProvenanceChild(f *testing.F) {
+	f.Add(provenanceChildFixture())
+	f.Add([]byte("raw failed child"))
+	f.Fuzz(func(t *testing.T, data []byte) {
+		summary, trace, ok := policyProvenanceChild(data)
+		if ok {
+			if len(data) > 16<<10 || len(summary) > 8192 || !json.Valid(summary) {
+				t.Fatal("unbounded child record accepted")
+			}
+			if _, valid := policyProvenanceTrace(trace); !valid {
+				t.Fatal("unsafe child trace accepted")
+			}
+		}
+	})
+}
+
+func FuzzPolicyProvenanceTrace(f *testing.F) {
+	f.Add([]byte(`{"status":"success","frames":[]}`))
+	f.Add([]byte(`{"status":"overflow","frames":[]}`))
+	f.Add([]byte(`{"status":"complete","frames":null}`))
+	f.Fuzz(func(t *testing.T, data []byte) {
+		trace, ok := policyProvenanceTrace(data)
+		if ok {
+			encoded, e := json.Marshal(trace)
+			if e != nil || len(data) > 8192 || len(trace.Frames) > 12 || trace.Frames == nil || !bytes.Equal(encoded, data) {
+				t.Fatal("inexact bounded scalar trace accepted")
+			}
+		}
+	})
+}

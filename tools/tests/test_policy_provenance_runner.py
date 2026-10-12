@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Portable runner coverage with synthetic build/transcript evidence only."""
-import copy
 import json
 from pathlib import Path
 import tempfile
@@ -84,6 +83,35 @@ class PolicyProvenanceRunner(unittest.TestCase):
         for key,value in [('source_commit','d'*40),('compiler_sha256','d'*64),('sha256','d'*64)]:
             candidate=build();candidate[key]=value
             with self.assertRaises(ValueError):self.m.validate(log(),candidate)
+        candidate=build();candidate['validated_transcript_sha256']='d'*64
+        with self.assertRaisesRegex(ValueError,'evidence changed'):self.m.validate(log()+'DEVICE_FIXTURE_CLEANUP pass\n',candidate,complete=True)
+
+    def test_actual_file_binding_retains_complete_canonical_frame(self):
+        with tempfile.TemporaryDirectory() as name:
+            directory=Path(name)
+            expected=dict(diagnostic_complete=True,native_acceptance=False)
+            with patch.object(self.m.candidate,'verify_candidate',return_value=expected) as verify:
+                self.assertEqual(self.m.verify_run(directory,build(),log()),expected)
+            path=directory/'provenance-transcript.txt'
+            self.assertEqual(path.read_text(),fixture())
+            self.assertEqual(path.stat().st_mode & 0o777,0o600)
+            args,kwargs=verify.call_args
+            self.assertEqual(args[1],path);self.assertEqual(args[3],directory/BINARY)
+            self.assertEqual(kwargs,dict(source_commit=SOURCE,compiler_sha256=COMPILER,artifact_sha256=ARTIFACT))
+            path.unlink()
+            with patch.object(self.m.candidate,'verify_candidate',side_effect=ValueError('unknown canonical line')) as verify:
+                with self.assertRaises(ValueError):self.m.verify_run(directory,build(),log().replace(END,'raw inventory\n'+END))
+                # Framing preserves the raw line; the strict actual-file consumer
+                # must reject it. Simulate that final boundary rather than filter it.
+                self.assertTrue(verify.called)
+                self.assertIn('raw inventory\n',path.read_text())
+            path.unlink()
+            other=directory/'unrelated';other.write_text('preserve original')
+            path.symlink_to(other)
+            with patch.object(self.m.candidate,'verify_candidate') as verify:
+                with self.assertRaises(ValueError):self.m.verify_run(directory,build(),log())
+                self.assertFalse(verify.called)
+            self.assertEqual(other.read_text(),'preserve original')
 
     def test_original_profiles_cannot_satisfy_new_suite(self):
         from test_policy_startup_envelope import fixture as old
