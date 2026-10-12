@@ -1637,3 +1637,27 @@ caused success or qualify performance. Diagnostic completeness is true; native
 lifecycle acceptance remains false. Both original full release lifecycle gates/
 retirement/second cycle remain pending; all 16 prior receipts stay immutable and
 14.5 was not attempted. No runtime writer or retry authority follows.
+
+## Original lifecycle qualification after diagnostic acceptance
+
+The [unchanged-profile follow-up](../testing/M2/retained-policy-lifecycle-qualification.md)
+and [source-bound receipt](../testing/M2/retained-policy-lifecycle-qualification-manifest.json)
+record merged source `c9b01533a8c3e343c2cc9dd176ce35f12ad9aed4` on disposable
+15.1. Facts/UFS review/ZFS review passed at 13.57/157.82/180.70 seconds: only the
+three-parent/135-control/seven-child retained prefix is strict-complete.
+The UFS lifecycle parent failed at 372.68 seconds when its second (`restart`)
+child's startup caller expired at 120.02 seconds. Source ordering establishes
+that the first child's exact control vector, closed generation+2 successor,
+unchanged ledger and released leases were checked before entering restart;
+its successful output and stage times are not independently retained. That
+partial inference does not qualify the parent or whole release vector.
+
+All original 120-second startup, 90-second product and 330/1080/40-minute fixture
+limits and native checks remain unchanged. No independent final metadata readback
+establishes the failed second cycle's publication state or causal failing probe.
+ZFS lifecycle and 14.5 were not attempted under the stop rule. Independent host/
+device/image/key/binary/supervisor teardown and base/runtime preservation passed;
+the incomplete lifecycle guest cleanup vectors remain unverified. All seventeen
+prior policy receipts remain byte-identical. Both full five-parent/289-control/
+thirteen-child release gates and issues 305/139 remain open; no hardware,
+performance, support or runtime write claim is added.

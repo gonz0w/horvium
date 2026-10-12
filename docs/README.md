@@ -226,3 +226,6 @@
 - [Separate adopted startup caller-envelope diagnostic](research/M2/policy-startup-envelope.md): fixture-only implementation and source-bound diagnostic result; no lifecycle acceptance.
 
 - [Separate caller-envelope execution receipt](research/M2/policy-startup-envelope-manifest.json): original startup success at 84.44s and complete diagnostic/teardown; full lifecycle acceptance remains false.
+
+- [Original lifecycle qualification follow-up](testing/M2/retained-policy-lifecycle-qualification.md): unchanged-profile 15.1 UFS second-cycle startup failure; first-cycle source-order observation and completed prefix remain partial, with independent host teardown and unverified incomplete guest vectors.
+- [Lifecycle follow-up receipt](testing/M2/retained-policy-lifecycle-qualification-manifest.json): exact native source/artifact, failed/skipped release boundaries and all seventeen prior policy receipts preserved.

@@ -1663,3 +1663,22 @@ source-mapped snapshots and one skipped after return. All 16 prior receipts rema
 unchanged; native lifecycle acceptance is false. The return precedes the old 120s
 ceiling, so no causal wider-caller/performance claim is made. Full original
 lifecycle/retirement/second-cycle gates on both releases remain required.
+
+## Original lifecycle follow-up after separate diagnostic acceptance
+
+The [qualification follow-up](../../testing/M2/retained-policy-lifecycle-qualification.md)
+and [candidate receipt](../../testing/M2/retained-policy-lifecycle-qualification-manifest.json)
+exercise unchanged merged source c9b01533 with the original startup caller and
+adopted 330/1080/40-minute fixture profile. Disposable 15.1 completed the strict
+three-parent/135-control/seven-child retained facts/review prefix. Source ordering
+supports the first UFS cycle's successful wait, exact 21-control inventory, closed
+successor/ledger/lease readbacks; its output and stage times are not independently
+retained, and it is not added to the qualified vector. The second UFS child's
+startup failed at 120.02 seconds; the UFS parent failed at 372.68 seconds.
+No child whole-test timeout or final failed-cycle publication state is established.
+ZFS lifecycle/14.5 were not attempted. Independent host cleanup passed, incomplete
+lifecycle guest vectors remain unverified and all seventeen preceding receipts
+remain exact. M2-POLICY-FIXTURE-BUDGET-004 and both complete release gates remain
+pending. No new implementation, deadlines, retry or fabricated behavioral red;
+evidence-only review requires a fresh signed baseline without repeating deep tests.
+Issues 305/139 and runtime authority remain open.
