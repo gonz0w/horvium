@@ -21,7 +21,7 @@ func policyFixtureWorkBudget(profile policyFixtureWorkProfile) (time.Duration, e
 	case policyFixtureFactsWork:
 		return 8 * time.Minute, nil
 	case policyFixtureLifecycleWork:
-		return 18 * time.Minute, nil
+		return 20 * time.Minute, nil
 	default:
 		return 0, errors.New("unknown fixture work profile")
 	}
@@ -42,14 +42,14 @@ func policyFixtureWorkContext(parent context.Context, profile policyFixtureWorkP
 }
 func policyFixtureChildBudgetValid(timeoutFlag string, deadline, now time.Time) bool {
 	budget, err := time.ParseDuration(timeoutFlag)
-	return err == nil && budget == 330*time.Second && !deadline.IsZero() && deadline.After(now) && deadline.Sub(now) <= budget
+	return err == nil && budget == 390*time.Second && !deadline.IsZero() && deadline.After(now) && deadline.Sub(now) <= budget
 }
 
 func TestPolicyFixtureWorkBudget(t *testing.T) {
 	for _, tc := range []struct {
 		profile policyFixtureWorkProfile
 		want    time.Duration
-	}{{policyFixtureFactsWork, 8 * time.Minute}, {policyFixtureLifecycleWork, 18 * time.Minute}} {
+	}{{policyFixtureFactsWork, 8 * time.Minute}, {policyFixtureLifecycleWork, 20 * time.Minute}} {
 		t.Run(tc.want.String(), func(t *testing.T) {
 			parent, cancel := context.WithCancel(context.Background())
 			defer cancel()
@@ -95,8 +95,8 @@ func TestPolicyFixtureWorkBudget(t *testing.T) {
 
 func TestPolicyFixtureChildBudget(t *testing.T) {
 	now := time.Now()
-	for _, flag := range []string{"330s", "5m30s"} {
-		for _, remaining := range []time.Duration{time.Second, 330 * time.Second} {
+	for _, flag := range []string{"390s", "6m30s"} {
+		for _, remaining := range []time.Duration{time.Second, 390 * time.Second} {
 			if !policyFixtureChildBudgetValid(flag, now.Add(remaining), now) {
 				t.Fatal("live bounded child", flag, remaining)
 			}
@@ -105,7 +105,7 @@ func TestPolicyFixtureChildBudget(t *testing.T) {
 	for _, tc := range []struct {
 		flag     string
 		deadline time.Time
-	}{{"150s", now.Add(time.Second)}, {"0", now.Add(time.Second)}, {"bad", now.Add(time.Second)}, {"330s", time.Time{}}, {"330s", now}, {"330s", now.Add(-time.Second)}, {"330s", now.Add(331 * time.Second)}} {
+	}{{"150s", now.Add(time.Second)}, {"0", now.Add(time.Second)}, {"bad", now.Add(time.Second)}, {"390s", time.Time{}}, {"390s", now}, {"390s", now.Add(-time.Second)}, {"390s", now.Add(391 * time.Second)}} {
 		if policyFixtureChildBudgetValid(tc.flag, tc.deadline, now) {
 			t.Fatal("invalid/stale/oversized child cannot pass", tc.flag)
 		}

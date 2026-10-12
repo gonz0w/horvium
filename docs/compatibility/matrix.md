@@ -1662,7 +1662,7 @@ prior policy receipts remain byte-identical. Both full five-parent/289-control/
 thirteen-child release gates and issues 305/139 remain open; no hardware,
 performance, support or runtime write claim is added.
 
-## Proposed original lifecycle caller composition amendment
+## Original lifecycle caller composition historical proposal
 
 [Issue 331's offline review](../research/M2/policy-lifecycle-caller.md) and
 [source-bound replay](../research/M2/policy-lifecycle-caller-manifest.json) preserve
@@ -1683,3 +1683,25 @@ No new profile or observation is implemented or qualified. All eighteen historic
 receipts remain exact; failed/skipped/unverified boundaries and issues 305/139
 stay open. Explicit decision through issue 331's reviewed PR is required before
 implementation/execution. No runtime/support/performance or infrastructure change.
+
+## Adopted original lifecycle caller fixture implementation
+
+PR 332 adopted the fixture-only 180/390/1200/44 profile. The
+[implementation and candidate evidence](../testing/M2/retained-policy-lifecycle-caller.md)
+add original caller budget assertions, ordered sanitized scalar observations
+before cancellation, successful child extraction and interrupted executable
+cleanup. Strict acceptance requires both pinned FreeBSD/amd64 releases, five
+parents/293 controls/thirteen normal children and forty stage observations each.
+The [candidate receipt](../testing/M2/retained-policy-lifecycle-caller-manifest.json)
+records a 15.1 first UFS startup failure at 126.708 seconds: operation deadline
+error, original caller still unexpired, no returned owner. Facts/UFS/ZFS reviews
+passed their strict 135-control prefix; only one actual partial stage row is
+retained. No lifecycle vector or 293-control gate passed, and ZFS lifecycle/14.5
+were not attempted. Independent host/device/supervisor cleanup passed; incomplete
+lifecycle guest vectors remain unverified. The failing nested boundary and final
+publication state are not established. Product
+90-second operations, collector/cleanup limits, other diagnostic profiles and
+normal runtime builds remain unchanged. All nineteen preceding policy receipts
+retain their failed/skipped/unverified boundaries. Issues 305/139, fault families,
+worker provenance, runtime writes and release/hardware/performance gates remain
+separate. No support claim follows from the fixture amendment.

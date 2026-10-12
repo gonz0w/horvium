@@ -31,8 +31,8 @@ if ! "$binary" -test.v -test.count=1 -test.timeout=18m -test.failfast -test.run=
     exit 1
 fi
 printf 'POLICY_ROOT_REVIEW_PHASE review done\n' >> "$log"
-printf 'POLICY_ROOT_LIFECYCLE_PHASE lifecycle begin timeout=40m\nPOLICY_ROOT_LIFECYCLE_BUDGET_PROFILE child_seconds=330 parent_work_seconds=1080 phase_minutes=40\nPOLICY_ROOT_LIFECYCLE_AFFINITY phase=lifecycle cpus=0\n' >> "$log"
-if ! /usr/bin/cpuset -l 0 "$binary" -test.v -test.count=1 -test.timeout=40m -test.failfast -test.run='^TestNativeMultiplePolicyLifecycle(UFS|ZFS)$' >> "$log" 2>&1; then
+printf 'POLICY_ROOT_LIFECYCLE_PHASE lifecycle begin timeout=44m\nPOLICY_ROOT_LIFECYCLE_BUDGET_PROFILE caller_seconds=180 child_seconds=390 parent_work_seconds=1200 phase_minutes=44\nPOLICY_ROOT_LIFECYCLE_AFFINITY phase=lifecycle cpus=0\n' >> "$log"
+if ! /usr/bin/cpuset -l 0 "$binary" -test.v -test.count=1 -test.timeout=44m -test.failfast -test.run='^TestNativeMultiplePolicyLifecycle(UFS|ZFS)$' >> "$log" 2>&1; then
     cat "$log"
     exit 1
 fi

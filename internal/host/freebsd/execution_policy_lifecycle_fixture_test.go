@@ -25,7 +25,7 @@ import (
 	"golang.org/x/sys/unix"
 )
 
-var multiplePolicyLifecycleControls = strings.Fields("cpu_affinity registered active_successor active_private_record current_boot leases_held nonjournal_unchanged original_observation observation_preserves_history copied_denied decoded_denied cancelled_no_effect closed_successor ledger_unchanged close_retains_leases retired_observation retired_finish release_once locks_released registration_consumed budget_profile")
+var multiplePolicyLifecycleControls = strings.Fields("cpu_affinity registered active_successor active_private_record current_boot leases_held nonjournal_unchanged original_observation observation_preserves_history copied_denied decoded_denied cancelled_no_effect closed_successor ledger_unchanged close_retains_leases retired_observation retired_finish release_once locks_released registration_consumed budget_profile startup_caller_budget")
 
 // Query this disposable process, never modify a system-wide or product CPU set.
 func multiplePolicyLifecycleAffinity(t *testing.T) bool {
@@ -92,16 +92,39 @@ func TestMultiplePolicyRootLifecycleChild(t *testing.T) {
 	deadline, bounded := t.Deadline()
 	timeoutFlag := flag.Lookup("test.timeout")
 	check("budget_profile", bounded && timeoutFlag != nil && policyFixtureChildBudgetValid(timeoutFlag.Value.String(), deadline, time.Now()))
-	call := func(stage string, budget time.Duration, run func(context.Context) error) error {
-		c, cancel := context.WithTimeout(context.Background(), budget)
-		defer cancel()
+	var owner *commissionedExecutionOwner
+	call := func(stage string, run func(context.Context) error) error {
 		start := time.Now()
+		c, cancel, contextErr := newPolicyLifecycleCaller(stage, start)
+		if contextErr != nil {
+			t.Fatal("fixed lifecycle caller", contextErr)
+		}
+		defer cancel()
+		deadline, bounded := c.Deadline()
+		if !bounded || c.Err() != nil {
+			t.Fatal("missing/expired original caller")
+		}
 		e := run(c)
-		t.Logf("root lifecycle stage=%s elapsed=%.2fs error=%v", stage, time.Since(start).Seconds(), e)
+		var returned *bool
+		if stage == "startup" {
+			present := owner != nil
+			returned = &present
+		}
+		row, scalarErr := newPolicyLifecycleStage(mode, stage, start, c, deadline, e, returned)
+		if scalarErr != nil {
+			t.Fatal("original lifecycle scalar", scalarErr)
+		}
+		data, scalarErr := json.Marshal(row)
+		if scalarErr != nil {
+			t.Fatal(scalarErr)
+		}
+		fmt.Println("POLICY_ROOT_LIFECYCLE_STAGE " + string(data))
+		if stage == "startup" {
+			check("startup_caller_budget", row.BudgetNS == int64(180*time.Second) && row.DeadlineNS == row.BudgetNS && row.DeadlineUnchanged)
+		}
 		return e
 	}
-	var owner *commissionedExecutionOwner
-	err := call("startup", 2*time.Minute, func(c context.Context) error {
+	err := call("startup", func(c context.Context) error {
 		var e error
 		// Use the actual existing factory, without substitute/wrapped producers.
 		owner, e = activateNativeClosedExecutionOwner(c, j, l)
@@ -128,7 +151,7 @@ func TestMultiplePolicyRootLifecycleChild(t *testing.T) {
 	expectedFiles["execution.json"] = activeBytes
 	check("nonjournal_unchanged", reflect.DeepEqual(expectedFiles, journalActive) && reflect.DeepEqual(ledgerBefore, multiplePolicyReviewFiles(t, l)))
 	var observation storage.ExecutionDomainsObservation
-	err = call("observe", 90*time.Second, func(c context.Context) error {
+	err = call("observe", func(c context.Context) error {
 		var e error
 		observation, e = owner.Observe(c)
 		return e
@@ -138,19 +161,19 @@ func TestMultiplePolicyRootLifecycleChild(t *testing.T) {
 	copied := new(commissionedExecutionOwner)
 	reflect.ValueOf(copied).Elem().Set(reflect.ValueOf(owner).Elem())
 	var denied storage.ExecutionDomainsObservation
-	err = call("copied", 90*time.Second, func(c context.Context) error {
+	err = call("copied", func(c context.Context) error {
 		var e error
 		denied, e = copied.Observe(c)
 		return e
 	})
-	check("copied_denied", err != nil && denied == (storage.ExecutionDomainsObservation{}) && call("copied-finish", 90*time.Second, copied.FinishIdle) != nil && copied.Close() != nil)
+	check("copied_denied", err != nil && denied == (storage.ExecutionDomainsObservation{}) && call("copied-finish", copied.FinishIdle) != nil && copied.Close() != nil)
 	wire, e := json.Marshal(owner)
 	var decoded commissionedExecutionOwner
-	check("decoded_denied", e == nil && string(wire) == "{}" && json.Unmarshal(wire, &decoded) == nil && call("decoded", 90*time.Second, func(c context.Context) error {
+	check("decoded_denied", e == nil && string(wire) == "{}" && json.Unmarshal(wire, &decoded) == nil && call("decoded", func(c context.Context) error {
 		var e error
 		denied, e = decoded.Observe(c)
 		return e
-	}) != nil && denied == (storage.ExecutionDomainsObservation{}) && call("decoded-finish", 90*time.Second, decoded.FinishIdle) != nil && decoded.Close() != nil)
+	}) != nil && denied == (storage.ExecutionDomainsObservation{}) && call("decoded-finish", decoded.FinishIdle) != nil && decoded.Close() != nil)
 	cancelled, cancel := context.WithCancel(context.Background())
 	cancel()
 	untouched := true
@@ -159,7 +182,7 @@ func TestMultiplePolicyRootLifecycleChild(t *testing.T) {
 		untouched = untouched && e != nil && got == (storage.ExecutionDomainsObservation{}) && owner.FinishIdle(c) != nil
 	}
 	check("cancelled_no_effect", untouched && reflect.DeepEqual(journalActive, multiplePolicyReviewFiles(t, j)) && reflect.DeepEqual(ledgerBefore, multiplePolicyReviewFiles(t, l)))
-	err = call("finish", 90*time.Second, owner.FinishIdle)
+	err = call("finish", owner.FinishIdle)
 	_, closed := readActivationFixture(t, j)
 	want = active
 	want.Generation++
@@ -168,17 +191,17 @@ func TestMultiplePolicyRootLifecycleChild(t *testing.T) {
 	check("ledger_unchanged", reflect.DeepEqual(ledgerBefore, multiplePolicyReviewFiles(t, l)))
 	check("close_retains_leases", nativeActivationLockHeld(t, j) && nativeActivationLockHeld(t, l))
 	journalClosed := multiplePolicyReviewFiles(t, j)
-	err = call("retired-observe", 90*time.Second, func(c context.Context) error {
+	err = call("retired-observe", func(c context.Context) error {
 		var e error
 		denied, e = owner.Observe(c)
 		return e
 	})
 	check("retired_observation", err != nil && denied == (storage.ExecutionDomainsObservation{}))
-	check("retired_finish", call("retired-finish", 90*time.Second, owner.FinishIdle) != nil && reflect.DeepEqual(journalClosed, multiplePolicyReviewFiles(t, j)) && reflect.DeepEqual(ledgerBefore, multiplePolicyReviewFiles(t, l)))
+	check("retired_finish", call("retired-finish", owner.FinishIdle) != nil && reflect.DeepEqual(journalClosed, multiplePolicyReviewFiles(t, j)) && reflect.DeepEqual(ledgerBefore, multiplePolicyReviewFiles(t, l)))
 	check("release_once", owner.Close() == nil && owner.Close() == nil)
 	check("locks_released", !nativeActivationLockHeld(t, j) && !nativeActivationLockHeld(t, l))
 	var other *commissionedExecutionOwner
-	err = call("registration-consumed", 90*time.Second, func(c context.Context) error {
+	err = call("registration-consumed", func(c context.Context) error {
 		var e error
 		other, e = activateNativeClosedExecutionOwner(c, j+"-other", l+"-other")
 		return e
@@ -227,7 +250,7 @@ func nativeMultiplePolicyLifecycleParent(t *testing.T, kind string) {
 			check("seed_closed", seed.Owner.State == "closed" && !seed.Metadata.Pending && !seed.Native.Pending && !seed.Disarmed && len(ledgerBefore) == 3 && !nativeActivationLockHeld(t, j) && !nativeActivationLockHeld(t, l))
 			for _, mode := range []string{"first", "restart"} {
 				_, before := readActivationFixture(t, j)
-				cmd := exec.CommandContext(ctx, os.Args[0], "-test.v", "-test.run=^TestMultiplePolicyRootLifecycleChild$", "-test.timeout=330s", "-test.count=1")
+				cmd := exec.CommandContext(ctx, os.Args[0], "-test.v", "-test.run=^TestMultiplePolicyRootLifecycleChild$", "-test.timeout=390s", "-test.count=1")
 				cmd.Env = append(os.Environ(), "GOMAXPROCS=1", "HORVIUM_POLICY_ROOT_LIFECYCLE_CHILD="+mode, "HORVIUM_RESTART_JOURNAL="+j, "HORVIUM_RESTART_LEDGER="+l)
 				data, err := cmd.CombinedOutput()
 				if err != nil {
@@ -249,7 +272,11 @@ func nativeMultiplePolicyLifecycleParent(t *testing.T, kind string) {
 					sort.Strings(want)
 					good = reflect.DeepEqual(names, want)
 				}
-				check(mode+"_child_inventory", good)
+				stageRows, scalarErr := policyLifecycleStageRows(data, mode)
+				check(mode+"_child_inventory", good && scalarErr == nil)
+				for _, row := range stageRows {
+					fmt.Println(row)
+				}
 				for _, name := range multiplePolicyLifecycleControls {
 					check(mode+"_"+name, true)
 				}
