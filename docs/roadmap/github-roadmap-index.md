@@ -196,6 +196,7 @@ separate trackers distinguish HTTP admission, native-resource recovery, Firefox 
 - [M2: deliver the qualified Overview dashboard (#289)](https://github.com/gonz0w/horvium/issues/289)
 - [M2: deliver the qualified Storage capacity dashboard (#290)](https://github.com/gonz0w/horvium/issues/290)
 - [M2: add bounded pool-page capacity comparisons (#350)](https://github.com/gonz0w/horvium/issues/350) — [slice contract/evidence](../testing/dashboards/pool-capacity.md)
+- [M2: add bounded dataset-page Used comparisons (#352)](https://github.com/gonz0w/horvium/issues/352) — [slice contract/evidence](../testing/dashboards/dataset-capacity.md)
 - [M2: deliver the qualified Storage health dashboard (#292)](https://github.com/gonz0w/horvium/issues/292)
 - [M2: deliver the qualified Jobs dashboard (#295)](https://github.com/gonz0w/horvium/issues/295)
 

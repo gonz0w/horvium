@@ -18,7 +18,9 @@ required before those views gain compatibility claims; current evidence is uncha
 The [Overview/Capacity packet](../design/dashboards/PRD.md) and
 [public fact inventory](../design/dashboards/inventory.md) were adopted via PR 349; adoption is not qualification.
 The first [pool-page comparison slice](../testing/dashboards/pool-capacity.md)
-adds bounded current-observation SVG presentation. Dashboard browser/accessibility,
+adds bounded current-observation SVG presentation. The [dataset Used slice](../testing/dashboards/dataset-capacity.md)
+adds page-local comparisons without summing overlapping accounting or implying
+quota headroom; its exact table and JSON remain unchanged. Dashboard browser/accessibility,
 fresh native service/performance, uPlot behavior and identity-bound history remain
 unqualified. Inspected upstream hashes
 and compressed input sizes in [ADR 0010](../adr/0010-progressive-dashboard-charts.md)

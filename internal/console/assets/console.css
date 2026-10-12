@@ -559,7 +559,11 @@ footer {
 .capacity-track {
   fill:var(--bg)
 }
-.capacity-allocated {
+.capacity-single {
+  height:16px
+}
+.capacity-allocated,
+.capacity-used {
   fill:var(--capacity-allocated)
 }
 .capacity-free {

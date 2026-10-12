@@ -258,3 +258,6 @@
 
 - [Bounded pool-page capacity comparisons](testing/dashboards/pool-capacity.md):
   current cached observations and exact table fallback; broader qualification remains separate.
+
+- [Bounded dataset-page Used comparisons](testing/dashboards/dataset-capacity.md):
+  exact current page scale and independent accounting; broader qualification remains separate.

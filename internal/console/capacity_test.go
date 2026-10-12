@@ -42,7 +42,7 @@ func capacitySection(t *testing.T, body string) string {
 	t.Helper()
 	start := strings.Index(body, `<section class="capacity-section"`)
 	if start < 0 {
-		t.Fatal("pool comparisons missing")
+		t.Fatal("capacity comparisons missing")
 	}
 	end := strings.Index(body[start:], "</section>")
 	if end < 0 {
@@ -78,7 +78,7 @@ func capacityWidths(t *testing.T, section string) []string {
 					for _, v := range el.Attr {
 						a[v.Name.Local] = v.Value
 					}
-					if a["class"] == "capacity-allocated" || a["class"] == "capacity-free" {
+					if a["class"] == "capacity-allocated" || a["class"] == "capacity-free" || a["class"] == "capacity-used" {
 						if a["x"] != "0" {
 							t.Fatal("measurement is stacked instead of zero-origin")
 						}
