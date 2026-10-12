@@ -1721,3 +1721,24 @@ actual partial scalar is retained; later stages/restart/ZFS lifecycle and 14.5
 were not attempted. Complete M2-POLICY-LIFECYCLE-CALLER-005 remains pending;
 independent host cleanup passed, incomplete guest vectors remain unverified.
 No earliest nested expiry, final publication state or causal performance claim.
+
+## Proposed original deadline return-path diagnostic
+
+[Research issue 335](https://github.com/gonz0w/horvium/issues/335) owns the
+[proposal and M2-POLICY-DEADLINE-PROVENANCE-001–006 Test Design](../../research/M2/policy-startup-timeout-provenance.md#proposed-failing-first-test-design).
+It refines M2-RUNTIME-002/M2-STATE-001/M2-RECOVERY-001/M2-PRIV-001/M2-NATIVE-001
+with private, fixture-enabled/tagged immutable deadline-error annotations.
+Normal/disabled error identity, actual original child/parent contexts before
+cancellation, bounded honest error propagation and unknown/ambiguous/overflow
+handling are required. Original producers, timeout constructors/allowances and
+all publication/release guards remain unchanged. These are planned tests;
+explicit maintainer adoption is required before instrumentation or execution.
+
+The proposed separate one-parent/two-child/50-control diagnostic retains all
+original 42 diagnostic/fact controls and the existing 180/210/480/18 profile,
+three samples, independent final journal and complete guest/host teardown.
+One fresh 15.1 candidate would establish diagnostic evidence only; both complete
+293-control lifecycle release gates remain pending. Its [offline replay](../../research/M2/policy-startup-timeout-provenance-manifest.json)
+rebinds PR 334's post-publication failure, all 103 source/compiler frames and
+twenty-one immutable preceding receipts. No new native run, changed budgets,
+runtime writer or support claim follows from this research review.

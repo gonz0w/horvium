@@ -1733,3 +1733,20 @@ PR 333 binary; it cannot reconstruct that earlier failure's final journal or
 substitute for either full lifecycle gate. Forty-three source assertions and
 compiler-bound frames, all twenty immutable prior receipts and scoped local
 baseline review are recorded. No repeat/14.5/full lifecycle or support claim.
+
+## Proposed startup deadline return-path diagnostic
+
+[Research issue 335's proposal](../research/M2/policy-startup-timeout-provenance.md)
+adds no implementation or native execution. Its [offline replay](../research/M2/policy-startup-timeout-provenance-manifest.json)
+rebinds PR 334's unsuccessful post-publication startup and complete 42-control
+diagnostic, preserving all twenty-one preceding policy receipts. The proposed
+fixture-enabled/tagged error annotations would retain exact normal-build and
+disabled error identity, original 90/45/10-second contexts and pre-cancel return
+snapshots; no budget, native producer or safety-check change. Its separate
+50-control one-parent/two-child diagnostic would keep the adopted 180/210/480/18
+profile and require independent final journal/cleanup, never native lifecycle
+acceptance. Instrumentation overhead and ambiguous/inherited deadline observations
+preclude exact production timing or earliest-timer causal claims. Explicit
+adoption is required before implementation/execution. Both complete lifecycle
+release gates, runtime writes and hardware/performance/release support remain
+pending. This proposal needs no new home-lab infrastructure.
