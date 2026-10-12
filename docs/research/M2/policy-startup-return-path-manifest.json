@@ -1,0 +1,1421 @@
+{
+  "schema": 1,
+  "source_commit": "e4e77ac5f30a131a02b6f96315c73de5c3fef6a7",
+  "base_commit": "256b6bc5ab0520a182cace0566b98d18e990e1cd",
+  "native_execution": true,
+  "diagnostic_complete": true,
+  "native_acceptance": false,
+  "attempt_count": 1,
+  "record_sha256": "16c0c4ee36df5d2ad9c7cb7b70e0c1b5b1852015f0e9a2b54514eedfe6931e12",
+  "full_log_sha256": "689a63cfdb5bccec023d7690ba3a1866995e9562f0f617ca007c107e5d4853e2",
+  "canonical_transcript_sha256": "e7c132c338f490a0aae858dedb7edc8dcfce4effaeb04796cb641b4a9aa84014",
+  "private_serial_log_sha256": "49f4c19d4d5968c24292b7c6791e5a08178c06897dfb6a1987b71dfdfe762c0b",
+  "prebuilt": {
+    "source_commit": "e4e77ac5f30a131a02b6f96315c73de5c3fef6a7",
+    "sha256": "18cc152570e668dae4da56428cd3ad7341c29164bac8baf8737faa5ba97ab006",
+    "bytes": 13874724,
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+    "go_pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+    "go_mod_sha256": "adcf8bba335a4ecbf17fdc3d7f3d12707e0ce1055b555585f7e3c6bffc88395b",
+    "go_sum_sha256": "cde7b21c6627bd3cfc042453150e8eaf8b6c80aa2df25d96f48b038050945f03",
+    "target": "freebsd/amd64",
+    "goamd64": "v1",
+    "cgo_enabled": false,
+    "build_arguments": [
+      "go",
+      "test",
+      "-c",
+      "-trimpath",
+      "-tags=horvium_native_fixture",
+      "-o",
+      "<owned-artifact>",
+      "./internal/host/freebsd"
+    ],
+    "source_isolation": {
+      "schema": 1,
+      "normal_binary_sha256": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+      "normal": {
+        "storage": {
+          "go_files": [
+            "deadline_return.go",
+            "deadline_return_plain.go",
+            "device_use.go",
+            "enrollment_publish.go",
+            "enrollment_publish_freebsd.go",
+            "execution_activation.go",
+            "execution_activation_bridge_freebsd.go",
+            "execution_activation_freebsd.go",
+            "execution_binding.go",
+            "execution_binding_freebsd.go",
+            "execution_census.go",
+            "execution_census_change.go",
+            "execution_census_freebsd.go",
+            "execution_domain.go",
+            "execution_domain_freebsd.go",
+            "execution_domains.go",
+            "execution_domains_freebsd.go",
+            "execution_fresh_freebsd.go",
+            "execution_journal.go",
+            "execution_journal_namespace.go",
+            "execution_journal_store_freebsd.go",
+            "execution_policy.go",
+            "execution_policy_freebsd.go",
+            "execution_publication_freebsd.go",
+            "execution_restart.go",
+            "execution_restart_freebsd.go",
+            "execution_restart_retirement.go",
+            "execution_restart_retirement_freebsd.go",
+            "execution_retirement.go",
+            "execution_retirement_freebsd.go",
+            "execution_startup.go",
+            "execution_startup_freebsd.go",
+            "execution_system.go",
+            "feature_names.go",
+            "features.go",
+            "identities.go",
+            "imported_pools.go",
+            "job.go",
+            "job_capacity.go",
+            "job_publish_freebsd.go",
+            "job_read_freebsd.go",
+            "job_record.go",
+            "job_restart.go",
+            "job_successor.go",
+            "labels.go",
+            "model.go",
+            "ownership_capacity.go",
+            "ownership_catalog.go",
+            "ownership_catalog_freebsd.go",
+            "ownership_members.go",
+            "ownership_publish.go",
+            "ownership_publish_freebsd.go",
+            "ownership_read_freebsd.go",
+            "ownership_record.go",
+            "plan.go",
+            "pool.go",
+            "pool_scan.go",
+            "properties.go",
+            "property_assessment.go",
+            "property_assessment_read_freebsd.go",
+            "property_assessment_selection.go",
+            "property_claim_ack.go",
+            "property_claim_ack_freebsd.go",
+            "property_claim_applying.go",
+            "property_claim_applying_freebsd.go",
+            "property_claim_read_freebsd.go",
+            "property_claim_successor.go",
+            "property_claim_successor_freebsd.go",
+            "property_coordinator.go",
+            "property_enrollment.go",
+            "property_enrollment_selection.go",
+            "property_enrollment_state.go",
+            "property_enrollment_state_freebsd.go",
+            "property_execution.go",
+            "property_execution_authority.go",
+            "property_handoff.go",
+            "property_intent.go",
+            "property_intent_record.go",
+            "property_intent_wire.go",
+            "property_job.go",
+            "property_job_publish_freebsd.go",
+            "property_job_read_freebsd.go",
+            "property_job_record.go",
+            "property_live_state.go",
+            "property_live_state_freebsd.go",
+            "property_members.go",
+            "property_postcondition.go",
+            "property_state.go",
+            "property_state_freebsd.go",
+            "property_submission_freebsd.go",
+            "property_system.go",
+            "property_views.go",
+            "reservations.go",
+            "reservations_freebsd.go",
+            "signatures.go",
+            "state.go",
+            "state_acl.go",
+            "state_acl_freebsd.go",
+            "state_catalog.go",
+            "state_catalog_freebsd.go",
+            "state_directory.go",
+            "state_directory_freebsd.go",
+            "state_publish_freebsd.go",
+            "system_devices.go",
+            "topology.go",
+            "validate.go"
+          ],
+          "test_files": [
+            "deadline_activation_guard_test.go",
+            "deadline_return_plain_test.go",
+            "device_use_test.go",
+            "enrollment_publish_freebsd_test.go",
+            "enrollment_publish_test.go",
+            "execution_activation_freebsd_test.go",
+            "execution_activation_test.go",
+            "execution_binding_freebsd_test.go",
+            "execution_binding_test.go",
+            "execution_census_change_test.go",
+            "execution_census_freebsd_test.go",
+            "execution_census_test.go",
+            "execution_domain_test.go",
+            "execution_domains_freebsd_test.go",
+            "execution_domains_test.go",
+            "execution_fresh_freebsd_test.go",
+            "execution_journal_cuts_freebsd_test.go",
+            "execution_journal_namespace_test.go",
+            "execution_journal_store_freebsd_test.go",
+            "execution_journal_test.go",
+            "execution_policy_admission_test.go",
+            "execution_policy_history_freebsd_test.go",
+            "execution_policy_multi_freebsd_test.go",
+            "execution_policy_multi_test.go",
+            "execution_policy_native_test.go",
+            "execution_policy_test.go",
+            "execution_publication_freebsd_test.go",
+            "execution_restart_freebsd_test.go",
+            "execution_restart_retirement_freebsd_test.go",
+            "execution_restart_retirement_test.go",
+            "execution_restart_test.go",
+            "execution_restore_freebsd_test.go",
+            "execution_retirement_freebsd_test.go",
+            "execution_retirement_test.go",
+            "execution_startup_test.go",
+            "execution_system_test.go",
+            "features_test.go",
+            "identities_test.go",
+            "imported_pools_freebsd_test.go",
+            "imported_pools_test.go",
+            "job_capacity_test.go",
+            "job_publish_freebsd_test.go",
+            "job_read_freebsd_test.go",
+            "job_record_test.go",
+            "job_restart_test.go",
+            "job_successor_test.go",
+            "labels_test.go",
+            "ownership_capacity_freebsd_test.go",
+            "ownership_capacity_test.go",
+            "ownership_catalog_freebsd_test.go",
+            "ownership_catalog_test.go",
+            "ownership_members_test.go",
+            "ownership_publish_freebsd_test.go",
+            "ownership_publish_test.go",
+            "ownership_read_freebsd_test.go",
+            "ownership_record_test.go",
+            "plan_test.go",
+            "policy_binding_test.go",
+            "pool_scan_test.go",
+            "pool_test.go",
+            "properties_freebsd_test.go",
+            "properties_test.go",
+            "property_assessment_test.go",
+            "property_claim_ack_freebsd_test.go",
+            "property_claim_ack_test.go",
+            "property_claim_applying_freebsd_test.go",
+            "property_claim_applying_test.go",
+            "property_claim_successor_freebsd_test.go",
+            "property_claim_successor_test.go",
+            "property_coordinator_test.go",
+            "property_enrollment_state_test.go",
+            "property_enrollment_test.go",
+            "property_execution_authority_test.go",
+            "property_execution_test.go",
+            "property_handoff_test.go",
+            "property_handoff_uncertainty_test.go",
+            "property_intent_test.go",
+            "property_job_storage_freebsd_test.go",
+            "property_job_storage_test.go",
+            "property_job_test.go",
+            "property_live_state_freebsd_test.go",
+            "property_live_state_test.go",
+            "property_members_test.go",
+            "property_postcondition_test.go",
+            "property_publication_cuts_freebsd_test.go",
+            "property_state_test.go",
+            "property_submission_freebsd_test.go",
+            "property_system_test.go",
+            "property_views_test.go",
+            "reservations_freebsd_test.go",
+            "reservations_test.go",
+            "signatures_test.go",
+            "state_acl_freebsd_test.go",
+            "state_acl_test.go",
+            "state_catalog_freebsd_test.go",
+            "state_catalog_test.go",
+            "state_directory_freebsd_test.go",
+            "state_fixture_freebsd_test.go",
+            "state_test.go",
+            "system_devices_freebsd_test.go",
+            "system_devices_test.go",
+            "topology_test.go"
+          ]
+        },
+        "host": {
+          "go_files": [
+            "boot_native_freebsd.go",
+            "boot_owner.go",
+            "execute.go",
+            "execution_activation_freebsd.go",
+            "execution_owner.go",
+            "execution_owner_freebsd.go",
+            "execution_policy.go",
+            "execution_restart_freebsd.go",
+            "execution_startup_freebsd.go",
+            "execution_system_freebsd.go",
+            "guard_freebsd.go",
+            "joint_execution_leases_freebsd.go",
+            "native_freebsd.go",
+            "original_backing_freebsd.go",
+            "persistent_backing.go",
+            "persistent_backing_freebsd.go",
+            "pool_health.go",
+            "pool_properties.go",
+            "pool_properties_freebsd.go",
+            "pool_providers.go",
+            "process_unix.go",
+            "property_backend.go",
+            "property_claim_control.go",
+            "property_claim_source.go",
+            "property_control.go",
+            "property_control_freebsd.go",
+            "property_enrollment.go",
+            "property_job_source.go",
+            "property_policy.go",
+            "property_safety.go",
+            "property_state.go",
+            "source.go",
+            "supervisor_freebsd.go",
+            "supervisor_protocol.go",
+            "system_use.go",
+            "system_use_freebsd.go"
+          ],
+          "test_files": [
+            "boot_owner_test.go",
+            "deadline_return_test.go",
+            "enrollment_publication_test.go",
+            "enrollment_publish_freebsd_test.go",
+            "enrollment_state_freebsd_test.go",
+            "execute_test.go",
+            "execution_activation_freebsd_test.go",
+            "execution_owner_freebsd_test.go",
+            "execution_owner_test.go",
+            "execution_policy_envelope_support_test.go",
+            "execution_policy_fixture_budget_test.go",
+            "execution_policy_lifecycle_support_test.go",
+            "execution_policy_trace_support_test.go",
+            "execution_restart_freebsd_test.go",
+            "execution_retirement_freebsd_test.go",
+            "execution_startup_freebsd_test.go",
+            "execution_system_freebsd_test.go",
+            "executor_recovery_freebsd_test.go",
+            "guard_freebsd_test.go",
+            "joint_execution_leases_freebsd_test.go",
+            "native_freebsd_test.go",
+            "original_backing_freebsd_test.go",
+            "persistent_backing_freebsd_test.go",
+            "persistent_backing_test.go",
+            "pool_health_test.go",
+            "pool_properties_freebsd_test.go",
+            "pool_properties_test.go",
+            "pool_providers_freebsd_test.go",
+            "pool_providers_test.go",
+            "process_unix_test.go",
+            "projection_freebsd_test.go",
+            "property_backend_freebsd_test.go",
+            "property_backend_test.go",
+            "property_claim_control_freebsd_test.go",
+            "property_claim_control_test.go",
+            "property_claim_source_freebsd_test.go",
+            "property_claim_source_test.go",
+            "property_control_freebsd_test.go",
+            "property_control_test.go",
+            "property_enrollment_freebsd_test.go",
+            "property_enrollment_test.go",
+            "property_job_source_freebsd_test.go",
+            "property_job_source_test.go",
+            "property_policy_test.go",
+            "property_postcondition_freebsd_test.go",
+            "property_safety_test.go",
+            "property_state_freebsd_test.go",
+            "property_state_test.go",
+            "property_system_freebsd_test.go",
+            "source_test.go",
+            "supervisor_entry_test.go",
+            "supervisor_native_freebsd_test.go",
+            "supervisor_protocol_test.go",
+            "system_use_test.go"
+          ]
+        }
+      },
+      "tagged": {
+        "storage": {
+          "go_files": [
+            "deadline_return.go",
+            "deadline_return_fixture.go",
+            "deadline_semantics_fixture.go",
+            "device_use.go",
+            "enrollment_publish.go",
+            "enrollment_publish_freebsd.go",
+            "execution_activation.go",
+            "execution_activation_bridge_freebsd.go",
+            "execution_activation_freebsd.go",
+            "execution_binding.go",
+            "execution_binding_freebsd.go",
+            "execution_census.go",
+            "execution_census_change.go",
+            "execution_census_freebsd.go",
+            "execution_domain.go",
+            "execution_domain_freebsd.go",
+            "execution_domains.go",
+            "execution_domains_freebsd.go",
+            "execution_fresh_freebsd.go",
+            "execution_journal.go",
+            "execution_journal_namespace.go",
+            "execution_journal_store_freebsd.go",
+            "execution_policy.go",
+            "execution_policy_fixture_freebsd.go",
+            "execution_policy_freebsd.go",
+            "execution_publication_freebsd.go",
+            "execution_restart.go",
+            "execution_restart_freebsd.go",
+            "execution_restart_retirement.go",
+            "execution_restart_retirement_freebsd.go",
+            "execution_retirement.go",
+            "execution_retirement_freebsd.go",
+            "execution_startup.go",
+            "execution_startup_freebsd.go",
+            "execution_system.go",
+            "feature_names.go",
+            "features.go",
+            "identities.go",
+            "imported_pools.go",
+            "job.go",
+            "job_capacity.go",
+            "job_publish_freebsd.go",
+            "job_read_freebsd.go",
+            "job_record.go",
+            "job_restart.go",
+            "job_successor.go",
+            "labels.go",
+            "model.go",
+            "ownership_capacity.go",
+            "ownership_catalog.go",
+            "ownership_catalog_freebsd.go",
+            "ownership_members.go",
+            "ownership_publish.go",
+            "ownership_publish_freebsd.go",
+            "ownership_read_freebsd.go",
+            "ownership_record.go",
+            "plan.go",
+            "pool.go",
+            "pool_scan.go",
+            "properties.go",
+            "property_assessment.go",
+            "property_assessment_read_freebsd.go",
+            "property_assessment_selection.go",
+            "property_claim_ack.go",
+            "property_claim_ack_freebsd.go",
+            "property_claim_applying.go",
+            "property_claim_applying_freebsd.go",
+            "property_claim_read_freebsd.go",
+            "property_claim_successor.go",
+            "property_claim_successor_freebsd.go",
+            "property_coordinator.go",
+            "property_enrollment.go",
+            "property_enrollment_selection.go",
+            "property_enrollment_state.go",
+            "property_enrollment_state_freebsd.go",
+            "property_execution.go",
+            "property_execution_authority.go",
+            "property_handoff.go",
+            "property_intent.go",
+            "property_intent_record.go",
+            "property_intent_wire.go",
+            "property_job.go",
+            "property_job_publish_freebsd.go",
+            "property_job_read_freebsd.go",
+            "property_job_record.go",
+            "property_live_state.go",
+            "property_live_state_freebsd.go",
+            "property_members.go",
+            "property_postcondition.go",
+            "property_state.go",
+            "property_state_freebsd.go",
+            "property_submission_freebsd.go",
+            "property_system.go",
+            "property_views.go",
+            "reservations.go",
+            "reservations_freebsd.go",
+            "signatures.go",
+            "state.go",
+            "state_acl.go",
+            "state_acl_freebsd.go",
+            "state_catalog.go",
+            "state_catalog_freebsd.go",
+            "state_directory.go",
+            "state_directory_freebsd.go",
+            "state_publish_freebsd.go",
+            "system_devices.go",
+            "topology.go",
+            "validate.go"
+          ],
+          "test_files": [
+            "deadline_activation_guard_fixture_test.go",
+            "deadline_activation_guard_test.go",
+            "deadline_return_fixture_test.go",
+            "deadline_semantics_fixture_test.go",
+            "device_use_test.go",
+            "enrollment_publish_freebsd_test.go",
+            "enrollment_publish_test.go",
+            "execution_activation_freebsd_test.go",
+            "execution_activation_test.go",
+            "execution_binding_freebsd_test.go",
+            "execution_binding_test.go",
+            "execution_census_change_test.go",
+            "execution_census_freebsd_test.go",
+            "execution_census_test.go",
+            "execution_domain_test.go",
+            "execution_domains_freebsd_test.go",
+            "execution_domains_test.go",
+            "execution_fresh_freebsd_test.go",
+            "execution_journal_cuts_freebsd_test.go",
+            "execution_journal_namespace_test.go",
+            "execution_journal_store_freebsd_test.go",
+            "execution_journal_test.go",
+            "execution_policy_admission_test.go",
+            "execution_policy_history_freebsd_test.go",
+            "execution_policy_multi_freebsd_test.go",
+            "execution_policy_multi_test.go",
+            "execution_policy_native_test.go",
+            "execution_policy_test.go",
+            "execution_publication_freebsd_test.go",
+            "execution_restart_freebsd_test.go",
+            "execution_restart_retirement_freebsd_test.go",
+            "execution_restart_retirement_test.go",
+            "execution_restart_test.go",
+            "execution_restore_freebsd_test.go",
+            "execution_retirement_freebsd_test.go",
+            "execution_retirement_test.go",
+            "execution_startup_test.go",
+            "execution_system_test.go",
+            "features_test.go",
+            "identities_test.go",
+            "imported_pools_freebsd_test.go",
+            "imported_pools_test.go",
+            "job_capacity_test.go",
+            "job_publish_freebsd_test.go",
+            "job_read_freebsd_test.go",
+            "job_record_test.go",
+            "job_restart_test.go",
+            "job_successor_test.go",
+            "labels_test.go",
+            "ownership_capacity_freebsd_test.go",
+            "ownership_capacity_test.go",
+            "ownership_catalog_freebsd_test.go",
+            "ownership_catalog_test.go",
+            "ownership_members_test.go",
+            "ownership_publish_freebsd_test.go",
+            "ownership_publish_test.go",
+            "ownership_read_freebsd_test.go",
+            "ownership_record_test.go",
+            "plan_test.go",
+            "policy_binding_test.go",
+            "pool_scan_test.go",
+            "pool_test.go",
+            "properties_freebsd_test.go",
+            "properties_test.go",
+            "property_assessment_test.go",
+            "property_claim_ack_freebsd_test.go",
+            "property_claim_ack_test.go",
+            "property_claim_applying_freebsd_test.go",
+            "property_claim_applying_test.go",
+            "property_claim_successor_freebsd_test.go",
+            "property_claim_successor_test.go",
+            "property_coordinator_test.go",
+            "property_enrollment_state_test.go",
+            "property_enrollment_test.go",
+            "property_execution_authority_test.go",
+            "property_execution_test.go",
+            "property_handoff_test.go",
+            "property_handoff_uncertainty_test.go",
+            "property_intent_test.go",
+            "property_job_storage_freebsd_test.go",
+            "property_job_storage_test.go",
+            "property_job_test.go",
+            "property_live_state_freebsd_test.go",
+            "property_live_state_test.go",
+            "property_members_test.go",
+            "property_postcondition_test.go",
+            "property_publication_cuts_freebsd_test.go",
+            "property_state_test.go",
+            "property_submission_freebsd_test.go",
+            "property_system_test.go",
+            "property_views_test.go",
+            "reservations_freebsd_test.go",
+            "reservations_test.go",
+            "signatures_test.go",
+            "state_acl_freebsd_test.go",
+            "state_acl_test.go",
+            "state_catalog_freebsd_test.go",
+            "state_catalog_test.go",
+            "state_directory_freebsd_test.go",
+            "state_fixture_freebsd_test.go",
+            "state_test.go",
+            "system_devices_freebsd_test.go",
+            "system_devices_test.go",
+            "topology_test.go"
+          ]
+        },
+        "host": {
+          "go_files": [
+            "boot_native_freebsd.go",
+            "boot_owner.go",
+            "execute.go",
+            "execution_activation_freebsd.go",
+            "execution_owner.go",
+            "execution_owner_freebsd.go",
+            "execution_policy.go",
+            "execution_restart_freebsd.go",
+            "execution_startup_freebsd.go",
+            "execution_system_freebsd.go",
+            "guard_freebsd.go",
+            "joint_execution_leases_freebsd.go",
+            "native_freebsd.go",
+            "original_backing_freebsd.go",
+            "persistent_backing.go",
+            "persistent_backing_freebsd.go",
+            "pool_health.go",
+            "pool_properties.go",
+            "pool_properties_freebsd.go",
+            "pool_providers.go",
+            "process_unix.go",
+            "property_backend.go",
+            "property_claim_control.go",
+            "property_claim_source.go",
+            "property_control.go",
+            "property_control_freebsd.go",
+            "property_enrollment.go",
+            "property_job_source.go",
+            "property_policy.go",
+            "property_safety.go",
+            "property_state.go",
+            "source.go",
+            "supervisor_freebsd.go",
+            "supervisor_protocol.go",
+            "system_use.go",
+            "system_use_freebsd.go"
+          ],
+          "test_files": [
+            "boot_owner_test.go",
+            "deadline_return_fixture_test.go",
+            "deadline_return_test.go",
+            "enrollment_publication_test.go",
+            "enrollment_publish_freebsd_test.go",
+            "enrollment_state_freebsd_test.go",
+            "execute_test.go",
+            "execution_activation_freebsd_test.go",
+            "execution_owner_freebsd_test.go",
+            "execution_owner_test.go",
+            "execution_policy_costs_fixture_test.go",
+            "execution_policy_envelope_support_test.go",
+            "execution_policy_facts_fixture_test.go",
+            "execution_policy_fixture_budget_test.go",
+            "execution_policy_fixture_test.go",
+            "execution_policy_lifecycle_fixture_test.go",
+            "execution_policy_lifecycle_support_test.go",
+            "execution_policy_provenance_support_fixture_test.go",
+            "execution_policy_provenance_support_test.go",
+            "execution_policy_review_fixture_test.go",
+            "execution_policy_startup_envelope_fixture_test.go",
+            "execution_policy_startup_provenance_fixture_test.go",
+            "execution_policy_startup_trace_fixture_test.go",
+            "execution_policy_trace_support_test.go",
+            "execution_restart_freebsd_test.go",
+            "execution_retirement_freebsd_test.go",
+            "execution_startup_freebsd_test.go",
+            "execution_system_freebsd_test.go",
+            "executor_recovery_freebsd_test.go",
+            "guard_freebsd_test.go",
+            "joint_execution_leases_freebsd_test.go",
+            "native_freebsd_test.go",
+            "original_backing_freebsd_test.go",
+            "persistent_backing_freebsd_test.go",
+            "persistent_backing_test.go",
+            "pool_health_test.go",
+            "pool_properties_freebsd_test.go",
+            "pool_properties_test.go",
+            "pool_providers_freebsd_test.go",
+            "pool_providers_test.go",
+            "process_unix_test.go",
+            "projection_freebsd_test.go",
+            "property_backend_freebsd_test.go",
+            "property_backend_test.go",
+            "property_claim_control_freebsd_test.go",
+            "property_claim_control_test.go",
+            "property_claim_source_freebsd_test.go",
+            "property_claim_source_test.go",
+            "property_control_freebsd_test.go",
+            "property_control_test.go",
+            "property_enrollment_freebsd_test.go",
+            "property_enrollment_test.go",
+            "property_job_source_freebsd_test.go",
+            "property_job_source_test.go",
+            "property_policy_test.go",
+            "property_postcondition_freebsd_test.go",
+            "property_safety_test.go",
+            "property_state_freebsd_test.go",
+            "property_state_test.go",
+            "property_system_freebsd_test.go",
+            "source_test.go",
+            "supervisor_entry_test.go",
+            "supervisor_native_freebsd_test.go",
+            "supervisor_protocol_test.go",
+            "system_use_test.go"
+          ]
+        }
+      }
+    },
+    "validated_transcript_sha256": "e7c132c338f490a0aae858dedb7edc8dcfce4effaeb04796cb641b4a9aa84014"
+  },
+  "unchanged_build_selection_and_artifacts_from_reviewed_fixture": true,
+  "profile": {
+    "release": "15.1",
+    "cpu_count": 1,
+    "cpu_model": "qemu64",
+    "memory_mib": 6144,
+    "accelerator": "tcg",
+    "device_profile": "policy-facts"
+  },
+  "owned_devices": 7,
+  "startup_budget": {
+    "child_seconds": 210,
+    "parent_seconds": 480,
+    "phase_minutes": 18,
+    "caller_seconds": 180,
+    "product_seconds": 90,
+    "sample_seconds": [
+      30,
+      75,
+      110
+    ],
+    "snapshot_bytes": 65536,
+    "join_seconds": 5
+  },
+  "parent_seconds": 173.35,
+  "base_versions": [
+    "15.1-RELEASE-p3",
+    "15.1-RELEASE-p3",
+    "15.1-RELEASE-p3",
+    "zfs-2.4.2-1-FreeBSD_g6330a45b0",
+    "zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0"
+  ],
+  "image": {
+    "release": "15.1",
+    "builder": "2.2.8",
+    "compressed_sha256": "42b6377c065d8291f82e3c93c95e95fc7ef0cb1f321947946df4e240b8183bd3",
+    "qcow2_sha256": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+    "anyvm_sha256": "40a16e846bc07030759936d792343e770acdeb14d4c9991af7409648661a650d",
+    "cpu_model": "qemu64",
+    "cpu_count": 2,
+    "memory_mib": 6144
+  },
+  "qemu_version": "QEMU emulator version 11.1.1",
+  "qemu_sha256": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+  "firmware_code_sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+  "firmware_vars_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+  "observations": {
+    "native_acceptance": false,
+    "summary": {
+      "return_ns": 105111880999,
+      "caller_deadline_ns": 180000000000,
+      "caller_error": "none",
+      "startup_error": "none",
+      "owner_present": true,
+      "samples": [
+        {
+          "id": 1,
+          "offset_ns": 30000000000,
+          "begin_ns": 30004460000,
+          "end_ns": 30007933000,
+          "bytes": 9542,
+          "sha256": "1db4b6f1abee64c34f3bfcfbb91475d0aa69440789574244e275129f83ac3f60",
+          "status": "captured"
+        },
+        {
+          "id": 2,
+          "offset_ns": 75000000000,
+          "begin_ns": 75010530000,
+          "end_ns": 75012091000,
+          "bytes": 9559,
+          "sha256": "6aa97b4deb8bc7473a9165fbc763a3f027337d275c70476c9fbf66b844e431c8",
+          "status": "captured"
+        },
+        {
+          "id": 3,
+          "offset_ns": 110000000000,
+          "begin_ns": 0,
+          "end_ns": 0,
+          "bytes": 0,
+          "sha256": "",
+          "status": "skipped"
+        }
+      ]
+    },
+    "stacks": [
+      {
+        "id": 1,
+        "status": "located",
+        "frames": [
+          {
+            "file": "syscall/asm_unix_amd64.s",
+            "line": 39,
+            "symbol": "syscall.Syscall6"
+          },
+          {
+            "file": "os/wait6_freebsd64.go",
+            "line": 18,
+            "symbol": "os.wait6"
+          },
+          {
+            "file": "os/wait_wait6.go",
+            "line": 19,
+            "symbol": "os.(*Process).blockUntilWaitable.func1"
+          },
+          {
+            "file": "os/file_posix.go",
+            "line": 263,
+            "symbol": "os.ignoringEINTR"
+          },
+          {
+            "file": "os/wait_wait6.go",
+            "line": 18,
+            "symbol": "os.(*Process).blockUntilWaitable"
+          },
+          {
+            "file": "os/exec_unix.go",
+            "line": 45,
+            "symbol": "os.(*Process).pidWait"
+          },
+          {
+            "file": "os/exec_unix.go",
+            "line": 28,
+            "symbol": "os.(*Process).wait"
+          },
+          {
+            "file": "os/exec.go",
+            "line": 347,
+            "symbol": "os.(*Process).Wait"
+          },
+          {
+            "file": "os/exec/exec.go",
+            "line": 944,
+            "symbol": "os/exec.(*Cmd).Wait"
+          },
+          {
+            "file": "os/exec/exec.go",
+            "line": 643,
+            "symbol": "os/exec.(*Cmd).Run"
+          },
+          {
+            "file": "internal/host/freebsd/execute.go",
+            "line": 70,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executePrepared"
+          },
+          {
+            "file": "internal/host/freebsd/guard_freebsd.go",
+            "line": 17,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executeNative"
+          },
+          {
+            "file": "internal/host/freebsd/persistent_backing_freebsd.go",
+            "line": 74,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.readPersistentBackingNative"
+          },
+          {
+            "file": "internal/host/freebsd/persistent_backing.go",
+            "line": 58,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*persistentBackingCollector).collect.func1"
+          },
+          {
+            "file": "internal/host/freebsd/persistent_backing.go",
+            "line": 82,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*persistentBackingCollector).collect"
+          },
+          {
+            "file": "internal/host/freebsd/persistent_backing_freebsd.go",
+            "line": 62,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.collectNativePersistentBacking"
+          },
+          {
+            "file": "internal/host/freebsd/joint_execution_leases_freebsd.go",
+            "line": 17,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.readNativeExecutionBacking"
+          },
+          {
+            "file": "internal/storage/execution_domain_freebsd.go",
+            "line": 43,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).observeExecutionDomainLocked.func1"
+          },
+          {
+            "file": "internal/storage/execution_binding_freebsd.go",
+            "line": 52,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked"
+          },
+          {
+            "file": "internal/storage/execution_domain_freebsd.go",
+            "line": 42,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).observeExecutionDomainLocked"
+          },
+          {
+            "file": "internal/storage/execution_domains_freebsd.go",
+            "line": 190,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*ExecutionDomainLeases).observeLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 191,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1.1"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 240,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1"
+          },
+          {
+            "file": "internal/storage/execution_binding_freebsd.go",
+            "line": 52,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 156,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2"
+          },
+          {
+            "file": "internal/storage/execution_binding_freebsd.go",
+            "line": 52,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 155,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked"
+          },
+          {
+            "file": "internal/storage/execution_restart_freebsd.go",
+            "line": 51,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).activate"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 66,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.reviewExecutionStartupPolicy.func1"
+          },
+          {
+            "file": "internal/storage/execution_restart.go",
+            "line": 62,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*ExecutionStartupReview).Activate"
+          },
+          {
+            "file": "internal/host/freebsd/execution_restart_freebsd.go",
+            "line": 30,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner.func2"
+          },
+          {
+            "file": "internal/host/freebsd/execution_owner.go",
+            "line": 82,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.commissionExecutionOwner"
+          },
+          {
+            "file": "internal/host/freebsd/execution_restart_freebsd.go",
+            "line": 17,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner"
+          },
+          {
+            "file": "internal/host/freebsd/execution_policy_startup_provenance_fixture_test.go",
+            "line": 73,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.TestMultiplePolicyStartupProvenanceChild"
+          },
+          {
+            "file": "testing/testing.go",
+            "line": 2193,
+            "symbol": "testing.tRunner"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "status": "located",
+        "frames": [
+          {
+            "file": "syscall/asm_unix_amd64.s",
+            "line": 39,
+            "symbol": "syscall.Syscall6"
+          },
+          {
+            "file": "os/wait6_freebsd64.go",
+            "line": 18,
+            "symbol": "os.wait6"
+          },
+          {
+            "file": "os/wait_wait6.go",
+            "line": 19,
+            "symbol": "os.(*Process).blockUntilWaitable.func1"
+          },
+          {
+            "file": "os/file_posix.go",
+            "line": 263,
+            "symbol": "os.ignoringEINTR"
+          },
+          {
+            "file": "os/wait_wait6.go",
+            "line": 18,
+            "symbol": "os.(*Process).blockUntilWaitable"
+          },
+          {
+            "file": "os/exec_unix.go",
+            "line": 45,
+            "symbol": "os.(*Process).pidWait"
+          },
+          {
+            "file": "os/exec_unix.go",
+            "line": 28,
+            "symbol": "os.(*Process).wait"
+          },
+          {
+            "file": "os/exec.go",
+            "line": 347,
+            "symbol": "os.(*Process).Wait"
+          },
+          {
+            "file": "os/exec/exec.go",
+            "line": 944,
+            "symbol": "os/exec.(*Cmd).Wait"
+          },
+          {
+            "file": "os/exec/exec.go",
+            "line": 643,
+            "symbol": "os/exec.(*Cmd).Run"
+          },
+          {
+            "file": "internal/host/freebsd/execute.go",
+            "line": 70,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executePrepared"
+          },
+          {
+            "file": "internal/host/freebsd/guard_freebsd.go",
+            "line": 17,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.executeNative"
+          },
+          {
+            "file": "internal/host/freebsd/persistent_backing_freebsd.go",
+            "line": 74,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.readPersistentBackingNative"
+          },
+          {
+            "file": "internal/host/freebsd/persistent_backing.go",
+            "line": 58,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*persistentBackingCollector).collect.func1"
+          },
+          {
+            "file": "internal/host/freebsd/persistent_backing.go",
+            "line": 82,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.(*persistentBackingCollector).collect"
+          },
+          {
+            "file": "internal/host/freebsd/persistent_backing_freebsd.go",
+            "line": 62,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.collectNativePersistentBacking"
+          },
+          {
+            "file": "internal/host/freebsd/joint_execution_leases_freebsd.go",
+            "line": 17,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.readNativeExecutionBacking"
+          },
+          {
+            "file": "internal/storage/execution_domain_freebsd.go",
+            "line": 43,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).observeExecutionDomainLocked.func1"
+          },
+          {
+            "file": "internal/storage/execution_binding_freebsd.go",
+            "line": 52,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked"
+          },
+          {
+            "file": "internal/storage/execution_domain_freebsd.go",
+            "line": 42,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).observeExecutionDomainLocked"
+          },
+          {
+            "file": "internal/storage/execution_domains_freebsd.go",
+            "line": 194,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*ExecutionDomainLeases).observeLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 209,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1.1"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 240,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2.1"
+          },
+          {
+            "file": "internal/storage/execution_binding_freebsd.go",
+            "line": 52,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 156,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked.func2"
+          },
+          {
+            "file": "internal/storage/execution_binding_freebsd.go",
+            "line": 52,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*StateDirectory).inspectExecutionBindingObjectsLocked"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 155,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).inspectLocked"
+          },
+          {
+            "file": "internal/storage/execution_restart_freebsd.go",
+            "line": 76,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*executionStartupNative).activate"
+          },
+          {
+            "file": "internal/storage/execution_startup_freebsd.go",
+            "line": 66,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.reviewExecutionStartupPolicy.func1"
+          },
+          {
+            "file": "internal/storage/execution_restart.go",
+            "line": 62,
+            "symbol": "github.com/gonz0w/horvium/internal/storage.(*ExecutionStartupReview).Activate"
+          },
+          {
+            "file": "internal/host/freebsd/execution_restart_freebsd.go",
+            "line": 30,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner.func2"
+          },
+          {
+            "file": "internal/host/freebsd/execution_owner.go",
+            "line": 82,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.commissionExecutionOwner"
+          },
+          {
+            "file": "internal/host/freebsd/execution_restart_freebsd.go",
+            "line": 17,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.activateNativeClosedExecutionOwner"
+          },
+          {
+            "file": "internal/host/freebsd/execution_policy_startup_provenance_fixture_test.go",
+            "line": 73,
+            "symbol": "github.com/gonz0w/horvium/internal/host/freebsd.TestMultiplePolicyStartupProvenanceChild"
+          },
+          {
+            "file": "testing/testing.go",
+            "line": 2193,
+            "symbol": "testing.tRunner"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "status": "skipped",
+        "frames": []
+      }
+    ],
+    "journal": {
+      "before_sha256": "81c84ce0425c1d7216ac6cbed929771ee4416fbf748b2a1532e6b588b3a2eb7a",
+      "after_sha256": "d9a3ed6e594c9b27a495a27c2621868c18828720fb5565a79307d30816e35117",
+      "unchanged": false,
+      "decoded": true,
+      "state": "active",
+      "generation_before": 6,
+      "generation_after": 7
+    },
+    "trace": {
+      "status": "success",
+      "frames": []
+    },
+    "identity": {
+      "schema": 1,
+      "profile": "deadline-provenance-v1",
+      "source_commit": "e4e77ac5f30a131a02b6f96315c73de5c3fef6a7",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": "18cc152570e668dae4da56428cd3ad7341c29164bac8baf8737faa5ba97ab006"
+    },
+    "diagnostic_complete": true,
+    "transcript_sha256": "e7c132c338f490a0aae858dedb7edc8dcfce4effaeb04796cb641b4a9aa84014"
+  },
+  "frame_source_hashes": {
+    "syscall/asm_unix_amd64.s": {
+      "origin": "installed pinned-compiler Go source; point-source mapping only",
+      "sha256": "ab8df94a62e23a5dcc79590078ca54dd1432faed5341cc27fdab6f9ef9cd0e66"
+    },
+    "os/wait6_freebsd64.go": {
+      "origin": "installed pinned-compiler Go source; point-source mapping only",
+      "sha256": "1cadc99c0d646c0daa735b2019c76c470d3bf91d3e7ea298015ea3ccb3ccc728"
+    },
+    "os/wait_wait6.go": {
+      "origin": "installed pinned-compiler Go source; point-source mapping only",
+      "sha256": "78e364a18a97408cbcae5735608f687fb75ed3a028be81b4b2050f44ed79d596"
+    },
+    "os/file_posix.go": {
+      "origin": "installed pinned-compiler Go source; point-source mapping only",
+      "sha256": "2e93ac5f812cd7184d3ac3a2eb9a51583911a6261cf9c27772fa7dfedcbe514f"
+    },
+    "os/exec_unix.go": {
+      "origin": "installed pinned-compiler Go source; point-source mapping only",
+      "sha256": "6e5581c9945c2364c01c26ed4d8659f0b0c10cd32b4eab3000132dc98e8e92f4"
+    },
+    "os/exec.go": {
+      "origin": "installed pinned-compiler Go source; point-source mapping only",
+      "sha256": "811e5ad1e525fa0b4ab9109ee003f493df79e30e2b17ea29d643686ac9c6db2b"
+    },
+    "os/exec/exec.go": {
+      "origin": "installed pinned-compiler Go source; point-source mapping only",
+      "sha256": "3ec96eeef97a375aa5e39663961f8adf3177db9449dacd3c407fd258bc9a2498"
+    },
+    "internal/host/freebsd/execute.go": {
+      "origin": "executed Horvium Git source",
+      "sha256": "6b1aa25996f23adec5d9af6bb58708ae475a5a2291f9e994cab83e1408d0c1d8"
+    },
+    "internal/host/freebsd/guard_freebsd.go": {
+      "origin": "executed Horvium Git source",
+      "sha256": "3093de04ed48250ad47424b14467e8e698ee264a7b2cc241e008b05191ec9c03"
+    },
+    "internal/host/freebsd/persistent_backing_freebsd.go": {
+      "origin": "executed Horvium Git source",
+      "sha256": "2934f96769d2fbd560ac72fb9d9376d441285e616ee771a299d8eb67ae5ac724"
+    },
+    "internal/host/freebsd/persistent_backing.go": {
+      "origin": "executed Horvium Git source",
+      "sha256": "43c55dedb5b332add94f12f5def5f75f061a9ced2cc8fb07fd52f6b00ea392ca"
+    },
+    "internal/host/freebsd/joint_execution_leases_freebsd.go": {
+      "origin": "executed Horvium Git source",
+      "sha256": "c583daebb2831212bfe32b875b0eb899e5b52f6d800fc462812a8596cbc0ca36"
+    },
+    "internal/storage/execution_domain_freebsd.go": {
+      "origin": "executed Horvium Git source",
+      "sha256": "237179b1e73510fc345e81c72440cf52662edb41e06396d5f17e7ed900f6c5ed"
+    },
+    "internal/storage/execution_binding_freebsd.go": {
+      "origin": "executed Horvium Git source",
+      "sha256": "a6d549990d5855697c9774b92ba328a3146774320661624b4760946143b31f1d"
+    },
+    "internal/storage/execution_domains_freebsd.go": {
+      "origin": "executed Horvium Git source",
+      "sha256": "4c117a7a2136d422eef44f936a98d4ebeac6fd52ff017d05deab619feb5571bf"
+    },
+    "internal/storage/execution_startup_freebsd.go": {
+      "origin": "executed Horvium Git source",
+      "sha256": "f12c8c9e1a2ae251680ae1637cf407612c39f1c2e8259461111fdba69c2ec8b8"
+    },
+    "internal/storage/execution_restart_freebsd.go": {
+      "origin": "executed Horvium Git source",
+      "sha256": "44cfc4b56ff09bdb5865e792d8c047301ee64903dc851a343ea68e0c02caff0b"
+    },
+    "internal/storage/execution_restart.go": {
+      "origin": "executed Horvium Git source",
+      "sha256": "06dd4de534850432d618cd6d60d60277e4012effb40208bd3d52deca4e8d7b26"
+    },
+    "internal/host/freebsd/execution_restart_freebsd.go": {
+      "origin": "executed Horvium Git source",
+      "sha256": "2c4bd0e5ff57a17d803ad59ca346cbf7094040addd6c4062ed7eb9b50330c444"
+    },
+    "internal/host/freebsd/execution_owner.go": {
+      "origin": "executed Horvium Git source",
+      "sha256": "c3b9bb2b2b9c309947dc4f55723e3ae9ca5dcb2bac48beb77d8cd3aa1935e7ba"
+    },
+    "internal/host/freebsd/execution_policy_startup_provenance_fixture_test.go": {
+      "origin": "executed Horvium Git source",
+      "sha256": "91e93bb5bd16488ae39e11a1470d3b860f982f141902195c831a3427b0ccae07"
+    },
+    "testing/testing.go": {
+      "origin": "installed pinned-compiler Go source; point-source mapping only",
+      "sha256": "8d2437cfdcfb82fd8807e5063783de1d50f70e589e80cad10e17d8ef23f724d9"
+    }
+  },
+  "independent_cleanup": {
+    "guest_assertions": true,
+    "host_teardown": true,
+    "base_preserved": true,
+    "runtime_preserved": true,
+    "device_backings_preserved": true,
+    "device_fixture_teardown": true,
+    "supervisor_fixture_cleanup": true,
+    "supervisor_group_cleaned": true
+  },
+  "temporary_artifacts_removed": true,
+  "native_supervisor": {
+    "session": "f61j7758",
+    "record_sha256": "e05509202a91cfd8493e00bfe90c7f8d6bb78b23a6dfa687a92a6f2ff53202c6",
+    "completed": true,
+    "group_cleaned": true,
+    "worker_returncode": 0
+  },
+  "preserved_policy_receipts": {
+    "docs/testing/M2/retained-policy-admission-manifest.json": "2e733dd5a017772ce7947913ced1c16940ee8614cde445cb9fcd0327331077c3",
+    "docs/testing/M2/retained-policy-lifecycle-budget-manifest.json": "4019d0b125d2dfbf0bc1be31f1cc0465eea1aae9bd40dc28efeeecc3bec13990",
+    "docs/testing/M2/retained-policy-lifecycle-caller-manifest.json": "ce438292ee672027e896d4f8476635c2ad271d9fb29364ad6babae97428e2475",
+    "docs/testing/M2/retained-policy-lifecycle-qualification-manifest.json": "43d7724e44af147a619eac167b1b13cbd703c69b43809b358e0318a5499cd66e",
+    "docs/testing/M2/retained-policy-native-facts-manifest.json": "e9d4a0c6eef2011b236ea69a0ff94c0adae9a9c8f2102fefe4c9ff69f1c9f499",
+    "docs/testing/M2/retained-policy-native-history-manifest.json": "0788d387d4b4c27921fd3f68ffc5206f9fe0c548270464d34c87fd6ea4b8db6d",
+    "docs/testing/M2/retained-policy-native-lifecycle-manifest.json": "43fdd1bbda87853e7d9aee336f70402bfc5f263b9b6b71304dee7133faea5ce0",
+    "docs/testing/M2/retained-policy-native-multiple-manifest.json": "294662c837cf9921dba954491b6737f84adc43de71d09d93c3747107992eb263",
+    "docs/testing/M2/retained-policy-native-review-manifest.json": "f37c74e30d2c769d87f65872303021fd5bf2640467636bd9bea499ae4abaa3cf",
+    "docs/testing/M2/retained-policy-root-manifest.json": "52bb88c0d6cc94fe031a8345adb1bdc1e5fb005634d24f4ba3eb47a59ea3366a",
+    "docs/testing/M2/retained-policy-root-qualification-manifest.json": "6d3dd07f65d88247bdd854061f811629c59168bcfda42385eab5a7cf21aac99c",
+    "docs/testing/M2/retained-policy-startup-manifest.json": "b7b248f1bfe6e197f1c8955f72f80c9fbeef0a71a641767e424059df7cfdd271",
+    "docs/research/M2/policy-lifecycle-caller-manifest.json": "1a7febc154a2dd9542f50a43bdc7acafd69485c39d423810bd04f2bca708610f",
+    "docs/research/M2/policy-lifecycle-timeout-manifest.json": "53c7a8c64b1681863e91920364e97e02f5f3a6875c72dab60269999389fcd95c",
+    "docs/research/M2/policy-startup-costs-manifest.json": "4564cee1d3e579557f6af7d187a77274183752d2af370b44d4e92eed6431ca5a",
+    "docs/research/M2/policy-startup-deadline-manifest.json": "bae3a271140cbaef0ad08d5dbc290b388cfea2645aeb634ba973fc899094d017",
+    "docs/research/M2/policy-startup-envelope-manifest.json": "08a17cec903d3d16e9d816b6ccd99ee84883c9aa87a3d272f84a4e4692def459",
+    "docs/research/M2/policy-startup-inspection-manifest.json": "3abf2f117b3fd66779cc04a7d07e15c3a2777199d327d997fd8c8e421001bdfc",
+    "docs/research/M2/policy-startup-operation-timeout-manifest.json": "9ba85d24fdd70b1c745c3f19aff063126bbafaf61d94bea02bf3faa8f04e29d8",
+    "docs/research/M2/policy-startup-stack-manifest.json": "33c3640f5cc7602735912bd6e7949cdc3a10b8ca078503a64508d1a56bf30052",
+    "docs/research/M2/policy-startup-stack-qualification-manifest.json": "9512fbd6286228d5a417247602c6812b02b33a1385fa51c8292245c99fcfde5a",
+    "docs/research/M2/policy-startup-timeout-provenance-manifest.json": "76b1f07aedbe4db9557c63c480d2de3aba37fceb9f404c1acd00c77e25bcc4cc",
+    "docs/testing/M2/deadline-provenance-core-manifest.json": "f952b3bee5872374ce7e669e117352cf34f7ee20fe567b9d3c64678aebaf9cd9",
+    "docs/testing/M2/deadline-return-sites-manifest.json": "132741b82c2e6033b357bf55be6a736dfada3b96684af7b8a9088ad7201fd649",
+    "docs/testing/M2/deadline-provenance-consumer-manifest.json": "d8a9f659847a2916918d0176462fa4889e5c75aee4753ca460c84655d930e2ca",
+    "docs/testing/M2/deadline-provenance-candidate-manifest.json": "210096610b28ed0b0c4f171e51e4373e12a9b95754f02099b9f17d19307e3a8b",
+    "docs/testing/M2/deadline-provenance-fixture-manifest.json": "6e99d49fd63c511d6284f779b7cf94de0b7df05209f24108d5c1e80410d93fbf"
+  },
+  "pre_run_portable_review": {
+    "source_commit": "e4e77ac5f30a131a02b6f96315c73de5c3fef6a7",
+    "base_commit": "256b6bc5ab0520a182cace0566b98d18e990e1cd",
+    "title": "docs(research): record the startup return-path diagnostic",
+    "report_sha256": "d145ce45c9a02ce6a97f74db3c8dd099cf5daee6817dcce872f7e17923422572",
+    "checks_log_sha256": "a8c65924ab9ff2c34b65176b7877a576edf7d16212ef377c921f74922882f956",
+    "tooling_tests": 258,
+    "plan": {
+      "mode": "documentation",
+      "reason": "documentation/evidence only; baseline still required",
+      "packages": [],
+      "native_review_required": false
+    },
+    "deep_evidence": {
+      "executed": false,
+      "reason": "no behavioral inputs changed in contributor range"
+    },
+    "supervisors_completed": true,
+    "supervisors_group_cleaned": true
+  },
+  "owned_sessions_stopped": 145,
+  "all_existing_go_fixture_runner_sources_unchanged": true,
+  "error_return_contexts_observed": false,
+  "earlier_failure_reproduced": false,
+  "date": "2026-10-12",
+  "scope": "one adopted native diagnostic; successful startup with empty error trace, no failing return-context observations or lifecycle acceptance",
+  "research_issue": 347,
+  "broader_gates": [
+    305,
+    139
+  ],
+  "adopted_method": {
+    "PR": 336,
+    "fixture_PR": 346,
+    "fixture_merge": "256b6bc5ab0520a182cace0566b98d18e990e1cd"
+  },
+  "inventory": {
+    "normally_waited_parents": 1,
+    "normally_waited_children": 2,
+    "diagnostic_child_controls": 13,
+    "diagnostic_parent_controls": 29,
+    "original_fact_controls": 21,
+    "total_parent_visible_controls": 50,
+    "complete": true
+  },
+  "supplemental_supervisor": {
+    "session": "0hl3amc2",
+    "record_sha256": "0db9adf2ab1890d0bfbb3208db462c665d72fbfb021cf228778264714fb4ea4c",
+    "completed": true,
+    "group_cleaned": true,
+    "worker_returncode": 0
+  },
+  "retained_outer_bounds": {
+    "cleanup_seconds": 30,
+    "child_output_bytes": 16384,
+    "remote_seconds": 7200,
+    "supervisor_seconds": 9000,
+    "grace_seconds": 15
+  },
+  "not_attempted": {
+    "14.5": "outside adopted one-candidate diagnostic",
+    "retry": "no retry; no failure forced or failed seed reused",
+    "full_lifecycle": "both complete 293-control/thirteen-child/forty-scalar release gates remain pending"
+  },
+  "raw_snapshots": "Two original guest-only snapshots were verified, sanitized and deleted before metadata teardown. No raw host copy or commit; independent post-deletion re-extraction is unavailable.",
+  "limits": [
+    "Startup succeeded with original caller live; explicit success/empty trace records no expired context and does not reproduce or explain the earlier deadline failure",
+    "Underlying non-nil native Error/Is/As propagation and actual expired return-point contexts were not exercised by this success; portable prerequisites retain their original boundaries",
+    "Third 110-second sample was honestly skipped because the factory returned at 105.111880999 seconds; it is not a captured final-inspection frame",
+    "Two point samples locate the first and second activation inspections and persistent-backing command path, not exact command/probe duration, earliest cancellation or causal performance findings",
+    "This enabled diagnostic changes observation overhead; no controlled timing comparison or production/emulation cause is established",
+    "Installed pinned-compiler source bytes map sanitized runtime frames but binary identity is not an atomic attestation of every source file; recorded source hashes retain this mapping boundary",
+    "Final original journal is active generation 7, not durable idle retirement; release and fixture removal do not erase active history or complete recovery/finish obligations",
+    "Full 50-control diagnostic and cleanup pass cannot substitute for either full lifecycle vector or any unverified historical guest vector",
+    "All 27 previous receipts, existing Go product/fixture/runner/consumer/caller/sampler sources and timers remain byte-identical; all prior failed/skipped limits preserved",
+    "Worker/backend/global launch, manual browser/client, hardware/performance and release gates remain open; runtime writes disabled",
+    "Final evidence-only head requires a fresh actual-title mandatory documentation review and final owned-session teardown"
+  ],
+  "base_commands": [
+    {
+      "path": "/usr/bin/timeout",
+      "sha256": "099b29836a7efe1270842ffe093c971c7883e646293b8906b38652901ef1673d"
+    },
+    {
+      "path": "/usr/bin/true",
+      "sha256": "52ffe8a5fca645f31bddd0d2a1a930a160c1d986a7258e7bf9e1366260893fe2"
+    },
+    {
+      "path": "/bin/freebsd-version",
+      "sha256": "99e61d407fd6d5d037c2334b0b6668e4a1bdb0ceda79d011777f5f60b864d571"
+    },
+    {
+      "path": "/sbin/zpool",
+      "sha256": "fdc340695bd80a88b087ee78d6051fd048b1c163cee39e345e5a559a58667c85"
+    },
+    {
+      "path": "/sbin/zfs",
+      "sha256": "ad02488cbfbc489be74b4e8674c85d1d856758756b2a0b9a477abbf6f7c6398a"
+    },
+    {
+      "path": "/sbin/sysctl",
+      "sha256": "482b0e13db8d55c8de12a08c94bf4fc3a4039a254d37e157f864e08aad9ce7c7"
+    },
+    {
+      "path": "/sbin/mount",
+      "sha256": "c46db28eff4edb2011ad1463b5891db0fb009879c07ac26b6d11ee55e40a4c38"
+    },
+    {
+      "path": "/sbin/umount",
+      "sha256": "33a69773f4908e75a944bc1d229c7a7180ed468c3789d72fca8d5acd44129119"
+    },
+    {
+      "path": "/sbin/newfs",
+      "sha256": "e0e9fd5347e33d6ff2670c4a9aa1a088a23f6dac1a2454ca7eb46566ce3b0d62"
+    },
+    {
+      "path": "/sbin/dumpfs",
+      "sha256": "da6ad60953cb9a6ddc918b51c3842cb2b1479bc553d9444663ef42e7406eab3b"
+    },
+    {
+      "path": "/usr/sbin/diskinfo",
+      "sha256": "38c92c1ecbf7b6813dcd5b89743ec0c294ca2c2d9922d590faba81bda206963b"
+    },
+    {
+      "path": "/usr/sbin/swapinfo",
+      "sha256": "38ea4e35a245b22b445e2411f29e52f4f2efb463c4cc1c64fea2df6aefb19e77"
+    }
+  ]
+}

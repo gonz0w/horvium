@@ -1848,3 +1848,12 @@ diagnostic completeness and independent teardown remain separate from original
 startup success and native lifecycle acceptance. Failed or incomplete evidence
 remains unqualified. No other release, retry, runtime behavior or support claim
 is introduced; both complete lifecycle and broader release gates remain open.
+
+The recorded single candidate passed the full 50-control diagnostic and all
+independent preservation/teardown gates. Startup returned an owner without error
+at 105.111880999s; parent elapsed 173.35s. The immutable trace is explicit success
+with no error frames; 30/75s samples were located and the 110s sample was honestly
+skipped. Final original journal is active generation 7. This does not reproduce
+or explain the earlier deadline failure, exercise native expired return contexts
+or establish durable idle retirement or full lifecycle acceptance. No second
+attempt or release followed; see the candidate's source-bound receipt.

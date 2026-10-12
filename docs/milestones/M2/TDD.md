@@ -1794,3 +1794,11 @@ honest complete or failed records and independent guest/host preservation and
 teardown. This one attempt does not waive either lifecycle release gate or
 upgrade missing observations. Existing 001–003 portable prerequisites and all
 27 earlier receipts retain their candidate boundaries.
+
+Issue 347's one actual 15.1 candidate passed the exact 50-control diagnostic and
+independent cleanup: startup success at 105.111880999s, empty success trace, two
+located samples and one honest early-return skip. This covers the observed
+M2-POLICY-DEADLINE-PROVENANCE-004/005 inventory/binding/success/teardown subset,
+not native expired return contexts or non-nil error delegation. The earlier
+deadline failure was not reproduced; both full lifecycle vectors and wider
+acceptance remain pending. [Receipt](../../research/M2/policy-startup-return-path-manifest.json).
