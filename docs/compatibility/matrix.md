@@ -1625,3 +1625,15 @@ mismatch and incomplete teardown. Original trace 120/150 and full lifecycle
 profiles and all 16 preceding receipts remain unchanged. Native completeness
 requires its own candidate receipt; no support or lifecycle acceptance follows
 from implementation/compilation. Runtime writes remain disabled.
+
+The separate [candidate receipt](../research/M2/policy-startup-envelope-manifest.json)
+records one 15.1 parent at 138.50s, two normal children/all 42 controls and verified
+original/independent cleanup. Actual startup succeeded at 84.436750s with owner
+returned, followed only by original Close: final closed 6→active 7 journal, preserved
+ledger/nonjournal bytes and released locks. Two source-mapped point captures
+(68 frames) and one honest early-return skip complete the diagnostic. The return
+precedes the old 120s deadline, so this does not establish that a wider caller
+caused success or qualify performance. Diagnostic completeness is true; native
+lifecycle acceptance remains false. Both original full release lifecycle gates/
+retirement/second cycle remain pending; all 16 prior receipts stay immutable and
+14.5 was not attempted. No runtime writer or retry authority follows.

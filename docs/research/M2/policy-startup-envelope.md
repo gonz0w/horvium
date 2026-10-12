@@ -1,7 +1,7 @@
 # Separate startup caller-envelope diagnostic
 
-Status: implementation candidate; native execution/completeness unqualified until
-a source-bound receipt records the result. Owner: Cam (`@gonz0w`), 2026-10-11.
+Status: completed diagnostic candidate; maintainer review pending. Operation
+succeeded; native lifecycle acceptance remains false. Owner: Cam (`@gonz0w`), 2026-10-11.
 One development session; owning [issue 328](https://github.com/gonz0w/horvium/issues/328),
 Refs [305](https://github.com/gonz0w/horvium/issues/305) and
 [parent 139](https://github.com/gonz0w/horvium/issues/139). Authority:
@@ -88,3 +88,59 @@ or prove deadlock/emulation/performance/capacity. Both complete five-parent/
 289-control/thirteen-child lifecycle gates, second clean cycle and broader native/
 recovery/browser/client/hardware/performance/release acceptance remain pending.
 No runtime writes, product limits, host services, dependencies or Actions changes.
+
+## Executed candidate and observed limits
+
+The [source-bound receipt](policy-startup-envelope-manifest.json) records signed
+implementation/native source `0c8fabbb3341b40e34e89478b273d5ebc716a1c8`, base
+`38b69d77c1f5c4fcbb8c8a79e074ff14f76815dc` and the exact tagged executable/pinned
+compiler. One disposable 15.1 UFS parent passed at **138.50s**, with two normally
+waited children and all 42 controls, original metadata/fact cleanup and independent
+host/device/image/key/artifact/supervisor teardown and base/runtime preservation.
+All 16 preceding policy receipts and original trace/lifecycle fixtures/consumers/
+prebuilt scripts are byte-identical. Existing suite registrations/CPU/budgets are
+unchanged; no product Go file changed. Normal runtime build exclusion is verified.
+
+Startup returned successfully at **84.436750s**, with caller/startup errors `none`
+and an actual returned owner. Its original Close released leases without durable
+clean retirement. Final journal bytes changed from closed generation 6 to active
+generation 7, with exact hashes recorded independently; original ledger/nonjournal
+bytes were preserved and child locks released. An active journal after release
+provides no retry/closed-history/launch authority. No idle retirement, second
+cycle or broader recovery was exercised.
+
+| Sample | Capture start/end after caller creation | Bytes | Original located path |
+| --- | --- | --- | --- |
+| 1 | 30.002178–30.005476s | 9,535 | Activation first pre-publication inspection (`execution_restart_freebsd.go:50`), per-policy system version reader (`system_use_freebsd.go:9`). |
+| 2 | 75.005247–75.006118s | 7,810 | Activation post-publication inspection (`execution_restart_freebsd.go:100`), per-policy fixed pool native reader (`pool_properties_freebsd.go:38`); its shared reader line does not select a specific probe. |
+| 3 | Skipped | 0 | Actual return preceded the 110s offset; no raw file/capture/frames manufactured. |
+
+The two snapshots map 68 frames (46 Horvium/22 compiler-matched Go) across 24
+source files. The unique factory goroutine was waiting on the original native
+command path at each point; source orders publication at line 84 before the final
+inspection at line 100. Point capture intervals exclude subsequent snapshot writes
+and do not measure phase/collector/command duration or total observer overhead.
+Raw guest files were sanitized/deleted, not copied to the host; independent
+post-deletion raw re-extraction is unavailable by design.
+
+This return was **earlier than the original 120s ceiling**. It does not demonstrate
+that increasing the caller caused success, establish stable timings or qualify
+production capacity. Earlier unchanged-product candidates ran differently; no
+controlled paired experiment or causal scheduling/emulation diagnosis is claimed.
+The wider envelope remains a diagnostic profile, not a product recommendation.
+
+Initial signed-source mandatory review passed all 225 tooling tests, ordinary Go
+tests and full portable fallback: all 11 race packages/all 54 fuzz targets, with
+supervised teardown. Final evidence-only head requires its own current title/
+signature/DCO/baseline check and can reuse only that exact-input successful deep
+receipt; provenance stays bound to the original executed source. The manifest
+records failed/setup/red and passing log hashes, including the corrected macOS
+path fixture and reproduced retained-artifact cleanup failure.
+
+**Diagnostic completeness true; startup success true; native lifecycle acceptance
+false.** Scope permits closing only issue 328 upon maintainer acceptance. The
+original full lifecycle suite on both releases, durable unused retirement, second
+clean cycle and broader 305 / 139 gates remain unqualified. 14.5 was not attempted.
+After this bounded evidence is accepted, the next qualification can revisit the
+original full lifecycle gate on a fresh disposable fixture under its unchanged
+profiles; this receipt cannot substitute for those required controls.
