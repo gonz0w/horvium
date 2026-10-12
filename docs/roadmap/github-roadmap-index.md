@@ -284,9 +284,15 @@ Its source review and candidate evidence remain separate from full lifecycle
 acceptance; GitHub owns live status and priority.
 
 [Startup deadline provenance design (#335)](https://github.com/gonz0w/horvium/issues/335)
-owns the [proposed fixture-only method/Test Design](../research/M2/policy-startup-timeout-provenance.md),
-a native decision prerequisite for [owner #305](https://github.com/gonz0w/horvium/issues/305)
+owns the [fixture-only method/Test Design](../research/M2/policy-startup-timeout-provenance.md),
+adopted by merged PR 336 for [owner #305](https://github.com/gonz0w/horvium/issues/305)
 under [parent #139](https://github.com/gonz0w/horvium/issues/139). The
 [offline replay](../research/M2/policy-startup-timeout-provenance-manifest.json)
 preserves prior candidate limits. Implementation, native diagnostic completeness
 and both full lifecycle release gates remain separate; GitHub owns live status.
+
+[Portable deadline adapter (#337)](https://github.com/gonz0w/horvium/issues/337)
+owns the [bounded annotation/extraction prerequisite](../testing/M2/deadline-provenance-core.md).
+It is a native sub-issue of #305 with adopted decision #335 as its prerequisite.
+Original-return instrumentation, the separate strict 50-control fixture/consumer
+and one fresh diagnostic remain distinct work; portable passes do not satisfy them.

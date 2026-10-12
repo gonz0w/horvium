@@ -1742,3 +1742,13 @@ One fresh 15.1 candidate would establish diagnostic evidence only; both complete
 rebinds PR 334's post-publication failure, all 103 source/compiler frames and
 twenty-one immutable preceding receipts. No new native run, changed budgets,
 runtime writer or support claim follows from this research review.
+
+
+The deadline return-path method above was adopted in PR 336. The bounded
+[portable adapter prerequisite](../../testing/M2/deadline-provenance-core.md),
+owned by [issue 337](https://github.com/gonz0w/horvium/issues/337), exercises
+ordinary/disabled identity, original wrapping semantics, immutable context
+snapshots and bounded scalar extraction. It implements only portable parts of
+M2-POLICY-DEADLINE-PROVENANCE-001–003/006. Actual return-site placement, strict
+50-control native fixture/consumer and the one fresh 15.1 diagnostic remain
+required; no broader test ID or native acceptance is completed by this component.

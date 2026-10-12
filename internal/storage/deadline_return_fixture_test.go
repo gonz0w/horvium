@@ -44,7 +44,7 @@ func (e *cyclicDeadlineError) Error() string { return "private raw error" }
 func (e *cyclicDeadlineError) Unwrap() error { return e }
 
 func deadlineContexts() (time.Time, context.Context, *observedDeadlineContext, *observedDeadlineContext) {
-	start := time.Now().Add(-time.Second)
+	start := time.Now().Add(-100 * time.Second)
 	base := EnableDeadlineProvenance(context.Background(), start)
 	parent := &observedDeadlineContext{Context: base, deadline: start.Add(180 * time.Second), present: true}
 	child := &observedDeadlineContext{Context: base, deadline: start.Add(90 * time.Second), present: true, err: context.DeadlineExceeded}
@@ -94,8 +94,8 @@ func TestDeadlineProvenanceOriginalContextSnapshots(t *testing.T) {
 		mutate           func(*observedDeadlineContext, *observedDeadlineContext)
 	}{
 		{"local", "local-expiry", func(p, c *observedDeadlineContext) {}},
-		{"inherited", "inherited", func(p, c *observedDeadlineContext) { c.deadline = p.deadline }},
-		{"both", "both-expired", func(p, c *observedDeadlineContext) { p.err = context.DeadlineExceeded }},
+		{"inherited", "inherited", func(p, c *observedDeadlineContext) { p.deadline = c.deadline }},
+		{"both", "both-expired", func(p, c *observedDeadlineContext) { p.err = context.DeadlineExceeded; p.deadline = c.deadline }},
 		{"canceled", "canceled", func(p, c *observedDeadlineContext) { p.err = context.Canceled }},
 	}
 	for _, tc := range cases {
@@ -111,6 +111,7 @@ func TestDeadlineProvenanceOriginalContextSnapshots(t *testing.T) {
 	t.Run("parent-only", func(t *testing.T) {
 		_, base, parent, _ := deadlineContexts()
 		parent.err = context.DeadlineExceeded
+		parent.deadline = time.Now().Add(-time.Second)
 		got := AnnotateDeadlineReturn(nil, parent, context.DeadlineExceeded, DeadlineReview, DeadlineGuard, 0)
 		frame := oneDeadlineFrame(t, got)
 		if frame.ChildPresent || frame.ChildDeadline || frame.AllowanceNS != 0 || frame.Constraint != "parent-only" || parent.Context != base {
@@ -119,6 +120,7 @@ func TestDeadlineProvenanceOriginalContextSnapshots(t *testing.T) {
 	})
 	t.Run("overlap", func(t *testing.T) {
 		_, _, parent, child := deadlineContexts()
+		parent.deadline = child.deadline
 		parent.change = true
 		parent.next = context.DeadlineExceeded
 		got := ExtractDeadlineProvenance(annotateDeadline(child, parent, context.DeadlineExceeded))
@@ -132,9 +134,10 @@ func TestDeadlineProvenanceOriginalContextSnapshots(t *testing.T) {
 		before := oneDeadlineFrame(t, inner)
 		child.err = context.Canceled
 		parent.err = context.Canceled
-		outer := AnnotateDeadlineReturn(base, context.Background(), fmt.Errorf("outer: %w", inner), DeadlineActivation, DeadlineFinalInspection, 90*time.Second)
+		outerChild := &observedDeadlineContext{Context: base, deadline: child.deadline, present: true, err: context.DeadlineExceeded}
+		outer := AnnotateDeadlineReturn(outerChild, parent, fmt.Errorf("outer: %w", inner), DeadlineActivation, DeadlineFinalInspection, 90*time.Second)
 		got := ExtractDeadlineProvenance(outer)
-		if len(got.Frames) != 2 || !reflect.DeepEqual(got.Frames[0], before) || child.reads != 2 || parent.reads != 2 {
+		if len(got.Frames) != 2 || !reflect.DeepEqual(got.Frames[0], before) || child.reads != 2 || parent.reads != 4 {
 			t.Fatalf("inner resampled after cancellation: %+v", got)
 		}
 	})
@@ -267,5 +270,68 @@ func TestDeadlineProvenanceMalformedEvidence(t *testing.T) {
 				t.Fatalf("unreviewed scope accepted: %+v", got)
 			}
 		})
+	}
+}
+
+type disabledDeadlineContext struct{ context.Context }
+
+func (disabledDeadlineContext) Deadline() (time.Time, bool) { panic("disabled deadline inspection") }
+func (disabledDeadlineContext) Err() error                  { panic("disabled error inspection") }
+func TestDeadlineProvenanceDisabledNoObservation(t *testing.T) {
+	var c context.Context = disabledDeadlineContext{context.Background()}
+	if got := annotateDeadline(c, c, context.DeadlineExceeded); got != context.DeadlineExceeded {
+		t.Fatal("disabled identity changed")
+	}
+	if allocations := testing.AllocsPerRun(100, func() { _ = annotateDeadline(c, c, context.DeadlineExceeded) }); allocations != 0 {
+		t.Fatalf("disabled adapter allocated: %v", allocations)
+	}
+	if EnableDeadlineProvenance(nil, time.Now()) != nil || EnableDeadlineProvenance(c, time.Time{}) != c || EnableDeadlineProvenance(c, time.Now().Round(0)) != c {
+		t.Fatal("invalid enablement changed context")
+	}
+}
+func TestDeadlineProvenanceRejectsMalformedFrames(t *testing.T) {
+	_, _, parent, child := deadlineContexts()
+	err := annotateDeadline(child, parent, context.DeadlineExceeded)
+	original := err.(*deadlineAnnotation)
+	for _, mutate := range []func(*deadlineFrame){
+		func(f *deadlineFrame) { f.Operation = "private raw data" },
+		func(f *deadlineFrame) { f.Site = "private raw data" },
+		func(f *deadlineFrame) { f.ChildAfter = "private raw data" },
+		func(f *deadlineFrame) { f.Constraint = "private raw data" },
+		func(f *deadlineFrame) { f.EndNS = f.BeginNS - 1 },
+		func(f *deadlineFrame) { f.ChildDeadline = false },
+		func(f *deadlineFrame) { f.ChildDeadline = false; f.ChildDeadlineNS = 0; f.Constraint = "unresolved" },
+		func(f *deadlineFrame) { f.ChildDeadlineNS = f.EndNS + 1; f.Constraint = "unresolved" },
+	} {
+		frame := original.frame
+		mutate(&frame)
+		malformed := &deadlineAnnotation{original: context.DeadlineExceeded, frame: frame}
+		got := ExtractDeadlineProvenance(malformed)
+		if got.Status != "invalid" || bytes.Contains(EncodeDeadlineProvenance(malformed), []byte("private")) {
+			t.Fatalf("malformed frame accepted: %+v", got)
+		}
+	}
+}
+
+func TestDeadlineProvenanceRealCancellationRetention(t *testing.T) {
+	start := time.Now()
+	base := EnableDeadlineProvenance(context.Background(), start)
+	parent, parentCancel := context.WithDeadline(base, start.Add(180*time.Second))
+	defer parentCancel()
+	child, childCancel := context.WithDeadline(parent, start.Add(-time.Second))
+	defer childCancel()
+	originalDeadline, _ := child.Deadline()
+	if child.Err() != context.DeadlineExceeded || parent.Err() != nil {
+		t.Fatal("expired child fixture did not retain live parent")
+	}
+	err := annotateDeadline(child, parent, child.Err())
+	before := oneDeadlineFrame(t, err)
+	childCancel()
+	parentCancel()
+	if after := oneDeadlineFrame(t, err); !reflect.DeepEqual(before, after) || after.ParentAfter != "none" || after.ChildAfter != "deadline" {
+		t.Fatalf("deferred cancellation rewrote snapshot: %+v", after)
+	}
+	if after, _ := child.Deadline(); after != originalDeadline || before.ChildDeadlineNS != originalDeadline.Sub(start).Nanoseconds() {
+		t.Fatal("original effective deadline changed")
 	}
 }
