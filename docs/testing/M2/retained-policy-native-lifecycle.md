@@ -1,6 +1,6 @@
 # Original root lifecycle with two retained native policies
 
-Status: fixture merged in [PR 315](https://github.com/gonz0w/horvium/pull/315); all three candidates failed and native qualification remains pending. Live status is in issue 305.
+Status: fixture merged in [PR 315](https://github.com/gonz0w/horvium/pull/315); native qualification remains pending. Historical initial candidates below remain unqualified; see the [unchanged-profile follow-up](retained-policy-lifecycle-qualification.md) for the later second-cycle failure. Live status is in issue 305.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`).
 Refs [issue 305](https://github.com/gonz0w/horvium/issues/305) and
 [parent M2-RUNTIME-002](https://github.com/gonz0w/horvium/issues/139).
