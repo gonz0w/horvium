@@ -235,3 +235,7 @@
 
 - [Adopted lifecycle caller implementation](testing/M2/retained-policy-lifecycle-caller.md): fixed original caller, pre-cancel scalar observations, strict 293-control inventory and interruption cleanup; actual 15.1 first-startup operation deadline failure with caller still unexpired.
 - [Lifecycle caller candidate receipt](testing/M2/retained-policy-lifecycle-caller-manifest.json): signed red/green/full portable review, actual partial scalar, failed/skipped native gates and independent host cleanup; all nineteen prior receipts remain immutable.
+
+- [Original startup operation timeout investigation](research/M2/policy-startup-operation-timeout.md): exact-source review and one unchanged adopted diagnostic under issue 305; broader native acceptance remains pending.
+
+- [Startup operation timeout receipt](research/M2/policy-startup-operation-timeout-manifest.json): complete 42-control diagnostic with unsuccessful startup after publication; twenty preceding receipts preserved.
