@@ -32,7 +32,9 @@ M2 mechanism decision accepted by maintainer merge of
 
 - [0009 Property executor supervision and recovery provenance](0009-property-executor-recovery-mechanism.md)
 
-Proposed, awaiting maintainer adoption (no implementation/qualification claim):
+Dashboard presentation decision adopted by maintainer merge of
+[PR 349](https://github.com/gonz0w/horvium/pull/349), source
+`4713aef87cca23183b949ba2ed5a56130b3b3186` (no dashboard qualification claim):
 
 - [0010 Progressive dashboard charts](0010-progressive-dashboard-charts.md):
   current observations first; separately bounded uPlot fixture and history gates.

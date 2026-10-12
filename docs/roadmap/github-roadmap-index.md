@@ -86,7 +86,7 @@ separate trackers distinguish HTTP admission, native-resource recovery, Firefox 
 - [M2: Redundant replacement and created-pool reimport (#146)](https://github.com/gonz0w/horvium/issues/146)
 - [M2: Public storage review/job/recovery workflows (#147)](https://github.com/gonz0w/horvium/issues/147)
 - [M2: Complete storage lifecycle acceptance evidence (#148)](https://github.com/gonz0w/horvium/issues/148)
-- [M2: review Overview and Storage capacity dashboard packet (#166)](https://github.com/gonz0w/horvium/issues/166) — [authoritative proposed packet](../design/dashboards/PRD.md)
+- [M2: review Overview and Storage capacity dashboard packet (#166)](https://github.com/gonz0w/horvium/issues/166) — [authoritative adopted packet](../design/dashboards/PRD.md)
 - [Adopt issue-driven Horvium roadmap and contributor workflow (#168)](https://github.com/gonz0w/horvium/issues/168)
 - [M2: design safe storage ownership and durable jobs (#19)](https://github.com/gonz0w/horvium/issues/19)
 - [M2: add scoped immutable property reviews (#184)](https://github.com/gonz0w/horvium/issues/184)
@@ -195,6 +195,7 @@ separate trackers distinguish HTTP admission, native-resource recovery, Firefox 
 - [M2: define the next retained-history startup recovery slice (#288)](https://github.com/gonz0w/horvium/issues/288)
 - [M2: deliver the qualified Overview dashboard (#289)](https://github.com/gonz0w/horvium/issues/289)
 - [M2: deliver the qualified Storage capacity dashboard (#290)](https://github.com/gonz0w/horvium/issues/290)
+- [M2: add bounded pool-page capacity comparisons (#350)](https://github.com/gonz0w/horvium/issues/350) — [slice contract/evidence](../testing/dashboards/pool-capacity.md)
 - [M2: deliver the qualified Storage health dashboard (#292)](https://github.com/gonz0w/horvium/issues/292)
 - [M2: deliver the qualified Jobs dashboard (#295)](https://github.com/gonz0w/horvium/issues/295)
 

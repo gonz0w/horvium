@@ -11,9 +11,9 @@
 - [Dated migration verification](roadmap/github-migration.md)
 - [Proposed second release security roadmap](roadmap/v2-security.md)
 - [uPlot dashboard roadmap and build pickup](roadmap/dashboards.md)
-- Overview/Capacity packet for review: [public facts](design/dashboards/inventory.md),
+- Overview/Capacity adopted design: [public facts](design/dashboards/inventory.md),
   [PRD](design/dashboards/PRD.md), [EDD](design/dashboards/EDD.md),
-  [Test Design](design/dashboards/TDD.md), [proposed ADR](adr/0010-progressive-dashboard-charts.md)
+  [Test Design](design/dashboards/TDD.md), [ADR](adr/0010-progressive-dashboard-charts.md)
 - [UI baseline](ui/baseline.md)
 - [Compatibility matrix](compatibility/matrix.md)
 - [Ports distribution plan](../packaging/ports/README.md)
@@ -255,3 +255,6 @@
 
 - [Separate deadline provenance fixture and runner](testing/M2/deadline-provenance-fixture.md): issue 345; exact 50-control tagged implementation, source-isolated builds and owned teardown, with native execution pending.
 - [One fresh startup return-path diagnostic](research/M2/policy-startup-return-path.md): issue 347; the adopted single-candidate observation after fixture review, with operation outcome and native acceptance kept separate.
+
+- [Bounded pool-page capacity comparisons](testing/dashboards/pool-capacity.md):
+  current cached observations and exact table fallback; broader qualification remains separate.

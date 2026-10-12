@@ -1,10 +1,15 @@
 # Test Design: progressive capacity dashboards
 
-Status: Review; proposed, unexecuted. Owner: Cam (`@gonz0w`). Date: 2026-10-12.
+Status: Approved Test Design; execution gates remain candidate-specific. Owner: Cam (`@gonz0w`). Date: 2026-10-12.
 [PRD](PRD.md), [EDD](EDD.md), [inventory](inventory.md),
 [ADR](../../adr/0010-progressive-dashboard-charts.md).
 Owner: [issue 166](https://github.com/gonz0w/horvium/issues/166).
 TDD means Test Design Document; implementation uses failing behavioral tests first.
+
+Approval: maintainer merge of [PR 349](https://github.com/gonz0w/horvium/pull/349),
+source `4713aef87cca23183b949ba2ed5a56130b3b3186`, on 2026-10-12.
+Adoption authorizes the scoped stage-A design and separately bounded stage-B
+research, not dashboard/native/browser/resource or release acceptance.
 
 ## Traceability and observable gates
 
@@ -37,8 +42,8 @@ Expected bar count/scope and exact table text must be independent assertions,
 not implementation-generated expectations. Test sums deliberately differing from
 size, uint64 arithmetic overflow edges, partially available sections, cancellation,
 reader admission and hostile Unicode/markup. Native collectors and internal JSON
-responses retain their existing contracts. No new regression test is needed for
-this documentation-only review packet; it contains no behavior implementation.
+responses retain their existing contracts. The original review packet contained no behavior implementation. Each adopted
+implementation slice adds meaningful regression tests and its own source-bound receipt.
 
 Before B implementation, define one bounded fixture owning at most two plots,
 four Y series and 2,048 points per series with exact string source values. Include
@@ -109,5 +114,5 @@ race/fuzz selection for affected packages and `make review-full` at milestones/
 releases. New sources need separately approved native disposable tests; no operator
 storage/credentials or host service activation. Supervise preview/measurement
 processes, close owned browser fixtures and verify `make lab-stop`/`make lab-status`.
-This packet's only execution is repository documentation validation; all dashboard
-behavior/browser/resource/native acceptance remains unexecuted.
+Design adoption alone supplies no execution evidence. Candidate receipts record
+actual scoped tests; full dashboard/browser/resource/native acceptance remains separate.

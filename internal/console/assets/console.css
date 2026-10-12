@@ -11,6 +11,8 @@
   --soft:#f5e9e6;
   --hover:#eceeeb;
   --focus:#ab382c;
+  --capacity-allocated:#286299;
+  --capacity-free:#28786b;
   font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   font-size:14px;
   line-height:1.55
@@ -444,7 +446,9 @@ footer {
     --accent:#e18d80;
     --soft:#332a2a;
     --hover:#293134;
-    --focus:#ed9a87
+    --focus:#ed9a87;
+    --capacity-allocated:#7cafda;
+    --capacity-free:#71c2b1
   }
   button {
     color:#182023
@@ -517,5 +521,60 @@ footer {
     scroll-behavior:auto;
     animation:none;
     transition:none
+  }
+}
+
+.capacity-section {
+  padding:20px 0;
+  margin-bottom:24px;
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule)
+}
+.capacity-coverage {
+  font-size:.82rem;
+  overflow-wrap:anywhere;
+  color:var(--muted)
+}
+.capacity-list {
+  list-style:none;
+  padding:0;
+  margin:0
+}
+.capacity-list li {
+  display:grid;
+  grid-template-columns:minmax(120px,1fr) minmax(0,2fr);
+  gap:16px;
+  align-items:start;
+  padding:14px 0;
+  border-top:1px solid var(--rule)
+}
+.capacity-list a {
+  overflow-wrap:anywhere
+}
+.capacity-plot {
+  display:block;
+  width:100%;
+  height:36px
+}
+.capacity-track {
+  fill:var(--bg)
+}
+.capacity-allocated {
+  fill:var(--capacity-allocated)
+}
+.capacity-free {
+  fill:var(--capacity-free)
+}
+.capacity-values {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 20px;
+  font-size:.82rem;
+  margin:8px 0 0
+}
+@media(max-width:720px) {
+  .capacity-list li {
+    grid-template-columns:minmax(0,1fr);
+    gap:10px
   }
 }

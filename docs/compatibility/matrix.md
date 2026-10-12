@@ -16,9 +16,11 @@ No uPlot asset is introduced or qualified by this documentation. Native metrics,
 history, browser accessibility, chart performance and drill-down evidence remain
 required before those views gain compatibility claims; current evidence is unchanged.
 The [Overview/Capacity packet](../design/dashboards/PRD.md) and
-[public fact inventory](../design/dashboards/inventory.md) are review proposals.
-Current comparisons, uPlot CSP/lifecycle/browser/resource behavior and later
-identity-bound history are unimplemented/unqualified. Inspected upstream hashes
+[public fact inventory](../design/dashboards/inventory.md) were adopted via PR 349; adoption is not qualification.
+The first [pool-page comparison slice](../testing/dashboards/pool-capacity.md)
+adds bounded current-observation SVG presentation. Dashboard browser/accessibility,
+fresh native service/performance, uPlot behavior and identity-bound history remain
+unqualified. Inspected upstream hashes
 and compressed input sizes in [ADR 0010](../adr/0010-progressive-dashboard-charts.md)
 are provenance only; no runtime asset, new native result or support claim follows.
 

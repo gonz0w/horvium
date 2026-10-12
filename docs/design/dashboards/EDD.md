@@ -1,11 +1,16 @@
 # EDD: progressive capacity presentation
 
-Status: Review; proposed, not approved implementation. Owner: Cam (`@gonz0w`).
+Status: Approved design; stage-A implementation beginning. Owner: Cam (`@gonz0w`).
 Date: 2026-10-12. [PRD](PRD.md), [Test Design](TDD.md), [inventory](inventory.md),
 [ADR 0010](../../adr/0010-progressive-dashboard-charts.md).
 Refs [issue 166](https://github.com/gonz0w/horvium/issues/166).
-This refines presentation only after adoption; existing M1/M2 contracts and
+This adopted packet refines presentation only; existing M1/M2 contracts and
 native recovery gates remain authoritative. No new runtime interface is named.
+
+Approval: maintainer merge of [PR 349](https://github.com/gonz0w/horvium/pull/349),
+source `4713aef87cca23183b949ba2ed5a56130b3b3186`, on 2026-10-12.
+Adoption authorizes the scoped stage-A design and separately bounded stage-B
+research, not dashboard/native/browser/resource or release acceptance.
 
 ## Current-data contract (stage A)
 

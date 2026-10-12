@@ -1,13 +1,18 @@
 # PRD: Overview and Storage capacity dashboards
 
-Status: Review; proposed packet, not approved implementation. Owner: Cam (`@gonz0w`).
+Status: Approved design; stage-A implementation beginning. Owner: Cam (`@gonz0w`).
 Date: 2026-10-12. Phase: M2 presentation research; no new release phase.
 Owner: [issue 166](https://github.com/gonz0w/horvium/issues/166), under
 [gate 131](https://github.com/gonz0w/horvium/issues/131).
 [EDD](EDD.md), [Test Design](TDD.md), [dependency ADR](../../adr/0010-progressive-dashboard-charts.md),
 [source inventory](inventory.md), [maintainer direction](../../roadmap/dashboards.md).
-Maintainer review/merge must adopt this packet before its implementation slices.
+Maintainer merge of PR 349 adopted this packet for its bounded implementation slices.
 Approval does not accept either dashboard, M2 or the NAS release.
+
+Approval: maintainer merge of [PR 349](https://github.com/gonz0w/horvium/pull/349),
+source `4713aef87cca23183b949ba2ed5a56130b3b3186`, on 2026-10-12.
+Adoption authorizes the scoped stage-A design and separately bounded stage-B
+research, not dashboard/native/browser/resource or release acceptance.
 
 ## Problem and outcomes
 
@@ -65,7 +70,7 @@ No persistent history, additional collector cadence or background browser timer
 is introduced in A. The retention contract is explicitly zero durable samples;
 two replaceable generations are inspection cursors, never a trend buffer.
 
-| Proposed additional bound | A | B synthetic fixture |
+| Adopted additional bound | A | B synthetic fixture |
 | --- | --- | --- |
 | Visible comparisons | At most 20 rows per comparison; exact table pagination remains 100/500 | Same fallback |
 | Materialized comparison inputs | At most one bounded page per source per view, never drain every page | Fixed generated fixture only |
