@@ -26,9 +26,10 @@ and exact-value fallback. This additional cached read needs fresh resource evide
 before qualified Overview acceptance. The [resource Test Design supplement](../design/dashboards/resource-qualification.md)
 was adopted in PR 357. The [portable request-driver slice](../testing/dashboards/resource-request-driver.md)
 implements scheduling, bounded response reads and per-case timing accounting in
-test-only code. It remains inactive in the native suite; original-inventory HTML
-predicates, strict candidate/release receipt validation, native wiring and fresh
-measurements are pending. Historical receipts and support claims are unchanged. Dashboard browser/accessibility,
+test-only code. It remains inactive in the native suite; the [HTML-predicate slice](../testing/dashboards/resource-html-predicates.md)
+validates actual portable console pages against declared inventory. Strict
+candidate/release receipt validation, native wiring and fresh measurements remain
+pending. Historical receipts and support claims are unchanged. Dashboard browser/accessibility,
 fresh native service/performance, uPlot behavior and identity-bound history remain
 unqualified. Inspected upstream hashes
 and compressed input sizes in [ADR 0010](../adr/0010-progressive-dashboard-charts.md)

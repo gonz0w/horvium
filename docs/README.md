@@ -270,3 +270,6 @@
 
 - [Portable dashboard resource request driver](testing/dashboards/resource-request-driver.md):
   test-only scheduling, complete response reads and separate success/expiry timings; native wiring remains pending.
+
+- [Original-inventory dashboard resource HTML predicates](testing/dashboards/resource-html-predicates.md):
+  actual portable console/driver integration and semantic mutation denial; native workload remains inactive.
