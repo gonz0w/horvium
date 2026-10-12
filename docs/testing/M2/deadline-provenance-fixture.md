@@ -125,3 +125,28 @@ by this offline PR. The one fresh diagnostic, both complete lifecycle gates,
 worker/backend/global launch, manual browser/client, hardware/performance and
 release acceptance stay open; runtime writes remain disabled. Earlier failed,
 skipped and unverified evidence retains its original candidate boundaries.
+
+## Recorded offline candidate
+
+Signed source `3e19ce862b4100059859377b435c3e01cfcbae47`, base `673a1f0a304948320c5ac303bdebaab95b8ae5c3`,
+passed nine focused runner methods, eleven tagged portable methods under race
+checks in two packages, and two compiler-listed tagged decoder fuzz targets.
+Signed red `07ac1f37c3559bd0ffec0d86112ed59b306e9ba1` replays three failing Go methods
+and eight Python methods with two failures/seven errors. The signed archive and
+all disposable build/transcript files were removed. Both actual FreeBSD binaries
+cross-built with real compiler selection proof; neither was executed. Synthetic
+complete, incomplete and rejected transcripts bind the actual signed source,
+pinned compiler and cross-built tagged artifact; synthetic cleanup lines are
+not native/device observations.
+
+The actual-title `make review` passed 258 tooling tests, mandatory check/lint/
+test/secrets, eleven ordinary race packages and 54 ordinary compiler-listed fuzz
+targets under the conservative shared-tooling plan. A preceding portable review
+failed on an older serial-profile expectation that omitted this new one-CPU
+suite; the signed test correction and successful review are separate evidence.
+The first private verifier's constant-name assertion failure is also retained;
+its corrected runs passed. All involved owned process groups were cleaned.
+The [receipt](deadline-provenance-fixture-manifest.json) preserves those limits,
+exact build identities, all 26 preceding receipt checksums and source preservation.
+Final receipt-only changes require fresh baseline and verified exact-input deep
+reuse. Actual native execution and broader acceptance remain pending.
