@@ -122,3 +122,19 @@ if the constant-inventory assumption does not hold; retain that failure rather
 than disabling a check. #131/#289/#290, lifecycle #305/#139 and historical startup
 uncertainty, browser/manual, continuity, hardware/commercial and release gates
 remain open. Runtime writes remain disabled.
+
+## Recorded portable candidate
+
+[Receipt](workload-receipt-adapter-manifest.json): signed implementation
+`0bfc8cf7159fbde4e22f10a81af18813b9b62c9c`, base
+`dfa6686fed3936587738ed80ca8b78c738dcf920`, actual title
+`test(dashboards): bind workload samples to receipt phases`. Required checks
+passed with 269 tooling tests, ordinary Go tests and fresh affected command-package
+race checks; that package has no discovered portable fuzz targets. Ten adapter
+behavioral parents and independent Python phase-contract checks passed.
+
+The source receipt records the unexecuted FreeBSD/amd64 cross-build, removed
+artifact, verified owned teardown and preservation of 140 historical manifests.
+A signed documentation-only followup requires a new clean review and may reuse
+only this completed matching deep evidence. These checks qualify only the portable
+adapter; native fixture/host bindings and both-release execution remain required.
