@@ -1750,3 +1750,24 @@ preclude exact production timing or earliest-timer causal claims. Explicit
 adoption is required before implementation/execution. Both complete lifecycle
 release gates, runtime writes and hardware/performance/release support remain
 pending. This proposal needs no new home-lab infrastructure.
+
+
+## Portable deadline provenance adapter
+
+PR 336 adopted the [fixture-only method](../research/M2/policy-startup-timeout-provenance.md).
+[Issue 337's portable prerequisite](../testing/M2/deadline-provenance-core.md)
+adds an ordinary-build identity adapter and tag-only enablement, immutable
+pre-cancel scalar frames and bounded extraction. Portable tests exercise original
+error semantics, local/inherited/overlapping observations, real cancellation and
+malformed/ambiguous/cyclic/overflow handling. Disabled calls collect no context
+errors/deadlines or clocks and allocate no records. Normal builds exclude the
+annotation/enablement/serialization types. FreeBSD cross-compilation verifies
+build selection; it is not native execution.
+
+No original product return sites call the adapter yet. Existing native factory,
+registration, producers, timers, fixtures, consumers and 22 prior policy receipts
+are preserved. Native instrumentation and the separate strict 50-control fixture
+still need implementation, review and the one adopted fresh 15.1 diagnostic.
+Both full lifecycle release gates, runtime writes, client/browser, hardware,
+performance and release acceptance remain pending. No lab VM or service is started
+for this portable prerequisite; existing failed/skipped/unverified evidence remains.

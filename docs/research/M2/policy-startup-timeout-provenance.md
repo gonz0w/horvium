@@ -1,7 +1,12 @@
-# Proposed startup deadline return-path diagnostic
+# Startup deadline return-path diagnostic
 
-Status: proposed; explicit maintainer adoption/rejection pending. No new
-instrumentation or native execution in this review.
+Status: method and Test Design adopted by merged PR 336
+(`37402d6a017dc28fb7fb6528fc9b92516fda1cfb`). The proposal and offline replay below
+retain their historical review boundaries. The separate
+[portable adapter slice](../../testing/M2/deadline-provenance-core.md), owned by
+[issue 337](https://github.com/gonz0w/horvium/issues/337), implements the
+prerequisite only; original-return instrumentation and native execution remain
+under 305.
 Date: 2026-10-11. Owner: Cam (`@gonz0w`). Time box: one offline development session.
 Owning [research issue 335](https://github.com/gonz0w/horvium/issues/335), under
 [parent 139](https://github.com/gonz0w/horvium/issues/139), coordinating
@@ -12,8 +17,8 @@ Authority: approved [PRD](../../milestones/M2/PRD.md),
 [ADR 0009](../../adr/0009-property-executor-recovery-mechanism.md), and the
 [adopted separate envelope](policy-startup-inspection.md).
 Requirements: M2-RUNTIME-002, M2-STATE-001, M2-RECOVERY-001, M2-OWN-001,
-M2-DRIFT-001, M2-PRIV-001 and M2-NATIVE-001. These broader contracts do not
-already approve the new annotation method below.
+M2-DRIFT-001, M2-PRIV-001 and M2-NATIVE-001. The broader contracts alone did not approve the annotation method; PR 336
+adopted the scoped method and Test Design below.
 
 ## Question and existing evidence
 
@@ -65,7 +70,7 @@ unchanged. Command execution still waits for its original process group and I/O,
 then checks its supplied context. Classified errors lose this return-path context
 today, and outer cancellation can destroy an inner context's useful observation.
 
-## Proposed minimal instrumentation
+## Adopted minimal instrumentation
 
 Add a private annotation adapter in the existing storage/host layers, shared
 through the existing internal storage dependency; introduce no new package or
@@ -124,7 +129,7 @@ cancellation overlap or ambiguous branches do not prove cancellation delivery
 order. No return-point observation can promise the earliest wall-clock timer
 event, precise command duration or performance/emulation/deadlock causality.
 
-## Proposed separate fixture and inventory
+## Adopted separate fixture and inventory
 
 Use a separately identified tagged parent/child, prebuilt marker and strict
 consumer; choose development-only names during implementation after adoption.
@@ -170,7 +175,7 @@ verify guest and host/device/image/key/executable/supervisor cleanup and base/
 runtime/backing preservation, then lab-stop/status. Neither interpretation nor
 host cleanup retroactively completes a historical incomplete guest vector.
 
-## Proposed failing-first Test Design
+## Adopted failing-first Test Design
 
 These IDs refine the cited M2 requirements; they are plans, not passing tests.
 
@@ -185,17 +190,18 @@ These IDs refine the cited M2 requirements; they are plans, not passing tests.
 
 ## Decision and remaining work
 
-Recommended decision: adopt the bounded fixture-only annotation method and Test
+PR 336 adopted the bounded fixture-only annotation method and Test
 Design above. Alternatives are continued point-only diagnostics (which cannot
 recover missing return context), or a separately reviewed accelerated lab profile
 (which would change timing conditions and still not establish this candidate's
 timer provenance). Changing product limits or caching/dropping safety observations
 does not answer the current question and is outside this proposal.
 
-Issue 335 remains open until the maintainer records adoption or rejection through
-this review PR. Merging the proposal PR adopts only the method, inventory and
-Test Design; implementation and one native diagnostic remain separate work under
-305. This review runs no new VM, instrumented product, changed deadline or service.
+Issue 335's decision criterion is satisfied by merged PR 336. Adoption covers
+only the method, inventory and Test Design; implementation and one native
+diagnostic remain separate work under 305. The proposal review ran no new VM,
+instrumented product, changed deadline or service. The portable adapter slice
+adds no product call sites or native execution.
 Both complete 293-control/thirteen-child/forty-scalar lifecycle release gates,
 second clean cycle, fault families, worker/backend/global launch, manual browser/
 client, hardware/performance and release acceptance remain pending. Runtime

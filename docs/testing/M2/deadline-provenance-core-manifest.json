@@ -1,0 +1,277 @@
+{
+  "schema": 1,
+  "scope": "portable fixture-only deadline annotation/extraction prerequisite",
+  "native_execution": false,
+  "native_acceptance": false,
+  "requirements": [
+    "M2-POLICY-DEADLINE-PROVENANCE-001 portable subset",
+    "M2-POLICY-DEADLINE-PROVENANCE-002 portable subset",
+    "M2-POLICY-DEADLINE-PROVENANCE-003 adapter subset; native consumer pending",
+    "M2-POLICY-DEADLINE-PROVENANCE-006 portable subset"
+  ],
+  "source_commit": "a02758170d44e4efb412ab0f80651723acb190b9",
+  "adoption_base_commit": "37402d6a017dc28fb7fb6528fc9b92516fda1cfb",
+  "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+  "failing_first": {
+    "initial_signed_red": "03c29c520ed435dd5931a7beef107cd9dda67c90",
+    "initial_red_log_sha256": "1ab3324ca87ae84dff16fd218f08e6b1292dd8c4bb95cf20a17fb26003f56f92",
+    "corrected_signed_red": "2d8e5b0108d04fdb5406705cff8563fe86f0eee1",
+    "corrected_red_log_sha256": "9f7895265e2367b9b2267c060d7131e0715dfdf8752bacbaca9dfcacb939436b",
+    "limits": "initial typed wrapper lacked Unwrap; corrected red retains expected absent-annotation failures, not compiler failures; later coverage adds real cancellation and malformed-frame checks",
+    "dynamic_comparability_regression": {
+      "source_commit": "1b81279b36f7de04513d6af2a817ac70d14990a7",
+      "signature": "G",
+      "archive_sha256": "952cd9a4d93cc2d70dce8f994a9f0f8ea2fb570edeaa66c74a2439fdd8cd3593",
+      "command": [
+        "go",
+        "test",
+        "-tags=horvium_native_fixture",
+        "./internal/storage",
+        "-run",
+        "^TestDeadlineProvenanceMalformedEvidence/dynamic-uncomparable$",
+        "-count=1"
+      ],
+      "returncode": 1,
+      "expected_behavioral_failure": "hash panic on dynamic uncomparable interface field",
+      "log_sha256": "3571d697c05643d62efc3c4cfd722336c5f3ecfea0fe11eb806f0e4e1eb52497",
+      "disposable_archive_removed": true
+    }
+  },
+  "supplemental_verification": {
+    "schema": 1,
+    "scope": "portable adapter only; no native execution",
+    "source_commit": "a02758170d44e4efb412ab0f80651723acb190b9",
+    "base_commit": "37402d6a017dc28fb7fb6528fc9b92516fda1cfb",
+    "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+    "checks": [
+      {
+        "name": "ordinary",
+        "command": [
+          "go",
+          "test",
+          "./internal/storage",
+          "-run",
+          "^TestDeadlineReturnOrdinaryIdentity$",
+          "-count=1",
+          "-v"
+        ],
+        "returncode": 0,
+        "log_sha256": "051eb023b146e185e9a9aa283fe738cc7fecfd0640d262b70744626a54f385d5"
+      },
+      {
+        "name": "tagged-storage",
+        "command": [
+          "go",
+          "test",
+          "-tags=horvium_native_fixture",
+          "./internal/storage",
+          "-count=1",
+          "-v"
+        ],
+        "returncode": 0,
+        "log_sha256": "1c17ff5e0f420e1a6f2f32bdd28d498c7752ba2074f47d7f32b98172453cc3f6"
+      },
+      {
+        "name": "tagged-race",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-tags=horvium_native_fixture",
+          "./internal/storage",
+          "-run",
+          "^TestDeadlineProvenance",
+          "-count=1",
+          "-v"
+        ],
+        "returncode": 0,
+        "log_sha256": "bc503a784ab3d9d81142fd3829099974406413c5f5804d072886507fcd56d3f6"
+      },
+      {
+        "name": "tagged-fuzz",
+        "command": [
+          "go",
+          "test",
+          "-tags=horvium_native_fixture",
+          "./internal/storage",
+          "-run",
+          "^$",
+          "-fuzz",
+          "^FuzzDeadlineProvenanceBoundedGraphs$",
+          "-fuzztime=3s",
+          "-parallel=2"
+        ],
+        "returncode": 0,
+        "log_sha256": "ab6a806283997976e706d2353165ae40075f31f9fdc5e5e498df162776faafbf"
+      },
+      {
+        "name": "freebsd-ordinary",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tools/bin/deadline-provenance-freebsd-ordinary.test",
+          "./internal/storage"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "freebsd-tagged",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-tags=horvium_native_fixture",
+          "-o",
+          ".tools/bin/deadline-provenance-freebsd-tagged.test",
+          "./internal/storage"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "build_selection": {
+      "host-ordinary": [
+        "deadline_return.go",
+        "deadline_return_plain.go",
+        "deadline_return_plain_test.go"
+      ],
+      "host-tagged": [
+        "deadline_return.go",
+        "deadline_return_fixture.go",
+        "deadline_return_fixture_test.go"
+      ],
+      "freebsd-ordinary": [
+        "deadline_return.go",
+        "deadline_return_plain.go",
+        "deadline_return_plain_test.go"
+      ],
+      "freebsd-tagged": [
+        "deadline_return.go",
+        "deadline_return_fixture.go",
+        "deadline_return_fixture_test.go"
+      ],
+      "freebsd-ordinary_artifact_sha256": "b6689b82d00b847d89638211015ba148fdcd42b22cad52f5598cb776c39a1b7e",
+      "freebsd-tagged_artifact_sha256": "72e36594aada85ae8e5767c4b2cc059044dc9121bc6d9e3770fd6e4fd5781e83"
+    },
+    "preserved_policy_receipts": {
+      "docs/testing/M2/retained-policy-admission-manifest.json": "2e733dd5a017772ce7947913ced1c16940ee8614cde445cb9fcd0327331077c3",
+      "docs/testing/M2/retained-policy-lifecycle-budget-manifest.json": "4019d0b125d2dfbf0bc1be31f1cc0465eea1aae9bd40dc28efeeecc3bec13990",
+      "docs/testing/M2/retained-policy-lifecycle-caller-manifest.json": "ce438292ee672027e896d4f8476635c2ad271d9fb29364ad6babae97428e2475",
+      "docs/testing/M2/retained-policy-lifecycle-qualification-manifest.json": "43d7724e44af147a619eac167b1b13cbd703c69b43809b358e0318a5499cd66e",
+      "docs/testing/M2/retained-policy-native-facts-manifest.json": "e9d4a0c6eef2011b236ea69a0ff94c0adae9a9c8f2102fefe4c9ff69f1c9f499",
+      "docs/testing/M2/retained-policy-native-history-manifest.json": "0788d387d4b4c27921fd3f68ffc5206f9fe0c548270464d34c87fd6ea4b8db6d",
+      "docs/testing/M2/retained-policy-native-lifecycle-manifest.json": "43fdd1bbda87853e7d9aee336f70402bfc5f263b9b6b71304dee7133faea5ce0",
+      "docs/testing/M2/retained-policy-native-multiple-manifest.json": "294662c837cf9921dba954491b6737f84adc43de71d09d93c3747107992eb263",
+      "docs/testing/M2/retained-policy-native-review-manifest.json": "f37c74e30d2c769d87f65872303021fd5bf2640467636bd9bea499ae4abaa3cf",
+      "docs/testing/M2/retained-policy-root-manifest.json": "52bb88c0d6cc94fe031a8345adb1bdc1e5fb005634d24f4ba3eb47a59ea3366a",
+      "docs/testing/M2/retained-policy-root-qualification-manifest.json": "6d3dd07f65d88247bdd854061f811629c59168bcfda42385eab5a7cf21aac99c",
+      "docs/testing/M2/retained-policy-startup-manifest.json": "b7b248f1bfe6e197f1c8955f72f80c9fbeef0a71a641767e424059df7cfdd271",
+      "docs/research/M2/policy-lifecycle-caller-manifest.json": "1a7febc154a2dd9542f50a43bdc7acafd69485c39d423810bd04f2bca708610f",
+      "docs/research/M2/policy-lifecycle-timeout-manifest.json": "53c7a8c64b1681863e91920364e97e02f5f3a6875c72dab60269999389fcd95c",
+      "docs/research/M2/policy-startup-costs-manifest.json": "4564cee1d3e579557f6af7d187a77274183752d2af370b44d4e92eed6431ca5a",
+      "docs/research/M2/policy-startup-deadline-manifest.json": "bae3a271140cbaef0ad08d5dbc290b388cfea2645aeb634ba973fc899094d017",
+      "docs/research/M2/policy-startup-envelope-manifest.json": "08a17cec903d3d16e9d816b6ccd99ee84883c9aa87a3d272f84a4e4692def459",
+      "docs/research/M2/policy-startup-inspection-manifest.json": "3abf2f117b3fd66779cc04a7d07e15c3a2777199d327d997fd8c8e421001bdfc",
+      "docs/research/M2/policy-startup-operation-timeout-manifest.json": "9ba85d24fdd70b1c745c3f19aff063126bbafaf61d94bea02bf3faa8f04e29d8",
+      "docs/research/M2/policy-startup-stack-manifest.json": "33c3640f5cc7602735912bd6e7949cdc3a10b8ca078503a64508d1a56bf30052",
+      "docs/research/M2/policy-startup-stack-qualification-manifest.json": "9512fbd6286228d5a417247602c6812b02b33a1385fa51c8292245c99fcfde5a",
+      "docs/research/M2/policy-startup-timeout-provenance-manifest.json": "76b1f07aedbe4db9557c63c480d2de3aba37fceb9f404c1acd00c77e25bcc4cc"
+    },
+    "qualified": true,
+    "temporary_artifacts_removed": true
+  },
+  "supplemental_supervisors": {
+    "verify-provenance-core.py": {
+      "session": "elpwhft0",
+      "record_sha256": "e4f00fd9090d287b851c7453f709537fac3d6ec1a67700a3db817accfe93de96",
+      "completed": true,
+      "group_cleaned": true,
+      "worker_returncode": 0
+    },
+    "replay-provenance-core-red.py": {
+      "session": "9d7y8c8p",
+      "record_sha256": "ef7e684dad0089fc4b382a26aa4b9caa855e8b237327f18157e69bbdb7634b2e",
+      "completed": true,
+      "group_cleaned": true,
+      "worker_returncode": 0
+    }
+  },
+  "portable_review": {
+    "source_commit": "a02758170d44e4efb412ab0f80651723acb190b9",
+    "base_commit": "37402d6a017dc28fb7fb6528fc9b92516fda1cfb",
+    "title": "test(storage): add bounded deadline provenance adapter",
+    "qualified": true,
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ],
+      "native_review_required": true
+    },
+    "report_sha256": "0dfef90783575ba20ab44e850f0c4b7924576021099f14decf942eff16ecc02c",
+    "checks_log_sha256": "436047554b71d1490dfe0304bf755506298875d160915e8daaea322a6738ad42",
+    "tooling_tests": 228,
+    "race_packages": 9,
+    "fuzz_targets": 48,
+    "deep_log_sha256": "b5652d86d9285e24a195e7064b76f99c564cd9beb06e434cf18fbba989c452cb",
+    "deep_executed": true,
+    "supervisors_completed": true,
+    "supervisors_group_cleaned": true
+  },
+  "interrupted_predecessor": {
+    "source_commit": "071340e298a1f7980b8c1f5bab512dd5621a36cc",
+    "qualified": false,
+    "report_sha256": "7e1fa566e0130d12eceddbb78cbc19da155e564b1a888f96dd5b55c0f810740f",
+    "checks_log_sha256": null,
+    "reason": "operator stopped partial deep review after independent actual-value-comparability panic reproduction",
+    "worker_returncode": -15,
+    "supervisor_completed": true,
+    "group_cleaned": true,
+    "limits": "earlier selected supplemental checks passed; interrupted review cannot qualify adapter completeness"
+  },
+  "preserved_policy_receipts": {
+    "docs/testing/M2/retained-policy-admission-manifest.json": "2e733dd5a017772ce7947913ced1c16940ee8614cde445cb9fcd0327331077c3",
+    "docs/testing/M2/retained-policy-lifecycle-budget-manifest.json": "4019d0b125d2dfbf0bc1be31f1cc0465eea1aae9bd40dc28efeeecc3bec13990",
+    "docs/testing/M2/retained-policy-lifecycle-caller-manifest.json": "ce438292ee672027e896d4f8476635c2ad271d9fb29364ad6babae97428e2475",
+    "docs/testing/M2/retained-policy-lifecycle-qualification-manifest.json": "43d7724e44af147a619eac167b1b13cbd703c69b43809b358e0318a5499cd66e",
+    "docs/testing/M2/retained-policy-native-facts-manifest.json": "e9d4a0c6eef2011b236ea69a0ff94c0adae9a9c8f2102fefe4c9ff69f1c9f499",
+    "docs/testing/M2/retained-policy-native-history-manifest.json": "0788d387d4b4c27921fd3f68ffc5206f9fe0c548270464d34c87fd6ea4b8db6d",
+    "docs/testing/M2/retained-policy-native-lifecycle-manifest.json": "43fdd1bbda87853e7d9aee336f70402bfc5f263b9b6b71304dee7133faea5ce0",
+    "docs/testing/M2/retained-policy-native-multiple-manifest.json": "294662c837cf9921dba954491b6737f84adc43de71d09d93c3747107992eb263",
+    "docs/testing/M2/retained-policy-native-review-manifest.json": "f37c74e30d2c769d87f65872303021fd5bf2640467636bd9bea499ae4abaa3cf",
+    "docs/testing/M2/retained-policy-root-manifest.json": "52bb88c0d6cc94fe031a8345adb1bdc1e5fb005634d24f4ba3eb47a59ea3366a",
+    "docs/testing/M2/retained-policy-root-qualification-manifest.json": "6d3dd07f65d88247bdd854061f811629c59168bcfda42385eab5a7cf21aac99c",
+    "docs/testing/M2/retained-policy-startup-manifest.json": "b7b248f1bfe6e197f1c8955f72f80c9fbeef0a71a641767e424059df7cfdd271",
+    "docs/research/M2/policy-lifecycle-caller-manifest.json": "1a7febc154a2dd9542f50a43bdc7acafd69485c39d423810bd04f2bca708610f",
+    "docs/research/M2/policy-lifecycle-timeout-manifest.json": "53c7a8c64b1681863e91920364e97e02f5f3a6875c72dab60269999389fcd95c",
+    "docs/research/M2/policy-startup-costs-manifest.json": "4564cee1d3e579557f6af7d187a77274183752d2af370b44d4e92eed6431ca5a",
+    "docs/research/M2/policy-startup-deadline-manifest.json": "bae3a271140cbaef0ad08d5dbc290b388cfea2645aeb634ba973fc899094d017",
+    "docs/research/M2/policy-startup-envelope-manifest.json": "08a17cec903d3d16e9d816b6ccd99ee84883c9aa87a3d272f84a4e4692def459",
+    "docs/research/M2/policy-startup-inspection-manifest.json": "3abf2f117b3fd66779cc04a7d07e15c3a2777199d327d997fd8c8e421001bdfc",
+    "docs/research/M2/policy-startup-operation-timeout-manifest.json": "9ba85d24fdd70b1c745c3f19aff063126bbafaf61d94bea02bf3faa8f04e29d8",
+    "docs/research/M2/policy-startup-stack-manifest.json": "33c3640f5cc7602735912bd6e7949cdc3a10b8ca078503a64508d1a56bf30052",
+    "docs/research/M2/policy-startup-stack-qualification-manifest.json": "9512fbd6286228d5a417247602c6812b02b33a1385fa51c8292245c99fcfde5a",
+    "docs/research/M2/policy-startup-timeout-provenance-manifest.json": "76b1f07aedbe4db9557c63c480d2de3aba37fceb9f404c1acd00c77e25bcc4cc"
+  },
+  "limits": [
+    "No product/native return-site calls added; original-context placement still requires integration review",
+    "No original host/fixture/consumer/runner/product timer or context constructor changes",
+    "Normal builds exclude diagnostic enablement, frame/annotation types, extraction and serialization",
+    "Cross-compilation and portable passing tests do not qualify native runtime behavior",
+    "Strict separate 50-control fixture/consumer and one fresh 15.1 diagnostic remain pending",
+    "All complete lifecycle, worker/backend/global launch, manual browser/client, hardware/performance and release gates remain open",
+    "Final receipt-only head needs fresh baseline with verified exact-input deep reuse and final owned-process teardown"
+  ]
+}
