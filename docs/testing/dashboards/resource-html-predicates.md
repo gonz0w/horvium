@@ -103,8 +103,9 @@ source-bound [receipt](resource-html-predicates-manifest.json) records actual re
 ## Remaining gates and rollback
 
 The native performance loop and historical validator are unchanged and inactive
-with respect to this new workload. Next review strict candidate/transcript/release
-coverage receipts and wire the complete controller into all four native modes,
+with respect to this new workload. The [offline receipt validator](resource-receipt-validator.md) supplies strict
+candidate/transcript/release accounting as a separate inactive component. Next
+wire the complete controller into all four native modes,
 preserving original crash/cap recovery, warm-up/idle, replacements, RSS/CPU and
 teardown requirements. Only then execute a clean signed assembled candidate on
 both pinned releases. Historical receipts retain their original failed/skipped
