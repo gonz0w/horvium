@@ -247,3 +247,5 @@
 - [Original startup deadline return sites](testing/M2/deadline-return-sites.md): issue 339; existing context integration and portable placement checks, with native qualification pending.
 
 - [Strict deadline provenance consumer](testing/M2/deadline-provenance-consumer.md): issue 341; exact 50-control transcript contract and offline parser, with fixture/native execution pending.
+
+- [Deadline provenance runner input binding](testing/M2/deadline-provenance-candidate.md): issue 343; clean signed source and actual compiler/artifact/transcript verification, with build/fixture/runner integration pending.

@@ -306,3 +306,9 @@ not accept the separate strict fixture, native diagnostic or lifecycle gates.
 owns the [offline transcript contract and parser](../testing/M2/deadline-provenance-consumer.md),
 under #305 after merged return-site #339. Native fixture/runner and the one fresh
 diagnostic remain separate; GitHub owns live status.
+
+[Deadline runner input binding (#343)](https://github.com/gonz0w/horvium/issues/343)
+owns the [offline candidate verification boundary](../testing/M2/deadline-provenance-candidate.md),
+under #305 after merged strict consumer #341. File/source identity does not
+complete build attestation, tagged fixture, runner integration or native
+execution; GitHub owns live status and dependencies.

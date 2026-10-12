@@ -1,0 +1,6 @@
+{
+  "schema": 1,
+  "scope": "offline runner input binding only; candidate execution evidence pending",
+  "native_execution": false,
+  "native_acceptance": false
+}

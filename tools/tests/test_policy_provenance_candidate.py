@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Disposable input verification; synthetic bytes are not a native build."""
 import hashlib
+import contextlib
+import io
 import json
 import os
 from pathlib import Path
@@ -89,6 +91,17 @@ class PolicyProvenanceCandidate(unittest.TestCase):
             self.artifact.chmod(0o600)
             with self.assertRaises(ValueError):
                 self.verify()
+            self.artifact.chmod(0o700)
+            for path in (self.compiler, self.artifact):
+                with path.open('wb') as stream:
+                    stream.truncate((128 << 20) + 1)
+                with self.subTest(kind='oversized', path=path.name), self.assertRaises(ValueError):
+                    self.verify()
+                path.write_bytes(b'')
+                with self.subTest(kind='empty', path=path.name), self.assertRaises(ValueError):
+                    self.verify()
+                # Restore the other candidate so each bound is exercised.
+                path.write_bytes(b'synthetic ' + path.name.encode() + b', never executed')
 
     def test_transcript_encoding_bounds_and_raw_records_fail_closed(self):
         with patch.object(self.m, 'verify_source'):
@@ -161,3 +174,18 @@ class PolicyProvenanceCandidate(unittest.TestCase):
         self.assertEqual(result.stdout, '')
         self.assertNotIn(str(self.root), result.stderr)
         self.assertNotIn('synthetic compiler', result.stderr)
+
+    def test_cli_complete_and_incomplete_exit_codes_preserve_scalar_evidence(self):
+        argv = ['candidate', str(self.transcript), '--repo-root', str(self.root),
+                '--compiler', str(self.compiler), '--artifact', str(self.artifact),
+                '--source-commit', SOURCE, '--compiler-sha256', self.expected['compiler_sha256'],
+                '--artifact-sha256', self.expected['artifact_sha256']]
+        for record, code in [(None, 0), (dict(status='unattributed', frames=[]), 1)]:
+            self.write_transcript(record)
+            output = io.StringIO()
+            with self.subTest(code=code), patch.object(self.m, 'verify_source'), patch.object(os.sys, 'argv', argv), contextlib.redirect_stdout(output):
+                self.assertEqual(self.m.main(), code)
+            result = json.loads(output.getvalue())
+            self.assertEqual(result['diagnostic_complete'], code == 0)
+            self.assertFalse(result['native_acceptance'])
+            self.assertEqual(result['transcript_sha256'], self.digest(self.transcript))
