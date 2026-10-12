@@ -23,7 +23,9 @@ adds page-local comparisons without summing overlapping accounting or implying
 quota headroom; its exact table and JSON remain unchanged. The [Overview slice](../testing/dashboards/overview-capacity.md)
 composes one same-generation bounded pool page, with explicit intervening eviction
 and exact-value fallback. This additional cached read needs fresh resource evidence
-before qualified Overview acceptance. Dashboard browser/accessibility,
+before qualified Overview acceptance. The [resource Test Design supplement](../design/dashboards/resource-qualification.md)
+proposes current-view/default/max-page workload coverage; it changes no harness,
+native measurement, historical receipt or support claim. Dashboard browser/accessibility,
 fresh native service/performance, uPlot behavior and identity-bound history remain
 unqualified. Inspected upstream hashes
 and compressed input sizes in [ADR 0010](../adr/0010-progressive-dashboard-charts.md)
