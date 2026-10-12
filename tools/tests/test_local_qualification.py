@@ -2,6 +2,7 @@
 import importlib.util
 import re
 import subprocess
+import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import Mock, patch
@@ -14,6 +15,37 @@ class LocalQualificationTests(unittest.TestCase):
     def setUp(self):
         self.module = importlib.util.module_from_spec(SPEC)
         SPEC.loader.exec_module(self.module)
+
+    def test_partial_dashboard_fixture_cannot_execute_or_qualify(self):
+        for log in ('PASS\n', 'PERFORMANCE_RESULT {}\nNATIVE_READER_RESULT {}\nPASS\n',
+                    'DASHBOARD_WORKLOAD {}\nPASS\n'):
+            with self.assertRaisesRegex(ValueError, 'independent dashboard.*bindings'):
+                self.module.validate_result('performance', log, complete=True)
+        with self.assertRaisesRegex(ValueError, 'independent dashboard.*bindings'):
+            self.module.suite_command('performance')
+        for arguments in (['local-qualification.py','performance','15.1','--run'],
+                          ['local-qualification.py','performance','14.5','--run','--owned-directory','/tmp/unused']):
+            with patch.object(self.module.sys, 'argv', arguments), patch.object(self.module.shutil, 'which') as prerequisite:
+                with self.assertRaisesRegex(ValueError, 'independent dashboard.*bindings'):
+                    self.module.main()
+                prerequisite.assert_not_called()
+        with patch.object(self.module.sys, 'argv', ['local-qualification.py','performance','15.1']), patch('builtins.print') as output:
+            self.module.main()
+            self.assertIn('Add --run', output.call_args.args[0])
+
+    def test_native_performance_shell_stops_before_guest_build(self):
+        # Simulate only the existing OS/root guards; execute no native facility.
+        with tempfile.TemporaryDirectory() as directory:
+            for name, value in [('uname', 'FreeBSD'), ('id', '0')]:
+                executable = Path(directory) / name
+                executable.write_text('#!/bin/sh\nprintf "%s\\n" "' + value + '"\n')
+                executable.chmod(0o700)
+            result = subprocess.run(['/bin/sh', str(ROOT / 'tools/bsd-performance.sh')],
+                                    env={'PATH': directory + ':/usr/bin:/bin', 'HORVIUM_NATIVE_VM': '1', 'HORVIUM_PERF_VM': '1'},
+                                    capture_output=True, text=True, timeout=5)
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual(result.stdout, '')
+        self.assertIn('independent dashboard resource/control/provenance/teardown bindings', result.stderr)
 
     def claim_log(self, checker):
         parent='TestNativePropertyClaimCollection'

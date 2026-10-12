@@ -87,7 +87,13 @@ def load_tool(name):
     return module
 
 
+def require_dashboard_runner_bindings(suite):
+    if suite == 'performance':
+        raise ValueError('independent dashboard resource/control/provenance/teardown bindings require review before performance execution or qualification')
+
+
 def suite_command(suite, source_build=False, artifact_digest=None, candidate=None):
+    require_dashboard_runner_bindings(suite)
     if suite == 'policy-startup-provenance':
         if source_build or type(candidate) is not dict or artifact_digest != candidate.get('sha256'):
             raise ValueError('separate provenance suite requires bound reviewed prebuilt receipt')
@@ -255,6 +261,7 @@ def stop_guest(process):
 
 
 def validate_result(suite, log, complete=False, candidate=None):
+    require_dashboard_runner_bindings(suite)
     if '--- FAIL:' in log or '\nFAIL\n' in log:
         raise ValueError('guest test failure')
     if suite == 'policy-startup-provenance':
@@ -389,6 +396,7 @@ def main():
     if not args.run:
         print(f'{args.suite}: FreeBSD {args.release} amd64, {cpu_count_for_suite(args.suite)} CPUs, 6144 MiB, snapshot, TCG, loopback SSH. Add --run to execute.')
         return
+    require_dashboard_runner_bindings(args.suite)
     if platform.system() not in ('Darwin', 'Linux'):
         raise ValueError('local runner requires macOS or Linux')
     for name in ('qemu-system-x86_64', 'unzstd', 'ssh', 'git'):

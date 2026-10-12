@@ -279,3 +279,7 @@
 
 - [Prepared dashboard workload/receipt adapter](testing/dashboards/workload-receipt-adapter.md):
   immutable originals and strict raw phase serialization; native/runner bindings remain separate.
+
+- [Current-dashboard native fixture bindings](testing/dashboards/native-fixture-bindings.md):
+  four test-only modes, independent original observations and retained phase outcomes;
+  execution remains gated pending full host receipt bindings and both-release evidence.
