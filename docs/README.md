@@ -251,3 +251,4 @@
 - [Deadline provenance runner input binding](testing/M2/deadline-provenance-candidate.md): issue 343; clean signed source and actual compiler/artifact/transcript verification, with build/fixture/runner integration pending.
 
 - [Separate deadline provenance fixture and runner](testing/M2/deadline-provenance-fixture.md): issue 345; exact 50-control tagged implementation, source-isolated builds and owned teardown, with native execution pending.
+- [One fresh startup return-path diagnostic](research/M2/policy-startup-return-path.md): issue 347; the adopted single-candidate observation after fixture review, with operation outcome and native acceptance kept separate.
