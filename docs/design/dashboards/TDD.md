@@ -80,8 +80,10 @@ based solely on one successful image or console silence.
 ## Resource procedure and missing instrumentation
 
 The [current-dashboard resource supplement](resource-qualification.md) is a
-proposed refinement of stage-A workload coverage and strict receipts. It awaits
-maintainer review; no new workload execution or acceptance follows from the proposal.
+refinement of stage-A workload coverage and strict receipts adopted in PR 357.
+The [portable request driver](../../testing/dashboards/resource-request-driver.md) is
+the first fixture slice; complete HTML predicates, receipt validation, native wiring
+and fresh both-release execution remain required. Adoption is not qualification.
 
 A reruns affected console/cache checks plus fresh assembled service measurements
 for its candidate using existing small/large native resource procedure on both
