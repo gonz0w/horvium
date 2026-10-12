@@ -69,3 +69,28 @@ unexplained startup deadline retain their original boundaries; writes stay disab
 Rollback removes the private dataset projection and embedded presentation changes;
 there is no storage, configuration, schema or journal migration. Any development
 preview uses labelled synthetic inventory and owned process/tab teardown.
+
+## Recorded portable candidate
+
+[Receipt](dataset-capacity-manifest.json): signed implementation source `37f81f7b8db83f519d8a06cb18ffbc5ad5fa2e02`,
+merged base `a5e2668546e7a78579df8520653c0a623b9406ee`, actual title
+`feat(console): compare bounded current dataset Used`. Required check/lint/test/secrets passed,
+including 258 tooling tests and ordinary Go tests. Fresh focused race checks passed
+for console, service and command consumers; no portable fuzz targets exist in
+these packages. Five dataset behavioral parents passed, with pool regression
+coverage for the reused exact ratio helper. No full milestone suite was selected.
+All 135 historical manifests are byte-identical; collector/cache/native/privilege/
+storage/tooling/module/workflow inputs are unchanged.
+
+Console and command test packages cross-compiled for FreeBSD/amd64/v1 with pinned
+Go 1.27.1 and cgo disabled; checksummed artifacts were removed without execution.
+A supplementary Codex in-app light preview at 1280 pixels displayed the exact
+123 B scale, 8.1%/100.0% ratios and 81/1000 coordinates. Keyboard Enter selected
+the original GUID/generation and retained comparison-link focus; no warning/error
+console entries were observed. Document client/scroll widths were both 1280.
+Engine/version was not captured: this is limited synthetic inspection, not
+Safari/Firefox/manual accessibility, contrast/zoom/narrow or resource acceptance.
+Screenshot stays private and is checksummed in the receipt. Owned tab/preview
+closed/stopped, build artifacts removed and 164 owned records stopped with verified
+teardown. A final receipt-only signed review reruns mandatory checks; deep evidence
+can reuse only identical behavioral inputs from the original implementation source.
