@@ -1613,3 +1613,27 @@ adoption before implementation/execution and a separate strict profile/consumer.
 Original trace and full lifecycle profiles remain unchanged. No new support,
 hardware, client, full lifecycle or release acceptance is established; native
 lifecycle acceptance is false and runtime writes remain disabled.
+
+## Separate adopted startup caller-envelope candidate
+
+PR 327 adopted the [fixture-only 180/210 experiment](../research/M2/policy-startup-inspection.md).
+The [implementation contract](../research/M2/policy-startup-envelope.md) preserves
+product 90/90/native bounds, all 42 controls, one fresh 15.1 UFS seed and original
+fixed factory/producer/registry semantics. Separate strict profile/consumer and
+portable tests reject old/new evidence interchange, renewal, checksum/source
+mismatch and incomplete teardown. Original trace 120/150 and full lifecycle
+profiles and all 16 preceding receipts remain unchanged. Native completeness
+requires its own candidate receipt; no support or lifecycle acceptance follows
+from implementation/compilation. Runtime writes remain disabled.
+
+The separate [candidate receipt](../research/M2/policy-startup-envelope-manifest.json)
+records one 15.1 parent at 138.50s, two normal children/all 42 controls and verified
+original/independent cleanup. Actual startup succeeded at 84.436750s with owner
+returned, followed only by original Close: final closed 6→active 7 journal, preserved
+ledger/nonjournal bytes and released locks. Two source-mapped point captures
+(68 frames) and one honest early-return skip complete the diagnostic. The return
+precedes the old 120s deadline, so this does not establish that a wider caller
+caused success or qualify performance. Diagnostic completeness is true; native
+lifecycle acceptance remains false. Both original full release lifecycle gates/
+retirement/second cycle remain pending; all 16 prior receipts stay immutable and
+14.5 was not attempted. No runtime writer or retry authority follows.

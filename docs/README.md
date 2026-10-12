@@ -222,3 +222,7 @@
 - [Adopted original startup stack diagnostic](research/M2/policy-startup-stack.md): bounded test-only sampling; diagnostic completeness and native acceptance are separate.
 
 - [Original startup inspection and proposed caller experiment](research/M2/policy-startup-inspection.md): source/point-observation review; adoption, implementation and native acceptance remain separate.
+
+- [Separate adopted startup caller-envelope diagnostic](research/M2/policy-startup-envelope.md): fixture-only implementation and source-bound diagnostic result; no lifecycle acceptance.
+
+- [Separate caller-envelope execution receipt](research/M2/policy-startup-envelope-manifest.json): original startup success at 84.44s and complete diagnostic/teardown; full lifecycle acceptance remains false.

@@ -19,6 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ROOT / 'tools'
 SUITES = {
+    'policy-startup-envelope': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_ENVELOPE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1 sh tools/bsd-policy-startup-envelope-prebuilt.sh'),
     'policy-startup-trace': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_TRACE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1 sh tools/bsd-policy-startup-trace-prebuilt.sh'),
     'policy-startup-diagnostics': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_DIAGNOSTICS_VM=1 sh tools/bsd-policy-startup-diagnostics-prebuilt.sh'),
     'policy-startup-lifecycle': ('', 'env HORVIUM_NATIVE_VM=1 HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_ROOT_REVIEW_VM=1 HORVIUM_POLICY_ROOT_LIFECYCLE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1 sh tools/bsd-policy-startup-lifecycle-prebuilt.sh'),
@@ -48,6 +49,7 @@ SUITES = {
 }
 
 PREBUILT = {
+    'policy-startup-envelope': ('policy-startup-envelope-native.test', './internal/host/freebsd', 'POLICY_STARTUP_ENVELOPE_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_ENVELOPE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1', 'bsd-policy-startup-envelope-prebuilt.sh'),
     'policy-startup-trace': ('policy-startup-trace-native.test', './internal/host/freebsd', 'POLICY_STARTUP_TRACE_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_TRACE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1', 'bsd-policy-startup-trace-prebuilt.sh'),
     'policy-startup-diagnostics': ('policy-startup-diagnostics-native.test', './internal/host/freebsd', 'POLICY_STARTUP_COST_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_STARTUP_DIAGNOSTICS_VM=1', 'bsd-policy-startup-diagnostics-prebuilt.sh'),
     'policy-startup-lifecycle': ('policy-startup-lifecycle-native.test', './internal/host/freebsd', 'POLICY_ROOT_LIFECYCLE_PREBUILT_SHA256', 'HORVIUM_POLICY_FACTS_VM=1 HORVIUM_POLICY_ROOT_REVIEW_VM=1 HORVIUM_POLICY_ROOT_LIFECYCLE_VM=1 HORVIUM_CLOSED_STARTUP_OWNER_VM=1', 'bsd-policy-startup-lifecycle-prebuilt.sh'),
@@ -94,7 +96,7 @@ def suite_command(suite, source_build=False, artifact_digest=None):
 
 
 def uses_device_fixture(suite):
-    return suite in ('policy-startup-trace', 'policy-startup-diagnostics', 'policy-startup-lifecycle', 'policy-startup-review', 'policy-startup-facts', 'policy-startup-owner', 'devices', 'pool-properties', 'executor-recovery', 'execution-system', 'execution-startup', 'closed-startup-owner')
+    return suite in ('policy-startup-envelope', 'policy-startup-trace', 'policy-startup-diagnostics', 'policy-startup-lifecycle', 'policy-startup-review', 'policy-startup-facts', 'policy-startup-owner', 'devices', 'pool-properties', 'executor-recovery', 'execution-system', 'execution-startup', 'closed-startup-owner')
 
 
 def recovery_boot_identity(text):
@@ -158,7 +160,7 @@ def build_native_binary(directory, source, suite):
     subprocess.run([go, 'mod', 'verify'], cwd=ROOT, env=env, check=True)
     filename, package, _, _, _ = PREBUILT[suite]
     binary = directory / filename
-    tags = ['-tags=horvium_native_fixture'] if suite in ('policy-startup-trace', 'policy-startup-owner', 'policy-startup-facts', 'policy-startup-review', 'policy-startup-lifecycle', 'policy-startup-diagnostics') else []
+    tags = ['-tags=horvium_native_fixture'] if suite in ('policy-startup-envelope', 'policy-startup-trace', 'policy-startup-owner', 'policy-startup-facts', 'policy-startup-review', 'policy-startup-lifecycle', 'policy-startup-diagnostics') else []
     command = [go, 'test', '-c', '-trimpath', *tags, '-o', str(binary), package]
     source_identity(source)
     subprocess.run(command, cwd=ROOT, env=env, check=True)
@@ -180,13 +182,23 @@ def validate_prebuilt(log, artifact_digest, suite='state'):
 def cpu_count_for_suite(suite):
     if suite not in SUITES:
         raise ValueError('unknown native suite CPU profile')
-    return 1 if suite in ('policy-startup-trace', 'policy-startup-lifecycle', 'policy-startup-diagnostics') else 2
+    return 1 if suite in ('policy-startup-envelope', 'policy-startup-trace', 'policy-startup-lifecycle', 'policy-startup-diagnostics') else 2
 
 
 def lifecycle_budget_for_suite(suite):
     if suite not in SUITES:
         raise ValueError('unknown suite budget profile')
     return {'child_seconds': 330, 'parent_work_seconds': 1080, 'phase_minutes': 40} if suite == 'policy-startup-lifecycle' else None
+
+
+def startup_envelope_budget_for_suite(suite):
+    if suite not in SUITES:
+        raise ValueError('unknown suite envelope profile')
+    if suite != 'policy-startup-envelope':
+        return None
+    return {'child_seconds': 210, 'parent_seconds': 480, 'phase_minutes': 18,
+            'caller_seconds': 180, 'product_seconds': 90, 'sample_seconds': [30, 75, 110],
+            'snapshot_bytes': 65536, 'join_seconds': 5}
 
 
 def qemu_command(qemu, base, code, variables, port, cpu_count=2):
@@ -227,6 +239,11 @@ def stop_guest(process):
 def validate_result(suite, log, complete=False):
     if '--- FAIL:' in log or '\nFAIL\n' in log:
         raise ValueError('guest test failure')
+    if suite == 'policy-startup-envelope':
+        load_tool('check-policy-startup-envelope').validate(log)
+        if complete and re.findall('DEVICE_FIXTURE_CLEANUP ([^\n]+)', log) != ['pass']:
+            raise ValueError('independent caller-envelope device teardown required')
+        return
     if suite == 'policy-startup-trace':
         load_tool('check-policy-startup-trace').validate(log)
         if complete and re.findall('DEVICE_FIXTURE_CLEANUP ([^\n]+)', log) != ['pass']:
@@ -392,7 +409,7 @@ def main():
         raise InterruptedError('owned lab interrupted')
     signal.signal(signal.SIGTERM, interrupted)
     signal.signal(signal.SIGINT, interrupted)
-    device_profile = 'policy-facts' if args.suite in ('policy-startup-trace', 'policy-startup-facts', 'policy-startup-review', 'policy-startup-lifecycle', 'policy-startup-diagnostics') else 'baseline'
+    device_profile = 'policy-facts' if args.suite in ('policy-startup-envelope', 'policy-startup-trace', 'policy-startup-facts', 'policy-startup-review', 'policy-startup-lifecycle', 'policy-startup-diagnostics') else 'baseline'
     cpu_count = cpu_count_for_suite(args.suite)
     guest, key = None, directory / 'fixture-key'
     record = {'source_commit': source, 'suite': args.suite, 'release': args.release,
@@ -407,6 +424,10 @@ def main():
               'execution_mode': 'host-cross-built' if args.suite in PREBUILT and not args.source_build else 'guest-source-build'}
     if args.suite == 'policy-startup-lifecycle':
         record['lifecycle_fixture_budget'] = lifecycle_budget_for_suite(args.suite)
+    if args.suite == 'policy-startup-envelope':
+        record['native_acceptance'] = False
+        record['qualification_scope'] = 'separate caller-envelope diagnostic completeness only; no lifecycle acceptance'
+        record['startup_envelope_budget'] = startup_envelope_budget_for_suite(args.suite)
     if args.suite == 'policy-startup-trace':
         record['native_acceptance'] = False
         record['qualification_scope'] = 'diagnostic completeness only; original operation outcome and lifecycle acceptance separate'
