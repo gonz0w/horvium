@@ -1912,3 +1912,19 @@ No runtime, source limit, performance guard, resource validator, workload budget
 service or dependency changes. Historical receipts and unresolved lifecycle,
 manual browser, hardware/commercial and release gates remain authoritative;
 runtime writes stay disabled.
+
+## Host dashboard preflight binding prerequisite
+
+The [inactive host module](../testing/dashboards/host-preflight-binding.md) compares
+original guest artifact/compiler/release observations with actual independently
+reverified source/review/compiler/archive/build files and the original owned
+loopback-command supervisor. Full signed-tree archive/blob/mode coverage, strict
+standalone output, exact command identity and original completion ordering are
+required; altered or incomplete records fail closed. Synthetic guest records
+exercise portable refusal behavior only. Actual host candidate revalidation and
+an unexecuted FreeBSD cross-build do not establish transferred/executed identity,
+native controls, performance or guest/host teardown. Those bindings and trusted
+runner assembly remain required before fresh both-release execution. No runtime,
+resource guard, native fixture, validator, service, dependency or workflow changes;
+historical receipts, lifecycle uncertainty and manual/browser/hardware/commercial/
+release gates remain authoritative. Runtime writes stay disabled.
