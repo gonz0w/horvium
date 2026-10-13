@@ -288,6 +288,9 @@
   observed CPU/wall/RSS/warm-up and complete phases; native execution stays gated
   pending independent candidate/control/teardown bindings.
 
+- [Disposable native storage cleanup](testing/dashboards/native-storage-cleanup.md):
+  original pool/device ownership, bounded successful absence checks, and scoped
+  final-callback observations; actual native and complete teardown acceptance remain.
 - [Host dashboard preflight binding](testing/dashboards/host-preflight-binding.md):
   inactive source/archive/artifact and original owned-command comparison; actual
   transfer/launch, native fixture/control and complete teardown remain gated.

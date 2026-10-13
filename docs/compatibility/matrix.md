@@ -1928,3 +1928,18 @@ runner assembly remain required before fresh both-release execution. No runtime,
 resource guard, native fixture, validator, service, dependency or workflow changes;
 historical receipts, lifecycle uncertainty and manual/browser/hardware/commercial/
 release gates remain authoritative. Runtime writes stay disabled.
+
+## Disposable native storage cleanup prerequisite (2026-10-12)
+
+The [test-only fixture](../testing/dashboards/native-storage-cleanup.md) now
+rechecks its original file-backed md association and pool GUID before destructive
+cleanup, then requires bounded successful full listings to prove absence. Failed
+inspection is uncertainty, never absence; no force, alternate storage action or
+operator storage is used. The final cleanup callback may emit a sanitized scoped
+storage observation after actual removal and preserved property checks. It cannot
+establish process descendants/socket, whole guest or host teardown, resource or
+release acceptance. Portable synthetic command tests and unexecuted cross-builds
+qualify test-controller implementation only. Native both-release behavior and
+complete independently bound execution/cleanup receipts remain pending. Runtime,
+legacy/strict validators, performance execution guards and historical receipts
+remain unchanged; writes remain disabled.

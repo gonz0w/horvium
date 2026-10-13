@@ -71,25 +71,36 @@ func nativeStorageFixture(t *testing.T) ownedFixture {
 		t.Fatal("generated md identity invalid; discard guest")
 	}
 	created := false
+	var poolGUID string
 	t.Cleanup(func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer cancel()
-		clean := func(path string, args ...string) error { return exec.CommandContext(ctx, path, args...).Run() }
-		if created {
-			if clean("/sbin/zpool", "destroy", pool) != nil {
-				t.Error("owned pool cleanup failed; discard guest")
-				return
+		run := func(path string, args ...string) ([]byte, error) {
+			cmd := exec.CommandContext(ctx, path, args...)
+			cmd.Env = []string{"LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
+			cmd.WaitDelay = time.Second
+			var output dashboardCleanupOutput
+			cmd.Stdout = &output
+			err := cmd.Run()
+			if output.overflow {
+				return nil, fmt.Errorf("cleanup output exceeds bound")
 			}
-			if clean("/sbin/zpool", "list", "-H", pool) == nil {
-				t.Error("owned pool remains")
-			}
+			return output.data, err
 		}
-		if clean("/sbin/mdconfig", "-d", "-u", strings.TrimPrefix(unit, "md")) != nil {
-			t.Error("owned md cleanup failed; discard guest")
+		receipt, err := dashboardCleanupStorage(dashboardCleanupIdentity{pool, unit, file, poolGUID, created}, run)
+		if err != nil {
+			t.Error("owned storage cleanup uncertain; discard guest")
 			return
 		}
-		if clean("/sbin/mdconfig", "-l", "-n", "-f", file) == nil {
-			t.Error("owned md remains")
+		// Property callbacks and later-registered pair cleanup have already run.
+		// This observation proves only this fixture's storage, not whole guest cleanup.
+		if !t.Failed() && created {
+			data, err := json.Marshal(receipt)
+			if err != nil {
+				t.Error("storage cleanup encoding")
+				return
+			}
+			t.Log("NATIVE_STORAGE_CLEANUP " + string(data))
 		}
 	})
 	if strings.TrimSpace(must("/sbin/mdconfig", "-l", "-n", "-f", file)) != strings.TrimPrefix(unit, "md") {
@@ -98,6 +109,7 @@ func nativeStorageFixture(t *testing.T) ownedFixture {
 	// Only a newly allocated file-backed md device; no force or operator disk args.
 	must("/sbin/zpool", "create", "-o", "cachefile=none", "-m", "none", pool, "/dev/"+unit)
 	created = true
+	poolGUID = strings.TrimSpace(must("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid", pool))
 	must("/sbin/zfs", "create", "-o", "mountpoint=none", pool+"/data")
 	before := must("/sbin/zfs", "get", "-H", "-p", "-o", "property,value", "mountpoint,readonly,compression", pool+"/data")
 	t.Cleanup(func() {
@@ -108,6 +120,9 @@ func nativeStorageFixture(t *testing.T) ownedFixture {
 	values := strings.Fields(must("/sbin/zpool", "get", "-H", "-p", "-o", "value", "guid,size", pool))
 	if len(values) != 2 {
 		t.Fatal("independent pool properties")
+	}
+	if values[0] != poolGUID {
+		t.Fatal("original pool GUID changed")
 	}
 	size, e := strconv.ParseUint(values[1], 10, 64)
 	if e != nil {

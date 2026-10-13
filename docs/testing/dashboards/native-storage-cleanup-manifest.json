@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "date": "2026-10-12",
+  "status": "portable fixture component awaiting maintainer review",
+  "issue": "https://github.com/gonz0w/horvium/issues/376",
+  "requirements": [
+    "DASH-REQ-006",
+    "DASH-PERF-001"
+  ],
+  "source_commit": "a8fc1058d502d41689c2992e1a2a007921f965f8",
+  "base_commit": "358dd76b9621bb242527ede296f51f3ec3708dd5",
+  "actual_pr_title": "test(dashboards): verify disposable storage cleanup",
+  "signatures_and_author_DCO_verified": true,
+  "portable_review": {
+    "command": "make review",
+    "qualified": true,
+    "required_checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "tooling_tests": 294,
+    "behavioral_parents": 5,
+    "synthetic_command_inputs": true,
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium"
+      ],
+      "native_review_required": true
+    },
+    "deep_executed": true,
+    "race_packages": [
+      "./cmd/horvium"
+    ],
+    "fuzz_target_count": 0,
+    "fuzz_limit": "affected command package has no compiler-listed fuzz targets",
+    "checks_log_sha256": "1da37d28aa739fcc4897ba37723056113bb3de43729e7c2ff4dd7a7b9ad24c19",
+    "deep_log_sha256": "e9f05763c7ed3e70b47ba154235f8464ca477427c27f7b1b806c724dada1a34a",
+    "supervisors_successful_complete_clean": true
+  },
+  "cross_build": {
+    "source_commit": "a8fc1058d502d41689c2992e1a2a007921f965f8",
+    "base_commit": "358dd76b9621bb242527ede296f51f3ec3708dd5",
+    "artifact_sha256": "75fb8cf5c919e4950fb84c261e5ae5bf367671b7212bf3bd35f8c2403fab8548",
+    "artifact_size": 19713125,
+    "native_executed": false,
+    "removed": true,
+    "go_version": "go1.27.1",
+    "target": "freebsd/amd64/v1",
+    "cgo_enabled": false,
+    "supervisor_complete_clean": true
+  },
+  "failure_provenance": {
+    "initial_missing_coordinator_red_retained": true,
+    "aborted_creation_test_input_corrected": "initial synthetic fixture supplied a GUID with Created=false; corrected to absent GUID",
+    "native_failures_or_skips_reclassified": false
+  },
+  "preservation": {
+    "historical_manifests_byte_identical": 146,
+    "owned_records_stopped_verified": 278,
+    "runtime_and_execution_guards_unchanged": true,
+    "legacy_and_strict_validators_unchanged": true
+  },
+  "acceptance": {
+    "portable_storage_cleanup_component": true,
+    "native_storage_cleanup": false,
+    "whole_guest_cleanup": false,
+    "process_descendant_and_socket_cleanup": false,
+    "host_teardown_binding": false,
+    "dashboard_resource_acceptance": false,
+    "both_release_execution": false,
+    "runtime_write_enablement": false,
+    "broader_delivery_or_release": false
+  },
+  "remaining": [
+    "original fixture/control and complete-suite binding",
+    "pair descendants and socket cleanup",
+    "trusted transfer/launch and host teardown assembly",
+    "fresh reviewed sequential both-release resource execution",
+    "browser/manual accessibility and broader lifecycle/release gates"
+  ]
+}
