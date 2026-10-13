@@ -1987,3 +1987,5 @@ original-timing native-small case reproduced 600 first table failures / 400 data
 successes. Exact mismatch cause remains unknown. Reduced sequential responses and
 a failed partial parent do not qualify resources; 14.5 was not executed. No runtime behavior, support
 claim, dependency or historical receipt changes. Issue 382 remains open.
+
+The [original table-check diagnosis](../research/dashboards/table-location-diagnosis.md) preserves the existing oracle while separating fixed failure checks; portable maximum-page profiles remain research, with no new native qualification claim.

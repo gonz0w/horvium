@@ -40,8 +40,9 @@ func (s generatedSource) Collect(context.Context, string) (inventory.Snapshot, e
 // ten concurrent readers and 1,000 pages per fixture. It is deliberately not
 // the TDD's warm-up/idle/combined-helper RSS acceptance procedure.
 func BenchmarkAuthenticatedDatasetPages(b *testing.B) {
-	for _, count := range []int{100, 10000} {
-		b.Run(strconv.Itoa(count), func(b *testing.B) {
+	for _, fixture := range []struct{ count, limit int }{{100, 100}, {100, 500}, {10000, 100}, {10000, 500}} {
+		count, limit := fixture.count, fixture.limit
+		b.Run(fmt.Sprintf("%d/limit-%d", count, limit), func(b *testing.B) {
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
 			cfg := observation.DefaultConfig()
@@ -83,7 +84,7 @@ func BenchmarkAuthenticatedDatasetPages(b *testing.B) {
 					go func() {
 						defer wg.Done()
 						for i := worker * 100; i < (worker+1)*100; i++ {
-							r := req("GET", fmt.Sprintf("/storage/datasets?offset=%d&limit=100", (i*100)%count), "")
+							r := req("GET", fmt.Sprintf("/storage/datasets?offset=%d&limit=%d", (i*limit)%count, limit), "")
 							r.AddCookie(cookie)
 							w := httptest.NewRecorder()
 							start := time.Now()

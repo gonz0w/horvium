@@ -313,3 +313,5 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 
 - [Focused native dashboard diagnosis](research/dashboards/native-focused-diagnostics.md):
   bounded original/cache comparison, failure classes and explicit research limits.
+
+- [Original table-check and maximum-page diagnosis](research/dashboards/table-location-diagnosis.md): bounded research under #382, preserving acceptance and historical evidence.
