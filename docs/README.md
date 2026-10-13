@@ -3,6 +3,9 @@
 [Dashboard qualification runner integration](testing/dashboards/runner-integration.md)
 connects original candidate, guest controls and verified teardown in one outcome;
 actual both-release resource and browser acceptance remain separate.
+[Assembled native resource qualification](testing/dashboards/native-resource-qualification.md)
+retains the failed 15.1 candidate, explicit 14.5 skip, verified host teardown and
+remaining focused diagnostic work. Both-release acceptance remains open.
 
 ## Product and design
 

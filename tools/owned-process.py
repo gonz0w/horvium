@@ -112,7 +112,11 @@ def native_cleanup(directory, interrupted):
     result = directory / 'result.json'
     record = json.loads(result.read_text()) if result.exists() else {}
     if interrupted:
-        record.update(qualified=False, failure='supervisor interrupted the run or worker failed')
+        record['qualified'] = False
+        # The worker may have completed its own failure/cleanup record before
+        # exiting nonzero. Preserve that original diagnostic during fallback.
+        if not isinstance(record.get('failure'), str) or not record['failure']:
+            record['failure'] = 'supervisor interrupted the run or worker failed'
     if device_error:
         record.update(qualified=False, cleanup_failure=device_error)
     record['supervisor_fixture_cleanup'] = True
