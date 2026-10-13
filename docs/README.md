@@ -3,6 +3,8 @@
 [Dashboard qualification runner integration](testing/dashboards/runner-integration.md)
 connects original candidate, guest controls and verified teardown in one outcome;
 actual both-release resource and browser acceptance remain separate.
+[Assembled native resource qualification](testing/dashboards/native-resource-qualification.md)
+owns the sequential two-release execution and source-bound evidence outcome.
 
 ## Product and design
 

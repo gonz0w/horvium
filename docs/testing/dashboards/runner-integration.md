@@ -1,6 +1,6 @@
 # Dashboard qualification runner integration
 
-Date: 2026-10-13. Status: implementation awaiting maintainer review.
+Date: 2026-10-13. Status: implementation reviewed and merged in PR 381.
 Owner: [issue 380](https://github.com/gonz0w/horvium/issues/380), under
 [Capacity 290](https://github.com/gonz0w/horvium/issues/290), with
 [Overview 289](https://github.com/gonz0w/horvium/issues/289) and
@@ -96,9 +96,9 @@ one release's `qualified` resource receipt. Broader acceptance remains separate.
 
 ## Qualification handoff after integration review
 
-Do not run performance from this unreviewed integration branch. After maintainer
-review/merge, prepare a clean signed candidate and review with actual source/base/
-title. The base must be an ancestor with a nonempty signed contributor range.
+The integration is reviewed and merged. The
+[native qualification outcome](native-resource-qualification.md) prepares a clean
+signed candidate and reviews its actual source/base/title before execution. The base must be an ancestor with a nonempty signed contributor range.
 `PR_TITLE` / `BASE_REF` are existing review inputs, not runtime configuration.
 For that candidate, execute sequentially:
 

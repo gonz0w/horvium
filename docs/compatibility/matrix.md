@@ -8,7 +8,9 @@ connects clean signed candidate preparation, owned transfer/launch, independent
 original fixture/control files and full guest/host teardown. The performance main
 entry now requires that complete original context; generic shell/transcript paths
 remain denied. Portable/synthetic tests and cross-builds are implementation evidence
-only. This candidate has not executed either native resource suite, and new reaper,
+only. The [assembled native qualification](../testing/dashboards/native-resource-qualification.md)
+prepares actual sequential both-release execution; neither run has completed for
+that candidate at preparation. New reaper,
 cleanup, resource/browser and broader acceptance remain open. Runtime writes stay
 disabled; all historical manifests retain their source boundaries.
 
