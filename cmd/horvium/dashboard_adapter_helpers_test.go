@@ -24,12 +24,13 @@ type dashboardFixtureReceipt struct {
 	Origin          string `json:"origin"`
 }
 type dashboardPreparedFixture struct {
-	mode      string
-	count     int
-	large     bool
-	fixture   dashboardFixtureReceipt
-	plan      []dashboardRequest
-	predicate dashboardPredicate
+	mode                 string
+	count                int
+	large                bool
+	fixture              dashboardFixtureReceipt
+	plan                 []dashboardRequest
+	predicate            dashboardPredicate
+	nativeGUIDAssertions int
 }
 
 func dashboardCanonicalOriginal(s *inventory.Snapshot) {
@@ -109,6 +110,7 @@ func newDashboardPreparedFixture(mode string, original inventory.Snapshot, owned
 	} else {
 		return invalid()
 	}
+	guidAssertions := 0
 	if native {
 		names, guids := map[string]bool{}, map[string]bool{}
 		datasets := make(map[string]string, count)
@@ -121,6 +123,7 @@ func newDashboardPreparedFixture(mode string, original inventory.Snapshot, owned
 			}
 			names[witness.Name] = true
 			guids[witness.GUID] = true
+			guidAssertions++
 		}
 	} else if mode == "projection-10000" {
 		for i, row := range s.Datasets.Data {
@@ -156,7 +159,7 @@ func newDashboardPreparedFixture(mode string, original inventory.Snapshot, owned
 		origin = "native-original"
 	}
 	return &dashboardPreparedFixture{mode: mode, count: count, large: large,
-		fixture: dashboardFixtureReceipt{count, len(owned), hex.EncodeToString(hash[:]), origin}, plan: plan, predicate: predicate}, nil
+		fixture: dashboardFixtureReceipt{count, len(owned), hex.EncodeToString(hash[:]), origin}, plan: plan, predicate: predicate, nativeGUIDAssertions: guidAssertions}, nil
 }
 
 type dashboardWireQuantiles struct {
