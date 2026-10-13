@@ -111,3 +111,17 @@ fresh resource execution remain pending. Overview/Capacity, M2 lifecycle #305/#1
 manual accessibility, hardware/commercial and release gates stay open. Runtime
 writes remain disabled. Rollback restores the three fixture/adapter files and
 removes the two ledger/test files without changing product behavior or history.
+
+## Recorded source candidate
+
+[Receipt](control-observations-manifest.json): signed/DCO source
+`52e739075504a962c4c37d15141eab768d9bf02c`, base `7082bbd97522db23d52a4e2bc821da3efc42f150`, title
+`test(dashboards): bind original fixture and control observations`. Required checks passed with 294 tooling
+tests, ordinary Go tests and seven control behavioral parents. Fresh proportional
+deep review ran the command-package race check; that package has no listed fuzz
+targets. The FreeBSD/amd64/v1, cgo-free cross-build passed, was not executed and
+was removed. All 147 historical manifests remain byte-identical; owned process
+teardown was verified. No actual native control execution or broader acceptance is claimed.
+
+A signed documentation-only followup runs the current-head baseline review and
+may reuse only this completed exact-input deep evidence.

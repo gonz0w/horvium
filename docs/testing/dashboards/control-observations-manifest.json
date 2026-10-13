@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "date": "2026-10-12",
+  "status": "portable control component awaiting maintainer review",
+  "issue": "https://github.com/gonz0w/horvium/issues/378",
+  "requirements": [
+    "DASH-REQ-006",
+    "DASH-PERF-001"
+  ],
+  "source_commit": "52e739075504a962c4c37d15141eab768d9bf02c",
+  "base_commit": "7082bbd97522db23d52a4e2bc821da3efc42f150",
+  "actual_pr_title": "test(dashboards): bind original fixture and control observations",
+  "signatures_and_author_DCO_verified": true,
+  "portable_review": {
+    "command": "make review",
+    "qualified": true,
+    "required_checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "tooling_tests": 294,
+    "behavioral_parents": 7,
+    "synthetic_controller_inputs": true,
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium"
+      ],
+      "native_review_required": true
+    },
+    "deep_executed": true,
+    "race_packages": [
+      "./cmd/horvium"
+    ],
+    "fuzz_target_count": 0,
+    "fuzz_limit": "affected command package has no compiler-listed fuzz targets",
+    "checks_log_sha256": "b36a0ad73c403a6c228b38ab5c44600a56e78dc4496b4d5e8c2ea24c373b583d",
+    "deep_log_sha256": "774a2d729a62622189a48ce0e7adf29430ac75d1816a850a6a54a352726e3445",
+    "supervisors_successful_complete_clean": true
+  },
+  "cross_build": {
+    "source_commit": "52e739075504a962c4c37d15141eab768d9bf02c",
+    "base_commit": "7082bbd97522db23d52a4e2bc821da3efc42f150",
+    "artifact_sha256": "f8e2e3ee52ea7f9cea8674ac9fb7093f4e0a20e0f42000ef84ec3b79f45665bf",
+    "artifact_size": 19787645,
+    "native_executed": false,
+    "removed": true,
+    "go_version": "go1.27.1",
+    "target": "freebsd/amd64/v1",
+    "cgo_enabled": false,
+    "supervisor_complete_clean": true
+  },
+  "failure_provenance": {
+    "initial_missing_ledger_red_retained": true,
+    "negative_test_input_corrected": "early negative test reused an invalid ledger; corrected to require permanent failure and independent fixtures",
+    "native_failures_or_skips_reclassified": false
+  },
+  "preservation": {
+    "historical_manifests_byte_identical": 147,
+    "owned_records_stopped_verified": 282,
+    "runtime_and_execution_guards_unchanged": true,
+    "legacy_and_strict_validators_unchanged": true
+  },
+  "acceptance": {
+    "portable_control_observation_component": true,
+    "native_control_execution": false,
+    "whole_guest_cleanup": false,
+    "process_descendant_and_socket_cleanup": false,
+    "host_teardown_binding": false,
+    "dashboard_resource_acceptance": false,
+    "both_release_execution": false,
+    "runtime_write_enablement": false,
+    "broader_delivery_or_release": false
+  },
+  "remaining": [
+    "original fixture/control and complete-suite binding",
+    "pair descendants and socket cleanup",
+    "trusted transfer/launch and host teardown assembly",
+    "fresh reviewed sequential both-release resource execution",
+    "browser/manual accessibility and broader lifecycle/release gates"
+  ]
+}
