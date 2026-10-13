@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "date": "2026-10-12",
+  "status": "development prerequisite awaiting maintainer review",
+  "issue": "https://github.com/gonz0w/horvium/issues/372",
+  "requirements": [
+    "DASH-REQ-006",
+    "DASH-PERF-001"
+  ],
+  "source_commit": "820bce1ee64e3798eac291996114a4f5aec8d58a",
+  "base_commit": "58992db46134a23e5ac7c3c1357ca0d6149a3de9",
+  "actual_pr_title": "test(dashboards): observe guest artifacts before qualification",
+  "signatures_and_author_DCO_verified": true,
+  "portable_review": {
+    "command": "make review",
+    "qualified": true,
+    "required_checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "tooling_tests": 284,
+    "behavioral_parents": 8,
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium"
+      ],
+      "native_review_required": true
+    },
+    "deep_executed": true,
+    "result": {
+      "fuzz_targets": [],
+      "race_packages": [
+        "./cmd/horvium"
+      ]
+    },
+    "checks_log_sha256": "133a51b24fc1b0b1070eaa364b1d16d15b17b5b04e9b20f4089968b7b2ec138f",
+    "deep_log_sha256": "bff7b62ea7d2808a86383e7382f91364a24ca7f57737da9576ebc059b035b2ea",
+    "supervisors_successful_complete_clean": true
+  },
+  "regressions": {
+    "initial_missing_observer_red_retained": true,
+    "post_review_appended_metadata_red_retained": true,
+    "earlier_qualified_source": "2687d77fa568103585d1c9065b1db3451bb94800",
+    "earlier_source_has_no_native_acceptance": true,
+    "corrected_section_read_bound_and_final_rehash": true
+  },
+  "freebsd_cross_build": {
+    "executed": false,
+    "candidate": {
+      "source_commit": "820bce1ee64e3798eac291996114a4f5aec8d58a",
+      "base_commit": "58992db46134a23e5ac7c3c1357ca0d6149a3de9",
+      "pr_title": "test(dashboards): observe guest artifacts before qualification",
+      "go_version": "go1.27.1",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "archive_sha256": "dcf29bf876f4900fd6d10513206283a896a47fe4ddb1a76f70404b61e7aee6f2",
+      "review_verified": true,
+      "artifacts": {
+        "15.1": {
+          "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "fixture": "10cb71a7302cd96256647c54ab75fa648e7ef8d455a58d078f3dc67b5ff1358f"
+        },
+        "14.5": {
+          "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "fixture": "10cb71a7302cd96256647c54ab75fa648e7ef8d455a58d078f3dc67b5ff1358f"
+        }
+      }
+    },
+    "artifacts": [
+      {
+        "role": "management",
+        "sha256": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+        "bytes": 15727025,
+        "target_metadata_verified": true
+      },
+      {
+        "role": "helper",
+        "sha256": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "bytes": 13364650,
+        "target_metadata_verified": true
+      },
+      {
+        "role": "fixture",
+        "sha256": "10cb71a7302cd96256647c54ab75fa648e7ef8d455a58d078f3dc67b5ff1358f",
+        "bytes": 19674574,
+        "target_metadata_verified": true
+      }
+    ],
+    "original_archive": true,
+    "module_cache_verified_before_after": true,
+    "owned_commands": 6,
+    "successful_complete_clean": true,
+    "artifacts_removed": true,
+    "isolated_source_removed": true
+  },
+  "actual_host_file_inspection": {
+    "artifacts_and_compiler_match": true,
+    "original_signed_helper_source": "820bce1ee64e3798eac291996114a4f5aec8d58a",
+    "log_sha256": "64ca6e5b96e568e193f59df73155cff043de298ba036db75a4acc1994acfbcec",
+    "owned_commands": 2,
+    "successful_complete_clean": true,
+    "temporary_inspector_removed": true,
+    "host_surrogate_only": true,
+    "fixture_file_identity_argument_only": true,
+    "guest_controller_execution": false,
+    "native_execution": false
+  },
+  "preservation": {
+    "historical_manifests_byte_identical": 144,
+    "runtime_and_existing_native_resource_controls_unchanged": true,
+    "runner_execution_guards_and_validators_unchanged": true,
+    "owned_records_stopped_verified": 264
+  },
+  "acceptance": {
+    "portable_observer_component": true,
+    "native_preflight_execution": false,
+    "trusted_host_transfer_and_launch_binding": false,
+    "original_fixture_control_and_teardown_binding": false,
+    "native_resource_performance": false,
+    "dashboard_delivery": false,
+    "runtime_writes": false,
+    "browser_manual_accessibility": false,
+    "hardware_commercial_scale": false
+  },
+  "remaining": [
+    "trusted host comparison of separate original preflight and actual launches",
+    "independent original fixture expectations and native control completions",
+    "actual guest and host owned supervisor teardown",
+    "fresh sequential 15.1 and 14.5 execution of one reviewed assembled candidate",
+    "broader native, integration, browser/manual, hardware/commercial and release gates"
+  ]
+}

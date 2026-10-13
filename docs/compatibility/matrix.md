@@ -1896,3 +1896,19 @@ release compatibility. Native execution, original fixture/control/guest/host
 teardown and candidate-to-executed-artifact binding remain gated; historical
 receipts retain their original scope. No runtime, workflow, service or operator
 storage changes; broader acceptance and runtime writes remain unchanged.
+
+## Dashboard guest artifact preflight prerequisite
+
+The [test-only observer](../testing/dashboards/guest-artifact-observations.md)
+reads the three fixed original executables and build metadata through stable
+bounded descriptors, binds the controller file identity, and refuses target/compiler
+or byte mutation. A separate inactive FreeBSD preflight collects running
+kernel/installed userland, ZFS and physical memory facts using bounded fixed base commands.
+Portable file/parser tests and an unexecuted cross-build do not qualify native
+behavior, executed process identity, trusted host provenance or performance.
+The host's trusted candidate comparison, actual launches, original fixture/control
+and complete guest/host teardown binding remain required before both-release execution.
+No runtime, source limit, performance guard, resource validator, workload budget,
+service or dependency changes. Historical receipts and unresolved lifecycle,
+manual browser, hardware/commercial and release gates remain authoritative;
+runtime writes stay disabled.

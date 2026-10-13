@@ -288,6 +288,9 @@
   observed CPU/wall/RSS/warm-up and complete phases; native execution stays gated
   pending independent candidate/control/teardown bindings.
 
+- [Dashboard guest artifact observations](testing/dashboards/guest-artifact-observations.md):
+  test-only stable opened executable hashes/compiler and read-only guest environment
+  preflight; independent host/launch/control/teardown binding remains gated.
 - [Reviewed dashboard host candidate build](testing/dashboards/host-candidate-build.md):
   inactive source/review/compiler/archive and controlled cross-build binding;
   native execution and full control/teardown acceptance remain gated.

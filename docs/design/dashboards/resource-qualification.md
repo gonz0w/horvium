@@ -62,7 +62,11 @@ until full independent host receipts are reviewed. The
 retains actual resource/procedure observations without opening that execution gate.
 The [host candidate builder](../../testing/dashboards/host-candidate-build.md)
 binds source/review/compiler and archive-isolated artifacts while leaving
-transferred/executed artifact, control and guest/host teardown binding gated. Leave
+transferred/executed artifact, control and guest/host teardown binding gated. The
+[test-only guest artifact observer](../../testing/dashboards/guest-artifact-observations.md)
+adds independently read artifact/compiler and running-kernel/userland environment facts
+in a separate inactive preflight; trusted host comparison and actual launch,
+control and teardown binding remain required. Leave
 runtime, source model limits, collectors and file-service separation unchanged.
 Then select one clean signed assembled candidate, actual PR title and pinned Go
 compiler/artifacts for native execution. A failed candidate is retained with its
