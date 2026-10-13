@@ -285,3 +285,30 @@ func TestDashboardFactOutputBoundAndMissingObserver(t *testing.T) {
 		}
 	}
 }
+
+func TestDashboardArtifactDecoderCannotReadGrowth(t *testing.T) {
+	root, exe := dashboardArtifactFiles(t)
+	calls := 0
+	decode := func(r io.ReaderAt) (*debug.BuildInfo, error) {
+		calls++
+		if calls == 1 {
+			path := filepath.Join(root.Name(), "horvium")
+			original, e := os.ReadFile(path)
+			if e != nil {
+				t.Fatal(e)
+			}
+			if e = os.WriteFile(path, append(original, []byte("growth")...), 0700); e != nil {
+				t.Fatal(e)
+			}
+			var b [1]byte
+			n, e := r.ReadAt(b[:], int64(len(original)))
+			if n != 0 || e != io.EOF {
+				t.Error("decoder read beyond the originally bounded file")
+			}
+		}
+		return dashboardBuildInfoFixture(), nil
+	}
+	if _, e := dashboardObserveArtifacts(root, exe, decode); e == nil {
+		t.Fatal("grown original file accepted")
+	}
+}

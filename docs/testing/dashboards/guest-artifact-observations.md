@@ -24,7 +24,8 @@ Each original leaf must be a nonempty regular executable, at most 128 MiB, with
 no group/world write permission. Missing files, symlinks, directories, oversized
 files and ordinary replacement races deny the observation. The observer opens
 and hashes the entire original set before decoding metadata. `debug/buildinfo.Read`
-reads those same descriptors; all three require FreeBSD/amd64/v1, cgo disabled
+reads those same descriptors through a section reader limited to their original
+sizes; appended bytes cannot extend the metadata decoder's input. all three require FreeBSD/amd64/v1, cgo disabled
 and one observed release compiler version. That version is an observation;
 matching the host's pinned compiler is the subsequent trusted caller's job.
 

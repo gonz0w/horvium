@@ -108,7 +108,7 @@ func dashboardObserveArtifacts(root *os.Root, executable string, decode func(io.
 	result.Artifacts = map[string]string{}
 	for _, role := range dashboardArtifactRoles {
 		a := opened[role]
-		b, e := decode(a.file)
+		b, e := decode(io.NewSectionReader(a.file, 0, a.info.Size()))
 		if e != nil {
 			return result, errors.New("unreadable artifact build metadata")
 		}
@@ -124,9 +124,9 @@ func dashboardObserveArtifacts(root *os.Root, executable string, decode func(io.
 	}
 	for _, role := range dashboardArtifactRoles {
 		a := opened[role]
+		hash, he := dashboardArtifactDigest(a.file, a.info.Size())
 		after, e := a.file.Stat()
 		leaf, le := root.Lstat(dashboardArtifactNames[role])
-		hash, he := dashboardArtifactDigest(a.file, a.info.Size())
 		if e != nil || le != nil || he != nil || !dashboardArtifactUnchanged(a.info, after) || !dashboardArtifactUnchanged(a.info, leaf) || hash != a.hash {
 			return result, errors.New("original artifact changed during observation")
 		}
