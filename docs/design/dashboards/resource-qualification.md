@@ -59,7 +59,10 @@ binds original inputs and raw observations. The [native fixture bindings](../../
 connect the four test-only modes while gating performance execution/qualification
 until full independent host receipts are reviewed. The
 [per-mode resource record slice](../../testing/dashboards/resource-measurement-records.md)
-retains actual resource/procedure observations without opening that execution gate. Leave
+retains actual resource/procedure observations without opening that execution gate.
+The [host candidate builder](../../testing/dashboards/host-candidate-build.md)
+binds source/review/compiler and archive-isolated artifacts while leaving
+transferred/executed artifact, control and guest/host teardown binding gated. Leave
 runtime, source model limits, collectors and file-service separation unchanged.
 Then select one clean signed assembled candidate, actual PR title and pinned Go
 compiler/artifacts for native execution. A failed candidate is retained with its

@@ -1884,3 +1884,15 @@ skipped. Final original journal is active generation 7. This does not reproduce
 or explain the earlier deadline failure, exercise native expired return contexts
 or establish durable idle retirement or full lifecycle acceptance. No second
 attempt or release followed; see the candidate's source-bound receipt.
+
+## Reviewed dashboard host candidate preparation
+
+The [host candidate builder](../testing/dashboards/host-candidate-build.md) binds
+clean signed/DCO source, actual local review and the existing pinned compiler to
+archive-isolated FreeBSD/amd64/v1 management, projection-helper and command-fixture
+artifacts. Portable contract tests and unexecuted cross-builds establish this
+development prerequisite only. Shared hashes for 15.1/14.5 do not establish either
+release compatibility. Native execution, original fixture/control/guest/host
+teardown and candidate-to-executed-artifact binding remain gated; historical
+receipts retain their original scope. No runtime, workflow, service or operator
+storage changes; broader acceptance and runtime writes remain unchanged.
