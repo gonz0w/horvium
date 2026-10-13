@@ -287,3 +287,7 @@
 - [Per-mode dashboard resource measurement records](testing/dashboards/resource-measurement-records.md):
   observed CPU/wall/RSS/warm-up and complete phases; native execution stays gated
   pending independent candidate/control/teardown bindings.
+
+- [Reviewed dashboard host candidate build](testing/dashboards/host-candidate-build.md):
+  inactive source/review/compiler/archive and controlled cross-build binding;
+  native execution and full control/teardown acceptance remain gated.
