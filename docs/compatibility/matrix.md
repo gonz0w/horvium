@@ -1975,3 +1975,12 @@ Existing resource budgets, native recovery controls, legacy/strict validators,
 performance execution guards and historical receipts remain unchanged. Both-release
 native resources and full independent runner/cleanup binding remain pending;
 runtime writes remain disabled and broader gates remain open.
+
+## Focused dashboard failure diagnosis (2026-10-13)
+
+The [bounded research probe](../research/dashboards/native-focused-diagnostics.md)
+adds fixed non-sensitive failure classifications and a reduced test-only native
+JSON/HTML comparison. Original predicates and resource budgets remain unchanged.
+Portable regression and FreeBSD cross-compilation are distinct from execution;
+preparation does not claim native qualification. No runtime behavior, support
+claim, dependency or historical receipt changes. Issue 382 remains open.

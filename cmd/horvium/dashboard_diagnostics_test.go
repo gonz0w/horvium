@@ -1,0 +1,117 @@
+// SPDX-License-Identifier: BSD-3-Clause
+package main
+
+import (
+	"errors"
+	"github.com/gonz0w/horvium/internal/inventory"
+	"net/http"
+	"net/http/httptest"
+	"strings"
+	"testing"
+)
+
+func TestDashboardFailureDiagnosticsRemainBoundedAndFailClosed(t *testing.T) {
+	plan, err := dashboardPlan(100)
+	if err != nil {
+		t.Fatal(err)
+	}
+	cases := []struct {
+		name      string
+		status    int
+		body      string
+		predicate error
+		want      string
+	}{
+		{"original table", 200, "fixture", errors.New("wrong original dashboard table"), "failure:table"},
+		{"original comparisons", 200, "fixture", errors.New("wrong original dashboard comparisons"), "failure:comparisons"},
+		{"freshness", 200, "fixture", errors.New("wrong storage query or freshness metadata"), "failure:storage-metadata"},
+		{"unknown sensitive error", 200, "fixture", errors.New("session=private-token inventory=private-name"), "failure:predicate"},
+		{"denied status", 403, "fixture", nil, "failure:status"},
+		{"incomplete document", 200, "fixture", errors.New("malformed or unbounded dashboard document"), "failure:document"},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(c.status); _, _ = w.Write([]byte(c.body)) }))
+			defer server.Close()
+			samples, err := dashboardLoad(server.Client(), server.URL, 100, plan, "initial", func(dashboardRequest, int, []byte) error { return c.predicate })
+			if err == nil || len(samples) != 1000 {
+				t.Fatal("failed workload accepted or incomplete diagnostic retention")
+			}
+			for _, sample := range samples {
+				if sample.Outcome != "failure" || sample.Predicate != c.want || strings.Contains(sample.Predicate, "private") {
+					t.Fatalf("unsafe/missing classification: %q", sample.Predicate)
+				}
+			}
+			if receipt, err := dashboardBuildPhaseReceipt(samples, "initial", false); err == nil || receipt != nil {
+				t.Fatal("failure diagnostic accepted as successful receipt")
+			}
+		})
+	}
+}
+
+func TestDashboardFailureDiagnosticsPreserveSuccessAndSafeExpiry(t *testing.T) {
+	request := dashboardRequest{Case: "overview"}
+	for _, c := range []struct {
+		status                int
+		phase, outcome, label string
+	}{{200, "initial", "success", "original-inventory"}, {409, "replacement", "expiry", "safe-expiry"}, {409, "initial", "failure", "failure:status"}} {
+		outcome, label := dashboardClassifyResponse(request, c.phase, c.status, []byte("complete"), nil, nil, func(dashboardRequest, int, []byte) error { return nil })
+		if outcome != c.outcome || label != c.label {
+			t.Fatal("changed acceptance outcome", outcome, label)
+		}
+	}
+	for _, c := range []struct {
+		transport, body error
+		want            string
+	}{{errors.New("secret transport"), nil, "failure:transport"}, {nil, errors.New("secret body"), "failure:body"}} {
+		outcome, label := dashboardClassifyResponse(request, "initial", 200, nil, c.transport, c.body, func(dashboardRequest, int, []byte) error {
+			t.Fatal("predicate invoked for incomplete response")
+			return nil
+		})
+		if outcome != "failure" || label != c.want {
+			t.Fatal("unsafe failure")
+		}
+	}
+}
+
+func TestDashboardDiagnosticOracleKeepsOriginalPoolValues(t *testing.T) {
+	original := performanceSnapshot(100, 0)
+	plan, err := dashboardPlan(100)
+	if err != nil {
+		t.Fatal(err)
+	}
+	predicate, err := newDashboardHTMLPredicate(original, plan)
+	if err != nil {
+		t.Fatal(err)
+	}
+	handler, _, cookie := dashboardHTMLFixture(t, original)
+	for _, request := range plan[:5] {
+		response := dashboardHTMLRequest(handler, cookie, "GET", request.Path, "")
+		if err := predicate(request, response.Code, response.Body.Bytes()); err != nil {
+			t.Fatal("unchanged original fixture rejected", request.Case, err)
+		}
+	}
+	changed, err := inventory.CloneBounded(original, inventory.DefaultLimits())
+	if err != nil {
+		t.Fatal(err)
+	}
+	changed.Pools.Data[0].Allocated++
+	changed.Pools.Data[0].Free--
+	other, _, otherCookie := dashboardHTMLFixture(t, changed)
+	for _, request := range plan[:5] {
+		response := dashboardHTMLRequest(other, otherCookie, "GET", request.Path, "")
+		err := predicate(request, response.Code, response.Body.Bytes())
+		if strings.HasPrefix(request.Case, "datasets-") {
+			if err != nil {
+				t.Fatal("unchanged dataset facts rejected", err)
+			}
+		} else {
+			if err == nil || dashboardFailureClassification(err) != "failure:table" {
+				t.Fatal("changed original pool accounting accepted or misclassified", request.Case, err)
+			}
+		}
+	}
+	if original.Pools.Data[0].Allocated == changed.Pools.Data[0].Allocated {
+		t.Fatal("original oracle mutated")
+	}
+}

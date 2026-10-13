@@ -117,3 +117,7 @@ large pool cardinality or commercial hardware. Runtime storage writes remain
 disabled. No operator storage, host services, new dependencies or paid automation
 are introduced. Existing historical manifests retain their original bytes and
 limitations. GitHub owns live status and remaining acceptance.
+
+The [focused diagnostic spike](../../research/dashboards/native-focused-diagnostics.md)
+tracks the next bounded observation separately from this failed qualification.
+Its reduced sequential probes cannot replace either release's full resource gate.
