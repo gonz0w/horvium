@@ -71,7 +71,10 @@ control and teardown binding remain required. The
 rechecks the candidate's signed tree/archive/files and separately opened original
 guest observation/supervisor; trusted runner transfer/launch, native fixture/control
 and complete teardown assembly remain subsequent reviewed work. Leave
-runtime, source model limits, collectors and file-service separation unchanged.
+runtime, source model limits, collectors and file-service separation unchanged. The
+[disposable storage cleanup slice](../../testing/dashboards/native-storage-cleanup.md)
+rechecks original pool/device ownership and successful absence in the final
+fixture callback; this observation cannot prove whole guest or host teardown.
 Then select one clean signed assembled candidate, actual PR title and pinned Go
 compiler/artifacts for native execution. A failed candidate is retained with its
 reason; fixes require a new reviewed source and new relevant execution, rather than
