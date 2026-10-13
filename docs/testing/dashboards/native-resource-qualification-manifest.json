@@ -463,5 +463,70 @@
     "Controller/browser/OS/ARC/file daemons and physical throughput are outside paired-process measurements.",
     "Large inventories are synthetic; no commercial scale, hardware, browser, startup/recovery or release qualification.",
     "Failed source is not the later evidence/failure-retention fix source. Runtime writes remain disabled."
-  ]
+  ],
+  "failure_retention_fix": {
+    "source_commit": "c690d3fa034618ebaf404c0fffdcd68a5409cf7d",
+    "base_commit": "d171e5d5ddc632cbd6ffd1015b999443f9f24e49",
+    "pr_title": "test(dashboards): retain failed native qualification evidence",
+    "review_directory": ".tools/review-runs/wrz6p3le",
+    "review_report_sha256": "0d35d90cca366d53114b41e934a678d350d2ccb14f6dd5a7e7ad687ab62eefda",
+    "required_checks": "make check lint test secrets passed",
+    "tooling_tests": 306,
+    "deep": "fresh original complete portable execution: 11 race packages and 54 fuzz targets",
+    "deep_log_sha256": "93a100abb83ee05f8a19e191b6c2e931d01df95703c09d64179fc6be123fb488",
+    "qualified_portable": true,
+    "native_execution": false,
+    "regression": "original reason and cleanup context retained; missing reason gets generic interruption diagnostic; qualification denial retained",
+    "portable_profile": {
+      "source_commit": "c690d3fa034618ebaf404c0fffdcd68a5409cf7d",
+      "base_commit": "d171e5d5ddc632cbd6ffd1015b999443f9f24e49",
+      "scope": "Existing portable in-process authenticated dataset default-page benchmark; 100 and 10000 rows, one iteration each, 10 readers/1000 requests; no helper IPC, FreeBSD, maximum pages or other dashboard cases. Concurrent native work absent.",
+      "qualified_native": false,
+      "benchmark": {
+        "directory": ".tools/process-runs/0mv5b4y3",
+        "state": {
+          "completed": true,
+          "group_cleaned": true,
+          "command_sha256": "1a5f6ddafbfa926a1ec688fa0ae6577ea65e47c170b59cc98914f1e5974affaa",
+          "group": 99409,
+          "started_at": 1791865945.260992,
+          "escalated": false,
+          "worker_returncode": 0,
+          "reason": "exit",
+          "completed_at": 1791865946.610028
+        },
+        "log_sha256": "e92823d9b8f76c30d95bce1b89cc8c360d30d63a05e9b1a29fbe283fd10d5705"
+      },
+      "profile": {
+        "directory": ".tools/process-runs/1nhv5sfp",
+        "state": {
+          "completed": true,
+          "group_cleaned": true,
+          "command_sha256": "d36df85bdbf9d5fc46e8f8f8eb25ef22f4e13fa177b8b6ad9306487bfcff51e7",
+          "group": 99419,
+          "started_at": 1791865946.6801212,
+          "escalated": false,
+          "worker_returncode": 0,
+          "reason": "exit",
+          "completed_at": 1791865948.135788
+        },
+        "log_sha256": "86d1ec741081dd23c6205f05fdea30bb5228485b1f76b2cff4a14cc1ca8b10c6"
+      },
+      "cpu_sha256": "13a604d24a24800afa008fbdcef5431ce7df8cba42ef6d1d477d0b21c85dffdd",
+      "heap_sha256": "e69b8024dca127d016c0cc8ffd46be6aecc4a05d4164cc6aa3a28853e8c47bdd",
+      "benchmark_binary_removed": true,
+      "native_run_repeated": false,
+      "scope_note": "Default dataset pages only. Direct in-process handler/manager, no helper IPC, maximum pages, FreeBSD or TCG. Profile does not identify native failure cause.",
+      "host_os": "Darwin",
+      "host_arch": "arm64",
+      "observed_p95_ms": {
+        "100": 3.028,
+        "10000": 3.342
+      },
+      "observed_process_peak_rss_bytes": {
+        "100": 37715968,
+        "10000": 43106304
+      }
+    }
+  }
 }

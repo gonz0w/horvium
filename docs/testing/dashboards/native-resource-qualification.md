@@ -89,6 +89,19 @@ receive the existing generic interruption diagnostic. No timeout, signal, remova
 scope, runtime behavior or budget changes. This correction has not executed a new
 native candidate and cannot qualify the old failed one.
 
+The fix/evidence source `c690d3fa034618ebaf404c0fffdcd68a5409cf7d` passed
+required checks, 306 tooling tests, fresh races for all 11 portable packages and
+54 fuzz targets with verified supervision. The existing portable authenticated
+dataset-page benchmark ran once for 100 and 10,000 rows with ten readers and
+1,000 requests each. On Darwin/arm64 it observed p95 3.028 and 3.342 ms and process
+peak RSS 37,715,968 and 43,106,304 bytes. Its direct in-process handler/manager
+excludes helper IPC, maximum pages, other dashboard cases, FreeBSD and TCG.
+The retained CPU profile is dominated by runtime/allocator observations and does
+not isolate the native failure cause. Both owned benchmark/profile commands
+completed successfully and the benchmark executable was removed. No native run
+was repeated. A prose/receipt followup retains this original executed source;
+current-head required checks still run with exact-input deep reuse where valid.
+
 The next work under issue 382 is a focused diagnostic loop: retain bounded,
 non-sensitive predicate failure classifications without publishing response bodies,
 and profile the actual query/rendering paths before choosing a correction.

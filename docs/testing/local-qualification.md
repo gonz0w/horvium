@@ -691,3 +691,13 @@ acceptance is always false. See the [implementation contract](M2/deadline-proven
 Only the one adopted fresh prebuilt 15.1 candidate is permitted after fixture/
 runner review; no 14.5, guest source build, automatic retry or lifecycle comparison.
 This slice records offline implementation/build checks and executes no VM.
+
+
+### Original failure diagnostics
+
+When a failed native worker has already written a nonempty failure reason, fallback
+fixture cleanup preserves that reason and its existing cleanup observations while
+keeping the run unqualified. A missing reason receives the generic interruption/
+worker-failure message. This correction does not rewrite historical receipts or
+qualify a failed suite. See the [dashboard failure record](dashboards/native-resource-qualification.md)
+for the actual candidate, regression and unresolved resource/predicate gates.
