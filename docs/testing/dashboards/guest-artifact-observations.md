@@ -25,7 +25,8 @@ no group/world write permission. Missing files, symlinks, directories, oversized
 files and ordinary replacement races deny the observation. The observer opens
 and hashes the entire original set before decoding metadata. `debug/buildinfo.Read`
 reads those same descriptors through a section reader limited to their original
-sizes; appended bytes cannot extend the metadata decoder's input. all three require FreeBSD/amd64/v1, cgo disabled
+sizes; appended bytes cannot extend the metadata decoder's input. All three
+require FreeBSD/amd64/v1, cgo disabled
 and one observed release compiler version. That version is an observation;
 matching the host's pinned compiler is the subsequent trusted caller's job.
 
@@ -54,13 +55,14 @@ The preflight collects actual facts with fixed FreeBSD base argv:
 | ZFS versions | `/sbin/zfs version` |
 | Physical memory bytes | `/sbin/sysctl -n hw.physmem` |
 
-Each command has a five-second context deadline, one-second pipe wait bound, fixed locale/PATH, discarded
-stderr and a 512-byte stdout ceiling. Failure, oversized or malformed output denies
+Each command has a five-second context deadline, one-second pipe wait bound,
+fixed locale/PATH, discarded stderr and a 512-byte stdout ceiling. Failure, oversized or malformed output denies
 publication. Kernel/userland must identify the same declared 15.1 or 14.5 RELEASE
 line, optionally at different patch levels. ZFS version lines are normalized to
 one bounded printable field; physical memory must be a positive canonical uint64.
 These are actual running-kernel/installed-userland observations; CPU/QEMU
-profile and trusted host-to-guest comparison remain the final runner's job. The preflight reobserves the artifact set after commands
+profile and trusted host-to-guest comparison remain the final runner's job. The
+preflight reobserves the artifact set after commands
 and requires identical hashes/compiler before emitting one sanitized
 `DASHBOARD_GUEST_ARTIFACTS` JSON record.
 
@@ -83,7 +85,8 @@ parsers. They do not execute FreeBSD facilities. The native decoder is always
 This is developer-controlled preflight evidence, not attestation against a malicious
 root guest. File observations do not authenticate executable memory, prevent a
 concurrent root writer restoring bytes, prove which later management/helper child
-was executed, or authenticate the kernel against a malicious guest. The later reviewed host runner must
+was executed, or authenticate the kernel against a malicious guest. The later reviewed host
+runner must
 retain ownership, compare trusted expected hashes and bind actual launches and
 original completions. No acceptance/cleanup/candidate booleans are emitted here.
 
@@ -95,3 +98,32 @@ completion and guest/host teardown binding precede fresh sequential both-release
 execution. Broader #131/#289/#290, lifecycle #305/#139, browser/manual, physical
 hardware/commercial and release gates stay open. Rollback removes the three
 new test-only files and their documentation without changing product behavior.
+
+## Recorded source evidence
+
+[Receipt](guest-artifact-observations-manifest.json): signed behavioral source
+`820bce1ee64e3798eac291996114a4f5aec8d58a`, base `58992db46134a23e5ac7c3c1357ca0d6149a3de9`, actual title
+`test(dashboards): observe guest artifacts before qualification`. Required checks passed with
+284 tooling tests and ordinary Go tests. Eight behavioral parents passed; fresh
+affected `./cmd/horvium` race checks passed, with no compiler-listed portable fuzz
+targets in that package. Other packages were outside this PR's deep plan.
+
+The reviewed host builder produced all three FreeBSD/amd64/v1 artifacts from the
+original archive with the pinned compiler and verified module cache. A temporary
+portable host inspector compiled the original signed observer source and inspected
+those actual cross-built files with `debug/buildinfo.Read`; hashes/compiler agreed
+with the candidate. Its fixture-identity argument was an explicit host surrogate,
+not its own running executable, so this exercise cannot qualify the native
+controller identity or base-command preflight. No FreeBSD executable was run.
+All eight owned build/inspection commands completed cleanly; binaries, archive,
+extraction and temporary host inspector were removed. All 144 historical manifests
+and runtime/native resource/validator/runner guard inputs remained unchanged.
+Owned teardown was verified.
+
+The initial missing-observer and later appended-metadata regressions retain their
+red logs. The earlier qualified source `2687d77fa568103585d1c9065b1db3451bb94800`
+is preserved as portable evidence only; adding the read-bound regression produced
+the new corrected source above. No earlier result is relabelled as a native pass.
+A documentation followup requires current-head baseline checks and may reuse only
+this original exact-input deep evidence. All native qualification and broad gates
+remain open.
