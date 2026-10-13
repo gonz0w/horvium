@@ -112,3 +112,41 @@ func BenchmarkAuthenticatedDatasetPages(b *testing.B) {
 		})
 	}
 }
+
+func TestMaximumDatasetPageKeepsSelectedDetailsExact(t *testing.T) {
+	s, err := (generatedSource{10000}).Collect(context.Background(), "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Select a row beyond the twenty comparisons, within a nonzero maximum page.
+	s.Datasets.Data[999].Used = 9007199254740993
+	s.Datasets.Data[999].Available = 18446744073709551615
+	s.Datasets.Data[999].Referenced = 9007199254740992
+	h, m, _ := fixtureWithSource(t, capacitySource{s})
+	cookie, _ := login(t, h)
+	path := fmt.Sprintf("/storage/datasets?generation=%s&offset=500&limit=500&selected=1099", m.State().CurrentID)
+	for _, fragment := range []bool{false, true} {
+		body := capacityPage(t, h, cookie, path, fragment)
+		start := strings.Index(body, `<aside class="detail"`)
+		if start < 0 {
+			t.Fatal("selected detail absent")
+		}
+		end := strings.Index(body[start:], "</aside>")
+		if end < 0 {
+			t.Fatal("selected detail incomplete")
+		}
+		detail := body[start : start+end]
+		for _, want := range []string{"vault/dataset-000999", "Dataset GUID", "1099", "9007199254740993 B", "18446744073709551615 B", "9007199254740992 B"} {
+			if !strings.Contains(detail, want) {
+				t.Fatal("lost exact selected fact", want)
+			}
+		}
+		if strings.Count(body, `scope="row"`) != 500 || !strings.Contains(body, `aria-current="true"`) {
+			t.Fatal("maximum page or selection changed")
+		}
+	}
+	body := capacityPage(t, h, cookie, fmt.Sprintf("/storage/datasets?generation=%s&offset=500&limit=500", m.State().CurrentID), false)
+	if strings.Contains(body, `<aside class="detail"`) || strings.Count(body, `scope="row"`) != 500 {
+		t.Fatal("unselected page changed")
+	}
+}

@@ -183,3 +183,55 @@ func TestDashboardTableDiagnosticsIdentifyExactChecks(t *testing.T) {
 		})
 	}
 }
+
+func TestDashboardTableDiagnosticsDatasetAndEmptyChecks(t *testing.T) {
+	for _, field := range []string{"guid", "used", "available", "referenced", "empty-shape", "empty-text"} {
+		t.Run(field, func(t *testing.T) {
+			original := performanceSnapshot(1, 0)
+			d := original.Datasets.Data[0]
+			p := dashboardHTMLPage{title: "Datasets", path: "/storage/datasets", caption: "Datasets in this observation", limit: 100, status: inventory.OK, rows: []dashboardHTMLRow{{name: d.Name, guid: d.GUID, cells: []string{d.GUID, dashboardBytes(d.Used), dashboardBytes(d.Available), dashboardBytes(d.Referenced)}}}}
+			if strings.HasPrefix(field, "empty-") {
+				original.Datasets.Data = nil
+				p.rows = nil
+			}
+			h, _, cookie := dashboardHTMLFixture(t, original)
+			response := dashboardHTMLRequest(h, cookie, "GET", p.path, "")
+			root, err := dashboardParseHTML(response.Body.Bytes())
+			if err != nil {
+				t.Fatal(err)
+			}
+			table, err := dashboardTable(root, p.caption)
+			if err != nil {
+				t.Fatal(err)
+			}
+			generation, err := root.one("p", "class", "generation")
+			if err != nil {
+				t.Fatal(err)
+			}
+			code, err := generation.one("code", "", "")
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := dashboardTableHTML(table, p, code.rawText()); err != nil {
+				t.Fatal("original table rejected", err)
+			}
+			cells := table.direct("tbody")[0].find("td", "", "")
+			check := "cell-" + field
+			switch field {
+			case "empty-shape":
+				cells[0].attrs["colspan"] = "private"
+				check = field
+			case "empty-text":
+				cells[0].content = nil
+				check = field
+			default:
+				index := map[string]int{"guid": 0, "used": 1, "available": 2, "referenced": 3}[field]
+				cells[index].content = []dashboardHTMLContent{{text: "private-value"}}
+			}
+			err = dashboardTableHTML(table, p, code.rawText())
+			if err == nil || dashboardFailureClassification(err) != "failure:table-"+check {
+				t.Fatal("missing fixed dataset/empty check", field, err)
+			}
+		})
+	}
+}
