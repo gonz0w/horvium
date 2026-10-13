@@ -121,3 +121,10 @@ limitations. GitHub owns live status and remaining acceptance.
 The [focused diagnostic spike](../../research/dashboards/native-focused-diagnostics.md)
 tracks the next bounded observation separately from this failed qualification.
 Its reduced sequential probes cannot replace either release's full resource gate.
+
+The followup original-timing native-small diagnostic now retains 600
+`failure:table` observations and 400 successful dataset predicates under the
+unchanged warm-up/idle/request conditions. That is the first failing check; later
+comparison checks were not reached. See its research manifest for the exact
+executed source and failed partial-parent/teardown boundaries. These findings do
+not retroactively classify this historical candidate or close issue 382.

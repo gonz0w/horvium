@@ -1981,6 +1981,9 @@ runtime writes remain disabled and broader gates remain open.
 The [bounded research probe](../research/dashboards/native-focused-diagnostics.md)
 adds fixed non-sensitive failure classifications and a reduced test-only native
 JSON/HTML comparison. Original predicates and resource budgets remain unchanged.
-Portable regression and FreeBSD cross-compilation are distinct from execution;
-preparation does not claim native qualification. No runtime behavior, support
+Portable regressions and affected-package race review passed. A source-bound
+15.1 short probe completed three modes with 150 HTML predicates; a separate
+original-timing native-small case reproduced 600 first table failures / 400 dataset
+successes. Exact mismatch cause remains unknown. Reduced sequential responses and
+a failed partial parent do not qualify resources; 14.5 was not executed. No runtime behavior, support
 claim, dependency or historical receipt changes. Issue 382 remains open.

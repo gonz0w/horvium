@@ -117,3 +117,50 @@ ten-reader latency failure; the targeted original native-small case retains its
 actual warm-up/idle and contention while omitting the other resource modes.
 An earlier scoped-controller dispatch refusal also occurred before transfer or
 Go-test execution and remains retained with verified host teardown.
+
+## Original-timing result and interpretation
+
+The [source-bound research manifest](native-focused-diagnostics-manifest.json)
+retains every executed/refused preparation, signed reviewed candidate, original
+transcript hash, actual artifact/compiler/environment binding and cleanup scope.
+The short probe had three modes, each with 50 sequential HTML and 50 JSON
+responses. Its observed nearest-rank p95 over only ten maximum-page samples was
+77.207 ms HTML / 9.762 ms JSON for projection-10,000 and 124.943 / 8.673 ms for
+synthetic-10,000. This is a scoped cost difference, not a controlled causal CPU
+profile, ten-reader measurement, budget pass or native performance qualification.
+
+The separate original native-small case at signed source
+`99274977fc326c32cff4ddeae57d8bdffa0678a0` retained the original 60-second warm-up
+and full 300-second idle window. Its 115 total / 100 independently owned datasets
+reproduced **600 HTTP-200 `failure:table` observations**: 200 each for Overview,
+pools/default and pools/maximum. Both dataset cases passed all 200 predicates,
+for 400 successes out of 1,000 initial scheduled requests. The parent failed in
+394.73 seconds, with its native-small subcase failing in 390.54 seconds. No
+replacement phase, native crash/recovery or resource-budget publication was
+reached. Omitted projection also leaves the complete parent scope incomplete.
+The first failed check compares the exact original table. It may reject table
+structure, headers, row/link identity or cell content; this vocabulary does not
+identify the specific field. Later comparison checks are not reached. The old
+candidate's empty classifications remain unchanged and cannot be backfilled from
+this new candidate. No pool-accounting or runtime defect is yet established.
+
+The targeted failed command and outer worker exited nonzero with completed clean
+owned groups and no escalation. Host listener/key/image/variables absence and
+base/QEMU/firmware preservation were independently reopened and verified for all
+five actual preparations/attempts. The short successful diagnostic additionally
+observed owned pool/md removal, pair directory/socket removal, empty original
+reaper and unchanged artifacts before/after the guest. The failed original case
+has no complete parent cleanup receipt or after-preflight; host discard does not
+upgrade that boundary. `make lab-stop` and `make lab-status` report stopped,
+verified owned sessions. All 150 existing manifests and primary operator edits
+remain unchanged. Required checks and affected `cmd/horvium` race review passed;
+prose followups reuse the original exact-input deep evidence and rerun baseline
+checks. No eligible fuzz targets belong to that affected package.
+
+Next work under #382 is to distinguish the exact table field/shape/link mismatch
+at the original timing and inspect the maximum-page rendering/query cost under
+contention. Keep expectations independent and fixed; do not refresh them from
+responses, relax predicates or increase budgets. This PR ends at a reviewable
+research diagnosis because neither a particular runtime correction nor a changed
+fixture contract is justified by these observations. Future corrections and full
+both-release qualification remain in the same owning issue. No broader gate closes.

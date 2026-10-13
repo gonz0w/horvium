@@ -1,0 +1,1246 @@
+{
+  "schema": 1,
+  "scope": "bounded research diagnosis; no resource qualification",
+  "qualified": false,
+  "native_acceptance": false,
+  "historical_manifests_preserved": 150,
+  "primary_operator_changes_preserved": true,
+  "attempts": [
+    {
+      "release": "15.1",
+      "source_commit": "f44918155eaab266b0e207e00e7045d17753cf2d",
+      "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+      "pr_title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+      "qualified": false,
+      "native_acceptance": false,
+      "host_teardown": true,
+      "private_lab_name": "performance-15.1-focused-_5bmpaki",
+      "result_sha256": "1b82112673328efde4e38e8c94cb14bcdc618c3303a91013fd32930a5c68f935",
+      "controller_sha256": "a32d035ef7c85e3fe40bcb048ffe5c89348b73253f43722cdc094d4746dd3118",
+      "worker_source_sha256": "757f6587fe16f657dfb66d0ec9eee24997f95ef65077c23dc9e7ff2ac6f77b56",
+      "host_teardown_independently_rechecked": true,
+      "failure": "ValueError: original command failed or teardown uncertain",
+      "candidate_build": {
+        "source_commit": "f44918155eaab266b0e207e00e7045d17753cf2d",
+        "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+        "pr_title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+        "build_complete": true,
+        "native_execution": false,
+        "artifacts_removed": false,
+        "candidate": {
+          "source_commit": "f44918155eaab266b0e207e00e7045d17753cf2d",
+          "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+          "pr_title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+          "go_version": "go1.27.1",
+          "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+          "archive_sha256": "5fd657e813c8c5df4ea7dc950776f940c04a133883682cfb4f65cd97aef3202b",
+          "review_verified": true,
+          "artifacts": {
+            "15.1": {
+              "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+              "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+              "fixture": "369f5445902430855fc814f962fe675f39442a3f31904b677fce3b236356ad90"
+            },
+            "14.5": {
+              "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+              "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+              "fixture": "369f5445902430855fc814f962fe675f39442a3f31904b677fce3b236356ad90"
+            }
+          }
+        },
+        "compiler": {
+          "go_version": "go1.27.1",
+          "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+          "pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+          "marker_sha256": "d9a583e3a0dc10e396047e4ebce8854eebd9180b39b74beb80c4be1cdf36fb3a"
+        }
+      },
+      "commands": [
+        {
+          "operation": "transfer-source.tar",
+          "state": {
+            "command_sha256": "d7383d8f85903991139b449cb8ecdfee5dcca0f6545b6b8939d3a9cfc9cf67a2",
+            "worker_returncode": 0,
+            "completed": true,
+            "group_cleaned": true,
+            "escalated": false,
+            "reason": "exit"
+          }
+        },
+        {
+          "operation": "transfer-horvium",
+          "state": {
+            "command_sha256": "8eb61ce9f02fd952c7a3faa9ae4b836b2738cc8a8cf389b5e0b38cd498d7c75d",
+            "worker_returncode": 0,
+            "completed": true,
+            "group_cleaned": true,
+            "escalated": false,
+            "reason": "exit"
+          }
+        },
+        {
+          "operation": "transfer-reader-fixture.test",
+          "state": {
+            "command_sha256": "ac7f5bcf5fb85cd95145bfe90e6d35454029962dde5784799fcdf50ad0733b55",
+            "worker_returncode": 0,
+            "completed": true,
+            "group_cleaned": true,
+            "escalated": false,
+            "reason": "exit"
+          }
+        },
+        {
+          "operation": "transfer-dashboard-native.test",
+          "state": {
+            "command_sha256": "12610c4f6ccf91789f5d75e9bd844343dbcedf119f92aa8c298ef179c601e577",
+            "worker_returncode": 0,
+            "completed": true,
+            "group_cleaned": true,
+            "escalated": false,
+            "reason": "exit"
+          }
+        }
+      ],
+      "go_test_executed": true,
+      "raw_sha256": "5f3bf0ea5587756e89cf9080db74ed23d7d075da3b28493b9c50d6d0bfd43f38",
+      "raw_bytes": 15281,
+      "modes": [
+        {
+          "mode": "synthetic-10000",
+          "qualified": false,
+          "native_acceptance": false,
+          "original_sha256": "a927f84fbf2f0fbc7888bf5cdb5714fe9aa5c2f035843227645f9c61d3e31314",
+          "pool_differences": {},
+          "original_counts": {
+            "pools": 1,
+            "datasets": 10000
+          },
+          "html": {
+            "datasets-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 19385000,
+              "observed_p95_ns": 30649000,
+              "observed_p99_ns": 30649000
+            },
+            "datasets-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 76092000,
+              "observed_p95_ns": 80380000,
+              "observed_p99_ns": 80380000
+            },
+            "overview": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 4362000,
+              "observed_p95_ns": 19113000,
+              "observed_p99_ns": 19113000
+            },
+            "pools-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 3391000,
+              "observed_p95_ns": 6120000,
+              "observed_p99_ns": 6120000
+            },
+            "pools-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 3009000,
+              "observed_p95_ns": 24335000,
+              "observed_p99_ns": 24335000
+            }
+          },
+          "api": {
+            "datasets-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 5160000,
+              "observed_p95_ns": 9772000,
+              "observed_p99_ns": 9772000
+            },
+            "datasets-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 8561000,
+              "observed_p95_ns": 11722000,
+              "observed_p99_ns": 11722000
+            },
+            "overview": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 1514000,
+              "observed_p95_ns": 4981000,
+              "observed_p99_ns": 4981000
+            },
+            "pools-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 1238000,
+              "observed_p95_ns": 2849000,
+              "observed_p99_ns": 2849000
+            },
+            "pools-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 985000,
+              "observed_p95_ns": 1164000,
+              "observed_p99_ns": 1164000
+            }
+          }
+        }
+      ],
+      "diagnostic_cleanup_marker": false,
+      "checks": {
+        "original_build_complete": true,
+        "actual_native_acceptance": false,
+        "host_teardown_independently_rechecked": true
+      }
+    },
+    {
+      "release": "15.1",
+      "source_commit": "f4a8c1b03f35d695ac2c215f28ad7120dcbeabfb",
+      "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+      "pr_title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+      "qualified": false,
+      "native_acceptance": false,
+      "host_teardown": true,
+      "private_lab_name": "performance-15.1-focused-ldhlc4x_",
+      "result_sha256": "bbe945c3c7bfef4caef4d68f38fda65b7d112ad91551e40bc62cb76f95113122",
+      "controller_sha256": "1d7613952e16bd01e4fb1d76f5b514997d0eb9db551ab7ee3b224819994077a9",
+      "worker_source_sha256": "b655543537aa92ab85cc019c8ac108f2011dcbe1b8cdaeda94a2ebcfc18ea419",
+      "host_teardown_independently_rechecked": true,
+      "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+      "candidate_build": {
+        "source_commit": "f4a8c1b03f35d695ac2c215f28ad7120dcbeabfb",
+        "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+        "pr_title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+        "build_complete": true,
+        "native_execution": false,
+        "artifacts_removed": false,
+        "candidate": {
+          "source_commit": "f4a8c1b03f35d695ac2c215f28ad7120dcbeabfb",
+          "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+          "pr_title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+          "go_version": "go1.27.1",
+          "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+          "archive_sha256": "a13f7fcb78f110360e597c3311b6c008fcd5747652ffebaec160c581b316aef7",
+          "review_verified": true,
+          "artifacts": {
+            "15.1": {
+              "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+              "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+              "fixture": "75d036f07a9c3b2456b5c2759e51f4725361788b61b89f19c57efeb8d3b6358c"
+            },
+            "14.5": {
+              "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+              "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+              "fixture": "75d036f07a9c3b2456b5c2759e51f4725361788b61b89f19c57efeb8d3b6358c"
+            }
+          }
+        },
+        "compiler": {
+          "go_version": "go1.27.1",
+          "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+          "pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+          "marker_sha256": "d9a583e3a0dc10e396047e4ebce8854eebd9180b39b74beb80c4be1cdf36fb3a"
+        }
+      },
+      "commands": [
+        {
+          "operation": "transfer-source.tar",
+          "state": {
+            "command_sha256": "429299b7324c2fa27997fe31da868f3afa8e1ef26d4a1547ca9d70b6bfbcb84b",
+            "worker_returncode": 0,
+            "completed": true,
+            "group_cleaned": true,
+            "escalated": false,
+            "reason": "exit"
+          }
+        },
+        {
+          "operation": "transfer-horvium",
+          "state": {
+            "command_sha256": "9a28b427dc5f1593ce3ec8c0898fca5fe9eda5942929cdb65c543394075cb253",
+            "worker_returncode": 0,
+            "completed": true,
+            "group_cleaned": true,
+            "escalated": false,
+            "reason": "exit"
+          }
+        },
+        {
+          "operation": "transfer-reader-fixture.test",
+          "state": {
+            "command_sha256": "30db5b8252b458746c7439126da7e42ddf8da1cab6a11f5e8ce45d0314cc740d",
+            "worker_returncode": 0,
+            "completed": true,
+            "group_cleaned": true,
+            "escalated": false,
+            "reason": "exit"
+          }
+        },
+        {
+          "operation": "transfer-dashboard-native.test",
+          "state": {
+            "command_sha256": "9085f27ba478711ac22e91fc14889aea9a5083a011c2c56a26320b8c9eb47951",
+            "worker_returncode": 0,
+            "completed": true,
+            "group_cleaned": true,
+            "escalated": false,
+            "reason": "exit"
+          }
+        }
+      ],
+      "go_test_executed": true,
+      "raw_sha256": "2a972276192b4df3d88a7c16774b798a01a36065f3fd5d557023a0c30346f39c",
+      "raw_bytes": 43979,
+      "modes": [
+        {
+          "mode": "native-reduced",
+          "qualified": false,
+          "native_acceptance": false,
+          "original_sha256": "50c34021d60a3b3f5e2c0f0babec047f4882652c52cfdd5d7ea3fdf9782447b0",
+          "pool_differences": {},
+          "original_counts": {
+            "pools": 2,
+            "datasets": 17
+          },
+          "html": {
+            "datasets-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 4575000,
+              "observed_p95_ns": 15043000,
+              "observed_p99_ns": 15043000
+            },
+            "datasets-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 4531000,
+              "observed_p95_ns": 6578000,
+              "observed_p99_ns": 6578000
+            },
+            "overview": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 2587000,
+              "observed_p95_ns": 17620000,
+              "observed_p99_ns": 17620000
+            },
+            "pools-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 2618000,
+              "observed_p95_ns": 12088000,
+              "observed_p99_ns": 12088000
+            },
+            "pools-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 2589000,
+              "observed_p95_ns": 3130000,
+              "observed_p99_ns": 3130000
+            }
+          },
+          "api": {
+            "datasets-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 809000,
+              "observed_p95_ns": 1218000,
+              "observed_p99_ns": 1218000
+            },
+            "datasets-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 762000,
+              "observed_p95_ns": 1073000,
+              "observed_p99_ns": 1073000
+            },
+            "overview": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 787000,
+              "observed_p95_ns": 1078000,
+              "observed_p99_ns": 1078000
+            },
+            "pools-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 746000,
+              "observed_p95_ns": 1006000,
+              "observed_p99_ns": 1006000
+            },
+            "pools-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 743000,
+              "observed_p95_ns": 946000,
+              "observed_p99_ns": 946000
+            }
+          }
+        },
+        {
+          "mode": "projection-10000",
+          "qualified": false,
+          "native_acceptance": false,
+          "original_sha256": "a3dd886da18eb0b8f875aa6bd2ec3f219d9622dbf9f4dfccd2e47021637bf088",
+          "pool_differences": {},
+          "original_counts": {
+            "pools": 1,
+            "datasets": 10000
+          },
+          "html": {
+            "datasets-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 17383000,
+              "observed_p95_ns": 28820000,
+              "observed_p99_ns": 28820000
+            },
+            "datasets-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 67486000,
+              "observed_p95_ns": 77207000,
+              "observed_p99_ns": 77207000
+            },
+            "overview": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 3013000,
+              "observed_p95_ns": 16381000,
+              "observed_p99_ns": 16381000
+            },
+            "pools-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 2423000,
+              "observed_p95_ns": 6781000,
+              "observed_p99_ns": 6781000
+            },
+            "pools-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 2271000,
+              "observed_p95_ns": 3718000,
+              "observed_p99_ns": 3718000
+            }
+          },
+          "api": {
+            "datasets-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 4347000,
+              "observed_p95_ns": 72422000,
+              "observed_p99_ns": 72422000
+            },
+            "datasets-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 6080000,
+              "observed_p95_ns": 9762000,
+              "observed_p99_ns": 9762000
+            },
+            "overview": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 866000,
+              "observed_p95_ns": 1644000,
+              "observed_p99_ns": 1644000
+            },
+            "pools-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 712000,
+              "observed_p95_ns": 871000,
+              "observed_p99_ns": 871000
+            },
+            "pools-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 644000,
+              "observed_p95_ns": 827000,
+              "observed_p99_ns": 827000
+            }
+          }
+        },
+        {
+          "mode": "synthetic-10000",
+          "qualified": false,
+          "native_acceptance": false,
+          "original_sha256": "b4ad92035718c354d2fb3b2bdf20dcecf65e7ab64ce61dbea393a6aaf9fafd76",
+          "pool_differences": {},
+          "original_counts": {
+            "pools": 1,
+            "datasets": 10000
+          },
+          "html": {
+            "datasets-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 18221000,
+              "observed_p95_ns": 30000000,
+              "observed_p99_ns": 30000000
+            },
+            "datasets-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 67338000,
+              "observed_p95_ns": 124943000,
+              "observed_p99_ns": 124943000
+            },
+            "overview": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 3384000,
+              "observed_p95_ns": 16168000,
+              "observed_p99_ns": 16168000
+            },
+            "pools-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 2598000,
+              "observed_p95_ns": 14242000,
+              "observed_p99_ns": 14242000
+            },
+            "pools-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "original-inventory": 10
+              },
+              "observed_p50_ns": 2477000,
+              "observed_p95_ns": 21443000,
+              "observed_p99_ns": 21443000
+            }
+          },
+          "api": {
+            "datasets-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 4672000,
+              "observed_p95_ns": 10237000,
+              "observed_p99_ns": 10237000
+            },
+            "datasets-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 6453000,
+              "observed_p95_ns": 8673000,
+              "observed_p99_ns": 8673000
+            },
+            "overview": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 886000,
+              "observed_p95_ns": 2048000,
+              "observed_p99_ns": 2048000
+            },
+            "pools-default": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 743000,
+              "observed_p95_ns": 966000,
+              "observed_p99_ns": 966000
+            },
+            "pools-maximum": {
+              "scheduled": 10,
+              "outcomes": {
+                "success": 10
+              },
+              "classifications": {
+                "status-body-only": 10
+              },
+              "observed_p50_ns": 764000,
+              "observed_p95_ns": 937000,
+              "observed_p99_ns": 937000
+            }
+          }
+        }
+      ],
+      "diagnostic_cleanup_marker": true,
+      "environment": {
+        "artifacts": {
+          "fixture": "75d036f07a9c3b2456b5c2759e51f4725361788b61b89f19c57efeb8d3b6358c",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb"
+        },
+        "go_version": "go1.27.1",
+        "kernel": "15.1-RELEASE-p3",
+        "userland": "15.1-RELEASE-p3",
+        "zfs": "zfs-2.4.2-1-FreeBSD_g6330a45b0 zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0",
+        "physical_bytes": 6387634176
+      },
+      "candidate": {
+        "source_commit": "f4a8c1b03f35d695ac2c215f28ad7120dcbeabfb",
+        "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+        "pr_title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+        "go_version": "go1.27.1",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "archive_sha256": "a13f7fcb78f110360e597c3311b6c008fcd5747652ffebaec160c581b316aef7",
+        "review_verified": true,
+        "artifacts": {
+          "15.1": {
+            "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+            "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+            "fixture": "75d036f07a9c3b2456b5c2759e51f4725361788b61b89f19c57efeb8d3b6358c"
+          },
+          "14.5": {
+            "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+            "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+            "fixture": "75d036f07a9c3b2456b5c2759e51f4725361788b61b89f19c57efeb8d3b6358c"
+          }
+        }
+      },
+      "guest_preflight_preserved": true,
+      "preflight_sha256": "a6a5544f5a1eeac1b1fdd4eae11232d3e74cfcd3b2bfa57ec1a6af00585630c5",
+      "after_preflight_sha256": "86a6dcbbb953d880a5db8228884195ec383e6c10362268e622e8f018ec03ea81",
+      "resource_supervisor": {
+        "command_sha256": "0884a408c8ce51b2c62fd6eb7b930c7c5f6d4a8a9bb1e4827eac93646ab169f6",
+        "worker_returncode": 0,
+        "completed": true,
+        "group_cleaned": true,
+        "escalated": false,
+        "reason": "exit"
+      },
+      "checks": {
+        "original_build_complete": true,
+        "actual_native_acceptance": false,
+        "host_teardown_independently_rechecked": true
+      }
+    },
+    {
+      "release": "15.1",
+      "source_commit": "f4a8c1b03f35d695ac2c215f28ad7120dcbeabfb",
+      "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+      "pr_title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+      "qualified": false,
+      "native_acceptance": false,
+      "host_teardown": true,
+      "private_lab_name": "performance-15.1-focused-vlfnwwvj",
+      "result_sha256": "533c4be45a80b9f17ad4ebc8d6f960311cfa5cbfd9f7804ae868e936c9d9b164",
+      "controller_sha256": "03d192778f399d909b60da4fbcaa008ade1289f5b100ef2b2314d950f8fd4d37",
+      "worker_source_sha256": "b655543537aa92ab85cc019c8ac108f2011dcbe1b8cdaeda94a2ebcfc18ea419",
+      "host_teardown_independently_rechecked": true,
+      "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+      "failure": "ValueError: original command failed or teardown uncertain",
+      "candidate_build": {
+        "source_commit": "f4a8c1b03f35d695ac2c215f28ad7120dcbeabfb",
+        "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+        "pr_title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+        "build_complete": true,
+        "native_execution": false,
+        "artifacts_removed": false,
+        "candidate": {
+          "source_commit": "f4a8c1b03f35d695ac2c215f28ad7120dcbeabfb",
+          "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+          "pr_title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+          "go_version": "go1.27.1",
+          "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+          "archive_sha256": "a13f7fcb78f110360e597c3311b6c008fcd5747652ffebaec160c581b316aef7",
+          "review_verified": true,
+          "artifacts": {
+            "15.1": {
+              "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+              "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+              "fixture": "75d036f07a9c3b2456b5c2759e51f4725361788b61b89f19c57efeb8d3b6358c"
+            },
+            "14.5": {
+              "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+              "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+              "fixture": "75d036f07a9c3b2456b5c2759e51f4725361788b61b89f19c57efeb8d3b6358c"
+            }
+          }
+        },
+        "compiler": {
+          "go_version": "go1.27.1",
+          "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+          "pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+          "marker_sha256": "d9a583e3a0dc10e396047e4ebce8854eebd9180b39b74beb80c4be1cdf36fb3a"
+        }
+      },
+      "commands": [],
+      "go_test_executed": false,
+      "checks": {
+        "original_build_complete": true,
+        "actual_native_acceptance": false,
+        "host_teardown_independently_rechecked": true
+      }
+    },
+    {
+      "release": "15.1",
+      "source_commit": "7dc434dcb9dd807e7d3b3482ae3a2376424ccdad",
+      "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+      "pr_title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+      "qualified": false,
+      "native_acceptance": false,
+      "host_teardown": true,
+      "private_lab_name": "performance-15.1-focused-zmu_sanq",
+      "result_sha256": "7ea8e035461627e80081bf7470638f4562e6cf80b49959ed296a6dea6dffb834",
+      "controller_sha256": "a32d035ef7c85e3fe40bcb048ffe5c89348b73253f43722cdc094d4746dd3118",
+      "worker_source_sha256": "757f6587fe16f657dfb66d0ec9eee24997f95ef65077c23dc9e7ff2ac6f77b56",
+      "host_teardown_independently_rechecked": true,
+      "failure": "ValueError: original command failed or teardown uncertain",
+      "candidate_build": {
+        "source_commit": "7dc434dcb9dd807e7d3b3482ae3a2376424ccdad",
+        "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+        "pr_title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+        "build_complete": true,
+        "native_execution": false,
+        "artifacts_removed": false,
+        "candidate": {
+          "source_commit": "7dc434dcb9dd807e7d3b3482ae3a2376424ccdad",
+          "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+          "pr_title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+          "go_version": "go1.27.1",
+          "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+          "archive_sha256": "ff12625f50f615826b706802b4a764a1c7a72f69e48cc59e091e1968bd794eed",
+          "review_verified": true,
+          "artifacts": {
+            "15.1": {
+              "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+              "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+              "fixture": "75d036f07a9c3b2456b5c2759e51f4725361788b61b89f19c57efeb8d3b6358c"
+            },
+            "14.5": {
+              "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+              "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+              "fixture": "75d036f07a9c3b2456b5c2759e51f4725361788b61b89f19c57efeb8d3b6358c"
+            }
+          }
+        },
+        "compiler": {
+          "go_version": "go1.27.1",
+          "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+          "pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+          "marker_sha256": "d9a583e3a0dc10e396047e4ebce8854eebd9180b39b74beb80c4be1cdf36fb3a"
+        }
+      },
+      "commands": [
+        {
+          "operation": "transfer-source.tar",
+          "state": {
+            "command_sha256": "ea57f2d89762f556f26366bc81176e1fd1492e95da9f0279a3c134d30f5a38bf",
+            "worker_returncode": 0,
+            "completed": true,
+            "group_cleaned": true,
+            "escalated": false,
+            "reason": "exit"
+          }
+        }
+      ],
+      "go_test_executed": false,
+      "checks": {
+        "original_build_complete": true,
+        "actual_native_acceptance": false,
+        "host_teardown_independently_rechecked": true
+      }
+    }
+  ],
+  "original_native_small_diagnostic": {
+    "scope": "original native-small timing diagnostic; incomplete failed parent",
+    "qualified": false,
+    "native_acceptance": false,
+    "source_commit": "99274977fc326c32cff4ddeae57d8bdffa0678a0",
+    "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+    "pr_title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+    "candidate": {
+      "source_commit": "99274977fc326c32cff4ddeae57d8bdffa0678a0",
+      "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+      "pr_title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+      "go_version": "go1.27.1",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "archive_sha256": "6cae58abc0957e9f2b5d2ba4ef3a10ea163ca5079456ef3e92dc76ffeed9fafb",
+      "review_verified": true,
+      "artifacts": {
+        "15.1": {
+          "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "fixture": "75d036f07a9c3b2456b5c2759e51f4725361788b61b89f19c57efeb8d3b6358c"
+        },
+        "14.5": {
+          "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "fixture": "75d036f07a9c3b2456b5c2759e51f4725361788b61b89f19c57efeb8d3b6358c"
+        }
+      }
+    },
+    "environment": {
+      "artifacts": {
+        "fixture": "75d036f07a9c3b2456b5c2759e51f4725361788b61b89f19c57efeb8d3b6358c",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb"
+      },
+      "go_version": "go1.27.1",
+      "kernel": "15.1-RELEASE-p3",
+      "userland": "15.1-RELEASE-p3",
+      "zfs": "zfs-2.4.2-1-FreeBSD_g6330a45b0 zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0",
+      "physical_bytes": 6387634176
+    },
+    "raw_sha256": "7f40188cfa13a2e67234fd1ef8ea583bf50d4389ae918df5975b241568872b01",
+    "raw_bytes": 143522,
+    "result_sha256": "873505db9321c668964ef14398c3fa571daf055f984713def2a153992fb81fac",
+    "controller_sha256": "050bfa5a4ec0134b5344d5d14277f58a280a3ea07388057935551fc17c453d65",
+    "worker_source_sha256": "5eb6fc1e0ad8ee827634e693b4b36f84cb8480a47d952b1fb0fc46b705c6cd75",
+    "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+    "guest_preflight_sha256": "e8d0a8a3b050181a516ef456a01e6310f241581412049f4826903f1019428c82",
+    "fixture": {
+      "datasets": 115,
+      "owned_datasets": 100,
+      "inventory_sha256": "8ebabb6d6c7679d3cf0a913f0d1fd68e2e3edfc4df16dce3d697f3cb348cb8d9",
+      "origin": "native-original"
+    },
+    "initial_scheduled": 1000,
+    "initial_success": 400,
+    "initial_failure": 600,
+    "replacement_scheduled": 0,
+    "cases": {
+      "overview": {
+        "scheduled": 200,
+        "outcomes": {
+          "failure": 200
+        },
+        "first_predicate_classifications": {
+          "failure:table": 200
+        },
+        "observed_p50_ns": 54244064,
+        "observed_p95_ns": 129369972,
+        "observed_p99_ns": 335248926
+      },
+      "pools-default": {
+        "scheduled": 200,
+        "outcomes": {
+          "failure": 200
+        },
+        "first_predicate_classifications": {
+          "failure:table": 200
+        },
+        "observed_p50_ns": 52415063,
+        "observed_p95_ns": 137943165,
+        "observed_p99_ns": 512506614
+      },
+      "pools-maximum": {
+        "scheduled": 200,
+        "outcomes": {
+          "failure": 200
+        },
+        "first_predicate_classifications": {
+          "failure:table": 200
+        },
+        "observed_p50_ns": 50270990,
+        "observed_p95_ns": 134529162,
+        "observed_p99_ns": 204535244
+      },
+      "datasets-default": {
+        "scheduled": 200,
+        "outcomes": {
+          "success": 200
+        },
+        "first_predicate_classifications": {
+          "original-inventory": 200
+        },
+        "observed_p50_ns": 72470984,
+        "observed_p95_ns": 181522960,
+        "observed_p99_ns": 269925941
+      },
+      "datasets-maximum": {
+        "scheduled": 200,
+        "outcomes": {
+          "success": 200
+        },
+        "first_predicate_classifications": {
+          "original-inventory": 200
+        },
+        "observed_p50_ns": 74279089,
+        "observed_p95_ns": 201336240,
+        "observed_p99_ns": 369068919
+      }
+    },
+    "warmup_seconds_observed": 60,
+    "idle_seconds_observed": 300,
+    "supervisors": [
+      {
+        "private_directory_name": "xf55j5fw",
+        "command_sha256": "4bbb6becdb499e9a4761626bae40c8806ca89375e1ef10baa5d16b09cd240984",
+        "worker_returncode": 1,
+        "completed": true,
+        "group_cleaned": true,
+        "escalated": false,
+        "reason": "exit"
+      },
+      {
+        "private_directory_name": "bjjns1u3",
+        "command_sha256": "0acd12d0ee1e83679d5655b6736f863467a644e821fb4d76afa401d51b4d378d",
+        "worker_returncode": 1,
+        "completed": true,
+        "group_cleaned": true,
+        "escalated": false,
+        "reason": "exit"
+      }
+    ],
+    "host_teardown_independently_rechecked": true,
+    "guest_complete_parent_cleanup": "not reached",
+    "after_preflight": "not reached",
+    "failure": "ValueError: original command failed or teardown uncertain",
+    "scope_limits": [
+      "projection omitted; complete parent deliberately cannot qualify",
+      "table is first failed check; cell/header/link/value cause not distinguished",
+      "later comparison checks not reached",
+      "replacements, native crash/recovery and resource budget publication not reached",
+      "no 14.5 or both-release acceptance"
+    ]
+  },
+  "reviews": [
+    {
+      "source_commit": "f44918155eaab266b0e207e00e7045d17753cf2d",
+      "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+      "title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+      "qualified": true,
+      "plan": {
+        "mode": "focused",
+        "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+        "packages": [
+          "./cmd/horvium"
+        ],
+        "native_review_required": true
+      },
+      "result_sha256": "8eb34cb7ba94ab1086c737d27fc3f37cd1a7fb84d0beaee96731ea30b291f264",
+      "checks_log_sha256": "6231d14a18f5e76d4ac7113a58f7f5f366fea41d460f1b3bf18442e6588524df",
+      "deep_evidence": {
+        "executed": true,
+        "command": [
+          "/Users/cam/DEV/NAS/.tools/venv/bin/python3",
+          "<owned-checkout>/tools/deep-check.py",
+          "--packages",
+          "./cmd/horvium"
+        ],
+        "supervisor": {
+          "completed": true,
+          "group_cleaned": true,
+          "command_sha256": "501b91be50e400116949302e54b7fe469c40ff88bbdc810d5e9d6468b0e8fb78",
+          "group": 48126,
+          "started_at": 1791902128.434228,
+          "escalated": false,
+          "worker_returncode": 0,
+          "reason": "exit",
+          "completed_at": 1791902148.938136
+        },
+        "log_sha256": "47b8c0e329bd06e3dc4901421fea4b7aa3be0ae78cda2e8eafa0544b0f5f2b3b",
+        "result": {
+          "fuzz_targets": [],
+          "race_packages": [
+            "./cmd/horvium"
+          ]
+        }
+      }
+    },
+    {
+      "source_commit": "7dc434dcb9dd807e7d3b3482ae3a2376424ccdad",
+      "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+      "title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+      "qualified": true,
+      "plan": {
+        "mode": "focused",
+        "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+        "packages": [
+          "./cmd/horvium"
+        ],
+        "native_review_required": true
+      },
+      "result_sha256": "0d23df7419b99f8d5067e35d279110c17d33978e5e2c33a4eb3fa8dcdd62eb12",
+      "checks_log_sha256": "7eedccd48fadacfde15f2f7a810a54b4b8d102bb154a1ce63dd79f5ad24c7009",
+      "deep_evidence": {
+        "executed": true,
+        "command": [
+          "/Users/cam/DEV/NAS/.tools/venv/bin/python3",
+          "<owned-checkout>/tools/deep-check.py",
+          "--packages",
+          "./cmd/horvium"
+        ],
+        "supervisor": {
+          "completed": true,
+          "group_cleaned": true,
+          "command_sha256": "501b91be50e400116949302e54b7fe469c40ff88bbdc810d5e9d6468b0e8fb78",
+          "group": 51041,
+          "started_at": 1791902420.692554,
+          "escalated": false,
+          "worker_returncode": 0,
+          "reason": "exit",
+          "completed_at": 1791902421.3241248
+        },
+        "log_sha256": "a2aa0318b4d60f431a39dba521aefcb19b487a4487b4cebb8c6c3fc96b788be5",
+        "result": {
+          "fuzz_targets": [],
+          "race_packages": [
+            "./cmd/horvium"
+          ]
+        }
+      }
+    },
+    {
+      "source_commit": "f4a8c1b03f35d695ac2c215f28ad7120dcbeabfb",
+      "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+      "title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+      "qualified": true,
+      "plan": {
+        "mode": "focused",
+        "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+        "packages": [
+          "./cmd/horvium"
+        ],
+        "native_review_required": true
+      },
+      "result_sha256": "2b4beec895e814c584aa8abbb0845c9777e1290e88db74f85b18d9b42bed526d",
+      "checks_log_sha256": "6c6105cfda34dfba7e4075d39ff222fda4e46df515b12d41137fd96d6337516d",
+      "deep_evidence": {
+        "executed": false,
+        "reused": {
+          "record_sha256": "0d23df7419b99f8d5067e35d279110c17d33978e5e2c33a4eb3fa8dcdd62eb12",
+          "source_commit": "7dc434dcb9dd807e7d3b3482ae3a2376424ccdad",
+          "log_sha256": "a2aa0318b4d60f431a39dba521aefcb19b487a4487b4cebb8c6c3fc96b788be5",
+          "result": {
+            "fuzz_targets": [],
+            "race_packages": [
+              "./cmd/horvium"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_commit": "99274977fc326c32cff4ddeae57d8bdffa0678a0",
+      "base_commit": "393d83b861560b47b8121fe09c9895a866ecfbe9",
+      "title": "test(dashboards): diagnose native pool mismatches with bounded probes",
+      "qualified": true,
+      "plan": {
+        "mode": "focused",
+        "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+        "packages": [
+          "./cmd/horvium"
+        ],
+        "native_review_required": true
+      },
+      "result_sha256": "12445e2a95b42d686e42f7d8fa17a07ae7889ce145d4d933edb82e6a4b18a139",
+      "checks_log_sha256": "57aa15f0a19dc2e9c282e08dbc1c640141fd2370600266e9e20b90b81b6c79d5",
+      "deep_evidence": {
+        "executed": false,
+        "reused": {
+          "record_sha256": "0d23df7419b99f8d5067e35d279110c17d33978e5e2c33a4eb3fa8dcdd62eb12",
+          "source_commit": "7dc434dcb9dd807e7d3b3482ae3a2376424ccdad",
+          "log_sha256": "a2aa0318b4d60f431a39dba521aefcb19b487a4487b4cebb8c6c3fc96b788be5",
+          "result": {
+            "fuzz_targets": [],
+            "race_packages": [
+              "./cmd/horvium"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "scope_limits": [
+    "research and failure-classification evidence only",
+    "short sequential probe does not reproduce the historical mismatch",
+    "original-timing native-small reproduces first table failure; exact cell/header/link/value cause remains unknown",
+    "comparison checks after the failing table are not reached",
+    "no 14.5 or complete both-release qualification",
+    "original resource budgets, workflows and predicates unchanged",
+    "startup recovery and manual browser accessibility remain open",
+    "runtime storage writes disabled"
+  ]
+}
