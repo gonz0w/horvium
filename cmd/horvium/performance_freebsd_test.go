@@ -101,6 +101,36 @@ func sampleUsage(pids [2]int) (processUsage, error) {
 	}
 	return parseUsage(b, pids)
 }
+func sampleDashboardCPU(pids [2]int) (dashboardCPUCounters, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, "/bin/ps", "-p", strconv.Itoa(pids[0])+","+strconv.Itoa(pids[1]), "-o", "pid=", "-o", "usertime=", "-o", "systime=")
+	cmd.Env = []string{"LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
+	data, err := cmd.Output()
+	if err != nil {
+		return dashboardCPUCounters{}, errors.New("paired CPU observation unavailable")
+	}
+	return dashboardParseCPU(data, pids)
+}
+func observeDashboardIdle(t *testing.T, pids [2]int, label string) dashboardIdleObservation {
+	t.Helper()
+	started := time.Now() // envelope includes the two bounded ps observations
+	before, err := sampleDashboardCPU(pids)
+	if err != nil {
+		t.Fatal(err)
+	}
+	performancePause(t, 300*time.Second, label)
+	after, err := sampleDashboardCPU(pids)
+	if err != nil {
+		t.Fatal(err)
+	}
+	observation, err := dashboardObserveIdle(before, after, time.Since(started))
+	if err != nil {
+		t.Fatal(err)
+	}
+	return observation
+}
+
 func newUsageMonitor(pids [2]int) *usageMonitor {
 	m := &usageMonitor{pids: pids, stop: make(chan struct{}), done: make(chan struct{})}
 	go func() {
@@ -243,7 +273,7 @@ func (s *performanceSession) ready(t *testing.T, count int, previous string) str
 
 // Publish sanitized partial fixture observations even on a failed phase. These
 // cannot qualify the full resource contract or replace independently bound host records.
-func measureDashboardFixture(t *testing.T, p *performancePair, prepared *dashboardPreparedFixture) dashboardWireQuantiles {
+func measureDashboardFixture(t *testing.T, p *performancePair, prepared *dashboardPreparedFixture) dashboardMeasuredWorkload {
 	t.Helper()
 	previous := p.session.overview(t).Generation // controller read before timed phases
 	result, err := dashboardMeasureWorkload(func(phase string) (*dashboardPhaseReceipt, []dashboardSample, error) {
@@ -257,26 +287,26 @@ func measureDashboardFixture(t *testing.T, p *performancePair, prepared *dashboa
 		}
 		return err
 	})
-	record := struct {
-		Mode           string                    `json:"mode"`
-		Fixture        dashboardFixtureReceipt   `json:"fixture"`
-		Phases         dashboardMeasuredWorkload `json:"phases"`
-		InitialRaw     []dashboardWireSample     `json:"initial_raw"`
-		ReplacementRaw []dashboardWireSample     `json:"replacement_raw"`
-		WorkloadPassed bool                      `json:"workload_passed"`
-	}{prepared.mode, prepared.fixture, result, dashboardRawWire(result.InitialRaw), dashboardRawWire(result.ReplacementRaw), err == nil}
-	encoded, e := json.Marshal(record)
-	if e != nil {
-		t.Fatal("dashboard workload observation encoding")
-	}
-	t.Log("DASHBOARD_WORKLOAD " + string(encoded))
 	if err != nil {
+		record := struct {
+			Mode           string                    `json:"mode"`
+			Fixture        dashboardFixtureReceipt   `json:"fixture"`
+			Phases         dashboardMeasuredWorkload `json:"phases"`
+			InitialRaw     []dashboardWireSample     `json:"initial_raw"`
+			ReplacementRaw []dashboardWireSample     `json:"replacement_raw"`
+			WorkloadPassed bool                      `json:"workload_passed"`
+		}{prepared.mode, prepared.fixture, result, dashboardRawWire(result.InitialRaw), dashboardRawWire(result.ReplacementRaw), err == nil}
+		encoded, e := json.Marshal(record)
+		if e != nil {
+			t.Fatal("dashboard workload observation encoding")
+		}
+		t.Log("DASHBOARD_WORKLOAD " + string(encoded))
 		t.Fatal(err)
 	}
-	return *result.Initial.Summary["all"].SuccessLatency
+	return result
 }
 
-func performancePause(t *testing.T, d time.Duration, label string) {
+func performancePause(t *testing.T, d time.Duration, label string) time.Duration {
 	t.Helper()
 	started := time.Now()
 	ticker := time.NewTicker(30 * time.Second)
@@ -286,7 +316,7 @@ func performancePause(t *testing.T, d time.Duration, label string) {
 	for {
 		select {
 		case <-timer.C:
-			return
+			return time.Since(started)
 		case <-ticker.C:
 			t.Logf("performance phase=%s elapsed_seconds=%.0f", label, time.Since(started).Seconds())
 		}
@@ -384,16 +414,51 @@ func writePerformanceControl(t *testing.T, path string, c performanceControl) {
 		t.Fatal("fixture control publication")
 	}
 }
-func (p *performancePair) stop(t *testing.T) (uint64, uint64, int, time.Duration) {
+func (p *performancePair) stopResources(t *testing.T) dashboardResourceMeasurements {
 	t.Helper()
 	sampled, samples, gap := p.monitor.finish(t)
 	p.management.stop(t, syscall.SIGTERM, true)
 	p.helper.stop(t, syscall.SIGTERM, true)
-	peak := peakProcessRSS(t, p.management) + peakProcessRSS(t, p.helper)
-	if _, e := os.Lstat(p.config.HelperSocket); !os.IsNotExist(e) {
+	managementHigh, helperHigh := peakProcessRSS(t, p.management), peakProcessRSS(t, p.helper)
+	if _, err := os.Lstat(p.config.HelperSocket); !os.IsNotExist(err) {
 		t.Fatal("performance helper socket leaked")
 	}
-	return sampled, peak, samples, gap
+	return dashboardResourceMeasurements{SampledRSS: sampled, ManagementHigh: managementHigh, HelperHigh: helperHigh, Samples: samples, MaxGap: gap}
+}
+func (p *performancePair) stop(t *testing.T) (uint64, uint64, int, time.Duration) {
+	t.Helper()
+	measured := p.stopResources(t)
+	return measured.SampledRSS, measured.ManagementHigh + measured.HelperHigh, measured.Samples, measured.MaxGap
+}
+func publishDashboardResource(t *testing.T, prepared *dashboardPreparedFixture, work dashboardMeasuredWorkload, measured dashboardResourceMeasurements, native bool) {
+	t.Helper()
+	record, err := dashboardBuildResource(prepared, work, measured)
+	if err != nil {
+		failed := struct {
+			Mode         string                        `json:"mode"`
+			Fixture      dashboardFixtureReceipt       `json:"fixture"`
+			Measurements dashboardResourceMeasurements `json:"measurements"`
+			Phases       dashboardMeasuredWorkload     `json:"phases"`
+		}{prepared.mode, prepared.fixture, measured, work}
+		if data, e := json.Marshal(failed); e == nil {
+			t.Log("DASHBOARD_RESOURCE_FAILURE " + string(data))
+		}
+		t.Fatal(err)
+	}
+	encoded, err := json.Marshal(record)
+	if err != nil {
+		t.Fatal("dashboard resource observation encoding")
+	}
+	t.Log("DASHBOARD_RESOURCE " + string(encoded))
+	legacy, err := json.Marshal(dashboardLegacyResource(record, native))
+	if err != nil {
+		t.Fatal("legacy resource observation encoding")
+	}
+	marker := "PERFORMANCE_RESULT "
+	if native {
+		marker = "NATIVE_READER_RESULT "
+	}
+	t.Log(marker + string(legacy))
 }
 func TestNativePerformanceBudgets(t *testing.T) {
 	if os.Getenv("HORVIUM_NATIVE_VM") != "1" || os.Getenv("HORVIUM_PERF_VM") != "1" {
@@ -405,51 +470,19 @@ func TestNativePerformanceBudgets(t *testing.T) {
 	for _, count := range []int{100, 10000} {
 		t.Run(strconv.Itoa(count), func(t *testing.T) {
 			p := newPerformancePair(t, count, false)
-			performancePause(t, 60*time.Second, "warmup-"+strconv.Itoa(count))
-			idle := float64(0)
+			warmup := performancePause(t, 60*time.Second, "warmup-"+strconv.Itoa(count))
+			var idle dashboardIdleObservation
 			if count == 100 {
-				before, e := sampleUsage(p.monitor.pids)
-				if e != nil {
-					t.Fatal(e)
-				}
-				started := time.Now()
-				performancePause(t, 300*time.Second, "idle")
-				after, e := sampleUsage(p.monitor.pids)
-				if e != nil {
-					t.Fatal(e)
-				}
-				idle, e = idlePercent(before.CPU, after.CPU, time.Since(started))
-				if e != nil {
-					t.Fatal(e)
-				}
+				idle = observeDashboardIdle(t, p.monitor.pids, "idle")
 			}
 			prepared, e := newDashboardPreparedFixture("synthetic-"+strconv.Itoa(count), performanceSnapshot(count, 0), nil)
 			if e != nil {
 				t.Fatal(e)
 			}
-			latency := measureDashboardFixture(t, p, prepared)
-			sampled, peak, samples, gap := p.stop(t)
-			budgetPeak := max(sampled, peak)
-			p50, p95, p99 := time.Duration(latency.P50NS), time.Duration(latency.P95NS), time.Duration(latency.P99NS)
-			record := map[string]any{"datasets": count, "clients": 10, "session_count": 1, "requests": 1000, "replacement_requests": 1000, "replacements": 3, "warmup_seconds": 60, "idle_seconds": 0, "idle_cpu_percent_one_core": idle, "sampled_combined_peak_rss_bytes": sampled, "conservative_combined_high_water_rss_bytes": peak, "budget_peak_rss_bytes": budgetPeak, "rss_samples": samples, "max_sample_gap_ms": float64(gap.Microseconds()) / 1000, "p50_ms": float64(p50.Microseconds()) / 1000, "p95_ms": float64(p95.Microseconds()) / 1000, "p99_ms": float64(p99.Microseconds()) / 1000}
-			if count == 100 {
-				record["idle_seconds"] = 300
-			}
-			encoded, _ := json.Marshal(record)
-			t.Log("PERFORMANCE_RESULT " + string(encoded))
-			budget := uint64(256 << 20)
-			if count == 100 {
-				budget = 128 << 20
-				if idle >= 1 {
-					t.Errorf("small idle CPU exceeds 1%%: %.4f", idle)
-				}
-			}
-			if budgetPeak > budget {
-				t.Errorf("combined measured RSS exceeds budget: %d > %d", budgetPeak, budget)
-			}
-			if count == 10000 && p95 >= 250*time.Millisecond {
-				t.Errorf("large p95 exceeds 250 ms: %v", p95)
-			}
+			work := measureDashboardFixture(t, p, prepared)
+			measured := p.stopResources(t)
+			measured.Warmup, measured.Idle = warmup, idle
+			publishDashboardResource(t, prepared, work, measured, false)
 		})
 	}
 	t.Run("limits", func(t *testing.T) {

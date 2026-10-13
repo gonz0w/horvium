@@ -248,23 +248,10 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 					t.Fatal("independent owned native GUID mismatch")
 				}
 			}
-			performancePause(t, 60*time.Second, "reader-warmup-"+mode)
-			idle := float64(0)
+			warmup := performancePause(t, 60*time.Second, "reader-warmup-"+mode)
+			var idle dashboardIdleObservation
 			if mode == "native-small" {
-				before, e := sampleUsage(monitor.pids)
-				if e != nil {
-					t.Fatal(e)
-				}
-				started := time.Now()
-				performancePause(t, 300*time.Second, "reader-native-idle")
-				after, e := sampleUsage(monitor.pids)
-				if e != nil {
-					t.Fatal(e)
-				}
-				idle, e = idlePercent(before.CPU, after.CPU, time.Since(started))
-				if e != nil || idle >= 1 {
-					t.Fatal("native reader idle CPU budget")
-				}
+				idle = observeDashboardIdle(t, monitor.pids, "reader-native-idle")
 			}
 			// Independently collect original native facts after warm-up/idle.
 			// Do not obtain expectations from management responses or refresh them.
@@ -286,9 +273,9 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 			if prepared.count != count || prepared.fixture.OwnedDatasets != owned {
 				t.Fatal("original native fixture scope changed")
 			}
-			latency := measureDashboardFixture(t, p, prepared)
+			work := measureDashboardFixture(t, p, prepared)
 			sampled, samples, gap := monitor.finish(t)
-			var highWater uint64
+			var helperHigh uint64
 			if mode == "native-small" {
 				socket, e := os.Lstat(c.HelperSocket)
 				if e != nil {
@@ -311,12 +298,11 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 				p.session.ready(t, count, before)
 				helper.stop(t, syscall.SIGTERM, true)
 				management.stop(t, syscall.SIGTERM, true)
-				peak := max(originalPeak, peakProcessRSS(t, helper)) + peakProcessRSS(t, management)
-				highWater = peak
+				helperHigh = max(originalPeak, peakProcessRSS(t, helper))
 			} else {
 				helper.stop(t, syscall.SIGTERM, true)
 				management.stop(t, syscall.SIGTERM, true)
-				highWater = peakProcessRSS(t, helper) + peakProcessRSS(t, management)
+				helperHigh = peakProcessRSS(t, helper)
 			}
 			configAfter, _ := os.ReadFile(path)
 			digestAfter, _ := os.ReadFile(digestPath)
@@ -329,19 +315,8 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 			if mode == "native-small" {
 				t.Log("NATIVE_READER_CRASH captured_native_command=pass subtree_exit=pass stale_retention=pass recovery=pass boot_state=unchanged")
 			}
-			budget := uint64(256 << 20)
-			if mode == "native-small" {
-				budget = 128 << 20
-			}
-			if max(sampled, highWater) > budget || mode == "projection-10000" && time.Duration(latency.P95NS) >= 250*time.Millisecond {
-				t.Fatal("native reader resource/latency budget")
-			}
-			record := map[string]any{"mode": mode, "datasets": count, "owned_datasets": owned, "clients": 10, "requests": 1000, "replacement_requests": 1000, "replacements": 3, "warmup_seconds": 60, "idle_seconds": 0, "idle_cpu_percent_one_core": idle, "sampled_combined_peak_rss_bytes": sampled, "conservative_combined_high_water_rss_bytes": highWater, "budget_peak_rss_bytes": max(sampled, highWater), "rss_samples": samples, "max_sample_gap_ms": float64(gap.Microseconds()) / 1000, "p50_ms": float64(time.Duration(latency.P50NS).Microseconds()) / 1000, "p95_ms": float64(time.Duration(latency.P95NS).Microseconds()) / 1000, "p99_ms": float64(time.Duration(latency.P99NS).Microseconds()) / 1000}
-			if mode == "native-small" {
-				record["idle_seconds"] = 300
-			}
-			encoded, _ = json.Marshal(record)
-			t.Log("NATIVE_READER_RESULT " + string(encoded))
+			measured := dashboardResourceMeasurements{Warmup: warmup, SampledRSS: sampled, ManagementHigh: peakProcessRSS(t, management), HelperHigh: helperHigh, Samples: samples, MaxGap: gap, Idle: idle}
+			publishDashboardResource(t, prepared, work, measured, true)
 		})
 	}
 }

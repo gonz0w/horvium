@@ -57,7 +57,9 @@ its runner wiring and actual both-release execution remain separate reviews. The
 [prepared controller/phase adapter](../../testing/dashboards/workload-receipt-adapter.md)
 binds original inputs and raw observations. The [native fixture bindings](../../testing/dashboards/native-fixture-bindings.md)
 connect the four test-only modes while gating performance execution/qualification
-until full independent host receipts are reviewed. Leave
+until full independent host receipts are reviewed. The
+[per-mode resource record slice](../../testing/dashboards/resource-measurement-records.md)
+retains actual resource/procedure observations without opening that execution gate. Leave
 runtime, source model limits, collectors and file-service separation unchanged.
 Then select one clean signed assembled candidate, actual PR title and pinned Go
 compiler/artifacts for native execution. A failed candidate is retained with its

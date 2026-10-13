@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "date": "2026-10-12",
+  "scope": "test-only per-mode resource observation publication; no native execution or full candidate acceptance",
+  "source_commit": "31a9d55177b38b6116c3f1f6d77a2eb328326760",
+  "base_commit": "c895d987d1cc140fe52418b62b1bfed2bf113489",
+  "actual_pr_title": "test(dashboards): publish per-mode resource observations",
+  "review": {
+    "qualified": true,
+    "mode": "focused",
+    "packages": [
+      "./cmd/horvium"
+    ],
+    "report_sha256": "99075388f0aa94c3e23b1cc37437d326c48afbe3e773fb5d2bf6d6e83e9b9c8e",
+    "checks_log_sha256": "46c725870b27a73bbf6330e2d7698f185acd8c6949ca06ccbaa98847fa6f940a",
+    "deep_log_sha256": "f8b000d1337f54e09bdb995c6e288eb35d68bc4aa951c07b627c86f1b847cf69",
+    "required_check_lint_test_secrets": true,
+    "tooling_tests": 271,
+    "ordinary_go_tests": true,
+    "race_packages": [
+      "./cmd/horvium"
+    ],
+    "fuzz_targets": [],
+    "native_review_required": true
+  },
+  "behavioral_tests": {
+    "parents": 9,
+    "separate_rounded_cpu_fields_and_owned_identity": true,
+    "bounded_malformed_missing_duplicate_and_overflow_rejection": true,
+    "actual_wall_delta_and_regression": true,
+    "detached_four_mode_json": true,
+    "revalidate_raw_phase_summaries_and_replacements": true,
+    "missing_nonfinite_or_fabricated_idle_rejected": true,
+    "sampled_and_high_water_budget_edges": true,
+    "large_per_case_budget_failure_rejected": true,
+    "go_json_passed_independent_python_validate_mode": true,
+    "separate_safe_expiry_and_legacy_microsecond_truncation": true,
+    "native_measurements": false,
+    "first_red": "undefined CPU/resource helpers; preserved private focused-test failure log",
+    "development_limit": "A private preservation audit initially used the new code marker in the old source and was corrected; no native candidate executed."
+  },
+  "cpu_source_review": {
+    "projection": "/bin/ps pid= usertime= systime=; LC_ALL=C, two owned PIDs, no -S",
+    "display_resolution_ns": 10000000,
+    "nanosecond_kernel_precision_claim": false,
+    "wall_envelope": "actual monotonic interval including two bounded CPU observations and full 300-second idle pause",
+    "release_sources": [
+      "https://github.com/freebsd/freebsd-src/blob/releng/14.5/bin/ps/keyword.c",
+      "https://github.com/freebsd/freebsd-src/blob/releng/14.5/bin/ps/print.c",
+      "https://github.com/freebsd/freebsd-src/blob/releng/15.1/bin/ps/keyword.c",
+      "https://github.com/freebsd/freebsd-src/blob/releng/15.1/bin/ps/print.c"
+    ],
+    "child_sum_option_source": {
+      "url": "https://github.com/freebsd/freebsd-src/blob/releng/15.1/bin/ps/ps.c",
+      "git_blob": "94218f8cb2aa37b21efe30dc68035d14b82c384a",
+      "release": "15.1",
+      "source_checked": true,
+      "child_sum_flag": "S"
+    }
+  },
+  "freebsd_cross_build": {
+    "target": "FreeBSD/amd64/v1",
+    "source_commit": "31a9d55177b38b6116c3f1f6d77a2eb328326760",
+    "go_version": "go version go1.27.1 darwin/arm64",
+    "bytes": 18733674,
+    "sha256": "8b606ad606840e1716900b5776d25facc72551531af3073c20c322d86adf2cf5",
+    "cgo_enabled": false,
+    "executed": false,
+    "removed": true
+  },
+  "preservation": {
+    "base": "c895d987d1cc140fe52418b62b1bfed2bf113489",
+    "historical_manifests_byte_identical": 142,
+    "cap_recovery_body_sha256": "81be9c5694904bb5aa74b3ff5a80d3a69205b0910ba99148a1b53a67930d1787",
+    "native_boot_socket_crash_marker_body_sha256": "13cd878dbe7281e6940df6ca0753ee8811222acb830c2f890c5473d345a832fa",
+    "restarted_helper_conservative_max_preserved": true,
+    "runner_guards_validators_projection_unchanged": true,
+    "runtime_modules_workflows_unchanged": true,
+    "rss_sampler_and_original_model_generator_unchanged": true
+  },
+  "teardown": {
+    "owned_records_stopped_verified": 230,
+    "status_log_sha256": "843470f38f782b764657bcce05982eb02f86946fcf11b9fc3aefc795adf4be6f",
+    "vm_started": false,
+    "host_service_enabled": false,
+    "cross_build_removed": true
+  },
+  "acceptance": {
+    "portable_component": true,
+    "per_mode_fixture_record_implementation": true,
+    "full_candidate_control_teardown_binding": false,
+    "native_execution": false,
+    "native_resource_performance": false,
+    "dashboard_delivery": false,
+    "browser_manual_accessibility": false,
+    "hardware_commercial_scale": false,
+    "runtime_writes": false
+  },
+  "limits": [
+    "Go-generated four-mode records and CPU projections are synthetic contract fixtures, not observed native metrics.",
+    "Displayed ps user/system times have hundredth-second rounding; conversion preserves units, not nanosecond kernel precision.",
+    "Probes read rows non-atomically; observed wall is a bounded probe envelope, with no added uncertainty tolerance or CPU budget.",
+    "Native small requires original fixed accounting and three overlapping replacements; no rebaseline, pacing, shortened observations or measured-request retries.",
+    "Individual management/helper high-water RSS and restarted-helper conservative maximum are wired in source but unexecuted.",
+    "Full independently bound candidate/compiler/artifact/release, native control completion and guest/host supervisor teardown remain before execution.",
+    "Execution/result guards, historical/strict validators and all 142 historical manifests retain their original scope.",
+    "Lifecycle 305/139, historical startup uncertainty, browser/manual, continuity, hardware/commercial and release gates stay open; runtime writes disabled."
+  ]
+}
