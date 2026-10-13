@@ -460,6 +460,30 @@ func publishDashboardResource(t *testing.T, prepared *dashboardPreparedFixture, 
 	}
 	t.Log(marker + string(legacy))
 }
+func nativeDashboardControlLedger(t *testing.T) *dashboardControlLedger {
+	t.Helper()
+	ledger, err := newDashboardControlLedger(t.Name())
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		if t.Failed() || t.Skipped() {
+			return
+		}
+		record, err := ledger.finish()
+		if err != nil {
+			t.Error("dashboard parent controls incomplete")
+			return
+		}
+		data, err := json.Marshal(record)
+		if err != nil {
+			t.Error("dashboard parent control encoding")
+			return
+		}
+		t.Log("NATIVE_DASHBOARD_CONTROLS " + string(data))
+	})
+	return ledger
+}
 func TestNativePerformanceBudgets(t *testing.T) {
 	if os.Getenv("HORVIUM_NATIVE_VM") != "1" || os.Getenv("HORVIUM_PERF_VM") != "1" {
 		t.Skip("explicit disposable performance VM opt-in required")
@@ -467,6 +491,7 @@ func TestNativePerformanceBudgets(t *testing.T) {
 	if os.Getuid() != 0 {
 		t.Fatal("performance fixture requires root")
 	}
+	ledger := nativeDashboardControlLedger(t)
 	for _, count := range []int{100, 10000} {
 		t.Run(strconv.Itoa(count), func(t *testing.T) {
 			p := newPerformancePair(t, count, false)
@@ -479,20 +504,30 @@ func TestNativePerformanceBudgets(t *testing.T) {
 			if e != nil {
 				t.Fatal(e)
 			}
+			if err := ledger.declare(prepared); err != nil {
+				t.Fatal(err)
+			}
 			work := measureDashboardFixture(t, p, prepared)
 			measured := p.stopResources(t)
 			measured.Warmup, measured.Idle = warmup, idle
+			if err := ledger.completeMode(prepared, work, measured); err != nil {
+				t.Fatal(err)
+			}
 			publishDashboardResource(t, prepared, work, measured, false)
 		})
 	}
 	t.Run("limits", func(t *testing.T) {
+		boundary := new(dashboardBoundaryControl)
 		p := newPerformancePair(t, 100, true)
 		previous := p.session.overview(t).Generation
 		writePerformanceControl(t, p.control, performanceControl{Datasets: 99990})
 		p.session.refresh(t)
 		previous = p.session.ready(t, 99990, previous)
+		if err := boundary.step("accepted-model", dashboardDeclaredModelRecords(99990, 0)); err != nil {
+			t.Fatal(err)
+		}
 		// Model records: 99,990 datasets + class/four geoms/four providers/pool = 100,000.
-		for _, control := range []performanceControl{{Datasets: 99991}, {Datasets: 20000, Padding: 4000}} {
+		for i, control := range []performanceControl{{Datasets: 99991}, {Datasets: 20000, Padding: 4000}} {
 			writePerformanceControl(t, p.control, control)
 			p.session.refresh(t)
 			performanceWait(t, func() bool {
@@ -516,11 +551,26 @@ func TestNativePerformanceBudgets(t *testing.T) {
 				o := p.session.overview(t)
 				return o.Generation == previous && o.Datasets.Stale
 			})
+			event := []string{"record-exhaustion", "byte-exhaustion"}[i]
+			if err := boundary.step(event, dashboardDeclaredModelRecords(control.Datasets, control.Padding)); err != nil {
+				t.Fatal(err)
+			}
 		}
 		writePerformanceControl(t, p.control, performanceControl{Datasets: 100})
 		p.session.refresh(t)
 		p.session.ready(t, 100, previous)
-		sampled, peak, samples, gap := p.stop(t)
+		if err := boundary.step("recovery", dashboardDeclaredModelRecords(100, 0)); err != nil {
+			t.Fatal(err)
+		}
+		measured := p.stopResources(t)
+		observed, err := boundary.finish(measured)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := ledger.boundary(observed); err != nil {
+			t.Fatal(err)
+		}
+		sampled, peak, samples, gap := measured.SampledRSS, measured.ManagementHigh+measured.HelperHigh, measured.Samples, measured.MaxGap
 		t.Logf("PERFORMANCE_LIMITS accepted_model_records=100000 record_exhaustion=pass byte_exhaustion=pass recovery=pass sampled_rss_bytes=%d high_water_sum_bytes=%d samples=%d max_gap_ms=%.1f", sampled, peak, samples, float64(gap.Microseconds())/1000)
 	})
 }

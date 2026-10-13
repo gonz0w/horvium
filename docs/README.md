@@ -288,6 +288,9 @@
   observed CPU/wall/RSS/warm-up and complete phases; native execution stays gated
   pending independent candidate/control/teardown bindings.
 
+- [Original dashboard control observations](testing/dashboards/control-observations.md):
+  detached fixture expectations, validated predicate/GUID counts and completed
+  boundary/native controls; complete independently bound cleanup remains pending.
 - [Disposable native storage cleanup](testing/dashboards/native-storage-cleanup.md):
   original pool/device ownership, bounded successful absence checks, and scoped
   final-callback observations; actual native and complete teardown acceptance remain.

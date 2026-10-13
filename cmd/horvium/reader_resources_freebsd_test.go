@@ -176,6 +176,7 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 	if os.Geteuid() != 0 {
 		t.Fatal("reader resource fixture requires root")
 	}
+	ledger := nativeDashboardControlLedger(t)
 	for _, mode := range []string{"native-small", "projection-10000"} {
 		t.Run(mode, func(t *testing.T) {
 			count, owned := 10000, 0
@@ -273,20 +274,39 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 			if prepared.count != count || prepared.fixture.OwnedDatasets != owned {
 				t.Fatal("original native fixture scope changed")
 			}
+			if err := ledger.declare(prepared); err != nil {
+				t.Fatal(err)
+			}
 			work := measureDashboardFixture(t, p, prepared)
 			sampled, samples, gap := monitor.finish(t)
 			var helperHigh uint64
+			var recovery dashboardNativeControl
 			if mode == "native-small" {
 				socket, e := os.Lstat(c.HelperSocket)
 				if e != nil {
 					t.Fatal("owned socket")
 				}
 				probe := freezeReaderProbe(t, p)
+				if err := recovery.captured(helper.cmd.Process.Pid, probe.guard, probe.command); err != nil {
+					t.Fatal(err)
+				}
 				before := p.session.overview(t).Generation
 				helper.stop(t, syscall.SIGKILL, false)
 				readerProcessStopped(t, probe.command)
 				readerProcessStopped(t, probe.guard)
-				performanceWait(t, func() bool { o := p.session.overview(t); return o.Generation == before && o.Datasets.Stale })
+				if err := recovery.subtreeExited(); err != nil {
+					t.Fatal(err)
+				}
+				performanceWait(t, func() bool {
+					o := p.session.overview(t)
+					if o.Generation != before || !o.Datasets.Stale {
+						return false
+					}
+					if err := recovery.retained(before, o.Generation, o.Datasets.Stale); err != nil {
+						t.Fatal(err)
+					}
+					return true
+				})
 				current, e := os.Lstat(c.HelperSocket)
 				if e != nil || !os.SameFile(socket, current) || os.Remove(c.HelperSocket) != nil {
 					t.Fatal("owned stale socket")
@@ -295,7 +315,10 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 				helper = startNativeProcess(t, binary, []string{"helper", "-config", path}, 0, 0)
 				performanceWait(t, func() bool { info, e := os.Stat(c.HelperSocket); return e == nil && info.Mode().Perm() == 0660 })
 				p.session.refresh(t)
-				p.session.ready(t, count, before)
+				recovered := p.session.ready(t, count, before)
+				if err := recovery.recovered(before, recovered); err != nil {
+					t.Fatal(err)
+				}
 				helper.stop(t, syscall.SIGTERM, true)
 				management.stop(t, syscall.SIGTERM, true)
 				helperHigh = max(originalPeak, peakProcessRSS(t, helper))
@@ -313,9 +336,19 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 				t.Fatal("native helper socket leaked")
 			}
 			if mode == "native-small" {
+				observed, err := recovery.unchangedBoot(beforeConfig, configAfter, beforeDigest, digestAfter)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if err := ledger.native(observed); err != nil {
+					t.Fatal(err)
+				}
 				t.Log("NATIVE_READER_CRASH captured_native_command=pass subtree_exit=pass stale_retention=pass recovery=pass boot_state=unchanged")
 			}
 			measured := dashboardResourceMeasurements{Warmup: warmup, SampledRSS: sampled, ManagementHigh: peakProcessRSS(t, management), HelperHigh: helperHigh, Samples: samples, MaxGap: gap, Idle: idle}
+			if err := ledger.completeMode(prepared, work, measured); err != nil {
+				t.Fatal(err)
+			}
 			publishDashboardResource(t, prepared, work, measured, true)
 		})
 	}

@@ -1943,3 +1943,19 @@ qualify test-controller implementation only. Native both-release behavior and
 complete independently bound execution/cleanup receipts remain pending. Runtime,
 legacy/strict validators, performance execution guards and historical receipts
 remain unchanged; writes remain disabled.
+
+## Original dashboard fixture/control prerequisite (2026-10-12)
+
+The [test-only ledger](../testing/dashboards/control-observations.md) captures
+detached original fixture counts/digests before timed requests and records only
+complete raw-validated phases and ordered completed boundary/native controls.
+Native owned GUID comparisons are counted at their original assertion loop.
+A sanitized parent observation is emitted after successful subtests/cleanup;
+invalid/changed/duplicate input cannot be retried into a pass. This is partial
+controller evidence, not the strict full control record, native execution or
+whole guest/pair descendants/socket/host cleanup acceptance. Portable synthetic
+behavioral checks and unexecuted FreeBSD cross-build qualify implementation only.
+Existing resource budgets, native recovery controls, legacy/strict validators,
+performance execution guards and historical receipts remain unchanged. Both-release
+native resources and full independent runner/cleanup binding remain pending;
+runtime writes remain disabled and broader gates remain open.
