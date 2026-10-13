@@ -14,6 +14,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"syscall"
 	"testing"
 	"time"
@@ -34,18 +35,22 @@ func TestNativeDashboardFocusedDiagnosis(t *testing.T) {
 	}
 	owner := newDashboardGuestOwner(t)
 	t.Cleanup(func() {
+		clean := true
 		for mode, dir := range owner.directories {
 			if _, err := os.Lstat(dir); !os.IsNotExist(err) {
+				clean = false
 				t.Error("diagnostic directory cleanup uncertain")
 			}
 			if _, err := os.Lstat(owner.sockets[mode]); !os.IsNotExist(err) {
+				clean = false
 				t.Error("diagnostic socket cleanup uncertain")
 			}
 		}
 		if owner.storageCleanups != 1 || len(owner.directories) != 3 || dashboardReaperEmpty() != nil || !reflect.DeepEqual(owner.artifacts, observeDashboardParentArtifacts(t)) {
+			clean = false
 			t.Error("diagnostic storage/descendant/artifact observations incomplete")
 		}
-		t.Logf("DASHBOARD_DIAGNOSTIC_CLEANUP verified=%t qualified=false native_acceptance=false", !t.Failed())
+		t.Logf("DASHBOARD_DIAGNOSTIC_CLEANUP verified=%t qualified=false native_acceptance=false", clean)
 	})
 	for _, mode := range []string{"native-reduced", "projection-10000", "synthetic-10000"} {
 		t.Run(mode, func(t *testing.T) {
@@ -94,7 +99,13 @@ func TestNativeDashboardFocusedDiagnosis(t *testing.T) {
 				management := startNativeProcess(t, binary, []string{"serve", "-config", path}, c.ManagementUID, c.SocketGID)
 				pair = &performancePair{config: c, path: path, helper: helper, management: management}
 				pair.session = newPerformanceSession(t, c, token)
-				performanceWait(t, func() bool { return pair.session.overview(t).Datasets.Status == inventory.OK })
+				count := 10000
+				if mode == "native-reduced" {
+					count = len(strings.Fields(string(readerFixtureCommand(t, "/sbin/zfs", "list", "-H", "-t", "filesystem", "-o", "name"))))
+				}
+				// Existing readiness tolerates initial 503 and requires a complete,
+				// fresh publication. The strict overview reader is only safe after it.
+				pair.session.ready(t, count, "")
 				source, err := freebsd.New(c.InventoryLimits())
 				if err != nil {
 					t.Fatal("diagnostic independent collector")

@@ -16,10 +16,11 @@ DASH-REQ-006 / DASH-PERF-001. Preserve the
 Can fixed predicate classifications and an independent original-to-cache pool
 comparison distinguish the native table mismatch, and do complete JSON/HTML
 responses expose different costs in the same paired-process guest?
-One source-bound disposable FreeBSD 15.1 diagnostic attempt, with an eight-minute
+One source-bound disposable FreeBSD 15.1 diagnostic attempt per reviewed candidate, with an eight-minute
 Go-test deadline and ten-minute owned command deadline, follows signed clean local
 review. Preparation/boot retain their existing bounded owned deadlines. Do not
-retry a failed diagnostic to obtain a passing result. FreeBSD 14.5 and the full
+retry the same failed diagnostic to obtain a passing result. A reproduced setup
+defect requires corrected signed source and fresh local review before new execution. FreeBSD 14.5 and the full
 resource procedure remain unexecuted in this spike. Research observations require
 review before any change to the fixture contract or runtime behavior.
 
@@ -75,7 +76,12 @@ Historical manifests and primary operator edits remain unchanged.
 
 ## Findings and remaining work
 
-Execution has not occurred at this preparation source. A followup receipt retains
+Preparation candidate `f44918155eaab266b0e207e00e7045d17753cf2d` exposed an
+initial-publication setup defect: its strict Overview reader encountered HTTP 503
+before native/projection inventory was ready. This failed execution stays retained.
+The correction uses the existing complete/fresh readiness wait, with an independent
+native count or the declared projection count; it changes no product or acceptance
+contract. New execution requires a new signed, reviewed candidate. A followup receipt retains
 the exact executed candidate and actual findings. This spike cannot close issue
 382 or broader dashboard/native/browser/release gates. An adopted correction needs
 new reviewed source and both unchanged full native resource procedures. Runtime
