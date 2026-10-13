@@ -60,7 +60,11 @@ portable regression.
 Use existing candidate build, byte-verified transfer, guest artifact preflight and
 owned process facilities. The private one-off host controller is a scoped copy of
 the existing `release_worker`: its fixed command invokes only this Go diagnostic;
-full resource assembly/original sidecar retrieval is omitted. Preserve its actual
+full resource assembly/original sidecar retrieval is omitted. After a five-second
+SSH banner timeout during preparation, only this research transfer's connection
+window is fixed at 20 seconds. No actual Go diagnostic ran in that preparation;
+it remains a failed preparation record. The canonical qualification runner,
+resource command deadline and budgets are unchanged. Preserve its actual
 source/hash with private evidence and disclose this scope. It is development
 research orchestration, not a new qualification suite or production tool. Record
 signed source/base/title/review, build/archive/artifact hashes, actual original
@@ -81,7 +85,12 @@ initial-publication setup defect: its strict Overview reader encountered HTTP 50
 before native/projection inventory was ready. This failed execution stays retained.
 The correction uses the existing complete/fresh readiness wait, with an independent
 native count or the declared projection count; it changes no product or acceptance
-contract. New execution requires a new signed, reviewed candidate. A followup receipt retains
+contract. The corrected source `7dc434dcb9dd807e7d3b3482ae3a2376424ccdad` passed local
+review but its guest stopped during management artifact transfer with an SSH banner
+timeout; guest preflight and the Go diagnostic were not reached. This preparation
+failure and verified host teardown remain retained. Only the private research
+transfer window changes for the next preparation. New preparation/execution is
+bound to its reviewed source and actual driver hashes. A followup receipt retains
 the exact executed candidate and actual findings. This spike cannot close issue
 382 or broader dashboard/native/browser/release gates. An adopted correction needs
 new reviewed source and both unchanged full native resource procedures. Runtime
