@@ -1,0 +1,467 @@
+{
+  "schema": 1,
+  "scope": "failed assembled dashboard resource candidate; diagnostic retention only",
+  "qualified": false,
+  "native_acceptance": false,
+  "candidate": {
+    "source_commit": "552f88ab665463461ee1546317e7aee693aa340a",
+    "base_commit": "d171e5d5ddc632cbd6ffd1015b999443f9f24e49",
+    "pr_title": "test(dashboards): qualify the assembled resource candidate",
+    "go_version": "go1.27.1",
+    "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+    "archive_sha256": "f84ceb488c86629a7fb528d8ac9e0c06d098e4e7e605e60794daabf48c3df49f",
+    "review_verified": true,
+    "artifacts": {
+      "15.1": {
+        "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "9eca9f620f4fba21824a85e80f72b1b46e8ec668b13e8adae91c397a81cb631b"
+      },
+      "14.5": {
+        "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "9eca9f620f4fba21824a85e80f72b1b46e8ec668b13e8adae91c397a81cb631b"
+      }
+    }
+  },
+  "release_attempts": {
+    "15.1": {
+      "outcome": "failed",
+      "environment": {
+        "artifacts": {
+          "fixture": "9eca9f620f4fba21824a85e80f72b1b46e8ec668b13e8adae91c397a81cb631b",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb"
+        },
+        "go_version": "go1.27.1",
+        "kernel": "15.1-RELEASE-p3",
+        "userland": "15.1-RELEASE-p3",
+        "zfs": "zfs-2.4.2-1-FreeBSD_g6330a45b0 zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0",
+        "physical_bytes": 6387634176
+      },
+      "raw_transcript_sha256": "cc8e0c9368b42ed5dc0e8e0ae55a4d881d97a87fcf5a131e757b50e377373a67",
+      "raw_transcript_bytes": 712758,
+      "resource_supervisor": {
+        "directory": ".tools/process-runs/9lzgita7",
+        "record_sha256": "9d9ba4a423d1fa93b218bddf318b1b7988cd8a8337af135100839581d0b76af7",
+        "state": {
+          "completed": true,
+          "group_cleaned": true,
+          "command_sha256": "8eb7efe8ccd2608dbbc13045d10dc4cf5af62d619515fc465bbe49091820b520",
+          "group": 86192,
+          "started_at": 1791863809.381401,
+          "escalated": false,
+          "worker_returncode": 1,
+          "reason": "exit",
+          "completed_at": 1791865129.535009
+        }
+      },
+      "outer_supervisor": {
+        "directory": ".tools/process-runs/zzozheuj",
+        "record_sha256": "892a9c41edc8cdea0dd30d8ecbc654f1564b036d0df8a731af8b2e163abdabd1",
+        "state": {
+          "completed": true,
+          "group_cleaned": true,
+          "command_sha256": "9804215c2689df0866861ea5940cdf9d65bd034c7a11e245a2d7c79213248296",
+          "group": 84472,
+          "started_at": 1791863730.710284,
+          "escalated": false,
+          "worker_returncode": 1,
+          "reason": "exit",
+          "completed_at": 1791865133.5426712
+        }
+      },
+      "host_original_sha256": "303a349567db2f6b483e39475cb36b0f8e74f95762bf6f5c5949ad8b001f1b57",
+      "worker_result_sha256": "ab7237079529f8e7fc152fe2eb467ea96952b83860e87430a6a2720e44da286f",
+      "preflight_transcript_sha256": "83c0d3977b465f003673171a0df2229f501e861a5895ae6f23ab3d3ce7b82042",
+      "preflight_supervisor_sha256": "91915a533463f1dfec6df024aa47093521a33f5610797375dd4cc6f540e888d5",
+      "host_os": "Darwin",
+      "host_arch": "arm64",
+      "qemu_version": "QEMU emulator version 11.1.1",
+      "cpu_model": "qemu64",
+      "cpu_count": 2,
+      "memory_mib": 6144,
+      "accelerator": "tcg",
+      "modes": {
+        "synthetic-10000": {
+          "outcome": "failed",
+          "original_fixture": {
+            "datasets": 10000,
+            "owned_datasets": 0,
+            "inventory_sha256": "45ae3468f3a8afe6b6ced56e86f654505cea641f6a50b4bd8e5e60919d06cc6e",
+            "origin": "generated"
+          },
+          "initial": {
+            "overview": {
+              "scheduled": 200,
+              "successful_predicates": 200,
+              "failed_predicates": 0,
+              "http_200": 200,
+              "successful_p95_ns": 619593145
+            },
+            "pools-default": {
+              "scheduled": 200,
+              "successful_predicates": 200,
+              "failed_predicates": 0,
+              "http_200": 200,
+              "successful_p95_ns": 635176729
+            },
+            "pools-maximum": {
+              "scheduled": 200,
+              "successful_predicates": 200,
+              "failed_predicates": 0,
+              "http_200": 200,
+              "successful_p95_ns": 427537368
+            },
+            "datasets-default": {
+              "scheduled": 200,
+              "successful_predicates": 200,
+              "failed_predicates": 0,
+              "http_200": 200,
+              "successful_p95_ns": 875772176
+            },
+            "datasets-maximum": {
+              "scheduled": 200,
+              "successful_predicates": 200,
+              "failed_predicates": 0,
+              "http_200": 200,
+              "successful_p95_ns": 1670439580
+            }
+          },
+          "replacement_observations": 0,
+          "workload_passed": false
+        },
+        "native-small": {
+          "outcome": "failed",
+          "original_fixture": {
+            "datasets": 115,
+            "owned_datasets": 100,
+            "inventory_sha256": "65b271df9d9ed20152d9af5bb7d6bb4e7162f0d804ac7a6eb7794fee486dd69a",
+            "origin": "native-original"
+          },
+          "initial": {
+            "overview": {
+              "scheduled": 200,
+              "successful_predicates": 0,
+              "failed_predicates": 200,
+              "http_200": 200,
+              "successful_p95_ns": null
+            },
+            "pools-default": {
+              "scheduled": 200,
+              "successful_predicates": 0,
+              "failed_predicates": 200,
+              "http_200": 200,
+              "successful_p95_ns": null
+            },
+            "pools-maximum": {
+              "scheduled": 200,
+              "successful_predicates": 0,
+              "failed_predicates": 200,
+              "http_200": 200,
+              "successful_p95_ns": null
+            },
+            "datasets-default": {
+              "scheduled": 200,
+              "successful_predicates": 200,
+              "failed_predicates": 0,
+              "http_200": 200,
+              "successful_p95_ns": 260845111
+            },
+            "datasets-maximum": {
+              "scheduled": 200,
+              "successful_predicates": 200,
+              "failed_predicates": 0,
+              "http_200": 200,
+              "successful_p95_ns": 344243269
+            }
+          },
+          "replacement_observations": 0,
+          "workload_passed": false
+        },
+        "projection-10000": {
+          "outcome": "failed",
+          "original_fixture": {
+            "datasets": 10000,
+            "owned_datasets": 0,
+            "inventory_sha256": "1726b7f20f80879a75b87d6e47e9438943483b9f4dab65a81b5962f462b1ecae",
+            "origin": "generated"
+          },
+          "initial": {
+            "overview": {
+              "scheduled": 200,
+              "successful_predicates": 0,
+              "failed_predicates": 200,
+              "http_200": 200,
+              "successful_p95_ns": null
+            },
+            "pools-default": {
+              "scheduled": 200,
+              "successful_predicates": 0,
+              "failed_predicates": 200,
+              "http_200": 200,
+              "successful_p95_ns": null
+            },
+            "pools-maximum": {
+              "scheduled": 200,
+              "successful_predicates": 0,
+              "failed_predicates": 200,
+              "http_200": 200,
+              "successful_p95_ns": null
+            },
+            "datasets-default": {
+              "scheduled": 200,
+              "successful_predicates": 200,
+              "failed_predicates": 0,
+              "http_200": 200,
+              "successful_p95_ns": 735772508
+            },
+            "datasets-maximum": {
+              "scheduled": 200,
+              "successful_predicates": 200,
+              "failed_predicates": 0,
+              "http_200": 200,
+              "successful_p95_ns": 1566181551
+            }
+          },
+          "replacement_observations": 0,
+          "workload_passed": false
+        },
+        "synthetic-100": {
+          "outcome": "mode measurements completed; parent suite failed",
+          "datasets": 100,
+          "owned_datasets": 0,
+          "inventory_sha256": "ff84997dd08b44bef3d64b83f5263bfd7dc98183c4acb77baa8dc2e566e3eedc",
+          "origin": "generated",
+          "procedure": {
+            "clients": 10,
+            "session_count": 1,
+            "requests": 1000,
+            "replacement_requests": 1000,
+            "replacements": 3,
+            "retries": 0,
+            "hidden_api_requests": 0,
+            "warmup_seconds": 60,
+            "idle_seconds": 300,
+            "scheduled_collect_seconds": 30,
+            "default_limit": 100,
+            "maximum_limit": 500,
+            "comparison_rows": 20,
+            "response_ceiling_bytes": 33554432,
+            "predicate_controller_outside_pair": true,
+            "warmup_wall_ns": 60002798000
+          },
+          "resources": {
+            "sampled_combined_peak_rss_bytes": 35536896,
+            "conservative_combined_high_water_rss_bytes": 35274752,
+            "budget_peak_rss_bytes": 35536896,
+            "management_high_water_bytes": 18669568,
+            "helper_high_water_bytes": 16605184,
+            "rss_samples": 4001,
+            "max_sample_gap_ns": 985577150,
+            "nominal_sample_ns": 100000000,
+            "idle_user_ns": 570000000,
+            "idle_system_ns": 80000000,
+            "idle_wall_ns": 300046047704,
+            "idle_cpu_percent_one_core": 0.21663341509541725
+          },
+          "phase_summaries": {
+            "initial": {
+              "all": {
+                "scheduled": 1000,
+                "success": 1000,
+                "expiry": 0,
+                "success_latency": {
+                  "p50_ns": 119009758,
+                  "p95_ns": 335420863,
+                  "p99_ns": 597029737
+                },
+                "expiry_latency": null
+              },
+              "datasets-default": {
+                "scheduled": 200,
+                "success": 200,
+                "expiry": 0,
+                "success_latency": {
+                  "p50_ns": 171054340,
+                  "p95_ns": 397992160,
+                  "p99_ns": 608888414
+                },
+                "expiry_latency": null
+              },
+              "datasets-maximum": {
+                "scheduled": 200,
+                "success": 200,
+                "expiry": 0,
+                "success_latency": {
+                  "p50_ns": 151656870,
+                  "p95_ns": 336652349,
+                  "p99_ns": 732322052
+                },
+                "expiry_latency": null
+              },
+              "overview": {
+                "scheduled": 200,
+                "success": 200,
+                "expiry": 0,
+                "success_latency": {
+                  "p50_ns": 99458158,
+                  "p95_ns": 273176558,
+                  "p99_ns": 597029737
+                },
+                "expiry_latency": null
+              },
+              "pools-default": {
+                "scheduled": 200,
+                "success": 200,
+                "expiry": 0,
+                "success_latency": {
+                  "p50_ns": 89944550,
+                  "p95_ns": 268789678,
+                  "p99_ns": 366883546
+                },
+                "expiry_latency": null
+              },
+              "pools-maximum": {
+                "scheduled": 200,
+                "success": 200,
+                "expiry": 0,
+                "success_latency": {
+                  "p50_ns": 93678448,
+                  "p95_ns": 280834350,
+                  "p99_ns": 420160553
+                },
+                "expiry_latency": null
+              }
+            },
+            "replacement": {
+              "all": {
+                "scheduled": 1000,
+                "success": 1000,
+                "expiry": 0,
+                "success_latency": {
+                  "p50_ns": 107526072,
+                  "p95_ns": 281978322,
+                  "p99_ns": 447109824
+                },
+                "expiry_latency": null
+              },
+              "datasets-default": {
+                "scheduled": 200,
+                "success": 200,
+                "expiry": 0,
+                "success_latency": {
+                  "p50_ns": 131987407,
+                  "p95_ns": 299711839,
+                  "p99_ns": 440513002
+                },
+                "expiry_latency": null
+              },
+              "datasets-maximum": {
+                "scheduled": 200,
+                "success": 200,
+                "expiry": 0,
+                "success_latency": {
+                  "p50_ns": 138150238,
+                  "p95_ns": 323280195,
+                  "p99_ns": 546963104
+                },
+                "expiry_latency": null
+              },
+              "overview": {
+                "scheduled": 200,
+                "success": 200,
+                "expiry": 0,
+                "success_latency": {
+                  "p50_ns": 93394457,
+                  "p95_ns": 258998947,
+                  "p99_ns": 532512499
+                },
+                "expiry_latency": null
+              },
+              "pools-default": {
+                "scheduled": 200,
+                "success": 200,
+                "expiry": 0,
+                "success_latency": {
+                  "p50_ns": 84765692,
+                  "p95_ns": 211600237,
+                  "p99_ns": 334073903
+                },
+                "expiry_latency": null
+              },
+              "pools-maximum": {
+                "scheduled": 200,
+                "success": 200,
+                "expiry": 0,
+                "success_latency": {
+                  "p50_ns": 89785555,
+                  "p95_ns": 234015627,
+                  "p99_ns": 415998671
+                },
+                "expiry_latency": null
+              }
+            }
+          }
+        }
+      },
+      "boundary_controls": "completed: accepted model 100000; record/byte exhaustion and recovery passed outside normal RSS budget",
+      "resource_parent_outcomes": {
+        "TestNativePerformanceBudgets": "failed",
+        "TestNativeReaderResourceBudgets": "failed"
+      },
+      "strict_and_legacy_acceptance": "not reached: nonzero original resource suite",
+      "complete_guest_cleanup_receipt": false,
+      "host_teardown_verified": true,
+      "pinned_artifact_preservation": {
+        "base": {
+          "before": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788",
+          "after": "1009c8d1a644e661a8858bf8151bc141de930c5302f861d76377be0cb8e0f788"
+        },
+        "qemu": {
+          "before": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f",
+          "after": "25afcb2986e4a0f2c567de17273f55de3c99792b78a07c99e923bb62024c088f"
+        },
+        "firmware_code": {
+          "before": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+          "after": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a"
+        },
+        "firmware_vars": {
+          "before": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+          "after": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e"
+        }
+      }
+    },
+    "14.5": {
+      "outcome": "skipped",
+      "reason": "candidate already failed 15.1; new reviewed corrective candidate required"
+    }
+  },
+  "failure_provenance": {
+    "pre_execution": {
+      "source_commit": "552f88ab665463461ee1546317e7aee693aa340a",
+      "release": "15.1",
+      "stage": "private-host-prerequisite",
+      "failure": "pre-existing lab-runs directory mode 0755 refused",
+      "guest_started": false,
+      "native_execution": false,
+      "disposable_fixture_created": false,
+      "resolution": "restrict owned ignored directory permissions to 0700 before execution"
+    },
+    "worker_reason_overwritten_by_old_fallback": true,
+    "retained_controller_failure": "ValueError: original command failed or teardown uncertain",
+    "old_worker_result_preserved": true,
+    "raw_sample_predicate_failure_detail": "classification unavailable; empty predicate field on failed samples",
+    "portable_failure_retention_regression": "red: specific worker reason overwritten; green: original reason/cleanup evidence retained, qualified remains false",
+    "cleanup_fix_native_execution": false
+  },
+  "limitations": [
+    "No both-release resource acceptance or joint strict receipt; 14.5 deliberately skipped after failed candidate.",
+    "Native/projection pool and Overview predicate mismatches are unresolved; original samples do not establish cause.",
+    "Native crash/stale-retention/recovery gates were not reached after native workload failure.",
+    "No complete parent sidecars or post-resource artifact preflight were fetched after nonzero suite.",
+    "Controller/browser/OS/ARC/file daemons and physical throughput are outside paired-process measurements.",
+    "Large inventories are synthetic; no commercial scale, hardware, browser, startup/recovery or release qualification.",
+    "Failed source is not the later evidence/failure-retention fix source. Runtime writes remain disabled."
+  ]
+}

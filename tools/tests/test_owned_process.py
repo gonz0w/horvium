@@ -144,6 +144,25 @@ class OwnedProcessTests(unittest.TestCase):
         self.assertEqual(process.wait(timeout=15), 7)
         self.assertTrue(process.record()['group_cleaned'])
 
+    def test_native_fallback_preserves_original_failure_and_cleanup_evidence(self):
+        self.tool.ROOT = self.root
+        lab = self.root / '.tools/lab-runs/performance-15.1-failed'
+        lab.mkdir(parents=True, mode=0o700)
+        original = {'qualified': False, 'failure': 'ValueError: original command failed or teardown uncertain',
+                    'host_teardown': True, 'cleanup_failure': ['original cleanup observation']}
+        (lab / 'result.json').write_text(json.dumps(original))
+        self.tool.native_cleanup(lab, interrupted=True)
+        actual = json.loads((lab / 'result.json').read_text())
+        self.assertEqual(actual['failure'], original['failure'])
+        self.assertEqual(actual['cleanup_failure'], original['cleanup_failure'])
+        self.assertTrue(actual['host_teardown'])
+        self.assertFalse(actual['qualified'])
+        self.assertTrue(actual['supervisor_fixture_cleanup'])
+        self.assertTrue(actual['supervisor_group_cleaned'])
+        # Repeated fallback must still preserve the original reason and denial.
+        self.tool.native_cleanup(lab, interrupted=True)
+        self.assertEqual(json.loads((lab / 'result.json').read_text())['failure'], original['failure'])
+
     def test_interrupted_dashboard_removes_only_its_paired_candidate(self):
         self.tool.ROOT = self.root
         lab = self.root / '.tools/lab-runs/performance-15.1-test'

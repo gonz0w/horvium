@@ -8,11 +8,15 @@ connects clean signed candidate preparation, owned transfer/launch, independent
 original fixture/control files and full guest/host teardown. The performance main
 entry now requires that complete original context; generic shell/transcript paths
 remain denied. Portable/synthetic tests and cross-builds are implementation evidence
-only. The [assembled native qualification](../testing/dashboards/native-resource-qualification.md)
-prepares actual sequential both-release execution; neither run has completed for
-that candidate at preparation. New reaper,
-cleanup, resource/browser and broader acceptance remain open. Runtime writes stay
-disabled; all historical manifests retain their source boundaries.
+only. [Assembled native qualification](../testing/dashboards/native-resource-qualification.md)
+executed a signed reviewed candidate on pinned FreeBSD 15.1. The actual resource
+suite failed large-mode latency and native/projection pool/Overview predicates;
+14.5 is explicitly skipped for that failed candidate. Original host teardown and
+pinned artifact preservation passed; complete guest/strict/both-release resource
+acceptance did not. The portable fallback correction preserves original failure
+reasons without upgrading historical receipts. Browser, recovery and broader
+acceptance remain open. Runtime writes stay disabled; all historical manifests
+retain their source boundaries.
 
 The [second release security proposal](../roadmap/v2-security.md) and
 [deployment security guide](../security/deployment-security.md) are planning only.

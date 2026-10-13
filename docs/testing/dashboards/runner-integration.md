@@ -120,7 +120,9 @@ those two explicit owned directories; it reopens both originals, requires identi
 candidates and applies the unchanged two-release contract: eight modes, 16,000
 scheduled observations. Never select successful runs to replace a failed candidate.
 Retain failures; fixes need a new reviewed source and new relevant execution.
-Add actual source-bound receipts in the subsequent qualification PR. Browser/
+The [native qualification record](native-resource-qualification.md) retains the
+first failed 15.1 candidate and explicit 14.5 skip. Its failure-retention fix does
+not qualify either resource parent; a corrective reviewed candidate is required. Browser/
 accessibility, continuity, lifecycle #305/#139 and full NAS acceptance remain open.
 
 Use `make lab-stop` / `make lab-status` to verify development teardown. No service,
