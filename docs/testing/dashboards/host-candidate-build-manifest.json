@@ -1,0 +1,240 @@
+{
+  "schema": 1,
+  "date": "2026-10-12",
+  "scope": "inactive host candidate builder; actual unexecuted cross-build preparation, no native acceptance",
+  "source_commit": "47f8495749c77d2ea3c8f314f22c133c923361b7",
+  "base_commit": "f997c469f2e824911719dcd73e04ac7ca077d3d1",
+  "actual_pr_title": "test(dashboards): bind reviewed candidate artifacts",
+  "review": {
+    "qualified": true,
+    "mode": "full",
+    "required_check_lint_test_secrets": true,
+    "tooling_tests": 284,
+    "ordinary_go_tests": true,
+    "race_packages": [
+      "./cmd/horvium",
+      "./internal/admin",
+      "./internal/client",
+      "./internal/console",
+      "./internal/eventlog",
+      "./internal/helper",
+      "./internal/host/freebsd",
+      "./internal/inventory",
+      "./internal/observation",
+      "./internal/service",
+      "./internal/storage"
+    ],
+    "fuzz_target_count": 54,
+    "review_sha256": "33f50ac1a6530cd44a67b24cbcc89653c1d8de0f84188e0259b8122719b7fc1c",
+    "checks_log_sha256": "905f3c7f230a7b8008a20b9a158af770cb9953b5a902200da908dbe11e47c53a",
+    "deep_log_sha256": "d6c7f5f7c5fb5b387b79ed7d4879036584ed95600ce779e10f5c7efb19f7f99b"
+  },
+  "behavioral_tests": {
+    "groups": 13,
+    "first_red": "missing builder module; retained private import failure",
+    "module_cache_red": "missing before/after verification reproduced by regression before correction",
+    "quiet_build_red": "actual quiet successful compilation rejected by positive-size log guard; retained failing regression",
+    "synthetic_contract_inputs_only": true
+  },
+  "candidate_preparation": {
+    "source_commit": "47f8495749c77d2ea3c8f314f22c133c923361b7",
+    "base_commit": "f997c469f2e824911719dcd73e04ac7ca077d3d1",
+    "actual_pr_title": "test(dashboards): bind reviewed candidate artifacts",
+    "candidate": {
+      "source_commit": "47f8495749c77d2ea3c8f314f22c133c923361b7",
+      "base_commit": "f997c469f2e824911719dcd73e04ac7ca077d3d1",
+      "pr_title": "test(dashboards): bind reviewed candidate artifacts",
+      "go_version": "go1.27.1",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "archive_sha256": "74ba6395d0514a69832130dbc2264f6620c39a8501b906e4f3de29221b5aa831",
+      "review_verified": true,
+      "artifacts": {
+        "15.1": {
+          "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "fixture": "8b606ad606840e1716900b5776d25facc72551531af3073c20c322d86adf2cf5"
+        },
+        "14.5": {
+          "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "fixture": "8b606ad606840e1716900b5776d25facc72551531af3073c20c322d86adf2cf5"
+        }
+      }
+    },
+    "compiler": {
+      "go_version": "go1.27.1",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "pins_sha256": "47056de5a379f3ff66710ac6c890a821bcdd6158f6a791d36cf82dbf7135de64",
+      "marker_sha256": "d9a583e3a0dc10e396047e4ebce8854eebd9180b39b74beb80c4be1cdf36fb3a"
+    },
+    "review": {
+      "review_sha256": "33f50ac1a6530cd44a67b24cbcc89653c1d8de0f84188e0259b8122719b7fc1c",
+      "checks_log_sha256": "905f3c7f230a7b8008a20b9a158af770cb9953b5a902200da908dbe11e47c53a",
+      "deep_record_sha256": "33f50ac1a6530cd44a67b24cbcc89653c1d8de0f84188e0259b8122719b7fc1c",
+      "deep_log_sha256": "d6c7f5f7c5fb5b387b79ed7d4879036584ed95600ce779e10f5c7efb19f7f99b",
+      "deep_source_commit": "47f8495749c77d2ea3c8f314f22c133c923361b7"
+    },
+    "artifacts": [
+      {
+        "role": "management",
+        "bytes": 15727025,
+        "sha256": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+        "target_metadata_verified": true
+      },
+      {
+        "role": "helper",
+        "bytes": 13364650,
+        "sha256": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "target_metadata_verified": true
+      },
+      {
+        "role": "fixture",
+        "bytes": 18733674,
+        "sha256": "8b606ad606840e1716900b5776d25facc72551531af3073c20c322d86adf2cf5",
+        "target_metadata_verified": true
+      }
+    ],
+    "builds": [
+      {
+        "role": "management",
+        "filename": "horvium",
+        "sha256": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+        "log_sha256": "d4ed8f8f3986bb1787ba273a028c415ed82397361ca59b081eb3e1f73db9d62e",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "arguments": [
+          "go",
+          "build",
+          "-trimpath",
+          "-buildvcs=false",
+          "-o",
+          "<owned-artifact>",
+          "./cmd/horvium"
+        ]
+      },
+      {
+        "role": "helper",
+        "filename": "reader-fixture.test",
+        "sha256": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "log_sha256": "d4ed8f8f3986bb1787ba273a028c415ed82397361ca59b081eb3e1f73db9d62e",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-buildvcs=false",
+          "-o",
+          "<owned-artifact>",
+          "./internal/host/freebsd"
+        ]
+      },
+      {
+        "role": "fixture",
+        "filename": "dashboard-native.test",
+        "sha256": "8b606ad606840e1716900b5776d25facc72551531af3073c20c322d86adf2cf5",
+        "log_sha256": "d4ed8f8f3986bb1787ba273a028c415ed82397361ca59b081eb3e1f73db9d62e",
+        "target": "freebsd/amd64",
+        "goamd64": "v1",
+        "cgo_enabled": false,
+        "arguments": [
+          "go",
+          "test",
+          "-c",
+          "-trimpath",
+          "-buildvcs=false",
+          "-o",
+          "<owned-artifact>",
+          "./cmd/horvium"
+        ]
+      }
+    ],
+    "supervisor_count": 6,
+    "supervisors_completed_cleaned_successful": true,
+    "record_sha256": "6e5fee360f4e1b9309854574fa2507c97e79b264359c111e67281c49d96f4c81",
+    "original_archive_build": true,
+    "isolated_source_removed": true,
+    "artifacts_removed": true,
+    "native_execution": false,
+    "both_release_execution": false
+  },
+  "freebsd_cross_build": {
+    "source_commit": "47f8495749c77d2ea3c8f314f22c133c923361b7",
+    "artifacts": [
+      {
+        "role": "management",
+        "bytes": 15727025,
+        "sha256": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+        "target_metadata_verified": true
+      },
+      {
+        "role": "helper",
+        "bytes": 13364650,
+        "sha256": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "target_metadata_verified": true
+      },
+      {
+        "role": "fixture",
+        "bytes": 18733674,
+        "sha256": "8b606ad606840e1716900b5776d25facc72551531af3073c20c322d86adf2cf5",
+        "target_metadata_verified": true
+      }
+    ],
+    "removed": true,
+    "executed": false,
+    "shared_release_artifact_set": true,
+    "supervisor_count": 6,
+    "original_archive_build": true,
+    "module_cache_verified_before_after": true,
+    "isolated_source_removed": true
+  },
+  "preservation": {
+    "base_commit": "f997c469f2e824911719dcd73e04ac7ca077d3d1",
+    "historical_manifests_byte_identical": 143,
+    "native_runtime_validators_runner_guards_modules_workflows_unchanged": true
+  },
+  "failed_preparation": {
+    "source_commit": "9024b302ce5ce78d9413a30025c7703603c3dc3c",
+    "build_complete": false,
+    "failure": "ValueError",
+    "reason": "successful silent compiler output could not pass the existing positive-size file reader",
+    "candidate_returned": false,
+    "native_execution": false,
+    "artifacts_removed": true,
+    "supervisor_cleanup_verified": true
+  },
+  "superseded_review": {
+    "source_commit": "e0a0a0f65dcdece5e66746b88430154ffd5d48fe",
+    "qualified": false,
+    "reason": "stopped after adding the missing module-cache regression; preserved private records",
+    "supervisor_cleanup_verified": true
+  },
+  "teardown": {
+    "owned_records_stopped_verified": 246,
+    "status_log_sha256": "0fb4fc055214f0c81d82c5458505a91f6be61b363a5d43645d37252e7852fb41",
+    "vm_started": false,
+    "host_service_enabled": false,
+    "cross_build_removed": true
+  },
+  "acceptance": {
+    "portable_component": true,
+    "candidate_preparation": true,
+    "full_candidate_control_teardown_binding": false,
+    "native_execution": false,
+    "native_resource_performance": false,
+    "dashboard_delivery": false,
+    "browser_manual_accessibility": false,
+    "hardware_commercial_scale": false,
+    "runtime_writes": false
+  },
+  "limits": [
+    "Actual compiler/archive/artifact bytes and local review were checked; all developer-controlled evidence still requires maintainer review.",
+    "The existing bootstrap pin/marker policy does not independently authenticate the entire installed toolchain tree.",
+    "One unexecuted FreeBSD/amd64/v1 artifact set is intended for two release consumers; neither release was executed.",
+    "Transferred/executed artifact provenance, original fixture expectations, native controls and guest/host supervisor teardown remain gated.",
+    "Historical limitations, startup uncertainty, lifecycle 305/139, browser/manual, continuity and hardware/release gates remain; writes disabled."
+  ]
+}

@@ -126,3 +126,33 @@ work. Broader #131/#289/#290 and lifecycle #305/#139 stay open; historical start
 uncertainty, browser/manual, continuity, hardware/commercial and release gates
 remain. Runtime writes stay disabled. Rollback removes this inactive module,
 tests and documentation without altering product behavior or old receipts.
+
+## Recorded portable source and actual preparation
+
+[Receipt](host-candidate-build-manifest.json): signed corrected behavioral source
+`47f8495749c77d2ea3c8f314f22c133c923361b7`, base `f997c469f2e824911719dcd73e04ac7ca077d3d1`, actual title
+`test(dashboards): bind reviewed candidate artifacts`. Required checks passed with 284 tooling tests, ordinary Go
+tests, fresh race checks for all 11 portable packages and 54 bounded fuzz targets.
+Thirteen behavioral groups passed.
+
+The actual builder checked its clean signed/DCO source and local review, pinned
+compiler and original archive, verified cached modules before/after compilation,
+and produced all three FreeBSD/amd64/v1 executables from the archive extraction.
+All six owned commands completed with verified teardown. Host Go inspected target
+metadata without executing the native artifacts. The strict candidate contract
+passed; the extraction and all artifacts were removed. Shared release hashes
+identify one prepared set, with no native execution or release qualification.
+
+The initial preparation review was superseded after adding a failing module-cache
+regression and remains unqualified with cleanup verified. Actual preparation of
+source `9024b302ce5ce78d9413a30025c7703603c3dc3c` failed after a successful quiet
+compilation because its empty log was rejected. That failed record remains intact,
+without a returned candidate or native execution, with outputs removed. The new
+regression passes: compiler/module logs use an explicit fixed controller header
+that frames even absent stdout; it does not assert successful compilation.
+
+All 143 historical manifests and native/runtime/validator/runner/workflow inputs
+remain unchanged. Owned teardown is verified. The signed documentation followup
+requires current-head baseline review and may reuse only this original exact-input
+deep evidence. Full transferred/executed artifact, fixture/control and guest/host
+teardown binding and both-release measurements remain pending.
