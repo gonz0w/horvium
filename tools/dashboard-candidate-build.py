@@ -257,6 +257,10 @@ def build_candidate(root, review_directory_path, directory, *, source_commit, ba
         with tempfile.TemporaryDirectory(prefix='source-', dir=directory) as isolated:
             extract_source(archive, Path(isolated), archive_sha)
             record['original_archive_build'] = True
+            module_logs = []
+            before_log = directory / 'modules-before.log'
+            record['supervisors'].append(run_build([go, 'mod', 'verify'], before_log, Path(isolated), env))
+            module_logs.append(files.read_verified_file(before_log, 16 << 20)[0])
             for name, arguments, package in selections:
                 filename = ARTIFACT_FILES[name]
                 command = [go, *arguments, '-o', str(directory / filename), package]
@@ -268,6 +272,11 @@ def build_candidate(root, review_directory_path, directory, *, source_commit, ba
                                          'target': 'freebsd/amd64', 'goamd64': 'v1', 'cgo_enabled': False,
                                          'arguments': ['go', *arguments, '-o', '<owned-artifact>', package]})
                 review.OWNED.write_record(directory / 'result.json', record)
+            after_log = directory / 'modules-after.log'
+            record['supervisors'].append(run_build([go, 'mod', 'verify'], after_log, Path(isolated), env))
+            module_logs.append(files.read_verified_file(after_log, 16 << 20)[0])
+            record['modules_verified_before_after'] = True
+            record['module_log_sha256'] = module_logs
         record['isolated_source_removed'] = True
         contract.require(source_identity(root, source_commit, base_commit, pr_title) == identity
                          and verify_compiler(root) == compiler

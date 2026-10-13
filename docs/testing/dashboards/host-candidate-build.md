@@ -62,6 +62,8 @@ and `-buildvcs=false`: source identity is the independently checked archive,
 rather than an incidental checkout stamp. GOPROXY is disabled for this operation;
 the existing verified dependency cache must already be prepared. No automatic
 tool download, new dependency or compiler installation occurs here.
+The pinned compiler runs `go mod verify` against the archived module's cache
+before and after the builds; either failure denies candidate publication.
 
 The three existing executable roles are now explicit:
 
@@ -111,6 +113,8 @@ and mocked commands; they do not produce native measurements. They cover source/
 DCO and review mismatch, actual log and pin mutation, original deep reuse, archive
 path/link/duplicate rejection, controlled builds, shared release identity,
 post-build source/compiler/review/artifact mutation and failure/cleanup retention.
+They also require original module-cache verification before/after compilation
+and deny a candidate when cache verification fails.
 Shared-tool changes require the existing conservative full portable fallback.
 
 Runner/guest execution guards, strict and legacy validators, native fixtures,

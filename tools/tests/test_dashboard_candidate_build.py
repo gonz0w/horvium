@@ -150,7 +150,7 @@ class DashboardCandidateBuildTests(unittest.TestCase):
         Path(log).write_bytes(b'synthetic build log\n')
         if '-o' in command:
             destination=Path(command[command.index('-o')+1]);destination.write_bytes(('synthetic '+destination.name).encode());destination.chmod(0o700)
-        else:
+        elif command[:2]==['git','archive']:
             # Archive stdout is the actual opened destination, not text re-encoded by the caller.
             Path(log).write_bytes(self.archive)
         return dict(self.supervisor,command_sha256='e'*64)
@@ -168,9 +168,9 @@ class DashboardCandidateBuildTests(unittest.TestCase):
         self.assertEqual(candidate['archive_sha256'],digest(self.archive))
         self.assertEqual(candidate['artifacts']['15.1'],candidate['artifacts']['14.5'])
         self.assertFalse(record['native_execution']);self.assertTrue(record['build_complete'])
-        self.assertEqual([c[1:4] for c in self.commands[1:]],
+        self.assertEqual([c[1:4] for c in self.commands if c[1] in ('build','test')],
                          [['build','-trimpath','-buildvcs=false'],['test','-c','-trimpath'],['test','-c','-trimpath']])
-        self.assertTrue(all('-buildvcs=false' in c for c in self.commands[1:]))
+        self.assertTrue(all('-buildvcs=false' in c for c in self.commands if c[1] in ('build','test')))
         self.assertTrue(record['isolated_source_removed'])
         self.assertEqual(list(self.output.glob('source-*')),[])
         self.assertEqual(len(record['builds']),3)
@@ -256,6 +256,20 @@ class DashboardCandidateBuildTests(unittest.TestCase):
             record=json.loads((self.output/'result.json').read_text())
             self.assertFalse(record['build_complete']);self.assertNotIn('candidate',record)
             self.assertTrue(record['artifacts_removed']);self.assertEqual(list(self.output.glob('source-*')),[])
+
+    def test_module_cache_is_verified_before_and_after_compile_and_failure_denies_candidate(self):
+        self.build()
+        self.assertEqual([c[1:3] for c in self.commands if c[1]=='mod'],[['mod','verify'],['mod','verify']])
+        self.assertEqual(self.commands[1][1:3],['mod','verify'])
+        self.assertEqual(self.commands[-1][1:3],['mod','verify'])
+        self.output=self.root/'.tools/dashboard-candidates/module-failure'
+        def failure(command,log,root,env):
+            if command[1]=='mod':raise ValueError('module cache mismatch')
+            return self.fake_build(command,log,root,env)
+        with self.assertRaises(ValueError):self.build(failure)
+        record=json.loads((self.output/'result.json').read_text())
+        self.assertFalse(record['build_complete']);self.assertNotIn('candidate',record)
+        self.assertTrue(record['artifacts_removed'])
 
 
 if __name__ == '__main__':
