@@ -175,6 +175,11 @@ def verify_compiler(root):
 def run_build(command, log, root, env):
     process = None
     with Path(log).open('xb') as output:
+        if command[:2] != ['git', 'archive']:
+            # Go compilation is normally silent. This fixed controller header
+            # frames even empty compiler output; it is not a success assertion.
+            output.write(b'Owned candidate command output follows:\n')
+            output.flush()
         try:
             process = review.OWNED.OwnedProcess(command, cwd=root, env=env, stdout=output,
                                                stderr=subprocess.DEVNULL if command[:2] == ['git', 'archive'] else subprocess.STDOUT,

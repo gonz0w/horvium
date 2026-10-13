@@ -271,6 +271,15 @@ class DashboardCandidateBuildTests(unittest.TestCase):
         self.assertFalse(record['build_complete']);self.assertNotIn('candidate',record)
         self.assertTrue(record['artifacts_removed'])
 
+    def test_quiet_successful_compilation_retains_a_hashable_owned_log(self):
+        with patch.object(self.m.review.OWNED,'OwnedProcess') as cls:
+            process=cls.return_value;process.wait.return_value=0;process.record.return_value=self.supervisor
+            log=self.root/'quiet.log'
+            self.m.run_build(['go','build'],log,self.root,{})
+            # Success with no compiler stdout remains auditable. No success
+            # marker or fabricated compiler diagnostics is needed in the log.
+            self.assertEqual(self.m.files.read_verified_file(log,16<<20)[0],digest(log.read_bytes()))
+
 
 if __name__ == '__main__':
     unittest.main()
