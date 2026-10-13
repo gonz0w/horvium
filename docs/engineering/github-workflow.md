@@ -73,6 +73,18 @@ features into reviewed slices before implementation. M1 manual accessibility
 remains pending by maintainer choice; M2 private prerequisites do not enable a
 runtime writer. Independent research may proceed while delivery gates are blocked.
 
+Size slices around a complete behavior or integration outcome. Keep its internal
+helpers/adapters, tests, docs, compatibility notes and source-bound evidence in
+one PR, using incremental signed commits. Internal implementation steps belong
+in the owning issue's checklist; they do not each need another issue/merge cycle.
+Separate PRs are appropriate for an unresolved design/authorization decision,
+distinct safety boundary or a diff too large to review coherently. State that
+reason before splitting. Native execution that the adopted Test Design requires
+after integration review still follows that review; batching cannot waive it.
+Use focused tests while developing and complete the required clean candidate
+review before submission. Shared-tool fallback, milestone/release full checks
+and relevant native/client safety gates retain their existing policies.
+
 Branch from current merged `main` using a short-lived `codex/` branch for agents.
 Use Conventional Commit subjects and `git commit -S -s`; verify signatures and
 author DCO trailers. Preserve contributor sign-offs in canonical squash history.

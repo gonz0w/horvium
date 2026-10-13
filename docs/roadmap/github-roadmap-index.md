@@ -1,5 +1,11 @@
 # GitHub roadmap index
 
+[Dashboard qualification integration (#380)](https://github.com/gonz0w/horvium/issues/380)
+owns the remaining runner/fixture/control/teardown assembly as one coherent
+implementation outcome under #290. See the [contract and qualification handoff](../testing/dashboards/runner-integration.md).
+Actual both-release resource execution and broader dashboard/browser acceptance
+remain separate; GitHub owns live status and dependencies.
+
 Live status, priority and dependencies are in the [shared private Project](https://github.com/users/gonz0w/projects/2).
 This index supplies stable links, not a second progress checklist. The [capability roadmap](milestones.md)
 retains sequencing; the [GitHub workflow](../engineering/github-workflow.md) defines pickup, triage and acceptance.

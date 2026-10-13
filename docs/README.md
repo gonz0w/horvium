@@ -1,5 +1,9 @@
 # Documentation index
 
+[Dashboard qualification runner integration](testing/dashboards/runner-integration.md)
+connects original candidate, guest controls and verified teardown in one outcome;
+actual both-release resource and browser acceptance remain separate.
+
 ## Product and design
 
 - [Charter](project/charter.md)

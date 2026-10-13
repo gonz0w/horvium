@@ -25,7 +25,7 @@ class LocalQualificationTests(unittest.TestCase):
             self.module.suite_command('performance')
         for arguments in (['local-qualification.py','performance','15.1','--run'],
                           ['local-qualification.py','performance','14.5','--run','--owned-directory','/tmp/unused']):
-            with patch.object(self.module.sys, 'argv', arguments), patch.object(self.module.shutil, 'which') as prerequisite:
+            with patch.dict('os.environ', {'PR_TITLE': ''}), patch.object(self.module.sys, 'argv', arguments), patch.object(self.module.shutil, 'which') as prerequisite:
                 with self.assertRaisesRegex(ValueError, 'independent dashboard.*bindings'):
                     self.module.main()
                 prerequisite.assert_not_called()

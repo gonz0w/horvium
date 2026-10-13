@@ -356,7 +356,7 @@ type performancePair struct {
 	monitor            *usageMonitor
 }
 
-func newPerformancePair(t *testing.T, count int, modelBoundary bool) *performancePair {
+func newPerformancePair(t *testing.T, count int, modelBoundary bool, owner *dashboardGuestOwner) *performancePair {
 	t.Helper()
 	c, path, token := nativeRuntimeConfig(t)
 	c.IntervalSeconds = 30
@@ -378,13 +378,13 @@ func newPerformancePair(t *testing.T, count int, modelBoundary bool) *performanc
 		t.Fatal(e)
 	}
 	helperBinary := filepath.Join(dir, "helper-test")
-	copyPerformanceExecutable(t, exe, helperBinary)
+	owner.copy(t, "fixture", exe, helperBinary)
 	built, e := filepath.Abs("../../.tools/horvium")
 	if e != nil {
 		t.Fatal(e)
 	}
 	binary := filepath.Join(dir, "horvium")
-	copyPerformanceExecutable(t, built, binary)
+	owner.copy(t, "management", built, binary)
 	cmd := exec.Command(helperBinary, "-test.run=^TestNativePerformanceHelper$", "-test.count=1", "-test.timeout=20m")
 	cmd.Env = []string{"HORVIUM_NATIVE_VM=1", "HORVIUM_PERF_VM=1", "HORVIUM_PERF_HELPER=" + path, "LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
 	helperProcess := &nativeProcess{cmd: cmd, done: make(chan error, 1)}
@@ -460,8 +460,9 @@ func publishDashboardResource(t *testing.T, prepared *dashboardPreparedFixture, 
 	}
 	t.Log(marker + string(legacy))
 }
-func nativeDashboardControlLedger(t *testing.T) *dashboardControlLedger {
+func nativeDashboardControlLedger(t *testing.T) (*dashboardControlLedger, *dashboardGuestOwner) {
 	t.Helper()
+	owner := newDashboardGuestOwner(t)
 	ledger, err := newDashboardControlLedger(t.Name())
 	if err != nil {
 		t.Fatal(err)
@@ -480,9 +481,10 @@ func nativeDashboardControlLedger(t *testing.T) *dashboardControlLedger {
 			t.Error("dashboard parent control encoding")
 			return
 		}
+		owner.finish(t, record)
 		t.Log("NATIVE_DASHBOARD_CONTROLS " + string(data))
 	})
-	return ledger
+	return ledger, owner
 }
 func TestNativePerformanceBudgets(t *testing.T) {
 	if os.Getenv("HORVIUM_NATIVE_VM") != "1" || os.Getenv("HORVIUM_PERF_VM") != "1" {
@@ -491,10 +493,11 @@ func TestNativePerformanceBudgets(t *testing.T) {
 	if os.Getuid() != 0 {
 		t.Fatal("performance fixture requires root")
 	}
-	ledger := nativeDashboardControlLedger(t)
+	ledger, owner := nativeDashboardControlLedger(t)
 	for _, count := range []int{100, 10000} {
 		t.Run(strconv.Itoa(count), func(t *testing.T) {
-			p := newPerformancePair(t, count, false)
+			p := newPerformancePair(t, count, false, owner)
+			owner.pair(t, "synthetic-"+strconv.Itoa(count), p.path, p.config)
 			warmup := performancePause(t, 60*time.Second, "warmup-"+strconv.Itoa(count))
 			var idle dashboardIdleObservation
 			if count == 100 {
@@ -507,6 +510,7 @@ func TestNativePerformanceBudgets(t *testing.T) {
 			if err := ledger.declare(prepared); err != nil {
 				t.Fatal(err)
 			}
+			owner.original(t, prepared)
 			work := measureDashboardFixture(t, p, prepared)
 			measured := p.stopResources(t)
 			measured.Warmup, measured.Idle = warmup, idle
@@ -518,7 +522,8 @@ func TestNativePerformanceBudgets(t *testing.T) {
 	}
 	t.Run("limits", func(t *testing.T) {
 		boundary := new(dashboardBoundaryControl)
-		p := newPerformancePair(t, 100, true)
+		p := newPerformancePair(t, 100, true, owner)
+		owner.pair(t, "boundary", p.path, p.config)
 		previous := p.session.overview(t).Generation
 		writePerformanceControl(t, p.control, performanceControl{Datasets: 99990})
 		p.session.refresh(t)

@@ -38,6 +38,9 @@ type ownedFixture struct {
 }
 
 func nativeStorageFixture(t *testing.T) ownedFixture {
+	return nativeStorageFixtureObserved(t, nil)
+}
+func nativeStorageFixtureObserved(t *testing.T, observe func(dashboardCleanupReceipt)) ownedFixture {
 	t.Helper()
 	must := func(path string, args ...string) string {
 		t.Helper()
@@ -91,6 +94,9 @@ func nativeStorageFixture(t *testing.T) ownedFixture {
 		if err != nil {
 			t.Error("owned storage cleanup uncertain; discard guest")
 			return
+		}
+		if observe != nil {
+			observe(receipt)
 		}
 		// Property callbacks and later-registered pair cleanup have already run.
 		// This observation proves only this fixture's storage, not whole guest cleanup.

@@ -15,6 +15,10 @@ a research spike must identify its question and time box.
 Use short-lived topic branches from `main`. Add a failing test, implement the
 smallest correct change, then refactor with passing tests. Bug fixes add regression
 coverage. Keep a PR focused on one outcome and update its docs alongside code.
+Include related adapters, tests, compatibility notes, runbook and source-bound
+evidence in that PR. Use incremental signed commits for internal prerequisites.
+Split delivery only for unresolved design/authorization, a distinct safety boundary
+or scope too large to review coherently; explain the reason in the owning issue.
 
 Run `make tools` and `make hooks`. After signing/signing off the changes, run
 `PR_TITLE='type: actual proposed PR title' make review` from a clean checkout.
