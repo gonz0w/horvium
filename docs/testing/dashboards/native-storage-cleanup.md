@@ -87,3 +87,17 @@ and resource execution remain open. Overview/Capacity, M2 lifecycle #305/#139,
 manual accessibility and release gates remain open; runtime writes stay disabled.
 Rollback restores this fixture and removes the two test-only coordinator/test
 files, without changing product behavior or historical evidence.
+
+## Recorded source candidate
+
+[Receipt](native-storage-cleanup-manifest.json): signed/DCO source
+`a8fc1058d502d41689c2992e1a2a007921f965f8`, base `358dd76b9621bb242527ede296f51f3ec3708dd5`, title
+`test(dashboards): verify disposable storage cleanup`. Required checks passed with 294 tooling
+tests, ordinary Go tests and five cleanup behavioral parents. Fresh proportional
+deep review ran the command-package race check; that package has no listed fuzz
+targets. The FreeBSD/amd64/v1, cgo-free cross-build passed, was not executed and
+was removed. All 146 historical manifests remain byte-identical; owned process
+teardown was verified. No actual native cleanup or broader acceptance is claimed.
+
+A signed documentation-only followup runs the current-head baseline review and
+may reuse only this completed exact-input deep evidence.
