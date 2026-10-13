@@ -117,3 +117,21 @@ Broader #131/#289/#290, lifecycle #305/#139 and historical startup uncertainty,
 browser/manual, continuity, hardware/commercial and release gates remain open.
 Runtime writes stay disabled. Rollback restores test helpers and the two native
 fixture files without changing product behavior or historical receipt interpretation.
+
+## Recorded portable source
+
+[Receipt](resource-measurement-records-manifest.json): signed behavioral source
+`31a9d55177b38b6116c3f1f6d77a2eb328326760`, base
+`c895d987d1cc140fe52418b62b1bfed2bf113489`, actual title
+`test(dashboards): publish per-mode resource observations`. Required checks passed
+with 271 tooling tests, ordinary Go tests and fresh affected command-package race
+checks; no portable fuzz targets were discovered for that package. Nine new
+behavioral parents and independent four-mode Python contract checks passed.
+
+The source-bound FreeBSD/amd64 cross-build compiled but was not executed and was
+removed. Owned teardown is verified. All 142 historical manifests and execution
+guards/validators/runtime/modules/workflows remain unchanged. A private source
+preservation audit with a mismatched old/new code marker was corrected; it was
+not native execution or acceptance. A signed documentation-only followup requires
+a clean current-head review and may reuse only this completed exact-input deep
+evidence. Candidate/control/teardown binding and both-release evidence remain.
