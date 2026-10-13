@@ -310,3 +310,6 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [Reviewed dashboard host candidate build](testing/dashboards/host-candidate-build.md):
   inactive source/review/compiler/archive and controlled cross-build binding;
   native execution and full control/teardown acceptance remain gated.
+
+- [Focused native dashboard diagnosis](research/dashboards/native-focused-diagnostics.md):
+  bounded original/cache comparison, failure classes and explicit research limits.

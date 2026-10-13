@@ -347,8 +347,8 @@ func TestDashboardAdapterLoadRetainsFailedSamplesWithoutPassingReceipt(t *testin
 	for _, sample := range samples {
 		if sample.Outcome == "failure" {
 			failures++
-			if sample.Predicate != "" || sample.BodyBytes <= 0 {
-				t.Fatal("failed predicate marked verified")
+			if sample.Predicate != "failure:table" || sample.BodyBytes <= 0 {
+				t.Fatal("failed table predicate lost its bounded diagnostic")
 			}
 		}
 	}

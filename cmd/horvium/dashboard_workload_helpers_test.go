@@ -175,6 +175,50 @@ func dashboardLatencyBudget(summary dashboardSummary, large bool) error {
 // tables/comparisons and generation agreement, or the safe expiry/reload form.
 type dashboardPredicate func(dashboardRequest, int, []byte) error
 
+// Fixed diagnostic vocabulary only. Never serialize predicate/transport errors,
+// response bodies, identities or session material into failure observations.
+func dashboardFailureClassification(err error) string {
+	switch err.Error() {
+	case "malformed or unbounded dashboard document":
+		return "failure:document"
+	case "required unique response element missing":
+		return "failure:element"
+	case "wrong original dashboard table", "complete dashboard table missing", "duplicate dashboard table":
+		return "failure:table"
+	case "wrong original dashboard comparisons":
+		return "failure:comparisons"
+	case "wrong storage query or freshness metadata":
+		return "failure:storage-metadata"
+	case "wrong original Overview metadata":
+		return "failure:overview-metadata"
+	case "invalid response generation":
+		return "failure:generation"
+	case "unexpected dashboard table count":
+		return "failure:table-count"
+	default:
+		return "failure:predicate"
+	}
+}
+
+func dashboardClassifyResponse(request dashboardRequest, phase string, status int, body []byte, transportErr, bodyErr error, predicate dashboardPredicate) (string, string) {
+	if transportErr != nil {
+		return "failure", "failure:transport"
+	}
+	if bodyErr != nil {
+		return "failure", "failure:body"
+	}
+	if status != 200 && !(phase == "replacement" && request.Case == "overview" && status == 409) {
+		return "failure", "failure:status"
+	}
+	if err := predicate(request, status, body); err != nil {
+		return "failure", dashboardFailureClassification(err)
+	}
+	if status == 409 {
+		return "expiry", "safe-expiry"
+	}
+	return "success", "original-inventory"
+}
+
 func dashboardLoad(client *http.Client, base string, count int, plan []dashboardRequest, phase string, predicate dashboardPredicate) ([]dashboardSample, error) {
 	if client == nil || predicate == nil || phase != "initial" && phase != "replacement" || len(plan) != 1000 {
 		return nil, errors.New("incomplete dashboard workload configuration")
@@ -217,14 +261,7 @@ func dashboardLoad(client *http.Client, base string, count int, plan []dashboard
 				}
 				sample.Duration = time.Since(started)
 				sample.BodyBytes = len(body)
-				if transportErr == nil && bodyErr == nil && (sample.Status == 200 || phase == "replacement" && request.Case == "overview" && sample.Status == 409) && predicate(request, sample.Status, body) == nil {
-					sample.Outcome = "success"
-					sample.Predicate = "original-inventory"
-					if sample.Status == 409 {
-						sample.Outcome = "expiry"
-						sample.Predicate = "safe-expiry"
-					}
-				}
+				sample.Outcome, sample.Predicate = dashboardClassifyResponse(request, phase, sample.Status, body, transportErr, bodyErr, predicate)
 				samples[i] = sample
 			}
 		}()
