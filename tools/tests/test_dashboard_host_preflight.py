@@ -41,7 +41,7 @@ class DashboardHostPreflightTests(unittest.TestCase):
   modules=[]
   for name in ['modules-before.log','modules-after.log']:
    p=self.output/name;p.write_bytes(b'Owned candidate command output follows:\nall modules verified\n');modules.append(digest(p.read_bytes()))
-  stopped={'completed':True,'group_cleaned':True,'worker_returncode':0,'completed_at':10.0}
+  stopped={'completed':True,'group_cleaned':True,'worker_returncode':0,'completed_at':10.0,'started_at':9.0,'group':123,'command_sha256':'a'*64,'reason':'exit','escalated':False}
   self.record={'schema':1,'source_commit':SOURCE,'base_commit':BASE,'pr_title':TITLE,'build_complete':True,'native_execution':False,'artifacts_removed':False,'builds':self.builds,'supervisors':[dict(stopped) for _ in range(6)],'original_archive_build':True,'modules_verified_before_after':True,'module_log_sha256':modules,'isolated_source_removed':True,'candidate':self.candidate,'compiler':compiler,'review':reviewed}
   self.observed={'artifacts':hashes,'go_version':'go1.27.1','kernel':'15.1-RELEASE-p1','userland':'15.1-RELEASE','zfs':'zfs-actual zfs-kmod-actual','physical_bytes':6442450944}
   command=self.m.preflight_command(self.root,self.lab,2222)
@@ -144,3 +144,9 @@ class DashboardHostPreflightTests(unittest.TestCase):
     return result
    with self.subTest(target=target),patch.object(self.m.build,'verify_compiler',side_effect=changing),self.assertRaises(ValueError):self.verify()
    (self.output/'horvium').write_bytes(b'synthetic management');self.state['reason']='exit';self.save_state()
+
+ def test_original_build_supervisor_cannot_hide_timeout_or_cleanup_failure(self):
+  original=copy.deepcopy(self.record)
+  for mutate in [lambda s:s.update(reason='timeout'),lambda s:s.update(escalated=True),lambda s:s.update(cleanup_failure='unverified'),lambda s:s.update(group=True),lambda s:s.update(started_at=11.0),lambda s:s.update(command_sha256='malformed')]:
+   self.record=copy.deepcopy(original);mutate(self.record['supervisors'][0]);self.save_build()
+   with self.subTest(supervisor=self.record['supervisors'][0]),self.assertRaises(ValueError):self.verify()

@@ -162,6 +162,13 @@ def verify_build(root, review_directory, candidate_directory, *, source_commit, 
     supervisors = record.get('supervisors')
     c.require(type(supervisors) is list and len(supervisors) == 6 and all(build.stopped(s) for s in supervisors),
               'original build supervision incomplete')
+    for state in supervisors:
+        c.require(state.get('reason') == 'exit' and state.get('escalated') is False
+                  and 'cleanup_failure' not in state, 'original build completion/cleanup uncertain')
+        c.integer(state.get('group'), 1)
+        c.digest(state.get('command_sha256'))
+        c.require(timestamp(state.get('completed_at')) >= timestamp(state.get('started_at')),
+                  'original build completion ordering invalid')
     completed = max(timestamp(s.get('completed_at')) for s in supervisors)
     snapshots.update(zip(('modules-before.log', 'modules-after.log'), modules))
     c.require(c.exact(build.source_identity(root, source_commit, base_commit, pr_title), source_identity)

@@ -25,7 +25,8 @@ with retained outputs and successful preparation. It repeats existing clean sign
 source/contributor-DCO, actual compiler pin/version and completed original review
 verification. The actual opened build report must agree with those observations,
 caller source/base/title, original controlled role/target/arguments, six completed
-clean build supervisors, and original build/module logs. Report booleans alone
+clean build supervisors with original command/group identity, normal exit, no
+escalation/cleanup failure and finite ordered execution times, and original build/module logs. Report booleans alone
 cannot replace opened files or source/review/compiler verification.
 
 The retained Git archive is checked against the exact signed commit's recursive
