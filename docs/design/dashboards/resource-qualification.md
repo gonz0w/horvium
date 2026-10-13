@@ -66,7 +66,11 @@ transferred/executed artifact, control and guest/host teardown binding gated. Th
 [test-only guest artifact observer](../../testing/dashboards/guest-artifact-observations.md)
 adds independently read artifact/compiler and running-kernel/userland environment facts
 in a separate inactive preflight; trusted host comparison and actual launch,
-control and teardown binding remain required. Leave
+control and teardown binding remain required. The
+[inactive host preflight binding](../../testing/dashboards/host-preflight-binding.md)
+rechecks the candidate's signed tree/archive/files and separately opened original
+guest observation/supervisor; trusted runner transfer/launch, native fixture/control
+and complete teardown assembly remain subsequent reviewed work. Leave
 runtime, source model limits, collectors and file-service separation unchanged.
 Then select one clean signed assembled candidate, actual PR title and pinned Go
 compiler/artifacts for native execution. A failed candidate is retained with its

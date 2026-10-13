@@ -1,0 +1,162 @@
+{
+  "schema": 1,
+  "date": "2026-10-12",
+  "status": "development prerequisite awaiting maintainer review",
+  "issue": "https://github.com/gonz0w/horvium/issues/374",
+  "requirements": [
+    "DASH-REQ-006",
+    "DASH-PERF-001"
+  ],
+  "source_commit": "77a7298ff4e9c000c3d4616b356cf781ea9ba24c",
+  "base_commit": "026395aa035a08a80cf0f5abe65954b82e3a4742",
+  "actual_pr_title": "test(dashboards): bind original guest preflight receipts",
+  "signatures_and_author_DCO_verified": true,
+  "portable_review": {
+    "command": "make review",
+    "qualified": true,
+    "required_checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "tooling_tests": 294,
+    "behavioral_groups": 10,
+    "synthetic_guest_and_supervisor_inputs": true,
+    "plan": {
+      "mode": "full",
+      "reason": "shared tooling, policy, module or packaging change",
+      "packages": [],
+      "native_review_required": true
+    },
+    "deep_executed": true,
+    "race_packages": [
+      "./cmd/horvium",
+      "./internal/admin",
+      "./internal/client",
+      "./internal/console",
+      "./internal/eventlog",
+      "./internal/helper",
+      "./internal/host/freebsd",
+      "./internal/inventory",
+      "./internal/observation",
+      "./internal/service",
+      "./internal/storage"
+    ],
+    "fuzz_target_count": 54,
+    "checks_log_sha256": "29c0432df8ca02e561be2342aaecd13a6677414cf25551544f607b334972193d",
+    "deep_log_sha256": "7a9d880879d44b0eb80e708e4f8dad4c5db656f49d9855baf86c059baad8af93",
+    "supervisors_successful_complete_clean": true
+  },
+  "regressions": {
+    "initial_missing_module_red_retained": true,
+    "archive_digest_rewrite_red_retained": true,
+    "build_supervisor_timeout_cleanup_red_retained": true,
+    "superseded_unqualified_source": "757bd2f5773d9df8dba165045d21bc1f8293abf0",
+    "superseded_review_owned_teardown_verified": true,
+    "historical_result_relabelled": false
+  },
+  "actual_candidate_build_revalidation": {
+    "candidate": {
+      "source_commit": "77a7298ff4e9c000c3d4616b356cf781ea9ba24c",
+      "base_commit": "026395aa035a08a80cf0f5abe65954b82e3a4742",
+      "pr_title": "test(dashboards): bind original guest preflight receipts",
+      "go_version": "go1.27.1",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "archive_sha256": "c0304d0eef87c3d822ab7383d54f3de743e98d99104e51fb1b9ede170e7b48c0",
+      "review_verified": true,
+      "artifacts": {
+        "15.1": {
+          "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "fixture": "10cb71a7302cd96256647c54ab75fa648e7ef8d455a58d078f3dc67b5ff1358f"
+        },
+        "14.5": {
+          "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "fixture": "10cb71a7302cd96256647c54ab75fa648e7ef8d455a58d078f3dc67b5ff1358f"
+        }
+      }
+    },
+    "original_build_binding": {
+      "candidate": {
+        "source_commit": "77a7298ff4e9c000c3d4616b356cf781ea9ba24c",
+        "base_commit": "026395aa035a08a80cf0f5abe65954b82e3a4742",
+        "pr_title": "test(dashboards): bind original guest preflight receipts",
+        "go_version": "go1.27.1",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "archive_sha256": "c0304d0eef87c3d822ab7383d54f3de743e98d99104e51fb1b9ede170e7b48c0",
+        "review_verified": true,
+        "artifacts": {
+          "15.1": {
+            "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+            "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+            "fixture": "10cb71a7302cd96256647c54ab75fa648e7ef8d455a58d078f3dc67b5ff1358f"
+          },
+          "14.5": {
+            "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+            "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+            "fixture": "10cb71a7302cd96256647c54ab75fa648e7ef8d455a58d078f3dc67b5ff1358f"
+          }
+        }
+      },
+      "record_sha256": "2804b4e17eaaf70a80caff7abb28e7b9149d23c0c9538757427416d726bd2a40",
+      "completed_at": 1791855334.643129
+    },
+    "artifacts": [
+      {
+        "role": "management",
+        "sha256": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+        "bytes": 15727025,
+        "target_metadata_verified": true
+      },
+      {
+        "role": "helper",
+        "sha256": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "bytes": 13364650,
+        "target_metadata_verified": true
+      },
+      {
+        "role": "fixture",
+        "sha256": "10cb71a7302cd96256647c54ab75fa648e7ef8d455a58d078f3dc67b5ff1358f",
+        "bytes": 19674574,
+        "target_metadata_verified": true
+      }
+    ],
+    "original_signed_tree_archive_verified": true,
+    "pinned_compiler_and_original_review_reverified": true,
+    "original_module_build_logs_reverified": true,
+    "whole_set_reopened": true,
+    "owned_build_commands": 6,
+    "successful_complete_clean": true,
+    "artifacts_removed": true,
+    "isolated_source_removed": true,
+    "native_execution": false,
+    "guest_preflight_execution": false,
+    "whole_preflight_binding": false
+  },
+  "preservation": {
+    "historical_manifests_byte_identical": 145,
+    "runtime_and_native_fixtures_unchanged": true,
+    "legacy_strict_validators_and_runner_guards_unchanged": true,
+    "owned_records_stopped_verified": 274
+  },
+  "acceptance": {
+    "portable_host_binding_component": true,
+    "actual_guest_preflight_binding": false,
+    "transfer_and_launch_binding": false,
+    "original_fixture_control_and_teardown_binding": false,
+    "native_resource_performance": false,
+    "dashboard_delivery": false,
+    "runtime_writes": false,
+    "browser_manual_accessibility": false,
+    "hardware_commercial_scale": false
+  },
+  "remaining": [
+    "reviewed trusted runner transfer and actual launch bindings",
+    "original fixture expectations and native control completions",
+    "guest and host owned supervisor teardown",
+    "fresh sequential 15.1/14.5 resource execution for one reviewed assembled candidate",
+    "broader native lifecycle/browser/manual/hardware/commercial/release gates"
+  ]
+}
