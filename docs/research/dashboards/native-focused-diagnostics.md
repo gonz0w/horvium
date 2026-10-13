@@ -24,6 +24,17 @@ defect requires corrected signed source and fresh local review before new execut
 resource procedure remain unexecuted in this spike. Research observations require
 review before any change to the fixture contract or runtime behavior.
 
+The completed short probe did not reproduce the mismatch. One additional,
+separately source-bound `TestNativeReaderResourceBudgets/native-small` diagnostic
+uses the original 100-owned-filesystem fixture, 60-second warm-up, 300-second idle
+window, ten readers and original predicates. Keep the eight-minute Go and
+ten-minute owned command deadlines. It deliberately selects one original subcase;
+the omitted projection means the complete parent's declaration/cleanup acceptance
+cannot pass. Preserve that failure and original controls; never call this a
+qualified parent, both-release receipt or full resource run. This targeted
+execution is a distinct timing/workload investigation, not a repeat of the short
+probe or a retry to obtain a qualifying result. No budgets or predicates change.
+
 ## Test-only observations
 
 `TestNativeDashboardFocusedDiagnosis` uses the existing disposable root process
@@ -95,3 +106,14 @@ the exact executed candidate and actual findings. This spike cannot close issue
 382 or broader dashboard/native/browser/release gates. An adopted correction needs
 new reviewed source and both unchanged full native resource procedures. Runtime
 storage writes remain disabled; manual accessibility and startup recovery stay open.
+
+The short execution at signed source `f4a8c1b03f35d695ac2c215f28ad7120dcbeabfb`
+completed in 37.27 seconds with 150 successful original-inventory HTML predicates
+and 150 status/body-only JSON responses. All three modes reported zero differing
+pool fields between independently collected originals and the cached pages.
+Guest cleanup, before/after preflight and independent host teardown/preservation
+passed. This does not reproduce the historical native mismatch or explain the
+ten-reader latency failure; the targeted original native-small case retains its
+actual warm-up/idle and contention while omitting the other resource modes.
+An earlier scoped-controller dispatch refusal also occurred before transfer or
+Go-test execution and remains retained with verified host teardown.
