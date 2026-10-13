@@ -3,6 +3,15 @@
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 
+The [dashboard runner integration](../testing/dashboards/runner-integration.md)
+connects clean signed candidate preparation, owned transfer/launch, independent
+original fixture/control files and full guest/host teardown. The performance main
+entry now requires that complete original context; generic shell/transcript paths
+remain denied. Portable/synthetic tests and cross-builds are implementation evidence
+only. This candidate has not executed either native resource suite, and new reaper,
+cleanup, resource/browser and broader acceptance remain open. Runtime writes stay
+disabled; all historical manifests retain their source boundaries.
+
 The [second release security proposal](../roadmap/v2-security.md) and
 [deployment security guide](../security/deployment-security.md) are planning only.
 No hardened image, host firewall profile, encrypted replication, additional
@@ -33,7 +42,8 @@ The [prepared workload/receipt adapter](../testing/dashboards/workload-receipt-a
 binds those portable components and retains actual body sizes and strict phase JSON.
 The [native fixture bindings](../testing/dashboards/native-fixture-bindings.md) now use
 the prepared five-case workload in all four test-only modes. The existing performance
-entry points are gated pending full independent host receipt bindings. The
+generic entry points remain denied; the integrated host path requires complete
+independent receipts and maintainer review before native qualification. The
 [per-mode measurement record slice](../testing/dashboards/resource-measurement-records.md)
 binds actual warm-up, separate displayed CPU counters, individual RSS peaks and
 complete phase observations in test-only fixtures. No native execution or fresh

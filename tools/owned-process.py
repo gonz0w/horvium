@@ -96,6 +96,19 @@ def native_cleanup(directory, interrupted):
         image.unlink()
     elif image.exists():
         shutil.rmtree(image)
+    # The dashboard candidate is deterministically paired with this fresh
+    # performance lab directory. Never follow a record-supplied deletion path.
+    if directory.name.startswith('performance-'):
+        candidate = ROOT / '.tools/dashboard-candidates' / directory.name
+        if candidate.exists() or candidate.is_symlink():
+            private_directory(candidate)
+            for name in ('source.tar', 'horvium', 'reader-fixture.test', 'dashboard-native.test'):
+                (candidate / name).unlink(missing_ok=True)
+            build_record = candidate / 'result.json'
+            if build_record.exists():
+                build_state = json.loads(build_record.read_text())
+                build_state['artifacts_removed'] = True
+                write_record(build_record, build_state)
     result = directory / 'result.json'
     record = json.loads(result.read_text()) if result.exists() else {}
     if interrupted:

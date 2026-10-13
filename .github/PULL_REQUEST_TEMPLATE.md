@@ -8,6 +8,8 @@ Refs gonz0w/horvium#number. Link requirement IDs, approved PRD/EDD/Test Design,
 contracts and ADRs. Use Closes only when this PR satisfies every criterion of
 that specific issue; broader acceptance gates use Refs. Name repository-qualified
 issues for cross-repository work. Identify parent gates and native blockers.
+Describe the complete outcome covered; related helper steps, tests, docs and
+evidence belong together. Explain any scope split requiring another review.
 
 ## Validation
 

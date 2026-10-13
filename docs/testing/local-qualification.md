@@ -30,6 +30,12 @@ were not requalified by these host-lifecycle tests.
 
 ## Mac first
 
+Dashboard `performance` uses the [integrated candidate/receipt runbook](dashboards/runner-integration.md).
+The complete host path requires exact signed clean-source review and independent
+original fixture/control/teardown binding. Generic guest source-build and
+transcript-only performance entrypoints still deny. Actual both-release execution
+must follow integration review; its implementation checks are not native acceptance.
+
 The maintainer selected the current Mac as the first lab host. Run repository
 checks and deep Go checks there before requesting review:
 

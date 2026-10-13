@@ -144,6 +144,28 @@ class OwnedProcessTests(unittest.TestCase):
         self.assertEqual(process.wait(timeout=15), 7)
         self.assertTrue(process.record()['group_cleaned'])
 
+    def test_interrupted_dashboard_removes_only_its_paired_candidate(self):
+        self.tool.ROOT = self.root
+        lab = self.root / '.tools/lab-runs/performance-15.1-test'
+        lab.mkdir(parents=True, mode=0o700)
+        candidate = self.root / '.tools/dashboard-candidates' / lab.name
+        candidate.mkdir(parents=True, mode=0o700)
+        other = candidate.parent / 'unrelated'
+        other.mkdir(mode=0o700)
+        (other / 'horvium').write_text('preserve')
+        for name in ('source.tar', 'horvium', 'reader-fixture.test', 'dashboard-native.test'):
+            (candidate / name).write_text('partial original artifact')
+        (candidate / 'result.json').write_text(json.dumps({'build_complete': False}))
+        (candidate / 'management.log').write_text('retained failure')
+        # An untrusted record path must never select a different deletion target.
+        (lab / 'result.json').write_text(json.dumps({'qualified': True, 'candidate_directory': str(other)}))
+        self.tool.native_cleanup(lab, interrupted=True)
+        self.assertFalse(json.loads((lab / 'result.json').read_text())['qualified'])
+        self.assertTrue(json.loads((candidate / 'result.json').read_text())['artifacts_removed'])
+        self.assertEqual((other / 'horvium').read_text(), 'preserve')
+        self.assertEqual((candidate / 'management.log').read_text(), 'retained failure')
+        self.assertTrue(all(not (candidate / name).exists() for name in ('source.tar', 'horvium', 'reader-fixture.test', 'dashboard-native.test')))
+
     def test_control_bind_failure_starts_no_worker_and_cleans_prepared_fixture(self):
         for native in [None, str(self.root / 'prepared-native')]:
             with self.subTest(native=native):

@@ -396,6 +396,12 @@ def main():
     if not args.run:
         print(f'{args.suite}: FreeBSD {args.release} amd64, {cpu_count_for_suite(args.suite)} CPUs, 6144 MiB, snapshot, TCG, loopback SSH. Add --run to execute.')
         return
+    if args.suite == 'performance':
+        # The complete owned candidate/transfer/preflight/control/teardown path
+        # replaces the previous blanket main-entry denial. Generic shell and
+        # transcript-only entrypoints still deny without original host bindings.
+        load_tool('dashboard-qualification').run_release(args.release, args.owned_directory)
+        return
     require_dashboard_runner_bindings(args.suite)
     if platform.system() not in ('Darwin', 'Linux'):
         raise ValueError('local runner requires macOS or Linux')

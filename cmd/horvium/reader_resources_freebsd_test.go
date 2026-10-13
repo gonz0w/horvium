@@ -176,13 +176,13 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 	if os.Geteuid() != 0 {
 		t.Fatal("reader resource fixture requires root")
 	}
-	ledger := nativeDashboardControlLedger(t)
+	ledger, owner := nativeDashboardControlLedger(t)
 	for _, mode := range []string{"native-small", "projection-10000"} {
 		t.Run(mode, func(t *testing.T) {
 			count, owned := 10000, 0
 			var expected ownedFixture
 			if mode == "native-small" {
-				expected = nativeStorageFixture(t)
+				expected = nativeStorageFixtureObserved(t, owner.storage)
 				// Root + existing data + 98 fresh, unmounted filesystems = 100 owned.
 				for i := 0; i < 98; i++ {
 					readerFixtureCommand(t, "/sbin/zfs", "create", "-o", "mountpoint=none", expected.Pool+fmt.Sprintf("/item-%03d", i))
@@ -200,6 +200,7 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 			if os.WriteFile(path, encoded, 0644) != nil {
 				t.Fatal("native reader config")
 			}
+			owner.pair(t, mode, path, c)
 			beforeConfig := append([]byte(nil), encoded...)
 			digestPath := filepath.Join(c.StateDirectory, "token.sha256")
 			beforeDigest, err := os.ReadFile(digestPath)
@@ -209,14 +210,14 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 			dir := filepath.Dir(path)
 			built, _ := filepath.Abs("../../.tools/horvium")
 			binary := filepath.Join(dir, "horvium")
-			copyPerformanceExecutable(t, built, binary)
+			owner.copy(t, "management", built, binary)
 			var helper *nativeProcess
 			if mode == "native-small" {
 				helper = startNativeProcess(t, binary, []string{"helper", "-config", path}, 0, 0)
 			} else {
 				fixture, _ := filepath.Abs("../../.tools/reader-fixture.test")
 				fixtureBinary := filepath.Join(dir, "reader-fixture.test")
-				copyPerformanceExecutable(t, fixture, fixtureBinary)
+				owner.copy(t, "helper", fixture, fixtureBinary)
 				cmd := exec.Command(fixtureBinary, "-test.run=^TestNativeProjectionHelper$", "--", path)
 				cmd.Env = []string{"HORVIUM_NATIVE_VM=1", "HORVIUM_PERF_VM=1", "LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
 				helper = &nativeProcess{cmd: cmd, done: make(chan error, 1)}
@@ -277,6 +278,7 @@ func TestNativeReaderResourceBudgets(t *testing.T) {
 			if err := ledger.declare(prepared); err != nil {
 				t.Fatal(err)
 			}
+			owner.original(t, prepared)
 			work := measureDashboardFixture(t, p, prepared)
 			sampled, samples, gap := monitor.finish(t)
 			var helperHigh uint64

@@ -42,6 +42,13 @@ No merged component or successful cross-build is fresh resource evidence.
 
 ## Candidate and fixture procedure
 
+The [complete runner integration](../../testing/dashboards/runner-integration.md),
+[issue 380](https://github.com/gonz0w/horvium/issues/380), groups the remaining
+related transfer/launch, independent original controls and guest/host cleanup into
+one implementation PR. It consumes the prerequisites below without waiving their
+historical limitations. Actual both-release execution follows integration review;
+portable or cross-build results do not establish acceptance.
+
 Implement the fixture/validator in bounded reviewed slices with failing behavioral
 tests for workload and receipt contracts. The first [portable request-driver slice](../../testing/dashboards/resource-request-driver.md),
 [issue 358](https://github.com/gonz0w/horvium/issues/358), remains inactive in the
