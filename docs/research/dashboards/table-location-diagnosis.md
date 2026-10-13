@@ -112,3 +112,47 @@ a behavior change: the meaningful evidence is the original allocation baseline,
 plus exact full/HTMX selected and unselected 500-row regressions before and after.
 A fresh source-bound benchmark records the effect; native execution above belongs
 to the earlier diagnostic source and does not qualify this later optimization.
+
+
+## Measured allocation result and review
+
+The [source-bound manifest](table-location-diagnosis-manifest.json) retains actual
+source/base/title, original native/build/preflight/transcript hashes, failure
+counts, completed replacements, clean supervisors, profile/comparison hashes and
+unexecuted FreeBSD cross-build. The optimization source is
+`301db4d4abe1869ca12b4554eed12884b2408838`. Portable benchmark binaries used
+Go 1.27.1, Darwin/arm64, Apple M5 Max, GOMAXPROCS 18 and CGO enabled; the native
+candidate is cgo-free. Both comparison commands ran after QEMU and other review
+work stopped, with the same fixture workload and no CPU profiling enabled.
+Each B/op and allocs/op below covers **1,000 pages**, not one page or retained memory.
+
+| Datasets / requested limit | Before bytes / 1,000 pages | After bytes / 1,000 pages | Before allocations | After allocations |
+| --- | ---: | ---: | ---: | ---: |
+| 100 / 100 | 705,610,928 | 689,010,960 | 10,452,686 | 9,953,198 |
+| 100 / 500 | 705,554,344 | 688,938,992 | 10,453,512 | 9,953,852 |
+| 10,000 / 100 | 802,970,616 | 783,991,968 | 11,047,616 | 10,349,759 |
+| 10,000 / 500 | 3,028,209,736 | 2,933,517,512 | 48,054,298 | 44,566,090 |
+
+For 10,000/500 this is 3.127% fewer allocated bytes and 7.259% fewer allocations.
+Observed p95 was 8.275 ms before and 9.174 ms after; the single-cohort comparison
+shows no latency improvement. The earlier CPU-profiled cohort's maximum-page p95
+was 18.72 ms, with profiling overhead; it is a separate observation. These are
+portable diagnostic costs, not native budget or statistical performance acceptance.
+
+Both signed behavioral candidates passed required checks, 306 tooling tests and
+fresh affected-package race review for cmd/horvium, internal/console and
+internal/service; no eligible fuzz targets. Exact selected/unselected maximum-page
+and full/HTMX regressions passed before and after the optimization. Final prose
+followups rerun the required baseline and may reuse only those exact behavioral
+inputs. Owned portable/native groups are stopped and verified; benchmark and
+cross-built test binaries are removed. All 151 historical manifests and primary
+operator edits retain their original bytes. Runtime writes remain disabled.
+
+This PR combines the diagnostic, concrete allocation correction, regressions and
+evidence. It ends before resource acceptance because the remaining native value
+invariance/cause needs an evidenced fixture-contract decision and the large native
+latency failure is still unresolved. #382, #289/#290/#131, manual accessibility
+and startup/recovery gates stay open. Next unblocked work is to isolate original
+native value changes by controlled resource ownership/generation, without using
+management responses as new expectations, then review a justified correction and
+execute both complete unchanged resource procedures. No historical result is upgraded.
