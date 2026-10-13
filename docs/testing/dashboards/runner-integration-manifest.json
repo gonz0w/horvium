@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "date": "2026-10-13",
+  "status": "implementation review; native execution pending",
+  "issue": 380,
+  "requirements": [
+    "DASH-REQ-006",
+    "DASH-PERF-001"
+  ],
+  "source_commit": "993ae9b058fe9cf27ca32921af945ee20999ad4c",
+  "base_commit": "114a54ddebecb18ddc612423a797a19b76ed1b68",
+  "actual_pr_title": "test(dashboards): complete native resource runner integration",
+  "signatures_and_author_DCO_verified": true,
+  "portable_review": {
+    "required_checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "tooling_tests": 305,
+    "new_go_behavioral_parents": 4,
+    "new_python_integration_groups": 10,
+    "mode": "full",
+    "deep_executed": true,
+    "race_packages": [
+      "./cmd/horvium",
+      "./internal/admin",
+      "./internal/client",
+      "./internal/console",
+      "./internal/eventlog",
+      "./internal/helper",
+      "./internal/host/freebsd",
+      "./internal/inventory",
+      "./internal/observation",
+      "./internal/service",
+      "./internal/storage"
+    ],
+    "fuzz_targets": 54,
+    "checks_log_sha256": "652c048b406441605ff2e87a2cf8d6d34b30ac5249a43de2a2d93aa23f8b1b7f",
+    "deep_log_sha256": "0ed88f961a4304882c2ad0a3cdf29e5734edb8156382cdd0c665decd7758b018",
+    "synthetic_boundaries": "Host/supervisor/guest transcripts and portable reaper censuses in unit tests are synthetic, not native qualification."
+  },
+  "cross_build": {
+    "candidate": {
+      "source_commit": "993ae9b058fe9cf27ca32921af945ee20999ad4c",
+      "base_commit": "114a54ddebecb18ddc612423a797a19b76ed1b68",
+      "pr_title": "test(dashboards): complete native resource runner integration",
+      "go_version": "go1.27.1",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "archive_sha256": "50bc5342ce32a9238ba9c6c72caac1eb69701758de2fd899eeba1f6e24da58b4",
+      "review_verified": true,
+      "artifacts": {
+        "15.1": {
+          "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "fixture": "9eca9f620f4fba21824a85e80f72b1b46e8ec668b13e8adae91c397a81cb631b"
+        },
+        "14.5": {
+          "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "fixture": "9eca9f620f4fba21824a85e80f72b1b46e8ec668b13e8adae91c397a81cb631b"
+        }
+      }
+    },
+    "original_archive_and_build_revalidated": true,
+    "completed_owned_commands": 6,
+    "target": "freebsd/amd64",
+    "goamd64": "v1",
+    "cgo_enabled": false,
+    "three_artifact_metadata_inspections_passed": true,
+    "artifacts_and_source_archive_removed": true,
+    "native_executed": false,
+    "resource_executed": false
+  },
+  "failure_provenance": {
+    "initial_missing_module_and_helpers": "retained private red logs",
+    "missing_launch_copy_helper": "retained private red log",
+    "portable_temp_directory_alias_refusal": "corrected before the signed candidate; original tool output retained",
+    "native_attempts": 0,
+    "failed_native_candidates_relabelled": false
+  },
+  "preservation": {
+    "historical_manifests_byte_identical": 148,
+    "owned_records_completed_and_groups_cleaned": 299,
+    "lab_stop_and_status_passed": true,
+    "primary_checkout_edits_preserved": true,
+    "operator_storage_used": false,
+    "runtime_writes_enabled": false,
+    "new_actions_services_or_dependencies": false
+  },
+  "acceptance": {
+    "portable_integration_review": true,
+    "actual_native_reaper_and_cleanup": false,
+    "both_release_resource": false,
+    "browser_accessibility": false,
+    "dashboard_gate": false,
+    "milestone_or_release": false
+  },
+  "remaining": [
+    "Maintainer review/merge of the integrated runner before native performance execution.",
+    "One fresh clean signed candidate, sequential pinned 15.1/14.5 resource runs with original receipts and verified teardown.",
+    "Actual native reaper/launch/storage cleanup and RSS/CPU/latency controls on both releases.",
+    "Separate browser/accessibility, lifecycle #305/#139, continuity, hardware and release gates."
+  ]
+}

@@ -138,3 +138,20 @@ supervisor/file/runtime mutations and cleanup refusal. Existing denial and real
 owned-process regressions remain required. Reaper/syscall, ZFS cleanup and resource
 budgets require actual both-release execution after review. Historical manifests
 retain their original sources and limitations.
+
+The [source-bound implementation receipt](runner-integration-manifest.json) records
+signed behavioral source `993ae9b058fe9cf27ca32921af945ee20999ad4c`, base
+`114a54ddebecb18ddc612423a797a19b76ed1b68` and actual title
+`test(dashboards): complete native resource runner integration`. Required checks
+passed with 305 tooling tests, ten new synthetic integration groups, four new Go
+behavioral parents, fresh races for all 11 portable packages and all 54 listed
+fuzz targets. Exact reviewed candidate selection and the actual archive-isolated
+three-artifact build/revalidation passed. FreeBSD executables were inspected and
+removed without execution. All 148 historical manifests remain byte-identical;
+299 original owned process records were completed with cleaned groups. Initial
+portable red cases and the corrected directory-alias refusal retain their failure
+provenance. No native resource/reaper/cleanup acceptance is claimed.
+
+A documentation-only receipt followup reruns required current-head baseline checks
+and may reuse only this original successful exact-input deep review; it does not
+retag the build as having executed from a later source.
