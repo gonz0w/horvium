@@ -110,3 +110,34 @@ gates remain open; writes stay disabled. No service, paid automation or tracking
 synchronization is added. Use `make lab-stop` / `make lab-status` to verify owned
 teardown and remove cross-build outputs after inspection. Rollback removes this
 inactive module, its tests and documentation without altering product behavior.
+
+## Recorded portable source and actual build revalidation
+
+[Receipt](host-preflight-binding-manifest.json): signed behavioral source
+`77a7298ff4e9c000c3d4616b356cf781ea9ba24c`, base `026395aa035a08a80cf0f5abe65954b82e3a4742`, actual title
+`test(dashboards): bind original guest preflight receipts`. Required checks passed with
+294 tooling tests, including ten new behavioral groups, and ordinary Go tests.
+The conservative shared-tool plan executed fresh races for all 11 portable packages
+and all 54 compiler-listed portable fuzz targets. Guest/supervisor inputs in the
+new behavioral tests are explicitly synthetic; no native preflight is qualified.
+
+The reviewed host builder produced all three original FreeBSD/amd64/v1 artifacts
+from the signed archive with pinned Go and before/after module verification. The
+new `verify_build` reverified actual source/contributor-DCO, original review and
+compiler, full signed-tree/archive blob/mode coverage, actual artifact bytes,
+original module/build logs and six normal successful owned build completions.
+Its whole original candidate matched. Native executables were never run and
+`verify_preflight` was not exercised against a fabricated native record.
+The archive, executables and extraction were removed; owned teardown was verified.
+All 145 historical manifests and native/runtime/validator/runner guard inputs
+remained unchanged.
+
+Initial missing-module, archive-digest rewrite and original-build-supervisor
+regressions retain their red logs. The preparation review of initial signed source
+`757bd2f5773d9df8dba165045d21bc1f8293abf0` was deliberately stopped while adding
+the supervisor refusal regression. Its unqualified record and verified cleanup
+remain intact. It is not native evidence and is not relabelled as a pass.
+Current-head documentation review reruns baseline checks and may reuse only this
+corrected original exact-input deep evidence. Actual guest preflight, transfer/
+launch, fixture/control and complete guest/host teardown remain prerequisites
+before fresh both-release measurements. Broad gates stay open and writes disabled.
