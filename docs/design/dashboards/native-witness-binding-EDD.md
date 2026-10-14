@@ -1,6 +1,6 @@
 # EDD supplement: native generation witness binding
 
-Status: Review; proposed development-only mechanism. Date: 2026-10-13.
+Status: Accepted for test-only implementation in [PR 387](https://github.com/gonz0w/horvium/pull/387); native activation remains gated. Date: 2026-10-13.
 Owner: Cam (`@gonz0w`), [issue 382](https://github.com/gonz0w/horvium/issues/382).
 Authority: [PRD](PRD.md), [EDD](EDD.md), [resource supplement](resource-qualification.md),
 [requirement correction](native-invariance-correction.md),

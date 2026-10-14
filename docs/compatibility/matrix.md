@@ -2019,3 +2019,9 @@ no broker/native ABI/handoff/performance support is claimed. Independent decodin
 publication confirmation, actual/front socket recovery, bounded custody and augmented
 instrumentation resource gates require the accompanying Test Design after adoption.
 Existing runtime writes and broader native/browser/release acceptance remain pending.
+
+The [inactive original-witness fixture](../testing/dashboards/native-witness-fixture.md)
+adds independent portable provenance checks and a FreeBSD-only disposable broker.
+Native ABI/handoff, complete fault/custody/calibration, augmented resources and both-release
+resource acceptance remain unqualified until actual candidate evidence is reviewed.
+No new runtime or hardware support claim follows.
