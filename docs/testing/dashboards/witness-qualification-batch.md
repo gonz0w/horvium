@@ -93,3 +93,17 @@ and native short acceptance precede activating the unchanged full resource proce
 large-inventory latency, wider M2/startup/browser/hardware/release gates remain open.
 Runtime writes stay disabled; no product API/wire/config change, dependency, paid
 Actions, installed service or runtime C component is introduced.
+
+## Retained sampler failure and correction
+
+Source `8dc1461` failed all three native sampler paths on 15.1. Diagnostic source
+`996fa7e` retained the actual bounded private command output and rejected immediately
+at `usage-shape`: FreeBSD interpreted `pid=,ppid=,rss=,time=` as a custom header
+and emitted one PID column, rather than four columns. The direct/observer runs had
+53/50 single-field rows including that header. A Mac self-process probe emitted four
+columns for both forms, so it could not reproduce the native format semantics.
+Separate `-o pid= -o ppid= -o rss= -o time=` arguments correct the collector using
+the existing native sampler convention. Failed original runs/inputs remain retained;
+a new reviewed source and actual native row/lifetime observations supply regression
+coverage for the native-only format difference. This explains the new sampler
+failure, not the historical recovery rejection.

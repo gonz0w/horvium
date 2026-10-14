@@ -39,11 +39,10 @@ func witnessLifetime(a witnessActor, abi witnessABI) bool {
 	b, e := unix.SysctlRaw("kern.proc.pid", a.PID)
 	return e == nil && len(b) == abi.ProcSize && int(int32(binary.LittleEndian.Uint32(b[abi.ProcPID:]))) == a.PID && binary.LittleEndian.Uint32(b[abi.ProcUID:]) == a.UID && int64(binary.LittleEndian.Uint64(b[abi.ProcSec:])) == a.Sec && int64(binary.LittleEndian.Uint64(b[abi.ProcUsec:])) == a.Usec
 }
-func witnessNativeSample(roles []witnessActor, abi witnessABI) (witnessNativeUsageSample, error) {
-	var out witnessNativeUsageSample
+func witnessNativeSample(roles []witnessActor, abi witnessABI) (out witnessNativeUsageSample, err error) {
 	var original []byte
 	defer func() {
-		if out.PairRSS == 0 && len(original) > 0 {
+		if err != nil && len(original) > 0 {
 			_ = witnessWriteDiagnosticJSON("witness-rejected-sample-"+strconv.Itoa(len(roles))+".json", struct {
 				Rows  string
 				Roles []witnessActor
@@ -56,7 +55,7 @@ func witnessNativeSample(roles []witnessActor, abi witnessABI) (witnessNativeUsa
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	cmd := exec.CommandContext(ctx, "/bin/ps", "-axo", "pid=,ppid=,rss=,time=")
+	cmd := exec.CommandContext(ctx, "/bin/ps", "-a", "-x", "-o", "pid=", "-o", "ppid=", "-o", "rss=", "-o", "time=")
 	cmd.Env = []string{"LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
 	b, e := cmd.Output()
 	original = b
