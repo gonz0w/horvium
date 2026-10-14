@@ -1996,3 +1996,8 @@ query semantics retain portable regression coverage. The native diagnostic's
 initial 1,000 predicates passed but replacements failed on exact Allocated,
 Used/Available cells; no later optimization, resource-budget or both-release
 acceptance follows. See the [source boundaries](../research/dashboards/table-location-diagnosis.md).
+
+The [native value-invariance probe](../research/dashboards/native-value-invariance.md)
+separates original fixture ownership from other disposable-guest storage and retains
+fixed expectations. It is test-only research, including a bounded disposable scratch
+write; no product protocol, privilege, hardware scope or resource acceptance changes.
