@@ -111,10 +111,11 @@ failure, not the historical recovery rejection.
 
 ## Candidate-specific results and next work
 
-The [sanitized manifest](witness-qualification-batch-manifest.json) retains all six
+The initial [sanitized manifest](witness-qualification-batch-manifest.json) retains all six
 attempts, original transcript/archive hashes, local reviews and teardown readback.
 Four reduced diagnostic attempts failed and two passed. These are distinct source
-boundaries; there is **no candidate passing both pinned releases** in this batch.
+boundaries; **none of those six initial attempts passed both pinned releases**.
+The subsequent same-source diagnostic continuation is recorded below.
 
 | Source | FreeBSD | Reduced suite | Retained boundary |
 | --- | --- | --- | --- |
@@ -168,4 +169,45 @@ the existing two-second command deadline and sampling cadence are unchanged.
 Connector rejection originals also retain the connection stage, wait failure and
 context cancellation/deadline flags. These diagnostics supply missing evidence;
 they do not themselves fix the historical command or connector rejection.
-Native execution of this continuation is pending.
+The [continuation manifest](witness-command-diagnostics-manifest.json) records
+behavioral source `7a5490e`, unchanged base `0745c96` and the same PR title. Its
+signed focused review executed cmd race/original-wire fuzz and fresh required
+check/lint/test/secrets. Both reduced suites passed at this **same source**: 15.1
+326.47 seconds, 14.5 285.79 seconds. The separately reopened original metadata,
+raw helper outputs and all 40 HTML responses also passed independent validation
+with their own actual source/compiler/artifact/probe bindings. Guest/host teardown,
+pinned preservation and matching preflight observations passed on each release.
+
+Neither command nor connector rejection recurred in these two new runs. A successful
+diagnostic run supplies current evidence, not the missing cause of historical
+rejections. The original six-attempt manifest remains byte-identical, together
+with the other 156 historical manifests and seven primary operator files.
+
+### Observed sampling coverage remains incomplete
+
+A separate audit partitions the original relative timestamps into nominal 100 ms
+intervals, through the last retained sample. It includes the original initial
+origin slot and excludes the closing tail, so this is a bounded diagnostic census,
+not a complete scheduled-window acceptance calculation. Multiple observations in
+a later interval never fill an earlier unobserved interval.
+
+| Release / mode | Nominal intervals | Observed distinct intervals | Unobserved | Additional observations sharing an interval | Largest gap |
+| --- | --- | --- | --- | --- | --- |
+| 15.1 / native small | 720 | 720 | 0 | 0 | 122.64 ms |
+| 15.1 / projection | 591 | 508 | 83 | 23 | 1,624.14 ms |
+| 14.5 / native small | 704 | 704 | 0 | 0 | 156.81 ms |
+| 14.5 / projection | 528 | 482 | 46 | 15 | 1,933.07 ms |
+
+The largest 15.1 projection gap includes zero additional product-pair CPU,
+1.49 seconds of controller CPU and 1.52 seconds of observer CPU across its
+1.62-second wall interval. That suggests measurement overhead under the pinned
+two-CPU TCG profile; it is correlation rather than a causal proof. The largest
+14.5 gap has different CPU deltas, so the same explanation cannot be assumed.
+[FreeBSD's statistics-clock source](https://github.com/freebsd/freebsd-src/blob/stable/14/sys/kern/kern_clock.c)
+updates maximum RSS, which is relevant to short-lived processes, but no retained
+failing connector measurement establishes this as the historical rejection cause.
+
+Next work must distinguish command duration from controller scheduling and preserve
+complete independent sampling while retaining every original custody check,
+measurement cost, deadline and budget. Complete native 005/006 controls and full
+resource qualification remain required. PR 390 stays draft; no broader gate closes.

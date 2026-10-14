@@ -2051,5 +2051,10 @@ and runtime/client/hardware support claims are unchanged.
 The PR 390 diagnostic continuation bounds native sampler output during capture
 and distinguishes original command exit, deadline, cancellation, overflow, start
 and I/O failure; connector rejections retain their wait/context stage. Portable
-subprocess regressions pass; native execution remains pending. These test-only
-diagnostics retain the existing deadline/cadence/budgets and add no support claim.
+subprocess regressions and both reduced native suites pass at `7a5490e`, with
+40 independently reopened responses, original teardown and pinned preservation.
+The [continuation record](../testing/dashboards/witness-qualification-batch.md)
+retains 83/46 unobserved nominal projection intervals on 15.1/14.5; complete
+sampling/native/resource acceptance remains open. Earlier rejection causes are
+unresolved. These diagnostics retain existing deadline/cadence/budgets and add
+no runtime or hardware support claim.
