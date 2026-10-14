@@ -546,10 +546,17 @@ func (o *witnessNativeObserver) accountConnector(cmd *exec.Cmd) error {
 	defer o.mu.Unlock()
 	o.connectorActive--
 	var u *syscall.Rusage
+	exitCode := -1
 	if cmd.ProcessState != nil {
+		exitCode = cmd.ProcessState.ExitCode()
 		u, _ = cmd.ProcessState.SysUsage().(*syscall.Rusage)
 	}
 	if u == nil || u.Maxrss <= 0 || uint64(u.Maxrss) > math.MaxUint64/1024 {
+		_ = witnessWriteDiagnosticJSON("witness-rejected-connector-usage.json", struct {
+			Usage        *syscall.Rusage
+			StatePresent bool
+			ExitCode     int
+		}{u, cmd.ProcessState != nil, exitCode})
 		o.failed = true
 		if o.failure == "" {
 			o.failure = "connector-usage"
@@ -558,6 +565,12 @@ func (o *witnessNativeObserver) accountConnector(cmd *exec.Cmd) error {
 	}
 	cpu, e := witnessNativeCPU(u)
 	if e != nil || cpu > math.MaxInt64-int64(o.connectorCPU) {
+		_ = witnessWriteDiagnosticJSON("witness-rejected-connector-usage.json", struct {
+			Usage              *syscall.Rusage
+			CPU                int64
+			PriorCPU           int64
+			ConversionRejected bool
+		}{u, cpu, int64(o.connectorCPU), e != nil})
 		o.failed = true
 		if o.failure == "" {
 			o.failure = "connector-usage"
