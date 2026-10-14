@@ -2040,5 +2040,9 @@ augmented resources, unexplained recovery and release gates stay open.
 The [batched witness support](../testing/dashboards/witness-qualification-batch.md)
 adds test-only augmented resource arithmetic, source-bound response coverage,
 additional native descriptor/custody/physical-ENOSPC controls and a direct/broker
-cadence diagnostic. Native candidate evidence is pending; the canonical resource
-runner stays inactive and runtime/client/hardware support claims are unchanged.
+cadence diagnostic. Six reduced native attempts produced two passes and four failures;
+the passes are different source candidates. Forty transferred original responses
+passed independent verification for those individual runs. Connector accounting and
+projection sampler command rejections remain unresolved; complete native 005/006,
+sampling and resources are unqualified. The canonical resource runner stays inactive
+and runtime/client/hardware support claims are unchanged.

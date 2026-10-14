@@ -1,0 +1,732 @@
+{
+  "schema": 1,
+  "date": "2026-10-14",
+  "scope": "inactive witness qualification support; six reduced diagnostic attempts, not complete native acceptance",
+  "candidate_source_commit": "caf9ce41e744bb36459b48e162d614eb8dd358ed",
+  "base_commit": "0745c9684bd5b235164f74f0bb8accf4a84843a8",
+  "pr_title": "test(dashboards): batch witness qualification support and native probes",
+  "native_acceptance": false,
+  "resource_acceptance": false,
+  "resource_activation": false,
+  "same_candidate_both_releases_pass": false,
+  "historical_manifests_preserved": 156,
+  "native_counts": {
+    "attempts": 6,
+    "diagnostic_passes": 2,
+    "diagnostic_failures": 4
+  },
+  "portable_reviews": [
+    {
+      "source_commit": "8dc14617d589d1ec46591cf979eb930ba644eefc",
+      "base_commit": "0745c9684bd5b235164f74f0bb8accf4a84843a8",
+      "qualified": true,
+      "report_sha256": "216bb3f38c39855748a33ade4b4b7a3f40233ff2ec1d3c99a2e81259dcf6c2f0",
+      "checks_log_sha256": "c32fe811f0fe64df036a03c098eae03325a1e616a5f6e29d0a89cc9a9a1e438c",
+      "plan": {
+        "mode": "focused",
+        "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+        "packages": [
+          "./cmd/horvium"
+        ],
+        "native_review_required": true
+      },
+      "deep_checks": {
+        "fuzz_targets": [
+          {
+            "package": "./cmd/horvium",
+            "target": "FuzzDashboardWitnessOriginalGrammar"
+          }
+        ],
+        "race_packages": [
+          "./cmd/horvium"
+        ]
+      }
+    },
+    {
+      "source_commit": "996fa7e28f0d51fde854801d2ce1f258ee1fbf06",
+      "base_commit": "0745c9684bd5b235164f74f0bb8accf4a84843a8",
+      "qualified": true,
+      "report_sha256": "721dd219994e8078f12b3d8789e989c973b0647996b4a46af9224a14923f1490",
+      "checks_log_sha256": "988e4db988e1432583b7fd0832eecd967adae25258ee4652136017162f38546f",
+      "plan": {
+        "mode": "focused",
+        "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+        "packages": [
+          "./cmd/horvium"
+        ],
+        "native_review_required": true
+      },
+      "deep_checks": {
+        "fuzz_targets": [
+          {
+            "package": "./cmd/horvium",
+            "target": "FuzzDashboardWitnessOriginalGrammar"
+          }
+        ],
+        "race_packages": [
+          "./cmd/horvium"
+        ]
+      }
+    },
+    {
+      "source_commit": "aefd67d7dc9479c73ad0ca605b4cb13883519ea8",
+      "base_commit": "0745c9684bd5b235164f74f0bb8accf4a84843a8",
+      "qualified": true,
+      "report_sha256": "70de4bf62a9c5a571e3b3de44f87bcfda0e30d90c75813fcc9e720c055624089",
+      "checks_log_sha256": "20ee52b45c2d5118724ddf86eb4c0c40b77d4c367e5829a41d47a8b6e14ffbfb",
+      "plan": {
+        "mode": "focused",
+        "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+        "packages": [
+          "./cmd/horvium"
+        ],
+        "native_review_required": true
+      },
+      "deep_checks": {
+        "fuzz_targets": [
+          {
+            "package": "./cmd/horvium",
+            "target": "FuzzDashboardWitnessOriginalGrammar"
+          }
+        ],
+        "race_packages": [
+          "./cmd/horvium"
+        ]
+      }
+    },
+    {
+      "source_commit": "caf9ce41e744bb36459b48e162d614eb8dd358ed",
+      "base_commit": "0745c9684bd5b235164f74f0bb8accf4a84843a8",
+      "qualified": true,
+      "report_sha256": "21156e30175ee6495be11698bf85e3f253898b1aa2719f498a05d1a6bbf37010",
+      "checks_log_sha256": "48d53aa2e98ab2940cc064766a379b6408f931a37cfa72b7630bd4755b6e4d45",
+      "plan": {
+        "mode": "focused",
+        "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+        "packages": [
+          "./cmd/horvium"
+        ],
+        "native_review_required": true
+      },
+      "deep_checks": {
+        "fuzz_targets": [
+          {
+            "package": "./cmd/horvium",
+            "target": "FuzzDashboardWitnessOriginalGrammar"
+          }
+        ],
+        "race_packages": [
+          "./cmd/horvium"
+        ]
+      }
+    }
+  ],
+  "runs": [
+    {
+      "release": "15.1",
+      "source_commit": "8dc14617d589d1ec46591cf979eb930ba644eefc",
+      "base_commit": "0745c9684bd5b235164f74f0bb8accf4a84843a8",
+      "pr_title": "test(dashboards): batch witness qualification support and native probes",
+      "native_test_exit": 1,
+      "diagnostic_complete": false,
+      "raw_sha256": "322d9c24cb41f5c6ddac4e61d3649c097b449d93f2bab0d5b5902bf61d0e4474",
+      "archive_sha256": "a02d9694851a355ba6256f65358c4498b79e8f94d59455da29eb6a52d431d9c6",
+      "result_sha256": "0e83974458641c3b4231a33d5854ce89f2326fa962ee0a6b2a3ef19756bf10e9",
+      "duration_line": "--- FAIL: TestNativeDashboardWitnessShort (265.73s)",
+      "sampler_rejections": [],
+      "coverage": {},
+      "usage": {},
+      "physical_fault": {
+        "ENOSPC": true,
+        "FillBytes": 1048576,
+        "ArchiveCap": 268435456,
+        "TmpfsCap": 1048576,
+        "Eligible": false,
+        "OriginalIndexed": false
+      },
+      "guest_cleanup_marker": true,
+      "host_teardown_readback": true,
+      "preflight_observations_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "original_census": {
+        "attempts": 7,
+        "complete": 7,
+        "delivered": 7,
+        "canonical_json_sha256": "7e61f73c7a57f726d3691c685804c93fd8f53605694933745691903828daf5ac"
+      },
+      "injected_faults": [
+        {
+          "case": "archive-limit",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "archive-limit"
+        },
+        {
+          "case": "half-close",
+          "raw_bytes": 1328,
+          "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+          "candidate_complete": true,
+          "capture_failure": ""
+        },
+        {
+          "case": "failed-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        },
+        {
+          "case": "cancelled-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        }
+      ],
+      "calibration": null,
+      "limitation": "Sampler rejected all three paths; original generic failure retained."
+    },
+    {
+      "release": "15.1",
+      "source_commit": "996fa7e28f0d51fde854801d2ce1f258ee1fbf06",
+      "base_commit": "0745c9684bd5b235164f74f0bb8accf4a84843a8",
+      "pr_title": "test(dashboards): batch witness qualification support and native probes",
+      "native_test_exit": 1,
+      "diagnostic_complete": false,
+      "raw_sha256": "fc622c893f49c3a7ccae9bb8a19c3b47b7d1a2e4d425de6ed9b0ec523f679c61",
+      "archive_sha256": "07e14f7c3fcfda29d3a38c7e4ff0d4288aac7dd7efe3685675daee46e07a651b",
+      "result_sha256": "d68983c0d6927330b0195e762f937a929fe1303f634497c37d43f68e4d469f62",
+      "duration_line": "--- FAIL: TestNativeDashboardWitnessShort (84.04s)",
+      "sampler_rejections": [
+        {
+          "record_sha256": "d0df8fcf83f7561197ce7dc71aa88cdf1cc431a5e8698a2a81243bff7759f424",
+          "roles": 2,
+          "row_field_counts": {
+            "1": 53
+          }
+        },
+        {
+          "record_sha256": "c4fa8ff5e6b47f19dab7b7100dd58f5f581dc83b28c0fe851afa9f45c6f7f519",
+          "roles": 3,
+          "row_field_counts": {
+            "1": 50
+          }
+        }
+      ],
+      "coverage": {},
+      "usage": {},
+      "physical_fault": {
+        "ENOSPC": true,
+        "FillBytes": 1048576,
+        "ArchiveCap": 268435456,
+        "TmpfsCap": 1048576,
+        "Eligible": false,
+        "OriginalIndexed": false
+      },
+      "guest_cleanup_marker": true,
+      "host_teardown_readback": true,
+      "preflight_observations_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "original_census": {
+        "attempts": 2,
+        "complete": 2,
+        "delivered": 2,
+        "canonical_json_sha256": "e4ced7f5bfd2b1395471af72e93a6b34a82d4a6700ca22b1a506075d6e6c9a4e"
+      },
+      "injected_faults": [
+        {
+          "case": "cancelled-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        },
+        {
+          "case": "archive-limit",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "archive-limit"
+        },
+        {
+          "case": "failed-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        },
+        {
+          "case": "half-close",
+          "raw_bytes": 1328,
+          "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+          "candidate_complete": true,
+          "capture_failure": ""
+        }
+      ],
+      "calibration": null,
+      "limitation": "usage-shape: actual FreeBSD output had one field per row; separate -o arguments correct this native format mismatch."
+    },
+    {
+      "release": "14.5",
+      "source_commit": "aefd67d7dc9479c73ad0ca605b4cb13883519ea8",
+      "base_commit": "0745c9684bd5b235164f74f0bb8accf4a84843a8",
+      "pr_title": "test(dashboards): batch witness qualification support and native probes",
+      "native_test_exit": 1,
+      "diagnostic_complete": false,
+      "raw_sha256": "f9a95a9472886e79859925876454d2c23266bed7ddf5b24ba61e3fbc0c5861c2",
+      "archive_sha256": "36d84f26f914791ae11a877942641fd7e1cfc9be54580cd3ed957f07369b1402",
+      "result_sha256": "abacf0bb4f4f63ba8b08e9c285d48c46d837558b7dd827040f99277745bcdd46",
+      "duration_line": "--- FAIL: TestNativeDashboardWitnessShort (276.58s)",
+      "sampler_rejections": [],
+      "coverage": {},
+      "usage": {},
+      "physical_fault": {
+        "ENOSPC": true,
+        "FillBytes": 1048576,
+        "ArchiveCap": 268435456,
+        "TmpfsCap": 1048576,
+        "Eligible": false,
+        "OriginalIndexed": false
+      },
+      "guest_cleanup_marker": true,
+      "host_teardown_readback": true,
+      "preflight_observations_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "original_census": {
+        "attempts": 9,
+        "complete": 8,
+        "delivered": 9,
+        "canonical_json_sha256": "a7ea5b3efd7524cd5337d7653810d5ed2a2545bc199a970a245e6e8493577a5b"
+      },
+      "injected_faults": [
+        {
+          "case": "cancelled-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        },
+        {
+          "case": "failed-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        },
+        {
+          "case": "archive-limit",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "archive-limit"
+        },
+        {
+          "case": "half-close",
+          "raw_bytes": 1328,
+          "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+          "candidate_complete": true,
+          "capture_failure": ""
+        }
+      ],
+      "calibration": null,
+      "limitation": "Native-small helper recovery rejected connector-usage; projection rejected usage-command. Neither cause is established by a later passing run."
+    },
+    {
+      "release": "15.1",
+      "source_commit": "aefd67d7dc9479c73ad0ca605b4cb13883519ea8",
+      "base_commit": "0745c9684bd5b235164f74f0bb8accf4a84843a8",
+      "pr_title": "test(dashboards): batch witness qualification support and native probes",
+      "native_test_exit": 0,
+      "diagnostic_complete": true,
+      "raw_sha256": "3a5c8c3a8450b449d30fc6e43e0484f9d3a99a33f6f973efa7676eda1c8da426",
+      "archive_sha256": "23e9f2b7a4ef0604e10a579183591cc9cc903fdb57effd0d9f2f9d64730ba5d7",
+      "result_sha256": "fba01d02d3f8d6b0786e76d8d705cfcad5b079e5059a5a4ff2c3d462ad2ed6bb",
+      "duration_line": "--- PASS: TestNativeDashboardWitnessShort (299.45s)",
+      "sampler_rejections": [],
+      "coverage": {
+        "native-small": {
+          "responses": 10,
+          "metadata_originals": 2,
+          "receipt_sha256": "a621b623105ae59bf6906ab3735e4479612cbc54705ecf3ecfa9aa0e679735ad",
+          "original_index_sha256": "52170fd9626ff57223f862e43af38f718e34aa819f0629c5844a58563369b313"
+        },
+        "projection-10000": {
+          "responses": 10,
+          "metadata_originals": 3,
+          "receipt_sha256": "e274dd44cfa7084c6768c28755570d76a696040c96786ccc79fc90a0b0a64991",
+          "original_index_sha256": "33797e7bca81198e658abfb159f71513dd6113f7cda7fd8e44dbcd61932396a1"
+        }
+      },
+      "usage": {
+        "native-small": {
+          "original_sha256": "72f4747678c80568b414e6bc634f88cdf62d0385d70dfcfc7bf6f451c8f06519",
+          "samples": 708,
+          "sampled_pair_peak": 31232000,
+          "sampled_augmented_peak": 59645952,
+          "controller_peak": 22282240,
+          "max_sample_gap_ns": 118476998,
+          "observer_high": 17575936,
+          "connector_high": 12447744,
+          "connector_cpu_ns": 91613000,
+          "connectors": 6
+        },
+        "projection-10000": {
+          "original_sha256": "dbd1a1c65e7d6958668046d32d3c7a4cd68a5f18954bd34ad08db6983a3fa5c0",
+          "samples": 454,
+          "sampled_pair_peak": 40128512,
+          "sampled_augmented_peak": 72122368,
+          "controller_peak": 55517184,
+          "max_sample_gap_ns": 2042195000,
+          "observer_high": 21811200,
+          "connector_high": 12611584,
+          "connector_cpu_ns": 62457000,
+          "connectors": 4
+        }
+      },
+      "physical_fault": {
+        "ENOSPC": true,
+        "FillBytes": 1048576,
+        "ArchiveCap": 268435456,
+        "TmpfsCap": 1048576,
+        "Eligible": false,
+        "OriginalIndexed": false
+      },
+      "guest_cleanup_marker": true,
+      "host_teardown_readback": true,
+      "preflight_observations_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "original_census": {
+        "attempts": 10,
+        "complete": 9,
+        "delivered": 10,
+        "canonical_json_sha256": "3c9959ad1d9fa3e67ad4e63ae8ee7413f05b74dc394e99b1047ba711b81f5dff"
+      },
+      "injected_faults": [
+        {
+          "case": "half-close",
+          "raw_bytes": 1328,
+          "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+          "candidate_complete": true,
+          "capture_failure": ""
+        },
+        {
+          "case": "cancelled-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        },
+        {
+          "case": "failed-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        },
+        {
+          "case": "archive-limit",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "archive-limit"
+        }
+      ],
+      "calibration": {
+        "original_sha256": "bd2d042db268c1fa59dc29a8a1397703076b97c5427a70c1d338b1c3afa5b32b",
+        "direct": {
+          "window_ns": 65006536000,
+          "observed_generations": 3,
+          "metadata_reads": 65,
+          "complete_response_p95_ns": 5407000,
+          "samples": 651,
+          "observed_publication_interval_ns": [
+            29992193000,
+            30006819000
+          ],
+          "samples_scope": "entire monitor window; not restricted to the 65-second metadata window"
+        },
+        "broker": {
+          "window_ns": 65003805000,
+          "observed_generations": 3,
+          "metadata_reads": 65,
+          "complete_response_p95_ns": 5708000,
+          "samples": 708,
+          "observed_publication_interval_ns": [
+            28557349000,
+            30010327999
+          ],
+          "samples_scope": "entire monitor window; not restricted to the 65-second metadata window"
+        }
+      },
+      "limitation": "Reduced diagnostic pass only; no complete native or resource acceptance."
+    },
+    {
+      "release": "14.5",
+      "source_commit": "caf9ce41e744bb36459b48e162d614eb8dd358ed",
+      "base_commit": "0745c9684bd5b235164f74f0bb8accf4a84843a8",
+      "pr_title": "test(dashboards): batch witness qualification support and native probes",
+      "native_test_exit": 0,
+      "diagnostic_complete": true,
+      "raw_sha256": "197ba96c1c13a3a4999230fa8f9ff3fe2bcb456cc059d6207b1cb6c5f33473fc",
+      "archive_sha256": "27e2d9413ce512083879c1638ec95510edbfc618f881b63841d61a8c1a341156",
+      "result_sha256": "492650a237ea6b7f317f50ff8a0ccbb6566a00783d527338e9553db1876ad762",
+      "duration_line": "--- PASS: TestNativeDashboardWitnessShort (284.29s)",
+      "sampler_rejections": [],
+      "coverage": {
+        "native-small": {
+          "responses": 10,
+          "metadata_originals": 2,
+          "receipt_sha256": "dc9b3c038f27393a75d3d452ba4b78be2efee479cb2e5d85c9ce54efaf6299eb",
+          "original_index_sha256": "fdb87840589919c48fb5a1027d1671d5c1a432533028765b4bf1f68090d55bb2"
+        },
+        "projection-10000": {
+          "responses": 10,
+          "metadata_originals": 3,
+          "receipt_sha256": "f460acec8ff81f5a91929b584cea856915296ed54d31ad716689dcb3e1d42bd8",
+          "original_index_sha256": "f0fc897cdce39d7bc20a424ae6f72b934de7a3aa3636ae31a4ed1618f20899d8"
+        }
+      },
+      "usage": {
+        "native-small": {
+          "original_sha256": "9ae5261125fccef52671bac22b4f033e44037bb8c70a34a42dd756f348b63277",
+          "samples": 703,
+          "sampled_pair_peak": 35217408,
+          "sampled_augmented_peak": 70971392,
+          "controller_peak": 23519232,
+          "max_sample_gap_ns": 117644001,
+          "observer_high": 21581824,
+          "connector_high": 16048128,
+          "connector_cpu_ns": 97060000,
+          "connectors": 6
+        },
+        "projection-10000": {
+          "original_sha256": "6bf3f71ae8323c28219e7b223160931d8024e839b065ccf5178f2c4a608d5c99",
+          "samples": 457,
+          "sampled_pair_peak": 44019712,
+          "sampled_augmented_peak": 81731584,
+          "controller_peak": 57257984,
+          "max_sample_gap_ns": 1111977000,
+          "observer_high": 23801856,
+          "connector_high": 16064512,
+          "connector_cpu_ns": 69312000,
+          "connectors": 4
+        }
+      },
+      "physical_fault": {
+        "ENOSPC": true,
+        "FillBytes": 1048576,
+        "ArchiveCap": 268435456,
+        "TmpfsCap": 1048576,
+        "Eligible": false,
+        "OriginalIndexed": false
+      },
+      "guest_cleanup_marker": true,
+      "host_teardown_readback": true,
+      "preflight_observations_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "original_census": {
+        "attempts": 10,
+        "complete": 9,
+        "delivered": 10,
+        "canonical_json_sha256": "bd2ce6e0bc59190d715d563360ce499d436f109095d30bcd9dea02a619566db2"
+      },
+      "injected_faults": [
+        {
+          "case": "cancelled-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        },
+        {
+          "case": "failed-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        },
+        {
+          "case": "archive-limit",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "archive-limit"
+        },
+        {
+          "case": "half-close",
+          "raw_bytes": 1328,
+          "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+          "candidate_complete": true,
+          "capture_failure": ""
+        }
+      ],
+      "calibration": {
+        "original_sha256": "e47a3d73f958aef312d411b946d111f3b63d32f03382eaec65a182355aec2f6b",
+        "direct": {
+          "window_ns": 65001173000,
+          "observed_generations": 3,
+          "metadata_reads": 65,
+          "complete_response_p95_ns": 9977000,
+          "samples": 651,
+          "observed_publication_interval_ns": [
+            30004883000,
+            30004617000
+          ],
+          "samples_scope": "entire monitor window; not restricted to the 65-second metadata window"
+        },
+        "broker": {
+          "window_ns": 65001804999,
+          "observed_generations": 3,
+          "metadata_reads": 65,
+          "complete_response_p95_ns": 9341000,
+          "samples": 703,
+          "observed_publication_interval_ns": [
+            28577568000,
+            30003766999
+          ],
+          "samples_scope": "entire monitor window; not restricted to the 65-second metadata window"
+        }
+      },
+      "limitation": "Reduced diagnostic pass only; no complete native or resource acceptance."
+    },
+    {
+      "release": "15.1",
+      "source_commit": "caf9ce41e744bb36459b48e162d614eb8dd358ed",
+      "base_commit": "0745c9684bd5b235164f74f0bb8accf4a84843a8",
+      "pr_title": "test(dashboards): batch witness qualification support and native probes",
+      "native_test_exit": 1,
+      "diagnostic_complete": false,
+      "raw_sha256": "4a16e0552c98d77c614428b9c6474dab9f4d563f62529a57c3ffbc9b78d7c474",
+      "archive_sha256": "edd463d63fcdf3da526662ff2f77313a9500db96b4b8d4da120dfb8805a8694c",
+      "result_sha256": "36f8a3341aedf856ccb73f074d139864ccb1e0403ca85cb33ac21fcdd983615b",
+      "duration_line": "--- FAIL: TestNativeDashboardWitnessShort (338.86s)",
+      "sampler_rejections": [],
+      "coverage": {},
+      "usage": {
+        "native-small": {
+          "original_sha256": "11bcfc048609911b5ad6ea68a074eb4b52bfa466a8e9ba67bb48b3ec2c0935f3",
+          "samples": 746,
+          "sampled_pair_peak": 31936512,
+          "sampled_augmented_peak": 60837888,
+          "controller_peak": 22581248,
+          "max_sample_gap_ns": 134875000,
+          "observer_high": 17870848,
+          "connector_high": 12455936,
+          "connector_cpu_ns": 160580000,
+          "connectors": 6
+        }
+      },
+      "physical_fault": {
+        "ENOSPC": true,
+        "FillBytes": 1048576,
+        "ArchiveCap": 268435456,
+        "TmpfsCap": 1048576,
+        "Eligible": false,
+        "OriginalIndexed": false
+      },
+      "guest_cleanup_marker": true,
+      "host_teardown_readback": true,
+      "preflight_observations_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "original_census": {
+        "attempts": 10,
+        "complete": 9,
+        "delivered": 10,
+        "canonical_json_sha256": "322224657d0b55832a3bc824ac4e49b457f4df55633c2d26faf4ba35aadff821"
+      },
+      "injected_faults": [
+        {
+          "case": "cancelled-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        },
+        {
+          "case": "archive-limit",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "archive-limit"
+        },
+        {
+          "case": "failed-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        },
+        {
+          "case": "half-close",
+          "raw_bytes": 1328,
+          "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+          "candidate_complete": true,
+          "capture_failure": ""
+        }
+      ],
+      "calibration": {
+        "original_sha256": "f93da2f25995f594b53843ba85c25d6cb5e73fb8ea1c79c410a2edb3f5755f7b",
+        "direct": {
+          "window_ns": 65004884999,
+          "observed_generations": 3,
+          "metadata_reads": 65,
+          "complete_response_p95_ns": 7938000,
+          "samples": 651,
+          "observed_publication_interval_ns": [
+            29999586000,
+            30031218000
+          ],
+          "samples_scope": "entire monitor window; not restricted to the 65-second metadata window"
+        },
+        "broker": {
+          "window_ns": 65001177000,
+          "observed_generations": 3,
+          "metadata_reads": 65,
+          "complete_response_p95_ns": 8385000,
+          "samples": 746,
+          "observed_publication_interval_ns": [
+            26816055999,
+            30171099000
+          ],
+          "samples_scope": "entire monitor window; not restricted to the 65-second metadata window"
+        }
+      },
+      "limitation": "Native-small and direct calibration passed; projection rejected usage-command. Original command error/deadline cause is not resolved."
+    }
+  ],
+  "transferred_original_validation": {
+    "passed": true,
+    "responses": 40,
+    "scopes": "ten initial responses per mode, two modes for each individually passing release/source",
+    "sources": {
+      "14.5": "caf9ce41e744bb36459b48e162d614eb8dd358ed",
+      "15.1": "aefd67d7dc9479c73ad0ca605b4cb13883519ea8"
+    },
+    "same_candidate_both_releases": false,
+    "log_sha256": "3ed2c15b115297c1051325d19a082bc5d3b8cb80f251d7ad7c7d3939be44f099",
+    "private_driver_sha256": "8e96cd3409fe3f859448bab9f16959dec0d635c7076cadbce8c330bf1aa0994e",
+    "validator_source_sha256": "1ba1aab7c1abb5c6607b1b8203ea708cc45e3cdce9f0881c1ba5dc342464e37d"
+  },
+  "private_readback_sha256": "ce5b00e9a456d0c8862c736372e463e84f240ff5fd9ceea94b5674cfd6c1351d",
+  "private_controller_sha256": "a2b3d5a2e3a7da7ee0f09591171a7d3373f7bc3fe67e89f3cfec9a0db7e0aeb4",
+  "limits": [
+    "Private fixed short-suite orchestration does not activate the canonical resource runner.",
+    "usage-command does not establish whether command exit, timeout, or output cap caused rejection.",
+    "Sample gaps remain visible, including a 2.04-second gap in a passing projection diagnostic; complete scheduled sampling is unqualified.",
+    "65-second observed metadata cadence is not the required 300-second idle or exhaustive producer census.",
+    "Historical 6525631 recovery rejection, complete native 005/006, large-mode latency and wider acceptance gates remain open."
+  ]
+}

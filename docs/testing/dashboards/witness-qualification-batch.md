@@ -1,6 +1,6 @@
 # Batched inactive witness qualification support
 
-Date: 2026-10-14. Status: implementation candidate; native results pending.
+Date: 2026-10-14. Status: draft implementation; reduced native results mixed, acceptance open.
 Owner: [issue 382](https://github.com/gonz0w/horvium/issues/382).
 Authority: [ADR 0011](../../adr/0011-native-dashboard-witnesses.md),
 [accepted EDD](../../design/dashboards/native-witness-binding-EDD.md) and
@@ -50,8 +50,8 @@ resource record. Only existing safe replacement Overview expiry is allowed.
 
 The still-inactive native short suite now retains ten bodies per mode and bounded
 metadata originals in root-only private directories, and verifies them against the
-actual live original owner before teardown. A later offline verifier must independently
-reopen the transferred artifacts too. The full resource caller is not activated by
+actual live original owner before teardown. A private offline driver also reopens the transferred artifacts and uses this
+same reviewed validator with independently supplied build/probe expectations. The full resource caller is not activated by
 this implementation; legacy resources and controls remain separately necessary.
 HTTP durations stop at complete body read, before predicates, metadata, archive I/O
 or decoder work. These outside-duration costs still affect controller pacing.
@@ -107,3 +107,51 @@ the existing native sampler convention. Failed original runs/inputs remain retai
 a new reviewed source and actual native row/lifetime observations supply regression
 coverage for the native-only format difference. This explains the new sampler
 failure, not the historical recovery rejection.
+
+
+## Candidate-specific results and next work
+
+The [sanitized manifest](witness-qualification-batch-manifest.json) retains all six
+attempts, original transcript/archive hashes, local reviews and teardown readback.
+Four reduced diagnostic attempts failed and two passed. These are distinct source
+boundaries; there is **no candidate passing both pinned releases** in this batch.
+
+| Source | FreeBSD | Reduced suite | Retained boundary |
+| --- | --- | --- | --- |
+| `8dc1461` | 15.1 | Failed | Generic sampler rejection on all paths |
+| `996fa7e` | 15.1 | Failed | Native one-column `ps` output; original inputs retained |
+| `aefd67d` | 15.1 | Passed | Corrected column collection; reduced diagnostics only |
+| `aefd67d` | 14.5 | Failed | Connector usage rejected during recovery; projection command rejected |
+| `caf9ce4` | 14.5 | Passed | Additional rejection-original retention, not a proven causal fix |
+| `caf9ce4` | 15.1 | Failed | Small mode passed; projection sampling command rejected |
+
+`usage-command` conflates unsuccessful command exit, the existing two-second command
+bound and oversized output. The cause of these command rejections is unresolved;
+no relaxed deadline, cadence or budget is used to turn them into success. A passing
+15.1 projection diagnostic also retained a 2.04-second maximum sampling gap against
+the nominal 100 ms cadence. It cannot establish complete scheduled sampling.
+The new connector-usage rejection and older `6525631` recovery failure each remain
+open; a diagnostic-only addition and subsequent pass do not explain either failure.
+
+Each individually passing release/source retained ten original HTML responses per
+mode. A separate host driver reopened all **40** original bodies, source-bound helper
+outputs and actual publication metadata after transfer, and reapplied the independent
+HTML predicates successfully. The driver copied the reviewed source into a private
+package, with its source hash recorded in the manifest; this is manual local evidence,
+not a new canonical offline verification tool. Its initial missing embedded fixture
+preparation failed before replay and was corrected by copying the unchanged testdata.
+These different source/release passes do not satisfy a shared-candidate requirement.
+
+Both individually passing sources observed three publication generations with 65
+metadata reads in each direct/broker 65-second window. Usage samples cover the wider
+monitor lifetime, so their totals cannot be compared as identical calibration windows.
+All six completed attempts retain original guest cleanup markers, independently
+verified host teardown, matching preflight observations and preserved pinned inputs.
+The normal 256 MiB archive cap remained unchanged; the separate physical fault reached
+ENOSPC at 1 MiB and rejected its unindexed capture.
+
+The next unblocked work is to retain the exact bounded command failure reason and
+resolve connector accounting without dropping unknown usage, then repeat the reduced
+suite on both releases at one reviewed source. Complete native 005/006 controls and
+sampling/calibration must precede full resource-runner activation. This draft is one
+coherent support batch for review; issue 382 and every wider gate stay open.
