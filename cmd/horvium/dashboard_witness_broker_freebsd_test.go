@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math"
 	"net"
 	"os"
 	"os/exec"
@@ -340,39 +341,44 @@ type witnessNativeOriginal struct {
 	Object witnessFileObject   `json:"object"`
 }
 type witnessNativeReceipt struct {
-	OK              bool                    `json:"ok"`
-	Failed          bool                    `json:"failed"`
-	Failure         string                  `json:"failure"`
-	StoreFailed     bool                    `json:"store_failed"`
-	Denied          int                     `json:"denied"`
-	Originals       []witnessNativeOriginal `json:"originals"`
-	ConnectorMaxRSS uint64                  `json:"connector_max_rss"`
-	ConnectorCPUNS  int64                   `json:"connector_cpu_ns"`
-	Connectors      int                     `json:"connectors"`
-	FrontRemoved    bool                    `json:"front_removed"`
-	Active          bool                    `json:"active"`
+	OK               bool                    `json:"ok"`
+	Failed           bool                    `json:"failed"`
+	Failure          string                  `json:"failure"`
+	StoreFailed      bool                    `json:"store_failed"`
+	Denied           int                     `json:"denied"`
+	Originals        []witnessNativeOriginal `json:"originals"`
+	ObserverHigh     uint64                  `json:"observer_high_rss"`
+	ObserverCPUNS    int64                   `json:"observer_cpu_ns"`
+	ConnectorStarted int                     `json:"connector_started"`
+	ConnectorActive  int                     `json:"connector_active"`
+	ConnectorMaxRSS  uint64                  `json:"connector_max_rss"`
+	ConnectorCPUNS   int64                   `json:"connector_cpu_ns"`
+	Connectors       int                     `json:"connectors"`
+	FrontRemoved     bool                    `json:"front_removed"`
+	Active           bool                    `json:"active"`
 }
 type witnessNativeObserver struct {
-	mu           sync.Mutex
-	cfg          witnessNativeConfig
-	store        *dashboardWitnessStore
-	listener     *net.UnixListener
-	front        os.FileInfo
-	back         os.FileInfo
-	management   witnessActor
-	registered   chan struct{}
-	active       bool
-	stopping     bool
-	allowDeath   bool
-	denied       int
-	connections  map[*net.UnixConn]bool
-	children     sync.WaitGroup
-	connectorMax uint64
-	connectorCPU time.Duration
-	connectors   int
-	failed       bool
-	failure      string
-	ctx          context.Context
+	mu                                sync.Mutex
+	cfg                               witnessNativeConfig
+	store                             *dashboardWitnessStore
+	listener                          *net.UnixListener
+	front                             os.FileInfo
+	back                              os.FileInfo
+	management                        witnessActor
+	registered                        chan struct{}
+	active                            bool
+	stopping                          bool
+	allowDeath                        bool
+	denied                            int
+	connections                       map[*net.UnixConn]bool
+	children                          sync.WaitGroup
+	connectorMax                      uint64
+	connectorCPU                      time.Duration
+	connectors                        int
+	connectorStarted, connectorActive int
+	failed                            bool
+	failure                           string
+	ctx                               context.Context
 }
 
 func (o *witnessNativeObserver) connection(c *net.UnixConn) {
@@ -451,11 +457,16 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 		return
 	}
 	file.Close()
+	o.mu.Lock()
+	o.connectorStarted++
+	o.connectorActive++
+	o.mu.Unlock()
 	waited := false
 	defer func() {
 		if !waited {
 			cancel()
 			_ = cmd.Wait()
+			o.accountConnector(cmd)
 		}
 	}()
 	_ = parent.SetDeadline(time.Now().Add(10 * time.Second))
@@ -484,21 +495,10 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	stage = "connector-wait"
 	e = cmd.Wait()
 	waited = true
-	if e != nil {
+	if o.accountConnector(cmd) != nil || e != nil {
 		fail()
 		return
 	}
-	stage = "connector-usage"
-	u, ok := cmd.ProcessState.SysUsage().(*syscall.Rusage)
-	if !ok || u.Maxrss <= 0 {
-		fail()
-		return
-	}
-	o.mu.Lock()
-	o.connectorMax = max(o.connectorMax, uint64(u.Maxrss)*1024)
-	o.connectorCPU += time.Duration(u.Utime.Sec+u.Stime.Sec)*time.Second + time.Duration(u.Utime.Usec+u.Stime.Usec)*time.Microsecond
-	o.connectors++
-	o.mu.Unlock()
 	_ = actual.SetDeadline(deadline)
 	stage = "producer-request"
 	if n, e := actual.Write(request); e != nil || n != len(request) || actual.CloseWrite() != nil {
@@ -541,12 +541,49 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	// Index is published only after exact bytes and write-half EOF. Originals are
 	// not publication records; independent metadata confirmation remains required.
 }
+func (o *witnessNativeObserver) accountConnector(cmd *exec.Cmd) error {
+	o.mu.Lock()
+	defer o.mu.Unlock()
+	o.connectorActive--
+	var u *syscall.Rusage
+	if cmd.ProcessState != nil {
+		u, _ = cmd.ProcessState.SysUsage().(*syscall.Rusage)
+	}
+	if u == nil || u.Maxrss <= 0 || uint64(u.Maxrss) > math.MaxUint64/1024 {
+		o.failed = true
+		if o.failure == "" {
+			o.failure = "connector-usage"
+		}
+		return errDashboardWitness
+	}
+	cpu, e := witnessNativeCPU(u)
+	if e != nil || cpu > math.MaxInt64-int64(o.connectorCPU) {
+		o.failed = true
+		if o.failure == "" {
+			o.failure = "connector-usage"
+		}
+		return errDashboardWitness
+	}
+	o.connectorMax = max(o.connectorMax, uint64(u.Maxrss)*1024)
+	o.connectorCPU += time.Duration(cpu)
+	o.connectors++
+	return nil
+}
 func (o *witnessNativeObserver) receipt() witnessNativeReceipt {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	o.store.mu.Lock()
 	defer o.store.mu.Unlock()
-	r := witnessNativeReceipt{OK: true, Failed: o.failed || o.store.failed, Failure: o.failure, StoreFailed: o.store.failed, Denied: o.denied, ConnectorMaxRSS: o.connectorMax, ConnectorCPUNS: int64(o.connectorCPU), Connectors: o.connectors, Active: o.active}
+	var usage syscall.Rusage
+	ue := syscall.Getrusage(syscall.RUSAGE_SELF, &usage)
+	cpu, ce := witnessNativeCPU(&usage)
+	if ue != nil || ce != nil || usage.Maxrss <= 0 || uint64(usage.Maxrss) > math.MaxUint64/1024 {
+		o.failed = true
+		if o.failure == "" {
+			o.failure = "observer-usage"
+		}
+	}
+	r := witnessNativeReceipt{ObserverHigh: uint64(usage.Maxrss) * 1024, ObserverCPUNS: cpu, ConnectorStarted: o.connectorStarted, ConnectorActive: o.connectorActive, OK: true, Failed: o.failed || o.store.failed, Failure: o.failure, StoreFailed: o.store.failed, Denied: o.denied, ConnectorMaxRSS: o.connectorMax, ConnectorCPUNS: int64(o.connectorCPU), Connectors: o.connectors, Active: o.active}
 	for _, ref := range o.store.refs {
 		v := o.store.sealed[ref.Name]
 		object, e := witnessObject(v.info)

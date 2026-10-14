@@ -7,11 +7,15 @@ import (
 	"bytes"
 	"context"
 	"crypto/sha256"
+	"errors"
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"syscall"
 	"testing"
+	"time"
 
 	"golang.org/x/sys/unix"
 )
@@ -113,4 +117,139 @@ func dashboardNativeWitnessCustodyFaults(t *testing.T, mount string) {
 		})
 	}
 	t.Log("NATIVE_DASHBOARD_WITNESS_CUSTODY faults=4 retained=4 accepted=0 process_cancellation_complete=false")
+}
+
+// Use a separate nested mount so physical exhaustion cannot disturb the live
+// observer's originals. The normal witness/archive caps are never increased.
+func dashboardNativeWitnessAdditionalFaults(t *testing.T, mount string) {
+	t.Helper()
+	t.Run("receipt-latches-custody-failure", func(t *testing.T) {
+		dir := filepath.Join(mount, "receipt-mutation")
+		if os.Mkdir(dir, 0700) != nil {
+			t.Fatal("exclusive mutation fixture")
+		}
+		store, e := newDashboardWitnessStore(dir)
+		if e != nil {
+			t.Fatal(e)
+		}
+		t.Cleanup(func() {
+			store.close()
+			entries, _ := os.ReadDir(dir)
+			for _, entry := range entries {
+				if os.Remove(filepath.Join(dir, entry.Name())) != nil {
+					t.Error("mutation original cleanup")
+				}
+			}
+			if os.Remove(dir) != nil {
+				t.Error("mutation directory cleanup")
+			}
+		})
+		raw := witnessFrames(witnessGolden())
+		ref, e := store.capture(bytes.NewReader(raw), witnessTestID, "native-small", "fault-management", "fault-helper")
+		if e != nil {
+			t.Fatal(e)
+		}
+		if store.forward(ref, &bytes.Buffer{}) != nil {
+			t.Fatal("fault original delivery")
+		}
+		sealed := store.sealed[ref.Name]
+		o := &witnessNativeObserver{store: store}
+		if r := o.receipt(); r.Failed {
+			t.Fatal("healthy custody rejected")
+		}
+		path := filepath.Join(dir, ref.Name)
+		changed := bytes.Clone(raw)
+		changed[len(changed)-1] ^= 1
+		if os.Chmod(path, 0600) != nil || os.WriteFile(path, changed, 0600) != nil || os.Chmod(path, 0400) != nil {
+			t.Fatal("same object mutation")
+		}
+		r := o.receipt()
+		if !r.Failed || r.Failure != "receipt-custody" {
+			t.Fatal("native mutation escaped receipt")
+		}
+		if os.Chmod(path, 0600) != nil || os.WriteFile(path, raw, 0600) != nil || os.Chmod(path, 0400) != nil || os.Chtimes(path, sealed.info.ModTime(), sealed.info.ModTime()) != nil || store.check(sealed) != nil {
+			t.Fatal("restore original bytes/object timestamp")
+		}
+		if r := o.receipt(); !r.Failed || r.Failure != "receipt-custody" {
+			t.Fatal("restoration cleared observer rejection")
+		}
+	})
+	t.Run("physical-tmpfs-exhaustion", func(t *testing.T) {
+		nested := filepath.Join(mount, "physical-fault")
+		if os.Mkdir(nested, 0700) != nil {
+			t.Fatal("exclusive physical mount")
+		}
+		before, e := os.Stat(nested)
+		if e != nil {
+			t.Fatal(e)
+		}
+		readerFixtureCommand(t, "/sbin/mount", "-t", "tmpfs", "-o", "size=1048576,mode=0700", "tmpfs", nested)
+		var fs unix.Statfs_t
+		if unix.Statfs(nested, &fs) != nil || string(bytes.TrimRight(fs.Fstypename[:], "\x00")) != "tmpfs" {
+			t.Fatal("physical fault mount identity")
+		}
+		t.Cleanup(func() {
+			var current unix.Statfs_t
+			if unix.Statfs(nested, &current) != nil || current.Fsid != fs.Fsid {
+				t.Error("physical original mount lost")
+				return
+			}
+			ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+			defer cancel()
+			if exec.CommandContext(ctx, "/sbin/umount", nested).Run() != nil {
+				t.Error("physical fault unmount")
+				return
+			}
+			after, e := os.Stat(nested)
+			if e != nil || !os.SameFile(before, after) || os.Remove(nested) != nil {
+				t.Error("physical mount directory cleanup")
+			}
+		})
+		dir := filepath.Join(nested, "originals")
+		if os.Mkdir(dir, 0700) != nil {
+			t.Fatal("exclusive physical archive")
+		}
+		store, e := newDashboardWitnessStore(dir)
+		if e != nil {
+			t.Fatal(e)
+		}
+		defer store.close()
+		fill, e := os.OpenFile(filepath.Join(nested, "bounded-fill"), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+		if e != nil {
+			t.Fatal(e)
+		}
+		var writeErr error
+		var total int
+		buffer := make([]byte, witnessFrameCap)
+		for total <= 2<<20 {
+			n, e := fill.Write(buffer)
+			total += n
+			if e != nil {
+				writeErr = e
+				break
+			}
+		}
+		fill.Close()
+		if !errors.Is(writeErr, syscall.ENOSPC) || total > 2<<20 {
+			t.Fatal("physical ENOSPC not independently observed")
+		}
+		ref, e := store.capture(bytes.NewReader(witnessFrames(witnessGolden())), witnessTestID, "native-small", "fault-management", "fault-helper")
+		if e == nil || !store.failed || ref != nil && (ref.Complete || ref.Delivered) {
+			t.Fatal("physical I/O uncertainty accepted")
+		}
+		if _, e := store.capture(bytes.NewReader(nil), witnessTestID[:32]+"-2", "native-small", "fault-management", "new-helper"); e == nil {
+			t.Fatal("physical failed candidate resumed")
+		}
+		if witnessWritePrivateIndex("../../.tools", "witness-physical-fault.json", struct {
+			ENOSPC          bool
+			FillBytes       int
+			ArchiveCap      int
+			TmpfsCap        int
+			Eligible        bool
+			OriginalIndexed bool
+		}{true, total, witnessArchiveCap, 1 << 20, false, ref != nil}) != nil {
+			t.Fatal("physical fault receipt")
+		}
+	})
+	t.Log("NATIVE_WITNESS_ADDITIONAL_FAULTS same_object_mutation=denied restoration=still_denied physical_tmpfs_enospc=denied normal_caps_unchanged=true process_cancellation_complete=false")
 }

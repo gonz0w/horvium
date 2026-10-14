@@ -2036,3 +2036,9 @@ passed in the reduced suite on disposable FreeBSD 15.1 and 14.5, with all 21
 archived originals independently decoded and guest/host teardown verified. Product
 protocol/runtime compatibility is unchanged, and complete cancellation/calibration,
 augmented resources, unexplained recovery and release gates stay open.
+
+The [batched witness support](../testing/dashboards/witness-qualification-batch.md)
+adds test-only augmented resource arithmetic, source-bound response coverage,
+additional native descriptor/custody/physical-ENOSPC controls and a direct/broker
+cadence diagnostic. Native candidate evidence is pending; the canonical resource
+runner stays inactive and runtime/client/hardware support claims are unchanged.

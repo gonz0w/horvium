@@ -89,7 +89,7 @@ func TestDashboardWitnessDescriptorOwnershipSurvivesGC(t *testing.T) {
 	}
 }
 func TestDashboardWitnessDescriptorRejectsExtraAndWrongTag(t *testing.T) {
-	for _, name := range []string{"extra", "tag"} {
+	for _, name := range []string{"extra", "tag", "truncated", "non-socket", "closed"} {
 		t.Run(name, func(t *testing.T) {
 			a, b := witnessTestPair(t)
 			x, _ := witnessTestPair(t)
@@ -100,9 +100,29 @@ func TestDashboardWitnessDescriptorRejectsExtraAndWrongTag(t *testing.T) {
 			defer f.Close()
 			fds := []int{int(f.Fd())}
 			tag := byte('F')
+			if name == "closed" {
+				a.Close()
+				if c, e := witnessPassedDescriptor(b); e == nil || c != nil {
+					t.Fatal("closed sender accepted")
+				}
+				return
+			}
+			if name == "non-socket" {
+				temporary, e := os.CreateTemp(witnessPrivateDirectory(t), "not-socket-")
+				if e != nil {
+					t.Fatal(e)
+				}
+				defer temporary.Close()
+				fds = []int{int(temporary.Fd())}
+			}
+			if name == "truncated" {
+				for i := 0; i < 64; i++ {
+					fds = append(fds, int(f.Fd()))
+				}
+			}
 			if name == "extra" {
 				fds = append(fds, int(f.Fd()))
-			} else {
+			} else if name == "tag" {
 				tag = 'X'
 			}
 			if _, _, e := a.WriteMsgUnix([]byte{tag}, unix.UnixRights(fds...), nil); e != nil {
@@ -115,5 +135,40 @@ func TestDashboardWitnessDescriptorRejectsExtraAndWrongTag(t *testing.T) {
 				t.Fatal("ambiguous descriptor accepted")
 			}
 		})
+	}
+}
+
+func TestDashboardWitnessTransferredEndpointSurvivesSenderClosure(t *testing.T) {
+	sender, receiver := witnessTestPair(t)
+	original, peer := witnessTestPair(t)
+	file, e := original.File()
+	if e != nil {
+		t.Fatal(e)
+	}
+	if _, _, e := sender.WriteMsgUnix([]byte{'F'}, unix.UnixRights(int(file.Fd())), nil); e != nil {
+		t.Fatal(e)
+	}
+	file.Close()
+	original.Close()
+	sender.Close()
+	passed, e := witnessPassedDescriptor(receiver)
+	if e != nil {
+		t.Fatal("sender exit discarded established endpoint", e)
+	}
+	defer passed.Close()
+	if _, e := passed.Write([]byte("original")); e != nil {
+		t.Fatal(e)
+	}
+	var body [8]byte
+	if _, e := io.ReadFull(peer, body[:]); e != nil || string(body[:]) != "original" {
+		t.Fatal("transferred bytes changed", e)
+	}
+	receiver.Close()
+	if passed.CloseWrite() != nil {
+		t.Fatal("EOF after sender exit")
+	}
+	var extra [1]byte
+	if n, e := peer.Read(extra[:]); n != 0 || e != io.EOF {
+		t.Fatal("original EOF lost")
 	}
 }
