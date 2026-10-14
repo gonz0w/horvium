@@ -2091,3 +2091,9 @@ costs separately, preserves closing-window cadence gaps, and binds its private
 original file and all-started wait usage to the original fixture artifact.
 Native EOF/SIGKILL controls and both pinned releases must supply source-bound
 receipts before claiming this candidate; full resource acceptance remains open.
+
+Connector qualification now verifies the original child artifact and kernel
+lifetime on both sides of its inherited bootstrap channel before descriptor
+handoff. A real dropped-credential wrong-artifact control must deny before connect.
+That verification's actual CPU/RSS and collection overhead remain included; zero
+wait high-water remains a rejection rather than a measurement substitute.

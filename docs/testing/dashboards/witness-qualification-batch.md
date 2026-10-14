@@ -348,3 +348,31 @@ failing behavioral regression precedes the schedule audit implementation. Actual
 native EOF/kill controls and both pinned-release reduced suites are required for
 this candidate. Full native 005/006 and complete resource/latency acceptance remain
 separate; this implementation cannot activate the resource runner.
+
+### First independent-owner rejection and correction
+
+Source `6399210` failed the reduced 15.1 suite. The sampler's own three completed
+windows retained zero missing/duplicate/late intervals, but controller readback
+incorrectly applied an executable-artifact predicate to sealed 0400 sample data.
+An actual sealed-file portable regression reproduces that rejection before the
+correction to the original-data custody guard. The failed candidate stays failed.
+
+That run also preserved a successful connector wait with positive CPU but zero
+Maxrss. This is not zero memory usage. FreeBSD's
+[statistics clock](https://github.com/freebsd/freebsd-src/blob/releng/15.1/sys/kern/kern_clock.c#L695-L704)
+updates resident high-water while a thread runs; the receipt supports that failure
+mechanism but cannot retroactively identify the inputs missing from older runs.
+The corrected connector explicitly observes its own executable digest and kernel
+PID/UID/start lifetime, and the observer independently checks that original actor
+before permitting descriptor handoff. This performs real trust verification, not
+a sleep or synthetic workload to force a positive counter. Its CPU, high-water,
+collection timing and any added latency remain charged. Missing/zero/invalid
+wait usage still denies, and no accounting floor or estimated RSS is substituted.
+New fixed diagnostic names preserve sampler and connector-bootstrap rejection
+stages without publishing actor IDs or paths.
+
+The corrected candidate also includes a real dropped-credential wrong-artifact
+connector control: it exits before connect/descriptor handoff, is waited and
+retains its original usage outside the measurement windows. Native execution
+remains required for the handshake and accounting changes; a cross-build is not
+that evidence.

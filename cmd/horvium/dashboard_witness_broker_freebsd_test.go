@@ -294,6 +294,12 @@ func witnessSocketPair() (a, b *net.UnixConn, err error) {
 	return a, b, nil
 }
 
+type witnessConnectorConfig struct {
+	ABI             witnessABI
+	ParentPID       int
+	Fixture, SHA256 string
+}
+
 func TestNativeDashboardWitnessConnector(t *testing.T) {
 	path := os.Getenv("HORVIUM_WITNESS_CONNECTOR")
 	if path == "" {
@@ -310,6 +316,24 @@ func TestNativeDashboardWitnessConnector(t *testing.T) {
 		t.Fatal("connector channel")
 	}
 	defer channel.Close()
+	u := channel.(*net.UnixConn)
+	_ = u.SetDeadline(time.Now().Add(10 * time.Second))
+	var cfg witnessConnectorConfig
+	if witnessControlRead(u, &cfg) != nil || !cfg.ABI.valid() || cfg.ParentPID != os.Getppid() {
+		t.Fatal("connector original bootstrap")
+	}
+	parentUID, parentPID, pe := witnessNativePeer(u, cfg.ABI)
+	actor, ae := witnessObserveActor(os.Getpid(), cfg.ABI)
+	if pe != nil || parentUID != 0 || parentPID != cfg.ParentPID || ae != nil || actor.UID != uint32(uid) || actor.Executable != cfg.Fixture || actor.SHA256 != cfg.SHA256 {
+		t.Fatal("connector original artifact/lifetime")
+	}
+	if witnessControlWrite(u, actor) != nil {
+		t.Fatal("connector original identity receipt")
+	}
+	var bound [1]byte
+	if _, e := io.ReadFull(u, bound[:]); e != nil || bound[0] != 'B' {
+		t.Fatal("connector original identity confirmation")
+	}
 	c, e := net.DialUnix("unix", nil, &net.UnixAddr{Name: path, Net: "unix"})
 	if e != nil {
 		t.Fatal("connector connect")
@@ -320,8 +344,6 @@ func TestNativeDashboardWitnessConnector(t *testing.T) {
 		t.Fatal("connector descriptor")
 	}
 	defer f.Close()
-	u := channel.(*net.UnixConn)
-	_ = u.SetDeadline(time.Now().Add(10 * time.Second))
 	if n, on, e := u.WriteMsgUnix([]byte{'F'}, unix.UnixRights(int(f.Fd())), nil); e != nil || n != 1 || on != len(unix.UnixRights(int(f.Fd()))) {
 		t.Fatal("connector handoff")
 	}
@@ -487,6 +509,26 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 		}
 	}()
 	_ = parent.SetDeadline(time.Now().Add(10 * time.Second))
+	stage = "connector-bootstrap"
+	if witnessControlWrite(parent, witnessConnectorConfig{o.cfg.ABI, os.Getpid(), o.cfg.Fixture, o.cfg.FixtureSHA256}) != nil {
+		fail()
+		return
+	}
+	stage = "connector-identity"
+	var connector witnessActor
+	if witnessControlRead(parent, &connector) != nil {
+		fail()
+		return
+	}
+	original, e := witnessObserveActor(cmd.Process.Pid, o.cfg.ABI)
+	if e != nil || connector != original || original.UID != o.cfg.ManagementUID || original.Executable != o.cfg.Fixture || original.SHA256 != o.cfg.FixtureSHA256 {
+		fail()
+		return
+	}
+	if n, e := parent.Write([]byte{'B'}); e != nil || n != 1 {
+		fail()
+		return
+	}
 	stage = "connector-descriptor"
 	actual, e := witnessPassedDescriptor(parent)
 	if e != nil {

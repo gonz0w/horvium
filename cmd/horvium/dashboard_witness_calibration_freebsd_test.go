@@ -102,6 +102,7 @@ func witnessDirectCalibration(t *testing.T, owner *dashboardGuestOwner, probe wi
 	p := &performancePair{config: c, path: path, helper: helper, management: management}
 	p.session = newPerformanceSession(t, c, token)
 	p.session.ready(t, count, "")
+	witnessNativeConnectorArtifactControl(t, p, probe.ABI)
 	witnessNativeSamplerControls(t, p, probe.ABI)
 	usage := newWitnessNativeUsage(t, p, nil, probe.ABI)
 	r := witnessCalibrationWindow(t, p, "direct")

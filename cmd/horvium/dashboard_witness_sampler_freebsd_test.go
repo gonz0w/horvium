@@ -21,7 +21,6 @@ import (
 )
 
 const witnessSamplerInterval = 100 * time.Millisecond
-const witnessSamplerBytes = 32 << 20
 
 type witnessSamplerConfig struct {
 	ABI                 witnessABI
@@ -305,13 +304,8 @@ func (m *witnessNativeUsage) readback(result witnessSamplerReceipt) {
 		fail()
 		return
 	}
-	if _, e := m.file.Seek(0, 0); e != nil {
-		fail()
-		return
-	}
-	data, e := io.ReadAll(io.LimitReader(m.file, witnessSamplerBytes+1))
-	after, ae := m.file.Stat()
-	if e != nil || ae != nil || !dashboardArtifactUnchanged(before, after) || int64(len(data)) != object.Size {
+	data, e := witnessSamplerReadOriginal(m.file)
+	if e != nil {
 		fail()
 		return
 	}
@@ -360,4 +354,69 @@ func witnessNativeSamplerControls(t *testing.T, p *performancePair, abi witnessA
 		}
 		t.Logf("NATIVE_WITNESS_SAMPLER_CONTROL case=%s denied=true reaped=true usage_retained=true resource_acceptance=false", operation)
 	}
+}
+
+// An actual unprivileged connector refuses a mismatched artifact binding before
+// connecting or transferring a descriptor. Its outside-window cost is retained.
+func witnessNativeConnectorArtifactControl(t *testing.T, p *performancePair, abi witnessABI) {
+	t.Helper()
+	actor, e := witnessObserveActor(os.Getpid(), abi)
+	if e != nil {
+		t.Fatal("connector control original artifact")
+	}
+	parent, child, e := witnessSocketPair()
+	if e != nil {
+		t.Fatal("connector control channel")
+	}
+	defer parent.Close()
+	file, e := child.File()
+	child.Close()
+	if e != nil {
+		t.Fatal("connector control inherited channel")
+	}
+	defer file.Close()
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, actor.Executable, "-test.run=^TestNativeDashboardWitnessConnector$", "-test.count=1")
+	cmd.Env = []string{"HORVIUM_NATIVE_VM=1", "HORVIUM_PERF_VM=1", "HORVIUM_WITNESS_CONNECTOR=" + p.config.HelperSocket, "HORVIUM_WITNESS_UID=" + fmt.Sprint(p.config.ManagementUID), "LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
+	cmd.SysProcAttr = &syscall.SysProcAttr{Credential: &syscall.Credential{Uid: p.config.ManagementUID, Gid: p.config.SocketGID, Groups: []uint32{p.config.SocketGID}}}
+	cmd.ExtraFiles = []*os.File{file}
+	if cmd.Start() != nil {
+		t.Fatal("connector control start")
+	}
+	waited := false
+	defer func() {
+		if !waited {
+			_ = cmd.Process.Kill()
+			_ = cmd.Wait()
+		}
+	}()
+	_ = parent.SetDeadline(time.Now().Add(10 * time.Second))
+	if witnessControlWrite(parent, witnessConnectorConfig{abi, os.Getpid(), actor.Executable, "0000000000000000000000000000000000000000000000000000000000000000"}) != nil {
+		t.Fatal("connector control bootstrap")
+	}
+	var accepted witnessActor
+	if witnessControlRead(parent, &accepted) == nil {
+		t.Fatal("wrong artifact binding accepted")
+	}
+	e = cmd.Wait()
+	waited = true
+	var usage *syscall.Rusage
+	if cmd.ProcessState != nil {
+		usage, _ = cmd.ProcessState.SysUsage().(*syscall.Rusage)
+	}
+	if e == nil || cmd.ProcessState == nil || cmd.ProcessState.ExitCode() == 0 || usage == nil || usage.Maxrss <= 0 {
+		t.Fatal("wrong artifact connector control not denied/accounted")
+	}
+	cpu, ce := witnessNativeCPU(usage)
+	if ce != nil || cpu <= 0 {
+		t.Fatal("connector control usage")
+	}
+	if witnessWriteDiagnosticJSON("witness-connector-artifact-control.json", struct {
+		Denied, Reaped bool
+		Usage          *syscall.Rusage
+	}{true, true, usage}) != nil {
+		t.Fatal("connector control original receipt")
+	}
+	t.Log("NATIVE_WITNESS_CONNECTOR_ARTIFACT_CONTROL mismatch=denied descriptor=none reaped=true usage_retained=true resource_acceptance=false")
 }
