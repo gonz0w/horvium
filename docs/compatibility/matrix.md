@@ -2097,3 +2097,12 @@ lifetime on both sides of its inherited bootstrap channel before descriptor
 handoff. A real dropped-credential wrong-artifact control must deny before connect.
 That verification's actual CPU/RSS and collection overhead remain included; zero
 wait high-water remains a rejection rather than a measurement substitute.
+
+The [final independent-owner manifest](../testing/dashboards/witness-independent-owner-manifest.json)
+records same-source reduced fixture passes on pinned disposable FreeBSD 15.1 and
+14.5, all-started sampler/connector accounting and 40 independently reopened
+responses. All 15.1 schedule windows had no missing/duplicate/late intervals;
+14.5 retains two small-mode and four projection gaps with one late read each.
+This supports review of inactive instrumentation, not complete cadence, resource,
+latency, interruption, hardware or release acceptance. The canonical runner stays
+inactive; runtime writes remain disabled.

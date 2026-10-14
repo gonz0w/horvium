@@ -10,6 +10,9 @@ The earlier [rejection custody record](witness-rejection-custody.md) retains its
 original native candidate boundaries. Its PR 389 is merged; this is one continuation
 batch of related fault, instrumentation, coverage and calibration work.
 
+Status: submitted for review as inactive fixture support in PR 390. The final
+independent-owner receipt below does not close issue 382 or activate resources.
+
 ## Resource accounting and original samples
 
 The supplemental portable arithmetic keeps the original product-pair values and
@@ -320,7 +323,8 @@ Next work must preserve continuous independent sampling through controller work
 and distinguish time inside the native read from delayed scheduling. A separate
 sampling owner, if introduced, needs its own artifact/lifetime binding, all-started
 wait accounting, RSS/CPU reporting and complete cancellation/teardown controls.
-That remaining ownership work stays in PR 390; it remains draft. Broader native
+At that candidate, ownership work remained in draft PR 390; the final independent
+owner observations below supersede that pickup status without accepting resources. Broader native
 005/006 and resource/latency acceptance, the unexplained connector and 6525631
 rejections, startup/browser/hardware/release gates remain open.
 
@@ -393,3 +397,62 @@ The final correction retains that original fixture digest in the private adverse
 control receipt. Sampler readback also repeats descriptor ownership/link/object
 and path identity checks after reading its sealed original. Native evidence must
 bind the final behavioral candidate; intermediate portable success is insufficient.
+
+## Final inactive-support review boundary
+
+Behavioral source `04eb9fe0bdc864df61db56a1946ac5569e376e59`, base
+`0745c9684bd5b235164f74f0bb8accf4a84843a8`, actual title
+`test(dashboards): batch witness qualification support and native probes`, passed
+signed local review, fresh check/lint/test/secrets, affected cmd race/original-wire
+fuzz and an explicit FreeBSD test cross-build before native execution.
+[The independent-owner manifest](witness-independent-owner-manifest.json)
+retains four actual attempts: two failed predecessors and this same candidate's
+passing reduced suites on both pinned disposable releases. Fifteen behavioral
+commits retain signatures/DCO; final prose review is recorded with the PR.
+
+| Candidate / release | Reduced result | Planned / retained intervals: direct, native small, projection | Missing / duplicate / late |
+| --- | --- | --- | --- |
+| `04eb9fe` / 15.1 | Passed, 346.96 s | 651/651, 725/725, 521/521 | 0/0/0 in each window |
+| `04eb9fe` / 14.5 | Passed, 459.00 s | 651/651, 753/751, 1109/1105 | Direct 0/0/0; small 2/0/1; projection 4/0/1 |
+
+These are complete closing-window schedule audits, not reconstructed catch-up
+samples. The 14.5 gaps remain unaccepted. The largest actual small/projection gaps
+were 379.89/298.957001 ms on 14.5; 15.1's largest projection gap was 144.126 ms.
+Neither a different-run improvement nor the separate owner proves a historical
+scheduling cause or full cadence acceptance. Controller and sampler RSS/CPU,
+sampler original-file bytes/hash and all-started sampler wait costs are published
+separately. Each release retained three completed sampler windows and two refused
+EOF/SIGKILL owners, all reaped with original usage. A real dropped-credential
+wrong-artifact connector was denied before descriptor handoff and accounted.
+
+Both direct/broker calibration paths cover actual 65-second windows with three
+observed publication generations and **64** metadata reads each. Read counts and
+actual intervals remain explicit; this is not an exhaustive producer census,
+request-free idle, complete HTML p95 or a pacing-equivalence result.
+
+Independent safe archive/frame/object/hash/context readback verified source/base/
+title, compiler, product/controller artifact roles and the actual-header probe.
+The byte-identical reviewed Go validator reopened all **40** original HTML bodies,
+helper frames and actual publication metadata. Its early 15.1-only invocation
+reopened 20 bodies then refused missing 14.5 inputs; only the later complete driver
+passed. The private readback's initial helper-role assumption was also refused:
+direct and native-small use the real management binary's helper command; only
+projection uses the declared reader fixture. Final role verification checks the
+actual executable role against the independent candidate artifact map.
+
+Original guest descendants, descriptors, sockets, tmpfs, owned ZFS/md storage and
+host runtime artifacts were cleaned. Both preflight observations match and pinned
+runtime/base bytes remain unchanged. All 160 prior manifests remain byte-identical
+and the seven primary operator files are untouched. Private actors, original
+process rows, credentials and absolute publication timestamps are not published.
+
+PR 390 is ready to review **inactive qualification support**: original coverage,
+conservative accounting, bounded kernel collection, separate sampler ownership,
+trust/custody regressions, explicit cadence reporting and the stated reduced native
+controls. The canonical resource runner and product runtime are unchanged. Review
+or merge does not accept the full interruption/ancillary/cap matrix, 14.5 cadence,
+observer/connector overhead equivalence, augmented budgets, 300-second idle, full
+resource/latency procedures, browser, hardware or release gates. The historical
+large p95 and unexplained older connector/recovery failures stay open. Next work
+is the complete native 005/006 and remaining cadence/overhead gates before an
+integrated activation review and the unchanged full resource procedure.
