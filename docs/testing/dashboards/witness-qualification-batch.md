@@ -376,3 +376,13 @@ connector control: it exits before connect/descriptor handoff, is waited and
 retains its original usage outside the measurement windows. Native execution
 remains required for the handshake and accounting changes; a cross-build is not
 that evidence.
+
+Source `1afd7bc` corrected the sealed-data guard and exercised both normal broker
+modes with source-bound original coverage and all-started connector accounting.
+Its overall 15.1 attempt still failed: the new wrong-artifact control attempted
+an unprivileged launch from the root-private build path, before direct calibration.
+The correction uses an original hash-verified fixture copy in the owned runtime
+namespace, as the normal broker already does. It changes neither credentials nor
+namespace permissions. That failed run and its missing direct calibration remain
+retained. Its projection window reported one missing and one late interval;
+continuous resource acceptance is not inferred from a passing subcomponent.

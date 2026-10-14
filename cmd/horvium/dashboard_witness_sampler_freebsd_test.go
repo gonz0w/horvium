@@ -358,7 +358,7 @@ func witnessNativeSamplerControls(t *testing.T, p *performancePair, abi witnessA
 
 // An actual unprivileged connector refuses a mismatched artifact binding before
 // connecting or transferring a descriptor. Its outside-window cost is retained.
-func witnessNativeConnectorArtifactControl(t *testing.T, p *performancePair, abi witnessABI) {
+func witnessNativeConnectorArtifactControl(t *testing.T, p *performancePair, abi witnessABI, fixture string) {
 	t.Helper()
 	actor, e := witnessObserveActor(os.Getpid(), abi)
 	if e != nil {
@@ -377,7 +377,7 @@ func witnessNativeConnectorArtifactControl(t *testing.T, p *performancePair, abi
 	defer file.Close()
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	cmd := exec.CommandContext(ctx, actor.Executable, "-test.run=^TestNativeDashboardWitnessConnector$", "-test.count=1")
+	cmd := exec.CommandContext(ctx, fixture, "-test.run=^TestNativeDashboardWitnessConnector$", "-test.count=1")
 	cmd.Env = []string{"HORVIUM_NATIVE_VM=1", "HORVIUM_PERF_VM=1", "HORVIUM_WITNESS_CONNECTOR=" + p.config.HelperSocket, "HORVIUM_WITNESS_UID=" + fmt.Sprint(p.config.ManagementUID), "LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
 	cmd.SysProcAttr = &syscall.SysProcAttr{Credential: &syscall.Credential{Uid: p.config.ManagementUID, Gid: p.config.SocketGID, Groups: []uint32{p.config.SocketGID}}}
 	cmd.ExtraFiles = []*os.File{file}
@@ -392,7 +392,7 @@ func witnessNativeConnectorArtifactControl(t *testing.T, p *performancePair, abi
 		}
 	}()
 	_ = parent.SetDeadline(time.Now().Add(10 * time.Second))
-	if witnessControlWrite(parent, witnessConnectorConfig{abi, os.Getpid(), actor.Executable, "0000000000000000000000000000000000000000000000000000000000000000"}) != nil {
+	if witnessControlWrite(parent, witnessConnectorConfig{abi, os.Getpid(), fixture, "0000000000000000000000000000000000000000000000000000000000000000"}) != nil {
 		t.Fatal("connector control bootstrap")
 	}
 	var accepted witnessActor

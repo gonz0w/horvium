@@ -102,7 +102,10 @@ func witnessDirectCalibration(t *testing.T, owner *dashboardGuestOwner, probe wi
 	p := &performancePair{config: c, path: path, helper: helper, management: management}
 	p.session = newPerformanceSession(t, c, token)
 	p.session.ready(t, count, "")
-	witnessNativeConnectorArtifactControl(t, p, probe.ABI)
+	fixture := filepath.Join(filepath.Dir(path), "dashboard-native.test")
+	sourceFixture, _ := filepath.Abs("../../.tools/dashboard-native.test")
+	owner.copy(t, "fixture", sourceFixture, fixture)
+	witnessNativeConnectorArtifactControl(t, p, probe.ABI, fixture)
 	witnessNativeSamplerControls(t, p, probe.ABI)
 	usage := newWitnessNativeUsage(t, p, nil, probe.ABI)
 	r := witnessCalibrationWindow(t, p, "direct")
