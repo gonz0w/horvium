@@ -18,7 +18,7 @@ func witnessFailure(stage string) error {
 		"control-closed", "control-write", "control-read", "control-receipt", "control-failed",
 		"original-duplicate", "original-missing", "original-eligibility", "original-reference", "original-path", "original-object", "original-open", "original-descriptor", "original-decode", "original-hash", "original-changed",
 		"request-read", "request-grammar", "actual-socket", "connector-channel", "connector-file", "connector-start", "connector-descriptor", "helper-peer", "connector-ack", "connector-wait", "connector-usage", "producer-request", "producer-capture", "producer-lifetime", "producer-forward", "original-index",
-		"observer-usage", "management-registration", "helper-registration", "control-operation", "receipt-object", "receipt-custody", "receipt-store", "front-cleanup":
+		"usage-roles", "usage-command", "usage-shape", "usage-numbers", "usage-duplicate", "usage-identity", "usage-sum", "usage-descendants", "usage-controller", "observer-usage", "management-registration", "helper-registration", "control-operation", "receipt-object", "receipt-custody", "receipt-store", "front-cleanup":
 		return dashboardWitnessFailure(stage)
 	default:
 		return dashboardWitnessFailure("unclassified")

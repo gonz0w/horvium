@@ -41,16 +41,27 @@ func witnessLifetime(a witnessActor, abi witnessABI) bool {
 }
 func witnessNativeSample(roles []witnessActor, abi witnessABI) (witnessNativeUsageSample, error) {
 	var out witnessNativeUsageSample
+	var original []byte
+	defer func() {
+		if out.PairRSS == 0 && len(original) > 0 {
+			_ = witnessWriteDiagnosticJSON("witness-rejected-sample-"+strconv.Itoa(len(roles))+".json", struct {
+				Rows  string
+				Roles []witnessActor
+				ABI   witnessABI
+			}{string(original), roles, abi})
+		}
+	}()
 	if len(roles) != 2 && len(roles) != 3 {
-		return out, errDashboardWitness
+		return out, witnessFailure("usage-roles")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 	cmd := exec.CommandContext(ctx, "/bin/ps", "-axo", "pid=,ppid=,rss=,time=")
 	cmd.Env = []string{"LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
 	b, e := cmd.Output()
+	original = b
 	if e != nil || len(b) > witnessFrameCap {
-		return out, errDashboardWitness
+		return out, witnessFailure("usage-command")
 	}
 	type row struct {
 		parent int
@@ -61,28 +72,28 @@ func witnessNativeSample(roles []witnessActor, abi witnessABI) (witnessNativeUsa
 	for _, line := range strings.Split(strings.TrimSpace(string(b)), "\n") {
 		f := strings.Fields(line)
 		if len(f) != 4 {
-			return out, errDashboardWitness
+			return out, witnessFailure("usage-shape")
 		}
 		pid, e := strconv.Atoi(f[0])
 		parent, pe := strconv.Atoi(f[1])
 		rss, re := strconv.ParseUint(f[2], 10, 64)
 		cpu, ce := cpuTime(f[3])
 		if e != nil || pe != nil || re != nil || ce != nil || pid < 0 || parent < 0 || rss > math.MaxUint64/1024 {
-			return out, errDashboardWitness
+			return out, witnessFailure("usage-numbers")
 		}
 		if _, ok := processes[pid]; ok {
-			return out, errDashboardWitness
+			return out, witnessFailure("usage-duplicate")
 		}
 		processes[pid] = row{parent, rss * 1024, cpu}
 	}
 	for i, a := range roles {
 		r, ok := processes[a.PID]
 		if !ok || r.rss == 0 || !witnessLifetime(a, abi) {
-			return out, errDashboardWitness
+			return out, witnessFailure("usage-identity")
 		}
 		if i < 2 {
 			if r.rss > math.MaxUint64-out.PairRSS || int64(r.cpu) > math.MaxInt64-out.PairCPU {
-				return out, errDashboardWitness
+				return out, witnessFailure("usage-sum")
 			}
 			out.PairRSS += r.rss
 			out.PairCPU += int64(r.cpu)
@@ -100,12 +111,12 @@ func witnessNativeSample(roles []witnessActor, abi witnessABI) (witnessNativeUsa
 			}
 		}
 		if out.ConnectorCount > 1 {
-			return out, errDashboardWitness
+			return out, witnessFailure("usage-descendants")
 		}
 	}
 	current, ok := processes[os.Getpid()]
 	if !ok || current.rss == 0 {
-		return out, errDashboardWitness
+		return out, witnessFailure("usage-controller")
 	}
 	out.ControllerRSS = current.rss
 	out.ControllerCPU = int64(current.cpu)
@@ -125,7 +136,13 @@ func newWitnessNativeUsage(t *testing.T, p *performancePair, observer *witnessFi
 		}
 		roles = append(roles, actor)
 	}
+	first, e := witnessNativeSample(roles, abi)
+	if e != nil {
+		t.Fatal("original initial instrumentation sample rejected", e)
+	}
 	m := &witnessNativeUsage{stop: make(chan struct{}), done: make(chan struct{}), started: time.Now(), roles: roles, abi: abi}
+	first.AtNS = 1
+	m.samples = append(m.samples, first)
 	go func() {
 		defer close(m.done)
 		ticker := time.NewTicker(100 * time.Millisecond)
