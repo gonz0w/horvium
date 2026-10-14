@@ -241,3 +241,29 @@ host teardown. Next diagnostics should retain the original Run result and comman
 duration for successful samples, isolating controller scheduling from command work.
 A sampling correction must preserve independent lifetime/custody checks and every
 measurement cost. Existing deadlines, cadence, budgets and acceptance gates remain.
+
+
+## Direct kernel sampler candidate
+
+The following test-only collector reads fixed `kern.proc.pid` observations and
+the original observer's bounded `kern.proc.ppid` child census. It no longer launches
+a ps subprocess per scheduled sample. The actual guest C probe reports process
+parent/RSS/runtime offsets, native field widths and sysconf page size; no kinfo
+layout or hardware page size is guessed. Malformed sizes, overlapping offsets,
+negative/overflowing values and mismatched PID/UID/start lifetime deny measurement.
+RSS pages convert using the observed base page size; ki_runtime microseconds
+convert to nanoseconds. One observer child at its original launch UID or final management UID is allowed
+(the former charges fork-before-credential-drop memory without granting socket
+authority); extra or
+mismatched descendants deny the sample. All-started connector wait accounting
+and original custody checks remain required.
+
+An independently stopped, disposable idle fixture checks exact native RSS and
+identity against ps, with its reported CPU limited to ps's 10 ms display precision.
+This control runs before measurement, pauses no product process, and is killed
+and waited. Samples retain actual read duration; the existing two-second envelope
+and 100 ms cadence remain unchanged. A synchronous kernel read is not cancellable
+in-process; a late completed read rejects, while the owned fixture/VM lifetime
+provides the outer termination bound. Original bounded binary inputs are retained
+privately on rejection. Portable decoder regressions pass; native confirmation,
+cadence completeness and calibration at this candidate remain pending.

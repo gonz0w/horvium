@@ -4,14 +4,11 @@
 package main
 
 import (
-	"context"
 	"encoding/binary"
 	"golang.org/x/sys/unix"
 	"math"
 	"os"
-	"os/exec"
 	"strconv"
-	"strings"
 	"sync"
 	"syscall"
 	"testing"
@@ -20,6 +17,7 @@ import (
 
 type witnessNativeUsageSample struct {
 	AtNS                                              int64 `json:"at_ns"`
+	ReadNS                                            int64 `json:"read_ns"`
 	PairRSS, ObserverRSS, ConnectorRSS, ControllerRSS uint64
 	PairCPU, ObserverCPU, ControllerCPU               int64
 	ConnectorCount                                    int
@@ -40,87 +38,77 @@ func witnessLifetime(a witnessActor, abi witnessABI) bool {
 	return e == nil && len(b) == abi.ProcSize && int(int32(binary.LittleEndian.Uint32(b[abi.ProcPID:]))) == a.PID && binary.LittleEndian.Uint32(b[abi.ProcUID:]) == a.UID && int64(binary.LittleEndian.Uint64(b[abi.ProcSec:])) == a.Sec && int64(binary.LittleEndian.Uint64(b[abi.ProcUsec:])) == a.Usec
 }
 func witnessNativeSample(roles []witnessActor, abi witnessABI) (out witnessNativeUsageSample, err error) {
-	var original []byte
-	var command witnessCommandDiagnostic
+	started := time.Now()
+	var originals [][]byte
 	defer func() {
+		out.ReadNS = int64(time.Since(started))
+		if err == nil && out.ReadNS > int64(2*time.Second) {
+			err = witnessFailure("usage-kernel-deadline")
+		}
 		if err != nil {
 			_ = witnessWriteDiagnosticJSON("witness-rejected-sample-"+strconv.Itoa(len(roles))+".json", struct {
-				Rows    string
-				Roles   []witnessActor
-				ABI     witnessABI
-				Command witnessCommandDiagnostic
-			}{string(original), roles, abi, command})
+				Rows            string
+				Roles           []witnessActor
+				ABI             witnessABI
+				KernelOriginals [][]byte
+				ElapsedNS       int64
+			}{"", roles, abi, originals, out.ReadNS})
 		}
 	}()
-	if len(roles) != 2 && len(roles) != 3 {
+	if !abi.valid() || len(roles) != 2 && len(roles) != 3 {
 		return out, witnessFailure("usage-roles")
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
-	cmd := exec.CommandContext(ctx, "/bin/ps", "-a", "-x", "-o", "pid=", "-o", "ppid=", "-o", "rss=", "-o", "time=")
-	cmd.Env = []string{"LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
-	b, diagnostic, e := witnessRunSampleCommand(ctx, cmd)
-	original, command = b, diagnostic
-	if e != nil {
-		return out, witnessFailure("usage-command-" + diagnostic.Reason)
-	}
-	type row struct {
-		parent int
-		rss    uint64
-		cpu    time.Duration
-	}
-	processes := map[int]row{}
-	for _, line := range strings.Split(strings.TrimSpace(string(b)), "\n") {
-		f := strings.Fields(line)
-		if len(f) != 4 {
-			return out, witnessFailure("usage-shape")
+	layout := abi.usageLayout()
+	read := func(pid int) (witnessKernelProcess, error) {
+		b, e := unix.SysctlRaw("kern.proc.pid", pid)
+		originals = append(originals, append([]byte(nil), b[:min(len(b), 4096)]...))
+		if e != nil {
+			return witnessKernelProcess{}, witnessFailure("usage-kernel-read")
 		}
-		pid, e := strconv.Atoi(f[0])
-		parent, pe := strconv.Atoi(f[1])
-		rss, re := strconv.ParseUint(f[2], 10, 64)
-		cpu, ce := cpuTime(f[3])
-		if e != nil || pe != nil || re != nil || ce != nil || pid < 0 || parent < 0 || rss > math.MaxUint64/1024 {
-			return out, witnessFailure("usage-numbers")
-		}
-		if _, ok := processes[pid]; ok {
+		return witnessDecodeKernelProcess(b, layout)
+	}
+	seen := map[int]bool{}
+	for i, a := range roles {
+		if a.PID <= 1 || seen[a.PID] || a.PID == os.Getpid() {
 			return out, witnessFailure("usage-duplicate")
 		}
-		processes[pid] = row{parent, rss * 1024, cpu}
-	}
-	for i, a := range roles {
-		r, ok := processes[a.PID]
-		if !ok || r.rss == 0 || !witnessLifetime(a, abi) {
+		seen[a.PID] = true
+		r, e := read(a.PID)
+		if e != nil || r.PID != a.PID || r.UID != a.UID || r.Sec != a.Sec || r.Usec != a.Usec || r.RSS == 0 {
 			return out, witnessFailure("usage-identity")
 		}
 		if i < 2 {
-			if r.rss > math.MaxUint64-out.PairRSS || int64(r.cpu) > math.MaxInt64-out.PairCPU {
+			if r.RSS > math.MaxUint64-out.PairRSS || r.CPU > math.MaxInt64-out.PairCPU {
 				return out, witnessFailure("usage-sum")
 			}
-			out.PairRSS += r.rss
-			out.PairCPU += int64(r.cpu)
+			out.PairRSS += r.RSS
+			out.PairCPU += r.CPU
 		} else {
-			out.ObserverRSS = r.rss
-			out.ObserverCPU = int64(r.cpu)
+			out.ObserverRSS = r.RSS
+			out.ObserverCPU = r.CPU
 		}
 	}
 	if len(roles) == 3 {
-		observer := roles[2]
-		for _, r := range processes {
-			if r.parent == observer.PID {
-				out.ConnectorCount++
-				out.ConnectorRSS += r.rss
-			}
-		}
-		if out.ConnectorCount > 1 {
+		b, e := unix.SysctlRaw("kern.proc.ppid", roles[2].PID)
+		originals = append(originals, append([]byte(nil), b[:min(len(b), 4096)]...))
+		if e != nil || len(b)%layout.Size != 0 || len(b) > layout.Size {
 			return out, witnessFailure("usage-descendants")
 		}
+		if len(b) > 0 {
+			child, e := witnessDecodeKernelProcess(b, layout)
+			if e != nil || child.PID <= 1 || child.Parent != roles[2].PID || (child.UID != roles[0].UID && child.UID != roles[2].UID) || seen[child.PID] {
+				return out, witnessFailure("usage-descendants")
+			}
+			out.ConnectorCount = 1
+			out.ConnectorRSS = child.RSS
+		}
 	}
-	current, ok := processes[os.Getpid()]
-	if !ok || current.rss == 0 {
+	controller, e := read(os.Getpid())
+	if e != nil || controller.PID != os.Getpid() || controller.UID != uint32(os.Getuid()) || controller.RSS == 0 {
 		return out, witnessFailure("usage-controller")
 	}
-	out.ControllerRSS = current.rss
-	out.ControllerCPU = int64(current.cpu)
+	out.ControllerRSS = controller.RSS
+	out.ControllerCPU = controller.CPU
 	return out, nil
 }
 func newWitnessNativeUsage(t *testing.T, p *performancePair, observer *witnessFixtureObserver, abi witnessABI) *witnessNativeUsage {

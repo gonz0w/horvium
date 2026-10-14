@@ -13,7 +13,7 @@ func (e dashboardWitnessFailure) Error() string {
 func (e dashboardWitnessFailure) Unwrap() error { return errDashboardWitness }
 func witnessFailure(stage string) error {
 	switch stage {
-	case "capture-io", "producer-read", "raw-limit", "archive-limit",
+	case "usage-kernel-deadline", "usage-kernel-read", "capture-io", "producer-read", "raw-limit", "archive-limit",
 		"publication-original", "publication-eligibility", "publication-metadata", "publication-mismatch", "publication-context", "publication-cache", "publication-idle", "publication-capacity", "publication-failed",
 		"control-closed", "control-write", "control-read", "control-receipt", "control-failed",
 		"original-duplicate", "original-missing", "original-eligibility", "original-reference", "original-path", "original-object", "original-open", "original-descriptor", "original-decode", "original-hash", "original-changed",

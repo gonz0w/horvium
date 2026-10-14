@@ -2065,3 +2065,10 @@ adds a separately retained failed 15.1 diagnostic: deadline-envelope rejection
 with zero child exit and a 2.42-second complete command step. Startup-inclusive
 CPU-profile totals do not establish the cause of missing sampling intervals.
 No broader native/resource acceptance or runtime support is claimed.
+
+
+The direct-kernel sampler candidate uses actual base-header kinfo offsets/widths
+and observed page size, with portable malformed-record/overflow regressions and
+a prepared native ps comparison on a stopped disposable idle fixture. No product
+process is paused; native execution and sampling completeness remain pending.
+The canonical resource runner and runtime support claims remain unchanged.

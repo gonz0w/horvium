@@ -16,6 +16,10 @@ func TestDashboardWitnessCommandProbe(t *testing.T) {
 		return
 	}
 	switch mode {
+	case "kernel-idle":
+		os.Stdout.WriteString("ready\n")
+		time.Sleep(30 * time.Second)
+		os.Exit(0)
 	case "exit":
 		os.Stderr.WriteString("original command error")
 		os.Exit(7)
