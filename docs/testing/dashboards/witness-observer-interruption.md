@@ -45,6 +45,10 @@ all processes, descriptors, sockets, owned ZFS/md storage and host artifacts nee
 verified teardown. Never test on operator data. Private originals and actor/host
 inventory are not committed; public receipts contain fixed case names and hashes.
 
+An ordinary uninjected broker control also confirms an actual complete/delivered
+original and all-started connector accounting without an inherited fault channel.
+It verifies the normal path alongside the twelve adverse cases.
+
 ## Remaining acceptance
 
 This fixture adds no product API/configuration, daemon, runtime dependency or

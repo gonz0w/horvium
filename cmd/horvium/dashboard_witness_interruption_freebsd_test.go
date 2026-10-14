@@ -141,6 +141,27 @@ func TestNativeDashboardWitnessInterruption(t *testing.T) {
 	if os.Mkdir(exportRoot, 0700) != nil {
 		t.Fatal("exclusive interruption export")
 	}
+
+	t.Run("normal-control", func(t *testing.T) {
+		p := startWitnessPair(t, owner, probe, "native-small")
+		if p.observer.faultChannel != nil {
+			t.Fatal("normal broker acquired fault channel")
+		}
+		p.pair.session.ready(t, count, "")
+		generation := p.pair.session.overview(t).Generation
+		snapshot, ref, e := p.observer.original(generation)
+		if e != nil || !snapshot.Complete() || !ref.Complete || !ref.Delivered || ref.RawSHA256 != ref.ForwardSHA256 {
+			t.Fatal("normal original delivery/confirmation changed", e)
+		}
+		final := p.observer.stop(t)
+		if final.ConnectorStarted != final.Connectors || final.ConnectorActive != 0 {
+			t.Fatal("normal connector owner omitted")
+		}
+		if witnessWritePrivateIndex("../../.tools", "witness-interruption-normal.json", final) != nil {
+			t.Fatal("normal control original")
+		}
+		t.Log("NATIVE_WITNESS_INTERRUPTION_NORMAL original_confirmed=true no_fault_channel=true all_connectors_reaped=true resource_acceptance=false")
+	})
 	for _, stage := range []string{"capture", "sealed", "forward", "metadata"} {
 		for _, action := range []string{"sigterm", "sigkill", "channel-eof"} {
 			label := stage + "-" + action
