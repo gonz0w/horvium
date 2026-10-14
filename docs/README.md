@@ -325,3 +325,5 @@ remaining focused diagnostic work. Both-release acceptance remains open.
   packet under #382; [ADR 0011](adr/0011-native-dashboard-witnesses.md) is proposed.
 
 - [Inactive original dashboard witness fixture](testing/dashboards/native-witness-fixture.md).
+
+- [Witness rejection custody and recovery diagnostics](testing/dashboards/witness-rejection-custody.md).

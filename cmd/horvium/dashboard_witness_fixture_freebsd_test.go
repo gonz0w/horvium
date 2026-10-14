@@ -178,11 +178,26 @@ func (o *witnessFixtureObserver) control(command witnessNativeCommand) (witnessN
 	defer o.mu.Unlock()
 	var receipt witnessNativeReceipt
 	if o.closed {
-		return receipt, errDashboardWitness
+		return receipt, witnessFailure("control-closed")
 	}
 	_ = o.channel.SetDeadline(time.Now().Add(45 * time.Second))
-	if witnessControlWrite(o.channel, command) != nil || witnessControlRead(o.channel, &receipt) != nil || !receipt.OK || receipt.Failed {
-		return receipt, fmt.Errorf("invalid witness control: stage=%s store_failed=%t", receipt.Failure, receipt.StoreFailed)
+	if witnessControlWrite(o.channel, command) != nil {
+		return receipt, witnessFailure("control-write")
+	}
+	if witnessControlRead(o.channel, &receipt) != nil {
+		return receipt, witnessFailure("control-read")
+	}
+	if !receipt.OK {
+		return receipt, witnessFailure("control-receipt")
+	}
+	if receipt.Failed {
+		if receipt.Failure != "" {
+			return receipt, witnessFailure(receipt.Failure)
+		}
+		if receipt.StoreFailed {
+			return receipt, witnessFailure("receipt-store")
+		}
+		return receipt, witnessFailure("control-failed")
 	}
 	return receipt, nil
 }
@@ -198,14 +213,17 @@ func (o *witnessFixtureObserver) original(id string) (inventory.Snapshot, dashbo
 		for _, candidate := range r.Originals {
 			if candidate.Ref.ID == id {
 				if exists {
-					return inventory.Snapshot{}, dashboardWitnessRef{}, errDashboardWitness
+					return inventory.Snapshot{}, dashboardWitnessRef{}, witnessFailure("original-duplicate")
 				}
 				record = candidate
 				exists = true
 			}
 		}
-		if !exists || !record.Ref.Complete || !record.Ref.Delivered || record.Ref.Management == "" || record.Ref.Helper == "" || record.Object.UID != 0 || record.Object.Links != 1 {
-			return inventory.Snapshot{}, dashboardWitnessRef{}, errDashboardWitness
+		if !exists {
+			return inventory.Snapshot{}, dashboardWitnessRef{}, witnessFailure("original-missing")
+		}
+		if record.Ref.CaptureFailure != "" || !record.Ref.Complete || !record.Ref.Delivered || record.Ref.Management == "" || record.Ref.Helper == "" || record.Object.UID != 0 || record.Object.Links != 1 {
+			return inventory.Snapshot{}, dashboardWitnessRef{}, witnessFailure("original-eligibility")
 		}
 		o.mu.Lock()
 		o.originals[id] = record
@@ -213,30 +231,36 @@ func (o *witnessFixtureObserver) original(id string) (inventory.Snapshot, dashbo
 	}
 	ref := record.Ref
 	if !strings.HasPrefix(ref.Name, "original-") || strings.ContainsAny(ref.Name, "/\\") || ref.RawBytes <= 0 || ref.RawBytes > witnessRawCap || ref.RawSHA256 != ref.ForwardSHA256 {
-		return inventory.Snapshot{}, dashboardWitnessRef{}, errDashboardWitness
+		return inventory.Snapshot{}, dashboardWitnessRef{}, witnessFailure("original-reference")
 	}
 	i, e := o.root.Lstat(ref.Name)
 	if e != nil || !i.Mode().IsRegular() || i.Mode().Perm() != 0400 {
-		return inventory.Snapshot{}, dashboardWitnessRef{}, errDashboardWitness
+		return inventory.Snapshot{}, dashboardWitnessRef{}, witnessFailure("original-path")
 	}
 	object, e := witnessObject(i)
 	if e != nil || object != record.Object {
-		return inventory.Snapshot{}, dashboardWitnessRef{}, errDashboardWitness
+		return inventory.Snapshot{}, dashboardWitnessRef{}, witnessFailure("original-object")
 	}
 	f, e := o.root.Open(ref.Name)
 	if e != nil {
-		return inventory.Snapshot{}, dashboardWitnessRef{}, errDashboardWitness
+		return inventory.Snapshot{}, dashboardWitnessRef{}, witnessFailure("original-open")
 	}
 	defer f.Close()
 	opened, e := f.Stat()
 	if e != nil || !os.SameFile(i, opened) {
-		return inventory.Snapshot{}, dashboardWitnessRef{}, errDashboardWitness
+		return inventory.Snapshot{}, dashboardWitnessRef{}, witnessFailure("original-descriptor")
 	}
 	h := sha256.New()
 	snapshot, e := dashboardDecodeWitness(io.TeeReader(io.NewSectionReader(f, 0, ref.RawBytes), h), id)
 	after, ae := f.Stat()
-	if e != nil || ae != nil || !witnessRawUnchanged(opened, after) || fmt.Sprintf("%x", h.Sum(nil)) != ref.RawSHA256 || !snapshot.Complete() {
-		return inventory.Snapshot{}, dashboardWitnessRef{}, errDashboardWitness
+	if e != nil || !snapshot.Complete() {
+		return inventory.Snapshot{}, dashboardWitnessRef{}, witnessFailure("original-decode")
+	}
+	if ae != nil || !witnessRawUnchanged(opened, after) {
+		return inventory.Snapshot{}, dashboardWitnessRef{}, witnessFailure("original-changed")
+	}
+	if fmt.Sprintf("%x", h.Sum(nil)) != ref.RawSHA256 {
+		return inventory.Snapshot{}, dashboardWitnessRef{}, witnessFailure("original-hash")
 	}
 	return snapshot, ref, nil
 }
@@ -496,6 +520,9 @@ func TestNativeDashboardWitnessShort(t *testing.T) {
 	for _, mode := range []string{"native-small", "projection-10000"} {
 		t.Run(mode, func(t *testing.T) {
 			p := startWitnessPair(t, owner, probe, mode)
+			if mode == "native-small" {
+				t.Run("custody-faults", func(t *testing.T) { dashboardNativeWitnessCustodyFaults(t, p.mount) })
+			}
 			n := count
 			if mode == "projection-10000" {
 				n = 10000

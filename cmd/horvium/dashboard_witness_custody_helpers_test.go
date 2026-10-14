@@ -15,16 +15,17 @@ import (
 )
 
 type dashboardWitnessRef struct {
-	Name          string `json:"name"`
-	ID            string `json:"request_id"`
-	Mode          string `json:"mode"`
-	Management    string `json:"management_incarnation"`
-	Helper        string `json:"helper_incarnation"`
-	RawSHA256     string `json:"raw_sha256"`
-	RawBytes      int64  `json:"raw_bytes"`
-	Complete      bool   `json:"candidate_complete"`
-	Delivered     bool   `json:"delivered"`
-	ForwardSHA256 string `json:"forward_sha256"`
+	Name           string `json:"name"`
+	ID             string `json:"request_id"`
+	Mode           string `json:"mode"`
+	Management     string `json:"management_incarnation"`
+	Helper         string `json:"helper_incarnation"`
+	RawSHA256      string `json:"raw_sha256"`
+	RawBytes       int64  `json:"raw_bytes"`
+	CaptureFailure string `json:"capture_failure,omitempty"`
+	Complete       bool   `json:"candidate_complete"`
+	Delivered      bool   `json:"delivered"`
+	ForwardSHA256  string `json:"forward_sha256"`
 }
 type witnessSealed struct {
 	ref  dashboardWitnessRef
@@ -102,7 +103,7 @@ func (s *dashboardWitnessStore) location() error {
 func (s *dashboardWitnessStore) capture(r io.Reader, id, mode, management, helper string) (out *dashboardWitnessRef, err error) {
 	s.mu.Lock()
 	key := management + "/" + helper + "/" + id
-	if s.failed || s.active || s.location() != nil || !dashboardGenerationPattern.MatchString(id) || mode != "native-small" && mode != "projection-10000" || management == "" || helper == "" || len(management) > 256 || len(helper) > 256 || s.keys[key] || s.counts[mode] >= witnessAttemptCap {
+	if s.failed || s.active || s.bytes < 0 || s.bytes > witnessArchiveCap || s.location() != nil || !dashboardGenerationPattern.MatchString(id) || mode != "native-small" && mode != "projection-10000" || management == "" || helper == "" || len(management) > 256 || len(helper) > 256 || s.keys[key] || s.counts[mode] >= witnessAttemptCap {
 		s.failed = true
 		s.mu.Unlock()
 		return nil, errDashboardWitness
@@ -144,14 +145,18 @@ func (s *dashboardWitnessStore) capture(r io.Reader, id, mode, management, helpe
 	hash := sha256.New()
 	buffer := make([]byte, witnessFrameCap)
 	n, e := io.CopyBuffer(io.MultiWriter(f, hash), io.LimitReader(r, remaining), buffer)
+	captureFailure := ""
 	if e != nil {
-		return nil, errDashboardWitness
+		captureFailure = "producer-read"
 	}
-	if n == remaining {
-		if witnessEOF(r) != nil {
-			return nil, errDashboardWitness
+	if e == nil && n == remaining && witnessEOF(r) != nil {
+		captureFailure = "raw-limit"
+		if remaining < witnessRawCap {
+			captureFailure = "archive-limit"
 		}
 	}
+	// Retain and seal the bounded bytes already written even when capture fails.
+	// No delivery/publication may use this original; the candidate stays failed.
 	if s.location() != nil || f.Sync() != nil || f.Chmod(0400) != nil {
 		return nil, errDashboardWitness
 	}
@@ -167,7 +172,7 @@ func (s *dashboardWitnessStore) capture(r io.Reader, id, mode, management, helpe
 	if e != nil {
 		return nil, errDashboardWitness
 	}
-	ref := dashboardWitnessRef{Name: name, ID: id, Mode: mode, Management: management, Helper: helper, RawSHA256: fmt.Sprintf("%x", hash.Sum(nil)), RawBytes: n}
+	ref := dashboardWitnessRef{Name: name, ID: id, Mode: mode, Management: management, Helper: helper, RawSHA256: fmt.Sprintf("%x", hash.Sum(nil)), RawBytes: n, CaptureFailure: captureFailure}
 	sealed := &witnessSealed{ref: ref, info: info, file: read}
 	if s.check(sealed) != nil {
 		read.Close()
@@ -179,7 +184,7 @@ func (s *dashboardWitnessStore) capture(r io.Reader, id, mode, management, helpe
 		return nil, errDashboardWitness
 	}
 	snapshot, de := dashboardDecodeWitness(read, id)
-	sealed.ref.Complete = de == nil && snapshot.Complete()
+	sealed.ref.Complete = captureFailure == "" && de == nil && snapshot.Complete()
 	// Partial producer snapshots can be valid; normal exact-value eligibility is
 	// complete-only. Neither validity nor EOF supplies publication authority.
 	outRef := sealed.ref
@@ -188,6 +193,9 @@ func (s *dashboardWitnessStore) capture(r io.Reader, id, mode, management, helpe
 	s.sealed[name] = sealed
 	s.refs = append(s.refs, &outRef)
 	s.mu.Unlock()
+	if captureFailure != "" {
+		return &outRef, witnessFailure(captureFailure)
+	}
 	return &outRef, nil
 }
 func (s *dashboardWitnessStore) check(v *witnessSealed) error {
@@ -215,7 +223,7 @@ func (s *dashboardWitnessStore) resolve(ref *dashboardWitnessRef) (*witnessSeale
 		return nil, errDashboardWitness
 	}
 	v := s.sealed[ref.Name]
-	if v == nil || v.ref.ID != ref.ID || v.ref.Mode != ref.Mode || v.ref.Management != ref.Management || v.ref.Helper != ref.Helper || v.ref.RawSHA256 != ref.RawSHA256 || v.ref.RawBytes != ref.RawBytes || v.ref.Complete != ref.Complete || s.check(v) != nil {
+	if v == nil || v.ref.ID != ref.ID || v.ref.Mode != ref.Mode || v.ref.Management != ref.Management || v.ref.Helper != ref.Helper || v.ref.RawSHA256 != ref.RawSHA256 || v.ref.RawBytes != ref.RawBytes || v.ref.Complete != ref.Complete || v.ref.CaptureFailure != ref.CaptureFailure || s.check(v) != nil {
 		return nil, errDashboardWitness
 	}
 	return v, nil

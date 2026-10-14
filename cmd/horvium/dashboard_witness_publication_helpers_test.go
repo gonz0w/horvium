@@ -34,6 +34,7 @@ type dashboardWitnessRegistry struct {
 	lookup             witnessMetadataReader
 	entries            map[string]*witnessConfirmation
 	failed, idle       bool
+	failure            error
 	operations, active int
 }
 type witnessConfirmation struct {
@@ -48,25 +49,30 @@ func newDashboardWitnessRegistry(r witnessOriginalReader, m witnessMetadataReade
 	return &dashboardWitnessRegistry{read: r, lookup: m, entries: map[string]*witnessConfirmation{}}
 }
 func (r *dashboardWitnessRegistry) confirm(ctx context.Context, id string) (inventory.Snapshot, dashboardWitnessRef, error) {
-	deny := func() (inventory.Snapshot, dashboardWitnessRef, error) {
+	deny := func(cause error) (inventory.Snapshot, dashboardWitnessRef, error) {
 		r.mu.Lock()
 		r.failed = true
+		if r.failure == nil {
+			r.failure = cause
+		}
+		failure := r.failure
 		r.mu.Unlock()
-		return inventory.Snapshot{}, dashboardWitnessRef{}, errDashboardWitness
+		return inventory.Snapshot{}, dashboardWitnessRef{}, failure
 	}
 	if !dashboardGenerationPattern.MatchString(id) || ctx.Err() != nil {
-		return deny()
+		return deny(witnessFailure("publication-context"))
 	}
 	r.mu.Lock()
 	if r.failed {
+		failure := r.failure
 		r.mu.Unlock()
-		return inventory.Snapshot{}, dashboardWitnessRef{}, errDashboardWitness
+		return inventory.Snapshot{}, dashboardWitnessRef{}, witnessFailureFrom(failure, "publication-failed")
 	}
 	entry, exists := r.entries[id]
 	if !exists {
 		if r.idle || len(r.entries) >= 2*witnessAttemptCap || r.read == nil || r.lookup == nil {
 			r.mu.Unlock()
-			return deny()
+			return deny(witnessFailure("publication-capacity"))
 		}
 		entry = &witnessConfirmation{done: make(chan struct{})}
 		r.entries[id] = entry
@@ -77,25 +83,28 @@ func (r *dashboardWitnessRegistry) confirm(ctx context.Context, id string) (inve
 		select {
 		case <-entry.done:
 		case <-ctx.Done():
-			return deny()
+			return deny(witnessFailure("publication-context"))
 		}
 		if entry.err != nil {
-			return deny()
+			return deny(entry.err)
 		}
 		s, ref, e := r.read(id)
 		if e != nil || ref != entry.ref {
-			return deny()
+			return deny(witnessFailureFrom(e, "publication-cache"))
 		}
 		return s, ref, nil
 	}
 	s, ref, e := r.read(id)
-	if e == nil && (!ref.Complete || !ref.Delivered || ref.ID != id || !s.Complete() || len(ref.RawSHA256) != 64 || ref.RawSHA256 != ref.ForwardSHA256) {
-		e = errDashboardWitness
+	if e != nil {
+		e = witnessFailureFrom(e, "publication-original")
+	}
+	if e == nil && (ref.CaptureFailure != "" || !ref.Complete || !ref.Delivered || ref.ID != id || !s.Complete() || len(ref.RawSHA256) != 64 || ref.RawSHA256 != ref.ForwardSHA256) {
+		e = witnessFailure("publication-eligibility")
 	}
 	if e == nil {
 		r.mu.Lock()
 		if r.idle || r.failed {
-			e = errDashboardWitness
+			e = witnessFailure("publication-idle")
 		} else {
 			r.operations++
 		}
@@ -106,21 +115,32 @@ func (r *dashboardWitnessRegistry) confirm(ctx context.Context, id string) (inve
 		metadata, me := r.lookup(bounded, id)
 		cancel()
 		want := witnessPublication{ID: id, Complete: s.Complete(), Host: s.Host.Status, GEOM: s.GEOM.Status, Pools: s.Pools.Status, Datasets: s.Datasets.Status, Classes: len(s.GEOM.Data.Classes), Geoms: len(s.GEOM.Data.Geoms), Providers: len(s.GEOM.Data.Providers), PoolCount: len(s.Pools.Data), DatasetCount: len(s.Datasets.Data)}
-		if me != nil || metadata != want {
-			e = errDashboardWitness
+		if me != nil {
+			e = witnessFailureFrom(me, "publication-metadata")
+		} else if metadata != want {
+			e = witnessFailure("publication-mismatch")
 		}
 	}
+	if ctx.Err() != nil {
+		e = witnessFailure("publication-context")
+	}
 	r.mu.Lock()
+	if e == nil && r.failed {
+		e = witnessFailureFrom(r.failure, "publication-failed")
+	}
 	entry.ref = ref
 	entry.err = e
 	r.active--
 	if e != nil {
 		r.failed = true
+		if r.failure == nil {
+			r.failure = e
+		}
 	}
 	close(entry.done)
 	r.mu.Unlock()
 	if e != nil {
-		return inventory.Snapshot{}, dashboardWitnessRef{}, errDashboardWitness
+		return inventory.Snapshot{}, dashboardWitnessRef{}, e
 	}
 	return s, ref, nil
 }
@@ -168,7 +188,7 @@ func (r *dashboardWitnessRegistry) predicate(plan []dashboardRequest) dashboardP
 		id := code.rawText()
 		s, _, e := r.confirm(context.Background(), id)
 		if e != nil {
-			return errDashboardWitness
+			return e
 		}
 		r.mu.Lock()
 		entry := r.entries[id]

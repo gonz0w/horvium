@@ -397,7 +397,14 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 		return
 	}
 	stage := "request-read"
-	fail := func() { o.mu.Lock(); o.failed = true; o.failure = stage; o.mu.Unlock() }
+	fail := func() {
+		o.mu.Lock()
+		o.failed = true
+		if o.failure == "" {
+			o.failure = stage
+		}
+		o.mu.Unlock()
+	}
 	request, e := io.ReadAll(io.LimitReader(c, witnessFrameCap+5))
 	if e != nil || len(request) > witnessFrameCap+4 {
 		fail()
@@ -545,6 +552,17 @@ func (o *witnessNativeObserver) receipt() witnessNativeReceipt {
 		object, e := witnessObject(v.info)
 		if e != nil || o.store.check(v) != nil {
 			r.Failed = true
+			o.failed = true
+			if r.Failure == "" {
+				if e != nil {
+					r.Failure = "receipt-object"
+				} else {
+					r.Failure = "receipt-custody"
+				}
+			}
+			if o.failure == "" {
+				o.failure = r.Failure
+			}
 		}
 		r.Originals = append(r.Originals, witnessNativeOriginal{v.ref, object})
 	}
@@ -692,6 +710,9 @@ func TestNativeDashboardWitnessObserver(t *testing.T) {
 			o.mu.Lock()
 			if o.management.PID != 0 || a.UID != cfg.ManagementUID || a.Executable != cfg.Product || a.SHA256 != cfg.ProductSHA256 || a.check(cfg.ABI) != nil {
 				o.failed = true
+				if o.failure == "" {
+					o.failure = "management-registration"
+				}
 			} else {
 				o.management = a
 				close(o.registered)
@@ -703,6 +724,9 @@ func TestNativeDashboardWitnessObserver(t *testing.T) {
 			o.mu.Lock()
 			if o.active || o.cfg.Helper.check(cfg.ABI) == nil || e != nil || a.UID != 0 || a.Executable != cfg.HelperBinary || a.SHA256 != cfg.HelperSHA256 || a.check(cfg.ABI) != nil || os.SameFile(s, o.back) {
 				o.failed = true
+				if o.failure == "" {
+					o.failure = "helper-registration"
+				}
 			} else {
 				o.cfg.Helper = a
 				o.back = s
@@ -719,6 +743,9 @@ func TestNativeDashboardWitnessObserver(t *testing.T) {
 		default:
 			o.mu.Lock()
 			o.failed = true
+			if o.failure == "" {
+				o.failure = "control-operation"
+			}
 			o.mu.Unlock()
 		}
 		if stop {
@@ -744,6 +771,9 @@ func TestNativeDashboardWitnessObserver(t *testing.T) {
 	r.FrontRemoved = cleanup == nil
 	if cleanup != nil {
 		r.Failed = true
+		if r.Failure == "" {
+			r.Failure = "front-cleanup"
+		}
 	}
 	if e := witnessControlWrite(control, r); e != nil && ctx.Err() == nil {
 		t.Error("observer final cleanup receipt")
