@@ -292,9 +292,18 @@ func TestNativeDashboardWitnessInterruption(t *testing.T) {
 					if e != nil || ae != nil || !os.SameFile(info, after) || info.Size() != int64(len(raw)) || !info.ModTime().Equal(after.ModTime()) {
 						t.Fatal("interrupted original changed")
 					}
-					if os.WriteFile(filepath.Join(dir, entry.Name()), raw, 0400) != nil {
-						t.Fatal("original export")
+					out, oe := os.OpenFile(filepath.Join(dir, entry.Name()), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+					if oe != nil {
+						t.Fatal("exclusive original export")
 					}
+					n, we := out.Write(raw)
+					se := out.Sync()
+					me := out.Chmod(0400)
+					ce := out.Close()
+					if n != len(raw) || we != nil || se != nil || me != nil || ce != nil {
+						t.Fatal("sealed original export")
+					}
+
 					records = append(records, witnessInterruptedOriginal{entry.Name(), object, uint32(info.Mode().Perm()), fmt.Sprintf("%x", sha256.Sum256(raw))})
 				}
 				if len(records) == 0 {
