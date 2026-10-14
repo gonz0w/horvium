@@ -268,8 +268,8 @@ and waited. Samples retain actual read duration; the existing two-second envelop
 and 100 ms cadence remain unchanged. A synchronous kernel read is not cancellable
 in-process; a late completed read rejects, while the owned fixture/VM lifetime
 provides the outer termination bound. Original bounded binary inputs are retained
-privately on rejection. Portable decoder regressions pass; native confirmation,
-cadence completeness and calibration at this candidate remain pending.
+privately on rejection. Portable decoder regressions pass; the corrected native results are recorded
+below. Complete cadence and calibration remain pending.
 
 The first direct-kernel source `f567543` passed the actual header/unit comparison
 on 15.1 but rejected both workload starts. It incorrectly assumed a
@@ -277,4 +277,49 @@ on 15.1 but rejected both workload starts. It incorrectly assumed a
 not that name. This source remains failed. The correction uses the actual
 header's CTL_KERN/KERN_PROC/KERN_PROC_PROC identifiers, observed int/size_t
 widths and a fixed buffer; it never accepts syscall ENOMEM/partial output or
-retries with a larger bound. Native execution of the correction is pending.
+retries with a larger bound. The corrected candidate passed the reduced suites on both pinned releases,
+with the evidence and remaining sampling failures below.
+
+
+### Corrected direct-kernel results
+
+[The kernel-sampler manifest](witness-kernel-sampler-manifest.json) records
+`893cb60`, base `0745c96`, at the unchanged actual PR title. Signed clean focused
+review passed required check/lint/test/secrets plus fresh cmd race/original-wire
+fuzz before execution. Both reduced suites passed on this same source, along with
+independent transfer readback of all 40 HTML bodies, original helper outputs and
+actual publication metadata. Each actual guest-header ABI and field/unit control
+passed: RSS exactly matches ps; CPU matches within its 10 ms displayed precision.
+The fixed-buffer table query uses header-derived numeric identifiers and rejects
+partial/oversized/duplicate data. It does not invoke a sampling subprocess.
+
+| Release / mode | Nominal intervals | Observed distinct intervals | Unobserved | Extra observations in a used interval | Largest gap | Largest complete read |
+| --- | --- | --- | --- | --- | --- | --- |
+| 15.1 / native small | 701 | 701 | 0 | 0 | 111.23 ms | 8.72 ms |
+| 15.1 / projection | 429 | 413 | 16 | 3 | 1,360.37 ms | 90.21 ms |
+| 14.5 / native small | 699 | 699 | 0 | 0 | 111.84 ms | 5.57 ms |
+| 14.5 / projection | 433 | 407 | 26 | 1 | 1,400.66 ms | 1,192.31 ms |
+
+The same limited interval audit applies: original relative timestamps, initial
+origin slot included, closing tail excluded. Comparing different diagnostic runs
+shows fewer unobserved intervals than the earlier 83/46; it is not a controlled
+causal experiment or complete cadence acceptance. In the largest 15.1 projection
+gap, the actual read step took 0.924 ms, while controller/observer CPU increased
+by about 1.338/1.315 seconds. That locates the gap before this read was scheduled,
+without establishing its underlying cause. On 14.5, the largest gap includes a
+1.192-second read step; the cases cannot be given one assumed explanation.
+
+The earlier unsupported-name failure, profile-only deadline failure and all
+historical rejections remain retained at their original source boundaries. No
+measurement budget, deadline, cadence or custody check was relaxed. Every completed
+new run retains matching preflight, unchanged pinned inputs, original guest cleanup
+and independently verified host teardown. All 159 earlier manifests remain
+byte-identical, as do the seven primary-worktree operator files.
+
+Next work must preserve continuous independent sampling through controller work
+and distinguish time inside the native read from delayed scheduling. A separate
+sampling owner, if introduced, needs its own artifact/lifetime binding, all-started
+wait accounting, RSS/CPU reporting and complete cancellation/teardown controls.
+That remaining ownership work stays in PR 390; it remains draft. Broader native
+005/006 and resource/latency acceptance, the unexplained connector and 6525631
+rejections, startup/browser/hardware/release gates remain open.

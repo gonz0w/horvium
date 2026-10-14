@@ -2077,3 +2077,10 @@ The initial direct collector's f567543 native attempt failed at an incorrectly
 assumed child-query name. The correction uses observed process-table MIB values
 and fixed-buffer decoding, rejects oversized/partial/duplicate tables, and retains
 only fixture-role inputs privately. Corrected native execution is pending.
+
+The [corrected kernel sampler](../testing/dashboards/witness-qualification-batch.md)
+passed both reduced native suites at 893cb60, actual header/unit comparisons and
+40 independently reopened responses. It uses observed numeric query identifiers
+and a fixed 64 KiB buffer, with original guest/host teardown and preserved pins.
+Projection timing retains 16/26 unobserved nominal intervals on 15.1/14.5; complete
+sampling/native/resource acceptance remains open. It adds no runtime support claim.
