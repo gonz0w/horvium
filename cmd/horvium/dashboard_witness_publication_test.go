@@ -136,3 +136,57 @@ func TestDashboardWitnessChangedValuesSelectOriginalAndRejectMutation(t *testing
 		t.Fatal("same numbers with wrong lineage accepted")
 	}
 }
+
+func TestDashboardWitnessConfirmationRetainsBoundedFailureStage(t *testing.T) {
+	for _, stage := range []string{"publication-original", "publication-metadata", "publication-mismatch"} {
+		t.Run(stage, func(t *testing.T) {
+			snapshot, e := dashboardDecodeWitness(bytes.NewReader(witnessFrames(witnessGolden())), witnessTestID)
+			if e != nil {
+				t.Fatal(e)
+			}
+			ref := dashboardWitnessRef{ID: witnessTestID, Complete: true, Delivered: true, RawSHA256: strings.Repeat("a", 64), ForwardSHA256: strings.Repeat("a", 64)}
+			calls := 0
+			reg := newDashboardWitnessRegistry(func(string) (inventory.Snapshot, dashboardWitnessRef, error) {
+				if stage == "publication-original" {
+					return snapshot, ref, errors.New("PRIVATE original path and inventory")
+				}
+				return snapshot, ref, nil
+			}, func(context.Context, string) (witnessPublication, error) {
+				calls++
+				p := witnessPublication{ID: witnessTestID, Complete: true, Host: "ok", GEOM: "ok", Pools: "ok", Datasets: "ok", PoolCount: 1, DatasetCount: 1}
+				if stage == "publication-metadata" {
+					return p, errors.New("PRIVATE authenticated response")
+				}
+				if stage == "publication-mismatch" {
+					p.DatasetCount++
+				}
+				return p, nil
+			})
+			_, _, first := reg.confirm(context.Background(), witnessTestID)
+			_, _, second := reg.confirm(context.Background(), witnessTestID)
+			if first == nil || second == nil || !strings.Contains(first.Error(), stage) || second.Error() != first.Error() || strings.Contains(first.Error(), "PRIVATE") || calls > 1 {
+				t.Fatal("bounded first failure classification lost", first, second, calls)
+			}
+		})
+	}
+}
+
+func TestDashboardWitnessCancelledMetadataNeverConfirms(t *testing.T) {
+	snapshot, e := dashboardDecodeWitness(bytes.NewReader(witnessFrames(witnessGolden())), witnessTestID)
+	if e != nil {
+		t.Fatal(e)
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	ref := dashboardWitnessRef{ID: witnessTestID, Complete: true, Delivered: true, RawSHA256: strings.Repeat("a", 64), ForwardSHA256: strings.Repeat("a", 64)}
+	reg := newDashboardWitnessRegistry(func(string) (inventory.Snapshot, dashboardWitnessRef, error) { return snapshot, ref, nil }, func(context.Context, string) (witnessPublication, error) {
+		cancel()
+		return witnessPublication{ID: witnessTestID, Complete: true, Host: "ok", GEOM: "ok", Pools: "ok", Datasets: "ok", PoolCount: 1, DatasetCount: 1}, nil
+	})
+	if _, _, e := reg.confirm(ctx, witnessTestID); e == nil {
+		t.Fatal("metadata completed after cancellation became confirmed")
+	}
+	if _, _, e := reg.confirm(context.Background(), witnessTestID); e == nil || reg.controls() != 1 {
+		t.Fatal("cancelled confirmation resumed")
+	}
+}
