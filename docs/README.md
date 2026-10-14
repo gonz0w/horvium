@@ -319,3 +319,7 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [Native dashboard value invariance](research/dashboards/native-value-invariance.md): bounded independent ownership and scratch-write diagnosis under #382.
 
 - [Proposed native oracle requirement correction](design/dashboards/native-invariance-correction.md): Draft review packet; actual native accounting evidence remains separate from adoption.
+
+- [Native witness binding EDD](design/dashboards/native-witness-binding-EDD.md) and
+  [Test Design](design/dashboards/native-witness-binding-TDD.md): concrete review
+  packet under #382; [ADR 0011](adr/0011-native-dashboard-witnesses.md) is proposed.

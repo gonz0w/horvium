@@ -38,3 +38,10 @@ Dashboard presentation decision adopted by maintainer merge of
 
 - [0010 Progressive dashboard charts](0010-progressive-dashboard-charts.md):
   current observations first; separately bounded uPlot fixture and history gates.
+
+
+Proposed review record (not yet accepted):
+
+- [0011 Original native dashboard witnesses](0011-native-dashboard-witnesses.md):
+  development-only original wire custody and existing generation/request-ID binding;
+  requires maintainer adoption and integrated/native verification before activation.

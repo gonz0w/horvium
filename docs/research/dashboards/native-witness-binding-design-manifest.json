@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "scope": "source inspection and existing portable behavioral proof for a proposed design; no broker implementation or native execution",
+  "source_commit": "3bdfda1797d9be6b88061005f577fe39b13daa05",
+  "native_resource_acceptance": false,
+  "broker_implemented": false,
+  "native_credential_handoff_qualified": false,
+  "inspected_source_sha256": {
+    "internal/observation/manager.go": "00b4001b727182f941a09400a0caf9e6bb05f8232616fc11324935d4544e92b2",
+    "internal/helper/wire.go": "5f8a5ac1a5d619435a2240a699afe3d4337bdd98ec9507bccb7e53f8ef0cbea6",
+    "internal/helper/server.go": "ae6af0cc454947b29d8e2cb10d39814d60814afad00919006f0facbc8bf0fcda",
+    "internal/helper/native_freebsd.go": "3ddac8e913f720ed717622fb80947d41ecbd970f261483218790a9a8acc50e40",
+    "internal/service/events.go": "b0f488de9f535e5b7772ed0d9ccc423614250b7ba901a0b18841860355866e44",
+    "internal/service/service.go": "4097069f401f39ac5a8803f61c66a7669ee7f46fbe1d31ed5891b16c5d7855ed",
+    "cmd/horvium/performance_freebsd_test.go": "293087e303d8a1ccf908829f028028573d5ccd6ad3b71447f6fdf725060a24d6",
+    "cmd/horvium/reader_resources_freebsd_test.go": "b00f44ef4b287c26116a3fbfe2046cf6367e48925e2dc9b8bfca8e67f9f6cd5e"
+  },
+  "observed_facts": [
+    "manager creates generation ID before Collect and publishes that same ID only after successful clone/publication",
+    "helper requires exact request_id in every original response record and complete bounded framing/EOF",
+    "failed source and publication cancellation preserve old generations",
+    "runtime operational logs are bounded/lossy and cannot replace original witness/publication confirmation"
+  ],
+  "portable_behavioral_checks": [
+    {
+      "package": "./internal/observation",
+      "test_pattern": "^Test(StartupAndRefreshAreSingleFlight|FailurePreservesGenerationAndDoesNotLeakErrorText|GenerationPagingExpiryAndLastCompleteRetention|CancellationWhilePublicationWaitsForReaders)$",
+      "command": "make test-focus PKG=./internal/observation TEST=the recorded pattern",
+      "log_sha256": "f95e528875fd5d3bf3d725fc67e018ffdf330ad3fba82a161da7ad8e4bda9852",
+      "result": "PASS"
+    },
+    {
+      "package": "./internal/helper",
+      "test_pattern": "^Test(WireRoundTrip|RequestsRejectAuthorityAndAmbiguity|FramingBoundsAndInterruptedCollections|MalformedResponseCannotPublish)$",
+      "command": "make test-focus PKG=./internal/helper TEST=the recorded pattern",
+      "log_sha256": "8cc5883cc93ac11a1a238140d6901a6abc2b931e7c77d94d503b641d3e2ed4cf",
+      "result": "PASS"
+    }
+  ],
+  "source_references": [
+    {
+      "url": "https://man.freebsd.org/cgi/man.cgi?manpath=FreeBSD+12.3-RELEASE&query=unix&sektion=4",
+      "scope": "general descriptor passing and connect/listen credential semantics; not pinned-release execution"
+    },
+    {
+      "url": "https://github.com/freebsd/freebsd-src/blob/main/sys/sys/ucred.h",
+      "scope": "general xucred PID member/version source; native header/ABI proof remains required"
+    },
+    {
+      "url": "https://cgit.freebsd.org/src/tree/sys/kern/kern_ktrace.c",
+      "scope": "alternative tracing payload cap evidence; tracing is not selected"
+    }
+  ],
+  "preservation": {
+    "historical_manifests": 153,
+    "primary_operator_edits_unchanged": true
+  },
+  "limits": [
+    "implementation and native peer/descriptor/mount/resource/evidence gates remain unexecuted",
+    "complete witness mechanism needs maintainer adoption before implementation and integrated review before activation",
+    "existing historical schemas cannot be upgraded by changing labels",
+    "original large-mode latency and all both-release/full resource gates remain open"
+  ]
+}

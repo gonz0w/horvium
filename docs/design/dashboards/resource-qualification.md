@@ -141,8 +141,15 @@ offset zero. Requests use existing routes and exact typed query encoding only.
 Derive expected names, GUIDs, counts and integer values from the declared fixture
 and its original native observations, never browser Number conversions or string
 prefix membership. Keep expectations outside the timed request loop where possible;
-do not add a hidden API request per HTML request. Expected inventory values stay
-constant during these replacement fixtures; generation/time are response-specific.
+do not add a hidden API request per HTML request. The [review amendment](native-invariance-correction.md),
+[proposed EDD](native-witness-binding-EDD.md) and
+[Test Design](native-witness-binding-TDD.md) replace the constant-native-value
+assumption **only after maintainer adoption of that complete packet and integrated
+fixture review**. Until then, the existing frozen original remains in force.
+After adoption, synthetic inventories and projected dataset declarations remain
+constant; native values require independently captured original producer witnesses
+for the exact displayed generation. Generation/time remain response-specific.
+No management numbers or later independent collection supply an expectation.
 Assert generation agreement across each successful response's section, comparison,
 table and resource links. HTTP 200 with an absent comparison, login/error body,
 wrong row count/identity or truncated table is a failed request, not a timing sample.
