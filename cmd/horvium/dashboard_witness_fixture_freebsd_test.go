@@ -182,7 +182,7 @@ func (o *witnessFixtureObserver) control(command witnessNativeCommand) (witnessN
 	}
 	_ = o.channel.SetDeadline(time.Now().Add(45 * time.Second))
 	if witnessControlWrite(o.channel, command) != nil || witnessControlRead(o.channel, &receipt) != nil || !receipt.OK || receipt.Failed {
-		return receipt, errDashboardWitness
+		return receipt, fmt.Errorf("invalid witness control: stage=%s store_failed=%t", receipt.Failure, receipt.StoreFailed)
 	}
 	return receipt, nil
 }

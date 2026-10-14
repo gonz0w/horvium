@@ -342,6 +342,8 @@ type witnessNativeOriginal struct {
 type witnessNativeReceipt struct {
 	OK              bool                    `json:"ok"`
 	Failed          bool                    `json:"failed"`
+	Failure         string                  `json:"failure"`
+	StoreFailed     bool                    `json:"store_failed"`
 	Denied          int                     `json:"denied"`
 	Originals       []witnessNativeOriginal `json:"originals"`
 	ConnectorMaxRSS uint64                  `json:"connector_max_rss"`
@@ -369,6 +371,7 @@ type witnessNativeObserver struct {
 	connectorCPU time.Duration
 	connectors   int
 	failed       bool
+	failure      string
 	ctx          context.Context
 }
 
@@ -393,17 +396,20 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 		o.mu.Unlock()
 		return
 	}
-	fail := func() { o.mu.Lock(); o.failed = true; o.mu.Unlock() }
+	stage := "request-read"
+	fail := func() { o.mu.Lock(); o.failed = true; o.failure = stage; o.mu.Unlock() }
 	request, e := io.ReadAll(io.LimitReader(c, witnessFrameCap+5))
 	if e != nil || len(request) > witnessFrameCap+4 {
 		fail()
 		return
 	}
+	stage = "request-grammar"
 	id, e := dashboardWitnessRequest(bytes.NewReader(request))
 	if e != nil {
 		fail()
 		return
 	}
+	stage = "actual-socket"
 	socket, e := witnessRootSocket(o.cfg.Back, o.cfg.SocketGID)
 	if e != nil || !os.SameFile(socket, back) || helper.check(o.cfg.ABI) != nil {
 		if !allowDeath {
@@ -411,12 +417,14 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 		}
 		return
 	}
+	stage = "connector-channel"
 	parent, child, e := witnessSocketPair()
 	if e != nil {
 		fail()
 		return
 	}
 	defer parent.Close()
+	stage = "connector-file"
 	file, e := child.File()
 	child.Close()
 	if e != nil {
@@ -429,6 +437,7 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	cmd.Env = []string{"HORVIUM_NATIVE_VM=1", "HORVIUM_PERF_VM=1", "HORVIUM_WITNESS_CONNECTOR=" + o.cfg.Back, "HORVIUM_WITNESS_UID=" + strconv.FormatUint(uint64(o.cfg.ManagementUID), 10), "LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
 	cmd.ExtraFiles = []*os.File{file}
 	cmd.SysProcAttr = &syscall.SysProcAttr{Credential: &syscall.Credential{Uid: o.cfg.ManagementUID, Gid: o.cfg.SocketGID, Groups: []uint32{o.cfg.SocketGID}}}
+	stage = "connector-start"
 	if cmd.Start() != nil {
 		file.Close()
 		fail()
@@ -443,6 +452,7 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 		}
 	}()
 	_ = parent.SetDeadline(time.Now().Add(10 * time.Second))
+	stage = "connector-descriptor"
 	actual, e := witnessPassedDescriptor(parent)
 	if e != nil {
 		fail()
@@ -453,21 +463,25 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	o.connections[actual] = true
 	o.mu.Unlock()
 	defer func() { o.mu.Lock(); delete(o.connections, actual); o.mu.Unlock() }()
+	stage = "helper-peer"
 	uid, pid, e = witnessNativePeer(actual, o.cfg.ABI)
 	if e != nil || uid != helper.UID || pid != helper.PID || helper.check(o.cfg.ABI) != nil {
 		fail()
 		return
 	}
+	stage = "connector-ack"
 	if n, e := parent.Write([]byte{'A'}); e != nil || n != 1 {
 		fail()
 		return
 	}
+	stage = "connector-wait"
 	e = cmd.Wait()
 	waited = true
 	if e != nil {
 		fail()
 		return
 	}
+	stage = "connector-usage"
 	u, ok := cmd.ProcessState.SysUsage().(*syscall.Rusage)
 	if !ok || u.Maxrss <= 0 {
 		fail()
@@ -479,19 +493,23 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	o.connectors++
 	o.mu.Unlock()
 	_ = actual.SetDeadline(deadline)
+	stage = "producer-request"
 	if n, e := actual.Write(request); e != nil || n != len(request) || actual.CloseWrite() != nil {
 		fail()
 		return
 	}
+	stage = "producer-capture"
 	ref, e := o.store.capture(actual, id, o.cfg.Mode, management.incarnation(), helper.incarnation())
 	if e != nil {
 		fail()
 		return
 	}
+	stage = "producer-lifetime"
 	if ref.Complete && helper.check(o.cfg.ABI) != nil {
 		fail()
 		return
 	}
+	stage = "producer-forward"
 	if o.store.forward(ref, c) != nil {
 		o.store.mu.Lock()
 		v := o.store.sealed[ref.Name]
@@ -503,6 +521,7 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 		fail()
 		return
 	}
+	stage = "original-index"
 	o.store.mu.Lock()
 	sealed := o.store.sealed[ref.Name]
 	object, e := witnessObject(sealed.info)
@@ -520,7 +539,7 @@ func (o *witnessNativeObserver) receipt() witnessNativeReceipt {
 	defer o.mu.Unlock()
 	o.store.mu.Lock()
 	defer o.store.mu.Unlock()
-	r := witnessNativeReceipt{OK: true, Failed: o.failed || o.store.failed, Denied: o.denied, ConnectorMaxRSS: o.connectorMax, ConnectorCPUNS: int64(o.connectorCPU), Connectors: o.connectors, Active: o.active}
+	r := witnessNativeReceipt{OK: true, Failed: o.failed || o.store.failed, Failure: o.failure, StoreFailed: o.store.failed, Denied: o.denied, ConnectorMaxRSS: o.connectorMax, ConnectorCPUNS: int64(o.connectorCPU), Connectors: o.connectors, Active: o.active}
 	for _, ref := range o.store.refs {
 		v := o.store.sealed[ref.Name]
 		object, e := witnessObject(v.info)
