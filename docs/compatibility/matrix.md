@@ -2036,3 +2036,73 @@ passed in the reduced suite on disposable FreeBSD 15.1 and 14.5, with all 21
 archived originals independently decoded and guest/host teardown verified. Product
 protocol/runtime compatibility is unchanged, and complete cancellation/calibration,
 augmented resources, unexplained recovery and release gates stay open.
+
+The [batched witness support](../testing/dashboards/witness-qualification-batch.md)
+adds test-only augmented resource arithmetic, source-bound response coverage,
+additional native descriptor/custody/physical-ENOSPC controls and a direct/broker
+cadence diagnostic. Six reduced native attempts produced two passes and four failures;
+the passes are different source candidates. Forty transferred original responses
+passed independent verification for those individual runs. Connector accounting and
+projection sampler command rejections remain unresolved; complete native 005/006,
+sampling and resources are unqualified. The canonical resource runner stays inactive
+and runtime/client/hardware support claims are unchanged.
+
+
+The PR 390 diagnostic continuation bounds native sampler output during capture
+and distinguishes original command exit, deadline, cancellation, overflow, start
+and I/O failure; connector rejections retain their wait/context stage. Portable
+subprocess regressions and both reduced native suites pass at `7a5490e`, with
+40 independently reopened responses, original teardown and pinned preservation.
+The [continuation record](../testing/dashboards/witness-qualification-batch.md)
+retains 83/46 unobserved nominal projection intervals on 15.1/14.5; complete
+sampling/native/resource acceptance remains open. Earlier rejection causes are
+unresolved. These diagnostics retain existing deadline/cadence/budgets and add
+no runtime or hardware support claim.
+
+
+The [focused projection profile](../testing/dashboards/witness-qualification-batch.md)
+adds a separately retained failed 15.1 diagnostic: deadline-envelope rejection
+with zero child exit and a 2.42-second complete command step. Startup-inclusive
+CPU-profile totals do not establish the cause of missing sampling intervals.
+No broader native/resource acceptance or runtime support is claimed.
+
+
+The direct-kernel sampler candidate uses actual base-header kinfo offsets/widths
+and observed page size, with portable malformed-record/overflow regressions and
+a prepared native ps comparison on a stopped disposable idle fixture. No product
+process is paused; native execution and sampling completeness remain pending.
+The canonical resource runner and runtime support claims remain unchanged.
+
+The initial direct collector's f567543 native attempt failed at an incorrectly
+assumed child-query name. The correction uses observed process-table MIB values
+and fixed-buffer decoding, rejects oversized/partial/duplicate tables, and retains
+only fixture-role inputs privately. Corrected native execution is pending.
+
+The [corrected kernel sampler](../testing/dashboards/witness-qualification-batch.md)
+passed both reduced native suites at 893cb60, actual header/unit comparisons and
+40 independently reopened responses. It uses observed numeric query identifiers
+and a fixed 64 KiB buffer, with original guest/host teardown and preserved pins.
+Projection timing retains 16/26 unobserved nominal intervals on 15.1/14.5; complete
+sampling/native/resource acceptance remains open. It adds no runtime support claim.
+
+The inactive dashboard witness fixture's independent sampler child requires the
+same actual-header FreeBSD/amd64 ABI probe. It records controller and sampler
+costs separately, preserves closing-window cadence gaps, and binds its private
+original file and all-started wait usage to the original fixture artifact.
+Native EOF/SIGKILL controls and both pinned releases must supply source-bound
+receipts before claiming this candidate; full resource acceptance remains open.
+
+Connector qualification now verifies the original child artifact and kernel
+lifetime on both sides of its inherited bootstrap channel before descriptor
+handoff. A real dropped-credential wrong-artifact control must deny before connect.
+That verification's actual CPU/RSS and collection overhead remain included; zero
+wait high-water remains a rejection rather than a measurement substitute.
+
+The [final independent-owner manifest](../testing/dashboards/witness-independent-owner-manifest.json)
+records same-source reduced fixture passes on pinned disposable FreeBSD 15.1 and
+14.5, all-started sampler/connector accounting and 40 independently reopened
+responses. All 15.1 schedule windows had no missing/duplicate/late intervals;
+14.5 retains two small-mode and four projection gaps with one late read each.
+This supports review of inactive instrumentation, not complete cadence, resource,
+latency, interruption, hardware or release acceptance. The canonical runner stays
+inactive; runtime writes remain disabled.

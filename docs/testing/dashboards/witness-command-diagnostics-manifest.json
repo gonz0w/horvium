@@ -1,0 +1,533 @@
+{
+  "schema": 1,
+  "date": "2026-10-14",
+  "scope": "bounded failure diagnostic continuation and same-source reduced native suites; complete sampling/native/resource acceptance remains open",
+  "candidate_source_commit": "7a5490ed45797deb6cf33fb758078d139fa00a4f",
+  "base_commit": "0745c9684bd5b235164f74f0bb8accf4a84843a8",
+  "pr_title": "test(dashboards): batch witness qualification support and native probes",
+  "reduced_same_candidate_both_releases_pass": true,
+  "native_acceptance": false,
+  "resource_acceptance": false,
+  "resource_activation": false,
+  "historical_manifests_preserved": 157,
+  "earlier_attempts": "witness-qualification-batch-manifest.json retains its original six attempts and limits unchanged",
+  "portable_review": {
+    "qualified": true,
+    "report_sha256": "6d595324c1544dca213dbb285be499824d671652ee59b92adc3b5f8b5050b3b2",
+    "checks_log_sha256": "afc2db85342340c19c436bbb2da8844d37dee33466018ed7aec8066f40370e71",
+    "plan": {
+      "mode": "focused",
+      "reason": "changed packages plus transitive host/FreeBSD/test consumers",
+      "packages": [
+        "./cmd/horvium"
+      ],
+      "native_review_required": true
+    },
+    "deep_executed": true,
+    "deep_result": {
+      "fuzz_targets": [
+        {
+          "package": "./cmd/horvium",
+          "target": "FuzzDashboardWitnessOriginalGrammar"
+        }
+      ],
+      "race_packages": [
+        "./cmd/horvium"
+      ]
+    }
+  },
+  "runs": [
+    {
+      "release": "14.5",
+      "source_commit": "7a5490ed45797deb6cf33fb758078d139fa00a4f",
+      "base_commit": "0745c9684bd5b235164f74f0bb8accf4a84843a8",
+      "pr_title": "test(dashboards): batch witness qualification support and native probes",
+      "native_test_exit": 0,
+      "diagnostic_complete": true,
+      "raw_sha256": "87f006d3f8d0e40695190799fc52bd800e32b33115636b4dd0a9555315bc27cb",
+      "archive_sha256": "6dc1a399c0455a145293633a9c6848ced68a2e07c452f3b61fbc29efcc95da89",
+      "result_sha256": "f4aee2cb1d97eeecc4fb1977d92316e90ddf09cfaa0fa37a2c122c0644109f63",
+      "duration_line": "--- PASS: TestNativeDashboardWitnessShort (285.79s)",
+      "originals": [
+        {
+          "mode": "native-small",
+          "raw_bytes": 40034,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "0e6f03c9bbf974c128d923f4c4098a99ae25136d3180814e0b08e6070bc2fa2c",
+          "forward_sha256": "0e6f03c9bbf974c128d923f4c4098a99ae25136d3180814e0b08e6070bc2fa2c"
+        },
+        {
+          "mode": "native-small",
+          "raw_bytes": 40035,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "9b506522fe8379fd64db9eecb6630b5040425c136260f674fd498a2d39015e88",
+          "forward_sha256": "9b506522fe8379fd64db9eecb6630b5040425c136260f674fd498a2d39015e88"
+        },
+        {
+          "mode": "native-small",
+          "raw_bytes": 40035,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "a1c4d9b4f2632c5d6275877bbb3095eef942d11971eb11aa1763938ed15ed0c1",
+          "forward_sha256": "a1c4d9b4f2632c5d6275877bbb3095eef942d11971eb11aa1763938ed15ed0c1"
+        },
+        {
+          "mode": "native-small",
+          "raw_bytes": 40035,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "28d819b214a099e8ddc73daf5a6d5eb7a73502444edd1ac232f491ac698c1e60",
+          "forward_sha256": "28d819b214a099e8ddc73daf5a6d5eb7a73502444edd1ac232f491ac698c1e60"
+        },
+        {
+          "mode": "native-small",
+          "raw_bytes": 0,
+          "candidate_complete": false,
+          "delivered": true,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "forward_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "mode": "native-small",
+          "raw_bytes": 40035,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "67aa95614e5b4003de2871900f41db257722a421d5ef05676c08b507b2695f5c",
+          "forward_sha256": "67aa95614e5b4003de2871900f41db257722a421d5ef05676c08b507b2695f5c"
+        },
+        {
+          "mode": "projection-10000",
+          "raw_bytes": 2142984,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "916c0c487a6447902e54bc46996eaa5c23904db99b546bad345b4b5c93d78fd4",
+          "forward_sha256": "916c0c487a6447902e54bc46996eaa5c23904db99b546bad345b4b5c93d78fd4"
+        },
+        {
+          "mode": "projection-10000",
+          "raw_bytes": 2142984,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "e64b8851fb187c05bddaf624423edd43e1e2c21b69a5e1e9e8cbb4babdf5c963",
+          "forward_sha256": "e64b8851fb187c05bddaf624423edd43e1e2c21b69a5e1e9e8cbb4babdf5c963"
+        },
+        {
+          "mode": "projection-10000",
+          "raw_bytes": 2142984,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "b0a8e6e1a552636c896695a99872b1ebd087c8ce0255899d196b555f966eb7ca",
+          "forward_sha256": "b0a8e6e1a552636c896695a99872b1ebd087c8ce0255899d196b555f966eb7ca"
+        }
+      ],
+      "injected_faults": [
+        {
+          "case": "cancelled-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        },
+        {
+          "case": "failed-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        },
+        {
+          "case": "archive-limit",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "archive-limit"
+        },
+        {
+          "case": "half-close",
+          "raw_bytes": 1328,
+          "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+          "candidate_complete": true,
+          "capture_failure": ""
+        }
+      ],
+      "sampler_rejections": [],
+      "coverage": {
+        "native-small": {
+          "responses": 10,
+          "metadata_originals": 2,
+          "receipt_sha256": "2442a93bfe5ca0425500a2767d85e515e7fce9f36d9571f1cb178eae662c40a8",
+          "original_index_sha256": "5383300dc1b7f1b5abe0088b8c593c7e9d227fbc2d70fe53974ed06e31c2313f"
+        },
+        "projection-10000": {
+          "responses": 10,
+          "metadata_originals": 3,
+          "receipt_sha256": "a410464490417cdc8a48388aa65d8fcf5ca2f0a9c5c10fdb93f553b6cfab27f8",
+          "original_index_sha256": "f5373a563cb4fc55523501810994ebc963bcbb1d2e8ade09313cfb92af619b80"
+        }
+      },
+      "usage": {
+        "native-small": {
+          "original_sha256": "99e5b0c5cc90dbb6347fa5dc941083bbb31d2fa5b28d809424195db6d7f1b2aa",
+          "samples": 704,
+          "sampled_pair_peak": 35287040,
+          "sampled_augmented_peak": 71151616,
+          "controller_peak": 23810048,
+          "max_sample_gap_ns": 156812000,
+          "observer_high": 21434368,
+          "connector_high": 21037056,
+          "connector_cpu_ns": 96584000,
+          "connectors": 6
+        },
+        "projection-10000": {
+          "original_sha256": "e1eb4bbc9b22daf07db722a6320d0a86bb985dc3801bcbda392be3dd5104f7b7",
+          "samples": 497,
+          "sampled_pair_peak": 46206976,
+          "sampled_augmented_peak": 83673088,
+          "controller_peak": 56029184,
+          "max_sample_gap_ns": 1933068999,
+          "observer_high": 24076288,
+          "connector_high": 15872000,
+          "connector_cpu_ns": 49712000,
+          "connectors": 3
+        }
+      },
+      "calibration": {
+        "original_sha256": "e593e95fa2b6d92cdf735605678a8f03d77d737ea8dfb0ca96528a5b82b9df20",
+        "direct": {
+          "window_ns": 65003947387,
+          "observed_generations": 3,
+          "metadata_reads": 65,
+          "complete_response_p95_ns": 6398198,
+          "samples": 651,
+          "observed_publication_interval_ns": [
+            30006311499,
+            30024335507
+          ],
+          "sampling_scope": "wider monitor lifetime; not restricted to the metadata window"
+        },
+        "broker": {
+          "window_ns": 65002384393,
+          "observed_generations": 3,
+          "metadata_reads": 65,
+          "complete_response_p95_ns": 6048022,
+          "samples": 704,
+          "observed_publication_interval_ns": [
+            28602714058,
+            29980237625
+          ],
+          "sampling_scope": "wider monitor lifetime; not restricted to the metadata window"
+        }
+      },
+      "physical_fault": {
+        "ENOSPC": true,
+        "FillBytes": 1048576,
+        "ArchiveCap": 268435456,
+        "TmpfsCap": 1048576,
+        "Eligible": false,
+        "OriginalIndexed": false
+      },
+      "guest_cleanup_marker": true,
+      "host_teardown_readback": true,
+      "preflight_observations_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "nominal_interval_audit": {
+        "native-small": {
+          "interval_ns": 100000000,
+          "scope": "relative monitor timestamps, through the last retained sample only; initial origin slot included; closing tail excluded",
+          "nominal_slots": 704,
+          "observed_unique_slots": 704,
+          "unobserved_slots": 0,
+          "samples_sharing_a_slot": 0,
+          "largest_gap_deltas_ns": {
+            "wall": 156812000,
+            "product_pair_cpu": 0,
+            "controller_cpu": 10000000,
+            "observer_cpu": 0
+          },
+          "complete_sampling_acceptance": false
+        },
+        "projection-10000": {
+          "interval_ns": 100000000,
+          "scope": "relative monitor timestamps, through the last retained sample only; initial origin slot included; closing tail excluded",
+          "nominal_slots": 528,
+          "observed_unique_slots": 482,
+          "unobserved_slots": 46,
+          "samples_sharing_a_slot": 15,
+          "largest_gap_deltas_ns": {
+            "wall": 1933068999,
+            "product_pair_cpu": 0,
+            "controller_cpu": 90000000,
+            "observer_cpu": 70000000
+          },
+          "complete_sampling_acceptance": false
+        }
+      }
+    },
+    {
+      "release": "15.1",
+      "source_commit": "7a5490ed45797deb6cf33fb758078d139fa00a4f",
+      "base_commit": "0745c9684bd5b235164f74f0bb8accf4a84843a8",
+      "pr_title": "test(dashboards): batch witness qualification support and native probes",
+      "native_test_exit": 0,
+      "diagnostic_complete": true,
+      "raw_sha256": "244b157dbe802a66bf19db56ad55403e0380e5881cd09333c8f4a4cbef07a2ab",
+      "archive_sha256": "ef7e9636f96923e8b657aeee14a875ebc5666c22ff3a8616d201872e81dda912",
+      "result_sha256": "362d28144a14c0fb695192e64bc94fdec092edea9667814793099b671aad0e73",
+      "duration_line": "--- PASS: TestNativeDashboardWitnessShort (326.47s)",
+      "originals": [
+        {
+          "mode": "native-small",
+          "raw_bytes": 42341,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "3249b566331084a27b5148faf423c01ed1bde5cc4ca29d4ba3f116144f6d4dac",
+          "forward_sha256": "3249b566331084a27b5148faf423c01ed1bde5cc4ca29d4ba3f116144f6d4dac"
+        },
+        {
+          "mode": "native-small",
+          "raw_bytes": 0,
+          "candidate_complete": false,
+          "delivered": true,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "forward_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "mode": "native-small",
+          "raw_bytes": 42341,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "982014f6ec1723f25832f154094e3bbc54a79793c5b6a4e8ff4895d82ceaae42",
+          "forward_sha256": "982014f6ec1723f25832f154094e3bbc54a79793c5b6a4e8ff4895d82ceaae42"
+        },
+        {
+          "mode": "native-small",
+          "raw_bytes": 42341,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "f53d4ca91aac844d9255e59a55cade49a285639c0e91cd4f158b67e6c17cf01a",
+          "forward_sha256": "f53d4ca91aac844d9255e59a55cade49a285639c0e91cd4f158b67e6c17cf01a"
+        },
+        {
+          "mode": "native-small",
+          "raw_bytes": 42341,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "74ee42848aa2cf1056dce99462f70b4d7e4c2aae9dc70c1f93f93d2006dedb53",
+          "forward_sha256": "74ee42848aa2cf1056dce99462f70b4d7e4c2aae9dc70c1f93f93d2006dedb53"
+        },
+        {
+          "mode": "native-small",
+          "raw_bytes": 42341,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "5d7036467a6bc8212f946a63e53aa58fd81a460ec22a5828e074b34f9b3bc2a2",
+          "forward_sha256": "5d7036467a6bc8212f946a63e53aa58fd81a460ec22a5828e074b34f9b3bc2a2"
+        },
+        {
+          "mode": "projection-10000",
+          "raw_bytes": 2141962,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "3552a07d0d4f21f747e19aaddea0d33b6178e9829613753bcac50be415e7be13",
+          "forward_sha256": "3552a07d0d4f21f747e19aaddea0d33b6178e9829613753bcac50be415e7be13"
+        },
+        {
+          "mode": "projection-10000",
+          "raw_bytes": 2141962,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "6669c690bf24140c9ff8eccff5d06f898a07fac4ec151956777f01f556106df1",
+          "forward_sha256": "6669c690bf24140c9ff8eccff5d06f898a07fac4ec151956777f01f556106df1"
+        },
+        {
+          "mode": "projection-10000",
+          "raw_bytes": 2141962,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "fa9f358e900dd2e6ead2269f300fbff1aeca01bba5013c19cb9f739f59f2992a",
+          "forward_sha256": "fa9f358e900dd2e6ead2269f300fbff1aeca01bba5013c19cb9f739f59f2992a"
+        },
+        {
+          "mode": "projection-10000",
+          "raw_bytes": 2141962,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "4de2b2296da40e7b69c3353fb1e4f7c6c4e76f874775e57dc68e88036185d199",
+          "forward_sha256": "4de2b2296da40e7b69c3353fb1e4f7c6c4e76f874775e57dc68e88036185d199"
+        },
+        {
+          "mode": "projection-10000",
+          "raw_bytes": 2141962,
+          "candidate_complete": true,
+          "delivered": true,
+          "raw_sha256": "6b0125252615526c804134383967de0d8af01a1fe9185284e35ab935aa8ce57f",
+          "forward_sha256": "6b0125252615526c804134383967de0d8af01a1fe9185284e35ab935aa8ce57f"
+        }
+      ],
+      "injected_faults": [
+        {
+          "case": "cancelled-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        },
+        {
+          "case": "half-close",
+          "raw_bytes": 1328,
+          "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+          "candidate_complete": true,
+          "capture_failure": ""
+        },
+        {
+          "case": "archive-limit",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "archive-limit"
+        },
+        {
+          "case": "failed-read",
+          "raw_bytes": 80,
+          "raw_sha256": "7a97869ec75a3239cdf0eabf495742c857e7e2a9379fd9bc7deeb9eca2886ef6",
+          "candidate_complete": false,
+          "capture_failure": "capture-io"
+        }
+      ],
+      "sampler_rejections": [],
+      "coverage": {
+        "native-small": {
+          "responses": 10,
+          "metadata_originals": 2,
+          "receipt_sha256": "daa4d1fd1a0c37ccce6ea822e4dd2fc54264856f5eaa88bc38b67b0472931854",
+          "original_index_sha256": "dec5d69909fa18bf8e18e18ad530abae3c99ab1cd472a7abe3aac5d37419b2a8"
+        },
+        "projection-10000": {
+          "responses": 10,
+          "metadata_originals": 3,
+          "receipt_sha256": "f6e989e7d73c1a4ffb077a2f9f9869314a880ba1131354d1113cee14e9278789",
+          "original_index_sha256": "69018c2851ea7acf895e2816f18f1902590392199ca097e6bc8c1f2fd5cb3ac0"
+        }
+      },
+      "usage": {
+        "native-small": {
+          "original_sha256": "ca4bd1524e0cd0d04de5958ebdabd3ba97af00668ec6f1be5d40229a69e6e8c8",
+          "samples": 720,
+          "sampled_pair_peak": 31629312,
+          "sampled_augmented_peak": 60612608,
+          "controller_peak": 22634496,
+          "max_sample_gap_ns": 122636999,
+          "observer_high": 17784832,
+          "connector_high": 12410880,
+          "connector_cpu_ns": 116363000,
+          "connectors": 6
+        },
+        "projection-10000": {
+          "original_sha256": "d35e6e5e96466820460d6d8b28413465f8a27e70ca5aaa505b173c85dd8a19b1",
+          "samples": 531,
+          "sampled_pair_peak": 40198144,
+          "sampled_augmented_peak": 73572352,
+          "controller_peak": 63721472,
+          "max_sample_gap_ns": 1624144000,
+          "observer_high": 20770816,
+          "connector_high": 12328960,
+          "connector_cpu_ns": 93682000,
+          "connectors": 5
+        }
+      },
+      "calibration": {
+        "original_sha256": "bc30c7ef4e6a8cbbb41eb0f5a62382a2aa57f34e953cc2fc50d2032f6ff5682f",
+        "direct": {
+          "window_ns": 65005730999,
+          "observed_generations": 3,
+          "metadata_reads": 65,
+          "complete_response_p95_ns": 11118000,
+          "samples": 651,
+          "observed_publication_interval_ns": [
+            30003708000,
+            30001705000
+          ],
+          "sampling_scope": "wider monitor lifetime; not restricted to the metadata window"
+        },
+        "broker": {
+          "window_ns": 65003880000,
+          "observed_generations": 3,
+          "metadata_reads": 65,
+          "complete_response_p95_ns": 9429000,
+          "samples": 720,
+          "observed_publication_interval_ns": [
+            27788434000,
+            29597243000
+          ],
+          "sampling_scope": "wider monitor lifetime; not restricted to the metadata window"
+        }
+      },
+      "physical_fault": {
+        "ENOSPC": true,
+        "FillBytes": 1048576,
+        "ArchiveCap": 268435456,
+        "TmpfsCap": 1048576,
+        "Eligible": false,
+        "OriginalIndexed": false
+      },
+      "guest_cleanup_marker": true,
+      "host_teardown_readback": true,
+      "preflight_observations_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "nominal_interval_audit": {
+        "native-small": {
+          "interval_ns": 100000000,
+          "scope": "relative monitor timestamps, through the last retained sample only; initial origin slot included; closing tail excluded",
+          "nominal_slots": 720,
+          "observed_unique_slots": 720,
+          "unobserved_slots": 0,
+          "samples_sharing_a_slot": 0,
+          "largest_gap_deltas_ns": {
+            "wall": 122636999,
+            "product_pair_cpu": 20000000,
+            "controller_cpu": 110000000,
+            "observer_cpu": 0
+          },
+          "complete_sampling_acceptance": false
+        },
+        "projection-10000": {
+          "interval_ns": 100000000,
+          "scope": "relative monitor timestamps, through the last retained sample only; initial origin slot included; closing tail excluded",
+          "nominal_slots": 591,
+          "observed_unique_slots": 508,
+          "unobserved_slots": 83,
+          "samples_sharing_a_slot": 23,
+          "largest_gap_deltas_ns": {
+            "wall": 1624144000,
+            "product_pair_cpu": 0,
+            "controller_cpu": 1490000000,
+            "observer_cpu": 1520000000
+          },
+          "complete_sampling_acceptance": false
+        }
+      }
+    }
+  ],
+  "independent_transferred_validation": {
+    "passed": true,
+    "same_source": true,
+    "responses": 40,
+    "log_sha256": "9c86ac592ff7ae0c629a8c4d5e02fb2bf94feefecbd9be35962b3559cb7d1b1a",
+    "private_driver_sha256": "8e96cd3409fe3f859448bab9f16959dec0d635c7076cadbce8c330bf1aa0994e",
+    "validator_sha256": "1ba1aab7c1abb5c6607b1b8203ea708cc45e3cdce9f0881c1ba5dc342464e37d",
+    "private_readback_sha256": "0384dce33b75181247ac92feaf404807fd8781f0d89b53b0d5712574c34b39cf"
+  },
+  "limitations": [
+    "These diagnostic passes do not reproduce or explain the older command or connector rejections.",
+    "Nominal interval audit only covers through the last retained sample, with the original initial origin slot; closing tail is excluded.",
+    "Projection unobserved slots are 83 on 15.1 and 46 on 14.5; repeated observations cannot repair them.",
+    "Largest-gap CPU deltas suggest controller/observer load on 15.1 but do not prove a general cause; 14.5 has different CPU deltas.",
+    "Complete native 005/006, calibration/sampling, request-free 300-second idle, full resource/latency and wider acceptance remain open."
+  ]
+}

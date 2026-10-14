@@ -327,3 +327,5 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [Inactive original dashboard witness fixture](testing/dashboards/native-witness-fixture.md).
 
 - [Witness rejection custody and recovery diagnostics](testing/dashboards/witness-rejection-custody.md).
+
+- [Batched inactive witness qualification support](testing/dashboards/witness-qualification-batch.md).

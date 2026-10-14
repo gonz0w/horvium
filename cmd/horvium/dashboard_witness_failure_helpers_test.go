@@ -13,12 +13,13 @@ func (e dashboardWitnessFailure) Error() string {
 func (e dashboardWitnessFailure) Unwrap() error { return errDashboardWitness }
 func witnessFailure(stage string) error {
 	switch stage {
-	case "producer-read", "raw-limit", "archive-limit",
+	case "usage-sampler", "sampler-control", "sampler-wait-timeout", "sampler-wait-usage", "sampler-exit", "sampler-receipt", "sampler-original-readback", "connector-bootstrap", "connector-identity", "usage-kernel-deadline", "usage-kernel-read", "capture-io", "producer-read", "raw-limit", "archive-limit",
 		"publication-original", "publication-eligibility", "publication-metadata", "publication-mismatch", "publication-context", "publication-cache", "publication-idle", "publication-capacity", "publication-failed",
 		"control-closed", "control-write", "control-read", "control-receipt", "control-failed",
 		"original-duplicate", "original-missing", "original-eligibility", "original-reference", "original-path", "original-object", "original-open", "original-descriptor", "original-decode", "original-hash", "original-changed",
 		"request-read", "request-grammar", "actual-socket", "connector-channel", "connector-file", "connector-start", "connector-descriptor", "helper-peer", "connector-ack", "connector-wait", "connector-usage", "producer-request", "producer-capture", "producer-lifetime", "producer-forward", "original-index",
-		"management-registration", "helper-registration", "control-operation", "receipt-object", "receipt-custody", "receipt-store", "front-cleanup":
+		"usage-command-exit", "usage-command-deadline", "usage-command-cancelled", "usage-command-overflow", "usage-command-start", "usage-command-io",
+		"usage-roles", "usage-command", "usage-shape", "usage-numbers", "usage-duplicate", "usage-identity", "usage-sum", "usage-descendants", "usage-controller", "observer-usage", "management-registration", "helper-registration", "control-operation", "receipt-object", "receipt-custody", "receipt-store", "front-cleanup":
 		return dashboardWitnessFailure(stage)
 	default:
 		return dashboardWitnessFailure("unclassified")

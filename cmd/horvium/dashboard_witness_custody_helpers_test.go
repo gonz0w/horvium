@@ -147,7 +147,7 @@ func (s *dashboardWitnessStore) capture(r io.Reader, id, mode, management, helpe
 	n, e := io.CopyBuffer(io.MultiWriter(f, hash), io.LimitReader(r, remaining), buffer)
 	captureFailure := ""
 	if e != nil {
-		captureFailure = "producer-read"
+		captureFailure = "capture-io"
 	}
 	if e == nil && n == remaining && witnessEOF(r) != nil {
 		captureFailure = "raw-limit"

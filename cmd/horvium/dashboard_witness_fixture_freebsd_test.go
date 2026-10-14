@@ -98,7 +98,7 @@ func witnessNativeABI(t *testing.T, dir string) witnessProbeReceipt {
 		t.Fatal("probe compiler version")
 	}
 	r := witnessProbeReceipt{ABI: abi, SourceSHA256: digest(source), CompilerSHA256: digest(compiler), CompilerVersion: strings.TrimSpace(string(version)), BinarySHA256: digest(binary), HeaderSHA256: map[string]string{}}
-	for _, name := range []string{"sys/types.h", "sys/ucred.h", "sys/user.h", "sys/un.h"} {
+	for _, name := range []string{"sys/types.h", "sys/ucred.h", "sys/user.h", "sys/un.h", "sys/sysctl.h", "unistd.h"} {
 		r.HeaderSHA256[name] = digest("/usr/include/" + name)
 	}
 	return r
@@ -504,6 +504,7 @@ func TestNativeDashboardWitnessShort(t *testing.T) {
 		t.Fatal("exclusive retained native probe directory")
 	}
 	probe := witnessNativeABI(t, probeDir)
+	t.Run("kernel-metric-controls", func(t *testing.T) { witnessNativeKernelComparison(t, probe.ABI) })
 	if witnessWritePrivateIndex("../../.tools", "witness-probe-original.json", probe) != nil {
 		t.Fatal("private extra native probe receipt")
 	}
@@ -517,18 +518,31 @@ func TestNativeDashboardWitnessShort(t *testing.T) {
 		t.Fatal("independent owned 100 GUIDs")
 	}
 	count := len(strings.Fields(string(readerFixtureCommand(t, "/sbin/zfs", "list", "-H", "-t", "filesystem", "-o", "name"))))
+	var directCalibration witnessCalibrationPath
+	t.Run("direct-calibration", func(t *testing.T) { directCalibration = witnessDirectCalibration(t, owner, probe, count) })
 	for _, mode := range []string{"native-small", "projection-10000"} {
 		t.Run(mode, func(t *testing.T) {
 			p := startWitnessPair(t, owner, probe, mode)
 			if mode == "native-small" {
-				t.Run("custody-faults", func(t *testing.T) { dashboardNativeWitnessCustodyFaults(t, p.mount) })
+				t.Run("custody-faults", func(t *testing.T) {
+					dashboardNativeWitnessCustodyFaults(t, p.mount)
+					dashboardNativeWitnessAdditionalFaults(t, p.mount)
+				})
+				t.Run("descriptor-faults", func(t *testing.T) {
+					TestDashboardWitnessDescriptorRejectsExtraAndWrongTag(t)
+					TestDashboardWitnessTransferredEndpointSurvivesSenderClosure(t)
+					TestDashboardWitnessDescriptorOwnershipSurvivesGC(t)
+				})
 			}
 			n := count
 			if mode == "projection-10000" {
 				n = 10000
 			}
 			id := p.pair.session.ready(t, n, "")
-			registry := newDashboardWitnessRegistry(p.observer.original, witnessHTTPMetadata(p.pair.session.http, p.pair.session.base))
+			coverage := newWitnessNativeCoverage(t, witnessNativeCoverageContext(t, mode, owner), p.observer)
+			registry := newDashboardWitnessRegistry(p.observer.original, witnessHTTPMetadataCapture(p.pair.session.http, p.pair.session.base, coverage.captureMetadata))
+			coverage.registry = registry
+			usage := newWitnessNativeUsage(t, p.pair, p.observer, probe.ABI)
 			s, ref, e := registry.confirm(context.Background(), id)
 			if e != nil {
 				t.Fatal("actual delivered original / publication", e)
@@ -541,23 +555,34 @@ func TestNativeDashboardWitnessShort(t *testing.T) {
 			if e != nil {
 				t.Fatal("independent native declaration", e)
 			}
+			coverage.plan = prepared.plan
 			predicate := registry.predicate(prepared.plan)
 			for _, request := range prepared.plan[:10] {
+				started := time.Now()
 				response, e := p.pair.session.http.Get(p.pair.session.base + request.Path)
 				if e != nil {
 					t.Fatal("short HTML transport")
 				}
 				body, e := dashboardReadBody(response.Body)
+				elapsed := time.Since(started)
 				if e != nil || predicate(request, response.StatusCode, body) != nil {
 					t.Fatal("actual original exact HTML")
+				}
+				if coverage.sample(request, response.StatusCode, body, elapsed) != nil {
+					t.Fatal("original response trace")
 				}
 				changed := bytes.Replace(body, []byte(" B</td>"), []byte("9 B</td>"), 1)
 				if request.Case != "overview" && (bytes.Equal(body, changed) || predicate(request, response.StatusCode, changed) == nil) {
 					t.Fatal("actual numeric corruption accepted")
 				}
 			}
+			var brokerCalibration witnessCalibrationPath
+			if mode == "native-small" {
+				brokerCalibration = witnessCalibrationWindow(t, p.pair, "broker")
+			}
+			previousID := p.pair.session.overview(t).Generation
 			p.pair.session.refresh(t)
-			next := p.pair.session.ready(t, n, id)
+			next := p.pair.session.ready(t, n, previousID)
 			nextSnapshot, nextRef, e := registry.confirm(context.Background(), next)
 			if e != nil || next == id || nextRef.ID != next || nextRef.RawSHA256 == ref.RawSHA256 {
 				t.Fatal("explicit new original lineage", e)
@@ -572,6 +597,8 @@ func TestNativeDashboardWitnessShort(t *testing.T) {
 					t.Fatal("projection values changed")
 				}
 			}
+			usageSamples := usage.finish(t)
+			coverage.finish(t)
 			if mode == "native-small" {
 				if _, e := p.observer.control(witnessNativeCommand{Operation: "native-death"}); e != nil {
 					t.Fatal("owned native death registration")
@@ -632,6 +659,23 @@ func TestNativeDashboardWitnessShort(t *testing.T) {
 				t.Fatal("kernel identity / connector receipts", e)
 			}
 			p.observer.stop(t)
+			finalUsage := p.observer.final
+			finalUsage.ObserverHigh = max(finalUsage.ObserverHigh, peakProcessRSS(t, p.observer.process))
+			witnessUsageDiagnostic(t, mode, usageSamples, finalUsage)
+			if mode == "native-small" {
+				brokerCalibration.Usage = usageSamples
+				brokerCalibration.ObserverHigh = finalUsage.ObserverHigh
+				brokerCalibration.ConnectorHigh = finalUsage.ConnectorMaxRSS
+				brokerCalibration.ConnectorCPU = finalUsage.ConnectorCPUNS
+				witnessCalibrationPublish(t, directCalibration, brokerCalibration)
+			}
+			if witnessWriteDiagnosticJSON("witness-usage-"+mode+".json", struct {
+				Mode    string
+				Samples []witnessNativeUsageSample
+				Final   witnessNativeReceipt
+			}{mode, usageSamples, finalUsage}) != nil {
+				t.Fatal("original usage receipt")
+			}
 			p.pair.management.stop(t, syscall.SIGTERM, true)
 			p.pair.helper.stop(t, syscall.SIGTERM, true)
 			if b, e := os.ReadFile(p.pair.path); e != nil || !bytes.Equal(b, p.configBytes) {

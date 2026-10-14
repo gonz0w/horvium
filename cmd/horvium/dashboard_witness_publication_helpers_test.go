@@ -204,6 +204,9 @@ func (r *dashboardWitnessRegistry) predicate(plan []dashboardRequest) dashboardP
 // Only metadata crosses into confirmation; Host/accounting values never enter
 // expectations. No refresh, retry or alternate-generation fallback is attempted.
 func witnessHTTPMetadata(client *http.Client, base string) witnessMetadataReader {
+	return witnessHTTPMetadataCapture(client, base, nil)
+}
+func witnessHTTPMetadataCapture(client *http.Client, base string, original func(string, []byte) error) witnessMetadataReader {
 	return func(ctx context.Context, id string) (witnessPublication, error) {
 		req, e := http.NewRequestWithContext(ctx, "GET", base+"/api/overview?generation="+url.QueryEscape(id), nil)
 		if e != nil {
@@ -222,6 +225,9 @@ func witnessHTTPMetadata(client *http.Client, base string) witnessMetadataReader
 		_, end := d.Token()
 		if re != nil || ce != nil || len(b) > witnessFrameCap || response.StatusCode != 200 || je != nil || end != io.EOF || json.Unmarshal(b, &o) != nil {
 			return witnessPublication{}, errDashboardWitness
+		}
+		if original != nil && original(id, b) != nil {
+			return witnessPublication{}, witnessFailure("publication-original")
 		}
 		return witnessPublicationFromOverview(o), nil
 	}

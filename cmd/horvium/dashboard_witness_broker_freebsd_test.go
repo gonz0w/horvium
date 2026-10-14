@@ -9,8 +9,10 @@ import (
 	"crypto/sha256"
 	"encoding/binary"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
+	"math"
 	"net"
 	"os"
 	"os/exec"
@@ -34,35 +36,51 @@ const witnessABIProbe = `// SPDX-License-Identifier: BSD-3-Clause
 #include <sys/ucred.h>
 #include <sys/user.h>
 #include <sys/un.h>
+#include <sys/sysctl.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <unistd.h>
 int main(void) {
  unsigned int endian=1;
- printf("{\"cred_size\":%zu,\"cred_version\":%u,\"version_offset\":%zu,\"uid_offset\":%zu,\"pid_offset\":%zu,\"proc_size\":%zu,\"proc_pid\":%zu,\"proc_uid\":%zu,\"proc_sec\":%zu,\"proc_usec\":%zu,\"little_endian\":%s,\"pid_size\":%zu,\"uid_size\":%zu,\"time_size\":%zu}\n",
- sizeof(struct xucred), XUCRED_VERSION, offsetof(struct xucred, cr_version), offsetof(struct xucred, cr_uid), offsetof(struct xucred, cr_pid), sizeof(struct kinfo_proc), offsetof(struct kinfo_proc, ki_pid), offsetof(struct kinfo_proc, ki_uid), offsetof(struct kinfo_proc, ki_start.tv_sec), offsetof(struct kinfo_proc, ki_start.tv_usec), *(unsigned char*)&endian ? "true":"false", sizeof(pid_t), sizeof(uid_t), sizeof(time_t));
+ long page=sysconf(_SC_PAGESIZE);
+ if (page <= 0) return 1;
+ printf("{\"cred_size\":%zu,\"cred_version\":%u,\"version_offset\":%zu,\"uid_offset\":%zu,\"pid_offset\":%zu,\"proc_size\":%zu,\"proc_pid\":%zu,\"proc_uid\":%zu,\"proc_sec\":%zu,\"proc_usec\":%zu,\"little_endian\":%s,\"pid_size\":%zu,\"uid_size\":%zu,\"time_size\":%zu,\"proc_ppid\":%zu,\"proc_rss\":%zu,\"proc_runtime\":%zu,\"rss_size\":%zu,\"runtime_size\":%zu,\"page_bytes\":%ld,\"proc_mib\":[%d,%d,%d],\"int_size\":%zu,\"size_t_size\":%zu}\n",
+ sizeof(struct xucred), XUCRED_VERSION, offsetof(struct xucred, cr_version), offsetof(struct xucred, cr_uid), offsetof(struct xucred, cr_pid), sizeof(struct kinfo_proc), offsetof(struct kinfo_proc, ki_pid), offsetof(struct kinfo_proc, ki_uid), offsetof(struct kinfo_proc, ki_start.tv_sec), offsetof(struct kinfo_proc, ki_start.tv_usec), *(unsigned char*)&endian ? "true":"false", sizeof(pid_t), sizeof(uid_t), sizeof(time_t), offsetof(struct kinfo_proc, ki_ppid), offsetof(struct kinfo_proc, ki_rssize), offsetof(struct kinfo_proc, ki_runtime), sizeof(((struct kinfo_proc*)0)->ki_rssize), sizeof(((struct kinfo_proc*)0)->ki_runtime), page, CTL_KERN, KERN_PROC, KERN_PROC_PROC, sizeof(int), sizeof(size_t));
  return 0;
 }
 `
 
 type witnessABI struct {
-	CredSize      int    `json:"cred_size"`
-	CredVersion   uint32 `json:"cred_version"`
-	VersionOffset int    `json:"version_offset"`
-	UIDOffset     int    `json:"uid_offset"`
-	PIDOffset     int    `json:"pid_offset"`
-	ProcSize      int    `json:"proc_size"`
-	ProcPID       int    `json:"proc_pid"`
-	ProcUID       int    `json:"proc_uid"`
-	ProcSec       int    `json:"proc_sec"`
-	ProcUsec      int    `json:"proc_usec"`
-	LittleEndian  bool   `json:"little_endian"`
-	PIDSize       int    `json:"pid_size"`
-	UIDSize       int    `json:"uid_size"`
-	TimeSize      int    `json:"time_size"`
+	ProcMIB       [3]int32 `json:"proc_mib"`
+	IntSize       int      `json:"int_size"`
+	SizeTSize     int      `json:"size_t_size"`
+	ProcPPID      int      `json:"proc_ppid"`
+	ProcRSS       int      `json:"proc_rss"`
+	ProcRuntime   int      `json:"proc_runtime"`
+	RSSSize       int      `json:"rss_size"`
+	RuntimeSize   int      `json:"runtime_size"`
+	PageBytes     uint64   `json:"page_bytes"`
+	CredSize      int      `json:"cred_size"`
+	CredVersion   uint32   `json:"cred_version"`
+	VersionOffset int      `json:"version_offset"`
+	UIDOffset     int      `json:"uid_offset"`
+	PIDOffset     int      `json:"pid_offset"`
+	ProcSize      int      `json:"proc_size"`
+	ProcPID       int      `json:"proc_pid"`
+	ProcUID       int      `json:"proc_uid"`
+	ProcSec       int      `json:"proc_sec"`
+	ProcUsec      int      `json:"proc_usec"`
+	LittleEndian  bool     `json:"little_endian"`
+	PIDSize       int      `json:"pid_size"`
+	UIDSize       int      `json:"uid_size"`
+	TimeSize      int      `json:"time_size"`
 }
 
+func (a witnessABI) usageLayout() witnessKernelLayout {
+	return witnessKernelLayout{Size: a.ProcSize, PID: a.ProcPID, Parent: a.ProcPPID, UID: a.ProcUID, Sec: a.ProcSec, Usec: a.ProcUsec, RSS: a.ProcRSS, Runtime: a.ProcRuntime, PageBytes: a.PageBytes}
+}
 func (a witnessABI) valid() bool {
-	if runtime.GOARCH != "amd64" || !a.LittleEndian || a.CredVersion != 0 || a.CredSize < 12 || a.CredSize > 256 || a.ProcSize < 32 || a.ProcSize > 4096 || a.PIDSize != 4 || a.UIDSize != 4 || a.TimeSize != 8 {
+	if runtime.GOARCH != "amd64" || !a.LittleEndian || a.CredVersion != 0 || a.CredSize < 12 || a.CredSize > 256 || a.ProcSize < 32 || a.ProcSize > 4096 || a.PIDSize != 4 || a.UIDSize != 4 || a.TimeSize != 8 || a.IntSize != 4 || a.SizeTSize != 8 || a.ProcMIB[0] <= 0 || a.ProcMIB[1] <= 0 || a.ProcMIB[2] <= 0 || a.RSSSize != 8 || a.RuntimeSize != 8 || !a.usageLayout().valid() {
 		return false
 	}
 	for _, p := range []int{a.VersionOffset, a.UIDOffset, a.PIDOffset} {
@@ -276,6 +294,12 @@ func witnessSocketPair() (a, b *net.UnixConn, err error) {
 	return a, b, nil
 }
 
+type witnessConnectorConfig struct {
+	ABI             witnessABI
+	ParentPID       int
+	Fixture, SHA256 string
+}
+
 func TestNativeDashboardWitnessConnector(t *testing.T) {
 	path := os.Getenv("HORVIUM_WITNESS_CONNECTOR")
 	if path == "" {
@@ -292,6 +316,24 @@ func TestNativeDashboardWitnessConnector(t *testing.T) {
 		t.Fatal("connector channel")
 	}
 	defer channel.Close()
+	u := channel.(*net.UnixConn)
+	_ = u.SetDeadline(time.Now().Add(10 * time.Second))
+	var cfg witnessConnectorConfig
+	if witnessControlRead(u, &cfg) != nil || !cfg.ABI.valid() || cfg.ParentPID != os.Getppid() {
+		t.Fatal("connector original bootstrap")
+	}
+	parentUID, parentPID, pe := witnessNativePeer(u, cfg.ABI)
+	actor, ae := witnessObserveActor(os.Getpid(), cfg.ABI)
+	if pe != nil || parentUID != 0 || parentPID != cfg.ParentPID || ae != nil || actor.UID != uint32(uid) || actor.Executable != cfg.Fixture || actor.SHA256 != cfg.SHA256 {
+		t.Fatal("connector original artifact/lifetime")
+	}
+	if witnessControlWrite(u, actor) != nil {
+		t.Fatal("connector original identity receipt")
+	}
+	var bound [1]byte
+	if _, e := io.ReadFull(u, bound[:]); e != nil || bound[0] != 'B' {
+		t.Fatal("connector original identity confirmation")
+	}
 	c, e := net.DialUnix("unix", nil, &net.UnixAddr{Name: path, Net: "unix"})
 	if e != nil {
 		t.Fatal("connector connect")
@@ -302,8 +344,6 @@ func TestNativeDashboardWitnessConnector(t *testing.T) {
 		t.Fatal("connector descriptor")
 	}
 	defer f.Close()
-	u := channel.(*net.UnixConn)
-	_ = u.SetDeadline(time.Now().Add(10 * time.Second))
 	if n, on, e := u.WriteMsgUnix([]byte{'F'}, unix.UnixRights(int(f.Fd())), nil); e != nil || n != 1 || on != len(unix.UnixRights(int(f.Fd()))) {
 		t.Fatal("connector handoff")
 	}
@@ -340,39 +380,44 @@ type witnessNativeOriginal struct {
 	Object witnessFileObject   `json:"object"`
 }
 type witnessNativeReceipt struct {
-	OK              bool                    `json:"ok"`
-	Failed          bool                    `json:"failed"`
-	Failure         string                  `json:"failure"`
-	StoreFailed     bool                    `json:"store_failed"`
-	Denied          int                     `json:"denied"`
-	Originals       []witnessNativeOriginal `json:"originals"`
-	ConnectorMaxRSS uint64                  `json:"connector_max_rss"`
-	ConnectorCPUNS  int64                   `json:"connector_cpu_ns"`
-	Connectors      int                     `json:"connectors"`
-	FrontRemoved    bool                    `json:"front_removed"`
-	Active          bool                    `json:"active"`
+	OK               bool                    `json:"ok"`
+	Failed           bool                    `json:"failed"`
+	Failure          string                  `json:"failure"`
+	StoreFailed      bool                    `json:"store_failed"`
+	Denied           int                     `json:"denied"`
+	Originals        []witnessNativeOriginal `json:"originals"`
+	ObserverHigh     uint64                  `json:"observer_high_rss"`
+	ObserverCPUNS    int64                   `json:"observer_cpu_ns"`
+	ConnectorStarted int                     `json:"connector_started"`
+	ConnectorActive  int                     `json:"connector_active"`
+	ConnectorMaxRSS  uint64                  `json:"connector_max_rss"`
+	ConnectorCPUNS   int64                   `json:"connector_cpu_ns"`
+	Connectors       int                     `json:"connectors"`
+	FrontRemoved     bool                    `json:"front_removed"`
+	Active           bool                    `json:"active"`
 }
 type witnessNativeObserver struct {
-	mu           sync.Mutex
-	cfg          witnessNativeConfig
-	store        *dashboardWitnessStore
-	listener     *net.UnixListener
-	front        os.FileInfo
-	back         os.FileInfo
-	management   witnessActor
-	registered   chan struct{}
-	active       bool
-	stopping     bool
-	allowDeath   bool
-	denied       int
-	connections  map[*net.UnixConn]bool
-	children     sync.WaitGroup
-	connectorMax uint64
-	connectorCPU time.Duration
-	connectors   int
-	failed       bool
-	failure      string
-	ctx          context.Context
+	mu                                sync.Mutex
+	cfg                               witnessNativeConfig
+	store                             *dashboardWitnessStore
+	listener                          *net.UnixListener
+	front                             os.FileInfo
+	back                              os.FileInfo
+	management                        witnessActor
+	registered                        chan struct{}
+	active                            bool
+	stopping                          bool
+	allowDeath                        bool
+	denied                            int
+	connections                       map[*net.UnixConn]bool
+	children                          sync.WaitGroup
+	connectorMax                      uint64
+	connectorCPU                      time.Duration
+	connectors                        int
+	connectorStarted, connectorActive int
+	failed                            bool
+	failure                           string
+	ctx                               context.Context
 }
 
 func (o *witnessNativeObserver) connection(c *net.UnixConn) {
@@ -451,14 +496,39 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 		return
 	}
 	file.Close()
+	o.mu.Lock()
+	o.connectorStarted++
+	o.connectorActive++
+	o.mu.Unlock()
 	waited := false
 	defer func() {
 		if !waited {
 			cancel()
-			_ = cmd.Wait()
+			waitError := cmd.Wait()
+			o.accountConnector(cmd, stage, waitError, ctx.Err())
 		}
 	}()
 	_ = parent.SetDeadline(time.Now().Add(10 * time.Second))
+	stage = "connector-bootstrap"
+	if witnessControlWrite(parent, witnessConnectorConfig{o.cfg.ABI, os.Getpid(), o.cfg.Fixture, o.cfg.FixtureSHA256}) != nil {
+		fail()
+		return
+	}
+	stage = "connector-identity"
+	var connector witnessActor
+	if witnessControlRead(parent, &connector) != nil {
+		fail()
+		return
+	}
+	original, e := witnessObserveActor(cmd.Process.Pid, o.cfg.ABI)
+	if e != nil || connector != original || original.UID != o.cfg.ManagementUID || original.Executable != o.cfg.Fixture || original.SHA256 != o.cfg.FixtureSHA256 {
+		fail()
+		return
+	}
+	if n, e := parent.Write([]byte{'B'}); e != nil || n != 1 {
+		fail()
+		return
+	}
 	stage = "connector-descriptor"
 	actual, e := witnessPassedDescriptor(parent)
 	if e != nil {
@@ -484,21 +554,10 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	stage = "connector-wait"
 	e = cmd.Wait()
 	waited = true
-	if e != nil {
+	if o.accountConnector(cmd, stage, e, ctx.Err()) != nil || e != nil {
 		fail()
 		return
 	}
-	stage = "connector-usage"
-	u, ok := cmd.ProcessState.SysUsage().(*syscall.Rusage)
-	if !ok || u.Maxrss <= 0 {
-		fail()
-		return
-	}
-	o.mu.Lock()
-	o.connectorMax = max(o.connectorMax, uint64(u.Maxrss)*1024)
-	o.connectorCPU += time.Duration(u.Utime.Sec+u.Stime.Sec)*time.Second + time.Duration(u.Utime.Usec+u.Stime.Usec)*time.Microsecond
-	o.connectors++
-	o.mu.Unlock()
 	_ = actual.SetDeadline(deadline)
 	stage = "producer-request"
 	if n, e := actual.Write(request); e != nil || n != len(request) || actual.CloseWrite() != nil {
@@ -541,12 +600,71 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	// Index is published only after exact bytes and write-half EOF. Originals are
 	// not publication records; independent metadata confirmation remains required.
 }
+
+type witnessConnectorWaitDiagnostic struct {
+	Stage                                   string
+	WaitFailed, DeadlineExceeded, Cancelled bool
+}
+
+func (o *witnessNativeObserver) accountConnector(cmd *exec.Cmd, stage string, waitError, contextError error) error {
+	o.mu.Lock()
+	defer o.mu.Unlock()
+	o.connectorActive--
+	var u *syscall.Rusage
+	exitCode := -1
+	if cmd.ProcessState != nil {
+		exitCode = cmd.ProcessState.ExitCode()
+		u, _ = cmd.ProcessState.SysUsage().(*syscall.Rusage)
+	}
+	diagnostic := witnessConnectorWaitDiagnostic{stage, waitError != nil, errors.Is(contextError, context.DeadlineExceeded), errors.Is(contextError, context.Canceled)}
+	if u == nil || u.Maxrss <= 0 || uint64(u.Maxrss) > math.MaxUint64/1024 {
+		_ = witnessWriteDiagnosticJSON("witness-rejected-connector-usage.json", struct {
+			Usage        *syscall.Rusage
+			StatePresent bool
+			ExitCode     int
+			Context      witnessConnectorWaitDiagnostic
+		}{u, cmd.ProcessState != nil, exitCode, diagnostic})
+		o.failed = true
+		if o.failure == "" {
+			o.failure = "connector-usage"
+		}
+		return errDashboardWitness
+	}
+	cpu, e := witnessNativeCPU(u)
+	if e != nil || cpu > math.MaxInt64-int64(o.connectorCPU) {
+		_ = witnessWriteDiagnosticJSON("witness-rejected-connector-usage.json", struct {
+			Usage              *syscall.Rusage
+			CPU                int64
+			PriorCPU           int64
+			ConversionRejected bool
+			Context            witnessConnectorWaitDiagnostic
+		}{u, cpu, int64(o.connectorCPU), e != nil, diagnostic})
+		o.failed = true
+		if o.failure == "" {
+			o.failure = "connector-usage"
+		}
+		return errDashboardWitness
+	}
+	o.connectorMax = max(o.connectorMax, uint64(u.Maxrss)*1024)
+	o.connectorCPU += time.Duration(cpu)
+	o.connectors++
+	return nil
+}
 func (o *witnessNativeObserver) receipt() witnessNativeReceipt {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	o.store.mu.Lock()
 	defer o.store.mu.Unlock()
-	r := witnessNativeReceipt{OK: true, Failed: o.failed || o.store.failed, Failure: o.failure, StoreFailed: o.store.failed, Denied: o.denied, ConnectorMaxRSS: o.connectorMax, ConnectorCPUNS: int64(o.connectorCPU), Connectors: o.connectors, Active: o.active}
+	var usage syscall.Rusage
+	ue := syscall.Getrusage(syscall.RUSAGE_SELF, &usage)
+	cpu, ce := witnessNativeCPU(&usage)
+	if ue != nil || ce != nil || usage.Maxrss <= 0 || uint64(usage.Maxrss) > math.MaxUint64/1024 {
+		o.failed = true
+		if o.failure == "" {
+			o.failure = "observer-usage"
+		}
+	}
+	r := witnessNativeReceipt{ObserverHigh: uint64(usage.Maxrss) * 1024, ObserverCPUNS: cpu, ConnectorStarted: o.connectorStarted, ConnectorActive: o.connectorActive, OK: true, Failed: o.failed || o.store.failed, Failure: o.failure, StoreFailed: o.store.failed, Denied: o.denied, ConnectorMaxRSS: o.connectorMax, ConnectorCPUNS: int64(o.connectorCPU), Connectors: o.connectors, Active: o.active}
 	for _, ref := range o.store.refs {
 		v := o.store.sealed[ref.Name]
 		object, e := witnessObject(v.info)
