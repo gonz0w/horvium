@@ -2106,3 +2106,11 @@ responses. All 15.1 schedule windows had no missing/duplicate/late intervals;
 This supports review of inactive instrumentation, not complete cadence, resource,
 latency, interruption, hardware or release acceptance. The canonical runner stays
 inactive; runtime writes remain disabled.
+
+The [original observer interruption controls](../testing/dashboards/witness-observer-interruption.md)
+are inactive FreeBSD/amd64 fixtures using actual base-header credentials/process
+observations. Twelve capture/sealed/forward/metadata cases require actual observer
+SIGTERM/SIGKILL/fault-channel loss, original-prefix custody, wait accounting and
+complete teardown on both pinned disposable releases. These controls do not claim
+controller/connector death, complete native 005, cadence or resource acceptance.
+Normal/timed runs have no fault barriers; product behavior stays read-only.
