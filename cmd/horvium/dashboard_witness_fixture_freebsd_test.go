@@ -98,7 +98,7 @@ func witnessNativeABI(t *testing.T, dir string) witnessProbeReceipt {
 		t.Fatal("probe compiler version")
 	}
 	r := witnessProbeReceipt{ABI: abi, SourceSHA256: digest(source), CompilerSHA256: digest(compiler), CompilerVersion: strings.TrimSpace(string(version)), BinarySHA256: digest(binary), HeaderSHA256: map[string]string{}}
-	for _, name := range []string{"sys/types.h", "sys/ucred.h", "sys/user.h", "sys/un.h", "unistd.h"} {
+	for _, name := range []string{"sys/types.h", "sys/ucred.h", "sys/user.h", "sys/un.h", "sys/sysctl.h", "unistd.h"} {
 		r.HeaderSHA256[name] = digest("/usr/include/" + name)
 	}
 	return r

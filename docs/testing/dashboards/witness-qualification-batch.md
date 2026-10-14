@@ -245,8 +245,11 @@ measurement cost. Existing deadlines, cadence, budgets and acceptance gates rema
 
 ## Direct kernel sampler candidate
 
-The following test-only collector reads fixed `kern.proc.pid` observations and
-the original observer's bounded `kern.proc.ppid` child census. It no longer launches
+The following test-only collector reads FreeBSD's non-thread process table into
+a reusable 64 KiB buffer, using numeric query identifiers from the actual guest
+headers. Oversized/partial/duplicate process tables deny measurement. Only fixture
+roles and the original observer's direct children enter resource accounting;
+unrelated process records are never archived. It no longer launches
 a ps subprocess per scheduled sample. The actual guest C probe reports process
 parent/RSS/runtime offsets, native field widths and sysconf page size; no kinfo
 layout or hardware page size is guessed. Malformed sizes, overlapping offsets,
@@ -267,3 +270,11 @@ in-process; a late completed read rejects, while the owned fixture/VM lifetime
 provides the outer termination bound. Original bounded binary inputs are retained
 privately on rejection. Portable decoder regressions pass; native confirmation,
 cadence completeness and calibration at this candidate remain pending.
+
+The first direct-kernel source `f567543` passed the actual header/unit comparison
+on 15.1 but rejected both workload starts. It incorrectly assumed a
+`kern.proc.ppid` node; FreeBSD's registered query supports the process table,
+not that name. This source remains failed. The correction uses the actual
+header's CTL_KERN/KERN_PROC/KERN_PROC_PROC identifiers, observed int/size_t
+widths and a fixed buffer; it never accepts syscall ENOMEM/partial output or
+retries with a larger bound. Native execution of the correction is pending.

@@ -49,3 +49,21 @@ func witnessDecodeKernelProcess(b []byte, l witnessKernelLayout) (witnessKernelP
 	p.RSS, p.CPU = pages*l.PageBytes, int64(runtime*1000)
 	return p, nil
 }
+
+func witnessDecodeKernelCensus(b []byte, l witnessKernelLayout) (map[int]witnessKernelProcess, error) {
+	if !l.valid() || len(b) == 0 || len(b) > witnessFrameCap || len(b)%l.Size != 0 {
+		return nil, errDashboardWitness
+	}
+	out := map[int]witnessKernelProcess{}
+	for offset := 0; offset < len(b); offset += l.Size {
+		p, e := witnessDecodeKernelProcess(b[offset:offset+l.Size], l)
+		if e != nil {
+			return nil, e
+		}
+		if _, exists := out[p.PID]; exists {
+			return nil, errDashboardWitness
+		}
+		out[p.PID] = p
+	}
+	return out, nil
+}

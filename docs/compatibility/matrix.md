@@ -2072,3 +2072,8 @@ and observed page size, with portable malformed-record/overflow regressions and
 a prepared native ps comparison on a stopped disposable idle fixture. No product
 process is paused; native execution and sampling completeness remain pending.
 The canonical resource runner and runtime support claims remain unchanged.
+
+The initial direct collector's f567543 native attempt failed at an incorrectly
+assumed child-query name. The correction uses observed process-table MIB values
+and fixed-buffer decoding, rejects oversized/partial/duplicate tables, and retains
+only fixture-role inputs privately. Corrected native execution is pending.

@@ -36,6 +36,7 @@ const witnessABIProbe = `// SPDX-License-Identifier: BSD-3-Clause
 #include <sys/ucred.h>
 #include <sys/user.h>
 #include <sys/un.h>
+#include <sys/sysctl.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -43,40 +44,43 @@ int main(void) {
  unsigned int endian=1;
  long page=sysconf(_SC_PAGESIZE);
  if (page <= 0) return 1;
- printf("{\"cred_size\":%zu,\"cred_version\":%u,\"version_offset\":%zu,\"uid_offset\":%zu,\"pid_offset\":%zu,\"proc_size\":%zu,\"proc_pid\":%zu,\"proc_uid\":%zu,\"proc_sec\":%zu,\"proc_usec\":%zu,\"little_endian\":%s,\"pid_size\":%zu,\"uid_size\":%zu,\"time_size\":%zu,\"proc_ppid\":%zu,\"proc_rss\":%zu,\"proc_runtime\":%zu,\"rss_size\":%zu,\"runtime_size\":%zu,\"page_bytes\":%ld}\n",
- sizeof(struct xucred), XUCRED_VERSION, offsetof(struct xucred, cr_version), offsetof(struct xucred, cr_uid), offsetof(struct xucred, cr_pid), sizeof(struct kinfo_proc), offsetof(struct kinfo_proc, ki_pid), offsetof(struct kinfo_proc, ki_uid), offsetof(struct kinfo_proc, ki_start.tv_sec), offsetof(struct kinfo_proc, ki_start.tv_usec), *(unsigned char*)&endian ? "true":"false", sizeof(pid_t), sizeof(uid_t), sizeof(time_t), offsetof(struct kinfo_proc, ki_ppid), offsetof(struct kinfo_proc, ki_rssize), offsetof(struct kinfo_proc, ki_runtime), sizeof(((struct kinfo_proc*)0)->ki_rssize), sizeof(((struct kinfo_proc*)0)->ki_runtime), page);
+ printf("{\"cred_size\":%zu,\"cred_version\":%u,\"version_offset\":%zu,\"uid_offset\":%zu,\"pid_offset\":%zu,\"proc_size\":%zu,\"proc_pid\":%zu,\"proc_uid\":%zu,\"proc_sec\":%zu,\"proc_usec\":%zu,\"little_endian\":%s,\"pid_size\":%zu,\"uid_size\":%zu,\"time_size\":%zu,\"proc_ppid\":%zu,\"proc_rss\":%zu,\"proc_runtime\":%zu,\"rss_size\":%zu,\"runtime_size\":%zu,\"page_bytes\":%ld,\"proc_mib\":[%d,%d,%d],\"int_size\":%zu,\"size_t_size\":%zu}\n",
+ sizeof(struct xucred), XUCRED_VERSION, offsetof(struct xucred, cr_version), offsetof(struct xucred, cr_uid), offsetof(struct xucred, cr_pid), sizeof(struct kinfo_proc), offsetof(struct kinfo_proc, ki_pid), offsetof(struct kinfo_proc, ki_uid), offsetof(struct kinfo_proc, ki_start.tv_sec), offsetof(struct kinfo_proc, ki_start.tv_usec), *(unsigned char*)&endian ? "true":"false", sizeof(pid_t), sizeof(uid_t), sizeof(time_t), offsetof(struct kinfo_proc, ki_ppid), offsetof(struct kinfo_proc, ki_rssize), offsetof(struct kinfo_proc, ki_runtime), sizeof(((struct kinfo_proc*)0)->ki_rssize), sizeof(((struct kinfo_proc*)0)->ki_runtime), page, CTL_KERN, KERN_PROC, KERN_PROC_PROC, sizeof(int), sizeof(size_t));
  return 0;
 }
 `
 
 type witnessABI struct {
-	ProcPPID      int    `json:"proc_ppid"`
-	ProcRSS       int    `json:"proc_rss"`
-	ProcRuntime   int    `json:"proc_runtime"`
-	RSSSize       int    `json:"rss_size"`
-	RuntimeSize   int    `json:"runtime_size"`
-	PageBytes     uint64 `json:"page_bytes"`
-	CredSize      int    `json:"cred_size"`
-	CredVersion   uint32 `json:"cred_version"`
-	VersionOffset int    `json:"version_offset"`
-	UIDOffset     int    `json:"uid_offset"`
-	PIDOffset     int    `json:"pid_offset"`
-	ProcSize      int    `json:"proc_size"`
-	ProcPID       int    `json:"proc_pid"`
-	ProcUID       int    `json:"proc_uid"`
-	ProcSec       int    `json:"proc_sec"`
-	ProcUsec      int    `json:"proc_usec"`
-	LittleEndian  bool   `json:"little_endian"`
-	PIDSize       int    `json:"pid_size"`
-	UIDSize       int    `json:"uid_size"`
-	TimeSize      int    `json:"time_size"`
+	ProcMIB       [3]int32 `json:"proc_mib"`
+	IntSize       int      `json:"int_size"`
+	SizeTSize     int      `json:"size_t_size"`
+	ProcPPID      int      `json:"proc_ppid"`
+	ProcRSS       int      `json:"proc_rss"`
+	ProcRuntime   int      `json:"proc_runtime"`
+	RSSSize       int      `json:"rss_size"`
+	RuntimeSize   int      `json:"runtime_size"`
+	PageBytes     uint64   `json:"page_bytes"`
+	CredSize      int      `json:"cred_size"`
+	CredVersion   uint32   `json:"cred_version"`
+	VersionOffset int      `json:"version_offset"`
+	UIDOffset     int      `json:"uid_offset"`
+	PIDOffset     int      `json:"pid_offset"`
+	ProcSize      int      `json:"proc_size"`
+	ProcPID       int      `json:"proc_pid"`
+	ProcUID       int      `json:"proc_uid"`
+	ProcSec       int      `json:"proc_sec"`
+	ProcUsec      int      `json:"proc_usec"`
+	LittleEndian  bool     `json:"little_endian"`
+	PIDSize       int      `json:"pid_size"`
+	UIDSize       int      `json:"uid_size"`
+	TimeSize      int      `json:"time_size"`
 }
 
 func (a witnessABI) usageLayout() witnessKernelLayout {
 	return witnessKernelLayout{Size: a.ProcSize, PID: a.ProcPID, Parent: a.ProcPPID, UID: a.ProcUID, Sec: a.ProcSec, Usec: a.ProcUsec, RSS: a.ProcRSS, Runtime: a.ProcRuntime, PageBytes: a.PageBytes}
 }
 func (a witnessABI) valid() bool {
-	if runtime.GOARCH != "amd64" || !a.LittleEndian || a.CredVersion != 0 || a.CredSize < 12 || a.CredSize > 256 || a.ProcSize < 32 || a.ProcSize > 4096 || a.PIDSize != 4 || a.UIDSize != 4 || a.TimeSize != 8 || a.RSSSize != 8 || a.RuntimeSize != 8 || !a.usageLayout().valid() {
+	if runtime.GOARCH != "amd64" || !a.LittleEndian || a.CredVersion != 0 || a.CredSize < 12 || a.CredSize > 256 || a.ProcSize < 32 || a.ProcSize > 4096 || a.PIDSize != 4 || a.UIDSize != 4 || a.TimeSize != 8 || a.IntSize != 4 || a.SizeTSize != 8 || a.ProcMIB[0] <= 0 || a.ProcMIB[1] <= 0 || a.ProcMIB[2] <= 0 || a.RSSSize != 8 || a.RuntimeSize != 8 || !a.usageLayout().valid() {
 		return false
 	}
 	for _, p := range []int{a.VersionOffset, a.UIDOffset, a.PIDOffset} {

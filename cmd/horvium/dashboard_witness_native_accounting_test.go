@@ -13,6 +13,7 @@ import (
 	"syscall"
 	"testing"
 	"time"
+	"unsafe"
 )
 
 type witnessNativeUsageSample struct {
@@ -37,9 +38,10 @@ func witnessLifetime(a witnessActor, abi witnessABI) bool {
 	b, e := unix.SysctlRaw("kern.proc.pid", a.PID)
 	return e == nil && len(b) == abi.ProcSize && int(int32(binary.LittleEndian.Uint32(b[abi.ProcPID:]))) == a.PID && binary.LittleEndian.Uint32(b[abi.ProcUID:]) == a.UID && int64(binary.LittleEndian.Uint64(b[abi.ProcSec:])) == a.Sec && int64(binary.LittleEndian.Uint64(b[abi.ProcUsec:])) == a.Usec
 }
-func witnessNativeSample(roles []witnessActor, abi witnessABI) (out witnessNativeUsageSample, err error) {
+func witnessNativeSample(roles []witnessActor, abi witnessABI, scratch []byte) (out witnessNativeUsageSample, err error) {
 	started := time.Now()
 	var originals [][]byte
+	var readErrno syscall.Errno
 	defer func() {
 		out.ReadNS = int64(time.Since(started))
 		if err == nil && out.ReadNS > int64(2*time.Second) {
@@ -52,20 +54,35 @@ func witnessNativeSample(roles []witnessActor, abi witnessABI) (out witnessNativ
 				ABI             witnessABI
 				KernelOriginals [][]byte
 				ElapsedNS       int64
-			}{"", roles, abi, originals, out.ReadNS})
+				Errno           uint64
+			}{"", roles, abi, originals, out.ReadNS, uint64(readErrno)})
 		}
 	}()
-	if !abi.valid() || len(roles) != 2 && len(roles) != 3 {
+	if !abi.valid() || len(scratch) != witnessFrameCap || len(roles) != 2 && len(roles) != 3 {
 		return out, witnessFailure("usage-roles")
 	}
 	layout := abi.usageLayout()
-	read := func(pid int) (witnessKernelProcess, error) {
-		b, e := unix.SysctlRaw("kern.proc.pid", pid)
-		originals = append(originals, append([]byte(nil), b[:min(len(b), 4096)]...))
-		if e != nil {
-			return witnessKernelProcess{}, witnessFailure("usage-kernel-read")
+	size := uintptr(len(scratch))
+	_, _, readErrno = unix.Syscall6(unix.SYS___SYSCTL, uintptr(unsafe.Pointer(&abi.ProcMIB[0])), 3, uintptr(unsafe.Pointer(&scratch[0])), uintptr(unsafe.Pointer(&size)), 0, 0)
+	if readErrno != 0 || size > uintptr(len(scratch)) {
+		return out, witnessFailure("usage-kernel-read")
+	}
+	processes, e := witnessDecodeKernelCensus(scratch[:size], layout)
+	if e != nil {
+		return out, witnessFailure("usage-kernel-read")
+	}
+	ownedPID := map[int]bool{}
+	for _, role := range roles {
+		ownedPID[role.PID] = true
+	}
+	// Only fixture roles and observer children are retained as original binary
+	// rejection inputs. The bounded whole census is never archived as inventory.
+	for offset := 0; offset < int(size); offset += layout.Size {
+		raw := scratch[offset : offset+layout.Size]
+		pid := int(int32(binary.LittleEndian.Uint32(raw[layout.PID:])))
+		if ownedPID[pid] || pid == os.Getpid() || len(roles) == 3 && processes[pid].Parent == roles[2].PID {
+			originals = append(originals, append([]byte(nil), raw...))
 		}
-		return witnessDecodeKernelProcess(b, layout)
 	}
 	seen := map[int]bool{}
 	for i, a := range roles {
@@ -73,8 +90,8 @@ func witnessNativeSample(roles []witnessActor, abi witnessABI) (out witnessNativ
 			return out, witnessFailure("usage-duplicate")
 		}
 		seen[a.PID] = true
-		r, e := read(a.PID)
-		if e != nil || r.PID != a.PID || r.UID != a.UID || r.Sec != a.Sec || r.Usec != a.Usec || r.RSS == 0 {
+		r, ok := processes[a.PID]
+		if !ok || r.UID != a.UID || r.Sec != a.Sec || r.Usec != a.Usec || r.RSS == 0 {
 			return out, witnessFailure("usage-identity")
 		}
 		if i < 2 {
@@ -89,22 +106,19 @@ func witnessNativeSample(roles []witnessActor, abi witnessABI) (out witnessNativ
 		}
 	}
 	if len(roles) == 3 {
-		b, e := unix.SysctlRaw("kern.proc.ppid", roles[2].PID)
-		originals = append(originals, append([]byte(nil), b[:min(len(b), 4096)]...))
-		if e != nil || len(b)%layout.Size != 0 || len(b) > layout.Size {
-			return out, witnessFailure("usage-descendants")
-		}
-		if len(b) > 0 {
-			child, e := witnessDecodeKernelProcess(b, layout)
-			if e != nil || child.PID <= 1 || child.Parent != roles[2].PID || (child.UID != roles[0].UID && child.UID != roles[2].UID) || seen[child.PID] {
+		for _, child := range processes {
+			if child.Parent != roles[2].PID {
+				continue
+			}
+			if child.PID <= 1 || (child.UID != roles[0].UID && child.UID != roles[2].UID) || seen[child.PID] || out.ConnectorCount != 0 {
 				return out, witnessFailure("usage-descendants")
 			}
 			out.ConnectorCount = 1
 			out.ConnectorRSS = child.RSS
 		}
 	}
-	controller, e := read(os.Getpid())
-	if e != nil || controller.PID != os.Getpid() || controller.UID != uint32(os.Getuid()) || controller.RSS == 0 {
+	controller, ok := processes[os.Getpid()]
+	if !ok || controller.UID != uint32(os.Getuid()) || controller.RSS == 0 {
 		return out, witnessFailure("usage-controller")
 	}
 	out.ControllerRSS = controller.RSS
@@ -125,7 +139,8 @@ func newWitnessNativeUsage(t *testing.T, p *performancePair, observer *witnessFi
 		}
 		roles = append(roles, actor)
 	}
-	first, e := witnessNativeSample(roles, abi)
+	scratch := make([]byte, witnessFrameCap)
+	first, e := witnessNativeSample(roles, abi, scratch)
 	if e != nil {
 		t.Fatal("original initial instrumentation sample rejected", e)
 	}
@@ -141,7 +156,7 @@ func newWitnessNativeUsage(t *testing.T, p *performancePair, observer *witnessFi
 			case <-m.stop:
 				return
 			case <-ticker.C:
-				s, e := witnessNativeSample(roles, abi)
+				s, e := witnessNativeSample(roles, abi, scratch)
 				s.AtNS = int64(time.Since(m.started))
 				m.mu.Lock()
 				if e != nil {

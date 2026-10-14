@@ -47,6 +47,16 @@ func TestDashboardWitnessKernelRecordUsesObservedLayout(t *testing.T) {
 			}
 		})
 	}
+
+	census, e := witnessDecodeKernelCensus(b, layout)
+	if e != nil || census[47] != got {
+		t.Fatal("single process census lost", e)
+	}
+	for _, raw := range [][]byte{nil, append(append([]byte(nil), b...), b...), append(append([]byte(nil), b...), 0), make([]byte, witnessFrameCap+1)} {
+		if _, e := witnessDecodeKernelCensus(raw, layout); e == nil {
+			t.Fatal("empty/duplicate/partial/oversized census accepted")
+		}
+	}
 	for _, data := range [][]byte{nil, b[:len(b)-1], append(append([]byte(nil), b...), 0)} {
 		if _, e := witnessDecodeKernelProcess(data, layout); e == nil {
 			t.Fatal("wrong object size admitted")
