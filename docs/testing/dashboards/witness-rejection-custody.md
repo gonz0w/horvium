@@ -1,6 +1,6 @@
 # Witness rejection custody and recovery diagnostics
 
-Date: 2026-10-14. Status: inactive test fixture; native candidate evidence pending.
+Date: 2026-10-14. Status: inactive corrections checked on both disposable targets; complete gates pending.
 Owner: [issue 382](https://github.com/gonz0w/horvium/issues/382).
 Authority: [ADR 0011](../../adr/0011-native-dashboard-witnesses.md),
 [accepted EDD](../../design/dashboards/native-witness-binding-EDD.md) and
@@ -54,3 +54,44 @@ adverse controls, direct/interposed calibration, instrumentation-inclusive RSS/C
 and independently reopened sample coverage remain required. The performance runner
 remains inactive on its existing oracle; no resource acceptance, causal recovery fix,
 hardware claim, browser waiver or runtime write authority follows from this slice.
+
+## Candidate receipts and independent readback
+
+Signed candidate `e9c42a4caba4efe2ccc47cae104ed5259717b6c1`, base
+`0993c77407432e313974e08d8ddae15f765e07b7`, passed required checks and focused
+cmd/horvium race/original-wire fuzz review before sequential Mac QEMU runs:
+
+| Pinned release | Reduced suite | Final producer originals | Injected rejected originals |
+| --- | --- | --- | --- |
+| FreeBSD 15.1 | Passed, 123.58 seconds | 7 | 4 |
+| FreeBSD 14.5 | Passed, 99.33 seconds | 6 | 4 |
+
+Both retained actual ABI probes, unchanged product-role artifacts, original raw
+files/object receipts, matching before/after preflight observations and verified
+bounded guest/host teardown/pinned preservation. Each checked ten actual HTML
+responses per mode, exact lineage/mutations, owned identities/fixed projection,
+same-UID denial, actual native command/guard death, stale retention and helper epoch
+recovery. Four injected custody cases per guest retained bounded rejected originals;
+these are not an entire process-cancellation or physical exhaustion matrix.
+
+Independent readback reopened both private archives and decoded all **21** indexed
+originals with the independent original-wire decoder: thirteen producer attempts
+and eight injected faults. Fifteen-one's final archive contains one additional
+complete delivered projection original beyond its pre-stop two-original summary.
+It was retained during the interval between that summary and completed drain; it
+supplies no extra publication or workload acceptance. The initial private readback
+harness incorrectly assumed twenty files and rejected the archive count. Replacing
+that assumption with the independently verified complete census allowed all
+originals to be decoded; no raw record was removed, repaired or relabeled.
+
+The [sanitized manifest](witness-rejection-custody-manifest.json) names exact source,
+base/title, original hashes, probe receipts, counts and remaining limitations. Raw
+inventories and actor identities remain private. All 155 earlier manifests retain
+their exact bytes, including the three failed native candidates and unresolved
+`6525631` recovery rejection. No new failure was observed in these reduced suites;
+they establish no causal explanation of that prior failure, complete adverse gate,
+calibration/augmented budget, full resource acceptance or writer authority.
+
+This follow-up continues the partial fixture merged in PR 388. Keep subsequent
+fault/calibration/accounting/coverage work in the continuation PR while it is open;
+full integration/native short acceptance still precedes resource activation.

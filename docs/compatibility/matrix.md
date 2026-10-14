@@ -2032,6 +2032,7 @@ No new runtime or hardware support claim follows.
 The [witness rejection custody correction](../testing/dashboards/witness-rejection-custody.md)
 retains interrupted/over-budget prefixes, denies cancelled publication and preserves
 fixed rejection stages in private test receipts. Four injected tmpfs custody cases
-extend the reduced native suite; actual both-release evidence is pending. Product
+passed in the reduced suite on disposable FreeBSD 15.1 and 14.5, with all 21
+archived originals independently decoded and guest/host teardown verified. Product
 protocol/runtime compatibility is unchanged, and complete cancellation/calibration,
 augmented resources, unexplained recovery and release gates stay open.
