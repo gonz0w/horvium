@@ -315,3 +315,7 @@ remaining focused diagnostic work. Both-release acceptance remains open.
   bounded original/cache comparison, failure classes and explicit research limits.
 
 - [Original table-check and maximum-page diagnosis](research/dashboards/table-location-diagnosis.md): bounded research under #382, preserving acceptance and historical evidence.
+
+- [Native dashboard value invariance](research/dashboards/native-value-invariance.md): bounded independent ownership and scratch-write diagnosis under #382.
+
+- [Proposed native oracle requirement correction](design/dashboards/native-invariance-correction.md): Draft review packet; actual native accounting evidence remains separate from adoption.
