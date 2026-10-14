@@ -2058,3 +2058,10 @@ retains 83/46 unobserved nominal projection intervals on 15.1/14.5; complete
 sampling/native/resource acceptance remains open. Earlier rejection causes are
 unresolved. These diagnostics retain existing deadline/cadence/budgets and add
 no runtime or hardware support claim.
+
+
+The [focused projection profile](../testing/dashboards/witness-qualification-batch.md)
+adds a separately retained failed 15.1 diagnostic: deadline-envelope rejection
+with zero child exit and a 2.42-second complete command step. Startup-inclusive
+CPU-profile totals do not establish the cause of missing sampling intervals.
+No broader native/resource acceptance or runtime support is claimed.

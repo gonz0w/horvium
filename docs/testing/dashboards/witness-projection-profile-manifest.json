@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "date": "2026-10-14",
+  "scope": "projection-only-controller-profile-not-qualification",
+  "source_commit": "17a9f3ee31155563cc0d9d4ea154c5ba1dad4aca",
+  "base_commit": "0745c9684bd5b235164f74f0bb8accf4a84843a8",
+  "pr_title": "test(dashboards): batch witness qualification support and native probes",
+  "native_test_exit": 1,
+  "diagnostic_complete": false,
+  "qualified": false,
+  "native_acceptance": false,
+  "resource_acceptance": false,
+  "resource_activation": false,
+  "failure": "usage-command-deadline",
+  "original_command": {
+    "Reason": "deadline",
+    "StatePresent": true,
+    "ExitCode": 0,
+    "DeadlineExceeded": true,
+    "Cancelled": false,
+    "StdoutOverflow": false,
+    "StderrOverflow": false,
+    "ElapsedNS": 2420390000,
+    "stderr_bytes": 0,
+    "stdout_bytes": 1200,
+    "row_fields": [
+      4
+    ]
+  },
+  "rejection_original_sha256": "fe30d03ce2345fbf32f83b3902523cde8ece00993791db1ed0d4fd8183d6ee30",
+  "raw_transcript_sha256": "24864bf6615d082321320b4b1f9f0eda0b0daffec19932b4474808ba564593c5",
+  "archive_sha256": "ad7481fc0976638b71df86cca89ea374b2550a147c0c365c9786d7c28e4ccfd7",
+  "result_sha256": "89b5c585e471f764c5f766a49629a70d4bc3e6bc273e21f7edcd946f107dfbeb",
+  "profile_sha256": "22c675aae38bafb120fccdc5f021fe055d12b945d3b6ce584a070a042675085a",
+  "profile_bytes": 8553,
+  "private_controller_sha256": "e4751f6905abcba25d774b636f3a02e7ea59ee20d201cb004cc8bbb1cd5aac18",
+  "guest_cleanup_marker": true,
+  "host_teardown_verified": true,
+  "pinned_inputs_preserved": true,
+  "preflight_observations_equal": true,
+  "cpu_profile_summary": {
+    "controller_only": true,
+    "includes_startup": true,
+    "duration_seconds": 109.93,
+    "sampled_cpu_seconds": 8.26,
+    "generic_sha256_flat_seconds": 7.33,
+    "generic_sha256_flat_percent": 88.74,
+    "artifact_digest_cumulative_seconds": 6.84,
+    "artifact_digest_cumulative_percent": 82.81,
+    "profile_top_sha256": "278995a6585f633a6423406e0745900cb0373c6d97c2d77f6278baea96eac4aa"
+  },
+  "preparation_failures": [
+    {
+      "stage": "private launcher syntax check before guest work",
+      "log_sha256": "6cce0f32abaecafe1d4fed5fb9131389d1cae93033bb571ee164cf130901cdf0"
+    },
+    {
+      "stage": "bundled go tool pprof unavailable; analysis used pinned Go cmd/pprof sources",
+      "native_effect": false
+    }
+  ],
+  "limits": [
+    "Profile overhead changes the diagnostic environment; this failed focused run is separate from the unprofiled same-source both-release short passes.",
+    "The child zero exit with expired context and 2.42-second complete command step does not establish the cause of historical generic command failures.",
+    "No original Cmd.Run error classification was captured independently of final context state; child completion versus parent handling delay remains to distinguish.",
+    "CPU profile includes startup artifact checks; cumulative/flat totals are not isolated to an individual sampling gap.",
+    "Do not remove artifact/custody checks, increase deadlines, pace requests, or count late observations as missing intervals."
+  ]
+}

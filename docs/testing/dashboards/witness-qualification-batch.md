@@ -211,3 +211,33 @@ Next work must distinguish command duration from controller scheduling and prese
 complete independent sampling while retaining every original custody check,
 measurement cost, deadline and budget. Complete native 005/006 controls and full
 resource qualification remain required. PR 390 stays draft; no broader gate closes.
+
+
+### Focused projection profiling observation
+
+A subsequent [profile-only record](witness-projection-profile-manifest.json) runs
+just the projection subtest at documentation head `17a9f3e`, with Go's existing
+CPU-profile option. It **failed** `usage-command-deadline` and remains separate
+from qualification: profiling changes controller cost. Original bounded output
+has four fields per row, no stdout/stderr overflow, a zero child exit and an expired
+context, with 2.42039 seconds elapsed for the complete command step. This establishes
+a new deadline-envelope rejection; it does not establish when the child exited
+or whether command execution, output handling or controller scheduling caused
+the lateness. The earlier generic command rejections remain unexplained.
+
+The retained controller CPU profile spans startup and the projection case. Of
+8.26 sampled CPU seconds, generic SHA-256 accounts for 7.33 seconds (88.74% flat);
+artifact-digest paths account for 6.84 seconds (82.81% cumulative). These totals
+include startup checks outside the sampling window. They cannot prove the cause
+of a particular missing interval, nor justify removing original artifact checks.
+The pinned bundled `go tool pprof` was unavailable; analysis used the same pinned
+Go runtime's `cmd/pprof` sources, adding no repository dependency or service.
+An initial private launcher syntax error failed before guest work and is retained
+as preparation failure, separate from the actual failed native run.
+
+The focused failure retains original stdout/wait/context/profile/transcript/archive
+hashes, matching preflight, unchanged pins, guest cleanup and independently verified
+host teardown. Next diagnostics should retain the original Run result and command
+duration for successful samples, isolating controller scheduling from command work.
+A sampling correction must preserve independent lifetime/custody checks and every
+measurement cost. Existing deadlines, cadence, budgets and acceptance gates remain.
