@@ -2046,3 +2046,10 @@ passed independent verification for those individual runs. Connector accounting 
 projection sampler command rejections remain unresolved; complete native 005/006,
 sampling and resources are unqualified. The canonical resource runner stays inactive
 and runtime/client/hardware support claims are unchanged.
+
+
+The PR 390 diagnostic continuation bounds native sampler output during capture
+and distinguishes original command exit, deadline, cancellation, overflow, start
+and I/O failure; connector rejections retain their wait/context stage. Portable
+subprocess regressions pass; native execution remains pending. These test-only
+diagnostics retain the existing deadline/cadence/budgets and add no support claim.

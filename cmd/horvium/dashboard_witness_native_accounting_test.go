@@ -41,13 +41,15 @@ func witnessLifetime(a witnessActor, abi witnessABI) bool {
 }
 func witnessNativeSample(roles []witnessActor, abi witnessABI) (out witnessNativeUsageSample, err error) {
 	var original []byte
+	var command witnessCommandDiagnostic
 	defer func() {
-		if err != nil && len(original) > 0 {
+		if err != nil {
 			_ = witnessWriteDiagnosticJSON("witness-rejected-sample-"+strconv.Itoa(len(roles))+".json", struct {
-				Rows  string
-				Roles []witnessActor
-				ABI   witnessABI
-			}{string(original), roles, abi})
+				Rows    string
+				Roles   []witnessActor
+				ABI     witnessABI
+				Command witnessCommandDiagnostic
+			}{string(original), roles, abi, command})
 		}
 	}()
 	if len(roles) != 2 && len(roles) != 3 {
@@ -57,10 +59,10 @@ func witnessNativeSample(roles []witnessActor, abi witnessABI) (out witnessNativ
 	defer cancel()
 	cmd := exec.CommandContext(ctx, "/bin/ps", "-a", "-x", "-o", "pid=", "-o", "ppid=", "-o", "rss=", "-o", "time=")
 	cmd.Env = []string{"LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
-	b, e := cmd.Output()
-	original = b
-	if e != nil || len(b) > witnessFrameCap {
-		return out, witnessFailure("usage-command")
+	b, diagnostic, e := witnessRunSampleCommand(ctx, cmd)
+	original, command = b, diagnostic
+	if e != nil {
+		return out, witnessFailure("usage-command-" + diagnostic.Reason)
 	}
 	type row struct {
 		parent int

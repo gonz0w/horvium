@@ -155,3 +155,17 @@ resolve connector accounting without dropping unknown usage, then repeat the red
 suite on both releases at one reviewed source. Complete native 005/006 controls and
 sampling/calibration must precede full resource-runner activation. This draft is one
 coherent support batch for review; issue 382 and every wider gate stay open.
+
+
+## Continuing diagnostics in PR 390
+
+The next candidate retains bounded command stdout (64 KiB), stderr (4 KiB),
+original wait status, elapsed time and fixed exit/deadline/cancellation/overflow/
+start/I/O classifications even when stdout is empty. Real subprocess regressions
+cover successful output, nonzero exit, both output ceilings, deadline, cancellation
+and failed start. Bounded writes prevent allocation of an oversized process census;
+the existing two-second command deadline and sampling cadence are unchanged.
+Connector rejection originals also retain the connection stage, wait failure and
+context cancellation/deadline flags. These diagnostics supply missing evidence;
+they do not themselves fix the historical command or connector rejection.
+Native execution of this continuation is pending.

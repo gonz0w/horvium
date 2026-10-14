@@ -9,6 +9,7 @@ import (
 	"crypto/sha256"
 	"encoding/binary"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"math"
@@ -465,8 +466,8 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	defer func() {
 		if !waited {
 			cancel()
-			_ = cmd.Wait()
-			o.accountConnector(cmd)
+			waitError := cmd.Wait()
+			o.accountConnector(cmd, stage, waitError, ctx.Err())
 		}
 	}()
 	_ = parent.SetDeadline(time.Now().Add(10 * time.Second))
@@ -495,7 +496,7 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	stage = "connector-wait"
 	e = cmd.Wait()
 	waited = true
-	if o.accountConnector(cmd) != nil || e != nil {
+	if o.accountConnector(cmd, stage, e, ctx.Err()) != nil || e != nil {
 		fail()
 		return
 	}
@@ -541,7 +542,13 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	// Index is published only after exact bytes and write-half EOF. Originals are
 	// not publication records; independent metadata confirmation remains required.
 }
-func (o *witnessNativeObserver) accountConnector(cmd *exec.Cmd) error {
+
+type witnessConnectorWaitDiagnostic struct {
+	Stage                                   string
+	WaitFailed, DeadlineExceeded, Cancelled bool
+}
+
+func (o *witnessNativeObserver) accountConnector(cmd *exec.Cmd, stage string, waitError, contextError error) error {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	o.connectorActive--
@@ -551,12 +558,14 @@ func (o *witnessNativeObserver) accountConnector(cmd *exec.Cmd) error {
 		exitCode = cmd.ProcessState.ExitCode()
 		u, _ = cmd.ProcessState.SysUsage().(*syscall.Rusage)
 	}
+	diagnostic := witnessConnectorWaitDiagnostic{stage, waitError != nil, errors.Is(contextError, context.DeadlineExceeded), errors.Is(contextError, context.Canceled)}
 	if u == nil || u.Maxrss <= 0 || uint64(u.Maxrss) > math.MaxUint64/1024 {
 		_ = witnessWriteDiagnosticJSON("witness-rejected-connector-usage.json", struct {
 			Usage        *syscall.Rusage
 			StatePresent bool
 			ExitCode     int
-		}{u, cmd.ProcessState != nil, exitCode})
+			Context      witnessConnectorWaitDiagnostic
+		}{u, cmd.ProcessState != nil, exitCode, diagnostic})
 		o.failed = true
 		if o.failure == "" {
 			o.failure = "connector-usage"
@@ -570,7 +579,8 @@ func (o *witnessNativeObserver) accountConnector(cmd *exec.Cmd) error {
 			CPU                int64
 			PriorCPU           int64
 			ConversionRejected bool
-		}{u, cpu, int64(o.connectorCPU), e != nil})
+			Context            witnessConnectorWaitDiagnostic
+		}{u, cpu, int64(o.connectorCPU), e != nil, diagnostic})
 		o.failed = true
 		if o.failure == "" {
 			o.failure = "connector-usage"
