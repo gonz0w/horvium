@@ -2084,3 +2084,10 @@ passed both reduced native suites at 893cb60, actual header/unit comparisons and
 and a fixed 64 KiB buffer, with original guest/host teardown and preserved pins.
 Projection timing retains 16/26 unobserved nominal intervals on 15.1/14.5; complete
 sampling/native/resource acceptance remains open. It adds no runtime support claim.
+
+The inactive dashboard witness fixture's independent sampler child requires the
+same actual-header FreeBSD/amd64 ABI probe. It records controller and sampler
+costs separately, preserves closing-window cadence gaps, and binds its private
+original file and all-started wait usage to the original fixture artifact.
+Native EOF/SIGKILL controls and both pinned releases must supply source-bound
+receipts before claiming this candidate; full resource acceptance remains open.

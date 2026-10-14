@@ -323,3 +323,28 @@ wait accounting, RSS/CPU reporting and complete cancellation/teardown controls.
 That remaining ownership work stays in PR 390; it remains draft. Broader native
 005/006 and resource/latency acceptance, the unexplained connector and 6525631
 rejections, startup/browser/hardware/release gates remain open.
+
+## Independent sampling owner candidate
+
+The next inactive fixture candidate moves the fixed 64 KiB direct kernel census
+into an owned reexecution of the original controller artifact. One inherited
+private channel and one exclusive root-owned file bind it to the controller,
+actual role lifetimes and actual-header ABI. No service or product endpoint is
+added. A separate runtime avoids sharing the controller's allocator and scheduler;
+it does not assume why earlier controller windows missed intervals.
+
+The sampler reports its own RSS and CPU separately from controller and product
+costs. Every started child is waited, including EOF and SIGKILL controls; missing
+or invalid wait usage denies completion. Parent EOF, malformed stop, a 650-second
+fixture limit, sampling errors and a 32 MiB original-file bound refuse acceptance.
+The actual original file is sealed, hashed, object-checked and independently
+reopened after child exit. The outer disposable-guest owner still requires an
+empty descendant census and complete host teardown.
+
+Samples retain scheduled and actual relative times. The closing window contributes
+to planned intervals; missing, duplicate and late records remain explicit. The
+loop skips elapsed intervals without creating catch-up observations. A portable
+failing behavioral regression precedes the schedule audit implementation. Actual
+native EOF/kill controls and both pinned-release reduced suites are required for
+this candidate. Full native 005/006 and complete resource/latency acceptance remain
+separate; this implementation cannot activate the resource runner.

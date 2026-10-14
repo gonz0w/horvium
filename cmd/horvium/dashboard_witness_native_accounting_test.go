@@ -9,7 +9,6 @@ import (
 	"math"
 	"os"
 	"strconv"
-	"sync"
 	"syscall"
 	"testing"
 	"time"
@@ -17,28 +16,19 @@ import (
 )
 
 type witnessNativeUsageSample struct {
-	AtNS                                              int64 `json:"at_ns"`
-	ReadNS                                            int64 `json:"read_ns"`
-	PairRSS, ObserverRSS, ConnectorRSS, ControllerRSS uint64
-	PairCPU, ObserverCPU, ControllerCPU               int64
-	ConnectorCount                                    int
-}
-type witnessNativeUsage struct {
-	mu         sync.Mutex
-	stopOnce   sync.Once
-	stop, done chan struct{}
-	started    time.Time
-	samples    []witnessNativeUsageSample
-	err        error
-	roles      []witnessActor
-	abi        witnessABI
+	ScheduledNS                                                   int64 `json:"scheduled_ns"`
+	AtNS                                                          int64 `json:"at_ns"`
+	ReadNS                                                        int64 `json:"read_ns"`
+	PairRSS, ObserverRSS, ConnectorRSS, ControllerRSS, SamplerRSS uint64
+	PairCPU, ObserverCPU, ControllerCPU, SamplerCPU               int64
+	ConnectorCount                                                int
 }
 
 func witnessLifetime(a witnessActor, abi witnessABI) bool {
 	b, e := unix.SysctlRaw("kern.proc.pid", a.PID)
 	return e == nil && len(b) == abi.ProcSize && int(int32(binary.LittleEndian.Uint32(b[abi.ProcPID:]))) == a.PID && binary.LittleEndian.Uint32(b[abi.ProcUID:]) == a.UID && int64(binary.LittleEndian.Uint64(b[abi.ProcSec:])) == a.Sec && int64(binary.LittleEndian.Uint64(b[abi.ProcUsec:])) == a.Usec
 }
-func witnessNativeSample(roles []witnessActor, abi witnessABI, scratch []byte) (out witnessNativeUsageSample, err error) {
+func witnessNativeSample(roles []witnessActor, owner witnessActor, abi witnessABI, scratch []byte) (out witnessNativeUsageSample, err error) {
 	started := time.Now()
 	var originals [][]byte
 	var readErrno syscall.Errno
@@ -80,13 +70,13 @@ func witnessNativeSample(roles []witnessActor, abi witnessABI, scratch []byte) (
 	for offset := 0; offset < int(size); offset += layout.Size {
 		raw := scratch[offset : offset+layout.Size]
 		pid := int(int32(binary.LittleEndian.Uint32(raw[layout.PID:])))
-		if ownedPID[pid] || pid == os.Getpid() || len(roles) == 3 && processes[pid].Parent == roles[2].PID {
+		if ownedPID[pid] || (pid == os.Getpid() || pid == owner.PID) || len(roles) == 3 && processes[pid].Parent == roles[2].PID {
 			originals = append(originals, append([]byte(nil), raw...))
 		}
 	}
 	seen := map[int]bool{}
 	for i, a := range roles {
-		if a.PID <= 1 || seen[a.PID] || a.PID == os.Getpid() {
+		if a.PID <= 1 || seen[a.PID] || (a.PID == os.Getpid() || a.PID == owner.PID) {
 			return out, witnessFailure("usage-duplicate")
 		}
 		seen[a.PID] = true
@@ -117,71 +107,18 @@ func witnessNativeSample(roles []witnessActor, abi witnessABI, scratch []byte) (
 			out.ConnectorRSS = child.RSS
 		}
 	}
-	controller, ok := processes[os.Getpid()]
-	if !ok || controller.UID != uint32(os.Getuid()) || controller.RSS == 0 {
+	controller, ok := processes[owner.PID]
+	if !ok || controller.UID != owner.UID || controller.Sec != owner.Sec || controller.Usec != owner.Usec || controller.RSS == 0 {
 		return out, witnessFailure("usage-controller")
 	}
 	out.ControllerRSS = controller.RSS
 	out.ControllerCPU = controller.CPU
+	sampler, ok := processes[os.Getpid()]
+	if !ok || sampler.UID != uint32(os.Getuid()) || sampler.Parent != owner.PID || sampler.RSS == 0 {
+		return out, witnessFailure("usage-sampler")
+	}
+	out.SamplerRSS, out.SamplerCPU = sampler.RSS, sampler.CPU
 	return out, nil
-}
-func newWitnessNativeUsage(t *testing.T, p *performancePair, observer *witnessFixtureObserver, abi witnessABI) *witnessNativeUsage {
-	t.Helper()
-	roles := []witnessActor{}
-	pids := []int{p.management.cmd.Process.Pid, p.helper.cmd.Process.Pid}
-	if observer != nil {
-		pids = append(pids, observer.process.cmd.Process.Pid)
-	}
-	for _, pid := range pids {
-		actor, e := witnessObserveActor(pid, abi)
-		if e != nil {
-			t.Fatal("original measurement actor")
-		}
-		roles = append(roles, actor)
-	}
-	scratch := make([]byte, witnessFrameCap)
-	first, e := witnessNativeSample(roles, abi, scratch)
-	if e != nil {
-		t.Fatal("original initial instrumentation sample rejected", e)
-	}
-	m := &witnessNativeUsage{stop: make(chan struct{}), done: make(chan struct{}), started: time.Now(), roles: roles, abi: abi}
-	first.AtNS = 1
-	m.samples = append(m.samples, first)
-	go func() {
-		defer close(m.done)
-		ticker := time.NewTicker(100 * time.Millisecond)
-		defer ticker.Stop()
-		for {
-			select {
-			case <-m.stop:
-				return
-			case <-ticker.C:
-				s, e := witnessNativeSample(roles, abi, scratch)
-				s.AtNS = int64(time.Since(m.started))
-				m.mu.Lock()
-				if e != nil {
-					m.err = e
-					m.mu.Unlock()
-					return
-				}
-				m.samples = append(m.samples, s)
-				m.mu.Unlock()
-			}
-		}
-	}()
-	t.Cleanup(m.close)
-	return m
-}
-func (m *witnessNativeUsage) close() { m.stopOnce.Do(func() { close(m.stop); <-m.done }) }
-func (m *witnessNativeUsage) finish(t *testing.T) []witnessNativeUsageSample {
-	t.Helper()
-	m.close()
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	if m.err != nil || len(m.samples) == 0 {
-		t.Fatal("original instrumentation sample unavailable", m.err)
-	}
-	return append([]witnessNativeUsageSample(nil), m.samples...)
 }
 func witnessNativeCPU(u *syscall.Rusage) (int64, error) {
 	if u.Utime.Sec < 0 || u.Stime.Sec < 0 || u.Utime.Usec < 0 || u.Utime.Usec >= 1000000 || u.Stime.Usec < 0 || u.Stime.Usec >= 1000000 || u.Utime.Sec > math.MaxInt64/1000000000-u.Stime.Sec {
