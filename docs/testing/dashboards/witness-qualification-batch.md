@@ -386,3 +386,10 @@ namespace, as the normal broker already does. It changes neither credentials nor
 namespace permissions. That failed run and its missing direct calibration remain
 retained. Its projection window reported one missing and one late interval;
 continuous resource acceptance is not inferred from a passing subcomponent.
+
+The intermediate `3b2f22d` portable review passed, but an explicit FreeBSD test
+cross-build caught an unused control binding; no native run used that source.
+The final correction retains that original fixture digest in the private adverse
+control receipt. Sampler readback also repeats descriptor ownership/link/object
+and path identity checks after reading its sealed original. Native evidence must
+bind the final behavioral candidate; intermediate portable success is insufficient.

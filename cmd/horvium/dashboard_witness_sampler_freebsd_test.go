@@ -309,6 +309,13 @@ func (m *witnessNativeUsage) readback(result witnessSamplerReceipt) {
 		fail()
 		return
 	}
+	after, ae := m.file.Stat()
+	afterObject, aoe := witnessObject(after)
+	afterPath, ape := os.Lstat(m.file.Name())
+	if ae != nil || aoe != nil || ape != nil || afterObject != object || !os.SameFile(before, afterPath) {
+		fail()
+		return
+	}
 	r := bytes.NewReader(data)
 	var schedule []witnessScheduleSample
 	for r.Len() > 0 {
@@ -414,8 +421,9 @@ func witnessNativeConnectorArtifactControl(t *testing.T, p *performancePair, abi
 	}
 	if witnessWriteDiagnosticJSON("witness-connector-artifact-control.json", struct {
 		Denied, Reaped bool
+		FixtureSHA256  string
 		Usage          *syscall.Rusage
-	}{true, true, usage}) != nil {
+	}{true, true, actor.SHA256, usage}) != nil {
 		t.Fatal("connector control original receipt")
 	}
 	t.Log("NATIVE_WITNESS_CONNECTOR_ARTIFACT_CONTROL mismatch=denied descriptor=none reaped=true usage_retained=true resource_acceptance=false")
