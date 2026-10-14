@@ -1,7 +1,8 @@
 # Proposed Test Design correction: native values during replacement
 
-Status: Draft requirement refinement; neither adopted nor an executable fixture
-mechanism. Date: 2026-10-13. Owner: Cam (`@gonz0w`).
+Status: Review requirement refinement; proposed for adoption with the concrete
+[EDD](native-witness-binding-EDD.md), [Test Design](native-witness-binding-TDD.md)
+and [ADR 0011](../../adr/0011-native-dashboard-witnesses.md). Date: 2026-10-13. Owner: Cam (`@gonz0w`).
 Refs [issue 382](https://github.com/gonz0w/horvium/issues/382),
 [Overview 289](https://github.com/gonz0w/horvium/issues/289),
 [Capacity 290](https://github.com/gonz0w/horvium/issues/290).
@@ -41,7 +42,10 @@ expiry retains only the existing allowed replacement-Overview exception.
 ## Mechanism review required before implementation or execution
 
 This document proposes the requirement, not a producer instrumentation interface.
-A separately reviewable EDD/Test Design mechanism must resolve all of the following:
+The linked concrete EDD/Test Design proposes the original-wire broker, existing
+request/generation ID correlation, custody, publication confirmation and measured
+process boundaries resolving the following requirements. They remain review gates
+until maintainer adoption and actual implementation/native verification:
 
 - Obtain original native command/source evidence before cached management
   consumption, with independent bounded parsing for expected accounting.
@@ -92,9 +96,10 @@ hardware and release claims remain separate, and runtime writes remain disabled.
 
 ## Review boundary
 
-Maintainer review may accept or revise this requirement direction. It does not
-approve an unspecified witness mechanism or authorize immediate qualification.
-Keep #382 open. The next bounded design outcome is the concrete original-producer/
-generation binding with artifact/resource/cleanup evidence above, followed by its
-reviewed implementation and fresh both-release execution. GitHub owns live status;
+Maintainer merge of this complete requirement/ADR/EDD/Test Design packet is requested
+to adopt the specified development mechanism for one coherent implementation PR.
+It does not accept an implementation, native ABI/descriptor behavior, overhead or
+resource results, nor authorize activation before integrated review. Keep #382 open.
+After adoption, implement the complete binding, controls and evidence together, then
+perform reviewed complete both-release execution. GitHub owns live status;
 this packet preserves requirement and evidence boundaries without a progress board.

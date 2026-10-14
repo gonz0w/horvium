@@ -2010,3 +2010,12 @@ current cached values matched independent native observations. The frozen oracle
 still rejected 147 of 200 complete responses. Full resources/14.5 remain unqualified.
 The [proposed generation-bound oracle requirement](../design/dashboards/native-invariance-correction.md)
 is Draft, with no adopted mechanism or runtime behavior change.
+
+
+The [native witness binding review packet](../design/dashboards/native-witness-binding-EDD.md)
+proposes a disposable root-owned original-wire broker using the existing helper
+request/generation ID. Product artifacts, APIs and privilege policy remain unchanged;
+no broker/native ABI/handoff/performance support is claimed. Independent decoding,
+publication confirmation, actual/front socket recovery, bounded custody and augmented
+instrumentation resource gates require the accompanying Test Design after adoption.
+Existing runtime writes and broader native/browser/release acceptance remain pending.
