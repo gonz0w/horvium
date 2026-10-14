@@ -6,8 +6,9 @@ Authority: [PRD](PRD.md), [EDD](EDD.md), [resource supplement](resource-qualific
 [requirement correction](native-invariance-correction.md),
 [ADR 0011](../../adr/0011-native-dashboard-witnesses.md),
 [Test Design](native-witness-binding-TDD.md), DASH-REQ-002 / DASH-REQ-006.
-This complete review packet requests adoption for test-only implementation. No
-broker, native ABI/handoff or resource execution is claimed by this document.
+PR 387 adopted this complete packet for test-only implementation. This design
+document itself establishes no broker, native ABI/handoff or resource evidence;
+candidate receipts and remaining gates live with the implementation record.
 
 ## Existing correlation and scope
 
