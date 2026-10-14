@@ -164,3 +164,5 @@ responses, relax predicates or increase budgets. This PR ends at a reviewable
 research diagnosis because neither a particular runtime correction nor a changed
 fixture contract is justified by these observations. Future corrections and full
 both-release qualification remain in the same owning issue. No broader gate closes.
+
+The [table-check and maximum-page diagnosis](table-location-diagnosis.md) continues this research under the same owning issue with fixed finer checks and portable maximum-limit profiling. It does not upgrade these original results.

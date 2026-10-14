@@ -415,12 +415,18 @@ func dashboardTable(w *dashboardHTMLNode, caption string) (*dashboardHTMLNode, e
 	}
 	return found, nil
 }
+
+// Error text and serialized observations never carry observed values or identities.
+type dashboardTableMismatch string
+
+func (dashboardTableMismatch) Error() string { return "wrong original dashboard table" }
+
 func dashboardTableHTML(table *dashboardHTMLNode, p dashboardHTMLPage, generation string) error {
-	invalid := func() error { return errors.New("wrong original dashboard table") }
+	invalid := func(check string) error { return dashboardTableMismatch(check) }
 	heads := table.direct("thead")
 	bodies := table.direct("tbody")
 	if len(heads) != 1 || len(bodies) != 1 {
-		return invalid()
+		return invalid("structure")
 	}
 	expected := []string{"Name", "GUID", "Size", "Allocated", "Free", "Pool state"}
 	if p.title == "Datasets" {
@@ -428,21 +434,21 @@ func dashboardTableHTML(table *dashboardHTMLNode, p dashboardHTMLPage, generatio
 	}
 	cols := heads[0].find("th", "", "")
 	if len(cols) != len(expected) {
-		return invalid()
+		return invalid("header-count")
 	}
 	for i, c := range cols {
 		if c.text() != expected[i] || c.attrs["scope"] != "col" {
-			return invalid()
+			return invalid("header")
 		}
 	}
 	rows := bodies[0].direct("tr")
 	if len(p.rows) == 0 {
 		if len(rows) != 1 || len(rows[0].direct("th")) != 0 {
-			return invalid()
+			return invalid("empty-shape")
 		}
 		cells := rows[0].direct("td")
 		if len(cells) != 1 || cells[0].attrs["colspan"] != strconv.Itoa(len(expected)) {
-			return invalid()
+			return invalid("empty-shape")
 		}
 		text := "No matching resources in this observation."
 		if p.overview {
@@ -451,27 +457,43 @@ func dashboardTableHTML(table *dashboardHTMLNode, p dashboardHTMLPage, generatio
 			text = "This section is unavailable. No resource count is implied."
 		}
 		if cells[0].text() != text {
-			return invalid()
+			return invalid("empty-text")
 		}
 		return nil
 	}
 	if len(rows) != len(p.rows) {
-		return invalid()
+		return invalid("row-count")
 	}
 	for i, row := range rows {
 		want := p.rows[i]
 		th := row.direct("th")
 		cells := row.direct("td")
 		if len(th) != 1 || th[0].attrs["scope"] != "row" || len(cells) != len(want.cells) || row.attrs["class"] != "" {
-			return invalid()
+			return invalid("row-shape")
 		}
 		a, err := th[0].one("a", "", "")
-		if err != nil || a.rawText() != want.name || a.attrs["aria-current"] != "" || !dashboardCheckLink(a, dashboardLink(p.path, generation, p.offset, p.limit, want.guid), !p.overview) || !p.overview && a.attrs["id"] != "row-"+want.guid {
-			return invalid()
+		if err != nil {
+			return invalid("row-shape")
+		}
+		if a.rawText() != want.name {
+			return invalid("row-name")
+		}
+		if a.attrs["aria-current"] != "" || !p.overview && a.attrs["id"] != "row-"+want.guid {
+			return invalid("row-selection")
+		}
+		if !dashboardCheckLink(a, dashboardLink(p.path, generation, p.offset, p.limit, want.guid), !p.overview) {
+			return invalid("row-link")
 		}
 		for j, c := range cells {
-			if c.rawText() != want.cells[j] || c.attrs["class"] != "mono" {
-				return invalid()
+			if c.rawText() != want.cells[j] {
+				fields := []string{"guid", "size", "allocated", "free", "pool-state"}
+				if p.title == "Datasets" {
+					fields = []string{"guid", "used", "available", "referenced"}
+				}
+				return invalid("cell-" + fields[j])
+			}
+			if c.attrs["class"] != "mono" {
+				return invalid("cell-style")
 			}
 		}
 	}

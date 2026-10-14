@@ -40,8 +40,9 @@ func (s generatedSource) Collect(context.Context, string) (inventory.Snapshot, e
 // ten concurrent readers and 1,000 pages per fixture. It is deliberately not
 // the TDD's warm-up/idle/combined-helper RSS acceptance procedure.
 func BenchmarkAuthenticatedDatasetPages(b *testing.B) {
-	for _, count := range []int{100, 10000} {
-		b.Run(strconv.Itoa(count), func(b *testing.B) {
+	for _, fixture := range []struct{ count, limit int }{{100, 100}, {100, 500}, {10000, 100}, {10000, 500}} {
+		count, limit := fixture.count, fixture.limit
+		b.Run(fmt.Sprintf("%d/limit-%d", count, limit), func(b *testing.B) {
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
 			cfg := observation.DefaultConfig()
@@ -83,7 +84,7 @@ func BenchmarkAuthenticatedDatasetPages(b *testing.B) {
 					go func() {
 						defer wg.Done()
 						for i := worker * 100; i < (worker+1)*100; i++ {
-							r := req("GET", fmt.Sprintf("/storage/datasets?offset=%d&limit=100", (i*100)%count), "")
+							r := req("GET", fmt.Sprintf("/storage/datasets?offset=%d&limit=%d", (i*limit)%count, limit), "")
 							r.AddCookie(cookie)
 							w := httptest.NewRecorder()
 							start := time.Now()
@@ -109,5 +110,43 @@ func BenchmarkAuthenticatedDatasetPages(b *testing.B) {
 				b.ReportMetric(float64(rss), "process-peak-rss-bytes")
 			}
 		})
+	}
+}
+
+func TestMaximumDatasetPageKeepsSelectedDetailsExact(t *testing.T) {
+	s, err := (generatedSource{10000}).Collect(context.Background(), "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Select a row beyond the twenty comparisons, within a nonzero maximum page.
+	s.Datasets.Data[999].Used = 9007199254740993
+	s.Datasets.Data[999].Available = 18446744073709551615
+	s.Datasets.Data[999].Referenced = 9007199254740992
+	h, m, _ := fixtureWithSource(t, capacitySource{s})
+	cookie, _ := login(t, h)
+	path := fmt.Sprintf("/storage/datasets?generation=%s&offset=500&limit=500&selected=1099", m.State().CurrentID)
+	for _, fragment := range []bool{false, true} {
+		body := capacityPage(t, h, cookie, path, fragment)
+		start := strings.Index(body, `<aside class="detail"`)
+		if start < 0 {
+			t.Fatal("selected detail absent")
+		}
+		end := strings.Index(body[start:], "</aside>")
+		if end < 0 {
+			t.Fatal("selected detail incomplete")
+		}
+		detail := body[start : start+end]
+		for _, want := range []string{"vault/dataset-000999", "Dataset GUID", "1099", "9007199254740993 B", "18446744073709551615 B", "9007199254740992 B"} {
+			if !strings.Contains(detail, want) {
+				t.Fatal("lost exact selected fact", want)
+			}
+		}
+		if strings.Count(body, `scope="row"`) != 500 || !strings.Contains(body, `aria-current="true"`) {
+			t.Fatal("maximum page or selection changed")
+		}
+	}
+	body := capacityPage(t, h, cookie, fmt.Sprintf("/storage/datasets?generation=%s&offset=500&limit=500", m.State().CurrentID), false)
+	if strings.Contains(body, `<aside class="detail"`) || strings.Count(body, `scope="row"`) != 500 {
+		t.Fatal("unselected page changed")
 	}
 }

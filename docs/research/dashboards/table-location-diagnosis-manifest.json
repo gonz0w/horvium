@@ -1,0 +1,405 @@
+{
+  "schema": 1,
+  "scope": "bounded diagnosis and portable page-allocation optimization; not native resource acceptance",
+  "requirement_ids": [
+    "DASH-REQ-006",
+    "DASH-PERF-001"
+  ],
+  "native_acceptance": false,
+  "native_diagnostic": {
+    "scope": "original native-small timing diagnostic; incomplete failed parent",
+    "qualified": false,
+    "native_acceptance": false,
+    "source_commit": "d13e41ea2583677048118f4a151bc1f3dd9bc4b8",
+    "base_commit": "ea4efd6031e06cee7e6cfeda61ac055c342db29d",
+    "pr_title": "test(dashboards): locate original table failures and profile maximum pages",
+    "candidate": {
+      "source_commit": "d13e41ea2583677048118f4a151bc1f3dd9bc4b8",
+      "base_commit": "ea4efd6031e06cee7e6cfeda61ac055c342db29d",
+      "pr_title": "test(dashboards): locate original table failures and profile maximum pages",
+      "go_version": "go1.27.1",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "archive_sha256": "4519ae7116651633774cc2106cfcf8ba3777676def539eea57b62d68122de48b",
+      "review_verified": true,
+      "artifacts": {
+        "15.1": {
+          "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "fixture": "fd2a8b6747b8f2614b33ca26be3d990003ef075197e31d0b60213f046f593e49"
+        },
+        "14.5": {
+          "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "fixture": "fd2a8b6747b8f2614b33ca26be3d990003ef075197e31d0b60213f046f593e49"
+        }
+      }
+    },
+    "environment": {
+      "artifacts": {
+        "fixture": "fd2a8b6747b8f2614b33ca26be3d990003ef075197e31d0b60213f046f593e49",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "management": "c1861b0be9bf36f72fd7a7daf7227718c9f52fdc680d64c27fbee116363394fb"
+      },
+      "go_version": "go1.27.1",
+      "kernel": "15.1-RELEASE-p3",
+      "userland": "15.1-RELEASE-p3",
+      "zfs": "zfs-2.4.2-1-FreeBSD_g6330a45b0 zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0",
+      "physical_bytes": 6387634176
+    },
+    "raw_sha256": "2dba305000f8d4619b749e54820f60c4fcffb77c11a8bb1dcf0633458a29b4c8",
+    "raw_bytes": 444509,
+    "result_sha256": "c18f6a16e822c7ed4f59f18dc482e73885684d10a7833879756b39eed871f5da",
+    "controller_sha256": "7ab8ab996a06b83e0e42cedd2a54e3f7cec43f44b6adeaab8dcbccc8d0e7dfd5",
+    "worker_source_sha256": "0a02884624386df22843c7cbe0e39ab1c084a4100ae2f002609952ced8dccfc6",
+    "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+    "guest_preflight_sha256": "1d6a83f8044ab71fb7cdc3d9e514602395889dc69bea99a1799f5676635fc7b3",
+    "fixture": {
+      "datasets": 115,
+      "owned_datasets": 100,
+      "inventory_sha256": "1b92db22dc1967047ee10651d659285776b53e63383706a8d1ae800cea72abd4",
+      "origin": "native-original"
+    },
+    "initial_scheduled": 1000,
+    "initial_success": 1000,
+    "initial_failure": 0,
+    "replacement_scheduled": 1000,
+    "cases": {
+      "overview": {
+        "scheduled": 200,
+        "outcomes": {
+          "success": 200
+        },
+        "first_predicate_classifications": {
+          "original-inventory": 200
+        },
+        "observed_p50_ns": 66060989,
+        "observed_p95_ns": 166414012,
+        "observed_p99_ns": 221161437
+      },
+      "pools-default": {
+        "scheduled": 200,
+        "outcomes": {
+          "success": 200
+        },
+        "first_predicate_classifications": {
+          "original-inventory": 200
+        },
+        "observed_p50_ns": 67481032,
+        "observed_p95_ns": 165377648,
+        "observed_p99_ns": 269554846
+      },
+      "pools-maximum": {
+        "scheduled": 200,
+        "outcomes": {
+          "success": 200
+        },
+        "first_predicate_classifications": {
+          "original-inventory": 200
+        },
+        "observed_p50_ns": 62544821,
+        "observed_p95_ns": 178275833,
+        "observed_p99_ns": 272129648
+      },
+      "datasets-default": {
+        "scheduled": 200,
+        "outcomes": {
+          "success": 200
+        },
+        "first_predicate_classifications": {
+          "original-inventory": 200
+        },
+        "observed_p50_ns": 81767135,
+        "observed_p95_ns": 200049223,
+        "observed_p99_ns": 422543876
+      },
+      "datasets-maximum": {
+        "scheduled": 200,
+        "outcomes": {
+          "success": 200
+        },
+        "first_predicate_classifications": {
+          "original-inventory": 200
+        },
+        "observed_p50_ns": 82553485,
+        "observed_p95_ns": 185396211,
+        "observed_p99_ns": 225766797
+      }
+    },
+    "warmup_seconds_observed": 60,
+    "idle_seconds_observed": 300,
+    "supervisors": [
+      {
+        "private_directory_name": "db0b7fo0",
+        "command_sha256": "c808713abdb2523af0727a2c8c694f149cda603e99a855f4da57edc63486dd54",
+        "worker_returncode": 1,
+        "completed": true,
+        "group_cleaned": true,
+        "escalated": false,
+        "reason": "exit"
+      },
+      {
+        "private_directory_name": "rswt4a5e",
+        "command_sha256": "33c11865fb86e9a463a9ffe692d805173c6279c9b75589e0576a973b4488c087",
+        "worker_returncode": 1,
+        "completed": true,
+        "group_cleaned": true,
+        "escalated": false,
+        "reason": "exit"
+      }
+    ],
+    "host_teardown_independently_rechecked": true,
+    "guest_complete_parent_cleanup": "not reached",
+    "after_preflight": "not reached",
+    "failure": "ValueError: original command failed or teardown uncertain",
+    "scope_limits": [
+      "projection omitted; complete parent deliberately cannot qualify",
+      "fixed table check identifies first failure; later checks are not reached",
+      "later comparison checks not reached",
+      "replacement predicates failed; native crash/recovery and resource budget publication not reached",
+      "no 14.5 or both-release acceptance"
+    ],
+    "replacement_success": 104,
+    "replacement_failure": 896,
+    "replacement_cases": {
+      "overview": {
+        "scheduled": 200,
+        "outcomes": {
+          "success": 22,
+          "failure": 178
+        },
+        "first_predicate_classifications": {
+          "original-inventory": 22,
+          "failure:table-cell-allocated": 178
+        }
+      },
+      "pools-default": {
+        "scheduled": 200,
+        "outcomes": {
+          "success": 21,
+          "failure": 179
+        },
+        "first_predicate_classifications": {
+          "original-inventory": 21,
+          "failure:table-cell-allocated": 179
+        }
+      },
+      "pools-maximum": {
+        "scheduled": 200,
+        "outcomes": {
+          "success": 19,
+          "failure": 181
+        },
+        "first_predicate_classifications": {
+          "original-inventory": 19,
+          "failure:table-cell-allocated": 181
+        }
+      },
+      "datasets-default": {
+        "scheduled": 200,
+        "outcomes": {
+          "success": 26,
+          "failure": 174
+        },
+        "first_predicate_classifications": {
+          "original-inventory": 26,
+          "failure:table-cell-used": 158,
+          "failure:table-cell-available": 16
+        }
+      },
+      "datasets-maximum": {
+        "scheduled": 200,
+        "outcomes": {
+          "success": 16,
+          "failure": 184
+        },
+        "first_predicate_classifications": {
+          "original-inventory": 16,
+          "failure:table-cell-used": 171,
+          "failure:table-cell-available": 13
+        }
+      }
+    },
+    "completed_replacements": 3,
+    "parent_elapsed_seconds": 432.6,
+    "native_small_elapsed_seconds": 427.12
+  },
+  "portable_review_candidates": [
+    {
+      "source_commit": "d13e41ea2583677048118f4a151bc1f3dd9bc4b8",
+      "base_commit": "ea4efd6031e06cee7e6cfeda61ac055c342db29d",
+      "pr_title": "test(dashboards): locate original table failures and profile maximum pages",
+      "review_report_sha256": "0b5216fdfad4490787dab96a03065378a1e362935dbfa738c46592dbf710f83f",
+      "required_checks": "make check lint test secrets passed",
+      "tooling_tests": 306,
+      "deep_executed": true,
+      "race_packages": [
+        "./cmd/horvium",
+        "./internal/console",
+        "./internal/service"
+      ],
+      "fuzz_targets": [],
+      "deep_log_sha256": "c0930e5ca28b03b5682c6b885ba139a22344867d037cea58cae5b8d36c0afc3b",
+      "completed_clean_deep_supervisor": true
+    },
+    {
+      "source_commit": "301db4d4abe1869ca12b4554eed12884b2408838",
+      "base_commit": "ea4efd6031e06cee7e6cfeda61ac055c342db29d",
+      "pr_title": "perf(dashboards): reduce page allocations and locate native table failures",
+      "review_report_sha256": "ac4b675c1466f06d8ee645ea3733434432d38ece5135d59f66190c34f1f6cd8a",
+      "required_checks": "make check lint test secrets passed",
+      "tooling_tests": 306,
+      "deep_executed": true,
+      "race_packages": [
+        "./cmd/horvium",
+        "./internal/console",
+        "./internal/service"
+      ],
+      "fuzz_targets": [],
+      "deep_log_sha256": "34a6e09a2b6d4a2563c0f15f31fc46da21925c8f98fbb639589faf9a87828ade",
+      "completed_clean_deep_supervisor": true
+    }
+  ],
+  "portable_comparison": {
+    "before_source": "d13e41ea2583677048118f4a151bc1f3dd9bc4b8",
+    "after_source": "301db4d4abe1869ca12b4554eed12884b2408838",
+    "os": "Darwin",
+    "arch": "arm64",
+    "cpu": "Apple M5 Max",
+    "go_version": "go1.27.1",
+    "cgo_enabled": "1",
+    "gomaxprocs": 18,
+    "fixtures": "100/10000 generated datasets, limits 100/500, one iteration, ten readers, 1000 complete pages per fixture",
+    "before": {
+      "100/limit-100": {
+        "allocated_bytes_per_1000_pages": 705610928,
+        "allocations_per_1000_pages": 10452686,
+        "observed_p95_ms": 3.531
+      },
+      "100/limit-500": {
+        "allocated_bytes_per_1000_pages": 705554344,
+        "allocations_per_1000_pages": 10453512,
+        "observed_p95_ms": 3.252
+      },
+      "10000/limit-100": {
+        "allocated_bytes_per_1000_pages": 802970616,
+        "allocations_per_1000_pages": 11047616,
+        "observed_p95_ms": 3.259
+      },
+      "10000/limit-500": {
+        "allocated_bytes_per_1000_pages": 3028209736,
+        "allocations_per_1000_pages": 48054298,
+        "observed_p95_ms": 8.275
+      }
+    },
+    "after": {
+      "100/limit-100": {
+        "allocated_bytes_per_1000_pages": 689010960,
+        "allocations_per_1000_pages": 9953198,
+        "observed_p95_ms": 3.983,
+        "allocated_bytes_reduction_percent": 2.3526,
+        "allocation_count_reduction_percent": 4.7786
+      },
+      "100/limit-500": {
+        "allocated_bytes_per_1000_pages": 688938992,
+        "allocations_per_1000_pages": 9953852,
+        "observed_p95_ms": 3.954,
+        "allocated_bytes_reduction_percent": 2.3549,
+        "allocation_count_reduction_percent": 4.7798
+      },
+      "10000/limit-100": {
+        "allocated_bytes_per_1000_pages": 783991968,
+        "allocations_per_1000_pages": 10349759,
+        "observed_p95_ms": 3.653,
+        "allocated_bytes_reduction_percent": 2.3636,
+        "allocation_count_reduction_percent": 6.3168
+      },
+      "10000/limit-500": {
+        "allocated_bytes_per_1000_pages": 2933517512,
+        "allocations_per_1000_pages": 44566090,
+        "observed_p95_ms": 9.174,
+        "allocated_bytes_reduction_percent": 3.127,
+        "allocation_count_reduction_percent": 7.2589
+      }
+    },
+    "log_sha256": {
+      "before": "0c35be0bd30a84125dd21790aae6ea2cf5842af5c0768e8abb164f8dbf646c0b",
+      "after": "6c081b9823dc4637356fa8e5ced1aaf762ae3a470621cfdfe680c2b9fc19ccb6"
+    },
+    "supervisors": [
+      {
+        "command_sha256": "61cda9cdaf5f38ee669764d97447ef58a867a04616ddc4669918d36b984aaa24",
+        "completed": true,
+        "group_cleaned": true,
+        "worker_returncode": 0,
+        "escalated": false,
+        "reason": "exit"
+      },
+      {
+        "command_sha256": "062c25cc483c7d9f1bcfdf66408c264f6617ba1fbe7bbffb31dd0709c1a32a78",
+        "completed": true,
+        "group_cleaned": true,
+        "worker_returncode": 0,
+        "escalated": false,
+        "reason": "exit"
+      },
+      {
+        "command_sha256": "70b70e81ba1a7a57f8056593c7dced9ef59d0727d7e6fd0739512accfdfaba96",
+        "completed": true,
+        "group_cleaned": true,
+        "worker_returncode": 0,
+        "escalated": false,
+        "reason": "exit"
+      }
+    ],
+    "binary_cleanup_verified": true,
+    "scope_limits": [
+      "one cohort per candidate; no statistical latency improvement claim",
+      "maximum request on 100-dataset fixture renders 100 rows",
+      "portable direct handler only; no helper/FreeBSD/TCG/native resource acceptance",
+      "benchmark cgo=1 differs from cgo-free native candidate",
+      "bytes/allocs per operation are cumulative over 1000 pages, not retained heap or peak RSS"
+    ]
+  },
+  "original_profile": {
+    "source_commit": "d13e41ea2583677048118f4a151bc1f3dd9bc4b8",
+    "scope": "all four fixtures combined, with CPU/memory profiling overhead; separate from allocation comparison",
+    "hashes": {
+      "dashboard-table-red.log": "fe4a79a33675da2ab95995f593a1e6ccf5ea4954dd93519f2901a4b4ce44a57e",
+      "dashboard-table-green.log": "e093bdff7248237ada69947552496076b759bc6949bcd6a2772f7a18956fdc48",
+      "dashboard-table-profile.log": "483dabbe73f9964818bb33aeb11e232683b14884a46690278be13f98c4bf8c62",
+      "dashboard-table-cpu.pprof": "bd7de820d90b593b35c3e5e1dbf6ca4a4707ad6faafe9488cd274d9099a9fcf9",
+      "dashboard-table-heap.pprof": "6fc7c5fdca65dc4785cd73cb0054a6ee1ca926d21e1baf298636e4a09cb2eba6",
+      "dashboard-table-cpu-top.txt": "1fd4e4d14c9f11754901b4da8c23d99d7260b34ac76ea5e370cc7e38ffdf04ba",
+      "dashboard-table-heap-top.txt": "69c053aa0f722c02509c3ad8f76a64cda99accb759c73e23d99d61c46828e8f7"
+    },
+    "profile_initial_inspection": "default GOENV lookup refused pprof; GOENV=off/GOTOOLCHAIN=local inspection succeeded; no benchmark retry"
+  },
+  "cross_build": {
+    "source_commit": "301db4d4abe1869ca12b4554eed12884b2408838",
+    "os": "freebsd",
+    "arch": "amd64",
+    "cgo_enabled": "0",
+    "binary_sha256": "8b3677b96d4df8695b08c58efe4bb345124b33f6ff5e76514ccea24ab7d725d2",
+    "execution": "not executed",
+    "supervisor": {
+      "command_sha256": "2bf0b6b289cd2138aaf2ef1eb95b8ff09aef5445602c35ad905c8ab37376ff93",
+      "worker_returncode": 0,
+      "completed": true,
+      "group_cleaned": true,
+      "escalated": false,
+      "reason": "exit"
+    },
+    "binary_removed": true
+  },
+  "preservation": {
+    "historical_manifests": 151,
+    "operator_edits_unchanged": true
+  },
+  "remaining": [
+    "exact original-inventory invariance/cause unresolved; no oracle refresh",
+    "all four modes and controls, strict/legacy and independent complete guest receipts on both releases",
+    "later optimization is not natively executed",
+    "large-mode latency failure remains; allocation reduction does not establish latency improvement",
+    "browser/manual accessibility, startup/recovery, hardware/release remain open"
+  ]
+}

@@ -377,7 +377,11 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 			v.Columns = []string{"GUID", "Size", "Allocated", "Free", "Pool state"}
 			v.Options = sortOptions("name", "guid", "size", "allocated", "free", "health")
 			for _, p := range p.Rows {
-				v.Rows = append(v.Rows, row{Key: p.GUID, Name: p.Name, Cells: []string{p.GUID, bytesValue(p.Size), bytesValue(p.Allocated), bytesValue(p.Free), p.Health}, Facts: []fact{{"Pool GUID", p.GUID}, {"Reported pool state", p.Health}, {"Size", bytesValue(p.Size)}, {"Allocated", bytesValue(p.Allocated)}, {"Free", bytesValue(p.Free)}}})
+				item := row{Key: p.GUID, Name: p.Name, Cells: []string{p.GUID, bytesValue(p.Size), bytesValue(p.Allocated), bytesValue(p.Free), p.Health}}
+				if selected == p.GUID {
+					item.Facts = []fact{{"Pool GUID", p.GUID}, {"Reported pool state", p.Health}, {"Size", bytesValue(p.Size)}, {"Allocated", bytesValue(p.Allocated)}, {"Free", bytesValue(p.Free)}}
+				}
+				v.Rows = append(v.Rows, item)
 			}
 		case "/storage/datasets":
 			p, err := a.manager.Datasets(r.Context(), q)
@@ -390,7 +394,11 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 			v.Columns = []string{"GUID", "Used", "Available", "Referenced"}
 			v.Options = sortOptions("name", "guid", "used", "available", "referenced")
 			for _, d := range p.Rows {
-				v.Rows = append(v.Rows, row{Key: d.GUID, Name: d.Name, Cells: []string{d.GUID, bytesValue(d.Used), bytesValue(d.Available), bytesValue(d.Referenced)}, Facts: []fact{{"Dataset GUID", d.GUID}, {"Used", bytesValue(d.Used)}, {"Available", bytesValue(d.Available)}, {"Referenced", bytesValue(d.Referenced)}}})
+				item := row{Key: d.GUID, Name: d.Name, Cells: []string{d.GUID, bytesValue(d.Used), bytesValue(d.Available), bytesValue(d.Referenced)}}
+				if selected == d.GUID {
+					item.Facts = []fact{{"Dataset GUID", d.GUID}, {"Used", bytesValue(d.Used)}, {"Available", bytesValue(d.Available)}, {"Referenced", bytesValue(d.Referenced)}}
+				}
+				v.Rows = append(v.Rows, item)
 			}
 		case "/storage/providers":
 			p, err := a.manager.Providers(r.Context(), q)

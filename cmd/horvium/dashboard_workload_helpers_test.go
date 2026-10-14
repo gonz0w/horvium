@@ -178,6 +178,16 @@ type dashboardPredicate func(dashboardRequest, int, []byte) error
 // Fixed diagnostic vocabulary only. Never serialize predicate/transport errors,
 // response bodies, identities or session material into failure observations.
 func dashboardFailureClassification(err error) string {
+	var table dashboardTableMismatch
+	if errors.As(err, &table) {
+		switch table {
+		case "structure", "header-count", "header", "empty-shape", "empty-text", "row-count", "row-shape", "row-name", "row-link", "row-selection", "cell-style", "cell-guid", "cell-size", "cell-allocated", "cell-free", "cell-pool-state", "cell-used", "cell-available", "cell-referenced":
+			return "failure:table-" + string(table)
+		default:
+			return "failure:table"
+		}
+	}
+
 	switch err.Error() {
 	case "malformed or unbounded dashboard document":
 		return "failure:document"

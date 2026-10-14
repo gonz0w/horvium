@@ -23,6 +23,7 @@ func TestDashboardFailureDiagnosticsRemainBoundedAndFailClosed(t *testing.T) {
 		want      string
 	}{
 		{"original table", 200, "fixture", errors.New("wrong original dashboard table"), "failure:table"},
+		{"unknown table check", 200, "fixture", dashboardTableMismatch("private-token"), "failure:table"},
 		{"original comparisons", 200, "fixture", errors.New("wrong original dashboard comparisons"), "failure:comparisons"},
 		{"freshness", 200, "fixture", errors.New("wrong storage query or freshness metadata"), "failure:storage-metadata"},
 		{"unknown sensitive error", 200, "fixture", errors.New("session=private-token inventory=private-name"), "failure:predicate"},
@@ -106,12 +107,131 @@ func TestDashboardDiagnosticOracleKeepsOriginalPoolValues(t *testing.T) {
 				t.Fatal("unchanged dataset facts rejected", err)
 			}
 		} else {
-			if err == nil || dashboardFailureClassification(err) != "failure:table" {
+			if err == nil || dashboardFailureClassification(err) != "failure:table-cell-allocated" {
 				t.Fatal("changed original pool accounting accepted or misclassified", request.Case, err)
 			}
 		}
 	}
 	if original.Pools.Data[0].Allocated == changed.Pools.Data[0].Allocated {
 		t.Fatal("original oracle mutated")
+	}
+}
+
+// Mutate parsed real responses, retaining the original independent expectation.
+// Each failure must identify a fixed check, never a row identity or observed value.
+func TestDashboardTableDiagnosticsIdentifyExactChecks(t *testing.T) {
+	original := performanceSnapshot(100, 0)
+	h, _, cookie := dashboardHTMLFixture(t, original)
+	pool := original.Pools.Data[0]
+	expected := dashboardHTMLPage{path: "/storage/pools", title: "Pools", caption: "Pools in this observation", limit: 100, rows: []dashboardHTMLRow{{name: pool.Name, guid: pool.GUID, cells: []string{pool.GUID, dashboardBytes(pool.Size), dashboardBytes(pool.Allocated), dashboardBytes(pool.Free), pool.Health}}}}
+	cases := []struct {
+		name, want string
+		mutate     func(*dashboardHTMLNode)
+	}{
+		{"structure", "structure", func(n *dashboardHTMLNode) { n.children = nil }},
+		{"header count", "header-count", func(n *dashboardHTMLNode) { n.direct("thead")[0].children = nil }},
+		{"header text", "header", func(n *dashboardHTMLNode) { n.direct("thead")[0].find("th", "", "")[0].content = nil }},
+		{"row count", "row-count", func(n *dashboardHTMLNode) { n.direct("tbody")[0].children = nil }},
+		{"row shape", "row-shape", func(n *dashboardHTMLNode) { n.direct("tbody")[0].direct("tr")[0].attrs["class"] = "private-name" }},
+		{"row name", "row-name", func(n *dashboardHTMLNode) {
+			n.direct("tbody")[0].find("a", "", "")[0].content = []dashboardHTMLContent{{text: "private-name"}}
+		}},
+		{"row link", "row-link", func(n *dashboardHTMLNode) { n.direct("tbody")[0].find("a", "", "")[0].attrs["href"] = "private-token" }},
+		{"row selection", "row-selection", func(n *dashboardHTMLNode) { n.direct("tbody")[0].find("a", "", "")[0].attrs["id"] = "private-id" }},
+		{"cell style", "cell-style", func(n *dashboardHTMLNode) {
+			n.direct("tbody")[0].find("td", "", "")[0].attrs["class"] = "private-class"
+		}},
+	}
+	for i, field := range []string{"guid", "size", "allocated", "free", "pool-state"} {
+		cases = append(cases, struct {
+			name, want string
+			mutate     func(*dashboardHTMLNode)
+		}{field, "cell-" + field, func(n *dashboardHTMLNode) {
+			n.direct("tbody")[0].find("td", "", "")[i].content = []dashboardHTMLContent{{text: "private-observed-value"}}
+		}})
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			response := dashboardHTMLRequest(h, cookie, "GET", "/storage/pools", "")
+			root, err := dashboardParseHTML(response.Body.Bytes())
+			if err != nil {
+				t.Fatal(err)
+			}
+			table, err := dashboardTable(root, expected.caption)
+			if err != nil {
+				t.Fatal(err)
+			}
+			generation, err := root.one("p", "class", "generation")
+			if err != nil {
+				t.Fatal(err)
+			}
+			code, err := generation.one("code", "", "")
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := dashboardTableHTML(table, expected, code.rawText()); err != nil {
+				t.Fatal("unmodified table rejected", err)
+			}
+			c.mutate(table)
+			err = dashboardTableHTML(table, expected, code.rawText())
+			if err == nil || dashboardFailureClassification(err) != "failure:table-"+c.want {
+				t.Fatal("missing fixed check", c.want, err)
+			}
+			if strings.Contains(err.Error(), "private") {
+				t.Fatal("observed data leaked")
+			}
+		})
+	}
+}
+
+func TestDashboardTableDiagnosticsDatasetAndEmptyChecks(t *testing.T) {
+	for _, field := range []string{"guid", "used", "available", "referenced", "empty-shape", "empty-text"} {
+		t.Run(field, func(t *testing.T) {
+			original := performanceSnapshot(1, 0)
+			d := original.Datasets.Data[0]
+			p := dashboardHTMLPage{title: "Datasets", path: "/storage/datasets", caption: "Datasets in this observation", limit: 100, status: inventory.OK, rows: []dashboardHTMLRow{{name: d.Name, guid: d.GUID, cells: []string{d.GUID, dashboardBytes(d.Used), dashboardBytes(d.Available), dashboardBytes(d.Referenced)}}}}
+			if strings.HasPrefix(field, "empty-") {
+				original.Datasets.Data = nil
+				p.rows = nil
+			}
+			h, _, cookie := dashboardHTMLFixture(t, original)
+			response := dashboardHTMLRequest(h, cookie, "GET", p.path, "")
+			root, err := dashboardParseHTML(response.Body.Bytes())
+			if err != nil {
+				t.Fatal(err)
+			}
+			table, err := dashboardTable(root, p.caption)
+			if err != nil {
+				t.Fatal(err)
+			}
+			generation, err := root.one("p", "class", "generation")
+			if err != nil {
+				t.Fatal(err)
+			}
+			code, err := generation.one("code", "", "")
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := dashboardTableHTML(table, p, code.rawText()); err != nil {
+				t.Fatal("original table rejected", err)
+			}
+			cells := table.direct("tbody")[0].find("td", "", "")
+			check := "cell-" + field
+			switch field {
+			case "empty-shape":
+				cells[0].attrs["colspan"] = "private"
+				check = field
+			case "empty-text":
+				cells[0].content = nil
+				check = field
+			default:
+				index := map[string]int{"guid": 0, "used": 1, "available": 2, "referenced": 3}[field]
+				cells[index].content = []dashboardHTMLContent{{text: "private-value"}}
+			}
+			err = dashboardTableHTML(table, p, code.rawText())
+			if err == nil || dashboardFailureClassification(err) != "failure:table-"+check {
+				t.Fatal("missing fixed dataset/empty check", field, err)
+			}
+		})
 	}
 }
