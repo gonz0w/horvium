@@ -1,0 +1,440 @@
+{
+  "schema": 1,
+  "scope": "native original-value invariance research; no resource acceptance",
+  "source_commit": "d975f7d5f16f5a61d57fd183e8748da80e2c1944",
+  "base_commit": "97ebb60836329730b3976629d255b584ddc443ec",
+  "pr_title": "test(dashboards): isolate native value changes and define correction boundaries",
+  "qualified_resource": false,
+  "native_acceptance": false,
+  "candidate": {
+    "source_commit": "d975f7d5f16f5a61d57fd183e8748da80e2c1944",
+    "base_commit": "97ebb60836329730b3976629d255b584ddc443ec",
+    "pr_title": "test(dashboards): isolate native value changes and define correction boundaries",
+    "go_version": "go1.27.1",
+    "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+    "archive_sha256": "c8468cba16d1be34f6f3a59d3fb53a37089061184ef5b1bc496401726991b0b8",
+    "review_verified": true,
+    "artifacts": {
+      "15.1": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "deb750be726dfffe3f61bba8c3c23bc3849c56f2d43ba14629b4a713753b9cfa"
+      },
+      "14.5": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "deb750be726dfffe3f61bba8c3c23bc3849c56f2d43ba14629b4a713753b9cfa"
+      }
+    }
+  },
+  "environment": {
+    "artifacts": {
+      "fixture": "deb750be726dfffe3f61bba8c3c23bc3849c56f2d43ba14629b4a713753b9cfa",
+      "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+      "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65"
+    },
+    "go_version": "go1.27.1",
+    "kernel": "15.1-RELEASE-p3",
+    "userland": "15.1-RELEASE-p3",
+    "zfs": "zfs-2.4.2-1-FreeBSD_g6330a45b0 zfs-kmod-2.4.2-1-FreeBSD_g6330a45b0",
+    "physical_bytes": 6387634176
+  },
+  "raw_transcript_sha256": "df4d39d148798687437ff8dace9628c8f2b6cff917aaeb925f812c827d07a3bd",
+  "raw_bytes": 33059,
+  "result_sha256": "a45f54d085ad7111b728ff2fea15083f3024ed45736f83bdb4300ecbb0f7a3b6",
+  "controller_sha256": "07ed98daabcfc26a3743fd36970879dade910ca24ce3ca98dcbd84da30fc3681",
+  "worker_source_sha256": "f481851acd86e6be8e9759e07b5de1bb65caebbd419a5478e867565604f1b198",
+  "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+  "preflight_before_sha256": "056eb095fba0b14485550c33abaca5e6fbb5fc996ed9ed3c58bae9b91f53b29f",
+  "preflight_after_sha256": "dc4bbedd19593ea8f0b6052cd5fbe0984f702cc5aa5879b2f409e51ce0d452c8",
+  "before_after_environment_and_artifacts_identical": true,
+  "go_diagnostic_elapsed_seconds": 38.83,
+  "declared_scratch_bytes": 4194304,
+  "scratch_backing": "independently observed other guest ZFS dataset/pool, outside the owned test pool",
+  "stages": [
+    {
+      "stage": "baseline",
+      "original_sha256": "5fe0d2b4c3920cfbc22dcc41a09eccf0dc2c50d9a2162dcca921c923bac962bf",
+      "native_changes": {
+        "other-datasets": {},
+        "other-pools": {},
+        "owned-datasets": {},
+        "owned-pools": {}
+      },
+      "cache_changes": {
+        "other-datasets": {},
+        "other-pools": {},
+        "owned-datasets": {},
+        "owned-pools": {}
+      },
+      "native_cache_differences": {
+        "other-datasets": {},
+        "other-pools": {},
+        "owned-datasets": {},
+        "owned-pools": {}
+      },
+      "scratch_used_greater": false,
+      "scratch_referenced_greater": false,
+      "cases": {
+        "overview": {
+          "scheduled": 10,
+          "outcomes": {
+            "success": 10
+          },
+          "first_predicate_checks": {
+            "original-inventory": 10
+          }
+        },
+        "pools-default": {
+          "scheduled": 10,
+          "outcomes": {
+            "success": 10
+          },
+          "first_predicate_checks": {
+            "original-inventory": 10
+          }
+        },
+        "pools-maximum": {
+          "scheduled": 10,
+          "outcomes": {
+            "success": 10
+          },
+          "first_predicate_checks": {
+            "original-inventory": 10
+          }
+        },
+        "datasets-default": {
+          "scheduled": 10,
+          "outcomes": {
+            "success": 10
+          },
+          "first_predicate_checks": {
+            "original-inventory": 10
+          }
+        },
+        "datasets-maximum": {
+          "scheduled": 10,
+          "outcomes": {
+            "success": 10
+          },
+          "first_predicate_checks": {
+            "original-inventory": 10
+          }
+        }
+      }
+    },
+    {
+      "stage": "receipt-written",
+      "original_sha256": "5fe0d2b4c3920cfbc22dcc41a09eccf0dc2c50d9a2162dcca921c923bac962bf",
+      "native_changes": {
+        "other-datasets": {
+          "available": 15,
+          "referenced": 1,
+          "used": 3
+        },
+        "other-pools": {
+          "allocated": 1,
+          "free": 1
+        },
+        "owned-datasets": {},
+        "owned-pools": {}
+      },
+      "cache_changes": {
+        "other-datasets": {
+          "available": 15,
+          "referenced": 1,
+          "used": 3
+        },
+        "other-pools": {
+          "allocated": 1,
+          "free": 1
+        },
+        "owned-datasets": {},
+        "owned-pools": {}
+      },
+      "native_cache_differences": {
+        "other-datasets": {},
+        "other-pools": {},
+        "owned-datasets": {},
+        "owned-pools": {}
+      },
+      "scratch_used_greater": true,
+      "scratch_referenced_greater": true,
+      "cases": {
+        "overview": {
+          "scheduled": 10,
+          "outcomes": {
+            "failure": 10
+          },
+          "first_predicate_checks": {
+            "failure:table-cell-allocated": 10
+          }
+        },
+        "pools-default": {
+          "scheduled": 10,
+          "outcomes": {
+            "failure": 10
+          },
+          "first_predicate_checks": {
+            "failure:table-cell-allocated": 10
+          }
+        },
+        "pools-maximum": {
+          "scheduled": 10,
+          "outcomes": {
+            "failure": 10
+          },
+          "first_predicate_checks": {
+            "failure:table-cell-allocated": 10
+          }
+        },
+        "datasets-default": {
+          "scheduled": 10,
+          "outcomes": {
+            "success": 1,
+            "failure": 9
+          },
+          "first_predicate_checks": {
+            "original-inventory": 1,
+            "failure:table-cell-used": 8,
+            "failure:table-cell-available": 1
+          }
+        },
+        "datasets-maximum": {
+          "scheduled": 10,
+          "outcomes": {
+            "failure": 10
+          },
+          "first_predicate_checks": {
+            "failure:table-cell-used": 10
+          }
+        }
+      }
+    },
+    {
+      "stage": "scratch-written",
+      "original_sha256": "5fe0d2b4c3920cfbc22dcc41a09eccf0dc2c50d9a2162dcca921c923bac962bf",
+      "native_changes": {
+        "other-datasets": {
+          "available": 15,
+          "referenced": 1,
+          "used": 3
+        },
+        "other-pools": {
+          "allocated": 1,
+          "free": 1
+        },
+        "owned-datasets": {},
+        "owned-pools": {}
+      },
+      "cache_changes": {
+        "other-datasets": {
+          "available": 15,
+          "referenced": 1,
+          "used": 3
+        },
+        "other-pools": {
+          "allocated": 1,
+          "free": 1
+        },
+        "owned-datasets": {},
+        "owned-pools": {}
+      },
+      "native_cache_differences": {
+        "other-datasets": {},
+        "other-pools": {},
+        "owned-datasets": {},
+        "owned-pools": {}
+      },
+      "scratch_used_greater": true,
+      "scratch_referenced_greater": true,
+      "cases": {
+        "overview": {
+          "scheduled": 10,
+          "outcomes": {
+            "failure": 10
+          },
+          "first_predicate_checks": {
+            "failure:table-cell-allocated": 10
+          }
+        },
+        "pools-default": {
+          "scheduled": 10,
+          "outcomes": {
+            "failure": 10
+          },
+          "first_predicate_checks": {
+            "failure:table-cell-allocated": 10
+          }
+        },
+        "pools-maximum": {
+          "scheduled": 10,
+          "outcomes": {
+            "failure": 10
+          },
+          "first_predicate_checks": {
+            "failure:table-cell-allocated": 10
+          }
+        },
+        "datasets-default": {
+          "scheduled": 10,
+          "outcomes": {
+            "success": 1,
+            "failure": 9
+          },
+          "first_predicate_checks": {
+            "original-inventory": 1,
+            "failure:table-cell-used": 8,
+            "failure:table-cell-available": 1
+          }
+        },
+        "datasets-maximum": {
+          "scheduled": 10,
+          "outcomes": {
+            "failure": 10
+          },
+          "first_predicate_checks": {
+            "failure:table-cell-used": 10
+          }
+        }
+      }
+    },
+    {
+      "stage": "scratch-removed",
+      "original_sha256": "5fe0d2b4c3920cfbc22dcc41a09eccf0dc2c50d9a2162dcca921c923bac962bf",
+      "native_changes": {
+        "other-datasets": {
+          "available": 15,
+          "referenced": 1,
+          "used": 3
+        },
+        "other-pools": {
+          "allocated": 1,
+          "free": 1
+        },
+        "owned-datasets": {},
+        "owned-pools": {}
+      },
+      "cache_changes": {
+        "other-datasets": {
+          "available": 15,
+          "referenced": 1,
+          "used": 3
+        },
+        "other-pools": {
+          "allocated": 1,
+          "free": 1
+        },
+        "owned-datasets": {},
+        "owned-pools": {}
+      },
+      "native_cache_differences": {
+        "other-datasets": {},
+        "other-pools": {},
+        "owned-datasets": {},
+        "owned-pools": {}
+      },
+      "scratch_used_greater": true,
+      "scratch_referenced_greater": true,
+      "cases": {
+        "overview": {
+          "scheduled": 10,
+          "outcomes": {
+            "failure": 10
+          },
+          "first_predicate_checks": {
+            "failure:table-cell-allocated": 10
+          }
+        },
+        "pools-default": {
+          "scheduled": 10,
+          "outcomes": {
+            "failure": 10
+          },
+          "first_predicate_checks": {
+            "failure:table-cell-allocated": 10
+          }
+        },
+        "pools-maximum": {
+          "scheduled": 10,
+          "outcomes": {
+            "failure": 10
+          },
+          "first_predicate_checks": {
+            "failure:table-cell-allocated": 10
+          }
+        },
+        "datasets-default": {
+          "scheduled": 10,
+          "outcomes": {
+            "success": 1,
+            "failure": 9
+          },
+          "first_predicate_checks": {
+            "original-inventory": 1,
+            "failure:table-cell-used": 8,
+            "failure:table-cell-available": 1
+          }
+        },
+        "datasets-maximum": {
+          "scheduled": 10,
+          "outcomes": {
+            "failure": 10
+          },
+          "first_predicate_checks": {
+            "failure:table-cell-used": 10
+          }
+        }
+      }
+    }
+  ],
+  "supervisors": [
+    {
+      "command_sha256": "e2fc21c2c78cbd0380661345a418599d1333e21c441fcda56f031fa438727613",
+      "completed": true,
+      "group_cleaned": true,
+      "worker_returncode": 0,
+      "escalated": false,
+      "reason": "exit"
+    },
+    {
+      "command_sha256": "031f5556addac40c17aaf8918cf7cc1361dfb23a9af4d9948b6cee92b7875b7e",
+      "completed": true,
+      "group_cleaned": true,
+      "worker_returncode": 0,
+      "escalated": false,
+      "reason": "exit"
+    }
+  ],
+  "guest_bounded_cleanup_verified": true,
+  "complete_resource_parent_cleanup": "not executed; custom diagnostic cleanup only",
+  "host_teardown_and_pins_independently_reopened": true,
+  "portable_review": {
+    "source_commit": "d975f7d5f16f5a61d57fd183e8748da80e2c1944",
+    "base_commit": "97ebb60836329730b3976629d255b584ddc443ec",
+    "pr_title": "test(dashboards): isolate native value changes and define correction boundaries",
+    "report_sha256": "6cbc60f6597f3b7a5678e662bbeb15c8820e6fffe6c62b905756d0111bdf8a54",
+    "required_checks": "make check lint test secrets passed",
+    "tooling_tests": 306,
+    "race_packages": [
+      "./cmd/horvium"
+    ],
+    "fuzz_targets": [],
+    "deep_log_sha256": "1d09cbfef19cfe770a825e39404d143398aa2e41f3483d6952926a2877a66c37"
+  },
+  "preservation": {
+    "historical_manifests": 152,
+    "primary_operator_edits_unchanged": true
+  },
+  "limits": [
+    "50 sequential HTML requests per stage; no original warm-up/idle or ten-reader resource acceptance",
+    "receipt stage combines receipt creation, identified-pool sync and refresh; not isolation of every natural writer",
+    "scratch Used/Referenced stay above original after removal; no return-to-baseline claim",
+    "bounded control does not prove the cause of every historical candidate failure",
+    "original HTML oracle still rejects changed values; no refresh or relaxation",
+    "14.5/full both-release budgets, native crash/recovery and complete parent controls not executed",
+    "large-mode latency remains unresolved",
+    "proposed witness requirement is draft, with no adopted mechanism or implementation",
+    "scratch increase booleans compare with the original baseline, not the receipt stage; no incremental scratch accounting claim"
+  ]
+}

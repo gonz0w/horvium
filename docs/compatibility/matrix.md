@@ -2001,3 +2001,12 @@ The [native value-invariance probe](../research/dashboards/native-value-invarian
 separates original fixture ownership from other disposable-guest storage and retains
 fixed expectations. It is test-only research, including a bounded disposable scratch
 write; no product protocol, privilege, hardware scope or resource acceptance changes.
+
+
+The native invariance diagnostic completed on disposable FreeBSD 15.1 with
+independently verified bounded guest/host cleanup. Receipt/sync/refresh changed
+other guest accounting while all 100 owned datasets and their pool stayed unchanged;
+current cached values matched independent native observations. The frozen oracle
+still rejected 147 of 200 complete responses. Full resources/14.5 remain unqualified.
+The [proposed generation-bound oracle requirement](../design/dashboards/native-invariance-correction.md)
+is Draft, with no adopted mechanism or runtime behavior change.
