@@ -40,8 +40,8 @@ Dashboard presentation decision adopted by maintainer merge of
   current observations first; separately bounded uPlot fixture and history gates.
 
 
-Proposed review record (not yet accepted):
+Accepted development-only decision:
 
 - [0011 Original native dashboard witnesses](0011-native-dashboard-witnesses.md):
   development-only original wire custody and existing generation/request-ID binding;
-  requires maintainer adoption and integrated/native verification before activation.
+  adopted in PR 387; integrated/native verification remains required before activation.

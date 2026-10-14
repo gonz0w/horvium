@@ -323,3 +323,5 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [Native witness binding EDD](design/dashboards/native-witness-binding-EDD.md) and
   [Test Design](design/dashboards/native-witness-binding-TDD.md): concrete review
   packet under #382; [ADR 0011](adr/0011-native-dashboard-witnesses.md) is proposed.
+
+- [Inactive original dashboard witness fixture](testing/dashboards/native-witness-fixture.md).

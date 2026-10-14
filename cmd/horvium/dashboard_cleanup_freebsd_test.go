@@ -69,11 +69,12 @@ func dashboardReaperEmpty() error {
 }
 
 type dashboardGuestOwner struct {
-	artifacts       dashboardArtifactObservation
-	files           map[string]*dashboardOriginalFile
-	directories     map[string]string
-	sockets         map[string]string
-	storageCleanups int
+	artifacts           dashboardArtifactObservation
+	files               map[string]*dashboardOriginalFile
+	directories         map[string]string
+	sockets             map[string]string
+	storageCleanups     int
+	witnessArchiveBytes int64
 }
 
 func newDashboardGuestOwner(t *testing.T) *dashboardGuestOwner {

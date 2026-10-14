@@ -1,14 +1,14 @@
 # ADR 0011: original native dashboard witnesses
 
-Status: Review; proposed development-only decision. Date: 2026-10-13.
+Status: Accepted for test-only implementation in [PR 387](https://github.com/gonz0w/horvium/pull/387); no implementation/resource acceptance. Date: 2026-10-13.
 Owner: Cam (`@gonz0w`), [issue 382](https://github.com/gonz0w/horvium/issues/382).
 [Requirement correction](../design/dashboards/native-invariance-correction.md),
 [EDD](../design/dashboards/native-witness-binding-EDD.md),
 [Test Design](../design/dashboards/native-witness-binding-TDD.md).
-Maintainer merge of this complete packet is requested to adopt its test-only
-mechanism for implementation. It does not approve an implementation or accept
-resource/native/browser/release results. Until adoption, the existing approved
-resource procedure remains authoritative.
+PR 387 adopted this complete packet's test-only mechanism for implementation.
+It did not approve an implementation or accept resource/native/browser/release
+results. The existing resource procedure remains authoritative until integrated
+review and the required native activation gates are complete.
 
 ## Context
 
