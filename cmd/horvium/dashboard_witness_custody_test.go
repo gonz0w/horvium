@@ -139,3 +139,22 @@ func witnessPrivateDirectory(t *testing.T) string {
 	}
 	return dir
 }
+
+func TestDashboardWitnessReadOnlyRawObjectIsNotExecutable(t *testing.T) {
+	f, e := os.CreateTemp(witnessPrivateDirectory(t), "original-")
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer f.Close()
+	if _, e := f.Write([]byte("original bytes")); e != nil || f.Chmod(0400) != nil {
+		t.Fatal("original object")
+	}
+	before, e := f.Stat()
+	if e != nil {
+		t.Fatal(e)
+	}
+	after, e := f.Stat()
+	if e != nil || !witnessRawUnchanged(before, after) {
+		t.Fatal("sealed raw object incorrectly required executable mode")
+	}
+}

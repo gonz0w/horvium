@@ -235,7 +235,7 @@ func (o *witnessFixtureObserver) original(id string) (inventory.Snapshot, dashbo
 	h := sha256.New()
 	snapshot, e := dashboardDecodeWitness(io.TeeReader(io.NewSectionReader(f, 0, ref.RawBytes), h), id)
 	after, ae := f.Stat()
-	if e != nil || ae != nil || !dashboardArtifactUnchanged(opened, after) || fmt.Sprintf("%x", h.Sum(nil)) != ref.RawSHA256 || !snapshot.Complete() {
+	if e != nil || ae != nil || !witnessRawUnchanged(opened, after) || fmt.Sprintf("%x", h.Sum(nil)) != ref.RawSHA256 || !snapshot.Complete() {
 		return inventory.Snapshot{}, dashboardWitnessRef{}, errDashboardWitness
 	}
 	return snapshot, ref, nil

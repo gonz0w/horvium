@@ -275,55 +275,6 @@ func witnessSocketPair() (a, b *net.UnixConn, err error) {
 	}
 	return a, b, nil
 }
-func witnessPassedDescriptor(c *net.UnixConn) (*net.UnixConn, error) {
-	var tag [1]byte
-	oob := make([]byte, unix.CmsgSpace(4)*2)
-	n, on, flags, _, e := c.ReadMsgUnix(tag[:], oob)
-	if e != nil || n != 1 || tag[0] != 'F' || flags&unix.MSG_CTRUNC != 0 {
-		return nil, errDashboardWitness
-	}
-	messages, e := unix.ParseSocketControlMessage(oob[:on])
-	if e != nil {
-		return nil, errDashboardWitness
-	}
-	var descriptors []int
-	for _, message := range messages {
-		if message.Header.Level != unix.SOL_SOCKET || message.Header.Type != unix.SCM_RIGHTS {
-			e = errDashboardWitness
-			continue
-		}
-		fds, fe := unix.ParseUnixRights(&message)
-		if fe != nil {
-			e = fe
-		}
-		descriptors = append(descriptors, fds...)
-	}
-	defer func() {
-		for _, fd := range descriptors {
-			_ = unix.Close(fd)
-		}
-	}()
-	if e != nil || len(messages) != 1 || len(descriptors) != 1 {
-		return nil, errDashboardWitness
-	}
-	fd := descriptors[0]
-	unix.CloseOnExec(fd)
-	if flags, e := unix.FcntlInt(uintptr(fd), unix.F_GETFD, 0); e != nil || flags&unix.FD_CLOEXEC == 0 {
-		return nil, errDashboardWitness
-	}
-	f := os.NewFile(uintptr(fd), "owned-helper-handoff")
-	conn, e := net.FileConn(f)
-	// defer closes the original fd; FileConn owns its separate CLOEXEC duplicate.
-	if e != nil {
-		return nil, errDashboardWitness
-	}
-	u, ok := conn.(*net.UnixConn)
-	if !ok {
-		conn.Close()
-		return nil, errDashboardWitness
-	}
-	return u, nil
-}
 
 func TestNativeDashboardWitnessConnector(t *testing.T) {
 	path := os.Getenv("HORVIUM_WITNESS_CONNECTOR")
@@ -409,6 +360,7 @@ type witnessNativeObserver struct {
 	management   witnessActor
 	registered   chan struct{}
 	active       bool
+	stopping     bool
 	allowDeath   bool
 	denied       int
 	connections  map[*net.UnixConn]bool
@@ -580,12 +532,13 @@ func (o *witnessNativeObserver) receipt() witnessNativeReceipt {
 	return r
 }
 func (o *witnessNativeObserver) stop() error {
-	_ = o.listener.Close()
 	o.mu.Lock()
+	o.stopping = true
 	for c := range o.connections {
 		_ = c.Close()
 	}
 	o.mu.Unlock()
+	_ = o.listener.Close()
 	o.children.Wait()
 	i, e := os.Lstat(o.cfg.Front)
 	if e != nil || !os.SameFile(i, o.front) || os.Remove(o.cfg.Front) != nil {
@@ -689,7 +642,7 @@ func TestNativeDashboardWitnessObserver(t *testing.T) {
 				return
 			}
 			o.mu.Lock()
-			if o.active {
+			if o.active || o.stopping {
 				o.denied++
 				o.mu.Unlock()
 				c.Close()

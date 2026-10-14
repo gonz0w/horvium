@@ -31,6 +31,11 @@ type witnessSealed struct {
 	info os.FileInfo
 	file *os.File
 }
+
+func witnessRawUnchanged(before, after os.FileInfo) bool {
+	return before != nil && after != nil && after.Mode().IsRegular() && after.Mode().Perm() == 0400 && os.SameFile(before, after) && before.Size() == after.Size() && before.Mode() == after.Mode() && before.ModTime().Equal(after.ModTime())
+}
+
 type dashboardWitnessStore struct {
 	mu        sync.Mutex
 	directory string

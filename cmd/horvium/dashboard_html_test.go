@@ -38,6 +38,11 @@ func dashboardHTMLFixture(t *testing.T, s inventory.Snapshot) (http.Handler, *ob
 	if err != nil {
 		t.Fatal(err)
 	}
+	return dashboardHTMLManagerFixture(t, m)
+}
+
+func dashboardHTMLManagerFixture(t *testing.T, m *observation.Manager) (http.Handler, *observation.Manager, *http.Cookie) {
+	t.Helper()
 	ctx, cancel := context.WithCancel(context.Background())
 	done := make(chan struct{})
 	go func() { defer close(done); _ = m.Run(ctx) }()
