@@ -531,11 +531,13 @@ func (o *witnessNativeObserver) receipt() witnessNativeReceipt {
 	}
 	return r
 }
-func (o *witnessNativeObserver) stop() error {
+func (o *witnessNativeObserver) stop(graceful bool) error {
 	o.mu.Lock()
 	o.stopping = true
-	for c := range o.connections {
-		_ = c.Close()
+	if !graceful {
+		for c := range o.connections {
+			_ = c.Close()
+		}
 	}
 	o.mu.Unlock()
 	_ = o.listener.Close()
@@ -707,10 +709,14 @@ func TestNativeDashboardWitnessObserver(t *testing.T) {
 			break
 		}
 	}
-	// Closing active streams is needed before waiting; cancellation also kills
-	// only the original exec.Cmd connector. Listener close does not unlink paths.
+	// Normal owner completion stops admission and drains the one existing call
+	// under its original deadline while management is alive. Signal/parent loss
+	// cancels/ closes immediately and retains any failure. No workload is retried.
+	if !stop {
+		stopWork()
+	}
+	cleanup := o.stop(stop)
 	stopWork()
-	cleanup := o.stop()
 	if cleanup != nil {
 		t.Error("observer owned socket cleanup")
 	}

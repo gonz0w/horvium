@@ -381,11 +381,11 @@ func startWitnessPair(t *testing.T, owner *dashboardGuestOwner, probe witnessPro
 func (p *witnessNativePair) cleanup(t *testing.T) {
 	t.Helper()
 	if p.pair != nil {
-		if !p.pair.management.waited {
-			p.pair.management.stop(t, syscall.SIGTERM, true)
-		}
 		if p.observer != nil && !p.observer.closed {
 			p.observer.stop(t)
+		}
+		if !p.pair.management.waited {
+			p.pair.management.stop(t, syscall.SIGTERM, true)
 		}
 		if !p.pair.helper.waited {
 			p.pair.helper.stop(t, syscall.SIGTERM, true)
@@ -604,8 +604,8 @@ func TestNativeDashboardWitnessShort(t *testing.T) {
 			if e != nil || r.Denied != 1 || r.Connectors < 2 || r.ConnectorMaxRSS == 0 || r.ConnectorCPUNS <= 0 {
 				t.Fatal("kernel identity / connector receipts", e)
 			}
-			p.pair.management.stop(t, syscall.SIGTERM, true)
 			p.observer.stop(t)
+			p.pair.management.stop(t, syscall.SIGTERM, true)
 			p.pair.helper.stop(t, syscall.SIGTERM, true)
 			if b, e := os.ReadFile(p.pair.path); e != nil || !bytes.Equal(b, p.configBytes) {
 				t.Fatal("front config changed")
