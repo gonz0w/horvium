@@ -398,8 +398,9 @@ func witnessNativeConnectorArtifactControl(t *testing.T, p *performancePair, abi
 			_ = cmd.Wait()
 		}
 	}()
-	_ = parent.SetDeadline(time.Now().Add(10 * time.Second))
-	if witnessControlWrite(parent, witnessConnectorConfig{ABI: abi, ParentPID: os.Getpid(), Fixture: fixture, SHA256: "0000000000000000000000000000000000000000000000000000000000000000"}) != nil {
+	originalDeadline, _ := ctx.Deadline()
+	_ = parent.SetDeadline(originalDeadline)
+	if witnessControlWrite(parent, witnessConnectorConfig{DeadlineNS: originalDeadline.UnixNano(), ABI: abi, ParentPID: os.Getpid(), Fixture: fixture, SHA256: "0000000000000000000000000000000000000000000000000000000000000000"}) != nil {
 		t.Fatal("connector control bootstrap")
 	}
 	var accepted witnessActor
@@ -412,7 +413,7 @@ func witnessNativeConnectorArtifactControl(t *testing.T, p *performancePair, abi
 	if cmd.ProcessState != nil {
 		usage, _ = cmd.ProcessState.SysUsage().(*syscall.Rusage)
 	}
-	if e == nil || cmd.ProcessState == nil || cmd.ProcessState.ExitCode() == 0 || usage == nil || usage.Maxrss <= 0 {
+	if e == nil || ctx.Err() != nil || cmd.ProcessState == nil || cmd.ProcessState.ExitCode() != 1 || usage == nil || usage.Maxrss <= 0 {
 		t.Fatal("wrong artifact connector control not denied/accounted")
 	}
 	cpu, ce := witnessNativeCPU(usage)

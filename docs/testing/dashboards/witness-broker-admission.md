@@ -86,3 +86,28 @@ but active observer with connector 1; fallback preserved one complete, undeliver
 original. Guest/host teardown passed. No admission outcome, capacity cases or 14.5
 execution is established. Restore the existing initial publication wait before
 using the overview helper; no product readiness or deadline changes are needed.
+
+## Connector deadline correction
+
+Source `4b26a1639c2eba95a1395623ae1c4d9d85db33dc` failed its initial
+15.1 readiness gate (150.38 seconds). The actual diagnostic records permanent
+`connector-ack` failure, one started/reaped connector, zero originals and subsequent
+admission denials; guest/host teardown passed. Capacity cases and 14.5 were not
+executed. The diagnostic does not retain that child's own error/wait or timestamp,
+so expiration of the separate ten-second handshake timer is an inference.
+
+The accepted EDD requires the existing 45-second collection deadline without an
+extension or retry. The connector previously started a separate ten-second timer
+covering self/parent/helper artifact checks and handoff. Pass the original absolute
+collection deadline through the existing private typed bootstrap; both peers use
+that same deadline, with expired/missing/out-of-budget values refused. Keep initial
+bootstrap bounded by ten seconds, original request cancellation and reaping, and
+all actor/descriptor checks. No phase restarts or extends the collection budget.
+A delayed-bootstrap portable regression preserves the exact original timestamp.
+
+Retain connector stdout/stderr in the original private observer log. The actual
+bad-artifact control supplies a valid deadline and must exit 1 with no context
+expiry, before any descriptor is transferred. Rerun normal/full-attempt admission,
+connector cancellation and ancillary rejection controls on both pinned releases.
+This corrects the earlier implementation's independent handshake timer; it does
+not increase the accepted 45-second collection deadline, caps or resource budgets.

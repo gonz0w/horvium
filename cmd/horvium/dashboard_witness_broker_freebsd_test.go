@@ -256,6 +256,7 @@ func witnessSocketPair() (a, b *net.UnixConn, err error) {
 }
 
 type witnessConnectorConfig struct {
+	DeadlineNS      int64 `json:"deadline_unix_ns"`
 	ABI             witnessABI
 	ParentPID       int
 	Fixture, SHA256 string
@@ -285,8 +286,12 @@ func TestNativeDashboardWitnessConnector(t *testing.T) {
 		t.Fatal("connector original bootstrap")
 	}
 	parentUID, parentPID, pe := witnessNativePeer(u, cfg.ABI)
+	deadline, de := witnessConnectorDeadline(time.Now(), cfg.DeadlineNS)
+	if pe != nil || parentUID != 0 || parentPID != cfg.ParentPID || de != nil || u.SetDeadline(deadline) != nil {
+		t.Fatal("connector original collection deadline/parent")
+	}
 	actor, ae := witnessObserveActor(os.Getpid(), cfg.ABI)
-	if pe != nil || parentUID != 0 || parentPID != cfg.ParentPID || ae != nil || actor.UID != uint32(uid) || actor.Executable != cfg.Fixture || actor.SHA256 != cfg.SHA256 {
+	if ae != nil || actor.UID != uint32(uid) || actor.Executable != cfg.Fixture || actor.SHA256 != cfg.SHA256 {
 		t.Fatal("connector original artifact/lifetime")
 	}
 	if witnessControlWrite(u, actor) != nil {
@@ -520,6 +525,7 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	cmd := exec.CommandContext(ctx, o.cfg.Fixture, "-test.run=^TestNativeDashboardWitnessConnector$", "-test.count=1")
 	cmd.Env = []string{"HORVIUM_NATIVE_VM=1", "HORVIUM_PERF_VM=1", "HORVIUM_WITNESS_CONNECTOR=" + o.cfg.Back, "HORVIUM_WITNESS_UID=" + strconv.FormatUint(uint64(o.cfg.ManagementUID), 10), "LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
 	cmd.ExtraFiles = []*os.File{file}
+	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
 	cmd.SysProcAttr = &syscall.SysProcAttr{Credential: &syscall.Credential{Uid: o.cfg.ManagementUID, Gid: o.cfg.SocketGID, Groups: []uint32{o.cfg.SocketGID}}}
 	stage = "connector-start"
 	if cmd.Start() != nil {
@@ -540,9 +546,9 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 			o.accountConnector(cmd, stage, waitError, ctx.Err())
 		}
 	}()
-	_ = parent.SetDeadline(time.Now().Add(10 * time.Second))
+	_ = parent.SetDeadline(deadline)
 	stage = "connector-bootstrap"
-	if witnessControlWrite(parent, witnessConnectorConfig{ABI: o.cfg.ABI, ParentPID: os.Getpid(), Fixture: o.cfg.Fixture, SHA256: o.cfg.FixtureSHA256, Fault: witnessConfiguredAncillary(o.cfg)}) != nil {
+	if witnessControlWrite(parent, witnessConnectorConfig{DeadlineNS: deadline.UnixNano(), ABI: o.cfg.ABI, ParentPID: os.Getpid(), Fixture: o.cfg.Fixture, SHA256: o.cfg.FixtureSHA256, Fault: witnessConfiguredAncillary(o.cfg)}) != nil {
 		fail()
 		return
 	}
