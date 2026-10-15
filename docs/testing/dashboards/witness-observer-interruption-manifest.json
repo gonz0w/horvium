@@ -1,0 +1,548 @@
+{
+  "schema": 1,
+  "date": "2026-10-14",
+  "scope": "inactive-actual-observer-interruption-support",
+  "source_commit": "6cc6e29c240202b56c69df0a1df7949df27a7d5d",
+  "base_commit": "420deb3cbc992704d0f0eed11e46b7b363d29b8d",
+  "pr_title": "test(dashboards): batch actual observer interruption controls",
+  "native_acceptance": false,
+  "resource_acceptance": false,
+  "resource_activation": false,
+  "historical_manifests_preserved": 161,
+  "portable_review": {
+    "source_commit": "6cc6e29c240202b56c69df0a1df7949df27a7d5d",
+    "result_sha256": "e03670b11ab3ae25a5b1e68cfa346d34053e2f967d4d011cb870af0fe673761c",
+    "qualified": true,
+    "deep": "executed affected cmd race/original-wire fuzz",
+    "checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "freebsd_test_cross_build": "passed"
+  },
+  "failing_behavior_log_sha256": "b7ca8c9a0102a973d6101f1d204b684c892218d3aa90ea4ab4ee0a2da8fef3ac",
+  "runs": [
+    {
+      "source_commit": "6cc6e29c240202b56c69df0a1df7949df27a7d5d",
+      "base_commit": "420deb3cbc992704d0f0eed11e46b7b363d29b8d",
+      "pr_title": "test(dashboards): batch actual observer interruption controls",
+      "release": "14.5",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessInterruption (378.12s)",
+      "raw_sha256": "8decc53b7221acd8081958a581bc2cbe62b4b72d52bc84fc169e2957be198c6f",
+      "archive_sha256": "cf65cc248b7eb46724f532906089d56cf331de66aec9118160ea682c93418810",
+      "result_sha256": "2489cf02242906931e9d295eb5f0c4d7b2b9b4061a34c344f0941cc9f8b68f62",
+      "cases": [
+        {
+          "case": "metadata-channel-eof",
+          "receipt_sha256": "ca5a3ab106ed9d191e2e898cc31add9623ed93da7a8bac261573ca9a99138295",
+          "originals": [
+            {
+              "original_sha256": "8849573c9ec1d4d6013f994e0a2e33f4935c20800bd9deccbbd76c727c247ecb",
+              "bytes": 20795,
+              "source_mode": 256
+            },
+            {
+              "original_sha256": "f4491dbe9c0a1758c03a62da92147d683749b7fe32e57427a587eb64059364c3",
+              "bytes": 686,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 17760256,
+          "observer_cpu_ns": 11613900000,
+          "original_failure_receipt": true,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "metadata-sigkill",
+          "receipt_sha256": "c1c384cc29c26f937a98ac02892f3db721f1127794c9d6c02309cabcc543307e",
+          "originals": [
+            {
+              "original_sha256": "3de7958dbfea4a9a21184fe9fc2f424646b303c4da8930616a1eb9d11d521f8f",
+              "bytes": 20797,
+              "source_mode": 256
+            },
+            {
+              "original_sha256": "41e436945eb69aabf80bf56c92f36ed2bb5fad33a3ddbb0957cf25f336addd2a",
+              "bytes": 687,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 17776640,
+          "observer_cpu_ns": 13257300000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "metadata-sigterm",
+          "receipt_sha256": "6a05dabe841755c1aac47429aa1ca3dc9a282ae71127561a9090a908c62e0a8f",
+          "originals": [
+            {
+              "original_sha256": "e1e42d667636c936f7772763d4ef5dfad10e84bdaae51a6f1c9d5f48213e8f27",
+              "bytes": 20797,
+              "source_mode": 256
+            },
+            {
+              "original_sha256": "8828a6b310cbf35b83762a13a813c708b5a198fb05520f8d324e31cdd4da3c4e",
+              "bytes": 686,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 17891328,
+          "observer_cpu_ns": 14906021000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "forward-channel-eof",
+          "receipt_sha256": "86e8fb54f88b3d1ef1813a570721e9766b608aef4ce40888a2f217e35465476c",
+          "originals": [
+            {
+              "original_sha256": "a2ad8eff65826fd703a61ae929aad2a3eecb0bef76cf63e7ee3d880db3b54937",
+              "bytes": 20797,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 17760256,
+          "observer_cpu_ns": 13983838000,
+          "original_failure_receipt": true,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "forward-sigkill",
+          "receipt_sha256": "63a57794986562d3554e06d0a712fd3d509045e4272552dd9598b3af146d3054",
+          "originals": [
+            {
+              "original_sha256": "f122b5b165dc9c9b6b4b71a00fd22e299d5c71336d69712b26fbc9f2826c0561",
+              "bytes": 20797,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 17788928,
+          "observer_cpu_ns": 13142009000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "forward-sigterm",
+          "receipt_sha256": "6a6ea584bb784b0cb76d59eb9586e282d07baed6de32a00bf90d797b8aec55e6",
+          "originals": [
+            {
+              "original_sha256": "6c1f916740b2f7935370b2bcb069f04001c1b748c8bc07b41f1d1693c21efc61",
+              "bytes": 20797,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 17727488,
+          "observer_cpu_ns": 12254118000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "sealed-channel-eof",
+          "receipt_sha256": "38af0c3db346a8f4500b9163ba6c181a16ac5359aeb1b50731e7ce05a39677fe",
+          "originals": [
+            {
+              "original_sha256": "d4e06399f9cf9af5cf3d213eb05c2d6b40b76bccde781ae93e9581801553dfda",
+              "bytes": 20797,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 17678336,
+          "observer_cpu_ns": 10287234000,
+          "original_failure_receipt": true,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "sealed-sigkill",
+          "receipt_sha256": "53e6d9cf3d8a4acabd01cf355ed434e62058e95aba8867cb23d26208ea39707e",
+          "originals": [
+            {
+              "original_sha256": "a82e5a1c05a3a72c7a270b8494f73bf4f261e6982d63d6e8ff4f123c8b8508c8",
+              "bytes": 20797,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 17494016,
+          "observer_cpu_ns": 10599049000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "sealed-sigterm",
+          "receipt_sha256": "9ebb4f49037d6a0ee4687a20797d644177c5578f668c447319e24c93a9b065ce",
+          "originals": [
+            {
+              "original_sha256": "150a6e8ed2f64b09c5a40538d45dfc9c1844e86edd2a17502961345ef5a7b6e8",
+              "bytes": 20797,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 17580032,
+          "observer_cpu_ns": 11285877000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "capture-channel-eof",
+          "receipt_sha256": "cc1e5e9832a79d1189cb90f5b67a92d1ab67b691927e40ffd8b8e3c76c1a847f",
+          "originals": [
+            {
+              "original_sha256": "e3abd3fdb7de31eb693e3186a9110697c703556b112e794839b747c003eba7df",
+              "bytes": 80,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 17166336,
+          "observer_cpu_ns": 10966796000,
+          "original_failure_receipt": true,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "capture-sigkill",
+          "receipt_sha256": "33650c7dc4922ed8a06ffb7760479bec29cd3a233540f47acec09115b15fc4c4",
+          "originals": [
+            {
+              "original_sha256": "fb2c08070662bffce08792e01fd9b6af42bc88adc9882815965c32b30a951cab",
+              "bytes": 80,
+              "source_mode": 384
+            }
+          ],
+          "observer_high_rss": 16900096,
+          "observer_cpu_ns": 11141708000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "capture-sigterm",
+          "receipt_sha256": "03664c06bba63e0c9c2f4b4e51745ea3d3b5a7138edc4ea438f52296ed47fd66",
+          "originals": [
+            {
+              "original_sha256": "0505358c80c5044151e8e8506611e7b9202b92d9c4aa414505f1fcae29f473a2",
+              "bytes": 80,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 17002496,
+          "observer_cpu_ns": 10572019000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "normal_control": {
+        "receipt_sha256": "f189d595b1c47526d9e766eb0104360eec0b6767a73ade4b637cd7f1a5892a5f",
+        "originals": 1,
+        "connectors": 1,
+        "all_connectors_reaped": true
+      },
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    },
+    {
+      "source_commit": "6cc6e29c240202b56c69df0a1df7949df27a7d5d",
+      "base_commit": "420deb3cbc992704d0f0eed11e46b7b363d29b8d",
+      "pr_title": "test(dashboards): batch actual observer interruption controls",
+      "release": "15.1",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessInterruption (506.28s)",
+      "raw_sha256": "6164a08a06c19ba32c20bc76e4b1a4fb1637fb6d8bc29d383b88593aefcc8507",
+      "archive_sha256": "f6ebac0ba123073787474f8f7950287426e7694e60d3da99497a31a2b63cb69d",
+      "result_sha256": "c678151b7ca7157d1c3a7d6f75b501898cac6c93930bffd308b9476bc7f212e5",
+      "cases": [
+        {
+          "case": "capture-sigterm",
+          "receipt_sha256": "e8a253b9c9f9ce6cdd7bb73907e5909ee4c25568017284e894848ecf0d1e5938",
+          "originals": [
+            {
+              "original_sha256": "d38435849da8c15e75e6fdf5d570b157923e9e8c5d6a668e950b744397dc8840",
+              "bytes": 80,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 13328384,
+          "observer_cpu_ns": 16123610000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "forward-sigterm",
+          "receipt_sha256": "a560fa0f96f1f999788a751484899c28c804aff97cf971b1924b11fe281a2139",
+          "originals": [
+            {
+              "original_sha256": "b822db1efb00fdd739dc8656b0c85f153845c3c036c1b9ca064eb8ed1934e55a",
+              "bytes": 23110,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 13705216,
+          "observer_cpu_ns": 17262271000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "metadata-sigkill",
+          "receipt_sha256": "ec1c27eca82e24b9c175006d29889f259194153d9ad8c9b856c2d2a423711fca",
+          "originals": [
+            {
+              "original_sha256": "0414a6c7baeff9e2f6bd05606c0d69eff180c420aa170ac6d874d0e55da055b9",
+              "bytes": 23108,
+              "source_mode": 256
+            },
+            {
+              "original_sha256": "67c3eba63d30b5e1039691b66cd60e884ac886f7d0d6bc37d14c61c5ad554d15",
+              "bytes": 687,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 20586496,
+          "observer_cpu_ns": 15954108000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "sealed-sigkill",
+          "receipt_sha256": "b87d15dfa567176d79d3d5624208c9e503a553de524687c27872b086b9df5d1b",
+          "originals": [
+            {
+              "original_sha256": "07c48969536729d9dbb47b3191d702cff97028d7e424d8610dc1b3b31fd993c4",
+              "bytes": 23111,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 19853312,
+          "observer_cpu_ns": 15374199000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "forward-sigkill",
+          "receipt_sha256": "606551975093dc770af7d6b340c1ed59c368c358c64c88efd79bd0cfe14f561f",
+          "originals": [
+            {
+              "original_sha256": "86c0a704927038af49bedf3588cd9539975f5510624dd88fd71273a5e34dc0b8",
+              "bytes": 23111,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 13979648,
+          "observer_cpu_ns": 17950989000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "capture-sigkill",
+          "receipt_sha256": "63af986406e3d2075383b70a3b1cd1443eef525d8fa3a31d1018e3200f26af88",
+          "originals": [
+            {
+              "original_sha256": "9f445a972d7a5b34e8eb0f5a64e12c6419b91283861bf42bf27d6f5d9c74713a",
+              "bytes": 80,
+              "source_mode": 384
+            }
+          ],
+          "observer_high_rss": 13266944,
+          "observer_cpu_ns": 15712406000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "sealed-sigterm",
+          "receipt_sha256": "c51484f17486c935fb926a4f629fa34a61be1cb05f7e2ae91bd168cd3a98741a",
+          "originals": [
+            {
+              "original_sha256": "5597370e9bbfb331e6f4d9c2adb07f688d38b59784604768c792247d16f305c9",
+              "bytes": 23111,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 13594624,
+          "observer_cpu_ns": 15369927000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "metadata-sigterm",
+          "receipt_sha256": "61634c96bc5c7904d9392ace4492ccd10e85c0ac07c19d7f953e159ac9469a0e",
+          "originals": [
+            {
+              "original_sha256": "e167fe9e86d51ae1a7a1fbfc14f2163fba5b9176ebfb9ae3388d5a27d5de542a",
+              "bytes": 23109,
+              "source_mode": 256
+            },
+            {
+              "original_sha256": "d301d03a4359035ed8ab7ce93553040cdba0375cf674b71f25c1e80d99f1850b",
+              "bytes": 687,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 14196736,
+          "observer_cpu_ns": 15754963000,
+          "original_failure_receipt": false,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "capture-channel-eof",
+          "receipt_sha256": "ab596a2c689ad219b1e88531f303637830215f8cb1285cc358cc1ec3bed4cc38",
+          "originals": [
+            {
+              "original_sha256": "2675434fb86b549ef0ea3991e615804b96c598a52b3ae9daa45e5240773a9fd9",
+              "bytes": 80,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 13344768,
+          "observer_cpu_ns": 15741609000,
+          "original_failure_receipt": true,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "metadata-channel-eof",
+          "receipt_sha256": "cb7aaf3df7f2fb8858fcf24f6fa044438910f8b851e7ecb3abc7e7da18507a0b",
+          "originals": [
+            {
+              "original_sha256": "70d6b77e44d8ffac0c9397c08bcc77600b730abdc2b099cff866afa1b0f9299e",
+              "bytes": 23108,
+              "source_mode": 256
+            },
+            {
+              "original_sha256": "0c70e7e1951ae59f71f2863030474b56c5e8584d77fea8ced5ae5a9f1aee3e3c",
+              "bytes": 687,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 14114816,
+          "observer_cpu_ns": 14525935000,
+          "original_failure_receipt": true,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "forward-channel-eof",
+          "receipt_sha256": "53db81c5d1bc1fa6cd12d4c7ee82aea9dc8bb4150111a134c169a790f47c561a",
+          "originals": [
+            {
+              "original_sha256": "80e03338cc88785a860c41763366b1ec809c421d651e47b601cde909d22ab1c9",
+              "bytes": 23108,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 14000128,
+          "observer_cpu_ns": 16198348000,
+          "original_failure_receipt": true,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "sealed-channel-eof",
+          "receipt_sha256": "0fb1b5c45f8b864a678bb9a6a3f37ef5b8e0c58265417c0d481bba5080271a74",
+          "originals": [
+            {
+              "original_sha256": "e99c9684f6f9978ebea90643eac68ce38a78c748b069d7bc11b00a856ed53a9e",
+              "bytes": 23109,
+              "source_mode": 256
+            }
+          ],
+          "observer_high_rss": 14704640,
+          "observer_cpu_ns": 15658759000,
+          "original_failure_receipt": true,
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "normal_control": {
+        "receipt_sha256": "b7c05006ed1a4ebbd1bbf5595a0f76a5190aaf6006efdab917ef1f6fcb7c3c9c",
+        "originals": 1,
+        "connectors": 1,
+        "all_connectors_reaped": true
+      },
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    }
+  ],
+  "limits": [
+    "Actual observer interruption only: controller/connector death and complete native 005 remain open.",
+    "SIGTERM/SIGKILL records prove actual lifetime loss and refusal; no graceful final receipt was retained for those signal cases. Fault-channel EOF retains an explicit failed owner receipt.",
+    "Capture SIGKILL retains an unsealed incomplete prefix; sealed bytes never imply delivery or live-owner confirmation.",
+    "Private readback initially refused incorrect casing/receipt assumptions; corrected validation keeps signal absence distinct from an explicit EOF failure receipt.",
+    "Normal/timed qualification has no fault gate; no resource runner activation, runtime/API change, service, dependency or paid Action.",
+    "Historical cadence, overhead, augmented budgets, 300-second idle, resource/latency, browser, hardware and release gates stay open."
+  ]
+}

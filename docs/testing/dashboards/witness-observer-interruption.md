@@ -1,6 +1,7 @@
 # Original observer interruption controls
 
-Status: inactive test fixture implementation; native execution required for this candidate.
+Status: inactive observer-interruption implementation submitted for review; full native
+005 and resource acceptance remain open.
 Owner: [issue 382](https://github.com/gonz0w/horvium/issues/382).
 [Accepted ADR](../../adr/0011-native-dashboard-witnesses.md),
 [EDD](../../design/dashboards/native-witness-binding-EDD.md),
@@ -58,3 +59,34 @@ full resource/latency, controller/connector interruption, browser, hardware and
 release gates remain open. Run both pinned releases at one signed reviewed source;
 keep failed attempts and source/base/title boundaries. Follow fresh check/lint/
 test/secrets, affected-package review, and lab-stop/status; no paid Actions.
+
+## Source-bound native observations
+
+Behavioral source `6cc6e29c240202b56c69df0a1df7949df27a7d5d`, base
+`420deb3cbc992704d0f0eed11e46b7b363d29b8d`, actual title
+`test(dashboards): batch actual observer interruption controls`, passed signed
+clean review, fresh check/lint/test/secrets, executed affected cmd race/original-wire
+fuzz and a FreeBSD test cross-build before native execution. The
+[immutable manifest](witness-observer-interruption-manifest.json) records the
+ordinary broker and twelve adverse cases on both pinned disposable releases.
+
+- FreeBSD 14.5: 378.12s, 12 cases and 15 independently reopened adverse originals; ordinary delivery/confirmation passed.
+
+- FreeBSD 15.1: 506.28s, 12 cases and 15 independently reopened adverse originals; ordinary delivery/confirmation passed.
+
+Independent safe archive/frame/object/hash verification binds observer/controller
+artifact roles, actual-header probe, source/base/title and original custody/usage.
+Capture SIGKILL preserves its actual 80-byte unsealed prefix; all signal cases
+bind a reaped original observer and denied lookup. Signal cases do not retain a
+graceful final observer receipt; only fault-channel EOF cases carry explicit
+permanently failed receipts. The initial private validator's field-case/receipt
+assumption was rejected before these distinctions were checked; no absent signal
+receipt is relabeled a graceful acknowledgement.
+
+Both original preflight observations match, pinned runtime/base bytes are
+unchanged, and original descendants/descriptors/sockets/tmpfs/ZFS/md/host runtime
+artifacts were cleaned. All 161 historical manifests and the seven primary
+operator files remain untouched. Public evidence contains no PID/UID inventories,
+private original payloads, credentials or operator data. Final documentation
+review and lab-stop/status results accompany the PR; this is not review-full,
+complete native 005 or release acceptance.

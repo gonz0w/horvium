@@ -2114,3 +2114,10 @@ SIGTERM/SIGKILL/fault-channel loss, original-prefix custody, wait accounting and
 complete teardown on both pinned disposable releases. These controls do not claim
 controller/connector death, complete native 005, cadence or resource acceptance.
 Normal/timed runs have no fault barriers; product behavior stays read-only.
+
+The [observer-interruption manifest](../testing/dashboards/witness-observer-interruption-manifest.json)
+records the same reviewed source passing an ordinary broker control and twelve
+actual observer capture/sealed/forward/metadata adverse cases on FreeBSD 15.1
+and 14.5, with independent original custody/usage readback and verified teardown.
+Signal loss is distinct from a retained failed EOF receipt. Full native 005,
+controller/connector death, cadence and resource acceptance remain open.
