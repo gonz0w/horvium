@@ -1,6 +1,6 @@
 # Broker attempt capacity and permanent admission denial
 
-Status: inactive test-only fixture; corrected native observations pending.
+Status: inactive test-only fixture; component results below. 14.5 projection capacity failed.
 Owner: [issue 382](https://github.com/gonz0w/horvium/issues/382).
 Authority: [ADR 0011](../../adr/0011-native-dashboard-witnesses.md),
 [EDD](../../design/dashboards/native-witness-binding-EDD.md),
@@ -145,3 +145,61 @@ keep exact wait/context/output checks. The failed attempt's metadata/bytes remai
 unchanged. The normal broker handoff still uses its original absolute 45-second
 collection deadline; fixing this independent negative-control alias does not
 reset or extend any trusted deadline.
+
+## Source-bound component observations
+
+Signed clean reviewed source
+`6635bf1a46cf5d1f0d54972dfc3b6f20578dcc3d` has the following exact pinned
+FreeBSD/amd64 outcomes. The [immutable manifest](witness-broker-admission-manifest.json)
+retains all eight admission attempts, including six historical failed predecessors,
+and four fresh same-source transport runs. No failed or missing fact is upgraded.
+
+| Gate | FreeBSD 15.1 | FreeBSD 14.5 |
+| --- | --- | --- |
+| Admission denial / timely bad-artifact refusal | Passed | Passed |
+| Native-small: 32 originals, attempt 33 and followup denial | Passed | Passed |
+| Projection 10,000: full 32-attempt procedure | Passed | **Failed: producer-forward after five captures** |
+| Connector interruption: eight cases plus normal | Passed | Passed |
+| Ancillary rejection: ten faults plus normal/census | Passed | Passed |
+
+15.1 admission/capacity passed in 1568.56s, retaining 65 complete/delivered
+originals and indexes with observed publication IDs. 14.5's whole run failed in
+777.03s, retaining two completed main cases (33 original/index pairs) plus five
+projection fallback pairs. Four projection originals were delivered; the fifth
+was complete but undelivered. Its actual failure diagnostic records failed
+`producer-forward`, a failed store, five started/reaped connectors and no active
+connector/call. The incomplete projection case has no full publication/case receipt.
+
+The exact underlying forwarding error, cancellation or deadline cause was not
+recorded and remains unproven. Investigate that boundary before claiming 14.5
+projection capacity or activation; preserve the existing trusted deadline, counts
+and byte/resource bounds. Do not retry this failed candidate as qualification.
+
+Every completed main case denied followup work/cached originals, retained prior
+publication, removed the original front and preserved actual helper/configuration/
+token state. Timely negative-artifact controls exited 1 with actual refusal output
+and no context expiry: 1.99s on 15.1 and 2.78s on 14.5. Independent readback reopened
+all 103 current-source admission original/index pairs, exact bounded control
+frames, actor/source/artifact/probe bindings, preflight and guest/host teardown. All originals
+retain their own completion/delivery facts; delivered source alone proves no
+publication, and the failed 14.5 run remains unqualified.
+
+The native topology is the existing small owned fixture, not the full 100-owned-
+dataset resource workload. Diagnostic controls are untimed evidence operations;
+there is no control/coalescing, cadence, overhead, full resource or hardware claim.
+The canonical resource runner stays inactive and runtime writes stay denied.
+
+## Reproduction boundary
+
+After original signed-source/artifact/ABI/host preflight in an owned disposable
+guest, the fixed selection is:
+
+```sh
+cd /root/work/cmd/horvium
+env HORVIUM_NATIVE_VM=1 HORVIUM_PERF_VM=1 /root/work/.tools/dashboard-native.test -test.v -test.count=1 -test.timeout=30m -test.failfast -test.run='^TestNativeDashboardWitnessAdmission$'
+```
+
+The selector alone is not qualification. Retain the source-bound host command,
+original raw/index/control bytes, independent readback and exact teardown. On
+14.5 this candidate is a retained failing capacity attempt; the preceding table
+states only the components that actually completed.

@@ -2211,5 +2211,10 @@ Loss of the surviving owner, full broker/resource and broader acceptance stay op
 
 [Broker admission controls](../testing/dashboards/witness-broker-admission.md)
 exercise real caller attempt capacity and permanent denial after observer failure.
-Native observations are pending; this test-only work adds no support claim or
-resource-runner activation. Broader acceptance gates remain open.
+The [source-bound manifest](../testing/dashboards/witness-broker-admission-manifest.json)
+retains six historical failed 15.1 predecessors and mixed current-source results.
+Admission denial, native-small attempt capacity and affected transport matrices
+pass on both pinned releases. Full projection capacity passes on 15.1; 14.5 fails
+`producer-forward` after five captures, with four delivered and one complete but
+undelivered original. All current guest/host teardown passed. The 14.5 gate remains
+unqualified; broader resource/support acceptance and activation stay open.
