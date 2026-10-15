@@ -2190,3 +2190,10 @@ releases, followed by both-release focused validation of actual typed-control
 receipts at a later source. Sources/scopes stay separate; earlier template hashes
 and the failed EOF predecessor are not upgraded. Producer-byte readback and
 guest/host teardown passed. Full controller-death/resource acceptance stays open.
+
+The [actual controller-interruption fixture](../testing/dashboards/witness-controller-interruption.md)
+uses a separately surviving original FreeBSD owner for controller SIGTERM/SIGKILL
+at capture, sealed, forward and metadata boundaries. It preserves adopted observer
+waits and terminal/original custody before exact teardown. This test-only lifetime
+boundary adds no product interface or service; broader resource and release gates
+remain open, and normal runtime write denial stays unchanged.
