@@ -360,6 +360,9 @@ func startWitnessPair(t *testing.T, owner *dashboardGuestOwner, probe witnessPro
 	return startWitnessPairWithFault(t, owner, probe, mode, "", mode)
 }
 func startWitnessPairWithFault(t *testing.T, owner *dashboardGuestOwner, probe witnessProbeReceipt, mode, stage, label string) *witnessNativePair {
+	return startWitnessPairUsingObserver(t, owner, probe, mode, stage, label, startWitnessObserver)
+}
+func startWitnessPairUsingObserver(t *testing.T, owner *dashboardGuestOwner, probe witnessProbeReceipt, mode, stage, label string, start func(*testing.T, witnessNativeConfig, string) *witnessFixtureObserver) *witnessNativePair {
 	t.Helper()
 	c, path, token := nativeRuntimeConfig(t)
 	c.IntervalSeconds, c.TimeoutSeconds = 30, 45
@@ -431,7 +434,7 @@ func startWitnessPairWithFault(t *testing.T, owner *dashboardGuestOwner, probe w
 		t.Fatal("original helper actor")
 	}
 	cfg := witnessNativeConfig{FaultStage: stage, RunLabel: label, ABI: probe.ABI, Parent: parent, Front: c.HelperSocket, Back: back.HelperSocket, Directory: archive, Mode: mode, ManagementUID: c.ManagementUID, SocketGID: c.SocketGID, Fixture: fixture, FixtureSHA256: owner.artifacts.Artifacts["fixture"], Product: binary, ProductSHA256: owner.artifacts.Artifacts["management"], Helper: helperActor, HelperBinary: helperBinary, HelperSHA256: helperHash, PriorArchiveBytes: owner.witnessArchiveBytes}
-	o := startWitnessObserver(t, cfg, filepath.Join(dir, "observer.json"))
+	o := start(t, cfg, filepath.Join(dir, "observer.json"))
 	p.observer = o
 	management := startNativeProcess(t, binary, []string{"serve", "-config", path}, c.ManagementUID, c.SocketGID)
 	actor, e := witnessObserveActor(management.cmd.Process.Pid, probe.ABI)

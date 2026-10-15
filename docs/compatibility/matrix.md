@@ -2190,3 +2190,21 @@ releases, followed by both-release focused validation of actual typed-control
 receipts at a later source. Sources/scopes stay separate; earlier template hashes
 and the failed EOF predecessor are not upgraded. Producer-byte readback and
 guest/host teardown passed. Full controller-death/resource acceptance stays open.
+
+The [actual controller-interruption fixture](../testing/dashboards/witness-controller-interruption.md)
+uses a separately surviving original FreeBSD owner for controller SIGTERM/SIGKILL
+at capture, sealed, forward and metadata boundaries. It preserves adopted observer
+waits and terminal/original custody before exact teardown. This test-only lifetime
+boundary adds no product interface or service; broader resource and release gates
+remain open, and normal runtime write denial stays unchanged.
+
+The controller fixture retains its failed first 15.1 matrix with unverified guest
+cleanup and missing adverse byte/wait exports; complete host teardown does not
+upgrade that result. Raw controller waits and validated index-sidecar custody
+have separate corrections; the connector wait representation stays unchanged.
+
+The [controller-interruption manifest](../testing/dashboards/witness-controller-interruption-manifest.json)
+records eight actual controller signals plus a normal publication/stop control
+passing on both pinned releases at one reviewed source. Adopted observer waits,
+failed terminal custody, original-byte readback and guest/host teardown passed.
+Loss of the surviving owner, full broker/resource and broader acceptance stay open.

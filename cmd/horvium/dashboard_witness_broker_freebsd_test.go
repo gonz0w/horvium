@@ -996,6 +996,11 @@ func TestNativeDashboardWitnessObserver(t *testing.T) {
 			r.Failure = "front-cleanup"
 		}
 	}
+	if _, _, controllerCase := witnessControllerLabel(cfg.RunLabel); controllerCase {
+		if witnessWritePrivateIndex("../../.tools", "witness-controller-final-"+cfg.RunLabel+".json", r) != nil {
+			t.Error("exclusive controller-loss final receipt")
+		}
+	}
 	if e := witnessControlWrite(control, r); e != nil && ctx.Err() == nil {
 		t.Error("observer final cleanup receipt")
 	}

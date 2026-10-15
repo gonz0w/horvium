@@ -87,6 +87,10 @@ func witnessOpenFaultGate(cfg witnessNativeConfig, ctx context.Context) (*witnes
 }
 
 func witnessFaultLabelValid(label string) bool {
+	if strings.HasPrefix(label, "controller-") {
+		_, _, ok := witnessControllerLabel(label)
+		return ok
+	}
 	if strings.HasPrefix(label, "ancillary-") {
 		return witnessAncillaryFaultValid(strings.TrimPrefix(label, "ancillary-")) && label != "ancillary-"
 	}
