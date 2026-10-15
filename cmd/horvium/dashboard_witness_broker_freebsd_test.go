@@ -878,7 +878,9 @@ func TestNativeDashboardWitnessObserver(t *testing.T) {
 				return
 			}
 			o.mu.Lock()
-			if o.active || o.stopping {
+			// Evidence remains readable after failure; fresh data connections may not
+			// start another connector or capture in the failed candidate.
+			if o.active || o.stopping || o.failed {
 				o.denied++
 				o.mu.Unlock()
 				c.Close()

@@ -146,6 +146,17 @@ func TestNativeDashboardWitnessAdmission(t *testing.T) {
 					t.Error("actual attempt 33 boundary", r.Boundary.ConnectorStarted, len(r.Boundary.Originals))
 				}
 			}
+			// The broker can finish before the real manager has observed its EOF.
+			// Join that original operation before making the next single request.
+			performanceWait(t, func() bool {
+				response, e := s.http.Get(s.base + "/status")
+				if e != nil {
+					return false
+				}
+				defer response.Body.Close()
+				body, e := io.ReadAll(io.LimitReader(response.Body, 65537))
+				return e == nil && response.StatusCode == 200 && !bytes.Contains(body, []byte("Collecting an observation"))
+			})
 			// A second real client collection after the latched failure may not create
 			// another connector, original or publication. Readback stays available for evidence.
 			witnessAdmissionRefresh(t, s)

@@ -1,6 +1,6 @@
 # Broker attempt capacity and permanent admission denial
 
-Status: inactive test-only fixture; native observations pending.
+Status: inactive test-only fixture; corrected native observations pending.
 Owner: [issue 382](https://github.com/gonz0w/horvium/issues/382).
 Authority: [ADR 0011](../../adr/0011-native-dashboard-witnesses.md),
 [EDD](../../design/dashboards/native-witness-binding-EDD.md),
@@ -10,7 +10,8 @@ DASH-WIT-003 / DASH-WIT-007 / DASH-WIT-NATIVE-005.
 The custody component already exercises its full byte/attempt/physical limits.
 This batch adds actual broker/caller attempt controls. It also tests admission
 after a permanent observer failure: a failed candidate must reject subsequent
-connections before creating a connector or another original. Same-UID unrelated
+connections before creating a connector or another original. The admission latch is checked under the original observer mutex; evidence
+readback remains available after failure. Same-UID unrelated
 peer rejection remains a separate nonfatal denial; it cannot clear a failure.
 
 ## Observable controls
