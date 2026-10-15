@@ -256,15 +256,6 @@ func TestNativeDashboardWitnessAdmission(t *testing.T) {
 			back, be := os.ReadFile(p.backPath)
 			token, te := os.ReadFile(filepath.Join(p.pair.config.StateDirectory, "token.sha256"))
 			r.ConfigurationUnchanged = ce == nil && be == nil && te == nil && bytes.Equal(config, p.configBytes) && bytes.Equal(back, p.backBytes) && bytes.Equal(token, p.digest)
-			if label == "control-failure" {
-				// The original actual helper is still available. Test artifact refusal
-				// after the admission assertions, outside their collection boundary.
-				artifactPair := *p.pair
-				artifactPair.config = p.backConfig
-				witnessNativeConnectorArtifactControl(t, &artifactPair, probe.ABI, o.config.Fixture)
-			}
-			p.pair.management.stop(t, syscall.SIGTERM, true)
-			p.pair.helper.stop(t, syscall.SIGTERM, true)
 			out := filepath.Join(export, label)
 			if os.Mkdir(out, 0700) != nil {
 				t.Fatal("exclusive case")
@@ -292,8 +283,17 @@ func TestNativeDashboardWitnessAdmission(t *testing.T) {
 				t.Fatal("exclusive original receipt")
 			}
 			if !r.FollowupRejected || !r.LastCollectionFailed || !r.OldOriginalDenied || !r.Reaped || !r.HelperUnchanged || !r.ConfigurationUnchanged {
-				t.Error("latched failure admitted work or lost custody", r.FollowupRejected, r.LastCollectionFailed, r.OldOriginalDenied, r.Reaped)
+				t.Fatal("latched failure admitted work or lost custody", r.FollowupRejected, r.LastCollectionFailed, r.OldOriginalDenied, r.Reaped)
 			}
+			if label == "control-failure" {
+				// The original actual helper is still available. Test artifact refusal
+				// after the admission assertions, outside their collection boundary.
+				artifactPair := *p.pair
+				artifactPair.config = p.backConfig
+				witnessNativeConnectorArtifactControl(t, &artifactPair, probe.ABI, o.config.Fixture)
+			}
+			p.pair.management.stop(t, syscall.SIGTERM, true)
+			p.pair.helper.stop(t, syscall.SIGTERM, true)
 			t.Logf("NATIVE_WITNESS_ADMISSION label=%s publications=%d rejected_after_failure=%t resource_acceptance=false", label, len(r.Publications), r.FollowupRejected)
 		})
 	}

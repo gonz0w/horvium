@@ -111,3 +111,20 @@ expiry, before any descriptor is transferred. Rerun normal/full-attempt admissio
 connector cancellation and ancillary rejection controls on both pinned releases.
 This corrects the earlier implementation's independent handshake timer; it does
 not increase the accepted 45-second collection deadline, caps or resource budgets.
+
+Source `b7a52f231ebe2eaa01e7ccf9abcdb02ab44dc2bb` failed on 15.1
+(93.20 seconds) after the admission assertions, in the separate wrong-artifact
+control's stricter exit/accounting check. That control did not persist its wait,
+context state or output before the assertion; its exact cause remains unknown.
+A complete/delivered fallback original and verified guest/host teardown remain
+retained, without a completed main case/publication receipt. Capacity/transport
+matrices and 14.5 were not executed. This predecessor remains unqualified.
+
+The negative-artifact control now uses the accepted 45-second budget and its
+original absolute deadline, records raw wait/context/usage plus bounded original
+stdout/stderr before asserting, and requires exit 1, no context expiry/overflow and
+the actual artifact-refusal diagnostic. A killed/timed-out child cannot count as
+artifact refusal. The main admission case and bounded source receipts are sealed
+before that separate control runs, so an unrelated later control failure cannot
+erase already observed facts. Original helper/configuration and cleanup checks
+remain required; all producer/collection and resource limits remain unchanged.

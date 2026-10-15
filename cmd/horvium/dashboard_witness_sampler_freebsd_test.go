@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/sha256"
+	"errors"
 	"fmt"
 	"io"
 	"math"
@@ -14,6 +15,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"sync"
 	"syscall"
 	"testing"
@@ -382,12 +384,16 @@ func witnessNativeConnectorArtifactControl(t *testing.T, p *performancePair, abi
 		t.Fatal("connector control inherited channel")
 	}
 	defer file.Close()
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 45*time.Second)
 	defer cancel()
+	originalDeadline, _ := ctx.Deadline()
 	cmd := exec.CommandContext(ctx, fixture, "-test.run=^TestNativeDashboardWitnessConnector$", "-test.count=1")
 	cmd.Env = []string{"HORVIUM_NATIVE_VM=1", "HORVIUM_PERF_VM=1", "HORVIUM_WITNESS_CONNECTOR=" + p.config.HelperSocket, "HORVIUM_WITNESS_UID=" + fmt.Sprint(p.config.ManagementUID), "LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
 	cmd.SysProcAttr = &syscall.SysProcAttr{Credential: &syscall.Credential{Uid: p.config.ManagementUID, Gid: p.config.SocketGID, Groups: []uint32{p.config.SocketGID}}}
 	cmd.ExtraFiles = []*os.File{file}
+	stdout, stderr := witnessCommandOutput{limit: 4096}, witnessCommandOutput{limit: 4096}
+	cmd.Stdout, cmd.Stderr = &stdout, &stderr
+	started := time.Now()
 	if cmd.Start() != nil {
 		t.Fatal("connector control start")
 	}
@@ -398,34 +404,49 @@ func witnessNativeConnectorArtifactControl(t *testing.T, p *performancePair, abi
 			_ = cmd.Wait()
 		}
 	}()
-	originalDeadline, _ := ctx.Deadline()
 	_ = parent.SetDeadline(originalDeadline)
-	if witnessControlWrite(parent, witnessConnectorConfig{DeadlineNS: originalDeadline.UnixNano(), ABI: abi, ParentPID: os.Getpid(), Fixture: fixture, SHA256: "0000000000000000000000000000000000000000000000000000000000000000"}) != nil {
+	if witnessControlWrite(parent, witnessConnectorConfig{DeadlineNS: originalDeadline.UnixNano(), ABI: abi, ParentPID: os.Getpid(), Fixture: fixture, SHA256: strings.Repeat("0", 64)}) != nil {
 		t.Fatal("connector control bootstrap")
 	}
 	var accepted witnessActor
 	if witnessControlRead(parent, &accepted) == nil {
 		t.Fatal("wrong artifact binding accepted")
 	}
-	e = cmd.Wait()
+	waitError := cmd.Wait()
 	waited = true
 	var usage *syscall.Rusage
+	present, exited, code, signal, status := false, false, -1, 0, uint32(0)
 	if cmd.ProcessState != nil {
 		usage, _ = cmd.ProcessState.SysUsage().(*syscall.Rusage)
-	}
-	if e == nil || ctx.Err() != nil || cmd.ProcessState == nil || cmd.ProcessState.ExitCode() != 1 || usage == nil || usage.Maxrss <= 0 {
-		t.Fatal("wrong artifact connector control not denied/accounted")
+		if w, ok := cmd.ProcessState.Sys().(syscall.WaitStatus); ok {
+			present = true
+			exited = w.Exited()
+			code = w.ExitStatus()
+			status = uint32(w)
+			if w.Signaled() {
+				signal = int(w.Signal())
+			}
+		}
 	}
 	cpu, ce := witnessNativeCPU(usage)
-	if ce != nil || cpu <= 0 {
-		t.Fatal("connector control usage")
-	}
+	refusal := bytes.Contains(stdout.data, []byte("connector original artifact/lifetime")) || bytes.Contains(stderr.data, []byte("connector original artifact/lifetime"))
+	denied := waitError != nil && ctx.Err() == nil && present && exited && code == 1 && signal == 0 && usage != nil && usage.Maxrss > 0 && ce == nil && cpu > 0 && refusal && !stdout.overflow && !stderr.overflow
+	// Preserve the actual outcome and bounded bytes before asserting semantic refusal.
 	if witnessWriteDiagnosticJSON("witness-connector-artifact-control.json", struct {
-		Denied, Reaped bool
-		FixtureSHA256  string
-		Usage          *syscall.Rusage
-	}{true, true, actor.SHA256, usage}) != nil {
+		Schema                                                        int
+		Denied, Reaped, StatePresent, Exited, ArtifactRefusalObserved bool
+		ExitCode, Signal                                              int
+		RawWaitStatus                                                 uint32
+		DeadlineExceeded, Cancelled, StdoutOverflow, StderrOverflow   bool
+		DeadlineNS, ElapsedNS, CPUNS                                  int64
+		Stdout, Stderr                                                []byte
+		FixtureSHA256                                                 string
+		Usage                                                         *syscall.Rusage
+	}{2, denied, cmd.ProcessState != nil, present, exited, refusal, code, signal, status, errors.Is(ctx.Err(), context.DeadlineExceeded), errors.Is(ctx.Err(), context.Canceled), stdout.overflow, stderr.overflow, originalDeadline.UnixNano(), int64(time.Since(started)), cpu, stdout.data, stderr.data, actor.SHA256, usage}) != nil {
 		t.Fatal("connector control original receipt")
+	}
+	if !denied {
+		t.Fatal("wrong artifact connector control not denied/accounted")
 	}
 	t.Log("NATIVE_WITNESS_CONNECTOR_ARTIFACT_CONTROL mismatch=denied descriptor=none reaped=true usage_retained=true resource_acceptance=false")
 }
