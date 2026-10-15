@@ -382,23 +382,25 @@ type witnessNativeOriginal struct {
 	Object witnessFileObject   `json:"object"`
 }
 type witnessNativeReceipt struct {
-	OK               bool                    `json:"ok"`
-	Failed           bool                    `json:"failed"`
-	Failure          string                  `json:"failure"`
-	StoreFailed      bool                    `json:"store_failed"`
-	Denied           int                     `json:"denied"`
-	Originals        []witnessNativeOriginal `json:"originals"`
-	ObserverHigh     uint64                  `json:"observer_high_rss"`
-	ObserverCPUNS    int64                   `json:"observer_cpu_ns"`
-	ConnectorStarted int                     `json:"connector_started"`
-	ConnectorActive  int                     `json:"connector_active"`
-	ConnectorMaxRSS  uint64                  `json:"connector_max_rss"`
-	ConnectorCPUNS   int64                   `json:"connector_cpu_ns"`
-	Connectors       int                     `json:"connectors"`
-	FrontRemoved     bool                    `json:"front_removed"`
-	Active           bool                    `json:"active"`
+	ConnectorBoundary *witnessConnectorBoundaryReceipt `json:"connector_boundary,omitempty"`
+	OK                bool                             `json:"ok"`
+	Failed            bool                             `json:"failed"`
+	Failure           string                           `json:"failure"`
+	StoreFailed       bool                             `json:"store_failed"`
+	Denied            int                              `json:"denied"`
+	Originals         []witnessNativeOriginal          `json:"originals"`
+	ObserverHigh      uint64                           `json:"observer_high_rss"`
+	ObserverCPUNS     int64                            `json:"observer_cpu_ns"`
+	ConnectorStarted  int                              `json:"connector_started"`
+	ConnectorActive   int                              `json:"connector_active"`
+	ConnectorMaxRSS   uint64                           `json:"connector_max_rss"`
+	ConnectorCPUNS    int64                            `json:"connector_cpu_ns"`
+	Connectors        int                              `json:"connectors"`
+	FrontRemoved      bool                             `json:"front_removed"`
+	Active            bool                             `json:"active"`
 }
 type witnessNativeObserver struct {
+	connectorBoundary                 *witnessConnectorBoundaryReceipt
 	fault                             *witnessNativeFaultGate
 	mu                                sync.Mutex
 	cfg                               witnessNativeConfig
@@ -528,6 +530,12 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 		fail()
 		return
 	}
+	stage = "interruption-connect"
+	if o.interruptConnector("connect", id, original, parent, cmd, ctx, cancel, &waited) {
+		fail()
+		return
+	}
+	stage = "connector-identity-confirm"
 	if n, e := parent.Write([]byte{'B'}); e != nil || n != 1 {
 		fail()
 		return
@@ -549,6 +557,11 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 		fail()
 		return
 	}
+	stage = "interruption-handoff"
+	if o.interruptConnector("handoff", id, original, parent, cmd, ctx, cancel, &waited) {
+		fail()
+		return
+	}
 	stage = "connector-ack"
 	if n, e := parent.Write([]byte{'A'}); e != nil || n != 1 {
 		fail()
@@ -557,7 +570,9 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	stage = "connector-wait"
 	e = cmd.Wait()
 	waited = true
-	if o.accountConnector(cmd, stage, e, ctx.Err()) != nil || e != nil {
+	accounted := o.accountConnector(cmd, stage, e, ctx.Err()) == nil
+	o.recordConnectorBoundary(original, cmd, accounted, false)
+	if !accounted || e != nil {
 		fail()
 		return
 	}
@@ -680,7 +695,7 @@ func (o *witnessNativeObserver) receipt() witnessNativeReceipt {
 			o.failure = "observer-usage"
 		}
 	}
-	r := witnessNativeReceipt{ObserverHigh: uint64(usage.Maxrss) * 1024, ObserverCPUNS: cpu, ConnectorStarted: o.connectorStarted, ConnectorActive: o.connectorActive, OK: true, Failed: o.failed || o.store.failed, Failure: o.failure, StoreFailed: o.store.failed, Denied: o.denied, ConnectorMaxRSS: o.connectorMax, ConnectorCPUNS: int64(o.connectorCPU), Connectors: o.connectors, Active: o.active}
+	r := witnessNativeReceipt{ConnectorBoundary: o.connectorBoundary, ObserverHigh: uint64(usage.Maxrss) * 1024, ObserverCPUNS: cpu, ConnectorStarted: o.connectorStarted, ConnectorActive: o.connectorActive, OK: true, Failed: o.failed || o.store.failed, Failure: o.failure, StoreFailed: o.store.failed, Denied: o.denied, ConnectorMaxRSS: o.connectorMax, ConnectorCPUNS: int64(o.connectorCPU), Connectors: o.connectors, Active: o.active}
 	for _, ref := range o.store.refs {
 		v := o.store.sealed[ref.Name]
 		object, e := witnessObject(v.info)

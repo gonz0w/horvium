@@ -28,18 +28,22 @@ type witnessNativeFaultGate struct {
 }
 
 func witnessFaultStageValid(stage string) bool {
-	return stage == "" || stage == "capture" || stage == "sealed" || stage == "forward" || stage == "metadata"
+	return stage == "" || stage == "capture" || stage == "sealed" || stage == "forward" || stage == "metadata" || stage == "connect" || stage == "handoff"
 }
 
-type witnessFaultEvent struct{ Stage, ID string }
+type witnessFaultEvent struct {
+	Stage, ID string
+	Connector *witnessActor `json:",omitempty"`
+}
 
-func (g *witnessNativeFaultGate) reach(stage, id string) error {
+func (g *witnessNativeFaultGate) reach(stage, id string) error { return g.reachActor(stage, id, nil) }
+func (g *witnessNativeFaultGate) reachActor(stage, id string, actor *witnessActor) error {
 	if g == nil || g.stage != stage {
 		return nil
 	}
 	g.once.Do(func() {
 		_ = g.channel.SetDeadline(time.Now().Add(45 * time.Second))
-		if witnessControlWrite(g.channel, witnessFaultEvent{Stage: stage, ID: id}) != nil {
+		if witnessControlWrite(g.channel, witnessFaultEvent{Stage: stage, ID: id, Connector: actor}) != nil {
 			g.err = errDashboardWitness
 			return
 		}
@@ -83,9 +87,9 @@ func witnessOpenFaultGate(cfg witnessNativeConfig, ctx context.Context) (*witnes
 }
 
 func witnessFaultLabelValid(label string) bool {
-	for _, stage := range []string{"capture", "sealed", "forward", "metadata"} {
-		for _, action := range []string{"sigterm", "sigkill", "channel-eof"} {
-			if label == stage+"-"+action {
+	for _, stage := range []string{"capture", "sealed", "forward", "metadata", "connect", "handoff"} {
+		for _, action := range []string{"sigterm", "sigkill", "channel-eof", "release"} {
+			if label == stage+"-"+action && (action != "release" || stage == "connect" || stage == "handoff") {
 				return true
 			}
 		}
