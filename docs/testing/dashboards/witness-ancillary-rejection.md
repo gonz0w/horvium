@@ -63,3 +63,30 @@ gaps, cadence/overhead/augmented budgets, 300-second idle, full original resourc
 latency, manual browser/accessibility, hardware and release gates remain open.
 No new dependency, service, paid automation or Actions; use required check/lint/
 test/secrets, affected-package review, FreeBSD test build and lab-stop/status.
+
+## Source-bound native observations
+
+Behavioral source `66dad3face037ee5ea102db1f0b987d109a33e09`, base `68c04f060812feb93e3943e7f5340f04e663ed34`, actual title
+`test(dashboards): batch native ancillary rejection controls`, passed signed clean
+review, required check/lint/test/secrets, executed affected cmd race/original-wire
+fuzz and a FreeBSD test build before native execution. The
+[immutable manifest](witness-ancillary-rejection-manifest.json) records both
+pinned disposable release runs at this same reviewed source.
+
+- FreeBSD 14.5: 443.79s; ten rejection cases, an uninjected publication control and all descriptor groups passed.
+- FreeBSD 15.1: 472.28s; ten rejection cases, an uninjected publication control and all descriptor groups passed.
+
+Independent safe archive/frame/object/hash/context readback verified twenty native
+rejection receipts, two uninjected controls and their original complete/delivered
+producer responses. All twenty adverse cases permanently refused lookup and had
+no producer originals. Replays before/after ACK and extra-byte cases were rejected
+by the new post-wait EOF guard. Eight complete descriptor-control groups retained
+the same descriptors/flags, and both original descriptor limits were independently
+reopened and matched after restoration before product startup.
+
+Original guest cleanup and host teardown, matching preflight observations and
+pinned base/QEMU/firmware preservation passed. All 163 historical manifests and
+seven primary operator files are unchanged. No private actor inventories, raw
+producer payloads or credentials are committed. Final documentation review and
+lab-stop/status accompany the PR. This is inactive ancillary-control evidence,
+not full native 005, resource activation or milestone/release acceptance.

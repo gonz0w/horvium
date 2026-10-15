@@ -1,0 +1,443 @@
+{
+  "schema": 1,
+  "date": "2026-10-15",
+  "scope": "inactive-native-ancillary-rejection-support",
+  "source_commit": "66dad3face037ee5ea102db1f0b987d109a33e09",
+  "base_commit": "68c04f060812feb93e3943e7f5340f04e663ed34",
+  "pr_title": "test(dashboards): batch native ancillary rejection controls",
+  "native_acceptance": false,
+  "resource_acceptance": false,
+  "resource_activation": false,
+  "historical_manifests_preserved": 163,
+  "portable_review": {
+    "source_commit": "66dad3face037ee5ea102db1f0b987d109a33e09",
+    "result_sha256": "3fbf622634f537238226c4e45e6ef7a36608a117e40f323bd9cdfdee86a3e6b0",
+    "qualified": true,
+    "checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "deep": "executed affected cmd race/original-wire fuzz",
+    "freebsd_test_build": "passed"
+  },
+  "failing_behavior_log_sha256": "0448c9d415a0223c802b6806f66bff9a75bd62cb4e4b95c80dad66a9246ecd61",
+  "runs": [
+    {
+      "source_commit": "66dad3face037ee5ea102db1f0b987d109a33e09",
+      "base_commit": "68c04f060812feb93e3943e7f5340f04e663ed34",
+      "pr_title": "test(dashboards): batch native ancillary rejection controls",
+      "release": "14.5",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessAncillary (443.79s)",
+      "raw_sha256": "7631a937c030c0beb2df3c9be8d01f960fd07f0798ce264558d3d6feb51cd6a1",
+      "archive_sha256": "bab1d684f121f4f013125c239947bdbe565afa23bd21faa35758c8d5d7aed1ba",
+      "result_sha256": "06444994c33d2a9dd7c6ce906c10a240e2b10a79afb1ca8b2d2eed5a5b712613",
+      "source_archive_sha256": "4267ff3e1500db85736a0344384403aab20efbb29e3cf8690ed28ccdc9cabf05",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "d1c2c790ef5e83e9628e01b7af2f6e5abc309f48e8d98d5b68f6f8eca9c42c2e"
+      },
+      "native_probe": {
+        "receipt_sha256": "a0e24744dd648299f09eb37fe808a599cc57bbb721323097bbfdbd550abae299",
+        "source_sha256": "db1deaca7216165b7b8967a2273f3eb86ffeb4460630aa2ec9cad31901489de5",
+        "binary_sha256": "92a469a8b91f8b2b9cb6ffdcaf986db933c4c9b6e2256d049b9594fb11a72de5"
+      },
+      "cases": [
+        {
+          "case": "eof",
+          "receipt_sha256": "7dd4149627f2400bc3dce5edcb8c543744999efe7adfde937fbd714bdd7ebcbf",
+          "failure_stage": "connector-descriptor",
+          "channel_eof_checks": 0,
+          "channel_eof_rejected": 0,
+          "connectors": 1,
+          "connector_high_rss": 16576512,
+          "connector_cpu_ns": 1805537000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "missing-rights",
+          "receipt_sha256": "d9729770d245f963d887e383c1ad01fb61bc03f1b012c68351b6c5e1c9154987",
+          "failure_stage": "connector-descriptor",
+          "channel_eof_checks": 0,
+          "channel_eof_rejected": 0,
+          "connectors": 1,
+          "connector_high_rss": 16474112,
+          "connector_cpu_ns": 1943923000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "wrong-tag",
+          "receipt_sha256": "2f798fc3ce5baa83d1d97aedc043ecaafa58a58ebf5db6f6d60c1578ef42475f",
+          "failure_stage": "connector-descriptor",
+          "channel_eof_checks": 0,
+          "channel_eof_rejected": 0,
+          "connectors": 1,
+          "connector_high_rss": 16465920,
+          "connector_cpu_ns": 1878269000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "extra-rights",
+          "receipt_sha256": "f9847160086b8d03bb31b57ea69ff150df1fa638a7fe1442f71c38698814e127",
+          "failure_stage": "connector-descriptor",
+          "channel_eof_checks": 0,
+          "channel_eof_rejected": 0,
+          "connectors": 1,
+          "connector_high_rss": 17055744,
+          "connector_cpu_ns": 2027193000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "truncated-rights",
+          "receipt_sha256": "ce2af9a1ef28dfd24836b7e69b8284024d2d5b05ea5d0e5ef95a74c55e503d82",
+          "failure_stage": "connector-descriptor",
+          "channel_eof_checks": 0,
+          "channel_eof_rejected": 0,
+          "connectors": 1,
+          "connector_high_rss": 17055744,
+          "connector_cpu_ns": 2034394000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "non-socket",
+          "receipt_sha256": "d17369026f72f0daa036047d5e2f5d50d45f6b98b9c7460e132c2c2f56b72948",
+          "failure_stage": "connector-descriptor",
+          "channel_eof_checks": 0,
+          "channel_eof_rejected": 0,
+          "connectors": 1,
+          "connector_high_rss": 16429056,
+          "connector_cpu_ns": 1869704000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "wrong-endpoint",
+          "receipt_sha256": "56383d2718e68e6da26d90ea2971243de1b8ad2d797e9d253dc16ce8b5291f7e",
+          "failure_stage": "helper-peer",
+          "channel_eof_checks": 0,
+          "channel_eof_rejected": 0,
+          "connectors": 1,
+          "connector_high_rss": 16302080,
+          "connector_cpu_ns": 1969945000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "replay-before-ack",
+          "receipt_sha256": "ac3db8d6ba36aa276f3ce5defa7bf5afd1028346f3970a3667f94f4c66db4210",
+          "failure_stage": "connector-channel-eof",
+          "channel_eof_checks": 1,
+          "channel_eof_rejected": 1,
+          "connectors": 1,
+          "connector_high_rss": 16572416,
+          "connector_cpu_ns": 2082788000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "replay-after-ack",
+          "receipt_sha256": "a4ea408ce429322c908be02ab8cac4b76239b7ef550b3f8e6f6d4e014cbc648b",
+          "failure_stage": "connector-channel-eof",
+          "channel_eof_checks": 1,
+          "channel_eof_rejected": 1,
+          "connectors": 1,
+          "connector_high_rss": 16310272,
+          "connector_cpu_ns": 2001702000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "extra-byte",
+          "receipt_sha256": "868137309f1774b15daa9b356edb6da174cb07bdb08eb36eb6f666be541a15ef",
+          "failure_stage": "connector-channel-eof",
+          "channel_eof_checks": 1,
+          "channel_eof_rejected": 1,
+          "connectors": 1,
+          "connector_high_rss": 16523264,
+          "connector_cpu_ns": 2545929000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "normal_control": {
+        "sha256": "db4da9a59f2a97895a421888147b8941c0f9d13f0afb399a8b9992fedd844862",
+        "originals": [
+          {
+            "sha256": "08b2301e96c9b6312215f7621a2ecaa18331f211fdb0fe8a86eca86e6be18d78",
+            "bytes": 20793
+          }
+        ],
+        "connectors": 1,
+        "all_channels_checked": true,
+        "all_connectors_reaped": true
+      },
+      "descriptor_census": {
+        "sha256": "dcd4a66a3fdf8329c22a2e5369819ac654ad7e02ef52f6c1e57173312dc9fd6a",
+        "bound": 128,
+        "groups": 4,
+        "baseline_descriptors": 4,
+        "all_original_descriptors_unchanged": true
+      },
+      "descriptor_limit_restore": {
+        "sha256": "5d8ad4f61e6e1ec376b7834821dcb1433f4722a5ab07aec4db8ae8d2802d2b3e",
+        "original_limits_restored": true
+      },
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    },
+    {
+      "source_commit": "66dad3face037ee5ea102db1f0b987d109a33e09",
+      "base_commit": "68c04f060812feb93e3943e7f5340f04e663ed34",
+      "pr_title": "test(dashboards): batch native ancillary rejection controls",
+      "release": "15.1",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessAncillary (472.28s)",
+      "raw_sha256": "160fdf21c0cfe7039bb70a23aa19d365c1233c988184b93576af58280c898994",
+      "archive_sha256": "89a4d3608fb23220985e4c869dd8df794943558b8788c03649673fd19d53a267",
+      "result_sha256": "715c6e585ea9ca1cb20c7b249b165ad67d509be0b220841845eb2f5b3b05ff7d",
+      "source_archive_sha256": "4267ff3e1500db85736a0344384403aab20efbb29e3cf8690ed28ccdc9cabf05",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "d1c2c790ef5e83e9628e01b7af2f6e5abc309f48e8d98d5b68f6f8eca9c42c2e"
+      },
+      "native_probe": {
+        "receipt_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+        "source_sha256": "db1deaca7216165b7b8967a2273f3eb86ffeb4460630aa2ec9cad31901489de5",
+        "binary_sha256": "c5ed9232a83e9f1ad0af9da1642d80f84200549685689849bb8390c3a5a3b6d5"
+      },
+      "cases": [
+        {
+          "case": "missing-rights",
+          "receipt_sha256": "dfd9dafd9e430dd4b19be66ae9ec2a15223d7a9cd0b05e9f44e4b2a5d61f4841",
+          "failure_stage": "connector-descriptor",
+          "channel_eof_checks": 0,
+          "channel_eof_rejected": 0,
+          "connectors": 1,
+          "connector_high_rss": 12374016,
+          "connector_cpu_ns": 2033057000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "replay-after-ack",
+          "receipt_sha256": "48f207311d0422f35f1aa084517ef794f2ca31b336527dc3af73386df7cd107f",
+          "failure_stage": "connector-channel-eof",
+          "channel_eof_checks": 1,
+          "channel_eof_rejected": 1,
+          "connectors": 1,
+          "connector_high_rss": 12754944,
+          "connector_cpu_ns": 2739323000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "replay-before-ack",
+          "receipt_sha256": "f4713d02a251ce64e0d96837a64de6a4ae53359f735fbe27c4984e511f3357d7",
+          "failure_stage": "connector-channel-eof",
+          "channel_eof_checks": 1,
+          "channel_eof_rejected": 1,
+          "connectors": 1,
+          "connector_high_rss": 13058048,
+          "connector_cpu_ns": 2248590000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "wrong-tag",
+          "receipt_sha256": "2f2bf757882144fd060257d190b880c09379c03a6681424726c82277d79d8e8f",
+          "failure_stage": "connector-descriptor",
+          "channel_eof_checks": 0,
+          "channel_eof_rejected": 0,
+          "connectors": 1,
+          "connector_high_rss": 12955648,
+          "connector_cpu_ns": 2308255000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "extra-byte",
+          "receipt_sha256": "5dd288ec31c8ebec4758a301aa6e5c24dbcba57c6b0cd4e5618a7f21907316ff",
+          "failure_stage": "connector-channel-eof",
+          "channel_eof_checks": 1,
+          "channel_eof_rejected": 1,
+          "connectors": 1,
+          "connector_high_rss": 12476416,
+          "connector_cpu_ns": 2152072000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "eof",
+          "receipt_sha256": "417b9afef7d920f77051aa5253442cbdc048508057d85d38edf38a2c3a921458",
+          "failure_stage": "connector-descriptor",
+          "channel_eof_checks": 0,
+          "channel_eof_rejected": 0,
+          "connectors": 1,
+          "connector_high_rss": 12836864,
+          "connector_cpu_ns": 2884550000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "wrong-endpoint",
+          "receipt_sha256": "a68a41c7185e775083de5f2051bc2f1580815e9d99a1ec06322ac165cd6f5dbc",
+          "failure_stage": "helper-peer",
+          "channel_eof_checks": 0,
+          "channel_eof_rejected": 0,
+          "connectors": 1,
+          "connector_high_rss": 12660736,
+          "connector_cpu_ns": 2463601000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "non-socket",
+          "receipt_sha256": "c5525bd9f1b279738942f89a9457304f2882bfd4edc6e86f5f61957250b9b0b4",
+          "failure_stage": "connector-descriptor",
+          "channel_eof_checks": 0,
+          "channel_eof_rejected": 0,
+          "connectors": 1,
+          "connector_high_rss": 12787712,
+          "connector_cpu_ns": 3056043000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "truncated-rights",
+          "receipt_sha256": "453f6cf5af676d1b8cc53a8a1ebfd4c0898bdc6c51d38b998796e6b078c480d7",
+          "failure_stage": "connector-descriptor",
+          "channel_eof_checks": 0,
+          "channel_eof_rejected": 0,
+          "connectors": 1,
+          "connector_high_rss": 12496896,
+          "connector_cpu_ns": 2293754000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "extra-rights",
+          "receipt_sha256": "61da139291a2bf455e63603e6560bf45b7ae06df2fe91783fd9879a4deb7c1ab",
+          "failure_stage": "connector-descriptor",
+          "channel_eof_checks": 0,
+          "channel_eof_rejected": 0,
+          "connectors": 1,
+          "connector_high_rss": 12533760,
+          "connector_cpu_ns": 2040414000,
+          "no_producer_originals": true,
+          "refused": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "normal_control": {
+        "sha256": "574c85c0e67278dc11886e71cb2758cf1aab85ffe0cd748928849a655d1b709e",
+        "originals": [
+          {
+            "sha256": "2fdb0b4a5f04ed19c96548afa78335943d15965f076839bf833ca110b8908d07",
+            "bytes": 23112
+          }
+        ],
+        "connectors": 1,
+        "all_channels_checked": true,
+        "all_connectors_reaped": true
+      },
+      "descriptor_census": {
+        "sha256": "dcd4a66a3fdf8329c22a2e5369819ac654ad7e02ef52f6c1e57173312dc9fd6a",
+        "bound": 128,
+        "groups": 4,
+        "baseline_descriptors": 4,
+        "all_original_descriptors_unchanged": true
+      },
+      "descriptor_limit_restore": {
+        "sha256": "40ce415220d1f6ec9914cd82ef85d9162711bb94ec245a66dc0f3ed657148dd5",
+        "original_limits_restored": true
+      },
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    }
+  ],
+  "limits": [
+    "Inactive fixture support only; canonical resource runner and runtime writes remain disabled.",
+    "Temporary descriptor-only soft limit 128 is restored exactly before product startup; no product capacity claim.",
+    "Original connector/bootstrap deadlines and overall collection deadline remain unchanged; the larger outer diagnostic allowance is not a product deadline.",
+    "Controller interruption, remaining cap/physical-exhaustion controls, historical 14.5 gaps, cadence/overhead/augmented budgets, 300-second idle and full resource/latency/browser/hardware/release gates remain open.",
+    "Historical failed, skipped and partial evidence remains unchanged; no broader acceptance closes."
+  ]
+}

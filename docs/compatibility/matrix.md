@@ -2147,3 +2147,11 @@ truncation, wrong tags/types/endpoints and EOF, with an uninjected publication
 control. A separate bounded descriptor census restores original limits before
 product startup. Both pinned releases and complete owned teardown remain required;
 this inactive test support does not enable resource qualification or runtime writes.
+
+The [ancillary-rejection manifest](../testing/dashboards/witness-ancillary-rejection-manifest.json)
+records the same reviewed source passing ten native connector rejection cases,
+an uninjected publication control and four descriptor-control groups on both
+15.1 and 14.5. Independent readback verified original rejection/custody/accounting,
+exact descriptor-limit restoration and full owned guest/host teardown. Twenty
+adverse cases produced no producer originals; both normal controls confirmed
+actual publication. Historical limits and broader acceptance gates remain open.
