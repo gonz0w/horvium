@@ -102,3 +102,23 @@ file's observed EOF and resumes from that EOF after an error. FreeBSD tmpfs
 rolls back file size after a failed data move; summing reported partial progress
 is not an independent file-size observation. Actual object size, complete file
 hash, one-byte refusal and custody failure remain required.
+
+## Same-source native observations
+
+Signed clean reviewed source `45341bd5e5c69c1d8effe078c141b9df0c290473` passed both pinned disposable
+FreeBSD/amd64 targets. The [immutable manifest](witness-custody-capacity-manifest.json)
+preserves all four attempts, including both failed 15.1 predecessors.
+
+- FreeBSD 15.1: 111.63 seconds; five controls passed.
+- FreeBSD 14.5: 118.97 seconds; five controls passed.
+
+Independent streaming readback reopened every exported byte, frame, object/hash
+receipt, source/release context, original ABI probe, unchanged preflight and exact
+guest/host cleanup. Each passing release retained 32 complete/delivered attempt
+originals, one complete overlapping-capture original, the full raw-cap prefix, the
+exact archive-cap originals and the physical-fault original census. All five failed
+stores denied a fresh mode/management/helper source without reading its body and
+denied the earlier complete original. Physical exhaustion included an independent
+one-byte ENOSPC probe and complete filler hash; freeing the original filler did
+not reset failure. These observations establish only the synthetic custody scope
+above. No acceptance gate closes and no runtime writer or resource runner activates.
