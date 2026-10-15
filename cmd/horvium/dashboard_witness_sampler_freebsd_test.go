@@ -384,7 +384,7 @@ func witnessNativeConnectorArtifactControl(t *testing.T, p *performancePair, abi
 		t.Fatal("connector control inherited channel")
 	}
 	defer file.Close()
-	ctx, cancel := context.WithTimeout(context.Background(), 45*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	originalDeadline, _ := ctx.Deadline()
 	cmd := exec.CommandContext(ctx, fixture, "-test.run=^TestNativeDashboardWitnessConnector$", "-test.count=1")
@@ -404,6 +404,11 @@ func witnessNativeConnectorArtifactControl(t *testing.T, p *performancePair, abi
 			_ = cmd.Wait()
 		}
 	}()
+	// Drop the parent's duplicate of the child's inherited endpoint. Otherwise
+	// a real child exit cannot produce EOF on parent until the deadline fires.
+	if file.Close() != nil {
+		t.Fatal("connector control inherited duplicate close")
+	}
 	_ = parent.SetDeadline(originalDeadline)
 	if witnessControlWrite(parent, witnessConnectorConfig{DeadlineNS: originalDeadline.UnixNano(), ABI: abi, ParentPID: os.Getpid(), Fixture: fixture, SHA256: strings.Repeat("0", 64)}) != nil {
 		t.Fatal("connector control bootstrap")

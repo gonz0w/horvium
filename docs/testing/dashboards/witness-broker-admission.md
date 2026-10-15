@@ -128,3 +128,20 @@ artifact refusal. The main admission case and bounded source receipts are sealed
 before that separate control runs, so an unrelated later control failure cannot
 erase already observed facts. Original helper/configuration and cleanup checks
 remain required; all producer/collection and resource limits remain unchanged.
+
+Source `53e08aba034beb7ef0a0fe881cf26e74e0c3d488` retained a completed
+main admission case before its separate negative-artifact control failed on 15.1
+(129.84 seconds overall). The actual control receipt records exit 1, the genuine
+artifact-refusal message (child test 2.40s), positive usage, no signal/output
+overflow, but deadline expiry after 45.045744s in the parent. Guest/host teardown
+passed; capacity/transport cases and 14.5 were not executed. Its refusal is not
+accepted as a timely control despite the child's correct semantic exit.
+
+The parent still held its duplicate of the child's inherited socketpair endpoint
+until function return, preventing read EOF after the child exited. Close that
+parent duplicate immediately after successful launch, with owned wait cleanup
+already armed. Restore the negative-artifact control's original ten-second budget;
+keep exact wait/context/output checks. The failed attempt's metadata/bytes remain
+unchanged. The normal broker handoff still uses its original absolute 45-second
+collection deadline; fixing this independent negative-control alias does not
+reset or extend any trusted deadline.
