@@ -124,6 +124,8 @@ func TestNativeDashboardWitnessAdmission(t *testing.T) {
 			if e != nil {
 				t.Fatal(e)
 			}
+			// Authentication readiness precedes the first inventory publication.
+			s.ready(t, count, "")
 			previous := ""
 			for {
 				performanceWait(t, func() bool {

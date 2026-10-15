@@ -78,3 +78,11 @@ readback before fallback cleanup so future early failures retain their actual
 reason. These corrections do not establish the unknown predecessor cause. The
 outer diagnostic allowance becomes 30 minutes for full-scale I/O; trusted product/
 collection/connector deadlines, scheduling and all byte/attempt bounds are unchanged.
+
+Source `eff95c79f0430dff7a048a06a3775b49cec444fb` then failed on 15.1
+startup (83.59 seconds): the revised loop called the ready-only overview helper
+before the first inventory publication. The early diagnostic records a healthy
+but active observer with connector 1; fallback preserved one complete, undelivered
+original. Guest/host teardown passed. No admission outcome, capacity cases or 14.5
+execution is established. Restore the existing initial publication wait before
+using the overview helper; no product readiness or deadline changes are needed.
