@@ -18,3 +18,20 @@ func TestDashboardWitnessControllerLabels(t *testing.T) {
 		}
 	}
 }
+
+func TestDashboardWitnessControllerWaitRawStatus(t *testing.T) {
+	for _, c := range []struct {
+		action       string
+		exited       bool
+		code, signal int
+		want         bool
+	}{
+		{"sigterm", false, -1, 15, true}, {"sigkill", false, -1, 9, true},
+		{"sigterm", false, 0, 15, false}, {"sigkill", false, 0, 9, false},
+		{"sigterm", true, 0, 0, false}, {"sigkill", false, -1, 15, false}, {"release", false, -1, 9, false},
+	} {
+		if got := witnessControllerWaitMatches(c.action, c.exited, c.code, c.signal); got != c.want {
+			t.Fatalf("raw controller wait %s exited=%t code=%d signal=%d got=%t want=%t", c.action, c.exited, c.code, c.signal, got, c.want)
+		}
+	}
+}

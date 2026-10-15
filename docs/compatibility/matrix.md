@@ -2197,3 +2197,8 @@ at capture, sealed, forward and metadata boundaries. It preserves adopted observ
 waits and terminal/original custody before exact teardown. This test-only lifetime
 boundary adds no product interface or service; broader resource and release gates
 remain open, and normal runtime write denial stays unchanged.
+
+The controller fixture retains its failed first 15.1 matrix with unverified guest
+cleanup and missing adverse byte/wait exports; complete host teardown does not
+upgrade that result. Raw controller waits and validated index-sidecar custody
+have separate corrections; the connector wait representation stays unchanged.

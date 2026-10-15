@@ -13,3 +13,10 @@ func witnessControllerLabel(label string) (stage, action string, ok bool) {
 	}
 	return parts[1], parts[2], true
 }
+
+func witnessControllerWaitMatches(action string, exited bool, code, signal int) bool {
+	if exited || code != -1 {
+		return false
+	}
+	return action == "sigterm" && signal == 15 || action == "sigkill" && signal == 9
+}

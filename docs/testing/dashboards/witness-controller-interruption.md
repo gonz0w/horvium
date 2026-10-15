@@ -78,3 +78,27 @@ browser/manual accessibility, hardware and release acceptance remain open. A
 merged component never closes full native 005 or resource acceptance by itself.
 Run required check/lint/test/secrets, affected-package review and lab-stop/status.
 No new Actions, paid automation or tracking service is added.
+
+## Retained failed first candidate
+
+Source `f9496760308232877e9c48dd069d13338938c0c3` failed its 15.1 matrix
+after 568.98 seconds; all nine cases failed. Normal export rejected an existing
+`.wire.json` index sidecar. Signal cases passed a raw WaitStatus exit code to a
+connector predicate that expects normalized signal-death codes, then attempted
+graceful cleanup through an already-dead controller proxy. Guest cleanup was
+unverified. The host discarded its disposable VM and verified complete host
+process/listener/key/image/variables teardown. This source has no 14.5 execution.
+
+Its archive retains the actual failed transcript, eight failed terminal receipts
+and one normal original export. It lacks completed per-case wait/usage receipts
+and adverse producer-byte exports. Terminal original references are not reopened
+producer bytes; they cannot acquire that claim later. Guest cleanup remains failed
+and the candidate remains unqualified. Historical manifests are not changed.
+
+A portable behavioral regression reproduces rejection of the raw signal result:
+`exited=false, code=-1, signal=15`. A dedicated raw-controller predicate now checks
+that representation without changing the connector's normalized contract. Export
+validates existing sidecars against the original final sealed records and preserves
+their actual bytes/object/hash separately. Failure cleanup never sends graceful
+stop to a dead proxy: the surviving owner closes it, reaps its known observer and
+retains an available final index for fallback export before ordinary pair cleanup.

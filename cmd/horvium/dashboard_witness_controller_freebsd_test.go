@@ -23,6 +23,7 @@ import (
 
 type witnessControllerReady struct{ Controller, Observer witnessActor }
 type witnessControllerReceipt struct {
+	Indexes                                                  []witnessInterruptedOriginal
 	ObserverWaitRecorded                                     bool
 	Label                                                    string
 	Owner, Controller, Observer                              witnessActor
@@ -206,7 +207,34 @@ func startWitnessController(t *testing.T, cfg witnessNativeConfig, path string) 
 		t.Fatal(e)
 	}
 	cfg.Parent = ready.Controller
-	return &witnessFixtureObserver{config: cfg, process: p, channel: parent, faultChannel: faultParent, root: root, originals: map[string]witnessNativeOriginal{}}, ready
+	o := &witnessFixtureObserver{config: cfg, process: p, channel: parent, faultChannel: faultParent, root: root, originals: map[string]witnessNativeOriginal{}}
+	t.Cleanup(func() {
+		if o.closed {
+			return
+		}
+		if !p.waited {
+			p.stop(t, syscall.SIGKILL, false)
+		}
+		if witnessLifetime(ready.Observer, cfg.ABI) {
+			_, _ = witnessControllerWait(t, ready.Observer.PID)
+		}
+		// A failed assertion must not call graceful stop on an already-dead proxy.
+		// Preserve an available final index before the original pair's fallback export.
+		file, e := os.Open(filepath.Join("../../.tools", "witness-controller-final-"+cfg.RunLabel+".json"))
+		if e == nil {
+			var final witnessNativeReceipt
+			if witnessControlRead(file, &final) == nil && witnessEOF(file) == nil {
+				o.final = final
+			}
+			file.Close()
+		}
+		parent.Close()
+		faultParent.Close()
+		root.Close()
+		o.failed = true
+		o.closed = true
+	})
+	return o, ready
 }
 
 func witnessControllerWait(t *testing.T, pid int) (syscall.WaitStatus, syscall.Rusage) {
@@ -256,50 +284,87 @@ func witnessControllerFinal(t *testing.T, label string) witnessNativeReceipt {
 	}
 	return r
 }
-func witnessControllerExport(t *testing.T, p *witnessNativePair, out string) []witnessInterruptedOriginal {
+func witnessControllerCopy(t *testing.T, path, out string, limit int64) witnessInterruptedOriginal {
+	t.Helper()
+	before, e := os.Lstat(path)
+	obj, oe := witnessObject(before)
+	if e != nil || oe != nil || !before.Mode().IsRegular() || obj.UID != 0 || obj.Links != 1 || before.Size() > limit {
+		t.Fatal("original object custody")
+	}
+	source, e := os.Open(path)
+	if e != nil {
+		t.Fatal(e)
+	}
+	dest, e := os.OpenFile(filepath.Join(out, filepath.Base(path)), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+	if e != nil {
+		source.Close()
+		t.Fatal(e)
+	}
+	h := sha256.New()
+	n, we := io.CopyBuffer(io.MultiWriter(dest, h), io.LimitReader(source, before.Size()+1), make([]byte, witnessFrameCap))
+	source.Close()
+	se := dest.Sync()
+	me := dest.Chmod(0400)
+	ce := dest.Close()
+	after, ae := os.Lstat(path)
+	if we != nil || se != nil || me != nil || ce != nil || ae != nil || n != before.Size() || !os.SameFile(before, after) || before.Size() != after.Size() || !before.ModTime().Equal(after.ModTime()) || before.Mode() != after.Mode() {
+		t.Fatal("original bytes changed/export failed")
+	}
+	return witnessInterruptedOriginal{filepath.Base(path), obj, uint32(before.Mode().Perm()), fmt.Sprintf("%x", h.Sum(nil))}
+}
+func witnessControllerExport(t *testing.T, p *witnessNativePair, out string) ([]witnessInterruptedOriginal, []witnessInterruptedOriginal) {
 	t.Helper()
 	entries, e := os.ReadDir(p.directory)
 	if e != nil {
 		t.Fatal(e)
 	}
-	var records []witnessInterruptedOriginal
+	var records, indexes []witnessInterruptedOriginal
 	for _, entry := range entries {
-		if entry.IsDir() || !strings.HasPrefix(entry.Name(), "original-") || !strings.HasSuffix(entry.Name(), ".wire") {
+		if entry.IsDir() || !strings.HasPrefix(entry.Name(), "original-") {
 			t.Fatal("unknown original entry")
 		}
 		path := filepath.Join(p.directory, entry.Name())
-		before, e := os.Lstat(path)
-		obj, oe := witnessObject(before)
-		if e != nil || oe != nil || !before.Mode().IsRegular() || obj.UID != 0 || obj.Links != 1 || before.Size() > witnessRawCap {
-			t.Fatal("original object custody")
+		if strings.HasSuffix(entry.Name(), ".wire.json") {
+			indexInfo, ie := os.Lstat(path)
+			indexObject, ioe := witnessObject(indexInfo)
+			if ie != nil || ioe != nil || !indexInfo.Mode().IsRegular() || indexInfo.Mode().Perm() != 0400 || indexObject.UID != 0 || indexObject.Links != 1 || indexInfo.Size() > witnessFrameCap+4 {
+				t.Fatal("original index custody")
+			}
+			f, e := os.Open(path)
+			if e != nil {
+				t.Fatal(e)
+			}
+			var record witnessNativeOriginal
+			re := witnessControlRead(f, &record)
+			eof := witnessEOF(f)
+			f.Close()
+			found := false
+			for _, original := range p.observer.final.Originals {
+				if reflect.DeepEqual(original, record) {
+					found = true
+				}
+			}
+			if re != nil || eof != nil || !found || record.Ref.Name+".json" != entry.Name() {
+				t.Fatal("original sidecar differs from final sealed record")
+			}
+			copied := witnessControllerCopy(t, path, out, witnessFrameCap+4)
+			if copied.Mode != 0400 || copied.Object != indexObject {
+				t.Fatal("original sidecar not sealed")
+			}
+			indexes = append(indexes, copied)
+		} else if strings.HasSuffix(entry.Name(), ".wire") {
+			record := witnessControllerCopy(t, path, out, witnessRawCap)
+			records = append(records, record)
+			p.owner.witnessArchiveBytes += record.Object.Size
+		} else {
+			t.Fatal("unknown original entry")
 		}
-		source, e := os.Open(path)
-		if e != nil {
-			t.Fatal(e)
-		}
-		dest, e := os.OpenFile(filepath.Join(out, entry.Name()), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
-		if e != nil {
-			source.Close()
-			t.Fatal(e)
-		}
-		h := sha256.New()
-		n, we := io.CopyBuffer(io.MultiWriter(dest, h), io.LimitReader(source, before.Size()+1), make([]byte, witnessFrameCap))
-		source.Close()
-		se := dest.Sync()
-		me := dest.Chmod(0400)
-		ce := dest.Close()
-		after, ae := os.Lstat(path)
-		if we != nil || se != nil || me != nil || ce != nil || ae != nil || n != before.Size() || !os.SameFile(before, after) || before.Size() != after.Size() || !before.ModTime().Equal(after.ModTime()) || before.Mode() != after.Mode() {
-			t.Fatal("original bytes changed/export failed")
-		}
-		records = append(records, witnessInterruptedOriginal{entry.Name(), obj, uint32(before.Mode().Perm()), fmt.Sprintf("%x", h.Sum(nil))})
-		p.owner.witnessArchiveBytes += n
 	}
 	if len(records) == 0 {
 		t.Fatal("original prefix lost")
 	}
 	p.originalsExported = true
-	return records
+	return records, indexes
 }
 
 func TestNativeDashboardWitnessControllerInterruption(t *testing.T) {
@@ -396,8 +461,8 @@ func TestNativeDashboardWitnessControllerInterruption(t *testing.T) {
 				}
 				o.process.stop(t, signal, false)
 				status, ok := o.process.cmd.ProcessState.Sys().(syscall.WaitStatus)
-				if !ok || !witnessConnectorWaitMatches(action, status.Exited(), status.ExitStatus(), int(status.Signal())) {
-					t.Fatal("actual controller signal wait")
+				if !ok || !witnessControllerWaitMatches(action, status.Exited(), status.ExitStatus(), int(status.Signal())) {
+					t.Error("actual controller signal wait", status)
 				}
 				r.ControllerExited = status.Exited()
 				r.ControllerExitCode = status.ExitStatus()
@@ -481,7 +546,7 @@ func TestNativeDashboardWitnessControllerInterruption(t *testing.T) {
 			}
 			p.pair.management.stop(t, syscall.SIGTERM, true)
 			p.pair.helper.stop(t, syscall.SIGTERM, true)
-			r.Originals = witnessControllerExport(t, p, out)
+			r.Originals, r.Indexes = witnessControllerExport(t, p, out)
 			if witnessWritePrivateIndex(out, "receipt.json", r) != nil {
 				t.Fatal("exclusive controller case receipt")
 			}
