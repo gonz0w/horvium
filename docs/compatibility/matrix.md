@@ -2183,3 +2183,10 @@ The control-channel batch distinguishes full containment matrices from focused
 typed-control receipt validation. Earlier unsupported-operation injection hashes
 refer to the compact template; recorded actual typed bytes have separate
 source-bound evidence. No historical observation is upgraded.
+
+The [control-channel manifest](../testing/dashboards/witness-control-channel-manifest.json)
+records nine adverse cases and an exact-cap valid control passing on both pinned
+releases, followed by both-release focused validation of actual typed-control
+receipts at a later source. Sources/scopes stay separate; earlier template hashes
+and the failed EOF predecessor are not upgraded. Producer-byte readback and
+guest/host teardown passed. Full controller-death/resource acceptance stays open.

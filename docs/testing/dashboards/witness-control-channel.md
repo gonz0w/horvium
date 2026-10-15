@@ -70,3 +70,32 @@ typed frame in an exclusive root-only receipt and independently reopen its full
 encoding, size and hash. Run the affected unsupported-operation case on both
 releases at the new signed reviewed source. The earlier full matrices are not
 relabeled as executions of the followup source.
+
+## Source-bound native observations
+
+The [immutable manifest](witness-control-channel-manifest.json) preserves five
+attempts, including the failed EOF regression. Full matrices at reviewed source
+`a4e4e78314abe10e305cb0e940ee97c4971c7aca` passed nine adverse controls and one valid exact-cap control
+on each pinned disposable FreeBSD/amd64 target:
+
+- FreeBSD 15.1: 555.09s.
+- FreeBSD 14.5: 498.24s.
+
+The actual typed-control receipt correction at reviewed source
+`543a61752db6b8aa036d668ce55cf4c1a1130abb` passed focused unsupported-operation checks on both targets:
+
+- FreeBSD 15.1: 69.70s.
+- FreeBSD 14.5: 59.92s.
+
+These focused runs are not full matrices of the followup source. The earlier
+unsupported-operation template hash/size retain their original limitation; both
+new receipts bind independently reopened bytes from the actual typed writes.
+
+Every adverse case produced a failed final receipt, refused a followup control and
+denied the already cached original before closing its root. The normal exact-cap
+control retained eligibility and stopped successfully. Actual complete/delivered
+producer originals remain preserved with original object/hash references.
+Independent readback reopened every original byte/frame/index, terminal receipt,
+source/actor/ABI context, original preflight/runtime pins and exact guest/host cleanup.
+The actual helper/socket and configuration/token stayed unchanged. These short
+controls establish no full native 005, resource, browser or release acceptance.

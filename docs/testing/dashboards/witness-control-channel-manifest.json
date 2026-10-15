@@ -1,0 +1,890 @@
+{
+  "schema": 1,
+  "date": "2026-10-15",
+  "scope": "inactive-native-control-channel-containment",
+  "source_commit": "543a61752db6b8aa036d668ce55cf4c1a1130abb",
+  "full_matrix_source_commit": "a4e4e78314abe10e305cb0e940ee97c4971c7aca",
+  "base_commit": "500259505c85ab240e7c8f032d1ad96f318ce7e1",
+  "pr_title": "test(dashboards): contain private control channel failures",
+  "native_acceptance": false,
+  "resource_acceptance": false,
+  "resource_activation": false,
+  "historical_manifests_preserved": 165,
+  "portable_reviews": [
+    {
+      "source_commit": "a4e4e78314abe10e305cb0e940ee97c4971c7aca",
+      "result_sha256": "b857dcfa8ce4551ecb40fe210bdb68c39d631e3e1788e6f6a7b3dbd86733844b",
+      "qualified": true,
+      "checks": [
+        "check",
+        "lint",
+        "test",
+        "secrets"
+      ],
+      "deep": "executed affected cmd race/original-wire fuzz",
+      "deep_log_sha256": "afd2e0e0f0d1965349bb8e4a73e06e60ffef49c478119a6c01bb2f62f8a873ef",
+      "freebsd_test_build": "passed"
+    },
+    {
+      "source_commit": "543a61752db6b8aa036d668ce55cf4c1a1130abb",
+      "result_sha256": "7ba411b79a56ea4d2c25115fd880db84e311a4be4561319fecc617b9e46040c2",
+      "qualified": true,
+      "checks": [
+        "check",
+        "lint",
+        "test",
+        "secrets"
+      ],
+      "deep": "executed affected cmd race/original-wire fuzz",
+      "deep_log_sha256": "5e8782f7c5c0bfd3899393685a01ffb76bd559d6cf3335e32a96e182f3ecf1db",
+      "freebsd_test_build": "passed"
+    }
+  ],
+  "runs": [
+    {
+      "source_commit": "543a61752db6b8aa036d668ce55cf4c1a1130abb",
+      "base_commit": "500259505c85ab240e7c8f032d1ad96f318ce7e1",
+      "pr_title": "test(dashboards): contain private control channel failures",
+      "release": "14.5",
+      "native_test_exit": 0,
+      "execution_scope": "focused-recorded-typed-control",
+      "duration_line": "--- PASS: TestNativeDashboardWitnessControlChannel (59.92s)",
+      "raw_sha256": "252f98b1e1c0aabfc97d4b20a718b757d53248a76cd1708f90ba759915b4e66f",
+      "archive_sha256": "1b61932b12947facc250b69696f704a6251c258ab8f4befd7c00795b0306226a",
+      "result_sha256": "f08945757985f5eb1a408716622d25cb782bda2f6abf020cae39300067fef322",
+      "source_archive_sha256": "b1d4adacb404cbf2e29cec07bbc76ee3898d5fb67bc50067a24467b67911f4b0",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "81f548ec8f0c5e035a59661643284fd3dea5226e81dc00a64899c67479ba061a"
+      },
+      "native_probe_receipt_sha256": "a0e24744dd648299f09eb37fe808a599cc57bbb721323097bbfdbd550abae299",
+      "cases": [
+        {
+          "case": "unknown-operation",
+          "receipt_sha256": "dfcd4fd747ae2ff549e6a63aee4b58fc42f300e30daddd30d7565aed5db18639",
+          "control_representation": "recorded-typed-control",
+          "recorded_control_receipt_sha256": "5eef795488631e8ae894df5b71abef4434a1bb180807eeb25be5d9bfcb464d64",
+          "injected_bytes": 100,
+          "injected_sha256": "68aa5257e3ffe6c7ca29a74e35b80e25b21cb9039c2250a5e7ca011d3cce2488",
+          "failed": true,
+          "failure": "control-operation",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "955c0f6192b4901e835a1e27ab7e7ad04f72325d697c0953b02f54f34c4e982a",
+              "bytes": 16470,
+              "records": 76,
+              "object_receipt_sha256": "b0cac4acbf43bc45568253b778f390d560885990128226d8ada2bb2fc46269a0",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "guest_cleanup_receipt_sha256": "3640f57c247605e0c441705a2a2e73fcbafbcab2e85327853c9497ce7ffaae77",
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    },
+    {
+      "source_commit": "a4e4e78314abe10e305cb0e940ee97c4971c7aca",
+      "base_commit": "500259505c85ab240e7c8f032d1ad96f318ce7e1",
+      "pr_title": "test(dashboards): contain private control channel failures",
+      "release": "14.5",
+      "native_test_exit": 0,
+      "execution_scope": "full-matrix",
+      "duration_line": "--- PASS: TestNativeDashboardWitnessControlChannel (498.24s)",
+      "raw_sha256": "d914232f1de566c5b22be5639b431c320735e7e2ae910822dd0c9420fe95b515",
+      "archive_sha256": "a83a77c80393e9de54f1156102a62865a24320984a74620664e1cfadd63b9086",
+      "result_sha256": "6ad5882851bf2bf40b9c9174f7ac2e5597813c7ff1d1e56df7341fe6babf5210",
+      "source_archive_sha256": "fed6e5aa5265584d4033963fbe4d16e8e57e70264a9d220ecbd9a0f0af20cdcf",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "77a92156d23cbf36455708763218cfd9ac6bddcde068f3b02dd874481d259abd"
+      },
+      "native_probe_receipt_sha256": "a0e24744dd648299f09eb37fe808a599cc57bbb721323097bbfdbd550abae299",
+      "cases": [
+        {
+          "case": "normal-boundary",
+          "receipt_sha256": "234935c1656531bd323a17cbd0d34d33efc04425cd67b6673087c1818e841892",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 65540,
+          "injected_sha256": "d061405e0306bf37558517c81f0decd002c358cb4ea31dd39ae35c50cd0db4c2",
+          "failed": false,
+          "failure": "",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": false,
+          "followup_denied": false,
+          "originals": [
+            {
+              "sha256": "d8d6bbbca56404c9ef3545d106df26260b617bc954440a8bf6abb854fb7b2116",
+              "bytes": 16469,
+              "records": 76,
+              "object_receipt_sha256": "fc84912baa0798efaa010ce1b3c7155dcbdde3853cb28757e99287090cafd613",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "control-eof",
+          "receipt_sha256": "43bb4040c3d14f609f6f5dfc591c538c190f546acd9ed4eeca26e9a119601d31",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 0,
+          "injected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "37a68a870c4afe8a77aff85f6b5bc9fae8fe1409f2b34d421628569e8342d9b5",
+              "bytes": 16469,
+              "records": 76,
+              "object_receipt_sha256": "d633d4cf139720ff5540c2f2df416716dc0a4b4edf5cbdf38bcac5f3e0c5d43f",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "duplicate-field",
+          "receipt_sha256": "797b180d8892462732bacb2fbb10b4feb4be7ecf73d0c19e4fe4314728760c9a",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 47,
+          "injected_sha256": "bcd04e6035bf31a2b51fed458431f23b547ca854ab10678bb669bb9a9d776c2d",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "4e1a9bee677b7cdc188cd9d4ce998e4b71a80920c4e81df3f630a224f622493e",
+              "bytes": 16469,
+              "records": 76,
+              "object_receipt_sha256": "41ba07411ffec46eeff5b05d157cc8647d5c41fe2dc805b58d5deac4056822d2",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "empty-frame",
+          "receipt_sha256": "dc1eab66de0f18d1210d8f1f99d5407fe214a12114aa306d8ca7e82974c0698a",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 4,
+          "injected_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "9611758594209aca4aef5296fb65a7311e7570643bae88c50daa0e686f5ad428",
+              "bytes": 16469,
+              "records": 76,
+              "object_receipt_sha256": "048847cdedb1213719c9827bcb69e327fba680a41e460cdde9eb56472666ee2a",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "oversized-header",
+          "receipt_sha256": "850431a0b1912ed5452edbb3cd7f910de98383b5897993de1440c386fe4ee36d",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 4,
+          "injected_sha256": "76cc5805dab9b4eacefdb477f498020fd82bccdbc9c6a2d9ce10586ac85512b4",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "048e975dda3654a0d332cfbc72929bd393069ca117826eaafafdedcb2e0f549f",
+              "bytes": 16469,
+              "records": 76,
+              "object_receipt_sha256": "4c6b0c8a0a6109de0e07a2bd103af5693c0ba122269bed3c5812646a70aece6d",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "trailing-json",
+          "receipt_sha256": "118d15f0b684c79853b6e1b67edf9e6342813b0b362f40163c52be32cf4c14d0",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 31,
+          "injected_sha256": "1698021a626abed58dc81ab5db5e82c79c7bd64fe9726797215c046f5cf59271",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "6abdad8fb4587068eb6c25e8907d9fcb9df7741e5dbea9f25998168f77b54da3",
+              "bytes": 16468,
+              "records": 76,
+              "object_receipt_sha256": "ae8112b7b63382ac8937704c4d7d1ba8dbc1d2b743cc7759ddeab7558922dfb1",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "truncated-body",
+          "receipt_sha256": "bb8ea01af3d7f99670d3f53456c27d36219a647606de90cbed75d4a3186639a4",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 5,
+          "injected_sha256": "8612229302bc818c3bad8d0199519b7248310be3debef575ad0f93f4b9a1116a",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "ee2953029b629f92af9bba9ed871f733373fd9852be940d73418e8d5e424fd02",
+              "bytes": 16467,
+              "records": 76,
+              "object_receipt_sha256": "da07387c6d6ad3e1841127ad413288f7be98d2414e0665a0f8326b6878c6729a",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "truncated-header",
+          "receipt_sha256": "66427a072922bd7a8947213156f4e5fa78c9e610eccbe62117a8602972f71b1f",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 2,
+          "injected_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "3cf2baed0f2f91592bfc3a9665727ae96ad16d6de532d5e4288b0402bfd8d0da",
+              "bytes": 16464,
+              "records": 76,
+              "object_receipt_sha256": "1ff755a36c4dc0d9ba211b659253ab4332a97f5e590f1be8f778d9fb8b55226c",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "unknown-field",
+          "receipt_sha256": "2daf77c307453747b4e2f6966b95b68304252b2ead39cc2c9bdc6cb9f840b3c2",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 45,
+          "injected_sha256": "7a3f21197a0a02df7ae8c0a63e7e9a86aa2ab567f809122bdff29c52fb664e1d",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "68cbef21656862ae748e60d7a6980ec54b808c7bb376e8bbf473674b99883d0f",
+              "bytes": 16468,
+              "records": 76,
+              "object_receipt_sha256": "0d9325c2918c4b8fce01325ceae58d7e5bcc58edfa20a01a6a8a46571076741a",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "unknown-operation",
+          "receipt_sha256": "44cd706d2b72ede1e07ee4848bbe83ed1eb8b9eda2fe3504753ad7abeb96bf3e",
+          "control_representation": "compact-template-only",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 29,
+          "injected_sha256": "563441d2fd2894b1c5603bee49d9a3fc7ef83d980941665676e0e5283e5f620e",
+          "failed": true,
+          "failure": "control-operation",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "ca3a7bd36fa84c2032f59d9e9eaa07c504f18b1ee88a0c6c4080cf1ec455bd8a",
+              "bytes": 16465,
+              "records": 76,
+              "object_receipt_sha256": "38bf33801acfeb1b426394e9caaa3fce6ecb28fa8bcdfc2916d961ff04cbdab2",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "guest_cleanup_receipt_sha256": "3640f57c247605e0c441705a2a2e73fcbafbcab2e85327853c9497ce7ffaae77",
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    },
+    {
+      "source_commit": "6eca553dc70b1c57a2bc6e5fb77f82ff21f3abbf",
+      "base_commit": "500259505c85ab240e7c8f032d1ad96f318ce7e1",
+      "pr_title": "test(dashboards): contain private control channel failures",
+      "release": "15.1",
+      "native_test_exit": 1,
+      "execution_scope": "focused-eof-regression",
+      "duration_line": "--- FAIL: TestNativeDashboardWitnessControlChannel (68.35s)",
+      "raw_sha256": "bcc65ab67de6f41ba5c1e858031dc32ad93b2d820ad332f60f5a643e83aab342",
+      "archive_sha256": "95da9a1950aad6c6cfa43958c7b8f10d9b2e30da65d434a8cf1f7eb4ac29a242",
+      "result_sha256": "ec85c237fd9aa502a8b0a40d4ce7f4d54074623d0b5624ff875023170991602f",
+      "source_archive_sha256": "1d6b12bee5d86f46f7aaf6b1f18af6b5955747617c0f1037266f078525410e94",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "14d081a405bb8ac4721feb27fddccf684b133442b097ab4868a10f7248e2d673"
+      },
+      "native_probe_receipt_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+      "cases": [
+        {
+          "case": "control-eof",
+          "receipt_sha256": "8a0fbc9bd626daa5d1c2ea91e7dab089b96435713ec76476ba87efedc97adc28",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 0,
+          "injected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "failed": false,
+          "failure": "",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": false,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "f910a0ed6445da97b4eb0c8b0d9744a357dc728118b459b349609ff1062a4fb6",
+              "bytes": 18785,
+              "records": 86,
+              "object_receipt_sha256": "5b2b2e8a69020d383f03fe001175e3554e0285bbae5e73bfd2b4dcc435a9424c",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "guest_cleanup_receipt_sha256": "3640f57c247605e0c441705a2a2e73fcbafbcab2e85327853c9497ce7ffaae77",
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    },
+    {
+      "source_commit": "a4e4e78314abe10e305cb0e940ee97c4971c7aca",
+      "base_commit": "500259505c85ab240e7c8f032d1ad96f318ce7e1",
+      "pr_title": "test(dashboards): contain private control channel failures",
+      "release": "15.1",
+      "native_test_exit": 0,
+      "execution_scope": "full-matrix",
+      "duration_line": "--- PASS: TestNativeDashboardWitnessControlChannel (555.09s)",
+      "raw_sha256": "00ad4c3669acfddaff85cfb5738777f3a51791b50b483e6906f1da9f3c3f75be",
+      "archive_sha256": "412b2b1439f8c7ecd3c3190d2496088ccd928dc9bfd103ab28767c9efbbb3397",
+      "result_sha256": "fb540493942ed856d52491c871167b1e4e3669f32db38248d2a9bbca8e22214b",
+      "source_archive_sha256": "fed6e5aa5265584d4033963fbe4d16e8e57e70264a9d220ecbd9a0f0af20cdcf",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "77a92156d23cbf36455708763218cfd9ac6bddcde068f3b02dd874481d259abd"
+      },
+      "native_probe_receipt_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+      "cases": [
+        {
+          "case": "control-eof",
+          "receipt_sha256": "3952aeed7b2b748c77e2fe7146e0b23fa87b88337b315647f0db19b6fc384924",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 0,
+          "injected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "f1517faf6a31f21ad352ab5502c708d7ac5c601db5a5f75c594ef1174a931047",
+              "bytes": 18779,
+              "records": 86,
+              "object_receipt_sha256": "e8d82cb1e2c0e32d103a5080ea804c3258a5dd61f90e079546eeb29baf7e3d10",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "unknown-field",
+          "receipt_sha256": "b1de3a4a61a7355a434596fc96301d3630fc8f77b1b5d1db360b0dbfc55c4a07",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 45,
+          "injected_sha256": "7a3f21197a0a02df7ae8c0a63e7e9a86aa2ab567f809122bdff29c52fb664e1d",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "d7c6d050d36e3d46112d4f1f62cff7696822f9a5c323cffc46d3d2edba79c0e2",
+              "bytes": 18779,
+              "records": 86,
+              "object_receipt_sha256": "b9c52075ca40de02e5e5ea7f3347e52ee1811bf9a2ccaa98c260cf95cba3ab5f",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "normal-boundary",
+          "receipt_sha256": "7020164d068b05de92f3e38f13ec1355107d408b65f57d62de2f480a204d9973",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 65540,
+          "injected_sha256": "d061405e0306bf37558517c81f0decd002c358cb4ea31dd39ae35c50cd0db4c2",
+          "failed": false,
+          "failure": "",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": false,
+          "followup_denied": false,
+          "originals": [
+            {
+              "sha256": "79433975870cd35a8dd4005c39a9cd1b62877478a21cd6f1e2943b1bd8993a82",
+              "bytes": 18779,
+              "records": 86,
+              "object_receipt_sha256": "fa814d6367333befeff043ce7e350dd741ae3ed70bf55d22377d450dc32aec49",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "truncated-header",
+          "receipt_sha256": "f4d2f1f81e93adb57b5fc75cfe11de4c88dee8bc7feaee5a746a810399c0b952",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 2,
+          "injected_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "b1daabd23c2034ca4f84e09fa90adb44405d4984d0659cdd2279a88d8da08c0d",
+              "bytes": 18777,
+              "records": 86,
+              "object_receipt_sha256": "6d6f25c85e716f431746df9adb6afaf89daea0899d39c91dc1b1934e23957aaf",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "empty-frame",
+          "receipt_sha256": "925ff1992cf7fa989d3678afc2ea1d7b256625337e6fa661f5d533d83b2b2d70",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 4,
+          "injected_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "ba18c1d05f1f89fd536d8ee6d87648555d0faf7ae1335445dc5e50285115a93d",
+              "bytes": 18779,
+              "records": 86,
+              "object_receipt_sha256": "85968cc166d3701deea0bd6b61578bb0c5c11bb3a043dd7f33ab055aaa46623e",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "unknown-operation",
+          "receipt_sha256": "489498de838b5a2cdbb53cf635bbf52a7d809272ef95f3b1af92ff9a9bef3d15",
+          "control_representation": "compact-template-only",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 29,
+          "injected_sha256": "563441d2fd2894b1c5603bee49d9a3fc7ef83d980941665676e0e5283e5f620e",
+          "failed": true,
+          "failure": "control-operation",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "6e2904b43561640b57ee6453d6abf535c971e97362b869f4eb774a53ddb8a704",
+              "bytes": 18779,
+              "records": 86,
+              "object_receipt_sha256": "3514bbe2c1f9e73fe9acd64ee64c01d5c1da211fae877122c4903279abd6407e",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "trailing-json",
+          "receipt_sha256": "ebc663cb2ea3a416e829c71c0ee5d3155779697fb6774969dce9fe232d312f87",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 31,
+          "injected_sha256": "1698021a626abed58dc81ab5db5e82c79c7bd64fe9726797215c046f5cf59271",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "6d5ca262b9afd84804b727890766af0861d0192719e3743a68c60a018f770edc",
+              "bytes": 18778,
+              "records": 86,
+              "object_receipt_sha256": "e54426a8df3072107411acdbfdf06c1f1e3984b0c3215ae87ecf39ef6b8081f2",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "oversized-header",
+          "receipt_sha256": "2e4a4275a06016c99bd6752b43f6fb47b96a1062918968ef1cad3c388768820a",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 4,
+          "injected_sha256": "76cc5805dab9b4eacefdb477f498020fd82bccdbc9c6a2d9ce10586ac85512b4",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "a3aa2f1138c6b65f8cdbb5583760a6e147f6d39b94b86d068123a5451505a2c8",
+              "bytes": 18779,
+              "records": 86,
+              "object_receipt_sha256": "62f5897e5f19582750b27ff28f1c4f784b6801648be4be3c411b9c7d211be658",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "truncated-body",
+          "receipt_sha256": "b9cb58e27f2b0f962aa43c62a18001fa82a84970c26897730cfa9050a05769b5",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 5,
+          "injected_sha256": "8612229302bc818c3bad8d0199519b7248310be3debef575ad0f93f4b9a1116a",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "f4832402d54928ff389c69202fc7b3839ef4dbac3cc0fa0c9c09ee7fc8c2fb0d",
+              "bytes": 18778,
+              "records": 86,
+              "object_receipt_sha256": "22fd69ae08431859e37d59f0717a32cbcfca8fb1617c5cea07643cd036b7edee",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "duplicate-field",
+          "receipt_sha256": "8c53c7c39bf539d98d17259e2ac87e65d44abd1339fa12ab2553881e2fe0b1b2",
+          "control_representation": "direct-control-input",
+          "recorded_control_receipt_sha256": null,
+          "injected_bytes": 47,
+          "injected_sha256": "bcd04e6035bf31a2b51fed458431f23b547ca854ab10678bb669bb9a9d776c2d",
+          "failed": true,
+          "failure": "control-read",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "a427a230323721c6ac7989b6284dbccf6bdeb6d9fccaffd4275bd739cff14caf",
+              "bytes": 18779,
+              "records": 86,
+              "object_receipt_sha256": "5564863be22775d9335577c3d7b6938d9fce740caf8ec7b3539f671f9bf89214",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "guest_cleanup_receipt_sha256": "3640f57c247605e0c441705a2a2e73fcbafbcab2e85327853c9497ce7ffaae77",
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    },
+    {
+      "source_commit": "543a61752db6b8aa036d668ce55cf4c1a1130abb",
+      "base_commit": "500259505c85ab240e7c8f032d1ad96f318ce7e1",
+      "pr_title": "test(dashboards): contain private control channel failures",
+      "release": "15.1",
+      "native_test_exit": 0,
+      "execution_scope": "focused-recorded-typed-control",
+      "duration_line": "--- PASS: TestNativeDashboardWitnessControlChannel (69.70s)",
+      "raw_sha256": "2dc6fba565442d747e8ecd3faba9411d773a4e06f9ba9a859d22e5591b656f83",
+      "archive_sha256": "8cfc40fc3a2f60a94e16c843bdec8ba352a6e2389e5110a565bc792cb857f1b8",
+      "result_sha256": "97bd9bd6e23963567c01547135f37543121e99fd543a51a8053269c66da46244",
+      "source_archive_sha256": "b1d4adacb404cbf2e29cec07bbc76ee3898d5fb67bc50067a24467b67911f4b0",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "81f548ec8f0c5e035a59661643284fd3dea5226e81dc00a64899c67479ba061a"
+      },
+      "native_probe_receipt_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+      "cases": [
+        {
+          "case": "unknown-operation",
+          "receipt_sha256": "bae9f76870a032d731575fb0cd5d4c5edb75d1d4240e8e58c7969b1bd872d932",
+          "control_representation": "recorded-typed-control",
+          "recorded_control_receipt_sha256": "5eef795488631e8ae894df5b71abef4434a1bb180807eeb25be5d9bfcb464d64",
+          "injected_bytes": 100,
+          "injected_sha256": "68aa5257e3ffe6c7ca29a74e35b80e25b21cb9039c2250a5e7ca011d3cce2488",
+          "failed": true,
+          "failure": "control-operation",
+          "store_failed": false,
+          "prior_original_eligible": true,
+          "old_original_denied": true,
+          "followup_denied": true,
+          "originals": [
+            {
+              "sha256": "e77aa47d0b67e230afffb5049df10642b4e7af08311fb51066a5e83117cfe117",
+              "bytes": 18780,
+              "records": 86,
+              "object_receipt_sha256": "6dd289b865153e46f7df6059a6a051378b323afd5070d54f4b869be40272d603",
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null
+            }
+          ],
+          "connectors": 1,
+          "all_connectors_reaped": true,
+          "front_removed": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "guest_cleanup_receipt_sha256": "3640f57c247605e0c441705a2a2e73fcbafbcab2e85327853c9497ce7ffaae77",
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    }
+  ],
+  "limits": [
+    "Test-only observer/control caller. Product runtime, public wire/API/config and native producer artifacts unchanged.",
+    "Full matrices at a4e4e78 cover nine adverse controls and exact 64 KiB valid readback followed by normal stop on both releases. Earlier complete/delivered producer originals remain retained; those facts do not authorize qualification after control failure.",
+    "The a4e4e78 unsupported-operation injection hash/size describe a compact request template, not the typed caller encoding. This limitation remains explicit. The 543a617 followup records actual successful typed control writes and runs only the affected unsupported-operation case on both releases; it is not a full-matrix execution of that source.",
+    "The focused failed 15.1 EOF predecessor remains failed with unfailed terminal receipt and cached original still eligible. It has no full-matrix or 14.5 execution.",
+    "Independent readback verifies complete actual producer bytes/frames/object/hash references, recorded typed-control bytes where present, original source/actor/ABI context, unchanged preflight/runtime pins and exact guest/host teardown.",
+    "Controller process death with separately surviving verified ownership, full broker/caller capacity and remaining cancellation/recovery remain open.",
+    "Cadence/overhead/augmented budgets, historical 14.5 gaps, 300-second idle, original large latency/full resource, browser/manual accessibility, hardware and release acceptance remain open.",
+    "No operator storage, new dependencies, services, Actions or paid automation. Canonical resource runner inactive; runtime writes denied."
+  ]
+}
