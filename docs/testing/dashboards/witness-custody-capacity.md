@@ -70,3 +70,21 @@ full resource/browser/hardware/release acceptance remain open. Canonical resourc
 runner stays inactive and runtime writes remain denied. Run required check/lint/
 test/secrets, affected-package review and lab-stop/status; no new Actions or paid
 automation. A passing custody component does not close the coordinating gate.
+
+## Retained failed physical-fill predecessor
+
+Source `7287cf0d8af28d42161df9d83376d86dea4d3df6` passed signed clean review
+before a failed 15.1 attempt (169.46s). Attempt, single-active, raw-cap and
+archive-cap controls passed. The physical filler stopped at 335,478,784 bytes
+when its 64 KiB write returned ENOSPC, but another complete 1,328-byte source
+still fit. Its original receipt reports the failed assertion and an unfailed
+store; this is not physical-exhaustion acceptance. Full original bytes, receipts,
+failed exit and verified guest/host cleanup are retained. 14.5 was not executed
+for that source.
+
+The corrected filler decreases write granularity down to one byte after each
+ENOSPC and independently requires a new one-byte file write to fail before
+exercising custody. A failed bulk write alone does not prove no smaller allocation
+fits. The mount remains 320 MiB and custody limits/guards remain unchanged. New
+review and both-release execution are required; later results do not upgrade the
+failed predecessor or infer its unobserved free-block count.

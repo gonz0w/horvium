@@ -59,7 +59,7 @@ type witnessCapacityReceipt struct {
 	Passed, Failed, PriorEligible, BoundaryEligible, ResumeDenied, OldOriginalDenied bool
 	UnreadRejectedBody                                                               bool
 	Failure                                                                          string
-	ENOSPC, SpaceReleased                                                            bool
+	ENOSPC, SmallProbeENOSPC, SpaceReleased                                          bool
 	FillBytes                                                                        int64
 	FillSHA256                                                                       string
 	FillObject                                                                       *witnessFileObject
@@ -381,18 +381,45 @@ func TestNativeDashboardWitnessCapacity(t *testing.T) {
 				defer fill.Close()
 				buffer := make([]byte, witnessFrameCap)
 				var writeError error
-				for receipt.FillBytes <= witnessCapacityTmpfs {
-					n, e := fill.Write(buffer)
-					receipt.FillBytes += int64(n)
-					if e != nil {
-						writeError = e
-						break
+				// A refused large write can leave room for smaller allocations.
+				// Fill at decreasing granularity down to one byte, then prove a
+				// new file cannot allocate even one byte before faulting custody.
+				for size := len(buffer); size >= 1; size /= 2 {
+					for receipt.FillBytes <= witnessCapacityTmpfs {
+						n, e := fill.Write(buffer[:size])
+						receipt.FillBytes += int64(n)
+						if e != nil {
+							writeError = e
+							if !errors.Is(e, syscall.ENOSPC) {
+								t.Fatal("unexpected filler I/O", e)
+							}
+							break
+						}
+						if n != size {
+							t.Fatal("short filler write without ENOSPC")
+						}
 					}
 				}
 				receipt.ENOSPC = errors.Is(writeError, syscall.ENOSPC)
 				if !receipt.ENOSPC || receipt.FillBytes <= 0 || receipt.FillBytes > witnessCapacityTmpfs {
 					t.Fatal("full-size physical ENOSPC not observed")
 				}
+				probePath := filepath.Join(mount, "space-probe")
+				spaceProbe, pe := os.OpenFile(probePath, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+				if pe != nil {
+					receipt.SmallProbeENOSPC = errors.Is(pe, syscall.ENOSPC)
+				} else {
+					n, we := spaceProbe.Write([]byte{0})
+					spaceProbe.Close()
+					receipt.SmallProbeENOSPC = n == 0 && errors.Is(we, syscall.ENOSPC)
+					if os.Remove(probePath) != nil {
+						t.Fatal("owned space probe cleanup")
+					}
+				}
+				if !receipt.SmallProbeENOSPC {
+					t.Fatal("large-write ENOSPC still left room for a new small file")
+				}
+
 				info, e := fill.Stat()
 				object, oe := witnessObject(info)
 				if e != nil || oe != nil || object.UID != 0 || object.Links != 1 || info.Size() != receipt.FillBytes {
