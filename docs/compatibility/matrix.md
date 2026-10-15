@@ -2224,3 +2224,11 @@ retain accepted-prefix byte/hash, bounded OS error and original observer deadlin
 observations without granting publication authority. Focused native controls and
 source-bound readback remain separate from the failed 14.5 full-capacity gate.
 The canonical resource runner stays inactive and runtime writes remain denied.
+
+The [forwarding diagnostic manifest](../testing/dashboards/witness-forward-diagnostics-manifest.json)
+records focused normal native-small/projection publications, actual manager-loss
+broken-pipe receipts and isolated expired-socket classification passing on both
+pinned releases. Original-byte readback and guest/host teardown passed. These
+results leave the prior 14.5 full-capacity failure unexplained and unqualified;
+actual collection expiry/cancellation, full resource/support and activation gates
+remain open. All 168 historical manifests remain unchanged.

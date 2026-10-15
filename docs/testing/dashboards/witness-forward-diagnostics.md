@@ -68,8 +68,32 @@ inactive; runtime writes remain denied. No service or Action is added.
 
 ## Candidate evidence
 
-Candidate-specific outcomes follow signed clean review; this document alone
-establishes no native result.
+Reviewed behavioral source `859ebb44db89ccd9dc5b63a81aadb0090f96765c` passed the focused selector
+on both pinned FreeBSD/amd64 targets. The [immutable manifest](witness-forward-diagnostics-manifest.json)
+retains original transcript/archive/receipt/artifact/probe hashes and independent
+readback. The original source-bound portable review passed baseline checks and
+verified exact-input reuse of affected-package race/original-wire fuzz checks
+originally executed at `c2ddc4c898e1c0e9a028a976184c045bbe0961e9`.
+
+| FreeBSD | Focused test duration | Peer-loss accepted bytes | Actual errno | Connection elapsed at peer loss |
+| --- | --- | --- | --- | --- |
+| 15.1 | 195.27s | 0 | 32 | 16.556400s |
+| 14.5 | 197.63s | 0 | 32 | 18.380096s |
+
+Both releases confirmed normal native-small and 10,000-projection publication,
+retained complete delivered originals and sidecars, then separately observed
+SIGKILL/reaping of the original manager before releasing the sealed stream.
+That control retained a complete undelivered original with actual broken-pipe
+errno, exact accepted-prefix hash, and no observer deadline crossing or context
+cancellation/expiry. The isolated expired-socket controls recorded actual timeout
+with zero accepted bytes. No expired-socket fixture is a production collection.
+
+All started connectors and original observers were reaped; actual helper and both
+configuration/token states were preserved; original fronts, owned tmpfs/ZFS/md and
+host runtime artifacts were removed. Independent readback reopened original bytes,
+sidecars, source-bound commands, probe/artifacts and matching before/after preflight.
+These are diagnostic component results, not native/resource activation or full
+14.5 projection-attempt capacity. All prior failed evidence remains unchanged.
 
 ### Incomplete host-wrapper predecessor
 
