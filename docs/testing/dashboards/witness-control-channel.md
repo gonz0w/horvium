@@ -55,3 +55,18 @@ The observer now latches failed control reads/writes before final cleanup. The
 fixture caller permanently latches control errors and rechecks that latch before
 and after original decoding, including cache hits. Cleanup/control reads can still
 collect failure evidence; they cannot restore original eligibility.
+
+## Typed control receipt correction
+
+The first corrected full matrices at `a4e4e78314abe10e305cb0e940ee97c4971c7aca`
+exercise actual unsupported-operation refusal, but that case's injection hash/size
+describe a compact request template. The ordinary typed caller also sends zero
+actor fields. Those records retain this representation limitation; their original
+producer files and observed containment results remain unchanged.
+
+A followup records bytes only after successful writes through the original
+control channel, using the same caller and failure latch. Export the recorded
+typed frame in an exclusive root-only receipt and independently reopen its full
+encoding, size and hash. Run the affected unsupported-operation case on both
+releases at the new signed reviewed source. The earlier full matrices are not
+relabeled as executions of the followup source.

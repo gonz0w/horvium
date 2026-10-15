@@ -196,7 +196,10 @@ func startWitnessObserver(t *testing.T, cfg witnessNativeConfig, configPath stri
 	}
 	return o
 }
-func (o *witnessFixtureObserver) control(command witnessNativeCommand) (receipt witnessNativeReceipt, controlError error) {
+func (o *witnessFixtureObserver) control(command witnessNativeCommand) (witnessNativeReceipt, error) {
+	return o.controlRecorded(command, nil)
+}
+func (o *witnessFixtureObserver) controlRecorded(command witnessNativeCommand, record io.Writer) (receipt witnessNativeReceipt, controlError error) {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	defer func() {
@@ -208,7 +211,11 @@ func (o *witnessFixtureObserver) control(command witnessNativeCommand) (receipt 
 		return receipt, witnessFailure("control-closed")
 	}
 	_ = o.channel.SetDeadline(time.Now().Add(45 * time.Second))
-	if witnessControlWrite(o.channel, command) != nil {
+	var writer io.Writer = o.channel
+	if record != nil {
+		writer = io.MultiWriter(o.channel, record)
+	}
+	if witnessControlWrite(writer, command) != nil {
 		return receipt, witnessFailure("control-write")
 	}
 	if witnessControlRead(o.channel, &receipt) != nil {

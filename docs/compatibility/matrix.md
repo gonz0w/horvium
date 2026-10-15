@@ -2178,3 +2178,8 @@ requires malformed/closed private controls to invalidate candidate qualification
 and cached originals while preserving actual producer files. Exact normal bounds
 and original helper/configuration remain required; controller process death and
 full broker/resource acceptance are separate pending gates.
+
+The control-channel batch distinguishes full containment matrices from focused
+typed-control receipt validation. Earlier unsupported-operation injection hashes
+refer to the compact template; recorded actual typed bytes have separate
+source-bound evidence. No historical observation is upgraded.

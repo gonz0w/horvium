@@ -17,6 +17,7 @@ import (
 )
 
 type witnessControlCaseReceipt struct {
+	TypedControlRecorded                                                                               bool
 	Label                                                                                              string
 	InjectedSHA256                                                                                     string
 	InjectedBytes                                                                                      int
@@ -113,8 +114,16 @@ func TestNativeDashboardWitnessControlChannel(t *testing.T) {
 				r.InjectedBytes = len(raw)
 				r.InjectedSHA256 = fmt.Sprintf("%x", sha256.Sum256(raw))
 				if label == "unknown-operation" {
-					if _, e := o.control(witnessNativeCommand{Operation: "untrusted"}); e == nil {
+					var sent bytes.Buffer
+					if _, e := o.controlRecorded(witnessNativeCommand{Operation: "untrusted"}, &sent); e == nil {
 						t.Error("unknown operation accepted")
+					}
+					raw = sent.Bytes()
+					r.InjectedBytes = len(raw)
+					r.InjectedSHA256 = fmt.Sprintf("%x", sha256.Sum256(raw))
+					r.TypedControlRecorded = true
+					if witnessWritePrivateIndex(export, label+".control", struct{ Bytes []byte }{raw}) != nil {
+						t.Fatal("exclusive actual typed control bytes")
 					}
 					if witnessControlWrite(o.channel, witnessNativeCommand{Operation: "stop"}) != nil {
 						t.Fatal("failed owner stop")
