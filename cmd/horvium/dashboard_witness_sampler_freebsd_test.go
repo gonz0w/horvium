@@ -399,7 +399,7 @@ func witnessNativeConnectorArtifactControl(t *testing.T, p *performancePair, abi
 		}
 	}()
 	_ = parent.SetDeadline(time.Now().Add(10 * time.Second))
-	if witnessControlWrite(parent, witnessConnectorConfig{abi, os.Getpid(), fixture, "0000000000000000000000000000000000000000000000000000000000000000"}) != nil {
+	if witnessControlWrite(parent, witnessConnectorConfig{ABI: abi, ParentPID: os.Getpid(), Fixture: fixture, SHA256: "0000000000000000000000000000000000000000000000000000000000000000"}) != nil {
 		t.Fatal("connector control bootstrap")
 	}
 	var accepted witnessActor

@@ -5,6 +5,7 @@ package main
 
 import (
 	"golang.org/x/sys/unix"
+	"io"
 	"net"
 	"os"
 )
@@ -60,4 +61,28 @@ func witnessPassedDescriptor(c *net.UnixConn) (*net.UnixConn, error) {
 		return nil, errDashboardWitness
 	}
 	return u, nil
+}
+
+// Called only after the original connector has been waited. No second byte or
+// queued descriptor may remain, even if the first handoff was valid.
+func witnessDescriptorEOF(c *net.UnixConn) error {
+	var data [1]byte
+	oob := make([]byte, unix.CmsgSpace(4)*2)
+	n, on, flags, _, readError := c.ReadMsgUnix(data[:], oob)
+	messages, parseError := unix.ParseSocketControlMessage(oob[:on])
+	for _, message := range messages {
+		if message.Header.Level == unix.SOL_SOCKET && message.Header.Type == unix.SCM_RIGHTS {
+			fds, e := unix.ParseUnixRights(&message)
+			for _, fd := range fds {
+				_ = unix.Close(fd)
+			}
+			if e != nil {
+				parseError = e
+			}
+		}
+	}
+	if n != 0 || on != 0 || flags&unix.MSG_CTRUNC != 0 || parseError != nil || readError != io.EOF {
+		return errDashboardWitness
+	}
+	return nil
 }

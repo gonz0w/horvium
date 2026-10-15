@@ -298,6 +298,7 @@ type witnessConnectorConfig struct {
 	ABI             witnessABI
 	ParentPID       int
 	Fixture, SHA256 string
+	Fault           string `json:"fault,omitempty"`
 }
 
 func TestNativeDashboardWitnessConnector(t *testing.T) {
@@ -319,7 +320,7 @@ func TestNativeDashboardWitnessConnector(t *testing.T) {
 	u := channel.(*net.UnixConn)
 	_ = u.SetDeadline(time.Now().Add(10 * time.Second))
 	var cfg witnessConnectorConfig
-	if witnessControlRead(u, &cfg) != nil || !cfg.ABI.valid() || cfg.ParentPID != os.Getppid() {
+	if witnessControlRead(u, &cfg) != nil || !cfg.ABI.valid() || cfg.ParentPID != os.Getppid() || !witnessAncillaryFaultValid(cfg.Fault) {
 		t.Fatal("connector original bootstrap")
 	}
 	parentUID, parentPID, pe := witnessNativePeer(u, cfg.ABI)
@@ -334,6 +335,15 @@ func TestNativeDashboardWitnessConnector(t *testing.T) {
 	if _, e := io.ReadFull(u, bound[:]); e != nil || bound[0] != 'B' {
 		t.Fatal("connector original identity confirmation")
 	}
+	if cfg.Fault == "eof" {
+		return
+	}
+	if cfg.Fault == "missing-rights" {
+		if _, e := u.Write([]byte{'F'}); e != nil {
+			t.Fatal("fault byte")
+		}
+		return
+	}
 	c, e := net.DialUnix("unix", nil, &net.UnixAddr{Name: path, Net: "unix"})
 	if e != nil {
 		t.Fatal("connector connect")
@@ -344,12 +354,65 @@ func TestNativeDashboardWitnessConnector(t *testing.T) {
 		t.Fatal("connector descriptor")
 	}
 	defer f.Close()
-	if n, on, e := u.WriteMsgUnix([]byte{'F'}, unix.UnixRights(int(f.Fd())), nil); e != nil || n != 1 || on != len(unix.UnixRights(int(f.Fd()))) {
+	tag := byte('F')
+	fds := []int{int(f.Fd())}
+	if cfg.Fault == "wrong-tag" {
+		tag = 'X'
+	}
+	if cfg.Fault == "extra-rights" {
+		fds = append(fds, int(f.Fd()))
+	}
+	if cfg.Fault == "truncated-rights" {
+		for len(fds) < 64 {
+			fds = append(fds, int(f.Fd()))
+		}
+	}
+	if cfg.Fault == "non-socket" {
+		r, w, e := os.Pipe()
+		if e != nil {
+			t.Fatal("fault pipe")
+		}
+		defer r.Close()
+		defer w.Close()
+		fds = []int{int(r.Fd())}
+	}
+	if cfg.Fault == "wrong-endpoint" {
+		a, b, e := witnessSocketPair()
+		if e != nil {
+			t.Fatal("fault endpoint")
+		}
+		defer a.Close()
+		defer b.Close()
+		other, e := a.File()
+		if e != nil {
+			t.Fatal("fault endpoint file")
+		}
+		defer other.Close()
+		fds = []int{int(other.Fd())}
+	}
+	rights := unix.UnixRights(fds...)
+	if n, on, e := u.WriteMsgUnix([]byte{tag}, rights, nil); e != nil || n != 1 || on != len(rights) {
 		t.Fatal("connector handoff")
 	}
+	if cfg.Fault == "replay-before-ack" {
+		if _, _, e := u.WriteMsgUnix([]byte{'F'}, unix.UnixRights(int(f.Fd())), nil); e != nil {
+			t.Fatal("fault replay")
+		}
+	}
+	if cfg.Fault == "extra-byte" {
+		if _, e := u.Write([]byte{'R'}); e != nil {
+			t.Fatal("fault extra byte")
+		}
+	}
+
 	var ack [1]byte
 	if _, e := io.ReadFull(u, ack[:]); e != nil || ack[0] != 'A' {
 		t.Fatal("connector acknowledgment")
+	}
+	if cfg.Fault == "replay-after-ack" {
+		if _, _, e := u.WriteMsgUnix([]byte{'F'}, unix.UnixRights(int(f.Fd())), nil); e != nil {
+			t.Fatal("fault replay after ack")
+		}
 	}
 }
 
@@ -382,47 +445,50 @@ type witnessNativeOriginal struct {
 	Object witnessFileObject   `json:"object"`
 }
 type witnessNativeReceipt struct {
-	ConnectorBoundary *witnessConnectorBoundaryReceipt `json:"connector_boundary,omitempty"`
-	OK                bool                             `json:"ok"`
-	Failed            bool                             `json:"failed"`
-	Failure           string                           `json:"failure"`
-	StoreFailed       bool                             `json:"store_failed"`
-	Denied            int                              `json:"denied"`
-	Originals         []witnessNativeOriginal          `json:"originals"`
-	ObserverHigh      uint64                           `json:"observer_high_rss"`
-	ObserverCPUNS     int64                            `json:"observer_cpu_ns"`
-	ConnectorStarted  int                              `json:"connector_started"`
-	ConnectorActive   int                              `json:"connector_active"`
-	ConnectorMaxRSS   uint64                           `json:"connector_max_rss"`
-	ConnectorCPUNS    int64                            `json:"connector_cpu_ns"`
-	Connectors        int                              `json:"connectors"`
-	FrontRemoved      bool                             `json:"front_removed"`
-	Active            bool                             `json:"active"`
+	ConnectorEOFChecks   int                              `json:"connector_eof_checks,omitempty"`
+	ConnectorEOFRejected int                              `json:"connector_eof_rejected,omitempty"`
+	ConnectorBoundary    *witnessConnectorBoundaryReceipt `json:"connector_boundary,omitempty"`
+	OK                   bool                             `json:"ok"`
+	Failed               bool                             `json:"failed"`
+	Failure              string                           `json:"failure"`
+	StoreFailed          bool                             `json:"store_failed"`
+	Denied               int                              `json:"denied"`
+	Originals            []witnessNativeOriginal          `json:"originals"`
+	ObserverHigh         uint64                           `json:"observer_high_rss"`
+	ObserverCPUNS        int64                            `json:"observer_cpu_ns"`
+	ConnectorStarted     int                              `json:"connector_started"`
+	ConnectorActive      int                              `json:"connector_active"`
+	ConnectorMaxRSS      uint64                           `json:"connector_max_rss"`
+	ConnectorCPUNS       int64                            `json:"connector_cpu_ns"`
+	Connectors           int                              `json:"connectors"`
+	FrontRemoved         bool                             `json:"front_removed"`
+	Active               bool                             `json:"active"`
 }
 type witnessNativeObserver struct {
-	connectorBoundary                 *witnessConnectorBoundaryReceipt
-	fault                             *witnessNativeFaultGate
-	mu                                sync.Mutex
-	cfg                               witnessNativeConfig
-	store                             *dashboardWitnessStore
-	listener                          *net.UnixListener
-	front                             os.FileInfo
-	back                              os.FileInfo
-	management                        witnessActor
-	registered                        chan struct{}
-	active                            bool
-	stopping                          bool
-	allowDeath                        bool
-	denied                            int
-	connections                       map[*net.UnixConn]bool
-	children                          sync.WaitGroup
-	connectorMax                      uint64
-	connectorCPU                      time.Duration
-	connectors                        int
-	connectorStarted, connectorActive int
-	failed                            bool
-	failure                           string
-	ctx                               context.Context
+	connectorEOFChecks, connectorEOFRejected int
+	connectorBoundary                        *witnessConnectorBoundaryReceipt
+	fault                                    *witnessNativeFaultGate
+	mu                                       sync.Mutex
+	cfg                                      witnessNativeConfig
+	store                                    *dashboardWitnessStore
+	listener                                 *net.UnixListener
+	front                                    os.FileInfo
+	back                                     os.FileInfo
+	management                               witnessActor
+	registered                               chan struct{}
+	active                                   bool
+	stopping                                 bool
+	allowDeath                               bool
+	denied                                   int
+	connections                              map[*net.UnixConn]bool
+	children                                 sync.WaitGroup
+	connectorMax                             uint64
+	connectorCPU                             time.Duration
+	connectors                               int
+	connectorStarted, connectorActive        int
+	failed                                   bool
+	failure                                  string
+	ctx                                      context.Context
 }
 
 func (o *witnessNativeObserver) connection(c *net.UnixConn) {
@@ -515,7 +581,7 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	}()
 	_ = parent.SetDeadline(time.Now().Add(10 * time.Second))
 	stage = "connector-bootstrap"
-	if witnessControlWrite(parent, witnessConnectorConfig{o.cfg.ABI, os.Getpid(), o.cfg.Fixture, o.cfg.FixtureSHA256}) != nil {
+	if witnessControlWrite(parent, witnessConnectorConfig{ABI: o.cfg.ABI, ParentPID: os.Getpid(), Fixture: o.cfg.Fixture, SHA256: o.cfg.FixtureSHA256, Fault: witnessConfiguredAncillary(o.cfg)}) != nil {
 		fail()
 		return
 	}
@@ -573,6 +639,19 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	accounted := o.accountConnector(cmd, stage, e, ctx.Err()) == nil
 	o.recordConnectorBoundary(original, cmd, accounted, false, e, ctx.Err())
 	if !accounted || e != nil {
+		fail()
+		return
+	}
+	stage = "connector-channel-eof"
+	_ = parent.SetReadDeadline(deadline)
+	eofError := witnessDescriptorEOF(parent)
+	o.mu.Lock()
+	o.connectorEOFChecks++
+	if eofError != nil {
+		o.connectorEOFRejected++
+	}
+	o.mu.Unlock()
+	if eofError != nil {
 		fail()
 		return
 	}
@@ -695,7 +774,7 @@ func (o *witnessNativeObserver) receipt() witnessNativeReceipt {
 			o.failure = "observer-usage"
 		}
 	}
-	r := witnessNativeReceipt{ConnectorBoundary: o.connectorBoundary, ObserverHigh: uint64(usage.Maxrss) * 1024, ObserverCPUNS: cpu, ConnectorStarted: o.connectorStarted, ConnectorActive: o.connectorActive, OK: true, Failed: o.failed || o.store.failed, Failure: o.failure, StoreFailed: o.store.failed, Denied: o.denied, ConnectorMaxRSS: o.connectorMax, ConnectorCPUNS: int64(o.connectorCPU), Connectors: o.connectors, Active: o.active}
+	r := witnessNativeReceipt{ConnectorEOFChecks: o.connectorEOFChecks, ConnectorEOFRejected: o.connectorEOFRejected, ConnectorBoundary: o.connectorBoundary, ObserverHigh: uint64(usage.Maxrss) * 1024, ObserverCPUNS: cpu, ConnectorStarted: o.connectorStarted, ConnectorActive: o.connectorActive, OK: true, Failed: o.failed || o.store.failed, Failure: o.failure, StoreFailed: o.store.failed, Denied: o.denied, ConnectorMaxRSS: o.connectorMax, ConnectorCPUNS: int64(o.connectorCPU), Connectors: o.connectors, Active: o.active}
 	for _, ref := range o.store.refs {
 		v := o.store.sealed[ref.Name]
 		object, e := witnessObject(v.info)
