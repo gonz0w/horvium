@@ -2172,3 +2172,21 @@ records all five full-size synthetic custody controls passing at one reviewed
 source on both pinned releases, with full original-byte readback and exact
 guest/host teardown. Both failed 15.1 predecessors remain failed; wider native
 broker/controller/resource, browser, hardware and release acceptance remains open.
+
+The [native control-channel fixture](../testing/dashboards/witness-control-channel.md)
+requires malformed/closed private controls to invalidate candidate qualification
+and cached originals while preserving actual producer files. Exact normal bounds
+and original helper/configuration remain required; controller process death and
+full broker/resource acceptance are separate pending gates.
+
+The control-channel batch distinguishes full containment matrices from focused
+typed-control receipt validation. Earlier unsupported-operation injection hashes
+refer to the compact template; recorded actual typed bytes have separate
+source-bound evidence. No historical observation is upgraded.
+
+The [control-channel manifest](../testing/dashboards/witness-control-channel-manifest.json)
+records nine adverse cases and an exact-cap valid control passing on both pinned
+releases, followed by both-release focused validation of actual typed-control
+receipts at a later source. Sources/scopes stay separate; earlier template hashes
+and the failed EOF predecessor are not upgraded. Producer-byte readback and
+guest/host teardown passed. Full controller-death/resource acceptance stays open.

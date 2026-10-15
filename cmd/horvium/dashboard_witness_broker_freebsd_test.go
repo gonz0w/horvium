@@ -8,7 +8,6 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/binary"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -224,44 +223,6 @@ func witnessRootSocket(path string, gid uint32) (os.FileInfo, error) {
 	return i, nil
 }
 
-// Private fixture IPC is one bounded framed control at a time. The channel is
-// inherited from an owned root parent; it is never an externally bound listener.
-func witnessControlWrite(w io.Writer, v any) error {
-	b, e := json.Marshal(v)
-	if e != nil || len(b) == 0 || len(b) > witnessFrameCap {
-		return errDashboardWitness
-	}
-	var h [4]byte
-	binary.BigEndian.PutUint32(h[:], uint32(len(b)))
-	if n, e := w.Write(h[:]); e != nil || n != 4 {
-		return errDashboardWitness
-	}
-	if n, e := w.Write(b); e != nil || n != len(b) {
-		return errDashboardWitness
-	}
-	return nil
-}
-func witnessControlRead(r io.Reader, v any) error {
-	var budget witnessWireBudget
-	b, e := budget.frame(r)
-	if e != nil {
-		return e
-	}
-	d := json.NewDecoder(bytes.NewReader(b))
-	d.UseNumber()
-	if _, e := witnessJSONValue(d, 0); e != nil {
-		return e
-	}
-	if _, e := d.Token(); e != io.EOF {
-		return errDashboardWitness
-	}
-	d = json.NewDecoder(bytes.NewReader(b))
-	d.DisallowUnknownFields()
-	if d.Decode(v) != nil {
-		return errDashboardWitness
-	}
-	return nil
-}
 func witnessSocketPair() (a, b *net.UnixConn, err error) {
 	pair, e := unix.Socketpair(unix.AF_UNIX, unix.SOCK_STREAM|unix.SOCK_CLOEXEC, 0)
 	if e != nil {
@@ -938,6 +899,12 @@ func TestNativeDashboardWitnessObserver(t *testing.T) {
 	for !stop {
 		var command witnessNativeCommand
 		if witnessControlRead(control, &command) != nil {
+			o.mu.Lock()
+			o.failed = true
+			if o.failure == "" {
+				o.failure = "control-read"
+			}
+			o.mu.Unlock()
 			break
 		}
 		switch command.Operation {
@@ -1000,6 +967,12 @@ func TestNativeDashboardWitnessObserver(t *testing.T) {
 			break
 		}
 		if witnessControlWrite(control, o.receipt()) != nil {
+			o.mu.Lock()
+			o.failed = true
+			if o.failure == "" {
+				o.failure = "control-write"
+			}
+			o.mu.Unlock()
 			break
 		}
 	}

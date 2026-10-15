@@ -113,6 +113,7 @@ type witnessFixtureObserver struct {
 	root         *os.Root
 	originals    map[string]witnessNativeOriginal
 	closed       bool
+	failed       bool
 	final        witnessNativeReceipt
 }
 
@@ -196,14 +197,25 @@ func startWitnessObserver(t *testing.T, cfg witnessNativeConfig, configPath stri
 	return o
 }
 func (o *witnessFixtureObserver) control(command witnessNativeCommand) (witnessNativeReceipt, error) {
+	return o.controlRecorded(command, nil)
+}
+func (o *witnessFixtureObserver) controlRecorded(command witnessNativeCommand, record io.Writer) (receipt witnessNativeReceipt, controlError error) {
 	o.mu.Lock()
 	defer o.mu.Unlock()
-	var receipt witnessNativeReceipt
+	defer func() {
+		if controlError != nil {
+			o.failed = true
+		}
+	}()
 	if o.closed {
 		return receipt, witnessFailure("control-closed")
 	}
 	_ = o.channel.SetDeadline(time.Now().Add(45 * time.Second))
-	if witnessControlWrite(o.channel, command) != nil {
+	var writer io.Writer = o.channel
+	if record != nil {
+		writer = io.MultiWriter(o.channel, record)
+	}
+	if witnessControlWrite(writer, command) != nil {
 		return receipt, witnessFailure("control-write")
 	}
 	if witnessControlRead(o.channel, &receipt) != nil {
@@ -225,6 +237,10 @@ func (o *witnessFixtureObserver) control(command witnessNativeCommand) (witnessN
 }
 func (o *witnessFixtureObserver) original(id string) (inventory.Snapshot, dashboardWitnessRef, error) {
 	o.mu.Lock()
+	if o.failed || o.closed {
+		o.mu.Unlock()
+		return inventory.Snapshot{}, dashboardWitnessRef{}, witnessFailure("original-control-failed")
+	}
 	record, exists := o.originals[id]
 	o.mu.Unlock()
 	if !exists {
@@ -283,6 +299,12 @@ func (o *witnessFixtureObserver) original(id string) (inventory.Snapshot, dashbo
 	}
 	if fmt.Sprintf("%x", h.Sum(nil)) != ref.RawSHA256 {
 		return inventory.Snapshot{}, dashboardWitnessRef{}, witnessFailure("original-hash")
+	}
+	o.mu.Lock()
+	failed := o.failed || o.closed
+	o.mu.Unlock()
+	if failed {
+		return inventory.Snapshot{}, dashboardWitnessRef{}, witnessFailure("original-control-failed")
 	}
 	return snapshot, ref, nil
 }
