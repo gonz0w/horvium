@@ -20,6 +20,8 @@ func TestWitnessConnectorBoundaryWait(t *testing.T) {
 		{"kill", "sigkill", false, 0, 9, true},
 		{"success is not eof", "channel-eof", true, 0, 0, false},
 		{"signal is not eof", "channel-eof", false, 0, 9, false},
+		{"ordinary failure is not term", "sigterm", true, 1, 0, false},
+		{"ordinary failure is not kill", "sigkill", true, 1, 0, false},
 		{"wrong signal", "sigterm", false, 0, 9, false},
 		{"failed release", "release", true, 1, 0, false},
 		{"unknown action", "other", true, 0, 0, false},

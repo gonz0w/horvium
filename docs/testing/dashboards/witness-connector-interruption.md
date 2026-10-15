@@ -62,3 +62,20 @@ original wait receipt before control readback. It does not permit negative sourc
 numbers or treat a missing wait as success. The failed predecessor did not retain
 those signal wait receipts, so it cannot prove each original signal outcome;
 a corrected candidate requires fresh review and both-release execution.
+
+The next source `1443bae6a75c94de377e64396f3124fb350979e7` also remains failed
+on 15.1 (483.46 seconds): six boundary controls and the uninjected control passed,
+but both post-handoff signal cases returned ordinary failure exit 1 / raw status
+256. Original wait receipts now prove those mismatches; they are not signal
+passes. Accounting and context remained valid. The earlier negative-number
+representation is corrected, but this run does not accept the full matrix.
+
+The controller's boundary-time full executable rehash added work while the child
+was already waiting under its original ten-second deadline. The correction checks
+kernel PID/UID/start lifetime at the boundary, using the actual-header ABI. Full
+artifact/path verification remains in the connector and observer before that
+boundary, with protected candidate artifact preflight; no deadline or artifact
+check there changes. Original final context is now exported before outcome
+assertions as well. The failure receipts identify exit 1, not the child's exact
+read error; they do not retrospectively prove a timeout cause. Fresh execution
+must establish the corrected controls. No artificial delay or retry is added.

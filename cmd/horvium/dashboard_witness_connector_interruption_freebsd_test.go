@@ -163,7 +163,7 @@ func TestNativeDashboardWitnessConnectorInterruption(t *testing.T) {
 					t.Fatal("actual connector boundary not reached")
 				}
 				actor := *event.Connector
-				if actor.PID == observer.PID || actor.UID != o.config.ManagementUID || actor.Executable != o.config.Fixture || actor.SHA256 != o.config.FixtureSHA256 || actor.check(probe.ABI) != nil {
+				if actor.PID == observer.PID || actor.UID != o.config.ManagementUID || actor.Executable != o.config.Fixture || actor.SHA256 != o.config.FixtureSHA256 || !witnessLifetime(actor, probe.ABI) {
 					t.Fatal("original credential-dropped connector binding")
 				}
 				switch action {
@@ -220,6 +220,10 @@ func TestNativeDashboardWitnessConnectorInterruption(t *testing.T) {
 					}
 				}
 				o.faultChannel.Close()
+				original := witnessConnectorCaseReceipt{Label: label, Event: event, Observer: observer, Controller: o.config.Parent, ABI: probe.ABI, Final: final}
+				if witnessWritePrivateIndex("../../.tools", "witness-connector-original-"+label+".json", original) != nil {
+					t.Fatal("exclusive original final context")
+				}
 				r := final.ConnectorBoundary
 				if r == nil || r.Actor != actor || r.Stage != stage || r.Action != action || !r.Accounted || !r.Present || r.ContextEnded || r.WaitFailed != !released || !witnessConnectorWaitMatches(action, r.Exited, r.ExitCode, r.Signal) || r.ChannelClosed != (action == "channel-eof") {
 					t.Fatal("original connector wait outcome mismatch")
