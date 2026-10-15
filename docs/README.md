@@ -329,3 +329,5 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [Witness rejection custody and recovery diagnostics](testing/dashboards/witness-rejection-custody.md).
 
 - [Batched inactive witness qualification support](testing/dashboards/witness-qualification-batch.md).
+
+- [Broker attempt capacity and permanent admission denial](testing/dashboards/witness-broker-admission.md)
