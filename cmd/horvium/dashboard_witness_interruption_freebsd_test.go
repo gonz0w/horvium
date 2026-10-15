@@ -87,6 +87,9 @@ func witnessOpenFaultGate(cfg witnessNativeConfig, ctx context.Context) (*witnes
 }
 
 func witnessFaultLabelValid(label string) bool {
+	if label == "forward-manager-exit" {
+		return true
+	}
 	if strings.HasPrefix(label, "controller-") {
 		_, _, ok := witnessControllerLabel(label)
 		return ok

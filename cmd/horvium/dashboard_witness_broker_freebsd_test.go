@@ -411,6 +411,7 @@ type witnessNativeOriginal struct {
 	Object witnessFileObject   `json:"object"`
 }
 type witnessNativeReceipt struct {
+	ForwardBoundary      *witnessForwardBoundary          `json:"forward_boundary,omitempty"`
 	ConnectorEOFChecks   int                              `json:"connector_eof_checks,omitempty"`
 	ConnectorEOFRejected int                              `json:"connector_eof_rejected,omitempty"`
 	ConnectorBoundary    *witnessConnectorBoundaryReceipt `json:"connector_boundary,omitempty"`
@@ -431,6 +432,7 @@ type witnessNativeReceipt struct {
 	Active               bool                             `json:"active"`
 }
 type witnessNativeObserver struct {
+	forwardBoundary                          *witnessForwardBoundary
 	connectorEOFChecks, connectorEOFRejected int
 	connectorBoundary                        *witnessConnectorBoundaryReceipt
 	fault                                    *witnessNativeFaultGate
@@ -461,7 +463,8 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	defer o.children.Done()
 	defer c.Close()
 	defer func() { o.mu.Lock(); delete(o.connections, c); o.active = false; o.mu.Unlock() }()
-	deadline := time.Now().Add(45 * time.Second)
+	started := time.Now()
+	deadline := started.Add(45 * time.Second)
 	_ = c.SetDeadline(deadline)
 	select {
 	case <-o.registered:
@@ -634,6 +637,7 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 		producer = &witnessInterruptedReader{source: actual, reach: func() error { return o.fault.reach("capture", id) }}
 	}
 	ref, e := o.store.capture(producer, id, o.cfg.Mode, management.incarnation(), helper.incarnation())
+	capturedElapsed := time.Since(started).Nanoseconds()
 	if e != nil {
 		fail()
 		return
@@ -653,7 +657,13 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	if o.fault != nil && o.fault.stage == "forward" {
 		delivery = &witnessInterruptedWriter{target: c, reach: func() error { return o.fault.reach("forward", id) }}
 	}
-	if o.store.forward(ref, delivery) != nil {
+	forwardStarted := time.Since(started).Nanoseconds()
+	forwardError := o.store.forward(ref, delivery)
+	finished := time.Now()
+	o.mu.Lock()
+	o.forwardBoundary = &witnessForwardBoundary{ID: id, Management: management.incarnation(), Helper: helper.incarnation(), StartedNS: started.UnixNano(), DeadlineNS: deadline.UnixNano(), CapturedElapsedNS: capturedElapsed, ForwardStartedElapsedNS: forwardStarted, FinishedElapsedNS: finished.Sub(started).Nanoseconds(), DeadlineReached: !finished.Before(deadline), ContextDeadlineExceeded: errors.Is(ctx.Err(), context.DeadlineExceeded), ContextCancelled: errors.Is(ctx.Err(), context.Canceled), Forward: ref.Forward}
+	o.mu.Unlock()
+	if forwardError != nil {
 		o.store.mu.Lock()
 		v := o.store.sealed[ref.Name]
 		if v != nil {
@@ -741,7 +751,7 @@ func (o *witnessNativeObserver) receipt() witnessNativeReceipt {
 			o.failure = "observer-usage"
 		}
 	}
-	r := witnessNativeReceipt{ConnectorEOFChecks: o.connectorEOFChecks, ConnectorEOFRejected: o.connectorEOFRejected, ConnectorBoundary: o.connectorBoundary, ObserverHigh: uint64(usage.Maxrss) * 1024, ObserverCPUNS: cpu, ConnectorStarted: o.connectorStarted, ConnectorActive: o.connectorActive, OK: true, Failed: o.failed || o.store.failed, Failure: o.failure, StoreFailed: o.store.failed, Denied: o.denied, ConnectorMaxRSS: o.connectorMax, ConnectorCPUNS: int64(o.connectorCPU), Connectors: o.connectors, Active: o.active}
+	r := witnessNativeReceipt{ForwardBoundary: o.forwardBoundary, ConnectorEOFChecks: o.connectorEOFChecks, ConnectorEOFRejected: o.connectorEOFRejected, ConnectorBoundary: o.connectorBoundary, ObserverHigh: uint64(usage.Maxrss) * 1024, ObserverCPUNS: cpu, ConnectorStarted: o.connectorStarted, ConnectorActive: o.connectorActive, OK: true, Failed: o.failed || o.store.failed, Failure: o.failure, StoreFailed: o.store.failed, Denied: o.denied, ConnectorMaxRSS: o.connectorMax, ConnectorCPUNS: int64(o.connectorCPU), Connectors: o.connectors, Active: o.active}
 	for _, ref := range o.store.refs {
 		v := o.store.sealed[ref.Name]
 		object, e := witnessObject(v.info)
