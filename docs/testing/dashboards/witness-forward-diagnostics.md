@@ -10,12 +10,16 @@ The [previous 14.5 capacity failure](witness-broker-admission.md) retained a com
 fifth projection original but lost the underlying forwarding error. Its cause
 remains unknown. These observations do not retrospectively explain or qualify it.
 
-Each attempted forward retains its copy/verification/half-close stage, bytes
+Each forward admitted through original custody checks retains its copy/verification/half-close stage, bytes
 accepted by the writer, SHA-256 of exactly that prefix, elapsed duration, bounded
 error class and wrapped OS errno. Hash bytes even when a write returns both a
 positive count and an error; `io.MultiWriter` omits that partial chunk. Do not retain
 raw error strings, paths or producer values in metadata. A second denied forward
 cannot overwrite the first attempt's observation.
+
+Rejection before custody admission does not create a byte-copy receipt. The
+original observer failure stage remains authoritative; missing observations
+cannot be reconstructed as an OS error or a successful forward.
 
 The observer separately records request ID, original helper and management
 incarnations, connection start and its original absolute deadline, capture
@@ -66,3 +70,25 @@ inactive; runtime writes remain denied. No service or Action is added.
 
 Candidate-specific outcomes follow signed clean review; this document alone
 establishes no native result.
+
+### Incomplete host-wrapper predecessor
+
+Source `c2ddc4c898e1c0e9a028a976184c045bbe0961e9` completed all four
+15.1 native diagnostic assertions (258.75s), including both normal publications,
+manager-loss forwarding and expired socket. Its host wrapper then raised
+`NameError: name 'resource_status' is not defined` before exporting originals or
+collecting post-run preflight. The raw native process exited zero and reports
+guest cleanup; independent host teardown passed. Actual wire/index/control bytes
+were not exported and are unavailable after teardown. No independent native
+component acceptance follows from those passing assertions. 14.5 was not run.
+
+The private wrapper rewrites the canonical resource worker for a fixed short
+selector. Its input match accidentally used the diagnostic's 800-second outer
+allowance instead of the canonical source's 1,900-second invocation, leaving the
+original invocation in place and the new status variable undefined. Match the
+original input, replace it with the fixed diagnostic invocation, and assert exactly
+one replacement and absence of the original before launch. Preserve this failed
+wrapper and transcript; a corrected, separately hashed controller needs a fresh
+signed-source review and both-release execution/readback. This changes no trusted
+collection deadline, native assertion, fixture count or acceptance bound, and
+cannot upgrade the incomplete predecessor.
