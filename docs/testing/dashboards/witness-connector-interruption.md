@@ -79,3 +79,32 @@ check there changes. Original final context is now exported before outcome
 assertions as well. The failure receipts identify exit 1, not the child's exact
 read error; they do not retrospectively prove a timeout cause. Fresh execution
 must establish the corrected controls. No artificial delay or retry is added.
+
+## Corrected same-source native observations
+
+Behavioral source `2064a95fb2bf9dae8219a9510722508008fe9c5a`, base
+`269e01bc31f962f4e405b3fa4c6b4b41110a6d59`, actual title
+`test(dashboards): batch actual connector interruption controls`, passed signed
+clean review, required check/lint/test/secrets, executed affected cmd race/original-wire
+fuzz and FreeBSD test cross-build before native execution. The
+[immutable manifest](witness-connector-interruption-manifest.json) retains both
+failed predecessors and both corrected passing release runs.
+
+- FreeBSD 15.1: 282.70 seconds; eight boundary cases and uninjected broker control passed.
+- FreeBSD 14.5: 257.46 seconds; the same complete matrix passed.
+
+Independent safe archive/frame/object/hash/context readback verified all sixteen
+passing boundary receipts, sixteen original wait records and six complete producer
+originals across the two releases. Twelve adverse cases refused lookup and had
+no producer original; four releases and two uninjected controls confirmed actual
+complete/delivered publication. Signals have their actual raw kernel statuses;
+EOF has exit 1 without prior context cancellation. Failed predecessor waits and
+missing original receipts retain their stated limitations.
+
+Original guest cleanup and host teardown, matching preflight observations and
+pinned base/QEMU/firmware preservation passed for all four retained attempts.
+All 162 historical manifests and seven primary operator files are unchanged.
+Original fixture source/compiler/product/probe hashes remain independently bound;
+no actor inventories or private original payloads are published. Final documentation
+review and lab-stop/status accompany the PR. This is inactive support, not full
+native 005, resource activation, milestone or release acceptance.
