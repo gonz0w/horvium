@@ -2172,3 +2172,9 @@ records all five full-size synthetic custody controls passing at one reviewed
 source on both pinned releases, with full original-byte readback and exact
 guest/host teardown. Both failed 15.1 predecessors remain failed; wider native
 broker/controller/resource, browser, hardware and release acceptance remains open.
+
+The [native control-channel fixture](../testing/dashboards/witness-control-channel.md)
+requires malformed/closed private controls to invalidate candidate qualification
+and cached originals while preserving actual producer files. Exact normal bounds
+and original helper/configuration remain required; controller process death and
+full broker/resource acceptance are separate pending gates.
