@@ -105,14 +105,15 @@ func witnessNativeABI(t *testing.T, dir string) witnessProbeReceipt {
 }
 
 type witnessFixtureObserver struct {
-	mu        sync.Mutex
-	config    witnessNativeConfig
-	process   *nativeProcess
-	channel   *net.UnixConn
-	root      *os.Root
-	originals map[string]witnessNativeOriginal
-	closed    bool
-	final     witnessNativeReceipt
+	mu           sync.Mutex
+	config       witnessNativeConfig
+	process      *nativeProcess
+	faultChannel *net.UnixConn
+	channel      *net.UnixConn
+	root         *os.Root
+	originals    map[string]witnessNativeOriginal
+	closed       bool
+	final        witnessNativeReceipt
 }
 
 func startWitnessObserver(t *testing.T, cfg witnessNativeConfig, configPath string) *witnessFixtureObserver {
@@ -136,8 +137,23 @@ func startWitnessObserver(t *testing.T, cfg witnessNativeConfig, configPath stri
 		parent.Close()
 		t.Fatal("observer inherited descriptor")
 	}
+	var faultParent *net.UnixConn
+	var faultFile *os.File
+	if cfg.FaultStage != "" {
+		a, b, e := witnessSocketPair()
+		if e != nil {
+			t.Fatal("fault channel")
+		}
+		faultParent = a
+		faultFile, e = b.File()
+		b.Close()
+		if e != nil {
+			t.Fatal("fault inherited channel")
+		}
+		t.Cleanup(func() { a.Close(); faultFile.Close() })
+	}
 	cmd := exec.Command(cfg.Fixture, "-test.run=^TestNativeDashboardWitnessObserver$", "-test.count=1")
-	log, e := os.OpenFile(filepath.Join("../../.tools", "witness-observer-"+cfg.Mode+".log"), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+	log, e := os.OpenFile(filepath.Join("../../.tools", "witness-observer-"+witnessRunLabel(cfg)+".log"), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
 	if e != nil {
 		t.Fatal("observer private transcript")
 	}
@@ -146,6 +162,9 @@ func startWitnessObserver(t *testing.T, cfg witnessNativeConfig, configPath stri
 	cmd.Stderr = log
 	cmd.Env = []string{"HORVIUM_NATIVE_VM=1", "HORVIUM_PERF_VM=1", "HORVIUM_WITNESS_OBSERVER=" + configPath, "LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
 	cmd.ExtraFiles = []*os.File{file}
+	if faultFile != nil {
+		cmd.ExtraFiles = append(cmd.ExtraFiles, faultFile)
+	}
 	p := &nativeProcess{cmd: cmd, done: make(chan error, 1)}
 	if cmd.Start() != nil {
 		file.Close()
@@ -153,6 +172,9 @@ func startWitnessObserver(t *testing.T, cfg witnessNativeConfig, configPath stri
 		t.Fatal("observer process")
 	}
 	file.Close()
+	if faultFile != nil {
+		faultFile.Close()
+	}
 	go func() { p.done <- cmd.Wait() }()
 	root, e := os.OpenRoot(cfg.Directory)
 	if e != nil {
@@ -160,7 +182,7 @@ func startWitnessObserver(t *testing.T, cfg witnessNativeConfig, configPath stri
 		p.stop(t, syscall.SIGTERM, false)
 		t.Fatal("observer original directory")
 	}
-	o := &witnessFixtureObserver{config: cfg, process: p, channel: parent, root: root, originals: map[string]witnessNativeOriginal{}}
+	o := &witnessFixtureObserver{faultChannel: faultParent, config: cfg, process: p, channel: parent, root: root, originals: map[string]witnessNativeOriginal{}}
 	t.Cleanup(func() {
 		if !o.closed {
 			o.stop(t)
@@ -313,6 +335,9 @@ type witnessNativePair struct {
 }
 
 func startWitnessPair(t *testing.T, owner *dashboardGuestOwner, probe witnessProbeReceipt, mode string) *witnessNativePair {
+	return startWitnessPairWithFault(t, owner, probe, mode, "", mode)
+}
+func startWitnessPairWithFault(t *testing.T, owner *dashboardGuestOwner, probe witnessProbeReceipt, mode, stage, label string) *witnessNativePair {
 	t.Helper()
 	c, path, token := nativeRuntimeConfig(t)
 	c.IntervalSeconds, c.TimeoutSeconds = 30, 45
@@ -324,7 +349,7 @@ func startWitnessPair(t *testing.T, owner *dashboardGuestOwner, probe witnessPro
 	if os.WriteFile(path, frontBytes, 0644) != nil || os.WriteFile(backPath, backBytes, 0644) != nil {
 		t.Fatal("witness two existing-schema configs")
 	}
-	owner.pair(t, mode, path, c)
+	owner.pair(t, label, path, c)
 	dir := filepath.Dir(path)
 	binary := filepath.Join(dir, "horvium")
 	built, _ := filepath.Abs("../../.tools/horvium")
@@ -383,7 +408,7 @@ func startWitnessPair(t *testing.T, owner *dashboardGuestOwner, probe witnessPro
 	if e != nil {
 		t.Fatal("original helper actor")
 	}
-	cfg := witnessNativeConfig{ABI: probe.ABI, Parent: parent, Front: c.HelperSocket, Back: back.HelperSocket, Directory: archive, Mode: mode, ManagementUID: c.ManagementUID, SocketGID: c.SocketGID, Fixture: fixture, FixtureSHA256: owner.artifacts.Artifacts["fixture"], Product: binary, ProductSHA256: owner.artifacts.Artifacts["management"], Helper: helperActor, HelperBinary: helperBinary, HelperSHA256: helperHash, PriorArchiveBytes: owner.witnessArchiveBytes}
+	cfg := witnessNativeConfig{FaultStage: stage, RunLabel: label, ABI: probe.ABI, Parent: parent, Front: c.HelperSocket, Back: back.HelperSocket, Directory: archive, Mode: mode, ManagementUID: c.ManagementUID, SocketGID: c.SocketGID, Fixture: fixture, FixtureSHA256: owner.artifacts.Artifacts["fixture"], Product: binary, ProductSHA256: owner.artifacts.Artifacts["management"], Helper: helperActor, HelperBinary: helperBinary, HelperSHA256: helperHash, PriorArchiveBytes: owner.witnessArchiveBytes}
 	o := startWitnessObserver(t, cfg, filepath.Join(dir, "observer.json"))
 	p.observer = o
 	management := startNativeProcess(t, binary, []string{"serve", "-config", path}, c.ManagementUID, c.SocketGID)
@@ -436,7 +461,7 @@ func (p *witnessNativePair) cleanup(t *testing.T) {
 }
 func (p *witnessNativePair) export(t *testing.T) {
 	t.Helper()
-	target := filepath.Join("../../.tools", "witness-originals-"+p.observer.config.Mode)
+	target := filepath.Join("../../.tools", "witness-originals-"+witnessRunLabel(p.observer.config))
 	if os.Mkdir(target, 0700) != nil {
 		t.Error("exclusive private witness export")
 		return

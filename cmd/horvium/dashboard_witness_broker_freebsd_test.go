@@ -354,6 +354,8 @@ func TestNativeDashboardWitnessConnector(t *testing.T) {
 }
 
 type witnessNativeConfig struct {
+	FaultStage        string       `json:"fault_stage,omitempty"`
+	RunLabel          string       `json:"run_label,omitempty"`
 	ABI               witnessABI   `json:"abi"`
 	Parent            witnessActor `json:"parent"`
 	Front             string       `json:"front"`
@@ -397,6 +399,7 @@ type witnessNativeReceipt struct {
 	Active           bool                    `json:"active"`
 }
 type witnessNativeObserver struct {
+	fault                             *witnessNativeFaultGate
 	mu                                sync.Mutex
 	cfg                               witnessNativeConfig
 	store                             *dashboardWitnessStore
@@ -565,8 +568,17 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 		return
 	}
 	stage = "producer-capture"
-	ref, e := o.store.capture(actual, id, o.cfg.Mode, management.incarnation(), helper.incarnation())
+	var producer io.Reader = actual
+	if o.fault != nil && o.fault.stage == "capture" {
+		producer = &witnessInterruptedReader{source: actual, reach: func() error { return o.fault.reach("capture", id) }}
+	}
+	ref, e := o.store.capture(producer, id, o.cfg.Mode, management.incarnation(), helper.incarnation())
 	if e != nil {
+		fail()
+		return
+	}
+	if o.fault.reach("sealed", id) != nil {
+		stage = "interruption-sealed"
 		fail()
 		return
 	}
@@ -576,7 +588,11 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 		return
 	}
 	stage = "producer-forward"
-	if o.store.forward(ref, c) != nil {
+	var delivery io.Writer = c
+	if o.fault != nil && o.fault.stage == "forward" {
+		delivery = &witnessInterruptedWriter{target: c, reach: func() error { return o.fault.reach("forward", id) }}
+	}
+	if o.store.forward(ref, delivery) != nil {
 		o.store.mu.Lock()
 		v := o.store.sealed[ref.Name]
 		if v != nil {
@@ -726,7 +742,7 @@ func TestNativeDashboardWitnessObserver(t *testing.T) {
 	var cfg witnessNativeConfig
 	e = witnessControlRead(f, &cfg)
 	f.Close()
-	if e != nil || !cfg.ABI.valid() || cfg.Parent.check(cfg.ABI) != nil || cfg.Parent.UID != 0 || cfg.ManagementUID == 0 || cfg.Front == cfg.Back || !filepath.IsAbs(cfg.Front) || !filepath.IsAbs(cfg.Back) || cfg.Helper.UID != 0 || cfg.Helper.Executable != cfg.HelperBinary || cfg.Helper.SHA256 != cfg.HelperSHA256 {
+	if e != nil || !witnessFaultStageValid(cfg.FaultStage) || cfg.FaultStage != "" && (cfg.RunLabel == "" || !witnessFaultLabelValid(cfg.RunLabel)) || !cfg.ABI.valid() || cfg.Parent.check(cfg.ABI) != nil || cfg.Parent.UID != 0 || cfg.ManagementUID == 0 || cfg.Front == cfg.Back || !filepath.IsAbs(cfg.Front) || !filepath.IsAbs(cfg.Back) || cfg.Helper.UID != 0 || cfg.Helper.Executable != cfg.HelperBinary || cfg.Helper.SHA256 != cfg.HelperSHA256 {
 		t.Fatal("observer configuration")
 	}
 	exe, _ := os.Executable()
@@ -790,6 +806,14 @@ func TestNativeDashboardWitnessObserver(t *testing.T) {
 	workCtx, stopWork := context.WithCancel(ctx)
 	defer stopWork()
 	o := &witnessNativeObserver{cfg: cfg, store: store, listener: listener, front: front, back: back, registered: make(chan struct{}), connections: map[*net.UnixConn]bool{}, ctx: workCtx}
+	fault, fe := witnessOpenFaultGate(cfg, workCtx)
+	if fe != nil {
+		t.Fatal("original interruption gate")
+	}
+	if fault != nil {
+		defer fault.channel.Close()
+	}
+	o.fault = fault
 	acceptDone := make(chan struct{})
 	go func() {
 		defer close(acceptDone)
@@ -852,6 +876,18 @@ func TestNativeDashboardWitnessObserver(t *testing.T) {
 			}
 			o.mu.Unlock()
 		case "readback":
+			o.store.mu.Lock()
+			metadataID := ""
+			if len(o.store.refs) > 0 {
+				metadataID = o.store.refs[0].ID
+			}
+			o.store.mu.Unlock()
+			if o.fault.reach("metadata", metadataID) != nil {
+				o.mu.Lock()
+				o.failed = true
+				o.failure = "interruption-metadata"
+				o.mu.Unlock()
+			}
 		case "native-death":
 			o.mu.Lock()
 			o.allowDeath = true
