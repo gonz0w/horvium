@@ -2202,3 +2202,9 @@ The controller fixture retains its failed first 15.1 matrix with unverified gues
 cleanup and missing adverse byte/wait exports; complete host teardown does not
 upgrade that result. Raw controller waits and validated index-sidecar custody
 have separate corrections; the connector wait representation stays unchanged.
+
+The [controller-interruption manifest](../testing/dashboards/witness-controller-interruption-manifest.json)
+records eight actual controller signals plus a normal publication/stop control
+passing on both pinned releases at one reviewed source. Adopted observer waits,
+failed terminal custody, original-byte readback and guest/host teardown passed.
+Loss of the surviving owner, full broker/resource and broader acceptance stay open.

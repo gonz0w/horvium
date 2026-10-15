@@ -102,3 +102,22 @@ validates existing sidecars against the original final sealed records and preser
 their actual bytes/object/hash separately. Failure cleanup never sends graceful
 stop to a dead proxy: the surviving owner closes it, reaps its known observer and
 retains an available final index for fallback export before ordinary pair cleanup.
+
+## Same-source native observations
+
+Signed clean reviewed source `094b5c5cb61718325bcb8e2db7709a5a3b6a99df` passed both pinned disposable
+FreeBSD/amd64 targets. The [immutable manifest](witness-controller-interruption-manifest.json)
+retains each actual source-bound attempt and its boundaries.
+
+- FreeBSD 15.1: 514.66s; eight actual controller signal cases and a normal control passed.
+- FreeBSD 14.5: 454.99s; eight actual controller signal cases and a normal control passed.
+
+Each adverse case recorded the actual controller signal wait and independently
+reaped the adopted original observer with its exit/wait usage. Failed terminal
+receipts, exact front removal, no active call/connector, all-started connector
+reaping, refused lookup and unchanged actual helper/configuration/token passed.
+Original source complete/delivered flags remain separate from failed qualification.
+Independent readback reopened every exported original byte or prefix, file object/
+hash reference, terminal/case receipt, source/artifact/actor/ABI binding, unchanged
+preflight/runtime pins and exact guest/host teardown. These short controls do not
+activate the resource runner or close broader native/resource/release acceptance.

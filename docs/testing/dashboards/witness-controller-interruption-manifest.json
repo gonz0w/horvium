@@ -1,0 +1,1220 @@
+{
+  "schema": 1,
+  "date": "2026-10-15",
+  "scope": "inactive-actual-controller-interruption-with-surviving-owner",
+  "source_commit": "094b5c5cb61718325bcb8e2db7709a5a3b6a99df",
+  "base_commit": "005d71c3593c940a47ff16979fea953e66c42d5b",
+  "pr_title": "test(dashboards): qualify actual controller interruption",
+  "native_acceptance": false,
+  "resource_acceptance": false,
+  "resource_activation": false,
+  "historical_manifests_preserved": 166,
+  "portable_review": {
+    "source_commit": "094b5c5cb61718325bcb8e2db7709a5a3b6a99df",
+    "result_sha256": "c87fb9d9839119cdf11b6bc97e6cd2a4c8b2fa0772c4c69392395c25da45d22b",
+    "qualified": true,
+    "checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "deep": "executed affected cmd race/original-wire fuzz",
+    "deep_log_sha256": "eb9b62f44dd435e820568ee1b1fe4277716d1470f96274ca7417b0c83bd0113d",
+    "freebsd_test_build": "passed"
+  },
+  "failing_raw_wait_regression_sha256": "b3fa6704063c45249aa3f26743c8228b89b6d73d0bbfb5c6d4371461ffebc32d",
+  "runs": [
+    {
+      "source_commit": "094b5c5cb61718325bcb8e2db7709a5a3b6a99df",
+      "base_commit": "005d71c3593c940a47ff16979fea953e66c42d5b",
+      "pr_title": "test(dashboards): qualify actual controller interruption",
+      "release": "14.5",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessControllerInterruption (454.99s)",
+      "raw_sha256": "9a0f8db66e94ab2775035fa4d7484be74b75d946fe6a73c805d47bd5fb6c9552",
+      "archive_sha256": "ca2646c9677716a42ee483eaf153a1e5524085a4f584cd45ce220b206cf53c8a",
+      "result_sha256": "9abc40e69ffb749c830a1045c9fe641f0d3b8d9f897ea2a6deb47623ed130c3d",
+      "source_archive_sha256": "988f4bc5ee8fb96f1642b7957b34834079b0530b3b65b561a73d989ec3904b82",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "3f09280782124fa21e35b4f5d687c8b65c3e35e50251b32f0c761d30c497cbd2"
+      },
+      "native_probe": {
+        "receipt_sha256": "a0e24744dd648299f09eb37fe808a599cc57bbb721323097bbfdbd550abae299",
+        "source_sha256": "db1deaca7216165b7b8967a2273f3eb86ffeb4460630aa2ec9cad31901489de5",
+        "binary_sha256": "92a469a8b91f8b2b9cb6ffdcaf986db933c4c9b6e2256d049b9594fb11a72de5"
+      },
+      "cases": [
+        {
+          "case": "controller-metadata-sigkill",
+          "receipt_sha256": "7e017dd13e2fbd00d57dcd4578d3a82940cf50fb236c727078af0ebf625a2d42",
+          "terminal_receipt_sha256": "38ad9e475649da07b4ed589ef401e6f3caf5d55f0a9d756247d7be2c1796f38a",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 9,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 16867328,
+          "controller_cpu_ns": 5370624000,
+          "observer_wait_high_rss": 18038784,
+          "observer_wait_cpu_ns": 16520823000,
+          "failed": true,
+          "failure": "interruption-metadata",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "e8312530f025267b17ca13d1088c60d1798a73338d411dd9664c4da6716a4ccf",
+              "bytes": 16469,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "complete_frames": 76,
+              "partial_frame_bytes": 0
+            }
+          ],
+          "original_indexes": [
+            {
+              "sha256": "a4dd8451655cc1a8570400ce6ce2a6de276739ce2c933506d5b82a39b1cd2d7f",
+              "bytes": 686
+            }
+          ]
+        },
+        {
+          "case": "controller-metadata-sigterm",
+          "receipt_sha256": "9788169fe3a2da0ae9f5a63bddf67958b3820ccf08cde1080fd449060608a2fc",
+          "terminal_receipt_sha256": "28cd89ab51cbf84afe21fc7eaba161e3d8f43fb4584a0ab111cf89d77ca9ad38",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 15,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 16818176,
+          "controller_cpu_ns": 5563781000,
+          "observer_wait_high_rss": 17846272,
+          "observer_wait_cpu_ns": 16604155000,
+          "failed": true,
+          "failure": "interruption-metadata",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "8b9112886f0481f5cf3b0719ced1e81006dd7d37a8b03cc3d14fd882394bd868",
+              "bytes": 16468,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "complete_frames": 76,
+              "partial_frame_bytes": 0
+            }
+          ],
+          "original_indexes": [
+            {
+              "sha256": "552cf9d61aa56c97d63a5e843f7278cb0b9e03f33b2d07a80d35be575fb971a6",
+              "bytes": 687
+            }
+          ]
+        },
+        {
+          "case": "controller-forward-sigkill",
+          "receipt_sha256": "b4a1d31128eaafa598474b1435bd0280e6494a83ca9135df3ac99de69656ce53",
+          "terminal_receipt_sha256": "5e9490a2e8d5280b06e994305895b4e3ccbf11eeb70006c89f38741fc782ad40",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 9,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 16830464,
+          "controller_cpu_ns": 5610533000,
+          "observer_wait_high_rss": 17735680,
+          "observer_wait_cpu_ns": 16414111000,
+          "failed": true,
+          "failure": "producer-forward",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "e133b4c31ec38265c3a1943f44709d04ae3fa8ab4bf8d8d5585d4e60e8405e73",
+              "bytes": 16469,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": true,
+              "delivered": false,
+              "capture_failure": null,
+              "complete_frames": 76,
+              "partial_frame_bytes": 0
+            }
+          ],
+          "original_indexes": []
+        },
+        {
+          "case": "controller-forward-sigterm",
+          "receipt_sha256": "4e651da724bc91e6e61bc7064719cc2443707ab0a04642ca32de768c4f2a4611",
+          "terminal_receipt_sha256": "e15b79d29da108ce973c7abba0bf89a496226b3ed2a7778764c5451164ebcd6e",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 15,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 16834560,
+          "controller_cpu_ns": 6053195000,
+          "observer_wait_high_rss": 17858560,
+          "observer_wait_cpu_ns": 17130186000,
+          "failed": true,
+          "failure": "control-read",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "eb996cdd54022bd4346ae03c1e7bd0fa4ec38f2bafcdce863121e2ef7ec2be55",
+              "bytes": 16469,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": true,
+              "delivered": false,
+              "capture_failure": null,
+              "complete_frames": 76,
+              "partial_frame_bytes": 0
+            }
+          ],
+          "original_indexes": []
+        },
+        {
+          "case": "controller-sealed-sigkill",
+          "receipt_sha256": "baff9e6089d65eb6682a0af2a37a140700c6340c51c887d3cda6eb124b6d1641",
+          "terminal_receipt_sha256": "beab62972220349c7e863eb121c0cc29e63326b5ad3569967229e6206090dcbf",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 9,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 16826368,
+          "controller_cpu_ns": 5734547000,
+          "observer_wait_high_rss": 17760256,
+          "observer_wait_cpu_ns": 15298259000,
+          "failed": true,
+          "failure": "control-read",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "acc384d2e73d32fb81669e32a3047c0aa128744ac68232506f624468833dd42a",
+              "bytes": 16469,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": true,
+              "delivered": false,
+              "capture_failure": null,
+              "complete_frames": 76,
+              "partial_frame_bytes": 0
+            }
+          ],
+          "original_indexes": []
+        },
+        {
+          "case": "controller-sealed-sigterm",
+          "receipt_sha256": "6467039952f47d6d0852e9fef557e6485f5a2fb2b036fad701f8a25f838d310a",
+          "terminal_receipt_sha256": "0b7482722cee7c420906ae62fc557c762fca89620f4c483a5bcc50da7b53e2db",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 15,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 16826368,
+          "controller_cpu_ns": 5530444000,
+          "observer_wait_high_rss": 17768448,
+          "observer_wait_cpu_ns": 14424725000,
+          "failed": true,
+          "failure": "interruption-sealed",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "e324aab5f8efc7373b7e1358e29b943fe4ed2e74dce029510101c711171c87b7",
+              "bytes": 16469,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": true,
+              "delivered": false,
+              "capture_failure": null,
+              "complete_frames": 76,
+              "partial_frame_bytes": 0
+            }
+          ],
+          "original_indexes": []
+        },
+        {
+          "case": "controller-capture-sigkill",
+          "receipt_sha256": "8296c22689a0cc5192244760995653c78fcd02951905f652b72c611255113257",
+          "terminal_receipt_sha256": "35e1ccd9c4e4de5a30261748ad740c05a361cbed3a297e1aeaee80422ba6de20",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 9,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 16887808,
+          "controller_cpu_ns": 5861159000,
+          "observer_wait_high_rss": 17289216,
+          "observer_wait_cpu_ns": 18325374000,
+          "failed": true,
+          "failure": "control-read",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "0c2ff29fcfb33df39c063ead964f1ca73c933f20325a11e0a2cf838b396c7a7a",
+              "bytes": 80,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": false,
+              "delivered": false,
+              "capture_failure": "capture-io",
+              "complete_frames": 0,
+              "partial_frame_bytes": 80
+            }
+          ],
+          "original_indexes": []
+        },
+        {
+          "case": "controller-capture-sigterm",
+          "receipt_sha256": "25c18123e09be691807607ac1d0182659fc105e5f8e167cd125502a3e97e74c7",
+          "terminal_receipt_sha256": "8bb9297a9380c3d8bad6ea825813390368d4172c268c683d9a09bec7f3eb8bf7",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 15,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 16809984,
+          "controller_cpu_ns": 5322110000,
+          "observer_wait_high_rss": 17248256,
+          "observer_wait_cpu_ns": 13509782000,
+          "failed": true,
+          "failure": "control-read",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "4fba5a9af2f6d21b49da87df9bdb1e31943c0d601753447c2261873e83d6bacd",
+              "bytes": 80,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": false,
+              "delivered": false,
+              "capture_failure": "capture-io",
+              "complete_frames": 0,
+              "partial_frame_bytes": 80
+            }
+          ],
+          "original_indexes": []
+        },
+        {
+          "case": "controller-normal",
+          "receipt_sha256": "f4bd01a14ad1d6596f37bd6c52763862d2eedb364379cb19d908b44d2402cd2c",
+          "terminal_receipt_sha256": null,
+          "controller_exited": true,
+          "controller_exit_code": 0,
+          "actual_controller_signal": 0,
+          "adopted_observer_wait_recorded": false,
+          "adopted_observer_exit_code": null,
+          "controller_high_rss": 17985536,
+          "controller_cpu_ns": 21889935000,
+          "observer_wait_high_rss": null,
+          "observer_wait_cpu_ns": null,
+          "failed": false,
+          "failure": "",
+          "refused": false,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "ad064db478c912490c6ff8160f8a22bb8d4a324e3e7e277e97bbfc963d3b1123",
+              "bytes": 16469,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "complete_frames": 76,
+              "partial_frame_bytes": 0
+            }
+          ],
+          "original_indexes": [
+            {
+              "sha256": "d0211ea2bb80a0f1a1bc4ccfd7afacae2fa2b3a585f8f639d67246d0a59a5340",
+              "bytes": 685
+            }
+          ]
+        }
+      ],
+      "terminal_receipts": [
+        {
+          "case": "controller-capture-sigkill",
+          "sha256": "35e1ccd9c4e4de5a30261748ad740c05a361cbed3a297e1aeaee80422ba6de20",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "0c2ff29fcfb33df39c063ead964f1ca73c933f20325a11e0a2cf838b396c7a7a",
+              "bytes": 80,
+              "complete": false,
+              "delivered": false,
+              "bytes_exported": true
+            }
+          ]
+        },
+        {
+          "case": "controller-capture-sigterm",
+          "sha256": "8bb9297a9380c3d8bad6ea825813390368d4172c268c683d9a09bec7f3eb8bf7",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "4fba5a9af2f6d21b49da87df9bdb1e31943c0d601753447c2261873e83d6bacd",
+              "bytes": 80,
+              "complete": false,
+              "delivered": false,
+              "bytes_exported": true
+            }
+          ]
+        },
+        {
+          "case": "controller-forward-sigkill",
+          "sha256": "5e9490a2e8d5280b06e994305895b4e3ccbf11eeb70006c89f38741fc782ad40",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "e133b4c31ec38265c3a1943f44709d04ae3fa8ab4bf8d8d5585d4e60e8405e73",
+              "bytes": 16469,
+              "complete": true,
+              "delivered": false,
+              "bytes_exported": true
+            }
+          ]
+        },
+        {
+          "case": "controller-forward-sigterm",
+          "sha256": "e15b79d29da108ce973c7abba0bf89a496226b3ed2a7778764c5451164ebcd6e",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "eb996cdd54022bd4346ae03c1e7bd0fa4ec38f2bafcdce863121e2ef7ec2be55",
+              "bytes": 16469,
+              "complete": true,
+              "delivered": false,
+              "bytes_exported": true
+            }
+          ]
+        },
+        {
+          "case": "controller-metadata-sigkill",
+          "sha256": "38ad9e475649da07b4ed589ef401e6f3caf5d55f0a9d756247d7be2c1796f38a",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "e8312530f025267b17ca13d1088c60d1798a73338d411dd9664c4da6716a4ccf",
+              "bytes": 16469,
+              "complete": true,
+              "delivered": true,
+              "bytes_exported": true
+            }
+          ]
+        },
+        {
+          "case": "controller-metadata-sigterm",
+          "sha256": "28cd89ab51cbf84afe21fc7eaba161e3d8f43fb4584a0ab111cf89d77ca9ad38",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "8b9112886f0481f5cf3b0719ced1e81006dd7d37a8b03cc3d14fd882394bd868",
+              "bytes": 16468,
+              "complete": true,
+              "delivered": true,
+              "bytes_exported": true
+            }
+          ]
+        },
+        {
+          "case": "controller-sealed-sigkill",
+          "sha256": "beab62972220349c7e863eb121c0cc29e63326b5ad3569967229e6206090dcbf",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "acc384d2e73d32fb81669e32a3047c0aa128744ac68232506f624468833dd42a",
+              "bytes": 16469,
+              "complete": true,
+              "delivered": false,
+              "bytes_exported": true
+            }
+          ]
+        },
+        {
+          "case": "controller-sealed-sigterm",
+          "sha256": "0b7482722cee7c420906ae62fc557c762fca89620f4c483a5bcc50da7b53e2db",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "e324aab5f8efc7373b7e1358e29b943fe4ed2e74dce029510101c711171c87b7",
+              "bytes": 16469,
+              "complete": true,
+              "delivered": false,
+              "bytes_exported": true
+            }
+          ]
+        }
+      ],
+      "uncorrelated_original_exports": [],
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    },
+    {
+      "source_commit": "f9496760308232877e9c48dd069d13338938c0c3",
+      "base_commit": "005d71c3593c940a47ff16979fea953e66c42d5b",
+      "pr_title": "test(dashboards): qualify actual controller interruption",
+      "release": "15.1",
+      "native_test_exit": 1,
+      "duration_line": "--- FAIL: TestNativeDashboardWitnessControllerInterruption (568.98s)",
+      "raw_sha256": "e9cd61c95d7f63e22f1a4aa491011043d4ddf800327fc89462cb7477f3b3b05f",
+      "archive_sha256": "8e3a1e389eecf09403d6976c3dee033865107a4235fdaf878c3210ea7d4ca562",
+      "result_sha256": "13db6736d210e590774a4733893bf2345bc79e66fb773556db269554b1c5f6d0",
+      "source_archive_sha256": "e0999b2f0bfabb9cc4ce5c60481856d2dda95238a3c0c955ccfae2f01828b8d5",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "e1cb895d9057cb0ad4dd9c211430bd380a0a899503b716653312b521959a5e94"
+      },
+      "native_probe": {
+        "receipt_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+        "source_sha256": "db1deaca7216165b7b8967a2273f3eb86ffeb4460630aa2ec9cad31901489de5",
+        "binary_sha256": "c5ed9232a83e9f1ad0af9da1642d80f84200549685689849bb8390c3a5a3b6d5"
+      },
+      "cases": [],
+      "terminal_receipts": [
+        {
+          "case": "controller-capture-sigkill",
+          "sha256": "86352aeab2dc05a971494e644d0911f7c0caefe8ce9a0815e2379a7118d121d4",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "bc33820b71ff7a1da0c4d83c6f392e1ee0dce37a4d9bcae0c0314542364837d3",
+              "bytes": 80,
+              "complete": false,
+              "delivered": false,
+              "bytes_exported": false
+            }
+          ]
+        },
+        {
+          "case": "controller-capture-sigterm",
+          "sha256": "921cb65ebd8bb59ec14f0f4d31d9d1293682d17e044aa9e3446d8d8dc5271e2b",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "9ab9e72c1ae8c2d4a881fa503d44c40c96476394f28cadf7473e4bad9ebe2d39",
+              "bytes": 80,
+              "complete": false,
+              "delivered": false,
+              "bytes_exported": false
+            }
+          ]
+        },
+        {
+          "case": "controller-forward-sigkill",
+          "sha256": "1b5ab67c4a3365d2c8c919e2cfc583e94a0ecf4af62dde01ab7fe9f90c944c75",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "9bdd58f6b4f40f08530342a9f83c1c32a8889b0fbb6ac56cf0623c6f61eceafb",
+              "bytes": 18781,
+              "complete": true,
+              "delivered": false,
+              "bytes_exported": false
+            }
+          ]
+        },
+        {
+          "case": "controller-forward-sigterm",
+          "sha256": "b4dc0945b2878af3416b3a44e6019a2799eba1a8cf9e0f28c29082d609500ed7",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "74856cf926d4b7f75ae8e880ce55bb86257b2697573bf6ef94b26a9c927041df",
+              "bytes": 18780,
+              "complete": true,
+              "delivered": false,
+              "bytes_exported": false
+            }
+          ]
+        },
+        {
+          "case": "controller-metadata-sigkill",
+          "sha256": "a519e4465f90867dda9d16d0dc32b8e227934eb1d1195db8ec8e80dcd2fc2760",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "b7b3d420d8cf93ea317ec39fb4c26e10f28376be8befe624b2bf00c4163ac804",
+              "bytes": 18781,
+              "complete": true,
+              "delivered": true,
+              "bytes_exported": false
+            }
+          ]
+        },
+        {
+          "case": "controller-metadata-sigterm",
+          "sha256": "aac247aa2ada062e76a6ade83783f4b78eaca91fba4aab52d28bf220dafeb1c8",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "a661792c3846ebb1621e7d85f77965163c7eb2bc90ed2fc861697348d7f187e8",
+              "bytes": 18781,
+              "complete": true,
+              "delivered": true,
+              "bytes_exported": false
+            }
+          ]
+        },
+        {
+          "case": "controller-sealed-sigkill",
+          "sha256": "1a583e02006a8090d181d476136d1e0249ec5a875a433e392a12159796a64468",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "b201b3a430132b8d35b2c97ee4b883067e60cb60242d268b9f4633d5b97d1d2a",
+              "bytes": 18781,
+              "complete": true,
+              "delivered": false,
+              "bytes_exported": false
+            }
+          ]
+        },
+        {
+          "case": "controller-sealed-sigterm",
+          "sha256": "ad17759673f6cf2f176f6fc3271a1f9531b73d4770e778e8287ed5c288bedb96",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "7de24f74fe1a79de2c1e42b4dc597db20f47961e3770728133d076f868c8b5b6",
+              "bytes": 18781,
+              "complete": true,
+              "delivered": false,
+              "bytes_exported": false
+            }
+          ]
+        }
+      ],
+      "uncorrelated_original_exports": [
+        {
+          "case": "controller-normal",
+          "sha256": "d1c5174fe6fa4facac32b6383b22c061b9566a8260bff003224ad66e8e0bf9a3",
+          "bytes": 18781,
+          "source_object_receipt_available": false
+        }
+      ],
+      "guest_cleanup": false,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    },
+    {
+      "source_commit": "094b5c5cb61718325bcb8e2db7709a5a3b6a99df",
+      "base_commit": "005d71c3593c940a47ff16979fea953e66c42d5b",
+      "pr_title": "test(dashboards): qualify actual controller interruption",
+      "release": "15.1",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessControllerInterruption (514.66s)",
+      "raw_sha256": "699ecdc9c6587039c2ac9a5cb7532a073b06f4476c363694798a97c7f38f9b57",
+      "archive_sha256": "e110d251eb926a37b19826554af58637cc3189d6b4ea255e32e324744c3685c3",
+      "result_sha256": "c36235348b600b2f17606d4741e32bda0bf5a17278518ab2dcb7b933f69cf09c",
+      "source_archive_sha256": "988f4bc5ee8fb96f1642b7957b34834079b0530b3b65b561a73d989ec3904b82",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "3f09280782124fa21e35b4f5d687c8b65c3e35e50251b32f0c761d30c497cbd2"
+      },
+      "native_probe": {
+        "receipt_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+        "source_sha256": "db1deaca7216165b7b8967a2273f3eb86ffeb4460630aa2ec9cad31901489de5",
+        "binary_sha256": "c5ed9232a83e9f1ad0af9da1642d80f84200549685689849bb8390c3a5a3b6d5"
+      },
+      "cases": [
+        {
+          "case": "controller-metadata-sigkill",
+          "receipt_sha256": "00edf172079a145ddb6e697f8eabbb957a278754f09c8a8bd3aa86aef30a1871",
+          "terminal_receipt_sha256": "f7d67ac564b006b94d79c93f0463291bb14b358e8276d1bee94d2bca21652841",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 9,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 12951552,
+          "controller_cpu_ns": 6180776000,
+          "observer_wait_high_rss": 14589952,
+          "observer_wait_cpu_ns": 18233149000,
+          "failed": true,
+          "failure": "interruption-metadata",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "b3a8faa1f22930a912a14ec918bd488b7d704bb0e114eecfbca702a114137dd6",
+              "bytes": 18782,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "complete_frames": 86,
+              "partial_frame_bytes": 0
+            }
+          ],
+          "original_indexes": [
+            {
+              "sha256": "f9c3a30c3c364c5716aed0fef9c1137b470ef6de03392d61c35576961093e662",
+              "bytes": 687
+            }
+          ]
+        },
+        {
+          "case": "controller-sealed-sigterm",
+          "receipt_sha256": "31d627c949f5eb91aadfe7d6ab62aca807e30f720d81956ed03eee2b33c253e6",
+          "terminal_receipt_sha256": "567d4abdd1edaafda25fc3110dbba8c4d4fb6a7ca081d9480eb737a48947cce4",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 15,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 14659584,
+          "controller_cpu_ns": 6863666000,
+          "observer_wait_high_rss": 14512128,
+          "observer_wait_cpu_ns": 17472059000,
+          "failed": true,
+          "failure": "interruption-sealed",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "a5a8e6c16f8148928b7be123030d80fcd92a51234742a43233046aaadd418b1b",
+              "bytes": 18783,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": true,
+              "delivered": false,
+              "capture_failure": null,
+              "complete_frames": 86,
+              "partial_frame_bytes": 0
+            }
+          ],
+          "original_indexes": []
+        },
+        {
+          "case": "controller-forward-sigkill",
+          "receipt_sha256": "4b685eb253491905fd511999fba0915184b921fbd8af66a69689b969f5381eb8",
+          "terminal_receipt_sha256": "bb68b1f5cb88dbff01ab1ef229b464451297f1a8e9a8436f907aab08e2022666",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 9,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 13037568,
+          "controller_cpu_ns": 6442046000,
+          "observer_wait_high_rss": 14225408,
+          "observer_wait_cpu_ns": 20174096000,
+          "failed": true,
+          "failure": "control-read",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "f0fa59c956fc37dbee939b04a8d001745512899a5640962af1d30d8e967d69d4",
+              "bytes": 18782,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": true,
+              "delivered": false,
+              "capture_failure": null,
+              "complete_frames": 86,
+              "partial_frame_bytes": 0
+            }
+          ],
+          "original_indexes": []
+        },
+        {
+          "case": "controller-capture-sigkill",
+          "receipt_sha256": "f059c8f9eca2c2f9803c49a78b6d5e98d67a05146180e120a5106ab065d632d6",
+          "terminal_receipt_sha256": "210764aba12c20d2e4d3c88ccca2d75d6e4f68522681d0410a1e2df6b03b4b26",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 9,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 13012992,
+          "controller_cpu_ns": 6615004000,
+          "observer_wait_high_rss": 13148160,
+          "observer_wait_cpu_ns": 16724629000,
+          "failed": true,
+          "failure": "control-read",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "3d7a8338e3ae0d33164b37abdda6bf7a6526c87d2e3e4cf1dbe8555ac9033e6b",
+              "bytes": 80,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": false,
+              "delivered": false,
+              "capture_failure": "capture-io",
+              "complete_frames": 0,
+              "partial_frame_bytes": 80
+            }
+          ],
+          "original_indexes": []
+        },
+        {
+          "case": "controller-metadata-sigterm",
+          "receipt_sha256": "9f33131a7d3f80512d6df57e953c65e75a96d0fd074fa708b09effd70c87d9e7",
+          "terminal_receipt_sha256": "a24f463b2b0b9948a258607489c9d6da90d928a78e471d7031f0f6b739df7cea",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 15,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 12832768,
+          "controller_cpu_ns": 7468221000,
+          "observer_wait_high_rss": 14073856,
+          "observer_wait_cpu_ns": 22235659000,
+          "failed": true,
+          "failure": "interruption-metadata",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "1f1c77f8de3b2797d68a37e17795517c365e16ff7d28ef7fee65294e78d72949",
+              "bytes": 18781,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "complete_frames": 86,
+              "partial_frame_bytes": 0
+            }
+          ],
+          "original_indexes": [
+            {
+              "sha256": "3784ac8cf0fc1a70719932c340d62cf9173a0151f81674ed7b3cae96364aed5c",
+              "bytes": 687
+            }
+          ]
+        },
+        {
+          "case": "controller-normal",
+          "receipt_sha256": "510041576271a6a68d73ccbb42b29f19a0e66e902ce529774d29a2b7fef719e6",
+          "terminal_receipt_sha256": null,
+          "controller_exited": true,
+          "controller_exit_code": 0,
+          "actual_controller_signal": 0,
+          "adopted_observer_wait_recorded": false,
+          "adopted_observer_exit_code": null,
+          "controller_high_rss": 13922304,
+          "controller_cpu_ns": 22110716000,
+          "observer_wait_high_rss": null,
+          "observer_wait_cpu_ns": null,
+          "failed": false,
+          "failure": "",
+          "refused": false,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "f6535b03c6bb6fdb3178436e754ccd3c7e7202b512197ecedb216abc03fc0151",
+              "bytes": 18783,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "complete_frames": 86,
+              "partial_frame_bytes": 0
+            }
+          ],
+          "original_indexes": [
+            {
+              "sha256": "03cbf3fa78b55473553964f1d0201a67d798bb46b901f62e91ee81c6e742b76a",
+              "bytes": 687
+            }
+          ]
+        },
+        {
+          "case": "controller-sealed-sigkill",
+          "receipt_sha256": "9d763a94b0b950fdc394dd4ee9702cfa4c6a4d6a86f53f0b2dbbd678c04e8b3f",
+          "terminal_receipt_sha256": "1d2f0b70a53653fc8d60bdd48a735cf1b25bf0d4bcf4c0b919ee5664c13d6751",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 9,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 13500416,
+          "controller_cpu_ns": 6659326000,
+          "observer_wait_high_rss": 14671872,
+          "observer_wait_cpu_ns": 17866151000,
+          "failed": true,
+          "failure": "control-read",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "cc2c7e28d8b63352a1cb11f9a50e0282aa15c4aebb6abee307a80acf5a8a3f42",
+              "bytes": 18783,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": true,
+              "delivered": false,
+              "capture_failure": null,
+              "complete_frames": 86,
+              "partial_frame_bytes": 0
+            }
+          ],
+          "original_indexes": []
+        },
+        {
+          "case": "controller-capture-sigterm",
+          "receipt_sha256": "eeaa5fbee090cd2d4ab3239f4b993ef67047e9078b7e6301f251cdc650d834dd",
+          "terminal_receipt_sha256": "b6442fe2fb4f9a2dc26e3b6ef5f87d03fac9bd4070dcde426ba46a8d9fcefef9",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 15,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 12910592,
+          "controller_cpu_ns": 7103375000,
+          "observer_wait_high_rss": 13422592,
+          "observer_wait_cpu_ns": 15189811000,
+          "failed": true,
+          "failure": "control-read",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "55b17d438cb3958e48f939e002c696b9e9031484d0f5258d3698394d98f05d96",
+              "bytes": 80,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": false,
+              "delivered": false,
+              "capture_failure": "capture-io",
+              "complete_frames": 0,
+              "partial_frame_bytes": 80
+            }
+          ],
+          "original_indexes": []
+        },
+        {
+          "case": "controller-forward-sigterm",
+          "receipt_sha256": "0e7b30a7726f10a710bb27de8406b660ae50612c303df0e0def4f5708a32aebd",
+          "terminal_receipt_sha256": "07b03de8442cdc1d02178d9c81c19c6864ab01a243d71f228b4f8a9956b17c5c",
+          "controller_exited": false,
+          "controller_exit_code": -1,
+          "actual_controller_signal": 15,
+          "adopted_observer_wait_recorded": true,
+          "adopted_observer_exit_code": 1,
+          "controller_high_rss": 12840960,
+          "controller_cpu_ns": 6408935000,
+          "observer_wait_high_rss": 14036992,
+          "observer_wait_cpu_ns": 21400760000,
+          "failed": true,
+          "failure": "control-read",
+          "refused": true,
+          "reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "originals": [
+            {
+              "sha256": "938c1aa8825585c74a6fd40f92698b1868569e18cc3980a8e8c4c73ccd9ea403",
+              "bytes": 18783,
+              "source_mode": 256,
+              "indexed": true,
+              "complete": true,
+              "delivered": false,
+              "capture_failure": null,
+              "complete_frames": 86,
+              "partial_frame_bytes": 0
+            }
+          ],
+          "original_indexes": []
+        }
+      ],
+      "terminal_receipts": [
+        {
+          "case": "controller-capture-sigkill",
+          "sha256": "210764aba12c20d2e4d3c88ccca2d75d6e4f68522681d0410a1e2df6b03b4b26",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "3d7a8338e3ae0d33164b37abdda6bf7a6526c87d2e3e4cf1dbe8555ac9033e6b",
+              "bytes": 80,
+              "complete": false,
+              "delivered": false,
+              "bytes_exported": true
+            }
+          ]
+        },
+        {
+          "case": "controller-capture-sigterm",
+          "sha256": "b6442fe2fb4f9a2dc26e3b6ef5f87d03fac9bd4070dcde426ba46a8d9fcefef9",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "55b17d438cb3958e48f939e002c696b9e9031484d0f5258d3698394d98f05d96",
+              "bytes": 80,
+              "complete": false,
+              "delivered": false,
+              "bytes_exported": true
+            }
+          ]
+        },
+        {
+          "case": "controller-forward-sigkill",
+          "sha256": "bb68b1f5cb88dbff01ab1ef229b464451297f1a8e9a8436f907aab08e2022666",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "f0fa59c956fc37dbee939b04a8d001745512899a5640962af1d30d8e967d69d4",
+              "bytes": 18782,
+              "complete": true,
+              "delivered": false,
+              "bytes_exported": true
+            }
+          ]
+        },
+        {
+          "case": "controller-forward-sigterm",
+          "sha256": "07b03de8442cdc1d02178d9c81c19c6864ab01a243d71f228b4f8a9956b17c5c",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "938c1aa8825585c74a6fd40f92698b1868569e18cc3980a8e8c4c73ccd9ea403",
+              "bytes": 18783,
+              "complete": true,
+              "delivered": false,
+              "bytes_exported": true
+            }
+          ]
+        },
+        {
+          "case": "controller-metadata-sigkill",
+          "sha256": "f7d67ac564b006b94d79c93f0463291bb14b358e8276d1bee94d2bca21652841",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "b3a8faa1f22930a912a14ec918bd488b7d704bb0e114eecfbca702a114137dd6",
+              "bytes": 18782,
+              "complete": true,
+              "delivered": true,
+              "bytes_exported": true
+            }
+          ]
+        },
+        {
+          "case": "controller-metadata-sigterm",
+          "sha256": "a24f463b2b0b9948a258607489c9d6da90d928a78e471d7031f0f6b739df7cea",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "1f1c77f8de3b2797d68a37e17795517c365e16ff7d28ef7fee65294e78d72949",
+              "bytes": 18781,
+              "complete": true,
+              "delivered": true,
+              "bytes_exported": true
+            }
+          ]
+        },
+        {
+          "case": "controller-sealed-sigkill",
+          "sha256": "1d2f0b70a53653fc8d60bdd48a735cf1b25bf0d4bcf4c0b919ee5664c13d6751",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "cc2c7e28d8b63352a1cb11f9a50e0282aa15c4aebb6abee307a80acf5a8a3f42",
+              "bytes": 18783,
+              "complete": true,
+              "delivered": false,
+              "bytes_exported": true
+            }
+          ]
+        },
+        {
+          "case": "controller-sealed-sigterm",
+          "sha256": "567d4abdd1edaafda25fc3110dbba8c4d4fb6a7ca081d9480eb737a48947cce4",
+          "failed": true,
+          "front_removed": true,
+          "connector_started": 1,
+          "connectors": 1,
+          "connector_active": 0,
+          "original_references": [
+            {
+              "sha256": "a5a8e6c16f8148928b7be123030d80fcd92a51234742a43233046aaadd418b1b",
+              "bytes": 18783,
+              "complete": true,
+              "delivered": false,
+              "bytes_exported": true
+            }
+          ]
+        }
+      ],
+      "uncorrelated_original_exports": [],
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    }
+  ],
+  "limits": [
+    "First source f949676 failed its 15.1 matrix with unverified guest cleanup, missing per-case waits and adverse byte exports. Its eight terminal references and one uncorrelated normal export do not substitute for missing proof. It has no 14.5 execution.",
+    "Eight actual controller signal cases and a normal publication/clean-stop control per passing release; separate surviving FreeBSD owner retains product processes, original storage identities and kernel reaper.",
+    "Controller and observer are separate original fixture reexecutions. Controller signal waits and adopted observer PID-specific waits/usage are original outcomes, not inferred from PID disappearance.",
+    "Only exact private controller labels persist root-only sealed terminal receipts. Actual producer originals/prefixes retain original object/hash/mode and complete/delivered facts without eligibility after controller loss.",
+    "Both actual product artifact roles, original helper/socket, configuration/token, preflight/runtime pins and exact guest/host teardown remain unchanged. No operator storage, runtime dependency, installed service or Action.",
+    "Loss of the independent surviving owner or host power is not covered. Remaining full broker/caller capacity and cancellation/recovery, historical 14.5 sampling gaps, cadence/overhead/augmented budgets, 300-second idle and original latency/full resources remain open.",
+    "Full native 005, browser/manual accessibility, hardware and release acceptance remain open. Runtime writes and canonical resource runner remain inactive."
+  ]
+}
