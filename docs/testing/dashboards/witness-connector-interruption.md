@@ -45,3 +45,20 @@ Canonical resource activation and runtime writes remain disabled. Controller
 interruption, remaining ancillary/cap controls, historical 14.5 cadence gaps,
 observer/connector overhead, augmented budgets, 300-second idle, original large
 latency failure, browser, hardware and release gates remain open.
+
+## Retained failed predecessor and receipt correction
+
+Source `1d920fdac20c75c8e24685abd01cec44ca00f426` passed signed portable review
+before a failed 15.1 native attempt (592.23 seconds). The uninjected, two release
+and two EOF controls passed; four signal cases timed out at control readback.
+Original archive/transcript, failed exit and verified guest/host cleanup remain
+retained. No 14.5 execution or signal wait acceptance follows from this candidate.
+
+The original receipt put Go's non-exit `-1` sentinel into a control frame whose
+unchanged grammar requires unsigned numbers. A failing portable codec regression
+reproduces that rejection. The correction represents availability and actual exit
+separately, preserves the raw kernel wait status/signal, and retains an exclusive
+original wait receipt before control readback. It does not permit negative source
+numbers or treat a missing wait as success. The failed predecessor did not retain
+those signal wait receipts, so it cannot prove each original signal outcome;
+a corrected candidate requires fresh review and both-release execution.

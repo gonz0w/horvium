@@ -19,11 +19,10 @@ import (
 )
 
 type witnessConnectorBoundaryReceipt struct {
-	Actor                    witnessActor
-	Stage, Action            string
-	Exited                   bool
-	ExitCode, Signal         int
-	Accounted, ChannelClosed bool
+	witnessConnectorWaitRecord
+	Actor                                              witnessActor
+	Stage, Action                                      string
+	Accounted, ChannelClosed, WaitFailed, ContextEnded bool
 }
 
 // Only explicitly configured disposable cases pause a live connector. Normal
@@ -48,25 +47,34 @@ func (o *witnessNativeObserver) interruptConnector(stage, id string, actor witne
 	waitError := cmd.Wait()
 	*waited = true
 	accounted := o.accountConnector(cmd, "interruption-"+stage, waitError, ctx.Err()) == nil
-	o.recordConnectorBoundary(actor, cmd, accounted, closed)
+	o.recordConnectorBoundary(actor, cmd, accounted, closed, waitError, ctx.Err())
 	return true
 }
-func (o *witnessNativeObserver) recordConnectorBoundary(actor witnessActor, cmd *exec.Cmd, accounted, closed bool) {
+func (o *witnessNativeObserver) recordConnectorBoundary(actor witnessActor, cmd *exec.Cmd, accounted, closed bool, waitError, contextError error) {
 	if o.fault == nil || (o.fault.stage != "connect" && o.fault.stage != "handoff") {
 		return
 	}
-	r := &witnessConnectorBoundaryReceipt{Actor: actor, Stage: o.fault.stage, Action: strings.TrimPrefix(o.cfg.RunLabel, o.fault.stage+"-"), Accounted: accounted, ChannelClosed: closed, ExitCode: -1}
+	r := &witnessConnectorBoundaryReceipt{Actor: actor, Stage: o.fault.stage, Action: strings.TrimPrefix(o.cfg.RunLabel, o.fault.stage+"-"), Accounted: accounted, ChannelClosed: closed, WaitFailed: waitError != nil, ContextEnded: contextError != nil}
 	if cmd.ProcessState != nil {
-		r.Exited = cmd.ProcessState.Exited()
-		r.ExitCode = cmd.ProcessState.ExitCode()
-		if status, ok := cmd.ProcessState.Sys().(syscall.WaitStatus); ok && status.Signaled() {
-			r.Signal = int(status.Signal())
+		if status, ok := cmd.ProcessState.Sys().(syscall.WaitStatus); ok {
+			signal := 0
+			if status.Signaled() {
+				signal = int(status.Signal())
+			}
+			r.witnessConnectorWaitRecord = witnessConnectorWaitRepresentation(true, status.Exited(), status.ExitStatus(), signal, uint32(status))
 		}
 	}
+
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	if o.connectorBoundary == nil {
 		o.connectorBoundary = r
+		if witnessWritePrivateIndex("../../.tools", "witness-connector-wait-"+o.cfg.RunLabel+".json", r) != nil {
+			o.failed = true
+			if o.failure == "" {
+				o.failure = "connector-wait-custody"
+			}
+		}
 	}
 }
 
@@ -213,7 +221,7 @@ func TestNativeDashboardWitnessConnectorInterruption(t *testing.T) {
 				}
 				o.faultChannel.Close()
 				r := final.ConnectorBoundary
-				if r == nil || r.Actor != actor || r.Stage != stage || r.Action != action || !r.Accounted || !witnessConnectorWaitMatches(action, r.Exited, r.ExitCode, r.Signal) || r.ChannelClosed != (action == "channel-eof") {
+				if r == nil || r.Actor != actor || r.Stage != stage || r.Action != action || !r.Accounted || !r.Present || r.ContextEnded || r.WaitFailed != !released || !witnessConnectorWaitMatches(action, r.Exited, r.ExitCode, r.Signal) || r.ChannelClosed != (action == "channel-eof") {
 					t.Fatal("original connector wait outcome mismatch")
 				}
 				if witnessLifetime(actor, probe.ABI) || witnessLifetime(observer, probe.ABI) || final.ConnectorStarted != final.Connectors || final.ConnectorActive != 0 || final.ConnectorMaxRSS == 0 || final.ConnectorCPUNS <= 0 {

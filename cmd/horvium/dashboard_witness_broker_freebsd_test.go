@@ -571,7 +571,7 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 	e = cmd.Wait()
 	waited = true
 	accounted := o.accountConnector(cmd, stage, e, ctx.Err()) == nil
-	o.recordConnectorBoundary(original, cmd, accounted, false)
+	o.recordConnectorBoundary(original, cmd, accounted, false, e, ctx.Err())
 	if !accounted || e != nil {
 		fail()
 		return
