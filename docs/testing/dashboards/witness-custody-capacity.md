@@ -88,3 +88,17 @@ exercising custody. A failed bulk write alone does not prove no smaller allocati
 fits. The mount remains 320 MiB and custody limits/guards remain unchanged. New
 review and both-release execution are required; later results do not upgrade the
 failed predecessor or infer its unobserved free-block count.
+
+A second 15.1 predecessor, source `5ff6723767f8138deaa67b2b184fdd6ccae0cced`,
+failed at the filler-object size assertion after 109.37s; the other four controls
+passed. One-byte ENOSPC was observed, but custody fault/resume checks were not
+reached. Its receipt retains the reported write count (335,540,224 bytes), no
+filler hash/object and only the earlier complete original. These missing
+observations remain missing. Guest and host teardown passed; 14.5 was not run.
+
+The next fixture records reported write progress separately from the original
+file's observed EOF and resumes from that EOF after an error. FreeBSD tmpfs
+[write implementation](https://github.com/freebsd/freebsd-src/blob/releng/15.1/sys/fs/tmpfs/tmpfs_vnops.c#L619-L671)
+rolls back file size after a failed data move; summing reported partial progress
+is not an independent file-size observation. Actual object size, complete file
+hash, one-byte refusal and custody failure remain required.

@@ -2162,3 +2162,7 @@ rejection, unchanged raw/archive limits and full 320 MiB physical exhaustion. It
 fills real bytes/counts and preserves prefixes; no seeded counters or reduced mount.
 Synthetic data remains custody evidence, with broker/controller/resource integration
 and broader gates open. No ZFS/md or operator storage is used by this fixture.
+
+The full-size custody fixture preserves both failed 15.1 physical-fill predecessors;
+failed-write progress is distinct from observed original file size. Neither
+predecessor establishes physical-exhaustion acceptance. See the capacity runbook.

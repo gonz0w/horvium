@@ -60,7 +60,7 @@ type witnessCapacityReceipt struct {
 	UnreadRejectedBody                                                               bool
 	Failure                                                                          string
 	ENOSPC, SmallProbeENOSPC, SpaceReleased                                          bool
-	FillBytes                                                                        int64
+	FillBytes, ReportedWriteBytes                                                    int64
 	FillSHA256                                                                       string
 	FillObject                                                                       *witnessFileObject
 	Originals                                                                        []witnessCapacityOriginal
@@ -387,11 +387,21 @@ func TestNativeDashboardWitnessCapacity(t *testing.T) {
 				for size := len(buffer); size >= 1; size /= 2 {
 					for receipt.FillBytes <= witnessCapacityTmpfs {
 						n, e := fill.Write(buffer[:size])
-						receipt.FillBytes += int64(n)
+						receipt.ReportedWriteBytes += int64(n)
+						info, se := fill.Stat()
+						if se != nil {
+							t.Fatal(se)
+						}
+						receipt.FillBytes = info.Size()
 						if e != nil {
 							writeError = e
 							if !errors.Is(e, syscall.ENOSPC) {
 								t.Fatal("unexpected filler I/O", e)
+							}
+							// Failed tmpfs writes may roll file size back after reporting
+							// partial progress. Resume from the observed original EOF.
+							if _, se := fill.Seek(0, io.SeekEnd); se != nil {
+								t.Fatal(se)
 							}
 							break
 						}
@@ -423,7 +433,7 @@ func TestNativeDashboardWitnessCapacity(t *testing.T) {
 				info, e := fill.Stat()
 				object, oe := witnessObject(info)
 				if e != nil || oe != nil || object.UID != 0 || object.Links != 1 || info.Size() != receipt.FillBytes {
-					t.Fatal("original filler custody")
+					t.Fatal("original filler custody", e, oe, object, receipt.FillBytes)
 				}
 				receipt.FillObject = &object
 				h := sha256.New()
