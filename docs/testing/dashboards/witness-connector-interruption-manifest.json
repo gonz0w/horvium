@@ -1,0 +1,892 @@
+{
+  "schema": 1,
+  "date": "2026-10-14",
+  "scope": "inactive-actual-connector-interruption-support",
+  "source_commit": "2064a95fb2bf9dae8219a9510722508008fe9c5a",
+  "base_commit": "269e01bc31f962f4e405b3fa4c6b4b41110a6d59",
+  "pr_title": "test(dashboards): batch actual connector interruption controls",
+  "native_acceptance": false,
+  "resource_acceptance": false,
+  "resource_activation": false,
+  "historical_manifests_preserved": 162,
+  "portable_review": {
+    "source_commit": "2064a95fb2bf9dae8219a9510722508008fe9c5a",
+    "result_sha256": "cf845470dee43359b26ae133cf74e23dc683c935c67a14786327f462cf6c76e6",
+    "qualified": true,
+    "deep": "executed affected cmd race/original-wire fuzz",
+    "checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "freebsd_test_cross_build": "passed"
+  },
+  "failing_behavior_logs_sha256": {
+    "wait_classification": "5858052d34e044f667b651fd7a7d0c6e6d8e2bfddd380394d7c400d325bef0d4",
+    "signal_receipt_control_grammar": "bbb42daacb7887315c49111fb530ca5dfb487e9051c7ea2de7d891f9b0a4a43d"
+  },
+  "runs": [
+    {
+      "source_commit": "2064a95fb2bf9dae8219a9510722508008fe9c5a",
+      "base_commit": "269e01bc31f962f4e405b3fa4c6b4b41110a6d59",
+      "pr_title": "test(dashboards): batch actual connector interruption controls",
+      "release": "14.5",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessConnectorInterruption (257.46s)",
+      "raw_sha256": "4da8cfaead308b6e9e444ce4c6291275b2c703a5b8c5434341f71f0d8499bef4",
+      "archive_sha256": "0302d16cc7ddcb7bd1e218a9354dc267e3a2bb1b5651190d72caf0296840ff77",
+      "result_sha256": "0838cd1abac67d74894552939b4de08b9e8092ff68296b9e9e269e18ffacacd0",
+      "cases": [
+        {
+          "case": "connect-release",
+          "wait_receipt_sha256": "b7579f8030fa261a5799d184d5e95e13b8d67532e2806317702769e448d88d94",
+          "receipt_sha256": "e28703eb1922484f76eb4404c15424800f74a54fb1900c669e7896150ee560c0",
+          "connector_high_rss": 16437248,
+          "connector_cpu_ns": 1404423000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 0,
+          "channel_closed": false,
+          "originals": [
+            {
+              "sha256": "51c1ff9658b2fdd4ba6ee6bd0759d8e469a6ab7dbf39ee473f5b5ffcff6d8097",
+              "bytes": 20792
+            }
+          ],
+          "refused": false,
+          "released": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "connect-sigterm",
+          "wait_receipt_sha256": "7534c1628d9efaf20e491fc57a1716c821f6e22e2fae18caf738e2ad9fdf3cad",
+          "receipt_sha256": "46663af7d121a5fd0ff985a43d9c27a17ca58fbe05f17e40ba348ff36445688b",
+          "connector_high_rss": 16281600,
+          "connector_cpu_ns": 1423200000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 15,
+          "channel_closed": false,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "connect-sigkill",
+          "wait_receipt_sha256": "82a036d6db0ea4b425657437fe35b317a36f2afc84d04366721a8165eb6d084c",
+          "receipt_sha256": "6f8e447b98913c39c809941e13bd5a518d2e126ac01ee500876080d8497eddc1",
+          "connector_high_rss": 16523264,
+          "connector_cpu_ns": 1425528000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 9,
+          "channel_closed": false,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "connect-channel-eof",
+          "wait_receipt_sha256": "f7b3d71a82d9057b41ddf52fa1b75cba81aedbe6b3ad8dc33a79b974769cbd73",
+          "receipt_sha256": "bc7a8b4fa6baeafb9bc5fc19c2ee3c0c30c3a02b16b022bf84e231f8beb1ebb9",
+          "connector_high_rss": 16220160,
+          "connector_cpu_ns": 1452134000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 1,
+          "original_wait_signal": 0,
+          "channel_closed": true,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "handoff-release",
+          "wait_receipt_sha256": "4fefd7abda6faf199f234fb0f1af5c7ba4169a5b5ee038b397465f723ed74f08",
+          "receipt_sha256": "11e95522a768fead2565559bd275deba96eb9e77550e4455ccf72bc4769a45cc",
+          "connector_high_rss": 16314368,
+          "connector_cpu_ns": 1442109000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 0,
+          "channel_closed": false,
+          "originals": [
+            {
+              "sha256": "a50232e85654f0392472717cfe684f77079b29725db3854ee046685998da63ab",
+              "bytes": 20793
+            }
+          ],
+          "refused": false,
+          "released": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "handoff-sigterm",
+          "wait_receipt_sha256": "67f8e812c61c9362c707956cf837d623153088ff614ee620fa31936e937c0bbc",
+          "receipt_sha256": "128c46821f5f924f55160b264804513390cea9b7aa4421f7262779219c4e2b09",
+          "connector_high_rss": 16449536,
+          "connector_cpu_ns": 1545477000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 15,
+          "channel_closed": false,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "handoff-sigkill",
+          "wait_receipt_sha256": "6dad343c66d02979a4457f55ea0ac23b0d60a877a119c39adf7fd9bea25d4505",
+          "receipt_sha256": "d8b67b91cf35891346022ded3cccc5b162ab929704224482a00350a3ae4953d9",
+          "connector_high_rss": 16424960,
+          "connector_cpu_ns": 1559242000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 9,
+          "channel_closed": false,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "handoff-channel-eof",
+          "wait_receipt_sha256": "6b35ed36f801dd0c344468b4980fd1659a70403826023131720cd2804a098c5c",
+          "receipt_sha256": "59b8ea941dcfdb5de0f3e935cf8ad3d79278949573db7a9b0e5ec918814e31a3",
+          "connector_high_rss": 16519168,
+          "connector_cpu_ns": 1447540000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 1,
+          "original_wait_signal": 0,
+          "channel_closed": true,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "retained_waits": [
+        {
+          "case": "connect-channel-eof",
+          "sha256": "f7b3d71a82d9057b41ddf52fa1b75cba81aedbe6b3ad8dc33a79b974769cbd73",
+          "exited": true,
+          "exit_code": 1,
+          "signal": 0,
+          "raw_wait_status": 256,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "connect-release",
+          "sha256": "b7579f8030fa261a5799d184d5e95e13b8d67532e2806317702769e448d88d94",
+          "exited": true,
+          "exit_code": 0,
+          "signal": 0,
+          "raw_wait_status": 0,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "connect-sigkill",
+          "sha256": "82a036d6db0ea4b425657437fe35b317a36f2afc84d04366721a8165eb6d084c",
+          "exited": false,
+          "exit_code": 0,
+          "signal": 9,
+          "raw_wait_status": 9,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "connect-sigterm",
+          "sha256": "7534c1628d9efaf20e491fc57a1716c821f6e22e2fae18caf738e2ad9fdf3cad",
+          "exited": false,
+          "exit_code": 0,
+          "signal": 15,
+          "raw_wait_status": 15,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "handoff-channel-eof",
+          "sha256": "6b35ed36f801dd0c344468b4980fd1659a70403826023131720cd2804a098c5c",
+          "exited": true,
+          "exit_code": 1,
+          "signal": 0,
+          "raw_wait_status": 256,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "handoff-release",
+          "sha256": "4fefd7abda6faf199f234fb0f1af5c7ba4169a5b5ee038b397465f723ed74f08",
+          "exited": true,
+          "exit_code": 0,
+          "signal": 0,
+          "raw_wait_status": 0,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "handoff-sigkill",
+          "sha256": "6dad343c66d02979a4457f55ea0ac23b0d60a877a119c39adf7fd9bea25d4505",
+          "exited": false,
+          "exit_code": 0,
+          "signal": 9,
+          "raw_wait_status": 9,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "handoff-sigterm",
+          "sha256": "67f8e812c61c9362c707956cf837d623153088ff614ee620fa31936e937c0bbc",
+          "exited": false,
+          "exit_code": 0,
+          "signal": 15,
+          "raw_wait_status": 15,
+          "expected_outcome_matched": true
+        }
+      ],
+      "normal_control": {
+        "receipt_sha256": "87c6a94dd12df219059ac97cf011078ef3446ef3d17f9311cb092f90b4982273",
+        "originals": [
+          {
+            "sha256": "112c7e8d40293ff3cc39b91e94f5ede05a67c0a6fb5c0df946e899fd3db2b681",
+            "bytes": 20790
+          }
+        ],
+        "connectors": 1,
+        "all_connectors_reaped": true
+      },
+      "source_archive_sha256": "ef3f6d91449dbdb9d3bf3e741d0aedbc9c8eeea91abb71365442dd928c26ce5c",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "f791d9501940a95e3cb98fc461e6156c716f091a10f9bef542dceb3af33154c2"
+      },
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    },
+    {
+      "source_commit": "2064a95fb2bf9dae8219a9510722508008fe9c5a",
+      "base_commit": "269e01bc31f962f4e405b3fa4c6b4b41110a6d59",
+      "pr_title": "test(dashboards): batch actual connector interruption controls",
+      "release": "15.1",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessConnectorInterruption (282.70s)",
+      "raw_sha256": "ef71053b1a97b19a75eb888bf5fa40da9add4d11664dfb9b155d5b3e5a7e24e4",
+      "archive_sha256": "0b84c0cc106f8305ba7e73b8654d4a98e1b32a1dd01bd29ccb27c73fee5664bd",
+      "result_sha256": "984c4fb1e4cbea7ef435e988170c3f9d1e874fe2a57b36133a0fa2b83dd642d6",
+      "cases": [
+        {
+          "case": "handoff-release",
+          "wait_receipt_sha256": "c57b89a71a15d663977d493aecb870911a7b9d8cc26d43abcdd4502f36d7f0d3",
+          "receipt_sha256": "59b3f322bf7b596487949514df5f373ed94cfdf7d8b16ac01d56887bae9fb9fb",
+          "connector_high_rss": 12443648,
+          "connector_cpu_ns": 1564153000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 0,
+          "channel_closed": false,
+          "originals": [
+            {
+              "sha256": "2b43f6f8cf3710762fac81efcd18365a90ec333dbf43fb4708ff68449eacbb83",
+              "bytes": 23115
+            }
+          ],
+          "refused": false,
+          "released": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "connect-release",
+          "wait_receipt_sha256": "5b44f3ec550c33b8a9a6e2f3a162804ed38258d2f86a9141267d879b7ffdc79d",
+          "receipt_sha256": "2ee9c73990f2638e54c166cf3b9eee2ef7421ddb42585d51cb5f357ae2ea2a9a",
+          "connector_high_rss": 12578816,
+          "connector_cpu_ns": 1670219000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 0,
+          "channel_closed": false,
+          "originals": [
+            {
+              "sha256": "796d87de94378cd008cbb19abb363ba90b1f740643403850ee41ce1fc1975b66",
+              "bytes": 23115
+            }
+          ],
+          "refused": false,
+          "released": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "connect-sigterm",
+          "wait_receipt_sha256": "05fbfa618d4b5b5293f169ddac17b004f0b50a999a2c14f9cf7b4ac417c86af9",
+          "receipt_sha256": "7d805c03d2b4224f4b72ffcc62e8fbbc9b58195ea93a07469d0a51595570791e",
+          "connector_high_rss": 12611584,
+          "connector_cpu_ns": 1917844000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 15,
+          "channel_closed": false,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "handoff-channel-eof",
+          "wait_receipt_sha256": "dc8e4872b16c4ca7c7c0f1acd6ab4aeb517c95ae6a11fc3075a5af18433f44e1",
+          "receipt_sha256": "3db662d39ce60419246d0a7ca7419141a481cac24ee708304ad5bc039cc03e6e",
+          "connector_high_rss": 12480512,
+          "connector_cpu_ns": 1651177000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 1,
+          "original_wait_signal": 0,
+          "channel_closed": true,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "handoff-sigterm",
+          "wait_receipt_sha256": "9085cf52062df5d8b1fdddfb1d5831c9f01f038f561062503d09ce2348ffb901",
+          "receipt_sha256": "4e4d0a6d599be161f19051663d3e9733972e4dfb5261357e1d33f23141f08d52",
+          "connector_high_rss": 12648448,
+          "connector_cpu_ns": 1506253000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 15,
+          "channel_closed": false,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "connect-channel-eof",
+          "wait_receipt_sha256": "09b5918e8449e844330639e08938902c87d00338dc1d9cdd25724586b2501244",
+          "receipt_sha256": "a58b579fb660c21584975b2a5af860ca9736a80ead5aa837c6136bf883891247",
+          "connector_high_rss": 12517376,
+          "connector_cpu_ns": 1562659000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 1,
+          "original_wait_signal": 0,
+          "channel_closed": true,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "connect-sigkill",
+          "wait_receipt_sha256": "627e7770ea3227e3521ad60cd4657b56e75388ead1ace480f9c8bc719c35be93",
+          "receipt_sha256": "8dfb1f5b71a3a8a272060b15d7ea220758e3b165d3c82179c402394e9647125a",
+          "connector_high_rss": 12300288,
+          "connector_cpu_ns": 1714837000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 9,
+          "channel_closed": false,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "handoff-sigkill",
+          "wait_receipt_sha256": "458e943362ce9c15ae01d7b7cac65bccf99aef2ead4d02b5bf89265e2df3d822",
+          "receipt_sha256": "b37a00194e1bfa4cf21e01ae7a5e426a3cf31e3e85138ebce9bc6092b9008e57",
+          "connector_high_rss": 12607488,
+          "connector_cpu_ns": 1481630000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 9,
+          "channel_closed": false,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "retained_waits": [
+        {
+          "case": "connect-channel-eof",
+          "sha256": "09b5918e8449e844330639e08938902c87d00338dc1d9cdd25724586b2501244",
+          "exited": true,
+          "exit_code": 1,
+          "signal": 0,
+          "raw_wait_status": 256,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "connect-release",
+          "sha256": "5b44f3ec550c33b8a9a6e2f3a162804ed38258d2f86a9141267d879b7ffdc79d",
+          "exited": true,
+          "exit_code": 0,
+          "signal": 0,
+          "raw_wait_status": 0,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "connect-sigkill",
+          "sha256": "627e7770ea3227e3521ad60cd4657b56e75388ead1ace480f9c8bc719c35be93",
+          "exited": false,
+          "exit_code": 0,
+          "signal": 9,
+          "raw_wait_status": 9,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "connect-sigterm",
+          "sha256": "05fbfa618d4b5b5293f169ddac17b004f0b50a999a2c14f9cf7b4ac417c86af9",
+          "exited": false,
+          "exit_code": 0,
+          "signal": 15,
+          "raw_wait_status": 15,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "handoff-channel-eof",
+          "sha256": "dc8e4872b16c4ca7c7c0f1acd6ab4aeb517c95ae6a11fc3075a5af18433f44e1",
+          "exited": true,
+          "exit_code": 1,
+          "signal": 0,
+          "raw_wait_status": 256,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "handoff-release",
+          "sha256": "c57b89a71a15d663977d493aecb870911a7b9d8cc26d43abcdd4502f36d7f0d3",
+          "exited": true,
+          "exit_code": 0,
+          "signal": 0,
+          "raw_wait_status": 0,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "handoff-sigkill",
+          "sha256": "458e943362ce9c15ae01d7b7cac65bccf99aef2ead4d02b5bf89265e2df3d822",
+          "exited": false,
+          "exit_code": 0,
+          "signal": 9,
+          "raw_wait_status": 9,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "handoff-sigterm",
+          "sha256": "9085cf52062df5d8b1fdddfb1d5831c9f01f038f561062503d09ce2348ffb901",
+          "exited": false,
+          "exit_code": 0,
+          "signal": 15,
+          "raw_wait_status": 15,
+          "expected_outcome_matched": true
+        }
+      ],
+      "normal_control": {
+        "receipt_sha256": "56c4af780c1ff66897401ee09e9128bf4e640487cf25c9a5e6f061f4ee69ed99",
+        "originals": [
+          {
+            "sha256": "251bac7d862dc1ca7bd27449ee8d907b573078244185c0edd1a1b96e51b90a12",
+            "bytes": 23115
+          }
+        ],
+        "connectors": 1,
+        "all_connectors_reaped": true
+      },
+      "source_archive_sha256": "ef3f6d91449dbdb9d3bf3e741d0aedbc9c8eeea91abb71365442dd928c26ce5c",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "f791d9501940a95e3cb98fc461e6156c716f091a10f9bef542dceb3af33154c2"
+      },
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    },
+    {
+      "source_commit": "1d920fdac20c75c8e24685abd01cec44ca00f426",
+      "base_commit": "269e01bc31f962f4e405b3fa4c6b4b41110a6d59",
+      "pr_title": "test(dashboards): batch actual connector interruption controls",
+      "release": "15.1",
+      "native_test_exit": 1,
+      "duration_line": "--- FAIL: TestNativeDashboardWitnessConnectorInterruption (592.23s)",
+      "raw_sha256": "bb53d1baaef92bc485f8cc7055c64fb65f4ab8ba2938cdc25f12831b594ac67e",
+      "archive_sha256": "86bdae76f980d54f55e3b1be4ff4da96c81e9bc21b46666e0d7187475bd7755f",
+      "result_sha256": "31277e56ffd1c02ab6c2b560c3dc57a16ce67befc5c509ea41050ea0231b5c22",
+      "cases": [
+        {
+          "case": "handoff-channel-eof",
+          "wait_receipt_sha256": null,
+          "receipt_sha256": "2ceda4ffb4175c4a51400084532258f70a6069b755bc6aa4dde7de3b6794fa6b",
+          "connector_high_rss": 12607488,
+          "connector_cpu_ns": 1608959000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 1,
+          "original_wait_signal": 0,
+          "channel_closed": true,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "connect-channel-eof",
+          "wait_receipt_sha256": null,
+          "receipt_sha256": "7476381b742424e601dc9ec65b34ea7545a26efce8b7ca40a209460055fb96dd",
+          "connector_high_rss": 12517376,
+          "connector_cpu_ns": 2561689000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 1,
+          "original_wait_signal": 0,
+          "channel_closed": true,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "connect-release",
+          "wait_receipt_sha256": null,
+          "receipt_sha256": "2e7c01115e857327480907fad88cbf1a9918bf160834d12472e58ebbe638cb99",
+          "connector_high_rss": 11976704,
+          "connector_cpu_ns": 1878042000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 0,
+          "channel_closed": false,
+          "originals": [
+            {
+              "sha256": "cb9fd60a0ee43a4a32045f0805d519a7b9406f96062cb9fea0b27820f0f604df",
+              "bytes": 23110
+            }
+          ],
+          "refused": false,
+          "released": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "handoff-release",
+          "wait_receipt_sha256": null,
+          "receipt_sha256": "4bc39b13b8ebfe1b111506461e1abd146ab60ac71c3ecb6433b1db587bac2752",
+          "connector_high_rss": 12681216,
+          "connector_cpu_ns": 1873314000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 0,
+          "channel_closed": false,
+          "originals": [
+            {
+              "sha256": "b4ac23b240288fbe2d4f1923b2f19259b046ade5dd392baf9aeba0e65b7b88e7",
+              "bytes": 23109
+            }
+          ],
+          "refused": false,
+          "released": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "retained_waits": [],
+      "normal_control": {
+        "receipt_sha256": "0bb52a1f9d86ac7d04dc6ba0fb5afb588c5f7af1a9c4148e02486ec4b80c8364",
+        "originals": [
+          {
+            "sha256": "2c407c59d9ece1b14b1714c9d5f270f7a8ad7c80d4f5bc71a1fe4933c40fd108",
+            "bytes": 23110
+          }
+        ],
+        "connectors": 1,
+        "all_connectors_reaped": true
+      },
+      "source_archive_sha256": "cacb1764d3379b3d1625884b5a2c92a8b141970c48c46fc67d44254be1f982a3",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "ebc18d32fc44fd929ac8e89671c978e900e93c55e336e66dc5425490ac075867"
+      },
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    },
+    {
+      "source_commit": "1443bae6a75c94de377e64396f3124fb350979e7",
+      "base_commit": "269e01bc31f962f4e405b3fa4c6b4b41110a6d59",
+      "pr_title": "test(dashboards): batch actual connector interruption controls",
+      "release": "15.1",
+      "native_test_exit": 1,
+      "duration_line": "--- FAIL: TestNativeDashboardWitnessConnectorInterruption (483.46s)",
+      "raw_sha256": "a5cd49a510dfb5da073b9e7ef2dde1ef876f82acf54fb57db29877e61b351773",
+      "archive_sha256": "3bc2e09901220ca92f5b05e32b6e34b85d65ceebfcb11d8f43289df32ebd98ef",
+      "result_sha256": "a40cb82423ca48f4b1acee372889a5ee0d3313c2c5c793360b1970fc0b9da1fc",
+      "cases": [
+        {
+          "case": "connect-sigkill",
+          "wait_receipt_sha256": "e0739bb732ca30f1d961774e8ff08ad7c855c245606468297271bb0c822ec4d7",
+          "receipt_sha256": "d55c7b33e2b4cf9eea2a094d5b3a864e215b4622e4517553b53fe1ab56a15811",
+          "connector_high_rss": 12886016,
+          "connector_cpu_ns": 2692361000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 9,
+          "channel_closed": false,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "connect-release",
+          "wait_receipt_sha256": "52916e58374009d0af53a230ec1b117a8c19d42d2dd484754906067452289532",
+          "receipt_sha256": "18983554b9fe0c92e24b6d2c800ab6f3c41aa2a34c97588cd5b3027326f4d7ab",
+          "connector_high_rss": 12292096,
+          "connector_cpu_ns": 2617064000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 0,
+          "channel_closed": false,
+          "originals": [
+            {
+              "sha256": "f17725c939c009b4fa1b09052bf1c777890e6f0a40294db557e4feab88dbc008",
+              "bytes": 23109
+            }
+          ],
+          "refused": false,
+          "released": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "handoff-release",
+          "wait_receipt_sha256": "1a7083672efbce638cd3384baa829809adb7ab28f333cc39036e6b081d688ce3",
+          "receipt_sha256": "64cb8a3b6a937d41402473bbc2c78a23383d77cdda1c8372c01ff502694ac2bb",
+          "connector_high_rss": 12173312,
+          "connector_cpu_ns": 2285283000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 0,
+          "channel_closed": false,
+          "originals": [
+            {
+              "sha256": "84dae2cd4794ae7028606a4f22e5f27e4858ed3dca5de2c579915ad52dc4f8de",
+              "bytes": 23107
+            }
+          ],
+          "refused": false,
+          "released": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "handoff-channel-eof",
+          "wait_receipt_sha256": "d99d8955d4bcc65973f437e3c6cc1c5760cb4fa536bf118fdbe6c4e706375258",
+          "receipt_sha256": "363793dec6f018f3933da9ca89884c912b8feff208340debe8e715f01e237614",
+          "connector_high_rss": 12349440,
+          "connector_cpu_ns": 2536648000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 1,
+          "original_wait_signal": 0,
+          "channel_closed": true,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "connect-sigterm",
+          "wait_receipt_sha256": "f5a9786bf28e9a82b5c5b1ca9b2dad981e0e8dda06b4988b3326d93fa30f584a",
+          "receipt_sha256": "deaf00ef090ef98fc9e0442eb042d053bdf1894967855610e2cb91d0041dc5fe",
+          "connector_high_rss": 13074432,
+          "connector_cpu_ns": 3660530000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 0,
+          "original_wait_signal": 15,
+          "channel_closed": false,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "connect-channel-eof",
+          "wait_receipt_sha256": "62455fe4f4c7af033368caace5a213ed303dac63a1bcc751e05ec6890d96522f",
+          "receipt_sha256": "0d677ebe830484cfc9195552399b490427933f92929ffa7f43ab488f154fc159",
+          "connector_high_rss": 12214272,
+          "connector_cpu_ns": 2636269000,
+          "original_wait_verified": true,
+          "original_wait_exit_code": 1,
+          "original_wait_signal": 0,
+          "channel_closed": true,
+          "originals": [],
+          "refused": true,
+          "released": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "retained_waits": [
+        {
+          "case": "connect-channel-eof",
+          "sha256": "62455fe4f4c7af033368caace5a213ed303dac63a1bcc751e05ec6890d96522f",
+          "exited": true,
+          "exit_code": 1,
+          "signal": 0,
+          "raw_wait_status": 256,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "connect-release",
+          "sha256": "52916e58374009d0af53a230ec1b117a8c19d42d2dd484754906067452289532",
+          "exited": true,
+          "exit_code": 0,
+          "signal": 0,
+          "raw_wait_status": 0,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "connect-sigkill",
+          "sha256": "e0739bb732ca30f1d961774e8ff08ad7c855c245606468297271bb0c822ec4d7",
+          "exited": false,
+          "exit_code": 0,
+          "signal": 9,
+          "raw_wait_status": 9,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "connect-sigterm",
+          "sha256": "f5a9786bf28e9a82b5c5b1ca9b2dad981e0e8dda06b4988b3326d93fa30f584a",
+          "exited": false,
+          "exit_code": 0,
+          "signal": 15,
+          "raw_wait_status": 15,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "handoff-channel-eof",
+          "sha256": "d99d8955d4bcc65973f437e3c6cc1c5760cb4fa536bf118fdbe6c4e706375258",
+          "exited": true,
+          "exit_code": 1,
+          "signal": 0,
+          "raw_wait_status": 256,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "handoff-release",
+          "sha256": "1a7083672efbce638cd3384baa829809adb7ab28f333cc39036e6b081d688ce3",
+          "exited": true,
+          "exit_code": 0,
+          "signal": 0,
+          "raw_wait_status": 0,
+          "expected_outcome_matched": true
+        },
+        {
+          "case": "handoff-sigkill",
+          "sha256": "9b1fee4c09c9fb12d10198ae8589a3652b6d0ea28410f2aba6ab5fd4d2d94353",
+          "exited": true,
+          "exit_code": 1,
+          "signal": 0,
+          "raw_wait_status": 256,
+          "expected_outcome_matched": false
+        },
+        {
+          "case": "handoff-sigterm",
+          "sha256": "eb98ae7c21fe0452e221343f0a6fc8b52e169cde813941a99e60dc28d557110f",
+          "exited": true,
+          "exit_code": 1,
+          "signal": 0,
+          "raw_wait_status": 256,
+          "expected_outcome_matched": false
+        }
+      ],
+      "normal_control": {
+        "receipt_sha256": "579e37886671a8a5754d37ee37cfd92eb4a35f9acbce3c582efef4f5702d7e4f",
+        "originals": [
+          {
+            "sha256": "0955a03b35345009c541a34d47db2ccd71e1ceab4d4a943f7c586590553e7201",
+            "bytes": 23109
+          }
+        ],
+        "connectors": 1,
+        "all_connectors_reaped": true
+      },
+      "source_archive_sha256": "74b51257f4c0e305693a2cadf1b7a5b41325461773b880d2a50981c327df5f82",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "63220608d016b647c2b92a4b781fbe688c08246aaeb48fe533096c0047323124"
+      },
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    }
+  ],
+  "limits": [
+    "Two failed 15.1 predecessors remain failed; neither ran on 14.5.",
+    "First predecessor lacks original signal wait receipts; second retains two ordinary exit-1 post-handoff mismatches.",
+    "Boundary-time kernel lifetime check preserves full connector/observer artifact checks and original deadlines; no retrospective child-error cause claim.",
+    "Sixteen boundary cases and two uninjected controls passed at one reviewed source; six complete original producer responses independently reopened.",
+    "Canonical resource runner remains inactive; runtime writes remain disabled.",
+    "Controller interruption, remaining ancillary/cap/physical exhaustion, historical 14.5 gaps, cadence/overhead/augmented budgets, 300-second idle and complete resource/latency/browser/hardware/release remain open."
+  ]
+}

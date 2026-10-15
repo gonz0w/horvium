@@ -2121,3 +2121,21 @@ actual observer capture/sealed/forward/metadata adverse cases on FreeBSD 15.1
 and 14.5, with independent original custody/usage readback and verified teardown.
 Signal loss is distinct from a retained failed EOF receipt. Full native 005,
 controller/connector death, cadence and resource acceptance remain open.
+
+The [original connector interruption controls](../testing/dashboards/witness-connector-interruption.md)
+cover the actual credential-dropped connector before helper connection and after
+validated descriptor handoff. SIGTERM, SIGKILL, actual IPC EOF and successful
+release require distinct original waits, all-started accounting and full owned
+teardown on both pinned disposable FreeBSD releases. An uninjected broker control
+checks ordinary publication. No connector lifetime is invented after its exit;
+controller interruption, full native 005, cadence and resource acceptance remain
+open. The canonical resource runner remains inactive and runtime writes denied.
+
+The [connector-interruption manifest](../testing/dashboards/witness-connector-interruption-manifest.json)
+retains two failed 15.1 predecessors plus a corrected reviewed source passing all
+eight boundary cases and an uninjected broker control on both 15.1 and 14.5.
+Independent readback verified sixteen passing original waits and six complete
+producer responses, with original guest/host teardown and pinned preservation.
+The earlier negative receipt sentinel and ordinary post-handoff failure exits stay
+failed; later passes do not reconstruct missing original inputs. This establishes
+inactive connector-control evidence only, with the broader gates still open.
