@@ -172,3 +172,60 @@ func TestDashboardWitnessTransferredEndpointSurvivesSenderClosure(t *testing.T) 
 		t.Fatal("original EOF lost")
 	}
 }
+
+func TestDashboardWitnessDescriptorChannelMustEnd(t *testing.T) {
+	for _, name := range []string{"clean", "byte", "replay", "extra-rights", "truncated-rights", "open"} {
+		t.Run(name, func(t *testing.T) {
+			sender, receiver := witnessTestPair(t)
+			original, peer := witnessTestPair(t)
+			f, e := original.File()
+			if e != nil {
+				t.Fatal(e)
+			}
+			defer f.Close()
+			if _, _, e := sender.WriteMsgUnix([]byte{'F'}, unix.UnixRights(int(f.Fd())), nil); e != nil {
+				t.Fatal(e)
+			}
+			passed, e := witnessPassedDescriptor(receiver)
+			if e != nil {
+				t.Fatal(e)
+			}
+			defer passed.Close()
+			switch name {
+			case "byte":
+				if _, e := sender.Write([]byte{'R'}); e != nil {
+					t.Fatal(e)
+				}
+			case "replay", "extra-rights", "truncated-rights":
+				fds := []int{int(f.Fd())}
+				if name == "extra-rights" {
+					fds = append(fds, int(f.Fd()))
+				}
+				if name == "truncated-rights" {
+					for len(fds) < 64 {
+						fds = append(fds, int(f.Fd()))
+					}
+				}
+				if _, _, e := sender.WriteMsgUnix([]byte{'F'}, unix.UnixRights(fds...), nil); e != nil {
+					t.Fatal(e)
+				}
+			}
+			if name != "open" {
+				sender.Close()
+			} else {
+				_ = receiver.SetReadDeadline(time.Now().Add(30 * time.Millisecond))
+			}
+			e = witnessDescriptorEOF(receiver)
+			if (e == nil) != (name == "clean") {
+				t.Fatalf("channel %s accepted=%t", name, e == nil)
+			}
+			if _, e := passed.Write([]byte{'P'}); e != nil {
+				t.Fatal("first owned endpoint lost", e)
+			}
+			var value [1]byte
+			if _, e := io.ReadFull(peer, value[:]); e != nil || value[0] != 'P' {
+				t.Fatal("original endpoint changed")
+			}
+		})
+	}
+}

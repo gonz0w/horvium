@@ -28,7 +28,7 @@ type witnessNativeFaultGate struct {
 }
 
 func witnessFaultStageValid(stage string) bool {
-	return stage == "" || stage == "capture" || stage == "sealed" || stage == "forward" || stage == "metadata" || stage == "connect" || stage == "handoff"
+	return stage == "" || stage == "capture" || stage == "sealed" || stage == "forward" || stage == "metadata" || stage == "connect" || stage == "handoff" || stage == "ancillary"
 }
 
 type witnessFaultEvent struct {
@@ -68,7 +68,7 @@ func (g *witnessNativeFaultGate) reachActor(stage, id string, actor *witnessActo
 	return g.err
 }
 func witnessOpenFaultGate(cfg witnessNativeConfig, ctx context.Context) (*witnessNativeFaultGate, error) {
-	if cfg.FaultStage == "" {
+	if cfg.FaultStage == "" || cfg.FaultStage == "ancillary" {
 		return nil, nil
 	}
 	f := os.NewFile(4, "owned-observer-interruption")
@@ -87,6 +87,9 @@ func witnessOpenFaultGate(cfg witnessNativeConfig, ctx context.Context) (*witnes
 }
 
 func witnessFaultLabelValid(label string) bool {
+	if strings.HasPrefix(label, "ancillary-") {
+		return witnessAncillaryFaultValid(strings.TrimPrefix(label, "ancillary-")) && label != "ancillary-"
+	}
 	for _, stage := range []string{"capture", "sealed", "forward", "metadata", "connect", "handoff"} {
 		for _, action := range []string{"sigterm", "sigkill", "channel-eof", "release"} {
 			if label == stage+"-"+action && (action != "release" || stage == "connect" || stage == "handoff") {

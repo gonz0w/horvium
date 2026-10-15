@@ -139,7 +139,7 @@ func startWitnessObserver(t *testing.T, cfg witnessNativeConfig, configPath stri
 	}
 	var faultParent *net.UnixConn
 	var faultFile *os.File
-	if cfg.FaultStage != "" {
+	if cfg.FaultStage != "" && cfg.FaultStage != "ancillary" {
 		a, b, e := witnessSocketPair()
 		if e != nil {
 			t.Fatal("fault channel")
