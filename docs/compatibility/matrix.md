@@ -2208,3 +2208,8 @@ records eight actual controller signals plus a normal publication/stop control
 passing on both pinned releases at one reviewed source. Adopted observer waits,
 failed terminal custody, original-byte readback and guest/host teardown passed.
 Loss of the surviving owner, full broker/resource and broader acceptance stay open.
+
+[Broker admission controls](../testing/dashboards/witness-broker-admission.md)
+exercise real caller attempt capacity and permanent denial after observer failure.
+Native observations are pending; this test-only work adds no support claim or
+resource-runner activation. Broader acceptance gates remain open.
