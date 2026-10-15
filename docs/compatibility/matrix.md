@@ -2155,3 +2155,10 @@ an uninjected publication control and four descriptor-control groups on both
 exact descriptor-limit restoration and full owned guest/host teardown. Twenty
 adverse cases produced no producer originals; both normal controls confirmed
 actual publication. Historical limits and broader acceptance gates remain open.
+
+The [full-scale custody capacity fixture](../testing/dashboards/witness-custody-capacity.md)
+uses original FreeBSD tmpfs/file objects for 32 complete attempts, actual single-active
+rejection, unchanged raw/archive limits and full 320 MiB physical exhaustion. It
+fills real bytes/counts and preserves prefixes; no seeded counters or reduced mount.
+Synthetic data remains custody evidence, with broker/controller/resource integration
+and broader gates open. No ZFS/md or operator storage is used by this fixture.
