@@ -41,3 +41,17 @@ cancellation/recovery, cadence/overhead/augmented budgets, historical 14.5 gaps,
 300-second idle, original latency/full resources, browser/manual accessibility,
 hardware and release gates remain open. Canonical resource runner stays inactive;
 runtime writes remain denied. No product API/config, dependency, service or Action.
+
+## Retained failing regression
+
+Signed reviewed source `6eca553dc70b1c57a2bc6e5fb77f82ff21f3abbf` failed the
+focused 15.1 EOF regression after 68.35 seconds. Its actual terminal receipt was
+unfailed with no failure reason, and the previously cached complete original
+remained eligible after a refused followup control. Its original producer bytes,
+receipt and failed exit remain retained. Guest and host teardown passed. This
+source has no full-matrix or 14.5 execution. Later fixes cannot upgrade that result.
+
+The observer now latches failed control reads/writes before final cleanup. The
+fixture caller permanently latches control errors and rechecks that latch before
+and after original decoding, including cache hits. Cleanup/control reads can still
+collect failure evidence; they cannot restore original eligibility.

@@ -899,6 +899,12 @@ func TestNativeDashboardWitnessObserver(t *testing.T) {
 	for !stop {
 		var command witnessNativeCommand
 		if witnessControlRead(control, &command) != nil {
+			o.mu.Lock()
+			o.failed = true
+			if o.failure == "" {
+				o.failure = "control-read"
+			}
+			o.mu.Unlock()
 			break
 		}
 		switch command.Operation {
@@ -961,6 +967,12 @@ func TestNativeDashboardWitnessObserver(t *testing.T) {
 			break
 		}
 		if witnessControlWrite(control, o.receipt()) != nil {
+			o.mu.Lock()
+			o.failed = true
+			if o.failure == "" {
+				o.failure = "control-write"
+			}
+			o.mu.Unlock()
 			break
 		}
 	}
