@@ -2155,3 +2155,20 @@ an uninjected publication control and four descriptor-control groups on both
 exact descriptor-limit restoration and full owned guest/host teardown. Twenty
 adverse cases produced no producer originals; both normal controls confirmed
 actual publication. Historical limits and broader acceptance gates remain open.
+
+The [full-scale custody capacity fixture](../testing/dashboards/witness-custody-capacity.md)
+uses original FreeBSD tmpfs/file objects for 32 complete attempts, actual single-active
+rejection, unchanged raw/archive limits and full 320 MiB physical exhaustion. It
+fills real bytes/counts and preserves prefixes; no seeded counters or reduced mount.
+Synthetic data remains custody evidence, with broker/controller/resource integration
+and broader gates open. No ZFS/md or operator storage is used by this fixture.
+
+The full-size custody fixture preserves both failed 15.1 physical-fill predecessors;
+failed-write progress is distinct from observed original file size. Neither
+predecessor establishes physical-exhaustion acceptance. See the capacity runbook.
+
+The [capacity manifest](../testing/dashboards/witness-custody-capacity-manifest.json)
+records all five full-size synthetic custody controls passing at one reviewed
+source on both pinned releases, with full original-byte readback and exact
+guest/host teardown. Both failed 15.1 predecessors remain failed; wider native
+broker/controller/resource, browser, hardware and release acceptance remains open.

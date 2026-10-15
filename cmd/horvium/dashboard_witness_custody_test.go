@@ -121,9 +121,9 @@ func TestDashboardWitnessCustodyMutationAndBounds(t *testing.T) {
 	defer store.close()
 	for n := 1; n <= witnessAttemptCap; n++ {
 		id := witnessTestID[:32] + "-" + strconv.Itoa(n)
-		raw := bytes.ReplaceAll(witnessFrames(witnessGolden()), []byte(witnessTestID), []byte(id))
-		if _, e := store.capture(bytes.NewReader(raw), id, "native-small", "management-1", "helper-1"); e != nil {
-			t.Fatal("within attempt budget", e)
+		raw := witnessCapacityGolden(id)
+		if ref, e := store.capture(bytes.NewReader(raw), id, "native-small", "management-1", "helper-1"); e != nil || ref == nil || !ref.Complete {
+			t.Fatal("within attempt budget must retain complete original", n, e)
 		}
 	}
 	if _, e := store.capture(bytes.NewReader(nil), witnessTestID[:32]+"-33", "native-small", "management-1", "helper-1"); e == nil {
