@@ -110,6 +110,17 @@ def stable(path, f, before):
                   'input object changed during readback')
 
 
+def chunks(f, limit):
+    """Even a concurrently growing regular file cannot extend this read budget."""
+    C.require(0 <= limit <= ARCHIVE_CAP + 1, 'input read budget')
+    while limit:
+        chunk = f.read(min(FRAME_CAP, limit))
+        if not chunk:
+            return
+        limit -= len(chunk)
+        yield chunk
+
+
 def file_object(value, size):
     keys(value, ('device', 'inode', 'uid', 'gid', 'links', 'size', 'modified_ns'))
     for field in value:
@@ -261,8 +272,11 @@ def validate_archive(path, expected):
         f, before = opened(path, ARCHIVE_CAP)
         with f:
             digest = hashlib.sha256()
-            while chunk := f.read(FRAME_CAP):
+            consumed = 0
+            for chunk in chunks(f, before.st_size + 1):
                 digest.update(chunk)
+                consumed += len(chunk)
+            C.require(consumed == before.st_size, 'archive size changed while hashing')
             exact(digest.hexdigest(), expected['archive_sha256'])
             f.seek(0)
             with tarfile.open(fileobj=f, mode='r:', tarinfo=StorageTarInfo) as archive:
@@ -304,7 +318,7 @@ def validate_archive(path, expected):
                 # tar readers otherwise ignore unparsed bytes after their end marker.
                 f.seek(archive.offset)
                 padding = 0
-                while chunk := f.read(FRAME_CAP):
+                for chunk in chunks(f, before.st_size - archive.offset):
                     C.require(not any(chunk), 'nonzero trailing archive bytes')
                     padding += len(chunk)
                 C.require(padding >= 1024, 'complete archive end marker required')

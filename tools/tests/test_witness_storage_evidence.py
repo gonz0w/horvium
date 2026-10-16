@@ -321,6 +321,46 @@ class StorageEvidenceTests(unittest.TestCase):
             with mock.patch.object(E, 'read_case', side_effect=replace_then_read), self.assertRaises(ValueError):
                 E.validate_archive(path, context)
 
+    def test_growing_input_stops_at_original_size(self):
+        files, context = fixture()
+        payload = archive(files)
+        context['archive_sha256'] = sha(payload)
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / 'original.tar'
+            path.write_bytes(payload)
+            original = E.opened
+
+            class Growing:
+                def __init__(self, f):
+                    self.f, self.reads = f, 0
+
+                def __enter__(self):
+                    return self
+
+                def __exit__(self, *_):
+                    self.f.close()
+
+                def __getattr__(self, name):
+                    return getattr(self.f, name)
+
+                def read(self, size):
+                    self.reads += 1
+                    if self.reads > 4:
+                        raise AssertionError('digest followed an indefinitely growing input')
+                    data = self.f.read(size)
+                    if not data:
+                        with path.open('ab') as append:
+                            append.write(bytes(65536))
+                        data = self.f.read(size)
+                    return data
+
+            def grow(name, ceiling):
+                f, info = original(name, ceiling)
+                return Growing(f), info
+
+            with mock.patch.object(E, 'opened', side_effect=grow), self.assertRaises(ValueError):
+                E.validate_archive(path, context)
+
     def test_cli_reports_scoped_success_and_no_output_on_failure(self):
         files, context = fixture()
         payload = archive(files)

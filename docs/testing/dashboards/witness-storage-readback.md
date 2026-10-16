@@ -70,6 +70,8 @@ are bounded at 64 KiB. Tar paths, namespaces, root ownership, modes, duplicate a
 missing files, links, sparse/extension headers, compression and nonzero trailing
 data fail closed. Extension/member bounds are checked before tar payload reads.
 Original input identity/size/timestamps are rechecked after validation. There is
+an original-size read budget even if a regular file keeps growing during readback.
+There is
 no extraction, network, process launch or output file write in the validator.
 
 On success, stdout contains one JSON consistency report; qualification, native
