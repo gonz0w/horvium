@@ -154,10 +154,8 @@ func (s *dashboardWitnessStore) capture(r io.Reader, id, mode, management, helpe
 			_ = f.Close()
 		}
 	}()
-	hash := sha256.New()
-	buffer := make([]byte, witnessFrameCap)
 	boundary.Stage = "copy"
-	n, e := io.CopyBuffer(io.MultiWriter(f, hash), io.LimitReader(r, remaining), buffer)
+	n, digest, e := witnessCopyCapture(f, r, remaining)
 	boundary.AcknowledgedBytes = n
 	captureIO = e
 	captureFailure := ""
@@ -203,7 +201,7 @@ func (s *dashboardWitnessStore) capture(r io.Reader, id, mode, management, helpe
 		captureIO = e
 		return nil, errDashboardWitness
 	}
-	ref := dashboardWitnessRef{Name: name, ID: id, Mode: mode, Management: management, Helper: helper, RawSHA256: fmt.Sprintf("%x", hash.Sum(nil)), RawBytes: n, CaptureFailure: captureFailure}
+	ref := dashboardWitnessRef{Name: name, ID: id, Mode: mode, Management: management, Helper: helper, RawSHA256: digest, RawBytes: n, CaptureFailure: captureFailure}
 	sealed := &witnessSealed{ref: ref, info: info, file: read}
 	if s.check(sealed) != nil {
 		read.Close()
