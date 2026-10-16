@@ -1,6 +1,6 @@
 # Captured prefix retention after a partial storage write
 
-Status: inactive test-only custody fixture; candidate execution pending.
+Status: inactive test-only custody fixture; focused results below.
 Owner: [issue 382](https://github.com/gonz0w/horvium/issues/382).
 Authority: [ADR 0011](../../adr/0011-native-dashboard-witnesses.md),
 [EDD](../../design/dashboards/native-witness-binding-EDD.md),
@@ -90,3 +90,35 @@ run failed in 27.76 seconds; 14.5 was not started. Guest/host teardown passed.
 That attempt remains failed. It does not demonstrate a partial filesystem write
 or disprove the portable regression. The new child file-limit control exercises
 that distinct boundary without relabeling the earlier ENOSPC result.
+
+## Source-bound component results
+
+Signed clean reviewed source `75622461d7238e151f2713885b8ddc070beac7d3`, base `f36d4b0a2ca93c27a4197291f55f84934621af41`,
+passed all three cases on each pinned FreeBSD/amd64 profile:
+
+| Case | FreeBSD 15.1 | FreeBSD 14.5 |
+| --- | --- | --- |
+| Normal synthetic capture, delivery and eligibility | Passed | Passed |
+| Actual tmpfs ENOSPC, zero-byte sealed diagnostic | Passed | Passed |
+| Child-only file-size limit, actual 8,193-byte EFBIG prefix | Passed | Passed |
+
+The [immutable manifest](witness-partial-storage-manifest.json) records exact
+source/base/title, compiler/artifacts, source archive, command/transcript/archive/
+probe/readback hashes and both failed and passing source boundaries. Independent
+readback reopened ten raw originals across the passing runs: six complete and
+delivered golden originals plus two empty ENOSPC and two positive EFBIG diagnostic
+originals. These are synthetic custody values; no original establishes publication.
+Both fault cases on each release denied old eligibility, failed forwarding and
+new source reads after actual resource restoration/allocation. Actual child waits
+exited zero within the 45-second child-control budget; child limits were restored and parent
+limits were never changed. All original mount/directory, guest/host artifact,
+descendant and runtime teardown checks passed. All 173 earlier manifests and
+seven operator-owned files remained byte-identical.
+
+The passing native source completed fresh check/lint/test/secrets, affected
+`cmd/horvium` race checks and its one compiler-listed portable fuzz target.
+A documentation-only followup may reuse that executed exact-input deep evidence
+while repeating the required baseline and final lab-stop/status checks. This is
+component evidence under DASH-WIT-NATIVE-005, not complete native/resource or
+release acceptance. The preserved 15.1 predecessor remains failed and its 14.5
+execution remains absent.

@@ -2286,9 +2286,13 @@ and original timeout/unavailable status bytes. Normal publications stay separate
 Guest/host teardown passed; no broader runtime/resource/support gate closes.
 
 [Partial storage write controls](../testing/dashboards/witness-partial-storage.md)
-correct the inactive witness capture hash when a file write acknowledges a prefix
-and returns an error. Portable partial-write and remaining-bound controls accompany
-actual FreeBSD tmpfs ENOSPC custody qualification. These synthetic originals do
-not establish broker/caller limits, producer lineage, publication or resource
-acceptance. Candidate-specific native results are recorded with the runbook;
-historical failures and the inactive resource runner retain their boundaries.
+correct the inactive capture hash when a writer acknowledges bytes with an error.
+Both pinned FreeBSD releases passed normal custody, actual zero-byte tmpfs ENOSPC,
+and child-only file-size-limit EFBIG with an actual 8,193-byte sealed prefix.
+The [source-bound manifest](../testing/dashboards/witness-partial-storage-manifest.json)
+retains original raw/hash/object readback, restored-resource permanent denial,
+child wait/limit restoration and verified teardown. The initial 15.1 positive-
+prefix tmpfs assumption failed; 14.5 was not started for that source. Both facts
+remain preserved. Synthetic custody/portable partial-write results establish no
+producer lineage, publication, broker byte-cap, full resource or hardware support.
+The canonical resource runner stays inactive and runtime writes remain denied.

@@ -1,0 +1,639 @@
+{
+  "schema": 1,
+  "date": "2026-10-16",
+  "scope": "inactive-synthetic-custody-partial-storage-only",
+  "requirements": [
+    "DASH-WIT-003",
+    "DASH-WIT-007",
+    "DASH-WIT-NATIVE-005"
+  ],
+  "source_commit": "75622461d7238e151f2713885b8ddc070beac7d3",
+  "base_commit": "f36d4b0a2ca93c27a4197291f55f84934621af41",
+  "pr_title": "test(dashboards): retain captured prefixes after partial storage writes",
+  "qualified": false,
+  "component_controls_passed": true,
+  "native_acceptance": false,
+  "resource_acceptance": false,
+  "resource_activation": false,
+  "historical_manifests_preserved": 173,
+  "portable_review": {
+    "source_commit": "75622461d7238e151f2713885b8ddc070beac7d3",
+    "base_commit": "f36d4b0a2ca93c27a4197291f55f84934621af41",
+    "pr_title": "test(dashboards): retain captured prefixes after partial storage writes",
+    "result_sha256": "b0b6bc00eaf9d167c7280f8e7736d080d9ac9c477f11c2faa02d74e6b24266d3",
+    "qualified": true,
+    "checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "deep": {
+      "fuzz_targets": [
+        {
+          "package": "./cmd/horvium",
+          "target": "FuzzDashboardWitnessOriginalGrammar"
+        }
+      ],
+      "race_packages": [
+        "./cmd/horvium"
+      ]
+    },
+    "executed": true,
+    "freebsd_test_cross_build": "passed"
+  },
+  "failing_copy_regression_log_sha256": "f71ba7de5ae694764d6e2b44c61c9e41776a5d68d72f3da3bf881a6bd2a570cd",
+  "passing_copy_regression_log_sha256": "59746e03ca5a7dab0273035d2a3f2f3f8a895da2f4109fd74d69e5d6f33faa11",
+  "independent_readback_sha256": "6d31029d46330e7ba848b9cce24ee9efd687bf631d51e7e18fc4b90bede403c0",
+  "predecessor_independent_readback_sha256": "c1920e6c7336cb7d9e15c99a05280e34d70ebb3c0866a6010d6843b5afd9d69b",
+  "runs": [
+    {
+      "source_commit": "75622461d7238e151f2713885b8ddc070beac7d3",
+      "base_commit": "f36d4b0a2ca93c27a4197291f55f84934621af41",
+      "pr_title": "test(dashboards): retain captured prefixes after partial storage writes",
+      "release": "14.5",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessPartialStorage (29.65s)",
+      "raw_sha256": "a3dc6fd441d08bdbe26bca687be6e8326cd4751a235f2f573f2bae2e2bdf684b",
+      "archive_sha256": "196dcacabed9b2e5b6f3688e006ef72c02e6cde6bef622f7f1f2d71329ba97ea",
+      "result_sha256": "7c3ba8d9e4dc4cae57f14109977a17114dbc9e02c922434efad0e712dfccd21e",
+      "source_archive_sha256": "58223bdfad8676b0e35a8049b886bd1144fb876d206a8c1ef0425e57d2b55418",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "5abf183c69d83d54da22aa5bb8868767bf696f1f2d7a182cbb5bc00bfdaac6bf",
+        "helper": "3b8b8bc4b9f4e8587d2f84204c2c8aa2830ba92ca6c556b264b48ee29a31eb7d",
+        "fixture": "d8cb48d4ab440aa431165c616ab97f079cf11d8db2a69c3d28bb40b0d691281a"
+      },
+      "controller_sha256": "8169e755b9da0c9c199576458632a07f4c98009eb968a98813682c9b2468d723",
+      "worker_source_sha256": "1c67e9629f0f3060d66cddd288634c4cb159d1a1a960b1506ec55b3c5a525840",
+      "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+      "probe_sha256": "a0e24744dd648299f09eb37fe808a599cc57bbb721323097bbfdbd550abae299",
+      "cleanup_receipt_sha256": "3ba76261d2c0208a4468f6a47b28f069791c949029452a3242ee0daff9f6f3e6",
+      "cases": [
+        {
+          "case": "normal",
+          "receipt_sha256": "9d20dbb05c5980d7b9c0977eb1a9fd4cfaa555509778abb530f37194588c9d76",
+          "mount_cleanup_sha256": "04e67d7a71beee3e5c3fc41d6a253eddca44539884db9cc21e77075a76c156a2",
+          "controller_artifact_sha256": "d8cb48d4ab440aa431165c616ab97f079cf11d8db2a69c3d28bb40b0d691281a",
+          "attempts": 1,
+          "stored_bytes": 1328,
+          "capture_stage": "sealed",
+          "capture_error": {
+            "class": ""
+          },
+          "acknowledged_bytes": 1328,
+          "fill": null,
+          "released_bytes": 0,
+          "filler_bytes_after_release": 0,
+          "source_bytes": 0,
+          "originals": [
+            {
+              "name": "original-001.wire",
+              "raw_bytes": 1328,
+              "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+              "object": {
+                "device": 18446744071679573761,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 1328,
+                "modified_ns": 1792156257916576000
+              },
+              "mode": 256,
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "publication_confirmed": false
+            }
+          ],
+          "failed": false,
+          "permanent_denial_after_resource_restoration": false,
+          "file_limit_before": null,
+          "file_limit_during": null,
+          "file_limit_after": null,
+          "child_wait": null,
+          "passed": true
+        },
+        {
+          "case": "enospc-zero",
+          "receipt_sha256": "d0b60ec96bc34175a7381afded61874080d8e02b98d593f3aaa96b60f44a1e3a",
+          "mount_cleanup_sha256": "04e67d7a71beee3e5c3fc41d6a253eddca44539884db9cc21e77075a76c156a2",
+          "controller_artifact_sha256": "d8cb48d4ab440aa431165c616ab97f079cf11d8db2a69c3d28bb40b0d691281a",
+          "attempts": 2,
+          "stored_bytes": 1328,
+          "capture_stage": "copy",
+          "capture_error": {
+            "class": "syscall",
+            "errno": 28
+          },
+          "acknowledged_bytes": 0,
+          "fill": {
+            "Bytes": 335540224,
+            "ReportedWriteBytes": 335540224,
+            "SHA256": "fd70f94c123262ca0cb5b9c4299d51b720367f52e16eec736eca540e87c17a5b",
+            "Object": {
+              "device": 18446744071679573762,
+              "inode": 5,
+              "uid": 0,
+              "gid": 0,
+              "links": 1,
+              "size": 335540224,
+              "modified_ns": 1792156258488685000
+            },
+            "ENOSPC": true,
+            "SmallProbeENOSPC": true,
+            "SpaceReleased": false
+          },
+          "released_bytes": 32768,
+          "filler_bytes_after_release": 335507456,
+          "source_bytes": 360448,
+          "originals": [
+            {
+              "name": "original-001.wire",
+              "raw_bytes": 1328,
+              "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+              "object": {
+                "device": 18446744071679573762,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 1328,
+                "modified_ns": 1792156257965128000
+              },
+              "mode": 256,
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "publication_confirmed": false
+            },
+            {
+              "name": "original-002.wire",
+              "raw_bytes": 0,
+              "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "object": {
+                "device": 18446744071679573762,
+                "inode": 6,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 0,
+                "modified_ns": 1792156274317972000
+              },
+              "mode": 256,
+              "complete": false,
+              "delivered": false,
+              "capture_failure": "capture-io",
+              "publication_confirmed": false
+            }
+          ],
+          "failed": true,
+          "permanent_denial_after_resource_restoration": true,
+          "file_limit_before": null,
+          "file_limit_during": null,
+          "file_limit_after": null,
+          "child_wait": null,
+          "passed": true
+        },
+        {
+          "case": "file-limit-partial",
+          "receipt_sha256": "abaa0e8e845c40a47953a91033a4d656cfbe7a5902de90ea331d1b44a1178db8",
+          "mount_cleanup_sha256": "04e67d7a71beee3e5c3fc41d6a253eddca44539884db9cc21e77075a76c156a2",
+          "controller_artifact_sha256": "d8cb48d4ab440aa431165c616ab97f079cf11d8db2a69c3d28bb40b0d691281a",
+          "attempts": 2,
+          "stored_bytes": 9521,
+          "capture_stage": "copy",
+          "capture_error": {
+            "class": "syscall",
+            "errno": 27
+          },
+          "acknowledged_bytes": 8193,
+          "fill": null,
+          "released_bytes": 0,
+          "filler_bytes_after_release": 0,
+          "source_bytes": 360448,
+          "originals": [
+            {
+              "name": "original-001.wire",
+              "raw_bytes": 1328,
+              "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+              "object": {
+                "device": 18446744071679573763,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 1328,
+                "modified_ns": 1792156275432664000
+              },
+              "mode": 256,
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "publication_confirmed": false
+            },
+            {
+              "name": "original-002.wire",
+              "raw_bytes": 8193,
+              "raw_sha256": "4024d420928ff45a21fc798732c27a0a5733382b0c0e9901acf876d09a9a0854",
+              "object": {
+                "device": 18446744071679573763,
+                "inode": 5,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 8193,
+                "modified_ns": 1792156275443212000
+              },
+              "mode": 256,
+              "complete": false,
+              "delivered": false,
+              "capture_failure": "capture-io",
+              "publication_confirmed": false
+            }
+          ],
+          "failed": true,
+          "permanent_denial_after_resource_restoration": true,
+          "file_limit_before": {
+            "Cur": 9223372036854775807,
+            "Max": 9223372036854775807
+          },
+          "file_limit_during": {
+            "Cur": 8193,
+            "Max": 9223372036854775807
+          },
+          "file_limit_after": {
+            "Cur": 9223372036854775807,
+            "Max": 9223372036854775807
+          },
+          "child_wait": {
+            "receipt_sha256": "b314aa466cf96f9e03a8c0c9b7b4cb09c9f301cf340dc6c2fbab7c6048a6afc3",
+            "raw_wait": 0,
+            "exit_code": 0,
+            "elapsed_ns": 1065074000,
+            "deadline": false,
+            "output_sha256": "529cdd4f8b2901f9d07adf4db545f0c62a14da44d17be3c7429d109dfe607910"
+          },
+          "passed": true
+        }
+      ],
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "resource_activation": false
+    },
+    {
+      "source_commit": "75622461d7238e151f2713885b8ddc070beac7d3",
+      "base_commit": "f36d4b0a2ca93c27a4197291f55f84934621af41",
+      "pr_title": "test(dashboards): retain captured prefixes after partial storage writes",
+      "release": "15.1",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessPartialStorage (36.10s)",
+      "raw_sha256": "eee6076730e8e041e293aa81a8c612889f89bdd0b56429489db026ec22b90772",
+      "archive_sha256": "16cd6912c1f22a17f8617b7b12a91b59c826c32ca3e47de8427dc35fe9d8cab1",
+      "result_sha256": "f28a47f58ec8e9f768740eb633ac603d8906c75df56698a013a9703f475cc07b",
+      "source_archive_sha256": "58223bdfad8676b0e35a8049b886bd1144fb876d206a8c1ef0425e57d2b55418",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "5abf183c69d83d54da22aa5bb8868767bf696f1f2d7a182cbb5bc00bfdaac6bf",
+        "helper": "3b8b8bc4b9f4e8587d2f84204c2c8aa2830ba92ca6c556b264b48ee29a31eb7d",
+        "fixture": "d8cb48d4ab440aa431165c616ab97f079cf11d8db2a69c3d28bb40b0d691281a"
+      },
+      "controller_sha256": "8169e755b9da0c9c199576458632a07f4c98009eb968a98813682c9b2468d723",
+      "worker_source_sha256": "1c67e9629f0f3060d66cddd288634c4cb159d1a1a960b1506ec55b3c5a525840",
+      "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+      "probe_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+      "cleanup_receipt_sha256": "3ba76261d2c0208a4468f6a47b28f069791c949029452a3242ee0daff9f6f3e6",
+      "cases": [
+        {
+          "case": "normal",
+          "receipt_sha256": "1868dd589d01ea0c3e6466d8957bb0271385edc377a85a7b6c6b2d8261ea2394",
+          "mount_cleanup_sha256": "04e67d7a71beee3e5c3fc41d6a253eddca44539884db9cc21e77075a76c156a2",
+          "controller_artifact_sha256": "d8cb48d4ab440aa431165c616ab97f079cf11d8db2a69c3d28bb40b0d691281a",
+          "attempts": 1,
+          "stored_bytes": 1328,
+          "capture_stage": "sealed",
+          "capture_error": {
+            "class": ""
+          },
+          "acknowledged_bytes": 1328,
+          "fill": null,
+          "released_bytes": 0,
+          "filler_bytes_after_release": 0,
+          "source_bytes": 0,
+          "originals": [
+            {
+              "name": "original-001.wire",
+              "raw_bytes": 1328,
+              "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+              "object": {
+                "device": 18446744071679573761,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 1328,
+                "modified_ns": 1792156147068841000
+              },
+              "mode": 256,
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "publication_confirmed": false
+            }
+          ],
+          "failed": false,
+          "permanent_denial_after_resource_restoration": false,
+          "file_limit_before": null,
+          "file_limit_during": null,
+          "file_limit_after": null,
+          "child_wait": null,
+          "passed": true
+        },
+        {
+          "case": "enospc-zero",
+          "receipt_sha256": "5b58a3503012f190f73914d16a9b2f37d105d4418eaab667f576b309a9b425d4",
+          "mount_cleanup_sha256": "04e67d7a71beee3e5c3fc41d6a253eddca44539884db9cc21e77075a76c156a2",
+          "controller_artifact_sha256": "d8cb48d4ab440aa431165c616ab97f079cf11d8db2a69c3d28bb40b0d691281a",
+          "attempts": 2,
+          "stored_bytes": 1328,
+          "capture_stage": "copy",
+          "capture_error": {
+            "class": "syscall",
+            "errno": 28
+          },
+          "acknowledged_bytes": 0,
+          "fill": {
+            "Bytes": 335540224,
+            "ReportedWriteBytes": 335540224,
+            "SHA256": "fd70f94c123262ca0cb5b9c4299d51b720367f52e16eec736eca540e87c17a5b",
+            "Object": {
+              "device": 18446744071679573762,
+              "inode": 5,
+              "uid": 0,
+              "gid": 0,
+              "links": 1,
+              "size": 335540224,
+              "modified_ns": 1792156147800445000
+            },
+            "ENOSPC": true,
+            "SmallProbeENOSPC": true,
+            "SpaceReleased": false
+          },
+          "released_bytes": 32768,
+          "filler_bytes_after_release": 335507456,
+          "source_bytes": 360448,
+          "originals": [
+            {
+              "name": "original-001.wire",
+              "raw_bytes": 1328,
+              "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+              "object": {
+                "device": 18446744071679573762,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 1328,
+                "modified_ns": 1792156147138006000
+              },
+              "mode": 256,
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "publication_confirmed": false
+            },
+            {
+              "name": "original-002.wire",
+              "raw_bytes": 0,
+              "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "object": {
+                "device": 18446744071679573762,
+                "inode": 6,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 0,
+                "modified_ns": 1792156166083193000
+              },
+              "mode": 256,
+              "complete": false,
+              "delivered": false,
+              "capture_failure": "capture-io",
+              "publication_confirmed": false
+            }
+          ],
+          "failed": true,
+          "permanent_denial_after_resource_restoration": true,
+          "file_limit_before": null,
+          "file_limit_during": null,
+          "file_limit_after": null,
+          "child_wait": null,
+          "passed": true
+        },
+        {
+          "case": "file-limit-partial",
+          "receipt_sha256": "c41754f8f32b7cabb6d4fc431482005aef4de7086b2437ad59b7f5b05b4a9f6e",
+          "mount_cleanup_sha256": "04e67d7a71beee3e5c3fc41d6a253eddca44539884db9cc21e77075a76c156a2",
+          "controller_artifact_sha256": "d8cb48d4ab440aa431165c616ab97f079cf11d8db2a69c3d28bb40b0d691281a",
+          "attempts": 2,
+          "stored_bytes": 9521,
+          "capture_stage": "copy",
+          "capture_error": {
+            "class": "syscall",
+            "errno": 27
+          },
+          "acknowledged_bytes": 8193,
+          "fill": null,
+          "released_bytes": 0,
+          "filler_bytes_after_release": 0,
+          "source_bytes": 360448,
+          "originals": [
+            {
+              "name": "original-001.wire",
+              "raw_bytes": 1328,
+              "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+              "object": {
+                "device": 18446744071679573763,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 1328,
+                "modified_ns": 1792156167412055000
+              },
+              "mode": 256,
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "publication_confirmed": false
+            },
+            {
+              "name": "original-002.wire",
+              "raw_bytes": 8193,
+              "raw_sha256": "4024d420928ff45a21fc798732c27a0a5733382b0c0e9901acf876d09a9a0854",
+              "object": {
+                "device": 18446744071679573763,
+                "inode": 5,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 8193,
+                "modified_ns": 1792156167421137000
+              },
+              "mode": 256,
+              "complete": false,
+              "delivered": false,
+              "capture_failure": "capture-io",
+              "publication_confirmed": false
+            }
+          ],
+          "failed": true,
+          "permanent_denial_after_resource_restoration": true,
+          "file_limit_before": {
+            "Cur": 9223372036854775807,
+            "Max": 9223372036854775807
+          },
+          "file_limit_during": {
+            "Cur": 8193,
+            "Max": 9223372036854775807
+          },
+          "file_limit_after": {
+            "Cur": 9223372036854775807,
+            "Max": 9223372036854775807
+          },
+          "child_wait": {
+            "receipt_sha256": "5af808744ec1486c273ae3f749b15bf65da0f2bf7fe419c7a802372f5e379f64",
+            "raw_wait": 0,
+            "exit_code": 0,
+            "elapsed_ns": 1251211000,
+            "deadline": false,
+            "output_sha256": "1f3a48a82edc3d1dae4aaea355e7a11cf6907bf3cba34d1ee8b700d6c85a6df0"
+          },
+          "passed": true
+        }
+      ],
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "resource_activation": false
+    }
+  ],
+  "failed_predecessor": [
+    {
+      "source_commit": "dcb70e0374311386bbf0358151395c10b9b26983",
+      "base_commit": "f36d4b0a2ca93c27a4197291f55f84934621af41",
+      "pr_title": "test(dashboards): retain captured prefixes after partial storage writes",
+      "release": "15.1",
+      "native_test_exit": 1,
+      "duration_seconds": 27.76,
+      "raw_sha256": "f436b53ec686acc47d5b419ab208da0afa5ce867ebd4247425d606c2e2444abf",
+      "archive_sha256": "ec6306aa575f1955d5211d310ff7c169c9382ce3bc494270f132acba3baeb874",
+      "result_sha256": "7f2cbdda11097f448e31de559a566037b4b5a923611cf00e562561d0320e53e8",
+      "source_archive_sha256": "115d3f30d40d61b93c5beb63a5b12f0c08477cdad783978d3ce900ec3a4b9201",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "5abf183c69d83d54da22aa5bb8868767bf696f1f2d7a182cbb5bc00bfdaac6bf",
+        "helper": "3b8b8bc4b9f4e8587d2f84204c2c8aa2830ba92ca6c556b264b48ee29a31eb7d",
+        "fixture": "7e928116f4260be523c9c5d0aae86b03f328c955fed5b9f679b6352385aef041"
+      },
+      "controller_sha256": "8169e755b9da0c9c199576458632a07f4c98009eb968a98813682c9b2468d723",
+      "cases": [
+        {
+          "case": "normal",
+          "passed": true,
+          "receipt_sha256": "a9e9c1f0655fb3f860da3b4f199131e459a2e609f96949312a940aedfd6f0955",
+          "boundary": {
+            "stage": "sealed",
+            "acknowledged_bytes": 1328,
+            "error": {
+              "class": ""
+            }
+          },
+          "originals": [
+            {
+              "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+              "raw_bytes": 1328,
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "sealed_reference_retained": true
+            }
+          ],
+          "fill": null,
+          "released_bytes": 0
+        },
+        {
+          "case": "partial-enospc",
+          "passed": false,
+          "receipt_sha256": "50acfa8404117c04f1a28dd1fdbc0f58d9214d06e675ce3dd274944f9fb89e02",
+          "boundary": {
+            "stage": "copy",
+            "acknowledged_bytes": 0,
+            "error": {
+              "class": "syscall",
+              "errno": 28
+            }
+          },
+          "originals": [
+            {
+              "raw_sha256": "034ca81aedafc0b88b0463117b0e3a98ca6658e84180537630f3485e530a8954",
+              "raw_bytes": 1328,
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "sealed_reference_retained": true
+            },
+            {
+              "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "raw_bytes": 0,
+              "complete": false,
+              "delivered": false,
+              "capture_failure": "capture-io",
+              "sealed_reference_retained": true
+            }
+          ],
+          "fill": {
+            "Bytes": 335540224,
+            "ReportedWriteBytes": 335540224,
+            "SHA256": "fd70f94c123262ca0cb5b9c4299d51b720367f52e16eec736eca540e87c17a5b",
+            "Object": {
+              "device": 18446744071679573762,
+              "inode": 5,
+              "uid": 0,
+              "gid": 0,
+              "links": 1,
+              "size": 335540224,
+              "modified_ns": 1792155754241149000
+            },
+            "ENOSPC": true,
+            "SmallProbeENOSPC": true,
+            "SpaceReleased": false
+          },
+          "released_bytes": 32768
+        }
+      ],
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "14.5": "not started after 15.1 failure",
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    }
+  ],
+  "limitations": [
+    "Synthetic custody originals, not native producer lineage or manager publication.",
+    "ENOSPC zero-byte rejection and EFBIG positive partial write are separate actual OS observations.",
+    "Child-only file-size limit injection is not broker full-cap or capacity measurement.",
+    "Failed predecessor remains failed; 14.5 was not started for that source.",
+    "Remaining broker raw/archive/integrated admission, cancellation/recovery, cadence/overhead and full resource/activation gates remain open.",
+    "Historical browser/manual accessibility, hardware and release gates remain open.",
+    "Canonical resource instrumentation inactive; runtime storage writes denied."
+  ]
+}
