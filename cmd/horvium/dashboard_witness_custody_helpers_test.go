@@ -10,22 +10,24 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/gonz0w/horvium/internal/inventory"
 )
 
 type dashboardWitnessRef struct {
-	Name           string `json:"name"`
-	ID             string `json:"request_id"`
-	Mode           string `json:"mode"`
-	Management     string `json:"management_incarnation"`
-	Helper         string `json:"helper_incarnation"`
-	RawSHA256      string `json:"raw_sha256"`
-	RawBytes       int64  `json:"raw_bytes"`
-	CaptureFailure string `json:"capture_failure,omitempty"`
-	Complete       bool   `json:"candidate_complete"`
-	Delivered      bool   `json:"delivered"`
-	ForwardSHA256  string `json:"forward_sha256"`
+	Name           string                 `json:"name"`
+	ID             string                 `json:"request_id"`
+	Mode           string                 `json:"mode"`
+	Management     string                 `json:"management_incarnation"`
+	Helper         string                 `json:"helper_incarnation"`
+	RawSHA256      string                 `json:"raw_sha256"`
+	RawBytes       int64                  `json:"raw_bytes"`
+	CaptureFailure string                 `json:"capture_failure,omitempty"`
+	Complete       bool                   `json:"candidate_complete"`
+	Delivered      bool                   `json:"delivered"`
+	ForwardSHA256  string                 `json:"forward_sha256"`
+	Forward        *witnessForwardReceipt `json:"forward,omitempty"`
 }
 type witnessSealed struct {
 	ref  dashboardWitnessRef
@@ -231,14 +233,26 @@ func (s *dashboardWitnessStore) resolve(ref *dashboardWitnessRef) (*witnessSeale
 func (s *dashboardWitnessStore) forward(ref *dashboardWitnessRef, w io.Writer) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	start := time.Now()
 	v, e := s.resolve(ref)
 	if e != nil || s.failed || v.ref.Delivered {
 		s.failed = true
 		return errDashboardWitness
 	}
-	h := sha256.New()
-	n, e := io.CopyBuffer(io.MultiWriter(w, h), io.NewSectionReader(v.file, 0, v.ref.RawBytes), make([]byte, witnessFrameCap))
-	if e != nil || n != v.ref.RawBytes || fmt.Sprintf("%x", h.Sum(nil)) != v.ref.RawSHA256 || s.check(v) != nil {
+	sink := newWitnessForwardWriter(w)
+	stage, closed := "copy", false
+	defer func() {
+		v.ref.Forward = sink.receipt(stage, e, closed, start)
+		ref.Forward = v.ref.Forward
+	}()
+	n, e := io.CopyBuffer(sink, io.NewSectionReader(v.file, 0, v.ref.RawBytes), make([]byte, witnessFrameCap))
+	if e != nil {
+		s.failed = true
+		return errDashboardWitness
+	}
+	stage = "verify"
+	if n != v.ref.RawBytes || fmt.Sprintf("%x", sink.hash.Sum(nil)) != v.ref.RawSHA256 || s.check(v) != nil {
+		e = errDashboardWitness
 		s.failed = true
 		return errDashboardWitness
 	}
@@ -247,11 +261,14 @@ func (s *dashboardWitnessStore) forward(ref *dashboardWitnessRef, w io.Writer) e
 	// Plain buffers in portable tests model byte delivery only; native eligibility
 	// additionally requires the verified Unix endpoint and this actual half-close.
 	if endpoint, ok := w.(interface{ CloseWrite() error }); ok {
-		if endpoint.CloseWrite() != nil {
+		stage = "close-write"
+		if e = endpoint.CloseWrite(); e != nil {
 			s.failed = true
 			return errDashboardWitness
 		}
+		closed = true
 	}
+	stage = "delivered"
 	v.ref.Delivered = true
 	v.ref.ForwardSHA256 = v.ref.RawSHA256
 	ref.Delivered = true

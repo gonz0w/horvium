@@ -331,3 +331,5 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [Batched inactive witness qualification support](testing/dashboards/witness-qualification-batch.md).
 
 - [Broker attempt capacity and permanent admission denial](testing/dashboards/witness-broker-admission.md)
+
+- [Original forwarding diagnostics](testing/dashboards/witness-forward-diagnostics.md).
