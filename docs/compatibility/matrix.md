@@ -2243,3 +2243,8 @@ passed on both pinned releases at its exact reviewed source. Original records/fo
 bounded control snapshots and teardown are independently checked per run. The
 historical 14.5 failure remains unchanged and unexplained; broader native/resource/
 hardware/release acceptance and runtime writes remain pending/denied.
+
+[Broker overlap/drain controls](../testing/dashboards/witness-overlap-drain.md)
+exercise unrelated same-UID rejection while a real call is sealed, then separately
+normal in-flight owner drain. This is test-only source-bound evidence; delivery
+without metadata confirmation does not establish publication or resource acceptance.

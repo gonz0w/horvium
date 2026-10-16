@@ -335,3 +335,5 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [Original forwarding diagnostics](testing/dashboards/witness-forward-diagnostics.md).
 
 - [Projection attempt-capacity qualification](testing/dashboards/witness-projection-capacity.md).
+
+- [Broker overlap rejection and graceful drain](testing/dashboards/witness-overlap-drain.md).
