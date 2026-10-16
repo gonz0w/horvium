@@ -411,6 +411,7 @@ type witnessNativeOriginal struct {
 	Object witnessFileObject   `json:"object"`
 }
 type witnessNativeReceipt struct {
+	CaptureBoundary      *witnessCaptureBoundary          `json:"capture_boundary,omitempty"`
 	ForwardBoundary      *witnessForwardBoundary          `json:"forward_boundary,omitempty"`
 	ConnectorEOFChecks   int                              `json:"connector_eof_checks,omitempty"`
 	ConnectorEOFRejected int                              `json:"connector_eof_rejected,omitempty"`
@@ -751,7 +752,7 @@ func (o *witnessNativeObserver) receipt() witnessNativeReceipt {
 			o.failure = "observer-usage"
 		}
 	}
-	r := witnessNativeReceipt{ForwardBoundary: o.forwardBoundary, ConnectorEOFChecks: o.connectorEOFChecks, ConnectorEOFRejected: o.connectorEOFRejected, ConnectorBoundary: o.connectorBoundary, ObserverHigh: uint64(usage.Maxrss) * 1024, ObserverCPUNS: cpu, ConnectorStarted: o.connectorStarted, ConnectorActive: o.connectorActive, OK: true, Failed: o.failed || o.store.failed, Failure: o.failure, StoreFailed: o.store.failed, Denied: o.denied, ConnectorMaxRSS: o.connectorMax, ConnectorCPUNS: int64(o.connectorCPU), Connectors: o.connectors, Active: o.active}
+	r := witnessNativeReceipt{CaptureBoundary: o.store.captureBoundary, ForwardBoundary: o.forwardBoundary, ConnectorEOFChecks: o.connectorEOFChecks, ConnectorEOFRejected: o.connectorEOFRejected, ConnectorBoundary: o.connectorBoundary, ObserverHigh: uint64(usage.Maxrss) * 1024, ObserverCPUNS: cpu, ConnectorStarted: o.connectorStarted, ConnectorActive: o.connectorActive, OK: true, Failed: o.failed || o.store.failed, Failure: o.failure, StoreFailed: o.store.failed, Denied: o.denied, ConnectorMaxRSS: o.connectorMax, ConnectorCPUNS: int64(o.connectorCPU), Connectors: o.connectors, Active: o.active}
 	for _, ref := range o.store.refs {
 		v := o.store.sealed[ref.Name]
 		object, e := witnessObject(v.info)

@@ -40,19 +40,20 @@ func witnessRawUnchanged(before, after os.FileInfo) bool {
 }
 
 type dashboardWitnessStore struct {
-	mu        sync.Mutex
-	directory string
-	root      *os.Root
-	info      os.FileInfo
-	refs      []*dashboardWitnessRef
-	sealed    map[string]*witnessSealed
-	counts    map[string]int
-	keys      map[string]bool
-	namespace map[string]string
-	counter   map[string]uint64
-	bytes     int64
-	failed    bool
-	active    bool
+	captureBoundary *witnessCaptureBoundary
+	mu              sync.Mutex
+	directory       string
+	root            *os.Root
+	info            os.FileInfo
+	refs            []*dashboardWitnessRef
+	sealed          map[string]*witnessSealed
+	counts          map[string]int
+	keys            map[string]bool
+	namespace       map[string]string
+	counter         map[string]uint64
+	bytes           int64
+	failed          bool
+	active          bool
 }
 
 func newDashboardWitnessStore(dir string) (*dashboardWitnessStore, error) {
@@ -134,8 +135,17 @@ func (s *dashboardWitnessStore) capture(r io.Reader, id, mode, management, helpe
 		}
 		s.mu.Unlock()
 	}()
+	boundary := &witnessCaptureBoundary{ID: id, Management: management, Helper: helper, Stage: "open"}
+	var captureIO error
+	defer func() {
+		boundary.Error = witnessClassifyForwardError(captureIO)
+		s.mu.Lock()
+		s.captureBoundary = boundary
+		s.mu.Unlock()
+	}()
 	f, e := s.root.OpenFile(name, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
 	if e != nil {
+		captureIO = e
 		return nil, errDashboardWitness
 	}
 	writerClosed := false
@@ -146,7 +156,10 @@ func (s *dashboardWitnessStore) capture(r io.Reader, id, mode, management, helpe
 	}()
 	hash := sha256.New()
 	buffer := make([]byte, witnessFrameCap)
+	boundary.Stage = "copy"
 	n, e := io.CopyBuffer(io.MultiWriter(f, hash), io.LimitReader(r, remaining), buffer)
+	boundary.AcknowledgedBytes = n
+	captureIO = e
 	captureFailure := ""
 	if e != nil {
 		captureFailure = "capture-io"
@@ -159,19 +172,35 @@ func (s *dashboardWitnessStore) capture(r io.Reader, id, mode, management, helpe
 	}
 	// Retain and seal the bounded bytes already written even when capture fails.
 	// No delivery/publication may use this original; the candidate stays failed.
-	if s.location() != nil || f.Sync() != nil || f.Chmod(0400) != nil {
+	if s.location() != nil {
+		return nil, errDashboardWitness
+	}
+	if se := f.Sync(); se != nil {
+		boundary.Stage = "sync"
+		captureIO = se
+		return nil, errDashboardWitness
+	}
+	if me := f.Chmod(0400); me != nil {
+		boundary.Stage = "chmod"
+		captureIO = me
 		return nil, errDashboardWitness
 	}
 	info, e := f.Stat()
 	if e != nil {
+		boundary.Stage = "stat"
+		captureIO = e
 		return nil, errDashboardWitness
 	}
-	if f.Close() != nil {
+	if ce := f.Close(); ce != nil {
+		boundary.Stage = "close"
+		captureIO = ce
 		return nil, errDashboardWitness
 	}
 	writerClosed = true
 	read, e := s.root.Open(name)
 	if e != nil {
+		boundary.Stage = "reopen"
+		captureIO = e
 		return nil, errDashboardWitness
 	}
 	ref := dashboardWitnessRef{Name: name, ID: id, Mode: mode, Management: management, Helper: helper, RawSHA256: fmt.Sprintf("%x", hash.Sum(nil)), RawBytes: n, CaptureFailure: captureFailure}
@@ -198,6 +227,7 @@ func (s *dashboardWitnessStore) capture(r io.Reader, id, mode, management, helpe
 	if captureFailure != "" {
 		return &outRef, witnessFailure(captureFailure)
 	}
+	boundary.Stage = "sealed"
 	return &outRef, nil
 }
 func (s *dashboardWitnessStore) check(v *witnessSealed) error {

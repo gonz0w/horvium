@@ -337,3 +337,5 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [Projection attempt-capacity qualification](testing/dashboards/witness-projection-capacity.md).
 
 - [Broker overlap rejection and graceful drain](testing/dashboards/witness-overlap-drain.md).
+
+- [Broker failure on an exhausted witness mount](testing/dashboards/witness-broker-enospc.md).
