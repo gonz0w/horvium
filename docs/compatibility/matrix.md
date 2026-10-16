@@ -2278,3 +2278,9 @@ deadline even when context cancellation has not yet become visible. Late replies
 cannot publish; on-time protocol errors remain distinct. See the
 [expiry investigation and correction](../testing/dashboards/witness-expiry-shutdown.md).
 Fresh both-release native evidence remains required; older failures are preserved.
+
+The [expiry/shutdown manifest](../testing/dashboards/witness-expiry-shutdown-manifest.json)
+records six passing native controls per pinned release, retaining actual orderly
+manager waits, original 45-second expiry, complete but undelivered adverse originals,
+and original timeout/unavailable status bytes. Normal publications stay separate.
+Guest/host teardown passed; no broader runtime/resource/support gate closes.
