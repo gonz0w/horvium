@@ -49,3 +49,38 @@ whole admission ordering, actual deadline expiry and remaining cancellation/
 recovery, cadence/calibration/overhead, full resource/idle/latency, browser/manual,
 hardware and release acceptance remain separate. Historical failed/skipped evidence
 is unchanged. Canonical resource runner stays inactive; runtime writes stay denied.
+
+## Candidate evidence
+
+Reviewed source `3a03ecd626a5b2eb64ea5a10fbfe127d21f5007c` passed all four focused controls
+on each pinned FreeBSD/amd64 release. The [immutable manifest](witness-broker-enospc-manifest.json)
+binds source/base/title, actual review, compiler/artifacts/native ABI probe, exact
+command/controller, reopened originals, before/after preflight and teardown.
+
+| FreeBSD | Four-case native duration | Normal delivered originals | Normal publications | Actual broker ENOSPC cases |
+| --- | --- | --- | --- | --- |
+| 15.1 | 380.31s | 2 | 2 | 2 |
+| 14.5 | 380.62s | 2 | 2 | 2 |
+
+Both normal modes retained complete delivered originals and sealed sidecars, with
+two observed exact-ID publications per release. Every exported normal original was
+independently reopened for framing, echoed IDs, exact forward hash/EOF, object,
+mode and actor binding; each projection source has 10,000 dataset records.
+
+All four physical cases reached real full-mount and new one-byte allocation ENOSPC,
+then retained the actual broker capture error class/errno and original request/actor
+binding. None became a complete/delivered original or publication. Any exported
+zero-byte/incomplete object remains failure evidence with its actual indexed or
+unindexed disposition; an open failure does not invent a captured original.
+After filler removal, fresh allocation succeeded on the same mount, but the failed
+broker still denied a real followup collection without a second connector or a
+changed original/diagnostic census. The actual failure operation and any exported
+prefix size are recorded per case rather than inferred from the storage setup.
+
+Guest original filler readback/hash and later space reclamation are distinct from
+host readback of exported producer originals. Actual helper/socket, both config
+bytes/token digest and pinned runtime were preserved; guest and host cleanup passed.
+All 171 historical manifests and seven existing operator files remain unchanged.
+Portable capture-diagnostic regression failed before correction and passed afterward.
+Capture admission, byte limits and runtime behavior are unchanged; diagnostics are
+test-only and grant no authority. All broader gates listed above remain open.

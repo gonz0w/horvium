@@ -2260,3 +2260,9 @@ retain actual bounded capture I/O diagnostics and separately test normal capture
 publication and an exhausted full-size witness mount with the original manager/
 helper. Qualification remains source-specific; runtime writes and resource runner
 activation remain denied/inactive, with broader acceptance gates open.
+
+The [broker ENOSPC manifest](../testing/dashboards/witness-broker-enospc-manifest.json)
+records normal native-small/projection capture/publication and full-size physical
+exhaustion passing on both pinned releases. Actual capture errno and permanent
+denial after space reclamation are preserved separately from normal originals.
+Guest/host teardown passed; no runtime/resource or hardware support gate closes.
