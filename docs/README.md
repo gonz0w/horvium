@@ -339,3 +339,5 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [Broker overlap rejection and graceful drain](testing/dashboards/witness-overlap-drain.md).
 
 - [Broker failure on an exhausted witness mount](testing/dashboards/witness-broker-enospc.md).
+
+- [Original collection expiry and orderly manager shutdown](testing/dashboards/witness-expiry-shutdown.md).

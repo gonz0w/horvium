@@ -2266,3 +2266,9 @@ records normal native-small/projection capture/publication and full-size physica
 exhaustion passing on both pinned releases. Actual capture errno and permanent
 denial after space reclamation are preserved separately from normal originals.
 Guest/host teardown passed; no runtime/resource or hardware support gate closes.
+
+[Native expiry/shutdown controls](../testing/dashboards/witness-expiry-shutdown.md)
+use the actual original connection window and separately observe orderly manager
+exit and collection deadline failure. They are inactive test-only qualification;
+complete capture still grants no delivery/publication authority. Broader native,
+resource, browser, hardware and release gates remain open.
