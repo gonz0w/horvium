@@ -1,0 +1,576 @@
+{
+  "schema": 1,
+  "date": "2026-10-15",
+  "scope": "inactive-broker-overlap-and-graceful-drain-only",
+  "requirements": [
+    "DASH-WIT-003",
+    "DASH-WIT-007",
+    "DASH-WIT-NATIVE-005"
+  ],
+  "source_commit": "abacef732f249ab1edc3b64fd10ffe0186a32af1",
+  "base_commit": "7c1a9a12afa5d0d6ab8040196fdba0be1235b175",
+  "pr_title": "test(dashboards): qualify active broker overlap and graceful drain",
+  "native_acceptance": false,
+  "resource_acceptance": false,
+  "resource_activation": false,
+  "historical_manifests_preserved": 170,
+  "portable_review": {
+    "source_commit": "abacef732f249ab1edc3b64fd10ffe0186a32af1",
+    "result_sha256": "11e72798cb46f6377f464880c78835c561d68055a5fc56e98a084e2e7480add8",
+    "qualified": true,
+    "checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "deep": "executed affected cmd race and all compiler-listed portable fuzz targets",
+    "freebsd_test_cross_build": "passed"
+  },
+  "independent_readback_sha256": "ef6a24d99b83894a8481f906b1be223df7968948ee6e21cb7dc81c2bdb2b66e4",
+  "runs": [
+    {
+      "source_commit": "abacef732f249ab1edc3b64fd10ffe0186a32af1",
+      "base_commit": "7c1a9a12afa5d0d6ab8040196fdba0be1235b175",
+      "pr_title": "test(dashboards): qualify active broker overlap and graceful drain",
+      "release": "14.5",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessOverlapAndDrain (209.98s)",
+      "raw_sha256": "726c6e243963a0e4b236bbc122b2c8a6ca9e463e2b3cf8c334695e0cf44c3176",
+      "archive_sha256": "cbc93a2e8ed11925e2a128f76df2f900b2691705041a8da7ce79bb44b6cdfef7",
+      "result_sha256": "aca7c2861e5385a75faec40ae16cdc18540a833e7c885e30b3b30f329290baca",
+      "source_archive_sha256": "d907c2d9db6a03dc5552fd3a93bb814de0e7b6e2e00f894a05144968901d7f14",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "3575890965a2ea73379930e8d9f512971e4b6a3067759a0498734c239fe4605e"
+      },
+      "controller_sha256": "05d47f48683100bf2b3aadcbfe5cc90b08ae1741b69755a9d3db52be26895da6",
+      "worker_source_sha256": "9e604385ca82bf262def732280b3d9cd928375c4e4f74dd81a265210775384a8",
+      "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+      "probe_sha256": "a0e24744dd648299f09eb37fe808a599cc57bbb721323097bbfdbd550abae299",
+      "cases": [
+        {
+          "case": "overlap-native-small",
+          "receipt_sha256": "1e2543bdcc1809b5584582a1383f88c765836760902a7e5b4bd857e1c20b8280",
+          "originals": [
+            {
+              "raw_sha256": "490ce6afc9d4ba02b3744bd682e562a589e2e0f107ba2712b2ff4b90bb96358f",
+              "raw_bytes": 16469,
+              "frames": 76,
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true,
+              "forward": {
+                "stage": "delivered",
+                "bytes": 16469,
+                "sha256": "490ce6afc9d4ba02b3744bd682e562a589e2e0f107ba2712b2ff4b90bb96358f",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 26578000
+              }
+            }
+          ],
+          "indexes": 1,
+          "boundary": {
+            "StartedNS": 1792116126843515428,
+            "DeadlineNS": 1792116171843515428,
+            "CapturedElapsedNS": 13530786000,
+            "ForwardStartedElapsedNS": 15145165000,
+            "FinishedElapsedNS": 15171990000,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "delivered",
+              "bytes": 16469,
+              "sha256": "490ce6afc9d4ba02b3744bd682e562a589e2e0f107ba2712b2ff4b90bb96358f",
+              "error": {
+                "class": ""
+              },
+              "write_half_closed": true,
+              "elapsed_ns": 26578000
+            },
+            "ID_sha256": "200ca72aaf60e1e7dc406611ec86c83f24027876a7bdae2c8dea2ccd5c533dfd",
+            "Management_sha256": "100adf42598c3bfb8fe84aab241ab726e4893d5e7d4cfb46a459eb753c51b21e",
+            "Helper_sha256": "8de3bc97b5713c0f4ac42b946ba7022116fa76a81791824b046fe8853cbf4ff3"
+          },
+          "overlap_peers": 2,
+          "overlap_rejections": 2,
+          "before_originals": 1,
+          "after_originals": 1,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "listener_closed_before_release": false,
+          "closure_probes": 0,
+          "final_denied": 2,
+          "publication_confirmed": true
+        },
+        {
+          "case": "overlap-projection-10000",
+          "receipt_sha256": "21872ffaa69ac7a3055cba56b8a9f69237fb5abdad7b1b4b45cbc7362b6e453e",
+          "originals": [
+            {
+              "raw_sha256": "34068838a1563d5c6c148abf2a10ed2ad534b8c08e83e1e58c5cd9c619d8c466",
+              "raw_bytes": 2142984,
+              "frames": 10074,
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true,
+              "forward": {
+                "stage": "delivered",
+                "bytes": 2142984,
+                "sha256": "34068838a1563d5c6c148abf2a10ed2ad534b8c08e83e1e58c5cd9c619d8c466",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 3496919000
+              }
+            }
+          ],
+          "indexes": 1,
+          "boundary": {
+            "StartedNS": 1792116170953096427,
+            "DeadlineNS": 1792116215953096427,
+            "CapturedElapsedNS": 20486928000,
+            "ForwardStartedElapsedNS": 22172786000,
+            "FinishedElapsedNS": 25669967000,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "delivered",
+              "bytes": 2142984,
+              "sha256": "34068838a1563d5c6c148abf2a10ed2ad534b8c08e83e1e58c5cd9c619d8c466",
+              "error": {
+                "class": ""
+              },
+              "write_half_closed": true,
+              "elapsed_ns": 3496919000
+            },
+            "ID_sha256": "653941c9c6eef93b20a13387bab75da7f0de4ff8836066e9185288fe77809adf",
+            "Management_sha256": "3e56574fe823ea8320431e79f17b1f6597417c54487f5383b0f9aa0da4390b81",
+            "Helper_sha256": "1082a195fed0fb77a5ce1c2a019cda9d3aca3410425d8062bcf1781a0ef1c334"
+          },
+          "overlap_peers": 2,
+          "overlap_rejections": 2,
+          "before_originals": 1,
+          "after_originals": 1,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "listener_closed_before_release": false,
+          "closure_probes": 0,
+          "final_denied": 2,
+          "publication_confirmed": true
+        },
+        {
+          "case": "drain-native-small",
+          "receipt_sha256": "a6f10961f3cfd335efb29879fa670ebeab009d088629864c730658cdffe6e692",
+          "originals": [
+            {
+              "raw_sha256": "f5dca5cbd5876694057e82bd1dba2ea3cf7ee38b8cfbfab0b048a84984317bb7",
+              "raw_bytes": 16469,
+              "frames": 76,
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": false,
+              "forward": {
+                "stage": "delivered",
+                "bytes": 16469,
+                "sha256": "f5dca5cbd5876694057e82bd1dba2ea3cf7ee38b8cfbfab0b048a84984317bb7",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 38240000
+              }
+            }
+          ],
+          "indexes": 1,
+          "boundary": {
+            "StartedNS": 1792116222637585427,
+            "DeadlineNS": 1792116267637585427,
+            "CapturedElapsedNS": 11773730000,
+            "ForwardStartedElapsedNS": 13206632000,
+            "FinishedElapsedNS": 13245174000,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "delivered",
+              "bytes": 16469,
+              "sha256": "f5dca5cbd5876694057e82bd1dba2ea3cf7ee38b8cfbfab0b048a84984317bb7",
+              "error": {
+                "class": ""
+              },
+              "write_half_closed": true,
+              "elapsed_ns": 38240000
+            },
+            "ID_sha256": "d085da6eb37964001bcb3a065cbf50efe7c399c72780974cef37e661705ec377",
+            "Management_sha256": "a4de9d4ca4c6ac12883def29b76420f566dbea1495b37354fd0c967f5513d48e",
+            "Helper_sha256": "27be24b1bbec718c8496dda62faef3aba2e5c24f83cf64b2c58bb6242e27ceab"
+          },
+          "overlap_peers": 2,
+          "overlap_rejections": 2,
+          "before_originals": 1,
+          "after_originals": 1,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "listener_closed_before_release": true,
+          "closure_probes": 2,
+          "final_denied": 3,
+          "publication_confirmed": false
+        },
+        {
+          "case": "drain-projection-10000",
+          "receipt_sha256": "9e34517adec98cb8216cbf1e299228c3902f309ce069c2a03361b39a9ab7bd4e",
+          "originals": [
+            {
+              "raw_sha256": "6e00dd29b971ae0e4cad5549d141da440901d9b9eaff157877f92af5ae4a2ec8",
+              "raw_bytes": 2142984,
+              "frames": 10074,
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": false,
+              "forward": {
+                "stage": "delivered",
+                "bytes": 2142984,
+                "sha256": "6e00dd29b971ae0e4cad5549d141da440901d9b9eaff157877f92af5ae4a2ec8",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 2971615000
+              }
+            }
+          ],
+          "indexes": 1,
+          "boundary": {
+            "StartedNS": 1792116263647094427,
+            "DeadlineNS": 1792116308647094427,
+            "CapturedElapsedNS": 16754219000,
+            "ForwardStartedElapsedNS": 18608636000,
+            "FinishedElapsedNS": 21580450000,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "delivered",
+              "bytes": 2142984,
+              "sha256": "6e00dd29b971ae0e4cad5549d141da440901d9b9eaff157877f92af5ae4a2ec8",
+              "error": {
+                "class": ""
+              },
+              "write_half_closed": true,
+              "elapsed_ns": 2971615000
+            },
+            "ID_sha256": "018903c368027fed6c074509132c5532e245fd640ab92a0ad4fcbd07e6d6a0eb",
+            "Management_sha256": "c5b029d7715f62c7ec534835398d98896b7815ea8027d61092c8a2805afa3ea7",
+            "Helper_sha256": "1e4de55fce73e96d4b0b0a1924774e431f33d2ee4ba404cd3de64623112f2b4c"
+          },
+          "overlap_peers": 2,
+          "overlap_rejections": 2,
+          "before_originals": 1,
+          "after_originals": 1,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "listener_closed_before_release": true,
+          "closure_probes": 2,
+          "final_denied": 2,
+          "publication_confirmed": false
+        }
+      ],
+      "failure_diagnostics": [],
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "resource_activation": false
+    },
+    {
+      "source_commit": "abacef732f249ab1edc3b64fd10ffe0186a32af1",
+      "base_commit": "7c1a9a12afa5d0d6ab8040196fdba0be1235b175",
+      "pr_title": "test(dashboards): qualify active broker overlap and graceful drain",
+      "release": "15.1",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessOverlapAndDrain (193.48s)",
+      "raw_sha256": "b5360b07f66d5d5b7fe44d8eb8be5706a32a91ee4bc635910d4df0b936ce6e2b",
+      "archive_sha256": "20f6b9cec4eac0c03f27022ee8271af26ef56ae52d205f4979029e9391aa7567",
+      "result_sha256": "88d8079682e5e93fd5dc3e5211fa9df256005ff021be9f7f11f8e328d6fe8974",
+      "source_archive_sha256": "d907c2d9db6a03dc5552fd3a93bb814de0e7b6e2e00f894a05144968901d7f14",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+        "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+        "fixture": "3575890965a2ea73379930e8d9f512971e4b6a3067759a0498734c239fe4605e"
+      },
+      "controller_sha256": "05d47f48683100bf2b3aadcbfe5cc90b08ae1741b69755a9d3db52be26895da6",
+      "worker_source_sha256": "9e604385ca82bf262def732280b3d9cd928375c4e4f74dd81a265210775384a8",
+      "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+      "probe_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+      "cases": [
+        {
+          "case": "overlap-native-small",
+          "receipt_sha256": "6d1ac4bebe5aa1ebc9624cb56729bdcce104a955d8c1cda2e13eb75ed364b630",
+          "originals": [
+            {
+              "raw_sha256": "9503ed3e3f60485f6dfa359ec8aff760f84e49fd25b9f3c03ccc3d415685104c",
+              "raw_bytes": 18782,
+              "frames": 86,
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true,
+              "forward": {
+                "stage": "delivered",
+                "bytes": 18782,
+                "sha256": "9503ed3e3f60485f6dfa359ec8aff760f84e49fd25b9f3c03ccc3d415685104c",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 11282000
+              }
+            }
+          ],
+          "indexes": 1,
+          "boundary": {
+            "StartedNS": 1792116462204884999,
+            "DeadlineNS": 1792116507204884999,
+            "CapturedElapsedNS": 11964174000,
+            "ForwardStartedElapsedNS": 13357350000,
+            "FinishedElapsedNS": 13368819000,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "delivered",
+              "bytes": 18782,
+              "sha256": "9503ed3e3f60485f6dfa359ec8aff760f84e49fd25b9f3c03ccc3d415685104c",
+              "error": {
+                "class": ""
+              },
+              "write_half_closed": true,
+              "elapsed_ns": 11282000
+            },
+            "ID_sha256": "fd0e879a1b5f99aa214e769acd745a248ab9fdd305df5b10e9b29f5a0de9f44c",
+            "Management_sha256": "06bf990ea1ac4faa55c862e1526e0e9b0de0ac0977f14605a28c2a6ba373c0a0",
+            "Helper_sha256": "4562c42988535c039afdca7f043d1b57c37018ce62915fab4b92cc6375cdf12a"
+          },
+          "overlap_peers": 2,
+          "overlap_rejections": 2,
+          "before_originals": 1,
+          "after_originals": 1,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "listener_closed_before_release": false,
+          "closure_probes": 0,
+          "final_denied": 2,
+          "publication_confirmed": true
+        },
+        {
+          "case": "overlap-projection-10000",
+          "receipt_sha256": "23c287cd3d31617e0260dc31526652796264ba9685a9df514b1e6f6b266d0748",
+          "originals": [
+            {
+              "raw_sha256": "9ef1bd4344d60a93588abe3de2b662e794a1ff96cba82559efd20d068369b0a8",
+              "raw_bytes": 2141961,
+              "frames": 10069,
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true,
+              "forward": {
+                "stage": "delivered",
+                "bytes": 2141961,
+                "sha256": "9ef1bd4344d60a93588abe3de2b662e794a1ff96cba82559efd20d068369b0a8",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 3052573000
+              }
+            }
+          ],
+          "indexes": 1,
+          "boundary": {
+            "StartedNS": 1792116503309071999,
+            "DeadlineNS": 1792116548309071999,
+            "CapturedElapsedNS": 15939567999,
+            "ForwardStartedElapsedNS": 17475579000,
+            "FinishedElapsedNS": 20528381999,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "delivered",
+              "bytes": 2141961,
+              "sha256": "9ef1bd4344d60a93588abe3de2b662e794a1ff96cba82559efd20d068369b0a8",
+              "error": {
+                "class": ""
+              },
+              "write_half_closed": true,
+              "elapsed_ns": 3052573000
+            },
+            "ID_sha256": "d06e01db60ae36e3ad0a4a0c1f102c44913d9f4d4fa36c83f504c76a21979e08",
+            "Management_sha256": "9fe0865f3fa5313d7e6f9ec51b65316e91c394c584f02bc8ec8fe67c7edf9a9f",
+            "Helper_sha256": "33b46f549539ac2a3861027972f22f287fa566a0c0e7930c8475d558a0c8e83e"
+          },
+          "overlap_peers": 2,
+          "overlap_rejections": 2,
+          "before_originals": 1,
+          "after_originals": 1,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "listener_closed_before_release": false,
+          "closure_probes": 0,
+          "final_denied": 2,
+          "publication_confirmed": true
+        },
+        {
+          "case": "drain-native-small",
+          "receipt_sha256": "9bfab1561066acc26801a3e52eafed95e30c99ebea8ea518d5542e816f081981",
+          "originals": [
+            {
+              "raw_sha256": "7c499ffed594cd191b809b8a95a7221eb10cf1c268bde2a047e229c4a6942bb8",
+              "raw_bytes": 18782,
+              "frames": 86,
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": false,
+              "forward": {
+                "stage": "delivered",
+                "bytes": 18782,
+                "sha256": "7c499ffed594cd191b809b8a95a7221eb10cf1c268bde2a047e229c4a6942bb8",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 7654000
+              }
+            }
+          ],
+          "indexes": 1,
+          "boundary": {
+            "StartedNS": 1792116549817330999,
+            "DeadlineNS": 1792116594817330999,
+            "CapturedElapsedNS": 11155210000,
+            "ForwardStartedElapsedNS": 12644521000,
+            "FinishedElapsedNS": 12652384000,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "delivered",
+              "bytes": 18782,
+              "sha256": "7c499ffed594cd191b809b8a95a7221eb10cf1c268bde2a047e229c4a6942bb8",
+              "error": {
+                "class": ""
+              },
+              "write_half_closed": true,
+              "elapsed_ns": 7654000
+            },
+            "ID_sha256": "667459292b8f3f92b501b77a2600fcfc94e108ffc8c6548c9984798288a0b8d8",
+            "Management_sha256": "8c2ca872c3dae38a58ffb5af234fd3052482ae80eb7e4ecbf78f3ca153dbe4a9",
+            "Helper_sha256": "ccfcdb1059a821c88342df995f4c036c55b775be372ea0f0505b52dec8ba8c5e"
+          },
+          "overlap_peers": 2,
+          "overlap_rejections": 2,
+          "before_originals": 1,
+          "after_originals": 1,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "listener_closed_before_release": true,
+          "closure_probes": 2,
+          "final_denied": 2,
+          "publication_confirmed": false
+        },
+        {
+          "case": "drain-projection-10000",
+          "receipt_sha256": "9e3583e48a7ba66820030896d2683e5cd295ad88c9397945db6f8a28081362e8",
+          "originals": [
+            {
+              "raw_sha256": "e1f9f8a78907910039847e0a595a12a54e407643b43ea586a7e14ecd2c2c866d",
+              "raw_bytes": 2141961,
+              "frames": 10069,
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": false,
+              "forward": {
+                "stage": "delivered",
+                "bytes": 2141961,
+                "sha256": "e1f9f8a78907910039847e0a595a12a54e407643b43ea586a7e14ecd2c2c866d",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 2881480000
+              }
+            }
+          ],
+          "indexes": 1,
+          "boundary": {
+            "StartedNS": 1792116589886866998,
+            "DeadlineNS": 1792116634886866998,
+            "CapturedElapsedNS": 15236544000,
+            "ForwardStartedElapsedNS": 16817288000,
+            "FinishedElapsedNS": 19698959000,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "delivered",
+              "bytes": 2141961,
+              "sha256": "e1f9f8a78907910039847e0a595a12a54e407643b43ea586a7e14ecd2c2c866d",
+              "error": {
+                "class": ""
+              },
+              "write_half_closed": true,
+              "elapsed_ns": 2881480000
+            },
+            "ID_sha256": "4a2899e46d5bbc6697e1aadb07d4d3e1a9c895686ccd2a54e3ca8f45ee584307",
+            "Management_sha256": "70c5bb3377ae2bea2b76e01379f4af5a088bac4be285d1b02e074a075748c067",
+            "Helper_sha256": "4d0943181cca2a4521e75db097bd144b468ea37372b57ad17cfa7c300222277e"
+          },
+          "overlap_peers": 2,
+          "overlap_rejections": 2,
+          "before_originals": 1,
+          "after_originals": 1,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true,
+          "listener_closed_before_release": true,
+          "closure_probes": 2,
+          "final_denied": 3,
+          "publication_confirmed": false
+        }
+      ],
+      "failure_diagnostics": [],
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "resource_activation": false
+    }
+  ],
+  "limitations": [
+    "Overlapping peers are actual unrelated same-UID processes, not simultaneous authenticated original-manager requests.",
+    "Normal drain is tested only at the sealed-original boundary; delivered drain sources have no publication confirmation.",
+    "Connection probes observe closure without inventory work; successful probe admissions can increase final denial counts separately.",
+    "Full broker raw/archive/physical exhaustion, whole admission ordering, collection expiry and remaining recovery/cancellation remain open.",
+    "Cadence/calibration/overhead, full resources/idle/latency, browser/manual accessibility, hardware and release acceptance remain open.",
+    "Historical failed/skipped candidates remain unchanged; all original limits, deadlines, counts and budgets remain unchanged.",
+    "Canonical resource runner remains inactive; runtime writes remain denied."
+  ]
+}

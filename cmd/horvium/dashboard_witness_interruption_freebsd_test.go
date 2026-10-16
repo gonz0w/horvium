@@ -87,7 +87,7 @@ func witnessOpenFaultGate(cfg witnessNativeConfig, ctx context.Context) (*witnes
 }
 
 func witnessFaultLabelValid(label string) bool {
-	if label == "forward-manager-exit" {
+	if label == "forward-manager-exit" || label == "overlap-native-small" || label == "overlap-projection-10000" || label == "drain-native-small" || label == "drain-projection-10000" {
 		return true
 	}
 	if strings.HasPrefix(label, "controller-") {
