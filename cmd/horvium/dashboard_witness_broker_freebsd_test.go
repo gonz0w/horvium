@@ -643,7 +643,7 @@ func (o *witnessNativeObserver) connection(c *net.UnixConn) {
 		fail()
 		return
 	}
-	if o.fault.reach("sealed", id) != nil {
+	if o.fault.reachSealed(id, started, deadline) != nil {
 		stage = "interruption-sealed"
 		fail()
 		return

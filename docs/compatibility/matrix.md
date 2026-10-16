@@ -2266,3 +2266,21 @@ records normal native-small/projection capture/publication and full-size physica
 exhaustion passing on both pinned releases. Actual capture errno and permanent
 denial after space reclamation are preserved separately from normal originals.
 Guest/host teardown passed; no runtime/resource or hardware support gate closes.
+
+[Native expiry/shutdown controls](../testing/dashboards/witness-expiry-shutdown.md)
+use the actual original connection window and separately observe orderly manager
+exit and collection deadline failure. They are inactive test-only qualification;
+complete capture still grants no delivery/publication authority. Broader native,
+resource, browser, hardware and release gates remain open.
+
+The helper reply completion path enforces its original absolute collection
+deadline even when context cancellation has not yet become visible. Late replies
+cannot publish; on-time protocol errors remain distinct. See the
+[expiry investigation and correction](../testing/dashboards/witness-expiry-shutdown.md).
+Fresh both-release native evidence remains required; older failures are preserved.
+
+The [expiry/shutdown manifest](../testing/dashboards/witness-expiry-shutdown-manifest.json)
+records six passing native controls per pinned release, retaining actual orderly
+manager waits, original 45-second expiry, complete but undelivered adverse originals,
+and original timeout/unavailable status bytes. Normal publications stay separate.
+Guest/host teardown passed; no broader runtime/resource/support gate closes.

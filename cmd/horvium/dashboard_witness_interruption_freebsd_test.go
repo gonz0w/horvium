@@ -20,11 +20,12 @@ import (
 )
 
 type witnessNativeFaultGate struct {
-	stage   string
-	channel *net.UnixConn
-	ctx     context.Context
-	once    sync.Once
-	err     error
+	startedNS, deadlineNS int64
+	stage                 string
+	channel               *net.UnixConn
+	ctx                   context.Context
+	once                  sync.Once
+	err                   error
 }
 
 func witnessFaultStageValid(stage string) bool {
@@ -32,8 +33,19 @@ func witnessFaultStageValid(stage string) bool {
 }
 
 type witnessFaultEvent struct {
-	Stage, ID string
-	Connector *witnessActor `json:",omitempty"`
+	StartedNS, DeadlineNS int64 `json:",omitempty"`
+	Stage, ID             string
+	Connector             *witnessActor `json:",omitempty"`
+}
+
+// Only the sealed negative control carries the original connection window.
+// Normal/timed paths have no fault gate and acquire no new metadata operation.
+func (g *witnessNativeFaultGate) reachSealed(id string, started, deadline time.Time) error {
+	if g == nil || g.stage != "sealed" {
+		return nil
+	}
+	g.startedNS, g.deadlineNS = started.UnixNano(), deadline.UnixNano()
+	return g.reach("sealed", id)
 }
 
 func (g *witnessNativeFaultGate) reach(stage, id string) error { return g.reachActor(stage, id, nil) }
@@ -43,7 +55,7 @@ func (g *witnessNativeFaultGate) reachActor(stage, id string, actor *witnessActo
 	}
 	g.once.Do(func() {
 		_ = g.channel.SetDeadline(time.Now().Add(45 * time.Second))
-		if witnessControlWrite(g.channel, witnessFaultEvent{Stage: stage, ID: id, Connector: actor}) != nil {
+		if witnessControlWrite(g.channel, witnessFaultEvent{Stage: stage, ID: id, Connector: actor, StartedNS: g.startedNS, DeadlineNS: g.deadlineNS}) != nil {
 			g.err = errDashboardWitness
 			return
 		}
@@ -87,7 +99,7 @@ func witnessOpenFaultGate(cfg witnessNativeConfig, ctx context.Context) (*witnes
 }
 
 func witnessFaultLabelValid(label string) bool {
-	if label == "forward-manager-exit" || label == "overlap-native-small" || label == "overlap-projection-10000" || label == "drain-native-small" || label == "drain-projection-10000" {
+	if label == "expiry-native-small" || label == "expiry-projection-10000" || label == "shutdown-native-small" || label == "shutdown-projection-10000" || label == "forward-manager-exit" || label == "overlap-native-small" || label == "overlap-projection-10000" || label == "drain-native-small" || label == "drain-projection-10000" {
 		return true
 	}
 	if strings.HasPrefix(label, "controller-") {

@@ -251,9 +251,5 @@ func (c *Client) Collect(parent context.Context, id string) (inventory.Snapshot,
 	if err := u.CloseWrite(); err != nil {
 		return inventory.Snapshot{}, ErrProtocol
 	}
-	s, err := readSnapshot(u, id, c.config.Limits)
-	if ctx.Err() != nil {
-		return inventory.Snapshot{}, ctx.Err()
-	}
-	return s, err
+	return readCollection(ctx, u, id, c.config.Limits)
 }

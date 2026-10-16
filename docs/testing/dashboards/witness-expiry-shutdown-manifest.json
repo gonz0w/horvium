@@ -1,0 +1,2117 @@
+{
+  "schema": 1,
+  "date": "2026-10-15",
+  "scope": "helper-reply-deadline-correction-with-inactive-native-controls",
+  "runtime_reply_deadline_correction": true,
+  "runtime_write_authority": false,
+  "requirements": [
+    "DASH-WIT-003",
+    "DASH-WIT-004",
+    "DASH-WIT-NATIVE-005",
+    "M1-REQ-002",
+    "M1-REQ-006",
+    "M1-FAIL-001",
+    "M1-SCALE-001"
+  ],
+  "source_commit": "59bdb60828ef83ba9f91cdbd16821472e5b0bc87",
+  "base_commit": "ae8d8802c7b237a088579ec04f7b9071929ca6c3",
+  "pr_title": "fix(helper): reject replies after the original collection deadline",
+  "native_acceptance": false,
+  "resource_acceptance": false,
+  "resource_activation": false,
+  "historical_manifests_preserved": 172,
+  "portable_review": {
+    "source_commit": "59bdb60828ef83ba9f91cdbd16821472e5b0bc87",
+    "result_sha256": "da5f672790f3f87aab29ef1c5e9bd8fe42c06235625e2d237d9029b4b96022f5",
+    "qualified": true,
+    "checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "deep": "executed affected helper packages/consumers race and all compiler-listed portable fuzz targets",
+    "packages": [
+      "./cmd/horvium",
+      "./internal/admin",
+      "./internal/client",
+      "./internal/console",
+      "./internal/helper",
+      "./internal/host/freebsd",
+      "./internal/observation",
+      "./internal/service"
+    ],
+    "freebsd_test_cross_build": "passed"
+  },
+  "predecessor": {
+    "source": {
+      "source_commit": "8a682eaac5cb795e0ab6bc5544a69b422494ac35",
+      "base_commit": "ae8d8802c7b237a088579ec04f7b9071929ca6c3",
+      "title": "test(dashboards): qualify native collection expiry and manager shutdown"
+    },
+    "runs": [
+      {
+        "source_commit": "8a682eaac5cb795e0ab6bc5544a69b422494ac35",
+        "base_commit": "ae8d8802c7b237a088579ec04f7b9071929ca6c3",
+        "pr_title": "test(dashboards): qualify native collection expiry and manager shutdown",
+        "release": "14.5",
+        "native_test_exit": 0,
+        "duration_line": "--- PASS: TestNativeDashboardWitnessExpiryAndShutdown (392.58s)",
+        "raw_sha256": "987a8a0cf3606b0bd1d6d93e775e754ac0e328e8d3c95ca000776d122a5bf5a6",
+        "archive_sha256": "4df35f91408bd3db1fc31d9bc0047f4666e3db1955821546ce288ca9f004f623",
+        "result_sha256": "4ed58d1fd93549afbf45fabe74f36eb4cf289e361ce47a4dfb8b637ed9f2adc1",
+        "source_archive_sha256": "433b9b04ac7968dbe352a3b5830bbb48a874fd618e5e117c7907c653b4bcd1d1",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "artifact_sha256": {
+          "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "fixture": "9daa0a94d65e679501950d039543d06a656a0ec43c991cd55725881abe663c9e"
+        },
+        "controller_sha256": "fd78de14eb3039710491bc8c50f3d6ff2c604a24e992eabb5dd093b5f3f94042",
+        "worker_source_sha256": "f2e31b263da381e820ee0e2e5823e1dc27fad35928de8c8bce53aba1544bc0c0",
+        "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+        "probe_sha256": "a0e24744dd648299f09eb37fe808a599cc57bbb721323097bbfdbd550abae299",
+        "cases": [
+          {
+            "case": "normal-native-small",
+            "receipt_sha256": "08beec59c8222406b78215cccd812952e9706ae07264ea833a37e7e86616861f",
+            "originals": [
+              {
+                "raw_sha256": "c123026fc9f534c2a3b1441b26fd8d5b50d0f38fbfd9037ea3acc05ecd5ec9da",
+                "raw_bytes": 16470,
+                "frames": 76,
+                "dataset_records": 2,
+                "complete": true,
+                "delivered": true,
+                "publication_confirmed": true,
+                "forward": {
+                  "stage": "delivered",
+                  "bytes": 16470,
+                  "sha256": "c123026fc9f534c2a3b1441b26fd8d5b50d0f38fbfd9037ea3acc05ecd5ec9da",
+                  "error": {
+                    "class": ""
+                  },
+                  "write_half_closed": true,
+                  "elapsed_ns": 97141000
+                }
+              }
+            ],
+            "indexes": 1,
+            "forward_boundary": {
+              "StartedNS": 1792121099169234999,
+              "DeadlineNS": 1792121144169234999,
+              "CapturedElapsedNS": 17830763000,
+              "ForwardStartedElapsedNS": 19807598000,
+              "FinishedElapsedNS": 19905368000,
+              "DeadlineReached": false,
+              "ContextDeadlineExceeded": false,
+              "ContextCancelled": false,
+              "Forward": {
+                "stage": "delivered",
+                "bytes": 16470,
+                "sha256": "c123026fc9f534c2a3b1441b26fd8d5b50d0f38fbfd9037ea3acc05ecd5ec9da",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 97141000
+              },
+              "ID_sha256": "eb6750f2a22fb5230e1543ad6591072dba22cf22bb4a82c3edb918810aca9b78",
+              "Management_sha256": "048a4185e1fee67e4e46911c9b4b7ce912b72839977ca081f39c7092389dba78",
+              "Helper_sha256": "da50e6dbb8eaa64270f7e43c22cde2403dd8f01bd73b721f062e51681288cf46"
+            },
+            "sealed_event": null,
+            "release_ns": 0,
+            "manager_reaped_before_release": false,
+            "manager_raw_wait": 0,
+            "manager_exit_code": 0,
+            "manager_wait_elapsed_ns": 0,
+            "timeout_status": null,
+            "original_denied": false,
+            "all_connectors_reaped": true,
+            "helper_unchanged": true,
+            "configuration_unchanged": true
+          },
+          {
+            "case": "normal-projection-10000",
+            "receipt_sha256": "40e6f5cbe34615079f861fc185edc2fa842cb3e8eaf79ae41b5935fc0780a237",
+            "originals": [
+              {
+                "raw_sha256": "a026a04957845cb704a867b886b3ea2452ddc81db1fd9564371bc5f5039fbc55",
+                "raw_bytes": 2142984,
+                "frames": 10074,
+                "dataset_records": 10000,
+                "complete": true,
+                "delivered": true,
+                "publication_confirmed": true,
+                "forward": {
+                  "stage": "delivered",
+                  "bytes": 2142984,
+                  "sha256": "a026a04957845cb704a867b886b3ea2452ddc81db1fd9564371bc5f5039fbc55",
+                  "error": {
+                    "class": ""
+                  },
+                  "write_half_closed": true,
+                  "elapsed_ns": 3387728000
+                }
+              }
+            ],
+            "indexes": 1,
+            "forward_boundary": {
+              "StartedNS": 1792121152243802998,
+              "DeadlineNS": 1792121197243802998,
+              "CapturedElapsedNS": 21085269000,
+              "ForwardStartedElapsedNS": 22289770000,
+              "FinishedElapsedNS": 25677706000,
+              "DeadlineReached": false,
+              "ContextDeadlineExceeded": false,
+              "ContextCancelled": false,
+              "Forward": {
+                "stage": "delivered",
+                "bytes": 2142984,
+                "sha256": "a026a04957845cb704a867b886b3ea2452ddc81db1fd9564371bc5f5039fbc55",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 3387728000
+              },
+              "ID_sha256": "0e9a50fac148c25d7ca1018be11323cd2a1a6d47374144274a20c05de10e2a7f",
+              "Management_sha256": "f4733818b26173219b2cb47587c00ce50a68612b9cf8817d8fb23245c5466348",
+              "Helper_sha256": "4e1bcfa05c74cd2cff5f9fea3eb9ae862a9113939dafc3f46c52537839e0ec1d"
+            },
+            "sealed_event": null,
+            "release_ns": 0,
+            "manager_reaped_before_release": false,
+            "manager_raw_wait": 0,
+            "manager_exit_code": 0,
+            "manager_wait_elapsed_ns": 0,
+            "timeout_status": null,
+            "original_denied": false,
+            "all_connectors_reaped": true,
+            "helper_unchanged": true,
+            "configuration_unchanged": true
+          },
+          {
+            "case": "shutdown-native-small",
+            "receipt_sha256": "072ff69b2ca128f49b6b956151087536af21526b54cfffe9752caa9082ee92c9",
+            "originals": [
+              {
+                "raw_sha256": "7962a3b3d9ed23f4ed30e64fe6f56f956aea1727dda206993572e27007faae91",
+                "raw_bytes": 16470,
+                "frames": 76,
+                "dataset_records": 2,
+                "complete": true,
+                "delivered": false,
+                "publication_confirmed": false,
+                "forward": {
+                  "stage": "copy",
+                  "bytes": 0,
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "error": {
+                    "class": "syscall",
+                    "errno": 32
+                  },
+                  "write_half_closed": false,
+                  "elapsed_ns": 5207000
+                }
+              }
+            ],
+            "indexes": 0,
+            "forward_boundary": {
+              "StartedNS": 1792121206624746998,
+              "DeadlineNS": 1792121251624746998,
+              "CapturedElapsedNS": 12790273000,
+              "ForwardStartedElapsedNS": 14219678000,
+              "FinishedElapsedNS": 14225071000,
+              "DeadlineReached": false,
+              "ContextDeadlineExceeded": false,
+              "ContextCancelled": false,
+              "Forward": {
+                "stage": "copy",
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "error": {
+                  "class": "syscall",
+                  "errno": 32
+                },
+                "write_half_closed": false,
+                "elapsed_ns": 5207000
+              },
+              "ID_sha256": "db44824ec59325dd895163d66746dc6e7e3fe7feb7862b215c4e35ab5cdacb9a",
+              "Management_sha256": "f94bb476297173a04204a7c765eccf974b3b8500833d82f057a6170a3c2f7827",
+              "Helper_sha256": "46ab99098ca1653c91986b295d5689d27321242376d6958c31d293b79ac980c8"
+            },
+            "sealed_event": {
+              "StartedNS": 1792121206624746998,
+              "DeadlineNS": 1792121251624746998,
+              "Stage": "sealed",
+              "ID_sha256": "db44824ec59325dd895163d66746dc6e7e3fe7feb7862b215c4e35ab5cdacb9a"
+            },
+            "release_ns": 1792121219435446998,
+            "manager_reaped_before_release": true,
+            "manager_raw_wait": 0,
+            "manager_exit_code": 0,
+            "manager_wait_elapsed_ns": 9370000,
+            "timeout_status": null,
+            "original_denied": true,
+            "all_connectors_reaped": true,
+            "helper_unchanged": true,
+            "configuration_unchanged": true
+          },
+          {
+            "case": "shutdown-projection-10000",
+            "receipt_sha256": "bfc6ace6fb72e53654131072006e4549a4c5af5141d4e794ac762cece372977b",
+            "originals": [
+              {
+                "raw_sha256": "695156338347fdbee704daadb0cc137f783bf50c538bd15199369084adefc905",
+                "raw_bytes": 2142984,
+                "frames": 10074,
+                "dataset_records": 10000,
+                "complete": true,
+                "delivered": false,
+                "publication_confirmed": false,
+                "forward": {
+                  "stage": "copy",
+                  "bytes": 0,
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "error": {
+                    "class": "syscall",
+                    "errno": 32
+                  },
+                  "write_half_closed": false,
+                  "elapsed_ns": 186006999
+                }
+              }
+            ],
+            "indexes": 0,
+            "forward_boundary": {
+              "StartedNS": 1792121250631767998,
+              "DeadlineNS": 1792121295631767998,
+              "CapturedElapsedNS": 20997577000,
+              "ForwardStartedElapsedNS": 23027750000,
+              "FinishedElapsedNS": 23350709000,
+              "DeadlineReached": false,
+              "ContextDeadlineExceeded": false,
+              "ContextCancelled": false,
+              "Forward": {
+                "stage": "copy",
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "error": {
+                  "class": "syscall",
+                  "errno": 32
+                },
+                "write_half_closed": false,
+                "elapsed_ns": 186006999
+              },
+              "ID_sha256": "2e70fdb6ca148f5afd093a9aeda89005e952f9544b034c1d4ec1f3a2daaf6b61",
+              "Management_sha256": "84d3807c771e2200d38ca9821a0b0e667f874cf928601c87fd9004b70fdb9b70",
+              "Helper_sha256": "9f542c0249ee675fe816c7e953e77510d8a4c203db107871ec1ace535fde566c"
+            },
+            "sealed_event": {
+              "StartedNS": 1792121250631767998,
+              "DeadlineNS": 1792121295631767998,
+              "Stage": "sealed",
+              "ID_sha256": "2e70fdb6ca148f5afd093a9aeda89005e952f9544b034c1d4ec1f3a2daaf6b61"
+            },
+            "release_ns": 1792121271879842998,
+            "manager_reaped_before_release": true,
+            "manager_raw_wait": 0,
+            "manager_exit_code": 0,
+            "manager_wait_elapsed_ns": 17235000,
+            "timeout_status": null,
+            "original_denied": true,
+            "all_connectors_reaped": true,
+            "helper_unchanged": true,
+            "configuration_unchanged": true
+          },
+          {
+            "case": "expiry-native-small",
+            "receipt_sha256": "4bfe6e8cc9462b20d3569223d1d766e73faad0f497b5c0f4371d91faf940c9bd",
+            "originals": [
+              {
+                "raw_sha256": "715e0dcb67a9d1b929f87a64efca6e9c94fe8b7be406172f7bb31855189cf8cc",
+                "raw_bytes": 16470,
+                "frames": 76,
+                "dataset_records": 2,
+                "complete": true,
+                "delivered": false,
+                "publication_confirmed": false,
+                "forward": {
+                  "stage": "copy",
+                  "bytes": 0,
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "error": {
+                    "class": "deadline"
+                  },
+                  "write_half_closed": false,
+                  "elapsed_ns": 3305284
+                }
+              }
+            ],
+            "indexes": 0,
+            "forward_boundary": {
+              "StartedNS": 1792121302995936998,
+              "DeadlineNS": 1792121347995936998,
+              "CapturedElapsedNS": 13977462000,
+              "ForwardStartedElapsedNS": 46673760925,
+              "FinishedElapsedNS": 46677247280,
+              "DeadlineReached": true,
+              "ContextDeadlineExceeded": true,
+              "ContextCancelled": false,
+              "Forward": {
+                "stage": "copy",
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "error": {
+                  "class": "deadline"
+                },
+                "write_half_closed": false,
+                "elapsed_ns": 3305284
+              },
+              "ID_sha256": "ee2994a08a6bd4c4e213ab1a08c3482c81952ce19a300b75cf18164fa1755f91",
+              "Management_sha256": "d16d6bf6a625658b5b68125e30571035fa6bff97f065066a21724474d65cdd8e",
+              "Helper_sha256": "93a87e25a2876350ef2cf4f42c34712510a10b58cf1438e94d2267e85e88aa30"
+            },
+            "sealed_event": {
+              "StartedNS": 1792121302995936998,
+              "DeadlineNS": 1792121347995936998,
+              "Stage": "sealed",
+              "ID_sha256": "ee2994a08a6bd4c4e213ab1a08c3482c81952ce19a300b75cf18164fa1755f91"
+            },
+            "release_ns": 1792121347998707547,
+            "manager_reaped_before_release": false,
+            "manager_raw_wait": 0,
+            "manager_exit_code": 0,
+            "manager_wait_elapsed_ns": 0,
+            "timeout_status": {
+              "timeout_body_sha256": "f541eefd51db2911debeb851697100e6a7aa98899a1439338866dc2bbdf7d1db",
+              "timeout_body_bytes": 187,
+              "unavailable_body_sha256": "4e6cdc6614ad230d02db7cae4b747ea10f11e21fe03898491af344f314933500",
+              "unavailable_body_bytes": 57,
+              "unavailable_http_status": 503,
+              "original_timeout_observed": true,
+              "manager_alive_after_expiry": true
+            },
+            "original_denied": true,
+            "all_connectors_reaped": true,
+            "helper_unchanged": true,
+            "configuration_unchanged": true
+          },
+          {
+            "case": "expiry-projection-10000",
+            "receipt_sha256": "9827f2bd094bd36d7d20d5a451b010d0998458b5758bf12717b4810bb85965f7",
+            "originals": [
+              {
+                "raw_sha256": "f6dac518cf366884aa6e3127fe25d130d1209cfd2787a70dae6344e237324ab5",
+                "raw_bytes": 2142984,
+                "frames": 10074,
+                "dataset_records": 10000,
+                "complete": true,
+                "delivered": false,
+                "publication_confirmed": false,
+                "forward": {
+                  "stage": "copy",
+                  "bytes": 0,
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "error": {
+                    "class": "deadline"
+                  },
+                  "write_half_closed": false,
+                  "elapsed_ns": 179759358
+                }
+              }
+            ],
+            "indexes": 0,
+            "forward_boundary": {
+              "StartedNS": 1792121380860020973,
+              "DeadlineNS": 1792121425860020973,
+              "CapturedElapsedNS": 18440541523,
+              "ForwardStartedElapsedNS": 46635924604,
+              "FinishedElapsedNS": 46955665691,
+              "DeadlineReached": true,
+              "ContextDeadlineExceeded": true,
+              "ContextCancelled": false,
+              "Forward": {
+                "stage": "copy",
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "error": {
+                  "class": "deadline"
+                },
+                "write_half_closed": false,
+                "elapsed_ns": 179759358
+              },
+              "ID_sha256": "92e99b0e8d2cb2f3d29306c2dff010bb08f5ff7afae9f8dc119a27a29ca04e99",
+              "Management_sha256": "0ec78153784f8fa656f3a888a3e82e1addafd3eaf2390d0c694af5fd7f7c206f",
+              "Helper_sha256": "a59684600b45a5ef4833aab91b1981709c1544a206700bff4ca6286210ddba58"
+            },
+            "sealed_event": {
+              "StartedNS": 1792121380860020973,
+              "DeadlineNS": 1792121425860020973,
+              "Stage": "sealed",
+              "ID_sha256": "92e99b0e8d2cb2f3d29306c2dff010bb08f5ff7afae9f8dc119a27a29ca04e99"
+            },
+            "release_ns": 1792121425868675973,
+            "manager_reaped_before_release": false,
+            "manager_raw_wait": 0,
+            "manager_exit_code": 0,
+            "manager_wait_elapsed_ns": 0,
+            "timeout_status": {
+              "timeout_body_sha256": "f541eefd51db2911debeb851697100e6a7aa98899a1439338866dc2bbdf7d1db",
+              "timeout_body_bytes": 187,
+              "unavailable_body_sha256": "4e6cdc6614ad230d02db7cae4b747ea10f11e21fe03898491af344f314933500",
+              "unavailable_body_bytes": 57,
+              "unavailable_http_status": 503,
+              "original_timeout_observed": true,
+              "manager_alive_after_expiry": true
+            },
+            "original_denied": true,
+            "all_connectors_reaped": true,
+            "helper_unchanged": true,
+            "configuration_unchanged": true
+          }
+        ],
+        "failure_diagnostics": [],
+        "guest_cleanup": true,
+        "host_teardown": true,
+        "preflight_equal": true,
+        "native_acceptance": false,
+        "resource_acceptance": false,
+        "resource_activation": false
+      },
+      {
+        "source_commit": "8a682eaac5cb795e0ab6bc5544a69b422494ac35",
+        "base_commit": "ae8d8802c7b237a088579ec04f7b9071929ca6c3",
+        "pr_title": "test(dashboards): qualify native collection expiry and manager shutdown",
+        "release": "15.1",
+        "native_test_exit": 1,
+        "duration_line": "--- FAIL: TestNativeDashboardWitnessExpiryAndShutdown (281.30s)",
+        "raw_sha256": "e124ca9e236c1ada981f74de01bf914175e22c9b7c0ada2db4d30350abf84d11",
+        "archive_sha256": "4b5c5af7ed8f18e357189cd2d3ac5dad71cd68b1b45bc111e5f0818d51ea6164",
+        "result_sha256": "98f8a8712008e031c57c15f204ef1f5517c8fdcfd67a5d94bfaa563f26e423b9",
+        "source_archive_sha256": "433b9b04ac7968dbe352a3b5830bbb48a874fd618e5e117c7907c653b4bcd1d1",
+        "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+        "artifact_sha256": {
+          "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+          "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+          "fixture": "9daa0a94d65e679501950d039543d06a656a0ec43c991cd55725881abe663c9e"
+        },
+        "controller_sha256": "fd78de14eb3039710491bc8c50f3d6ff2c604a24e992eabb5dd093b5f3f94042",
+        "worker_source_sha256": "f2e31b263da381e820ee0e2e5823e1dc27fad35928de8c8bce53aba1544bc0c0",
+        "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+        "probe_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+        "cases": [
+          {
+            "case": "normal-native-small",
+            "receipt_sha256": "3dc1c5dfeac2d19ff41c9fff8cea8c00a70d8514a305a77d4c2823cf72f87573",
+            "originals": [
+              {
+                "raw_sha256": "e919fe23ef0295c8d7652e593f47ffb5d25dde53afee2ccecec7195992454978",
+                "raw_bytes": 18784,
+                "frames": 86,
+                "dataset_records": 17,
+                "complete": true,
+                "delivered": true,
+                "publication_confirmed": true,
+                "forward": {
+                  "stage": "delivered",
+                  "bytes": 18784,
+                  "sha256": "e919fe23ef0295c8d7652e593f47ffb5d25dde53afee2ccecec7195992454978",
+                  "error": {
+                    "class": ""
+                  },
+                  "write_half_closed": true,
+                  "elapsed_ns": 8117000
+                }
+              }
+            ],
+            "indexes": 1,
+            "forward_boundary": {
+              "StartedNS": 1792121620252431999,
+              "DeadlineNS": 1792121665252431999,
+              "CapturedElapsedNS": 12806679000,
+              "ForwardStartedElapsedNS": 14235965000,
+              "FinishedElapsedNS": 14244280000,
+              "DeadlineReached": false,
+              "ContextDeadlineExceeded": false,
+              "ContextCancelled": false,
+              "Forward": {
+                "stage": "delivered",
+                "bytes": 18784,
+                "sha256": "e919fe23ef0295c8d7652e593f47ffb5d25dde53afee2ccecec7195992454978",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 8117000
+              },
+              "ID_sha256": "7fac70ae231e7ab03fba7c18f6cf630af820823afaf902a066550ddb2d4c838c",
+              "Management_sha256": "c6530f713a201ff007f06e05b973daf7832e792e4261daf8803ed74488442d22",
+              "Helper_sha256": "62f68000e6edb68e1860b27d55de0e06309bb92a0e81e720ba321ad18d96248f"
+            },
+            "sealed_event": null,
+            "release_ns": 0,
+            "manager_reaped_before_release": false,
+            "manager_raw_wait": 0,
+            "manager_exit_code": 0,
+            "manager_wait_elapsed_ns": 0,
+            "timeout_status": null,
+            "original_denied": false,
+            "all_connectors_reaped": true,
+            "helper_unchanged": true,
+            "configuration_unchanged": true
+          },
+          {
+            "case": "normal-projection-10000",
+            "receipt_sha256": "bebb00362cab71e8327a19c093f635a6302adce56be272a9b26b6b25788167bd",
+            "originals": [
+              {
+                "raw_sha256": "c4493e745a7c3ef986d67f26e53b945cb49f22b1eed5d1aee5f5e445546dc493",
+                "raw_bytes": 2141962,
+                "frames": 10069,
+                "dataset_records": 10000,
+                "complete": true,
+                "delivered": true,
+                "publication_confirmed": true,
+                "forward": {
+                  "stage": "delivered",
+                  "bytes": 2141962,
+                  "sha256": "c4493e745a7c3ef986d67f26e53b945cb49f22b1eed5d1aee5f5e445546dc493",
+                  "error": {
+                    "class": ""
+                  },
+                  "write_half_closed": true,
+                  "elapsed_ns": 3676751000
+                }
+              }
+            ],
+            "indexes": 1,
+            "forward_boundary": {
+              "StartedNS": 1792121663478069999,
+              "DeadlineNS": 1792121708478069999,
+              "CapturedElapsedNS": 18907312000,
+              "ForwardStartedElapsedNS": 20152787000,
+              "FinishedElapsedNS": 23829802000,
+              "DeadlineReached": false,
+              "ContextDeadlineExceeded": false,
+              "ContextCancelled": false,
+              "Forward": {
+                "stage": "delivered",
+                "bytes": 2141962,
+                "sha256": "c4493e745a7c3ef986d67f26e53b945cb49f22b1eed5d1aee5f5e445546dc493",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 3676751000
+              },
+              "ID_sha256": "9e3d3583b167369ae2a8c4b46b7b75e831825a79378a1c934ff9695548343723",
+              "Management_sha256": "712193f07a4ca6111d69b6523aa7c5e4f5b7b84335402727848de9984cba9074",
+              "Helper_sha256": "6b2e75088c12013f864f8c9eb161029d5560cc9a54c642ee668b247a3f07bc6c"
+            },
+            "sealed_event": null,
+            "release_ns": 0,
+            "manager_reaped_before_release": false,
+            "manager_raw_wait": 0,
+            "manager_exit_code": 0,
+            "manager_wait_elapsed_ns": 0,
+            "timeout_status": null,
+            "original_denied": false,
+            "all_connectors_reaped": true,
+            "helper_unchanged": true,
+            "configuration_unchanged": true
+          },
+          {
+            "case": "shutdown-native-small",
+            "receipt_sha256": "3a135eca42bc5954182b4156712aa54f2a1c9169791dac54d79a34e8f04ac6ac",
+            "originals": [
+              {
+                "raw_sha256": "fde26e06070752dea75aa09007a50dd0a2d41aacff66d71f4d07963f6b66db92",
+                "raw_bytes": 18784,
+                "frames": 86,
+                "dataset_records": 17,
+                "complete": true,
+                "delivered": false,
+                "publication_confirmed": false,
+                "forward": {
+                  "stage": "copy",
+                  "bytes": 0,
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "error": {
+                    "class": "syscall",
+                    "errno": 32
+                  },
+                  "write_half_closed": false,
+                  "elapsed_ns": 5572000
+                }
+              }
+            ],
+            "indexes": 0,
+            "forward_boundary": {
+              "StartedNS": 1792121715279043998,
+              "DeadlineNS": 1792121760279043998,
+              "CapturedElapsedNS": 13045692000,
+              "ForwardStartedElapsedNS": 14449547000,
+              "FinishedElapsedNS": 14455665000,
+              "DeadlineReached": false,
+              "ContextDeadlineExceeded": false,
+              "ContextCancelled": false,
+              "Forward": {
+                "stage": "copy",
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "error": {
+                  "class": "syscall",
+                  "errno": 32
+                },
+                "write_half_closed": false,
+                "elapsed_ns": 5572000
+              },
+              "ID_sha256": "882c83c0b464e8b5ae46b26be18180e36b24298a9e11049d7513a8f94c6ef6ba",
+              "Management_sha256": "112ed9685cc7a271954e30f19da720d1ea4848974c87bccfe76b76807a34e0c3",
+              "Helper_sha256": "5c0d7a1f81ef02ea9c7d3d4e6be85f034731954e6262a80ef49fa0e5289dc48e"
+            },
+            "sealed_event": {
+              "StartedNS": 1792121715279043998,
+              "DeadlineNS": 1792121760279043998,
+              "Stage": "sealed",
+              "ID_sha256": "882c83c0b464e8b5ae46b26be18180e36b24298a9e11049d7513a8f94c6ef6ba"
+            },
+            "release_ns": 1792121728345199998,
+            "manager_reaped_before_release": true,
+            "manager_raw_wait": 0,
+            "manager_exit_code": 0,
+            "manager_wait_elapsed_ns": 9365000,
+            "timeout_status": null,
+            "original_denied": true,
+            "all_connectors_reaped": true,
+            "helper_unchanged": true,
+            "configuration_unchanged": true
+          },
+          {
+            "case": "shutdown-projection-10000",
+            "receipt_sha256": "ca7cf9cdc03c43f42330d1aefdde8d8cd95cee2a5c11b7a68efaec814eca44b9",
+            "originals": [
+              {
+                "raw_sha256": "f40d0c1910f2068f56fe801a7e4ba98cf7e65fe93fe98a16c880c6fb62e6f9f7",
+                "raw_bytes": 2141962,
+                "frames": 10069,
+                "dataset_records": 10000,
+                "complete": true,
+                "delivered": false,
+                "publication_confirmed": false,
+                "forward": {
+                  "stage": "copy",
+                  "bytes": 0,
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "error": {
+                    "class": "syscall",
+                    "errno": 32
+                  },
+                  "write_half_closed": false,
+                  "elapsed_ns": 184736000
+                }
+              }
+            ],
+            "indexes": 0,
+            "forward_boundary": {
+              "StartedNS": 1792121759878694998,
+              "DeadlineNS": 1792121804878694998,
+              "CapturedElapsedNS": 18830241000,
+              "ForwardStartedElapsedNS": 20486732000,
+              "FinishedElapsedNS": 20744112000,
+              "DeadlineReached": false,
+              "ContextDeadlineExceeded": false,
+              "ContextCancelled": false,
+              "Forward": {
+                "stage": "copy",
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "error": {
+                  "class": "syscall",
+                  "errno": 32
+                },
+                "write_half_closed": false,
+                "elapsed_ns": 184736000
+              },
+              "ID_sha256": "26467b3ac2cad502c8b4995415c0a30f33f43dcba3315e9a9fe37877a63fcb98",
+              "Management_sha256": "cacaef04fa78ea753dc7f3258180dc1be7c001056ae3ee342fcc07d3757946aa",
+              "Helper_sha256": "aea933d8ee0c98f94390645c84ab03f07172e1d4950f2da1acf1325f92bc4531"
+            },
+            "sealed_event": {
+              "StartedNS": 1792121759878694998,
+              "DeadlineNS": 1792121804878694998,
+              "Stage": "sealed",
+              "ID_sha256": "26467b3ac2cad502c8b4995415c0a30f33f43dcba3315e9a9fe37877a63fcb98"
+            },
+            "release_ns": 1792121778914663998,
+            "manager_reaped_before_release": true,
+            "manager_raw_wait": 0,
+            "manager_exit_code": 0,
+            "manager_wait_elapsed_ns": 13350000,
+            "timeout_status": null,
+            "original_denied": true,
+            "all_connectors_reaped": true,
+            "helper_unchanged": true,
+            "configuration_unchanged": true
+          }
+        ],
+        "failure_diagnostics": [
+          {
+            "name": "witness-expiry-cases/expiry-native-small-failure.json",
+            "sha256": "ae6e7a9b102cb855432f899f15abc981a19eea240e2e94032e4c5e07b51f183c",
+            "failed": true,
+            "failure": "producer-forward",
+            "originals": 1
+          }
+        ],
+        "guest_cleanup": true,
+        "host_teardown": true,
+        "preflight_equal": true,
+        "native_acceptance": false,
+        "resource_acceptance": false,
+        "resource_activation": false
+      }
+    ],
+    "failed_15_1": {
+      "native_test_exit": 1,
+      "passed_cases": [
+        "normal-native-small",
+        "normal-projection-10000",
+        "shutdown-native-small",
+        "shutdown-projection-10000"
+      ],
+      "failed_case": "expiry-native-small",
+      "skipped_case": "expiry-projection-10000",
+      "failure": "combined manager/status assertion",
+      "underlying_manager_status_cause": "unknown: actual boolean/status/body values were not persisted before fatal assertion",
+      "retained_forward_error": {
+        "class": "deadline",
+        "bytes": 0,
+        "deadline_reached": true,
+        "context_deadline_exceeded": true
+      },
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "fallback_sidecar": "export-generated reference, not proof of an original sealed index",
+      "fallback_original": {
+        "raw_sha256": "ebeaa79188a5f77a4027cb33e6e5d8bcf4a88cb95e21299ab175493de0b1f042",
+        "raw_bytes": 18784,
+        "complete": true,
+        "delivered": false,
+        "export_reference_sha256": "5d49bed69d32bf6e28c1781fc0018f2575747d881b8edcadbd0081d3b68ea86b",
+        "export_reference_is_original_index": false,
+        "failure_diagnostic_sha256": "ae6e7a9b102cb855432f899f15abc981a19eea240e2e94032e4c5e07b51f183c"
+      }
+    },
+    "receipt_retention_candidate": {
+      "source": {
+        "source_commit": "6424b8466f48efc813f766447dfc7dcfa2edf6e2",
+        "base_commit": "ae8d8802c7b237a088579ec04f7b9071929ca6c3",
+        "title": "test(dashboards): qualify native collection expiry and manager shutdown"
+      },
+      "runs": [
+        {
+          "source_commit": "6424b8466f48efc813f766447dfc7dcfa2edf6e2",
+          "base_commit": "ae8d8802c7b237a088579ec04f7b9071929ca6c3",
+          "pr_title": "test(dashboards): qualify native collection expiry and manager shutdown",
+          "release": "15.1",
+          "native_test_exit": 1,
+          "duration_line": "--- FAIL: TestNativeDashboardWitnessExpiryAndShutdown (501.45s)",
+          "raw_sha256": "4c07ba8cbdcfdf545c97ad94783ec9e7e31efc28c936a0a96f5c443092b11693",
+          "archive_sha256": "576ad4aedf8cc4321d7edbd2f65a6b08c2070fae2ac3c904f059d879c3857e5e",
+          "result_sha256": "d23c7c1338e60b8e413144cd77bb1d1f35b1469a9e10f01e8ad31fd4c9d54637",
+          "source_archive_sha256": "60f29ed27508794590e3109068f8c6127c8c9df4ddf6a28dab0b53981bef8d7c",
+          "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+          "artifact_sha256": {
+            "management": "ba61726de1146b45306848a5bc7043eb4eae2182025786d1a45dea257f478e65",
+            "helper": "f26743b18158035f62eb175918054def3355aa9f7132e038af7ffb9f37f686cf",
+            "fixture": "ad9cfdcc421ddb499b92e33f24ac6605795d3cfe8c420ec8c9ff3c5e627e1ac5"
+          },
+          "controller_sha256": "fd78de14eb3039710491bc8c50f3d6ff2c604a24e992eabb5dd093b5f3f94042",
+          "worker_source_sha256": "f2e31b263da381e820ee0e2e5823e1dc27fad35928de8c8bce53aba1544bc0c0",
+          "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+          "probe_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+          "cases": [
+            {
+              "case": "normal-native-small",
+              "receipt_sha256": "ddb0ffd11ca89b6ec19fac54910cee23a7275933bfd0f2c9fee279eee05636b7",
+              "originals": [
+                {
+                  "raw_sha256": "3c724a4556006eb0765400c7fd37fcc668d0a11bdd5af0186ccf09b0a2af09a8",
+                  "raw_bytes": 18780,
+                  "frames": 86,
+                  "dataset_records": 17,
+                  "complete": true,
+                  "delivered": true,
+                  "publication_confirmed": true,
+                  "forward": {
+                    "stage": "delivered",
+                    "bytes": 18780,
+                    "sha256": "3c724a4556006eb0765400c7fd37fcc668d0a11bdd5af0186ccf09b0a2af09a8",
+                    "error": {
+                      "class": ""
+                    },
+                    "write_half_closed": true,
+                    "elapsed_ns": 10389001
+                  }
+                }
+              ],
+              "indexes": 1,
+              "forward_boundary": {
+                "StartedNS": 1792122353301012999,
+                "DeadlineNS": 1792122398301012999,
+                "CapturedElapsedNS": 19638728999,
+                "ForwardStartedElapsedNS": 21719165000,
+                "FinishedElapsedNS": 21729805000,
+                "DeadlineReached": false,
+                "ContextDeadlineExceeded": false,
+                "ContextCancelled": false,
+                "Forward": {
+                  "stage": "delivered",
+                  "bytes": 18780,
+                  "sha256": "3c724a4556006eb0765400c7fd37fcc668d0a11bdd5af0186ccf09b0a2af09a8",
+                  "error": {
+                    "class": ""
+                  },
+                  "write_half_closed": true,
+                  "elapsed_ns": 10389001
+                },
+                "ID_sha256": "2efdfefe18f9b091f9ce3f49c3aac1340647e882309f12e1e35048d34ba817a3",
+                "Management_sha256": "5bef5c77561a36dc3d6e03a596dd4e05f860af2394c58d44b9eef516cfce8544",
+                "Helper_sha256": "4d37d52f16aa21976c3228cfdc597b1555c4db0f417ee633196b581f90f23ee3"
+              },
+              "sealed_event": null,
+              "release_ns": 0,
+              "manager_reaped_before_release": false,
+              "manager_raw_wait": 0,
+              "manager_exit_code": 0,
+              "manager_wait_elapsed_ns": 0,
+              "timeout_status": null,
+              "original_denied": false,
+              "all_connectors_reaped": true,
+              "helper_unchanged": true,
+              "configuration_unchanged": true
+            },
+            {
+              "case": "normal-projection-10000",
+              "receipt_sha256": "6b5807175617f30ae2db022f95c1c4dfcb191c8c40a08acb2a5dac876ebded5b",
+              "originals": [
+                {
+                  "raw_sha256": "af404a6396175bf6a91164667f3da162d656732a5e665ce586158777ca2c1c2b",
+                  "raw_bytes": 2141960,
+                  "frames": 10069,
+                  "dataset_records": 10000,
+                  "complete": true,
+                  "delivered": true,
+                  "publication_confirmed": true,
+                  "forward": {
+                    "stage": "delivered",
+                    "bytes": 2141960,
+                    "sha256": "af404a6396175bf6a91164667f3da162d656732a5e665ce586158777ca2c1c2b",
+                    "error": {
+                      "class": ""
+                    },
+                    "write_half_closed": true,
+                    "elapsed_ns": 3727762000
+                  }
+                },
+                {
+                  "raw_sha256": "5bc902e03f54b582796a5556f94617bcd1fc9cc50ca8881204904c63a5e4b916",
+                  "raw_bytes": 2141960,
+                  "frames": 10069,
+                  "dataset_records": 10000,
+                  "complete": true,
+                  "delivered": true,
+                  "publication_confirmed": false,
+                  "forward": {
+                    "stage": "delivered",
+                    "bytes": 2141960,
+                    "sha256": "5bc902e03f54b582796a5556f94617bcd1fc9cc50ca8881204904c63a5e4b916",
+                    "error": {
+                      "class": ""
+                    },
+                    "write_half_closed": true,
+                    "elapsed_ns": 3195017000
+                  }
+                }
+              ],
+              "indexes": 2,
+              "forward_boundary": {
+                "StartedNS": 1792122448791771998,
+                "DeadlineNS": 1792122493791771998,
+                "CapturedElapsedNS": 18688657000,
+                "ForwardStartedElapsedNS": 20586343000,
+                "FinishedElapsedNS": 23781463000,
+                "DeadlineReached": false,
+                "ContextDeadlineExceeded": false,
+                "ContextCancelled": false,
+                "Forward": {
+                  "stage": "delivered",
+                  "bytes": 2141960,
+                  "sha256": "5bc902e03f54b582796a5556f94617bcd1fc9cc50ca8881204904c63a5e4b916",
+                  "error": {
+                    "class": ""
+                  },
+                  "write_half_closed": true,
+                  "elapsed_ns": 3195017000
+                },
+                "ID_sha256": "8c378292551d98db8f70c7e01cfacd88abd8adcfb2b862285baf11cc28aa8135",
+                "Management_sha256": "b0791bbcfb3575ca56be3fe63fae70e2963ca5c95d7393f639d8875a5fcf7751",
+                "Helper_sha256": "4da2545e447893d7070c310b40d7fa8c7a6aa9dfa8c2f72c2dace15a79f96337"
+              },
+              "sealed_event": null,
+              "release_ns": 0,
+              "manager_reaped_before_release": false,
+              "manager_raw_wait": 0,
+              "manager_exit_code": 0,
+              "manager_wait_elapsed_ns": 0,
+              "timeout_status": null,
+              "original_denied": false,
+              "all_connectors_reaped": true,
+              "helper_unchanged": true,
+              "configuration_unchanged": true
+            },
+            {
+              "case": "shutdown-native-small",
+              "receipt_sha256": "9494e182d928f1085e2d4ace73536eb2007c658bf4d197762c3a91955b303114",
+              "originals": [
+                {
+                  "raw_sha256": "bf72d364ca1f36cc6f7d5c31cb171e3a1ec8c5349a8c60a38c52a5cca9a90a92",
+                  "raw_bytes": 18780,
+                  "frames": 86,
+                  "dataset_records": 17,
+                  "complete": true,
+                  "delivered": false,
+                  "publication_confirmed": false,
+                  "forward": {
+                    "stage": "copy",
+                    "bytes": 0,
+                    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                    "error": {
+                      "class": "syscall",
+                      "errno": 32
+                    },
+                    "write_half_closed": false,
+                    "elapsed_ns": 5845999
+                  }
+                }
+              ],
+              "indexes": 0,
+              "forward_boundary": {
+                "StartedNS": 1792122510168299998,
+                "DeadlineNS": 1792122555168299998,
+                "CapturedElapsedNS": 19111691999,
+                "ForwardStartedElapsedNS": 21528625000,
+                "FinishedElapsedNS": 21534660999,
+                "DeadlineReached": false,
+                "ContextDeadlineExceeded": false,
+                "ContextCancelled": false,
+                "Forward": {
+                  "stage": "copy",
+                  "bytes": 0,
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "error": {
+                    "class": "syscall",
+                    "errno": 32
+                  },
+                  "write_half_closed": false,
+                  "elapsed_ns": 5845999
+                },
+                "ID_sha256": "00c7f4970be95862c7965a997108a35971fdc91e401a86e0ed7376a1c1f6009c",
+                "Management_sha256": "8f43c4f75136a343dbd58ef7c7cdb87e183f534891c725114f3a2358074eb8a2",
+                "Helper_sha256": "b7e9d6e59a3715170b29b4683338b9bbbea258e66d1de26b4957d2496cd8d8e3"
+              },
+              "sealed_event": {
+                "StartedNS": 1792122510168299998,
+                "DeadlineNS": 1792122555168299998,
+                "Stage": "sealed",
+                "ID_sha256": "00c7f4970be95862c7965a997108a35971fdc91e401a86e0ed7376a1c1f6009c"
+              },
+              "release_ns": 1792122529303992998,
+              "manager_reaped_before_release": true,
+              "manager_raw_wait": 0,
+              "manager_exit_code": 0,
+              "manager_wait_elapsed_ns": 9629000,
+              "timeout_status": null,
+              "original_denied": true,
+              "all_connectors_reaped": true,
+              "helper_unchanged": true,
+              "configuration_unchanged": true
+            },
+            {
+              "case": "shutdown-projection-10000",
+              "receipt_sha256": "8a9eaf01341a64d1e359736624209c7fcc0be83ac7533d2be2e7d05f85628216",
+              "originals": [
+                {
+                  "raw_sha256": "906a4b1ee031e911fadc8eb08131137f874928f75baf8225a9af4b4c5ad2547f",
+                  "raw_bytes": 2141960,
+                  "frames": 10069,
+                  "dataset_records": 10000,
+                  "complete": true,
+                  "delivered": false,
+                  "publication_confirmed": false,
+                  "forward": {
+                    "stage": "copy",
+                    "bytes": 0,
+                    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                    "error": {
+                      "class": "syscall",
+                      "errno": 32
+                    },
+                    "write_half_closed": false,
+                    "elapsed_ns": 303024147
+                  }
+                }
+              ],
+              "indexes": 0,
+              "forward_boundary": {
+                "StartedNS": 1792122576776738831,
+                "DeadlineNS": 1792122621776738831,
+                "CapturedElapsedNS": 24331533327,
+                "ForwardStartedElapsedNS": 26684475656,
+                "FinishedElapsedNS": 27009889966,
+                "DeadlineReached": false,
+                "ContextDeadlineExceeded": false,
+                "ContextCancelled": false,
+                "Forward": {
+                  "stage": "copy",
+                  "bytes": 0,
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "error": {
+                    "class": "syscall",
+                    "errno": 32
+                  },
+                  "write_half_closed": false,
+                  "elapsed_ns": 303024147
+                },
+                "ID_sha256": "6fa1b6757a422cb639a7ca74c1fa1aa8c31185b91903b8e60afb6c478c27a79b",
+                "Management_sha256": "4e3ab54da8cecdbaf398ccda0742cdb3470e9809bba65047cac3e61bd6fcddfe",
+                "Helper_sha256": "f5235a2fb3e6c51de61f65d2fe5f12832136f12d96cd6af9a9fd60e774520859"
+              },
+              "sealed_event": {
+                "StartedNS": 1792122576776738831,
+                "DeadlineNS": 1792122621776738831,
+                "Stage": "sealed",
+                "ID_sha256": "6fa1b6757a422cb639a7ca74c1fa1aa8c31185b91903b8e60afb6c478c27a79b"
+              },
+              "release_ns": 1792122601419477700,
+              "manager_reaped_before_release": true,
+              "manager_raw_wait": 0,
+              "manager_exit_code": 0,
+              "manager_wait_elapsed_ns": 9715174,
+              "timeout_status": null,
+              "original_denied": true,
+              "all_connectors_reaped": true,
+              "helper_unchanged": true,
+              "configuration_unchanged": true
+            },
+            {
+              "case": "expiry-native-small",
+              "receipt_sha256": "06a18ed3de1a9e43ab2f947af6e59305b8e64fa2c79edf2c1ccd48feeddc5eb1",
+              "originals": [
+                {
+                  "raw_sha256": "a7b7b9f53b6229203aca2c395a9cd0a993aa6a252858afebdb9d81a224a7b05b",
+                  "raw_bytes": 18780,
+                  "frames": 86,
+                  "dataset_records": 17,
+                  "complete": true,
+                  "delivered": false,
+                  "publication_confirmed": false,
+                  "forward": {
+                    "stage": "copy",
+                    "bytes": 0,
+                    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                    "error": {
+                      "class": "deadline"
+                    },
+                    "write_half_closed": false,
+                    "elapsed_ns": 4460818
+                  }
+                }
+              ],
+              "indexes": 0,
+              "forward_boundary": {
+                "StartedNS": 1792122642069208424,
+                "DeadlineNS": 1792122687069208424,
+                "CapturedElapsedNS": 18786258738,
+                "ForwardStartedElapsedNS": 47189621892,
+                "FinishedElapsedNS": 47194347698,
+                "DeadlineReached": true,
+                "ContextDeadlineExceeded": true,
+                "ContextCancelled": false,
+                "Forward": {
+                  "stage": "copy",
+                  "bytes": 0,
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "error": {
+                    "class": "deadline"
+                  },
+                  "write_half_closed": false,
+                  "elapsed_ns": 4460818
+                },
+                "ID_sha256": "177ed9c44ca4ce4d1282b60fa162f04e0080708eb4fb2c43429b245f68865830",
+                "Management_sha256": "dfb8b845677a5d4143db5c2bafbfca22d232ff228d8afccfac6fa9dee085ff4e",
+                "Helper_sha256": "cc4e804186113b3ae4fb4a2be9ff78323fd87b6aa2db25c4c395067d66da2e5f"
+              },
+              "sealed_event": {
+                "StartedNS": 1792122642069208424,
+                "DeadlineNS": 1792122687069208424,
+                "Stage": "sealed",
+                "ID_sha256": "177ed9c44ca4ce4d1282b60fa162f04e0080708eb4fb2c43429b245f68865830"
+              },
+              "release_ns": 1792122687085336377,
+              "manager_reaped_before_release": false,
+              "manager_raw_wait": 0,
+              "manager_exit_code": 0,
+              "manager_wait_elapsed_ns": 0,
+              "timeout_status": {
+                "timeout_body_sha256": "f541eefd51db2911debeb851697100e6a7aa98899a1439338866dc2bbdf7d1db",
+                "timeout_body_bytes": 187,
+                "unavailable_body_sha256": "4e6cdc6614ad230d02db7cae4b747ea10f11e21fe03898491af344f314933500",
+                "unavailable_body_bytes": 57,
+                "unavailable_http_status": 503,
+                "original_timeout_observed": true,
+                "manager_alive_after_expiry": true
+              },
+              "original_denied": true,
+              "all_connectors_reaped": true,
+              "helper_unchanged": true,
+              "configuration_unchanged": true
+            }
+          ],
+          "failure_diagnostics": [
+            {
+              "name": "witness-expiry-cases/expiry-projection-10000-failure.json",
+              "sha256": "b1779c718c142998787358717bf7fae3961e8b16bdf45a6c313abec53c34a63f",
+              "failed": true,
+              "failure": "producer-forward",
+              "originals": 1
+            }
+          ],
+          "partial_observations": [
+            {
+              "case": "expiry-projection-10000",
+              "receipt_sha256": "81f6515089b6acd022a7f3a0aeab53f7b0451537022568b0e751231a8458f499",
+              "manager_alive_check": true,
+              "timeout_observed": false,
+              "unavailable_status": 503,
+              "timeout_body_sha256": "dab0505496e88d11e0d6f5eb5e6c08570e169bf561df21fcd9c49986a299ed52",
+              "timeout_body_bytes": 188,
+              "timeout_literal_present": false,
+              "protocol_literal_present": true,
+              "unavailable_body_sha256": "4e6cdc6614ad230d02db7cae4b747ea10f11e21fe03898491af344f314933500",
+              "unavailable_body_bytes": 57,
+              "complete_case_receipt": false
+            }
+          ],
+          "guest_cleanup": true,
+          "host_teardown": true,
+          "preflight_equal": true,
+          "native_acceptance": false,
+          "resource_acceptance": false,
+          "resource_activation": false
+        }
+      ],
+      "15_1_failed_case": "expiry-projection-10000",
+      "14_5_not_executed": true,
+      "observed_manager_alive": true,
+      "observed_unavailable_status": 503,
+      "observed_status_code": "protocol",
+      "observed_second_call_or_denial": false,
+      "interpretation": "deadline/cancellation-callback ordering is a source-supported model reproduced deterministically; callback timing itself was not retained by the original product process",
+      "cleanup": "guest/host verified",
+      "fallback_original": {
+        "raw_sha256": "742dc19233aaee460c97179ce045c20b5910782804524a5fdced885243f9caca",
+        "raw_bytes": 2141960,
+        "complete": true,
+        "delivered": false,
+        "export_reference_sha256": "d65a6649e2b26d97b041b7e45444f7e7136795e53df6564d31aa398ad12bda44",
+        "export_reference_is_original_index": false
+      }
+    }
+  },
+  "deadline_regression": {
+    "red_log_sha256": "ccb5c125e9744b3cbd1dd153229dbb906976afc0f6149f4005b34f078cd659c7",
+    "green_log_sha256": "a4496e37c6afbb6152c2250888984ea196d8d6e67650fd28f310b2fcc2f2fd45",
+    "expired_unix_socket_and_complete_late_reply_reproduced": true
+  },
+  "independent_readback_sha256": "f1bc04d7c796eff466f2c40d00b9c0c70f2417092e2e9bc0128aaffc747b9160",
+  "runs": [
+    {
+      "source_commit": "59bdb60828ef83ba9f91cdbd16821472e5b0bc87",
+      "base_commit": "ae8d8802c7b237a088579ec04f7b9071929ca6c3",
+      "pr_title": "fix(helper): reject replies after the original collection deadline",
+      "release": "14.5",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessExpiryAndShutdown (335.30s)",
+      "raw_sha256": "4fd2e6f20d0498bb5e04691fb3da2a12a1b299fa53339a2b8ea66740fc07a852",
+      "archive_sha256": "59d8d66846cf6aad4d7f78dfe9b4196936a571f4f0dc513d8842df0e25e11b51",
+      "result_sha256": "3d0ca2f08b2deeb6be80e44a777f7d277e8bd310fae1c32cad316fa6a5a4140d",
+      "source_archive_sha256": "d9750d670e815297cc1a4401b170e176b9cdc46fe469f6287335b6b6ab865794",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "5abf183c69d83d54da22aa5bb8868767bf696f1f2d7a182cbb5bc00bfdaac6bf",
+        "helper": "3b8b8bc4b9f4e8587d2f84204c2c8aa2830ba92ca6c556b264b48ee29a31eb7d",
+        "fixture": "be86b9d98dbfaaea9d3d115ab8a0c22d98c0ab1fafcd86c0d6ee97dd53508d85"
+      },
+      "controller_sha256": "fd78de14eb3039710491bc8c50f3d6ff2c604a24e992eabb5dd093b5f3f94042",
+      "worker_source_sha256": "f2e31b263da381e820ee0e2e5823e1dc27fad35928de8c8bce53aba1544bc0c0",
+      "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+      "probe_sha256": "a0e24744dd648299f09eb37fe808a599cc57bbb721323097bbfdbd550abae299",
+      "cases": [
+        {
+          "case": "normal-native-small",
+          "receipt_sha256": "bac7f74d355331f06999609421abb888397ee1acaca19e3ceaa6ea02d8a9e3c5",
+          "originals": [
+            {
+              "raw_sha256": "b59c6641d574d801e794f6a7eb8eae863a9816fb89ae0ff0072fabef005da3bc",
+              "raw_bytes": 16468,
+              "frames": 76,
+              "dataset_records": 2,
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true,
+              "forward": {
+                "stage": "delivered",
+                "bytes": 16468,
+                "sha256": "b59c6641d574d801e794f6a7eb8eae863a9816fb89ae0ff0072fabef005da3bc",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 32850000
+              }
+            }
+          ],
+          "indexes": 1,
+          "forward_boundary": {
+            "StartedNS": 1792123862865919999,
+            "DeadlineNS": 1792123907865919999,
+            "CapturedElapsedNS": 12029540000,
+            "ForwardStartedElapsedNS": 13346994000,
+            "FinishedElapsedNS": 13380080000,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "delivered",
+              "bytes": 16468,
+              "sha256": "b59c6641d574d801e794f6a7eb8eae863a9816fb89ae0ff0072fabef005da3bc",
+              "error": {
+                "class": ""
+              },
+              "write_half_closed": true,
+              "elapsed_ns": 32850000
+            },
+            "ID_sha256": "98ed5c07450530ce87a128998ef97d6e82cc3309f357872dafdb4520ac7f72ad",
+            "Management_sha256": "0432b7b12f60020b376c74ce2dc3e553012f6fe87ca70820c4257cf9eddd48dc",
+            "Helper_sha256": "92c2f20c7ac1072d70c3e47d2a13d89423b5956679653b4b56fe179d40a8bedd"
+          },
+          "sealed_event": null,
+          "release_ns": 0,
+          "manager_reaped_before_release": false,
+          "manager_raw_wait": 0,
+          "manager_exit_code": 0,
+          "manager_wait_elapsed_ns": 0,
+          "timeout_status": null,
+          "original_denied": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "normal-projection-10000",
+          "receipt_sha256": "2207a6802dea3f6550ac29e60c21108b5c64dcbbb64adcd0489a4300c616e71b",
+          "originals": [
+            {
+              "raw_sha256": "de416e6cecdbdd76688f5f54e0ca1bf95a6a99a52727160508ecee4392dac5f5",
+              "raw_bytes": 2142983,
+              "frames": 10074,
+              "dataset_records": 10000,
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true,
+              "forward": {
+                "stage": "delivered",
+                "bytes": 2142983,
+                "sha256": "de416e6cecdbdd76688f5f54e0ca1bf95a6a99a52727160508ecee4392dac5f5",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 3058660001
+              }
+            }
+          ],
+          "indexes": 1,
+          "forward_boundary": {
+            "StartedNS": 1792123904270377999,
+            "DeadlineNS": 1792123949270377999,
+            "CapturedElapsedNS": 16863074000,
+            "ForwardStartedElapsedNS": 17997743999,
+            "FinishedElapsedNS": 21056669999,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "delivered",
+              "bytes": 2142983,
+              "sha256": "de416e6cecdbdd76688f5f54e0ca1bf95a6a99a52727160508ecee4392dac5f5",
+              "error": {
+                "class": ""
+              },
+              "write_half_closed": true,
+              "elapsed_ns": 3058660001
+            },
+            "ID_sha256": "9ca84547189dfc8930cf9086d991acbbfc082b8762f24f12363c9c0ab65bfef7",
+            "Management_sha256": "2d59e922821992cb784842bf466302eaf0802b1dff5474f9a78a69e20f8b5c3e",
+            "Helper_sha256": "a7f7f16d8d3f87d27e69ab895315ec7572c3fa6bb3809b5cf6b1c61e94d973c5"
+          },
+          "sealed_event": null,
+          "release_ns": 0,
+          "manager_reaped_before_release": false,
+          "manager_raw_wait": 0,
+          "manager_exit_code": 0,
+          "manager_wait_elapsed_ns": 0,
+          "timeout_status": null,
+          "original_denied": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "shutdown-native-small",
+          "receipt_sha256": "564e8dba4424aae260902aaef1e2c54161ad39e22d491067ba7ff61176f875c5",
+          "originals": [
+            {
+              "raw_sha256": "eb4e5fe6c54698efbe40c7513ee08d4845db81e83955fad527904c2bc5b38552",
+              "raw_bytes": 16468,
+              "frames": 76,
+              "dataset_records": 2,
+              "complete": true,
+              "delivered": false,
+              "publication_confirmed": false,
+              "forward": {
+                "stage": "copy",
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "error": {
+                  "class": "syscall",
+                  "errno": 32
+                },
+                "write_half_closed": false,
+                "elapsed_ns": 5138000
+              }
+            }
+          ],
+          "indexes": 0,
+          "forward_boundary": {
+            "StartedNS": 1792123951993519998,
+            "DeadlineNS": 1792123996993519998,
+            "CapturedElapsedNS": 11615336000,
+            "ForwardStartedElapsedNS": 13002965000,
+            "FinishedElapsedNS": 13011059000,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "copy",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "error": {
+                "class": "syscall",
+                "errno": 32
+              },
+              "write_half_closed": false,
+              "elapsed_ns": 5138000
+            },
+            "ID_sha256": "ae60abb8c1b167ef4f63c4c0aa7009dfec7d3c3df9695405749a02f31ad4b937",
+            "Management_sha256": "0c67a000b8ed964296dcd22bb216dab113e7124a040cc790a75d2f50b9f9ec31",
+            "Helper_sha256": "f33c1894686122a0ce49b74b5eb790a221e51d5d7996d111fee810fa2cae1935"
+          },
+          "sealed_event": {
+            "StartedNS": 1792123951993519998,
+            "DeadlineNS": 1792123996993519998,
+            "Stage": "sealed",
+            "ID_sha256": "ae60abb8c1b167ef4f63c4c0aa7009dfec7d3c3df9695405749a02f31ad4b937"
+          },
+          "release_ns": 1792123963629545998,
+          "manager_reaped_before_release": true,
+          "manager_raw_wait": 0,
+          "manager_exit_code": 0,
+          "manager_wait_elapsed_ns": 10808000,
+          "timeout_status": null,
+          "original_denied": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "shutdown-projection-10000",
+          "receipt_sha256": "96cc0ebe6f05c401c32ad7c6c4933a040fbf2cd6e1039995d478ae93e8d9a4be",
+          "originals": [
+            {
+              "raw_sha256": "2c268daeab96892b50927ade14c6bbc5b60a9c4e96315b397ea90377e664eee8",
+              "raw_bytes": 2142983,
+              "frames": 10074,
+              "dataset_records": 10000,
+              "complete": true,
+              "delivered": false,
+              "publication_confirmed": false,
+              "forward": {
+                "stage": "copy",
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "error": {
+                  "class": "syscall",
+                  "errno": 32
+                },
+                "write_half_closed": false,
+                "elapsed_ns": 186576000
+              }
+            }
+          ],
+          "indexes": 0,
+          "forward_boundary": {
+            "StartedNS": 1792123993377220998,
+            "DeadlineNS": 1792124038377220998,
+            "CapturedElapsedNS": 16118787000,
+            "ForwardStartedElapsedNS": 17504139000,
+            "FinishedElapsedNS": 17771330000,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "copy",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "error": {
+                "class": "syscall",
+                "errno": 32
+              },
+              "write_half_closed": false,
+              "elapsed_ns": 186576000
+            },
+            "ID_sha256": "6d76acde0e40174a8eeacd18ff2d95dd1117112a492a39f4376a00e4050aae92",
+            "Management_sha256": "c15434e640d4c5cc89ecbba2b5b6dad6961c1d030ac4126426d8b6f85ebae5df",
+            "Helper_sha256": "9f0cb0894a966d1e391539fccf3da0c87a7f09ccccf97e9935e6c8e596782147"
+          },
+          "sealed_event": {
+            "StartedNS": 1792123993377220998,
+            "DeadlineNS": 1792124038377220998,
+            "Stage": "sealed",
+            "ID_sha256": "6d76acde0e40174a8eeacd18ff2d95dd1117112a492a39f4376a00e4050aae92"
+          },
+          "release_ns": 1792124009693782998,
+          "manager_reaped_before_release": true,
+          "manager_raw_wait": 0,
+          "manager_exit_code": 0,
+          "manager_wait_elapsed_ns": 10842000,
+          "timeout_status": null,
+          "original_denied": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "expiry-native-small",
+          "receipt_sha256": "966d20742b86c44ac5c5801d014e0c709cb5a53805e361e5c02a4925bbdaadcd",
+          "originals": [
+            {
+              "raw_sha256": "02176fcb1769cb0865e28dc8c3b0caa451149439d4d10e1191b33178a801f39e",
+              "raw_bytes": 16468,
+              "frames": 76,
+              "dataset_records": 2,
+              "complete": true,
+              "delivered": false,
+              "publication_confirmed": false,
+              "forward": {
+                "stage": "copy",
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "error": {
+                  "class": "deadline"
+                },
+                "write_half_closed": false,
+                "elapsed_ns": 3665000
+              }
+            }
+          ],
+          "indexes": 0,
+          "forward_boundary": {
+            "StartedNS": 1792124035084395998,
+            "DeadlineNS": 1792124080084395998,
+            "CapturedElapsedNS": 9431590000,
+            "ForwardStartedElapsedNS": 46190633999,
+            "FinishedElapsedNS": 46194478000,
+            "DeadlineReached": true,
+            "ContextDeadlineExceeded": true,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "copy",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "error": {
+                "class": "deadline"
+              },
+              "write_half_closed": false,
+              "elapsed_ns": 3665000
+            },
+            "ID_sha256": "dd68de2d149195ae00c3c931b38604e14741fc40ae1e0867deca01009bae72db",
+            "Management_sha256": "900f5c17d84457624703d9a29db035b97b36038f4b70a6f09f10a0ce4f797bbc",
+            "Helper_sha256": "8f499843f95ec54a1f074f62e3a6ee14a26a40a20c0d6401aa6ca99369de7a17"
+          },
+          "sealed_event": {
+            "StartedNS": 1792124035084395998,
+            "DeadlineNS": 1792124080084395998,
+            "Stage": "sealed",
+            "ID_sha256": "dd68de2d149195ae00c3c931b38604e14741fc40ae1e0867deca01009bae72db"
+          },
+          "release_ns": 1792124080091579998,
+          "manager_reaped_before_release": false,
+          "manager_raw_wait": 0,
+          "manager_exit_code": 0,
+          "manager_wait_elapsed_ns": 0,
+          "timeout_status": {
+            "timeout_body_sha256": "f541eefd51db2911debeb851697100e6a7aa98899a1439338866dc2bbdf7d1db",
+            "timeout_body_bytes": 187,
+            "unavailable_body_sha256": "4e6cdc6614ad230d02db7cae4b747ea10f11e21fe03898491af344f314933500",
+            "unavailable_body_bytes": 57,
+            "unavailable_http_status": 503,
+            "original_timeout_observed": true,
+            "manager_alive_after_expiry": true
+          },
+          "original_denied": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "expiry-projection-10000",
+          "receipt_sha256": "da4e6612076c310e3a2f60e252985c41946c9e17d0c18097b57acd01adcfd577",
+          "originals": [
+            {
+              "raw_sha256": "8be8074b6dee53be87783ce09f71fe6182ad74af7839b49d9c811fe1ca275b9a",
+              "raw_bytes": 2142982,
+              "frames": 10074,
+              "dataset_records": 10000,
+              "complete": true,
+              "delivered": false,
+              "publication_confirmed": false,
+              "forward": {
+                "stage": "copy",
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "error": {
+                  "class": "deadline"
+                },
+                "write_half_closed": false,
+                "elapsed_ns": 142651671
+              }
+            }
+          ],
+          "indexes": 0,
+          "forward_boundary": {
+            "StartedNS": 1792124106811552523,
+            "DeadlineNS": 1792124151811552523,
+            "CapturedElapsedNS": 13378808191,
+            "ForwardStartedElapsedNS": 45997513562,
+            "FinishedElapsedNS": 46168238333,
+            "DeadlineReached": true,
+            "ContextDeadlineExceeded": true,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "copy",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "error": {
+                "class": "deadline"
+              },
+              "write_half_closed": false,
+              "elapsed_ns": 142651671
+            },
+            "ID_sha256": "8644024b9d6407c173ce98e8d224d3b9b5f2d321618afff2f8473b29b458b622",
+            "Management_sha256": "9a9fcbf89e301ed8866c97c737b5caf3c8d2be84e21f0239c199003c1153da54",
+            "Helper_sha256": "171818a9762df22da4edcd2b88c3d9b998adb7c39c724ef60c943ecfb50d5a6a"
+          },
+          "sealed_event": {
+            "StartedNS": 1792124106811552523,
+            "DeadlineNS": 1792124151811552523,
+            "Stage": "sealed",
+            "ID_sha256": "8644024b9d6407c173ce98e8d224d3b9b5f2d321618afff2f8473b29b458b622"
+          },
+          "release_ns": 1792124151820430757,
+          "manager_reaped_before_release": false,
+          "manager_raw_wait": 0,
+          "manager_exit_code": 0,
+          "manager_wait_elapsed_ns": 0,
+          "timeout_status": {
+            "timeout_body_sha256": "f541eefd51db2911debeb851697100e6a7aa98899a1439338866dc2bbdf7d1db",
+            "timeout_body_bytes": 187,
+            "unavailable_body_sha256": "4e6cdc6614ad230d02db7cae4b747ea10f11e21fe03898491af344f314933500",
+            "unavailable_body_bytes": 57,
+            "unavailable_http_status": 503,
+            "original_timeout_observed": true,
+            "manager_alive_after_expiry": true
+          },
+          "original_denied": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "failure_diagnostics": [],
+      "partial_observations": [],
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "resource_activation": false
+    },
+    {
+      "source_commit": "59bdb60828ef83ba9f91cdbd16821472e5b0bc87",
+      "base_commit": "ae8d8802c7b237a088579ec04f7b9071929ca6c3",
+      "pr_title": "fix(helper): reject replies after the original collection deadline",
+      "release": "15.1",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessExpiryAndShutdown (352.17s)",
+      "raw_sha256": "48bbab670e73595af9a7c2a7c68c6167329ddfc56efe2ab990e2b8ae3a7eb76d",
+      "archive_sha256": "05186ff1b779366e4f038276aa9b0462b6e2492a5e318dda9646a0556eb0d1fe",
+      "result_sha256": "6f463f2ef82d610bc9102e8e745a70ee20e89a799bf418701e6d410528a2c415",
+      "source_archive_sha256": "d9750d670e815297cc1a4401b170e176b9cdc46fe469f6287335b6b6ab865794",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "5abf183c69d83d54da22aa5bb8868767bf696f1f2d7a182cbb5bc00bfdaac6bf",
+        "helper": "3b8b8bc4b9f4e8587d2f84204c2c8aa2830ba92ca6c556b264b48ee29a31eb7d",
+        "fixture": "be86b9d98dbfaaea9d3d115ab8a0c22d98c0ab1fafcd86c0d6ee97dd53508d85"
+      },
+      "controller_sha256": "fd78de14eb3039710491bc8c50f3d6ff2c604a24e992eabb5dd093b5f3f94042",
+      "worker_source_sha256": "f2e31b263da381e820ee0e2e5823e1dc27fad35928de8c8bce53aba1544bc0c0",
+      "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+      "probe_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+      "cases": [
+        {
+          "case": "normal-native-small",
+          "receipt_sha256": "db38eb87bfc3fc7857e06931644d145ad8514bb292b84f10e02415e0ac0b939e",
+          "originals": [
+            {
+              "raw_sha256": "ab5c464639cf7fb41118d9f286371c02f90f537e3194b6f291602e4cf5570c98",
+              "raw_bytes": 18783,
+              "frames": 86,
+              "dataset_records": 17,
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true,
+              "forward": {
+                "stage": "delivered",
+                "bytes": 18783,
+                "sha256": "ab5c464639cf7fb41118d9f286371c02f90f537e3194b6f291602e4cf5570c98",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 6577000
+              }
+            }
+          ],
+          "indexes": 1,
+          "forward_boundary": {
+            "StartedNS": 1792123385402614999,
+            "DeadlineNS": 1792123430402614999,
+            "CapturedElapsedNS": 12906713000,
+            "ForwardStartedElapsedNS": 14321281000,
+            "FinishedElapsedNS": 14328049000,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "delivered",
+              "bytes": 18783,
+              "sha256": "ab5c464639cf7fb41118d9f286371c02f90f537e3194b6f291602e4cf5570c98",
+              "error": {
+                "class": ""
+              },
+              "write_half_closed": true,
+              "elapsed_ns": 6577000
+            },
+            "ID_sha256": "7801206d47c556954f0c837fb828ac7b2d585745f46f3baab24ed4507bfe490d",
+            "Management_sha256": "c99604d412bd13d9cc2d1122d84add273dde47902cecc94c37003ac692327873",
+            "Helper_sha256": "b9cd31567127bace43f1ce1934f55448e112c01fb15d3982ed212c9236e261bd"
+          },
+          "sealed_event": null,
+          "release_ns": 0,
+          "manager_reaped_before_release": false,
+          "manager_raw_wait": 0,
+          "manager_exit_code": 0,
+          "manager_wait_elapsed_ns": 0,
+          "timeout_status": null,
+          "original_denied": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "normal-projection-10000",
+          "receipt_sha256": "be803f7fb1c41ab7d727defa1fbe78298330052a710d841f52e1c58e4b3dc049",
+          "originals": [
+            {
+              "raw_sha256": "e061e816ceecdd61ee25e5a1ab78355a379b391074babfa7c5612f67be194c1c",
+              "raw_bytes": 2141961,
+              "frames": 10069,
+              "dataset_records": 10000,
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true,
+              "forward": {
+                "stage": "delivered",
+                "bytes": 2141961,
+                "sha256": "e061e816ceecdd61ee25e5a1ab78355a379b391074babfa7c5612f67be194c1c",
+                "error": {
+                  "class": ""
+                },
+                "write_half_closed": true,
+                "elapsed_ns": 3279787000
+              }
+            }
+          ],
+          "indexes": 1,
+          "forward_boundary": {
+            "StartedNS": 1792123428505558999,
+            "DeadlineNS": 1792123473505558999,
+            "CapturedElapsedNS": 17471126999,
+            "ForwardStartedElapsedNS": 18665839999,
+            "FinishedElapsedNS": 21945864999,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "delivered",
+              "bytes": 2141961,
+              "sha256": "e061e816ceecdd61ee25e5a1ab78355a379b391074babfa7c5612f67be194c1c",
+              "error": {
+                "class": ""
+              },
+              "write_half_closed": true,
+              "elapsed_ns": 3279787000
+            },
+            "ID_sha256": "5e70e07e72dd284b2d2684739e0d77be72541a605d2d00d4de57d7aa6c40b2d0",
+            "Management_sha256": "8593ee63f716d034cb7eeae277cfc9548d65c9bf85488dff93d2109e9b205849",
+            "Helper_sha256": "85312d114f434d2408e1ca2005f01e32d5e87d2f3ebe8845d32b4e7fb7900f61"
+          },
+          "sealed_event": null,
+          "release_ns": 0,
+          "manager_reaped_before_release": false,
+          "manager_raw_wait": 0,
+          "manager_exit_code": 0,
+          "manager_wait_elapsed_ns": 0,
+          "timeout_status": null,
+          "original_denied": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "shutdown-native-small",
+          "receipt_sha256": "1c5c7060b47d621ee160662bd2b41ff7a831dfbe2bd638fbe48f9dc44cdc5975",
+          "originals": [
+            {
+              "raw_sha256": "8d294a16487b4934000b0f4e4b20e95768473ccdabfdc1059ad6b373c5e41883",
+              "raw_bytes": 18783,
+              "frames": 86,
+              "dataset_records": 17,
+              "complete": true,
+              "delivered": false,
+              "publication_confirmed": false,
+              "forward": {
+                "stage": "copy",
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "error": {
+                  "class": "syscall",
+                  "errno": 32
+                },
+                "write_half_closed": false,
+                "elapsed_ns": 6362000
+              }
+            }
+          ],
+          "indexes": 0,
+          "forward_boundary": {
+            "StartedNS": 1792123478126439998,
+            "DeadlineNS": 1792123523126439998,
+            "CapturedElapsedNS": 12272434000,
+            "ForwardStartedElapsedNS": 13671127000,
+            "FinishedElapsedNS": 13677732000,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "copy",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "error": {
+                "class": "syscall",
+                "errno": 32
+              },
+              "write_half_closed": false,
+              "elapsed_ns": 6362000
+            },
+            "ID_sha256": "0627a8ea2f486e678d103a58d3785275b64a946e3b63c718ef43f63e08135848",
+            "Management_sha256": "d864109f57b75495f668f26e640d1e1824af886ecc1499cae9bb43025dba14ae",
+            "Helper_sha256": "e97b3978ed485acf03d1c1ced6f15ac7302183b1a19c14b83a25bf3db326f45f"
+          },
+          "sealed_event": {
+            "StartedNS": 1792123478126439998,
+            "DeadlineNS": 1792123523126439998,
+            "Stage": "sealed",
+            "ID_sha256": "0627a8ea2f486e678d103a58d3785275b64a946e3b63c718ef43f63e08135848"
+          },
+          "release_ns": 1792123490419393998,
+          "manager_reaped_before_release": true,
+          "manager_raw_wait": 0,
+          "manager_exit_code": 0,
+          "manager_wait_elapsed_ns": 9799000,
+          "timeout_status": null,
+          "original_denied": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "shutdown-projection-10000",
+          "receipt_sha256": "d56d2d27cc33aa79646dea29adec71a78e3468551c306e5431601a3e6412f175",
+          "originals": [
+            {
+              "raw_sha256": "b7a1b942ac1369ddface2fbe76cffd11fc197763a00cde750a07d97b8f0744a8",
+              "raw_bytes": 2141961,
+              "frames": 10069,
+              "dataset_records": 10000,
+              "complete": true,
+              "delivered": false,
+              "publication_confirmed": false,
+              "forward": {
+                "stage": "copy",
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "error": {
+                  "class": "syscall",
+                  "errno": 32
+                },
+                "write_half_closed": false,
+                "elapsed_ns": 181082000
+              }
+            }
+          ],
+          "indexes": 0,
+          "forward_boundary": {
+            "StartedNS": 1792123519871020998,
+            "DeadlineNS": 1792123564871020998,
+            "CapturedElapsedNS": 17091764000,
+            "ForwardStartedElapsedNS": 18606872000,
+            "FinishedElapsedNS": 18950076000,
+            "DeadlineReached": false,
+            "ContextDeadlineExceeded": false,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "copy",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "error": {
+                "class": "syscall",
+                "errno": 32
+              },
+              "write_half_closed": false,
+              "elapsed_ns": 181082000
+            },
+            "ID_sha256": "22cd1c2af1028fafaa764ae360e75c881d4091c136008e42d9f14658b1ab8041",
+            "Management_sha256": "e44e04746e6e7ca8f1eda3307f93549933aebe8777474bffa49103f797d0309c",
+            "Helper_sha256": "06a7f880bff43c1c7f40734c282fe71877c740b06e23708ba28d319eb5b9281e"
+          },
+          "sealed_event": {
+            "StartedNS": 1792123519871020998,
+            "DeadlineNS": 1792123564871020998,
+            "Stage": "sealed",
+            "ID_sha256": "22cd1c2af1028fafaa764ae360e75c881d4091c136008e42d9f14658b1ab8041"
+          },
+          "release_ns": 1792123537159910998,
+          "manager_reaped_before_release": true,
+          "manager_raw_wait": 0,
+          "manager_exit_code": 0,
+          "manager_wait_elapsed_ns": 11041000,
+          "timeout_status": null,
+          "original_denied": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "expiry-native-small",
+          "receipt_sha256": "fa40b52fb5998f6ce3d68fb3d8213c9e613898592e85f2b385b95233b32bf171",
+          "originals": [
+            {
+              "raw_sha256": "a1bcaba1144b8c4de3f3c59a3b630816c55146ed1e46782c5439f97be17dfd52",
+              "raw_bytes": 18783,
+              "frames": 86,
+              "dataset_records": 17,
+              "complete": true,
+              "delivered": false,
+              "publication_confirmed": false,
+              "forward": {
+                "stage": "copy",
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "error": {
+                  "class": "deadline"
+                },
+                "write_half_closed": false,
+                "elapsed_ns": 3862000
+              }
+            }
+          ],
+          "indexes": 0,
+          "forward_boundary": {
+            "StartedNS": 1792123562985408998,
+            "DeadlineNS": 1792123607985408998,
+            "CapturedElapsedNS": 12378438000,
+            "ForwardStartedElapsedNS": 46466704999,
+            "FinishedElapsedNS": 46470760999,
+            "DeadlineReached": true,
+            "ContextDeadlineExceeded": true,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "copy",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "error": {
+                "class": "deadline"
+              },
+              "write_half_closed": false,
+              "elapsed_ns": 3862000
+            },
+            "ID_sha256": "11be3464c5a7bf0774932f9f80d25ae29dca6801e44bc83f4d2f9a6fa706aed6",
+            "Management_sha256": "62fdbd0a520d1484293551564e88a6a3e7fa2ff4d3a1ec236ba4c1bf8449e5f8",
+            "Helper_sha256": "fd3fd1d9aecedf6d760ce362adb861b96d9b2d306b5cbd7e381db374092c6963"
+          },
+          "sealed_event": {
+            "StartedNS": 1792123562985408998,
+            "DeadlineNS": 1792123607985408998,
+            "Stage": "sealed",
+            "ID_sha256": "11be3464c5a7bf0774932f9f80d25ae29dca6801e44bc83f4d2f9a6fa706aed6"
+          },
+          "release_ns": 1792123607994150998,
+          "manager_reaped_before_release": false,
+          "manager_raw_wait": 0,
+          "manager_exit_code": 0,
+          "manager_wait_elapsed_ns": 0,
+          "timeout_status": {
+            "timeout_body_sha256": "f541eefd51db2911debeb851697100e6a7aa98899a1439338866dc2bbdf7d1db",
+            "timeout_body_bytes": 187,
+            "unavailable_body_sha256": "4e6cdc6614ad230d02db7cae4b747ea10f11e21fe03898491af344f314933500",
+            "unavailable_body_bytes": 57,
+            "unavailable_http_status": 503,
+            "original_timeout_observed": true,
+            "manager_alive_after_expiry": true
+          },
+          "original_denied": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "expiry-projection-10000",
+          "receipt_sha256": "86f81ec2df5bd8f2d418193120c26457e8337c333373bb81d7b0739cfc082401",
+          "originals": [
+            {
+              "raw_sha256": "0e30929e616d9c7ffb2f274be18d04f3b93ea619e691f43b7d9c4c5a79964bb2",
+              "raw_bytes": 2141961,
+              "frames": 10069,
+              "dataset_records": 10000,
+              "complete": true,
+              "delivered": false,
+              "publication_confirmed": false,
+              "forward": {
+                "stage": "copy",
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "error": {
+                  "class": "deadline"
+                },
+                "write_half_closed": false,
+                "elapsed_ns": 183506513
+              }
+            }
+          ],
+          "indexes": 0,
+          "forward_boundary": {
+            "StartedNS": 1792123639745081569,
+            "DeadlineNS": 1792123684745081569,
+            "CapturedElapsedNS": 16761008616,
+            "ForwardStartedElapsedNS": 46247811476,
+            "FinishedElapsedNS": 46605554425,
+            "DeadlineReached": true,
+            "ContextDeadlineExceeded": true,
+            "ContextCancelled": false,
+            "Forward": {
+              "stage": "copy",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "error": {
+                "class": "deadline"
+              },
+              "write_half_closed": false,
+              "elapsed_ns": 183506513
+            },
+            "ID_sha256": "a015be979034bca5437c9781f2dfeadc92fdb6baee15b85adac9fed2b27b890c",
+            "Management_sha256": "16284534297e5eb9b53e221f83e4eb8d04877c5e7d98f16d806ef46b429b71ec",
+            "Helper_sha256": "92fa932a2915795304e7e98899eea12c8d08e932fa76b01530f0ab9c0f5e9b2a"
+          },
+          "sealed_event": {
+            "StartedNS": 1792123639745081569,
+            "DeadlineNS": 1792123684745081569,
+            "Stage": "sealed",
+            "ID_sha256": "a015be979034bca5437c9781f2dfeadc92fdb6baee15b85adac9fed2b27b890c"
+          },
+          "release_ns": 1792123684750002284,
+          "manager_reaped_before_release": false,
+          "manager_raw_wait": 0,
+          "manager_exit_code": 0,
+          "manager_wait_elapsed_ns": 0,
+          "timeout_status": {
+            "timeout_body_sha256": "f541eefd51db2911debeb851697100e6a7aa98899a1439338866dc2bbdf7d1db",
+            "timeout_body_bytes": 187,
+            "unavailable_body_sha256": "4e6cdc6614ad230d02db7cae4b747ea10f11e21fe03898491af344f314933500",
+            "unavailable_body_bytes": 57,
+            "unavailable_http_status": 503,
+            "original_timeout_observed": true,
+            "manager_alive_after_expiry": true
+          },
+          "original_denied": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "failure_diagnostics": [],
+      "partial_observations": [],
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "resource_activation": false
+    }
+  ],
+  "limitations": [
+    "Orderly SIGTERM process exit does not establish cancellation inside a continuing management lifetime or its internal context error.",
+    "Expiry is a deliberately held sealed-source negative control, never an accepted latency/resource observation or an extra allowed workload expiry.",
+    "Original observer context flags are retained as actually sampled, independently of wall-clock deadline crossing and socket error.",
+    "Original 45-second collection window, interval, caps/counts and resource budgets are unchanged; the eighteen-minute diagnostic allowance covers six separate fixtures.",
+    "Raw/archive broker limits, later storage-failure stages, integrated admission ordering, other cancellation/recovery and cadence/calibration/overhead remain open.",
+    "Full resources/idle/latency, browser/manual accessibility, hardware and release acceptance remain open; historical failed/skipped observations are unchanged.",
+    "Canonical resource runner stays inactive; runtime writes remain denied."
+  ]
+}
