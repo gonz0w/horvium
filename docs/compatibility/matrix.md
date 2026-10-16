@@ -2296,3 +2296,11 @@ prefix tmpfs assumption failed; 14.5 was not started for that source. Both facts
 remain preserved. Synthetic custody/portable partial-write results establish no
 producer lineage, publication, broker byte-cap, full resource or hardware support.
 The canonical resource runner stays inactive and runtime writes remain denied.
+
+[Offline storage-custody readback](../testing/dashboards/witness-storage-readback.md)
+adds a repository-owned read-only validator for retained partial-storage control
+archives with separately verified source/release/artifact expectations. It checks
+original bytes, receipt consistency and safe bounded archive input without a VM
+or extraction. It does not establish native behavior at the validator commit or
+replace original build/ABI/preflight/teardown evidence. Failed historical candidates
+remain failed; wider native/resource/browser/hardware/release gates stay open.
