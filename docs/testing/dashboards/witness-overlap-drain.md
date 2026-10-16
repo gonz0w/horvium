@@ -43,3 +43,31 @@ exhaustion, actual collection expiry, ordinary cancellation, signal/controller
 loss at other stages, whole admission ordering or full resource acceptance.
 Existing source-specific evidence remains separate. Canonical resource runner is
 inactive; runtime writes stay denied. Hardware/browser/manual/release gates remain.
+
+## Candidate evidence
+
+Reviewed source `abacef732f249ab1edc3b64fd10ffe0186a32af1` passed all four controls on each pinned
+FreeBSD/amd64 release. The [immutable manifest](witness-overlap-drain-manifest.json)
+binds source/base/title, original review, compiler/artifacts/ABI probe, exact
+command/controller, original byte/index readback and before/after preflight.
+
+| FreeBSD | Four-case native duration | Complete delivered originals/indexes | Overlap peers rejected | Publication-confirmed originals |
+| --- | --- | --- | --- | --- |
+| 15.1 | 193.48s | 4 / 4 | 8 | 2 |
+| 14.5 | 209.98s | 4 / 4 | 8 | 2 |
+
+All eight case originals and their sealed indexes were independently reopened.
+Their real framing, echoed IDs, exact full forward hashes/EOF, object/mode/owner,
+actor incarnations and unchanged 45-second deadline were checked. Projection
+sources each contain exactly 10,000 dataset records. In every case, Before and
+Rejected retain the same one complete undelivered original and one reaped connector;
+two actual unrelated management-UID peers are denied without queued work or
+permanent failure. The overlap cases then confirm actual publication; the drain
+cases first observe listener refusal while the original observer is still alive,
+then release and retain delivery without claiming publication confirmation.
+
+Guest cleanup and host process/listener/key/image/variables teardown passed, with
+original helper/configuration/token and pinned runtime preservation. All 170 prior
+manifests and seven existing operator files remain unchanged. This adds coverage
+for existing test-only broker behavior, with no product or broker logic correction;
+there is no fabricated failing regression. Broader gates listed above remain open.

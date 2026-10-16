@@ -2248,3 +2248,9 @@ hardware/release acceptance and runtime writes remain pending/denied.
 exercise unrelated same-UID rejection while a real call is sealed, then separately
 normal in-flight owner drain. This is test-only source-bound evidence; delivery
 without metadata confirmation does not establish publication or resource acceptance.
+
+The [overlap/drain manifest](../testing/dashboards/witness-overlap-drain-manifest.json)
+records four passing controls per pinned release: eight reopened original/index
+pairs, sixteen rejected unrelated same-UID peers and four publication-confirmed
+overlap originals. Separate drain delivery does not confirm publication. Guest/host
+teardown passed; runtime, full resources and support claims are unchanged.
