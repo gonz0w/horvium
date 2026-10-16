@@ -28,21 +28,29 @@ read/write bound. The extracted previous copy behavior fails the three partial
 prefix cases before correction. Existing cancelled-read and archive-prefix controls
 also remain required.
 
-The fixed native selector runs normal and partial-ENOSPC cases on both pinned
-FreeBSD releases. Each owns a fresh full-size 320 MiB tmpfs, records its original
-identity and the actual fixture actor, and starts with a complete synthetic golden
-original whose byte delivery and eligibility are checked. The fault case fills the
-actual mount, independently checks that a new one-byte allocation fails, hashes
-and reopens the filler, then truncates that filler by exactly 32 KiB. It captures
-a larger fixed synthetic byte stream through the actual store and file writer.
+The fixed native selector runs three cases on both pinned releases. Each owns
+a fresh full-size 320 MiB tmpfs, records its identity and actual fixture actor,
+and starts with an eligible, delivered synthetic golden original:
 
-Require a positive acknowledged prefix smaller than one 64 KiB relay buffer,
-actual ENOSPC, the original copy-stage/actor boundary, sealed raw bytes with the
-exact prefix hash, and an incomplete, undelivered diagnostic reference. After
-reclaiming the filler, require a real allocation to succeed while old-original
-lookup, failed-original forwarding and another capture stay denied. The rejected
-source must remain unread and the first failure boundary unchanged. A zero-byte
-failure or unindexed raw file does not satisfy this partial-write control.
+- Normal capture preserves complete bytes and delivery.
+- ENOSPC fills the actual mount, independently checks that a new one-byte
+  allocation fails, hashes/reopens the filler, and truncates it by 32 KiB. The
+  observed tmpfs behavior rejects the next 64 KiB write with zero acknowledged
+  bytes. Retain that empty diagnostic original and actual ENOSPC separately.
+- Positive partial write runs in a disposable child with the original fixture
+  executable and bounded inherited bootstrap. Only that child sets its soft
+  `RLIMIT_FSIZE` to 8,193 bytes and ignores SIGXFSZ; hard/store/archive/mount bounds
+  stay unchanged. The actual file writer must acknowledge exactly 8,193 bytes and
+  return EFBIG. Record before/during/restored limits, actual child actor and wait.
+  Restore the limit before exporting or checking post-failure allocation.
+
+Both fault cases require the copy-stage/actor/error boundary and a sealed,
+incomplete, undelivered reference with the exact acknowledged prefix hash. After
+removing the actual filler or restoring the child limit, require allocation to
+succeed while old-original lookup, failed-original forwarding and another capture
+stay denied. The rejected source remains unread and the first boundary unchanged.
+Zero-byte ENOSPC does not satisfy the positive partial-write criterion, and EFBIG
+is not reported as physical ENOSPC. No process limit is changed in the parent.
 
 Export the actual raw originals and bounded case receipt before unmount, including
 on assertion failure. Independent host readback must reopen raw bytes, object/
@@ -56,7 +64,7 @@ cd /root/work/cmd/horvium
 env HORVIUM_NATIVE_VM=1 HORVIUM_PERF_VM=1 /root/work/.tools/dashboard-native.test -test.v -test.count=1 -test.timeout=8m -test.failfast -test.run='^TestNativeDashboardWitnessPartialStorage$'
 ```
 
-The eight-minute limit is an outer diagnostic allowance for two owned fixtures.
+The eight-minute limit is an outer diagnostic allowance for three owned fixtures.
 It adds no trusted collection allowance. Original source-bound host preflight,
 clean signed review and preserved failed attempts remain required.
 
@@ -71,3 +79,14 @@ admission, remaining cancellation/recovery, cadence/overhead, full resource and
 activation review remain open. Browser/manual accessibility, hardware and release
 acceptance remain separate. Canonical resource instrumentation stays inactive and
 runtime storage writes remain denied.
+
+## Preserved failed fixture assumption
+
+Source `dcb70e0374311386bbf0358151395c10b9b26983` passed normal custody
+on 15.1, then failed the positive-prefix predicate: the full-size tmpfs returned
+ENOSPC with zero acknowledged bytes after 32 KiB was reclaimed. An empty sealed
+`capture-io` original and its actual copy/errno boundary were retained. The whole
+run failed in 27.76 seconds; 14.5 was not started. Guest/host teardown passed.
+That attempt remains failed. It does not demonstrate a partial filesystem write
+or disprove the portable regression. The new child file-limit control exercises
+that distinct boundary without relabeling the earlier ENOSPC result.
