@@ -2272,3 +2272,9 @@ use the actual original connection window and separately observe orderly manager
 exit and collection deadline failure. They are inactive test-only qualification;
 complete capture still grants no delivery/publication authority. Broader native,
 resource, browser, hardware and release gates remain open.
+
+The helper reply completion path enforces its original absolute collection
+deadline even when context cancellation has not yet become visible. Late replies
+cannot publish; on-time protocol errors remain distinct. See the
+[expiry investigation and correction](../testing/dashboards/witness-expiry-shutdown.md).
+Fresh both-release native evidence remains required; older failures are preserved.

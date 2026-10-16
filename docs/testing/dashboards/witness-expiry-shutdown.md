@@ -58,3 +58,28 @@ forwarding failure; the actual manager/status predicate values were lost before
 the fatal assertion, so their cause remains unknown. Guest/host cleanup passed.
 A separate signed diagnostic candidate must retain observations on failure before
 any predicate is asserted; an isolated diagnostic is not the six-case matrix.
+
+## Reply-deadline correction
+
+The receipt-retention candidate's 15.1 projection expiry retained an alive manager,
+HTTP 503 and original status `protocol`, with one connector and no followup denial.
+The observer recorded the original deadline crossing and zero-byte forwarding
+failure. Its original native-small expiry passed; 14.5 was not started after the
+projection failure. Both failed candidates remain separately retained.
+
+The client previously checked only `ctx.Err()` after reading a reply. A socket's
+deadline can expire before context cancellation becomes visible; the decoder then
+reports a protocol failure, or a fully buffered late reply can escape the deadline
+check. This ordering is a source-supported explanation, not a measurement of the
+old manager's internal callback. Deterministic regressions reproduce both outcomes
+with an actually expired Unix socket and a complete buffered late reply while the
+context error is not yet published.
+
+The reply completion path now checks the existing absolute context deadline as
+well as explicit cancellation, rejecting late output as `DeadlineExceeded` before
+publication. No new timer, wait, timeout extension or retry is introduced. On-time
+malformed replies remain protocol failures; on-time valid data and explicit
+cancellation retain their behavior. Authority also includes the approved
+[M1 EDD](../../milestones/M1/EDD.md) and [Test Design](../../milestones/M1/TDD.md),
+M1-REQ-002 / M1-REQ-006, M1-FAIL-001 / M1-SCALE-001. New source-bound native
+execution must qualify this actual helper-client correction on both releases.
