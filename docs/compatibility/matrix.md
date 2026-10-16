@@ -2306,8 +2306,13 @@ replace original build/ABI/preflight/teardown evidence. Failed historical candid
 remain failed; wider native/resource/browser/hardware/release gates stay open.
 
 [Aggregate archive exhaustion](../testing/dashboards/witness-archive-budget.md)
-adds an inactive test-only broker control using actual prior producer originals
-and separately identified synthetic pressure captures. An actual manager collection
-must hit the unchanged aggregate byte bound and retain its failed prefix without
-forwarding or publication. Candidate results and limitations are recorded with
-the procedure; this is not normal producer scale, raw-cap or resource acceptance.
+passed on both pinned FreeBSD releases at the source in its
+[immutable manifest](../testing/dashboards/witness-archive-budget-manifest.json).
+Actual normal producer files plus separately identified sealed synthetic pressure
+left 80 bytes of the unchanged 256 MiB allowance; a real manager/helper collection
+through the broker retained an 80-byte archive-limit prefix, no forward/publication,
+and permanent followup denial. Independent readback recomputed exactly 256 MiB
+from all actual originals on each release; guest/host teardown passed. Pressure is
+not ordinary producer traffic, native accounting or publication. Projection-specific
+byte exhaustion, the normal-caller raw cap, broader admission/resource/activation,
+browser/manual/hardware/release gates remain open; runtime writes stay denied.

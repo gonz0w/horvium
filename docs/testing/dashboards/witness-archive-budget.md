@@ -1,6 +1,6 @@
 # Aggregate witness archive exhaustion through the broker
 
-Status: inactive test-only control; candidate results pending.
+Status: inactive test-only control; source-bound results below.
 Owner: [issue 382](https://github.com/gonz0w/horvium/issues/382).
 Authority: [ADR 0011](../../adr/0011-native-dashboard-witnesses.md),
 [accepted EDD](../../design/dashboards/native-witness-binding-EDD.md),
@@ -85,3 +85,37 @@ separate evidence. Remaining cancellation/recovery, cadence/overhead, full resou
 idle/latency/activation, browser/manual accessibility, hardware and release gates
 remain open. Canonical resource instrumentation stays inactive; runtime storage
 writes remain denied. No product interface, dependency, service or Action changes.
+
+## Source-bound component results
+
+Signed clean reviewed source `824ae181e25720469033b36bfb1afe502e19bacc`, base `61341f6940686a1ac1c898a69f9c8bd4e316b457`,
+passed normal publication and aggregate archive exhaustion on both pinned
+FreeBSD/amd64 profiles. The [immutable manifest](witness-archive-budget-manifest.json)
+retains original command/build/compiler/ABI/preflight, full archive/transcript,
+original object/hash/class and cleanup bindings for that exact source.
+
+| Release | Focused native result |
+| --- | --- |
+| 15.1 | TestNativeDashboardWitnessArchiveBudget (113.44s) |
+| 14.5 | TestNativeDashboardWitnessArchiveBudget (109.76s) |
+
+Independent readback reopened every counted byte and recomputed **268,435,456
+bytes per release**: all preceding normal producer originals, four separately
+classified sealed zero-stream pressure originals, and the final 80-byte producer
+prefix. The configured prior amount was exactly 268,435,376, derived from actual
+normal and pressure files. Normal delivered originals/indexes and their observed
+publication remain separate from undelivered failed prefixes and synthetic data.
+Each real failed collection retained `archive-limit`, no forward or original
+index, and a reaped connector. One actual refresh/busy join stayed denied without
+another connector or changed failure/original. Actual failure/unavailable response
+bytes were reopened and hashed independently.
+
+Both original tmpfs mounts, actual helper/configuration/token and owned ZFS/md,
+descendants and original host runtime teardown were verified. No source-bound
+failed native attempt occurred in this batch; all historical failures/skips retain
+their earlier scope. All 175 prior manifests and seven operator-owned files stayed
+byte-identical. Fresh check/lint/test/secrets and focused `cmd/horvium` race/one
+compiler-listed portable fuzz target passed at the native source. A prose/evidence
+followup may reuse that executed exact-input deep evidence while repeating the
+required baseline and lab-stop/status checks. These are component results, not
+broader native/resource/activation, hardware or release acceptance.
