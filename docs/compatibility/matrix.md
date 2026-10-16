@@ -2284,3 +2284,11 @@ records six passing native controls per pinned release, retaining actual orderly
 manager waits, original 45-second expiry, complete but undelivered adverse originals,
 and original timeout/unavailable status bytes. Normal publications stay separate.
 Guest/host teardown passed; no broader runtime/resource/support gate closes.
+
+[Partial storage write controls](../testing/dashboards/witness-partial-storage.md)
+correct the inactive witness capture hash when a file write acknowledges a prefix
+and returns an error. Portable partial-write and remaining-bound controls accompany
+actual FreeBSD tmpfs ENOSPC custody qualification. These synthetic originals do
+not establish broker/caller limits, producer lineage, publication or resource
+acceptance. Candidate-specific native results are recorded with the runbook;
+historical failures and the inactive resource runner retain their boundaries.

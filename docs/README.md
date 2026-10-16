@@ -341,3 +341,4 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [Broker failure on an exhausted witness mount](testing/dashboards/witness-broker-enospc.md).
 
 - [Collection reply deadlines and native shutdown controls](testing/dashboards/witness-expiry-shutdown.md).
+- [Partial storage write custody controls](testing/dashboards/witness-partial-storage.md).
