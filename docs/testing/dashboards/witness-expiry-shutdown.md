@@ -50,3 +50,11 @@ stages, raw/archive broker byte limits, later storage-failure stages, whole admi
 ordering, cadence/calibration/overhead, full resource/idle/latency, browser/manual,
 hardware or release acceptance. Failed historical candidates remain unchanged.
 Canonical resource runner stays inactive; runtime writes stay denied.
+
+The first candidate passed all six controls on 14.5, but 15.1 failed the combined
+manager/status assertion in native-small expiry after four passing cases. Projection
+expiry was skipped by fail-fast. The retained source proves original deadline
+forwarding failure; the actual manager/status predicate values were lost before
+the fatal assertion, so their cause remains unknown. Guest/host cleanup passed.
+A separate signed diagnostic candidate must retain observations on failure before
+any predicate is asserted; an isolated diagnostic is not the six-case matrix.

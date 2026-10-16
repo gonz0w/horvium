@@ -87,7 +87,14 @@ func TestNativeDashboardWitnessExpiryAndShutdown(t *testing.T) {
 				}
 				p := startWitnessPairWithFault(t, owner, probe, mode, stage, label)
 				o := p.observer
+				r := witnessExpiryCase{Label: label, Mode: mode, Owner: o.config.Parent, Helper: o.config.Helper}
+				caseRecorded := false
 				t.Cleanup(func() {
+					if !caseRecorded {
+						if witnessWritePrivateIndex(export, label+"-observations.json", r) != nil {
+							t.Error("partial original observations")
+						}
+					}
 					if !o.closed {
 						diagnostic, _ := o.control(witnessNativeCommand{Operation: "readback"})
 						if witnessWritePrivateIndex(export, label+"-failure.json", diagnostic) != nil {
@@ -95,7 +102,6 @@ func TestNativeDashboardWitnessExpiryAndShutdown(t *testing.T) {
 						}
 					}
 				})
-				r := witnessExpiryCase{Label: label, Mode: mode, Owner: o.config.Parent, Helper: o.config.Helper}
 				var e error
 				r.Observer, e = witnessObserveActor(o.process.cmd.Process.Pid, probe.ABI)
 				if e != nil {
@@ -198,7 +204,7 @@ func TestNativeDashboardWitnessExpiryAndShutdown(t *testing.T) {
 						response.Body.Close()
 						r.UnavailableStatus = response.StatusCode
 						if !r.ManagerAliveAfterExpiry || !r.TimeoutObserved || re != nil || r.UnavailableStatus != 503 {
-							t.Fatal("timeout published or killed manager")
+							t.Fatalf("timeout qualification failed: manager_alive=%t timeout_observed=%t unavailable_status=%d response_read_failed=%t", r.ManagerAliveAfterExpiry, r.TimeoutObserved, r.UnavailableStatus, re != nil)
 						}
 					} else if r.ReleaseNS >= r.Event.DeadlineNS || b.DeadlineReached || b.ContextDeadlineExceeded || b.ContextCancelled || ref.Forward.Error.Class != "syscall" || ref.Forward.Error.Errno != uint64(syscall.EPIPE) {
 						t.Fatal("orderly manager shutdown mislabeled as observer timeout/cancellation")
@@ -246,6 +252,7 @@ func TestNativeDashboardWitnessExpiryAndShutdown(t *testing.T) {
 				if witnessWritePrivateIndex(out, "receipt.json", r) != nil {
 					t.Fatal("case receipt")
 				}
+				caseRecorded = true
 				if !r.Reaped || !r.HelperUnchanged || !r.ConfigurationUnchanged {
 					t.Fatal("teardown/actor/config uncertainty")
 				}
