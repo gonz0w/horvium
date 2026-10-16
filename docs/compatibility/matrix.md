@@ -2237,3 +2237,9 @@ remain open. All 168 historical manifests remain unchanged.
 selects the existing full 32-attempt projection gate with retained forwarding
 diagnostics. Candidate-specific native results remain separate from the original
 failed 14.5 gate, resource activation and general hardware/support acceptance.
+
+The [projection capacity manifest](../testing/dashboards/witness-projection-capacity-manifest.json)
+passed on both pinned releases at its exact reviewed source. Original records/forwarding/publication,
+bounded control snapshots and teardown are independently checked per run. The
+historical 14.5 failure remains unchanged and unexplained; broader native/resource/
+hardware/release acceptance and runtime writes remain pending/denied.

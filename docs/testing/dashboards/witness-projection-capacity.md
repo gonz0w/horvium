@@ -61,5 +61,49 @@ Canonical resource runner stays inactive and runtime writes remain denied.
 
 ## Candidate evidence
 
-Record independently reopened candidate outcomes after execution, preserving
-failed and incomplete observations without upgrading older evidence.
+Signed reviewed source `e5949969c894455b26bc40bb04e1469963521fc1` passed the full selected
+projection attempt-cap gate on both pinned FreeBSD/amd64 releases. The
+[immutable manifest](witness-projection-capacity-manifest.json) binds both runs to
+that source, base, exact PR title, original review, compiler/artifacts, native probe,
+command/controller and before/after preflight. Baseline checks and affected cmd
+race/original-wire fuzz actually executed at this source before native execution.
+
+| FreeBSD | Native test duration | Complete/delivered originals | Observed publication IDs | Largest complete snapshot, bytes including header |
+| --- | --- | --- | --- | --- |
+| 15.1 | 1191.60s | 32 | 32 | 29392 |
+| 14.5 | 1139.10s | 32 | 32 | 29392 |
+
+Each run preserved all 32 originals and sealed indexes, denied original 33, and
+rejected a subsequent actual manager refresh before starting connector 34. Cached
+witness eligibility stayed denied and the manager retained its last complete
+publication. Independent readback reopened all producer frames, exact 10,000 dataset
+counts, full delivered hashes/EOF observations, original object/actor/incarnation
+bindings, publication metadata, five bounded snapshot shards, raw/index census,
+helper/configuration/token preservation and guest/host teardown. Observed publication
+IDs include the first and last originals; intervening IDs not observed by the
+controller are not retrospectively confirmed.
+
+15.1's healthy Before snapshot records `active=true`, one complete/delivered
+original and one already reaped connector (`connector_active=0`). The existing
+native gate does not require that pre-fault snapshot to be quiescent. Preserve this
+flag explicitly; both releases' capacity, boundary, followup and final snapshots
+are inactive, with no active connector. Independent readback distinguishes these
+states rather than treating Before as terminal cleanup evidence. Both untouched
+original receipt sets pass that predicate; fourteen mutations introducing terminal
+activity, a live connector or unreaped-connector counts are rejected.
+
+The intended terminal failure is the attempt-33 capture limit, after 32 successful
+forwards. The retained terminal forward receipt belongs to successful original 32;
+it is not a forwarding failure for attempt 33. All source facts and failure states
+remain separate. Both candidates remain globally native/resource unqualified.
+
+This is new source-bound component evidence. It does not establish the cause of
+the historical 14.5 fifth-original failure or change that failed observation.
+The complete three-case admission sequence and its cumulative preconditioning/order
+were not executed at this source. Full broker/resource activation and broader
+acceptance remain open.
+
+The host dispatcher stopped before launching 15.1 because exclusive log creation
+protected an older existing output file. 14.5 was already complete and independently
+verified. The first 15.1 execution resumed at the same signed source/controller
+with a fresh output path; no native test was replayed and the old log was preserved.
