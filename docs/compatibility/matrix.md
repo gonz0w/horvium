@@ -2232,3 +2232,8 @@ pinned releases. Original-byte readback and guest/host teardown passed. These
 results leave the prior 14.5 full-capacity failure unexplained and unqualified;
 actual collection expiry/cancellation, full resource/support and activation gates
 remain open. All 168 historical manifests remain unchanged.
+
+[Projection attempt-capacity qualification](../testing/dashboards/witness-projection-capacity.md)
+selects the existing full 32-attempt projection gate with retained forwarding
+diagnostics. Candidate-specific native results remain separate from the original
+failed 14.5 gate, resource activation and general hardware/support acceptance.
