@@ -1,0 +1,448 @@
+{
+  "schema": 1,
+  "date": "2026-10-16",
+  "scope": "offline-replay-of-retained-synthetic-storage-custody-archives",
+  "validator_source_commit": "eb70b7fbf505b6356e83a30a83a1b9b11cb3847e",
+  "validator_base_commit": "1f439274f152262687bffdab2dd200e8ce687504",
+  "pr_title": "test(dashboards): make storage custody readback reproducible",
+  "validator_sha256": "43738c345e294e41ef9b9c0725404deb36d3bdb5cff3eea54111c2d858c361c1",
+  "qualified": false,
+  "native_acceptance": false,
+  "resource_acceptance": false,
+  "resource_activation": false,
+  "new_native_execution": false,
+  "requirements": [
+    "DASH-WIT-003",
+    "DASH-WIT-007",
+    "DASH-WIT-009"
+  ],
+  "historical_manifests_preserved": 174,
+  "historical_native_manifest_sha256": "9627635661f74d09468c29bf144ba1841918e1dce52d57cbced5a8a10555195a",
+  "portable_review": {
+    "source_commit": "eb70b7fbf505b6356e83a30a83a1b9b11cb3847e",
+    "qualified": true,
+    "checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "plan": {
+      "mode": "full",
+      "reason": "shared tooling, policy, module or packaging change",
+      "packages": [],
+      "native_review_required": true
+    },
+    "deep_executed": true,
+    "deep_result": {
+      "fuzz_targets": [
+        {
+          "package": "./cmd/horvium",
+          "target": "FuzzDashboardWitnessOriginalGrammar"
+        },
+        {
+          "package": "./internal/admin",
+          "target": "FuzzConfiguration"
+        },
+        {
+          "package": "./internal/admin",
+          "target": "FuzzSessionAuthorityActions"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzActionNegotiation"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzPropertyReplies"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzPropertyRequest"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzRequest"
+        },
+        {
+          "package": "./internal/helper",
+          "target": "FuzzSnapshot"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPersistentBackingProjection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPoolPropertyCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPoolProviderCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyClaimSourceSelection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyControlSelection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyJobSource"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzPropertyPolicyCollection"
+        },
+        {
+          "package": "./internal/host/freebsd",
+          "target": "FuzzSystemUseCollection"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzDiskAccess"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzDiskAttachments"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzDiskObservation"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzGEOM"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzPoolDiskAttachments"
+        },
+        {
+          "package": "./internal/inventory",
+          "target": "FuzzPools"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzDeviceUseReview"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionCensus"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionCensusChange"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionJournal"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzExecutionJournalNamespace"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemSignature"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzFilesystemStates"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzIdentities"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzImportedPoolUse"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobReservations"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzJobRestartPage"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipCatalogNames"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzOwnershipRecord"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolFeatures"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolLabels"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolScan"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolState"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolSystemUse"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPoolTopology"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzProperties"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyCoordinatorActions"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyExecutionCut"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyExecutionHandoff"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyIntent"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyJob"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyJobAssessment"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyLiveStateReceipt"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyPlan"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyPostcondition"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzPropertyViews"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzStateCatalogNames"
+        },
+        {
+          "package": "./internal/storage",
+          "target": "FuzzSystemDeviceUse"
+        }
+      ],
+      "race_packages": [
+        "./cmd/horvium",
+        "./internal/admin",
+        "./internal/client",
+        "./internal/console",
+        "./internal/eventlog",
+        "./internal/helper",
+        "./internal/host/freebsd",
+        "./internal/inventory",
+        "./internal/observation",
+        "./internal/service",
+        "./internal/storage"
+      ]
+    },
+    "result_sha256": "f5eb1155e4324e22bb9942ce5bc5d966b2109779ed23929470c3957f98875338"
+  },
+  "behavioral_test_methods": 16,
+  "behavioral_log_sha256": "17130a82bd32026f7c093d9474b8e671ec7ba2ede268430aa09ff0afc71affa6",
+  "growth_regression": {
+    "failed_validator_source": "fb86b978c6f50a601bfaac8783cd0782a1cae749",
+    "failing_log_sha256": "17a5e6de28cb1444d5447a4ee80d3e7c5adc4240c5183dbe0033e4d97fb72248",
+    "corrected_validator_source": "eb70b7fbf505b6356e83a30a83a1b9b11cb3847e",
+    "passing_log_sha256": "d10ffbd9f0faa72cd6837063279524e199b59fbc3d035051302a1e8dbc4b36ad",
+    "original_size_read_budget": true
+  },
+  "earlier_validator_replay_sha256": "0eff9f9f57b55c9726b907f9e19cb3e7503b9f05e04f2566998203b704cc8971",
+  "corrected_validator_replay_sha256": "97fb89630b1d532b6ef11774bbaf53b4bb7f2fd3206ef9aa5c775b62d1642b3d",
+  "runs": [
+    {
+      "validator_source_commit": "eb70b7fbf505b6356e83a30a83a1b9b11cb3847e",
+      "validator_base_commit": "1f439274f152262687bffdab2dd200e8ce687504",
+      "native_source_commit": "75622461d7238e151f2713885b8ddc070beac7d3",
+      "native_base_commit": "f36d4b0a2ca93c27a4197291f55f84934621af41",
+      "native_release": "15.1",
+      "original_native_exit": 0,
+      "validator_exit": 0,
+      "expected_result": "scoped consistency report",
+      "expectation_sha256": "bf518a622ee50f85b9d1ec120ebaa45e5937d5cde52281d73c27f5eb34b2fd01",
+      "archive_sha256": "16cd6912c1f22a17f8617b7b12a91b59c826c32ca3e47de8427dc35fe9d8cab1",
+      "probe_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+      "fixture_sha256": "d8cb48d4ab440aa431165c616ab97f079cf11d8db2a69c3d28bb40b0d691281a",
+      "source_archive_sha256": "58223bdfad8676b0e35a8049b886bd1144fb876d206a8c1ef0425e57d2b55418",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "original_native_result_sha256": "f28a47f58ec8e9f768740eb633ac603d8906c75df56698a013a9703f475cc07b",
+      "stdout_sha256": "16ba07ff1c3b1b3d29132caa0d51f6443a3481d6e9d7656824f33bfdaebbc159",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "supervisor_state_sha256": "05b4df047698fd802443eb092fe28c262dfc48f01a9c19071de5f4572f4e193b",
+      "command_sha256": "47be1472beca5bcb2962615d12fe4093657b6060dd3a9be9cb29a7eb1c62e7d5",
+      "supervisor_completed": true,
+      "supervisor_group_cleaned": true,
+      "cases": [
+        {
+          "acknowledged_bytes": 1328,
+          "capture_error": {
+            "class": ""
+          },
+          "case": "normal",
+          "originals": 1,
+          "receipt_sha256": "1868dd589d01ea0c3e6466d8957bb0271385edc377a85a7b6c6b2d8261ea2394",
+          "stored_bytes": 1328
+        },
+        {
+          "acknowledged_bytes": 0,
+          "capture_error": {
+            "class": "syscall",
+            "errno": 28
+          },
+          "case": "enospc-zero",
+          "originals": 2,
+          "receipt_sha256": "5b58a3503012f190f73914d16a9b2f37d105d4418eaab667f576b309a9b425d4",
+          "stored_bytes": 1328
+        },
+        {
+          "acknowledged_bytes": 8193,
+          "capture_error": {
+            "class": "syscall",
+            "errno": 27
+          },
+          "case": "file-limit-partial",
+          "originals": 2,
+          "receipt_sha256": "c41754f8f32b7cabb6d4fc431482005aef4de7086b2437ad59b7f5b05b4a9f6e",
+          "stored_bytes": 9521
+        }
+      ],
+      "new_native_execution": false,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "resource_activation": false
+    },
+    {
+      "validator_source_commit": "eb70b7fbf505b6356e83a30a83a1b9b11cb3847e",
+      "validator_base_commit": "1f439274f152262687bffdab2dd200e8ce687504",
+      "native_source_commit": "75622461d7238e151f2713885b8ddc070beac7d3",
+      "native_base_commit": "f36d4b0a2ca93c27a4197291f55f84934621af41",
+      "native_release": "14.5",
+      "original_native_exit": 0,
+      "validator_exit": 0,
+      "expected_result": "scoped consistency report",
+      "expectation_sha256": "0cb4153c4b960922c81080d7c96a30d8a9123f4f34fc9fc021fbb6633a9058bd",
+      "archive_sha256": "196dcacabed9b2e5b6f3688e006ef72c02e6cde6bef622f7f1f2d71329ba97ea",
+      "probe_sha256": "a0e24744dd648299f09eb37fe808a599cc57bbb721323097bbfdbd550abae299",
+      "fixture_sha256": "d8cb48d4ab440aa431165c616ab97f079cf11d8db2a69c3d28bb40b0d691281a",
+      "source_archive_sha256": "58223bdfad8676b0e35a8049b886bd1144fb876d206a8c1ef0425e57d2b55418",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "original_native_result_sha256": "7c3ba8d9e4dc4cae57f14109977a17114dbc9e02c922434efad0e712dfccd21e",
+      "stdout_sha256": "b0aa15a0f161bba4e6525a727f2494713a1b5b06fb27e0503cf7f60af2451f07",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "supervisor_state_sha256": "253105852605ccc9ff185c22a5be6ddce694bd8c7e5445a510d3922948a602d4",
+      "command_sha256": "d415c558d4cc6ad1477b40ba8e0f8e29a19bee5ae78b68bafff4a4bcf243638c",
+      "supervisor_completed": true,
+      "supervisor_group_cleaned": true,
+      "cases": [
+        {
+          "acknowledged_bytes": 1328,
+          "capture_error": {
+            "class": ""
+          },
+          "case": "normal",
+          "originals": 1,
+          "receipt_sha256": "9d20dbb05c5980d7b9c0977eb1a9fd4cfaa555509778abb530f37194588c9d76",
+          "stored_bytes": 1328
+        },
+        {
+          "acknowledged_bytes": 0,
+          "capture_error": {
+            "class": "syscall",
+            "errno": 28
+          },
+          "case": "enospc-zero",
+          "originals": 2,
+          "receipt_sha256": "d0b60ec96bc34175a7381afded61874080d8e02b98d593f3aaa96b60f44a1e3a",
+          "stored_bytes": 1328
+        },
+        {
+          "acknowledged_bytes": 8193,
+          "capture_error": {
+            "class": "syscall",
+            "errno": 27
+          },
+          "case": "file-limit-partial",
+          "originals": 2,
+          "receipt_sha256": "abaa0e8e845c40a47953a91033a4d656cfbe7a5902de90ea331d1b44a1178db8",
+          "stored_bytes": 9521
+        }
+      ],
+      "new_native_execution": false,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "resource_activation": false
+    },
+    {
+      "validator_source_commit": "eb70b7fbf505b6356e83a30a83a1b9b11cb3847e",
+      "validator_base_commit": "1f439274f152262687bffdab2dd200e8ce687504",
+      "native_source_commit": "dcb70e0374311386bbf0358151395c10b9b26983",
+      "native_base_commit": "f36d4b0a2ca93c27a4197291f55f84934621af41",
+      "native_release": "15.1",
+      "original_native_exit": 1,
+      "validator_exit": 1,
+      "expected_result": "reject failed predecessor",
+      "expectation_sha256": "a10a00ef077f3cd3103861a0508f4031d03eee4fa539f7cb92be57213f73d7b9",
+      "archive_sha256": "ec6306aa575f1955d5211d310ff7c169c9382ce3bc494270f132acba3baeb874",
+      "probe_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+      "fixture_sha256": "7e928116f4260be523c9c5d0aae86b03f328c955fed5b9f679b6352385aef041",
+      "source_archive_sha256": "115d3f30d40d61b93c5beb63a5b12f0c08477cdad783978d3ce900ec3a4b9201",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "original_native_result_sha256": "7f2cbdda11097f448e31de559a566037b4b5a923611cf00e562561d0320e53e8",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "833683ad79a6357c823feb2af9d4944ceaa66231533145c0fa2c4e76c49c4d58",
+      "supervisor_state_sha256": "5ccb6b7d84829877affd8eaa6484794ed6d29ef487630169189e390922e09064",
+      "command_sha256": "8b000dc3be132af9c4ff0fa613e357c525e16f904e2306a3715e84291cffcf9a",
+      "supervisor_completed": true,
+      "supervisor_group_cleaned": true,
+      "cases": [],
+      "new_native_execution": false,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "resource_activation": false
+    }
+  ],
+  "limits": [
+    "Expectation mapping from independent signed review/build/run evidence is trusted input; this tool cannot attest source or release from archive contents.",
+    "Native fixture source remains 75622461d7238e151f2713885b8ddc070beac7d3; no native workload executed at validator source.",
+    "Failed native dcb70e0 remains failed; rejected readback produces no acceptance result.",
+    "Framing/correlation and custody checks do not replace the complete independent Go decoder.",
+    "Original filler bytes are not exported and cannot be rehashed by this offline validator.",
+    "Original build/ABI/preflight/supervision/teardown evidence remains separately required.",
+    "No broader broker, resource, activation, browser/manual, hardware or release gate closes."
+  ]
+}

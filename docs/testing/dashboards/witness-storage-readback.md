@@ -69,10 +69,8 @@ limits stay 64 KiB with depth/type/duplicate-field checks; raw synthetic origina
 are bounded at 64 KiB. Tar paths, namespaces, root ownership, modes, duplicate and
 missing files, links, sparse/extension headers, compression and nonzero trailing
 data fail closed. Extension/member bounds are checked before tar payload reads.
-Original input identity/size/timestamps are rechecked after validation. There is
-an original-size read budget even if a regular file keeps growing during readback.
-There is
-no extraction, network, process launch or output file write in the validator.
+Original input identity/size/timestamps are rechecked after validation. An original-size read budget applies even if a regular file keeps growing during
+readback. There is no extraction, network, process launch or output file write in the validator.
 
 On success, stdout contains one JSON consistency report; qualification, native
 acceptance, resource acceptance and activation are always false. On rejection,
@@ -95,3 +93,32 @@ fixture, runtime, API, configuration, dependency, service or Action is added.
 Broker raw/archive limits, integrated admission, remaining cancellation/recovery,
 cadence/calibration/overhead, full resource/activation, browser/manual accessibility,
 hardware and release acceptance remain open. Runtime storage writes stay denied.
+
+## Source-bound replay observations
+
+Validator source `eb70b7fbf505b6356e83a30a83a1b9b11cb3847e`, base `1f439274f152262687bffdab2dd200e8ce687504`,
+replayed the original reviewed archives without a VM or workload execution:
+
+| Retained archive | Original native source | Offline result |
+| --- | --- | --- |
+| FreeBSD 15.1: three successful controls | `7562246` | Scoped consistency report; five originals reopened |
+| FreeBSD 14.5: three successful controls | `7562246` | Scoped consistency report; five originals reopened |
+| FreeBSD 15.1: failed positive-prefix assumption | `dcb70e0` | Rejected, nonzero exit and empty stdout |
+
+The [replay manifest](witness-storage-readback-manifest.json) records the validator
+and native source IDs separately, independent input/output hashes, actual command/
+supervisor receipts and limitations. The failed predecessor's probe receipt is
+byte-identical to the independently pinned 15.1 probe; its original archive and
+fixture pins remain its own. Original native observations still belong to the
+[earlier immutable native manifest](witness-partial-storage-manifest.json).
+The rejected predecessor acquires no successful matrix or 14.5 execution.
+
+Sixteen synthetic behavioral test methods passed, including the growing-file
+regression that failed at first validator source `fb86b97`. Source `eb70b7fbf505b6356e83a30a83a1b9b11cb3847e`
+completed fresh check/lint/test/secrets and the shared-tool fallback: all eleven
+portable race packages and all 55 compiler-listed portable fuzz targets. A prose/
+evidence followup may reuse that executed exact-input deep evidence while
+repeating the required baseline and final lab-stop/status checks. All three
+replay processes completed with verified owned-group teardown; all 174 historical
+manifests and seven operator-owned files stayed byte-identical. No fresh native
+execution or acceptance at the validator source is implied.
