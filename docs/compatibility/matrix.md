@@ -2304,3 +2304,10 @@ original bytes, receipt consistency and safe bounded archive input without a VM
 or extraction. It does not establish native behavior at the validator commit or
 replace original build/ABI/preflight/teardown evidence. Failed historical candidates
 remain failed; wider native/resource/browser/hardware/release gates stay open.
+
+[Aggregate archive exhaustion](../testing/dashboards/witness-archive-budget.md)
+adds an inactive test-only broker control using actual prior producer originals
+and separately identified synthetic pressure captures. An actual manager collection
+must hit the unchanged aggregate byte bound and retain its failed prefix without
+forwarding or publication. Candidate results and limitations are recorded with
+the procedure; this is not normal producer scale, raw-cap or resource acceptance.
