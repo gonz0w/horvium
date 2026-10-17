@@ -1,6 +1,6 @@
 # Single-original witness limit through the broker
 
-Status: inactive test-only control; candidate results pending.
+Status: inactive test-only control; source-bound results below.
 Owner: [issue 382](https://github.com/gonz0w/horvium/issues/382).
 Authority: [ADR 0011](../../adr/0011-native-dashboard-witnesses.md),
 [accepted EDD](../../design/dashboards/native-witness-binding-EDD.md),
@@ -80,7 +80,7 @@ No runtime interface, schema, dependency, service or Action changes.
 
 Source `82394994a446df5da616906694172fcf65b2e678` failed on 15.1 in
 153.16s: normal publication passed (42.22s), then the negative source did not
-become socket-ready (76.07s). The source had already exited when cleanup tried
+become socket-ready (76.07s). Cleanup also reported a signal failure when it tried
 SIGTERM. Its stdout/stderr were not retained, so the actual child exit reason is
 unknown; no negative source request/capture receipt exists. The original normal
 files, failed observations and cleanup remain preserved. Guest/host teardown
@@ -107,3 +107,47 @@ entry must skip before authorization/setup; the configured owned child still
 executes its real negative source. This guards broad native selections without
 weakening the configured negative. Both fresh release runs and independent host
 readback are required at the corrected source.
+
+## Source-bound component results
+
+Signed clean reviewed source `43af5c838c88a67f41e213f535e2f5827ba8d553`, base `349513adc0bc0a726b4476d3e726545f55328cb3`,
+passed both cases on both pinned FreeBSD/amd64 releases. The
+[immutable manifest](witness-raw-budget-manifest.json) retains original command,
+source/build/compiler/ABI/preflight, source request/peer/wait, actual original
+object/hash and cleanup bindings for that exact source.
+
+| Release | Focused native result |
+| --- | --- |
+| 15.1 | TestNativeDashboardWitnessRawBudget (129.83s) |
+| 14.5 | TestNativeDashboardWitnessRawBudget (129.79s) |
+
+Independent readback reopened the separate source receipt and its matching case
+copy: **67,508,865 acknowledged synthetic source bytes** and **67,508,864 actual
+sealed broker bytes** per negative. The original request/ID and dropped-privilege
+connector UID/PID matched the actual observer identity/wait receipt. All connector
+waits completed, while the source actor/socket remained available for readback.
+Both source writes and half-closes recorded no error; those observations remain
+separate from receiver retention or publication. The unconfigured producer entry
+explicitly skipped on both releases while both configured negative children ran.
+
+Each broker retained `raw-limit` without a capture syscall error, completion,
+forward, original index or publication. A single real authenticated refresh/busy
+join stayed denied without another connector or changed failure/original. Actual
+manager status/unavailable bytes, normal product originals/indexes/publication,
+unchanged config/token and guest/host teardown were independently verified. The
+actual preceding normal bytes plus the negative stayed below the archive cap;
+that bound did not supply the failure. Synthetic data remains explicitly distinct
+from normal product helper replies and numerical/resource evidence.
+
+Fresh check/lint/test/secrets and affected `cmd/horvium` race/one compiler-listed
+portable fuzz target passed at the native source. Final prose/evidence followup
+may reuse this executed exact-input deep evidence with a fresh baseline. All 176
+historical manifests and seven operator files remained unchanged; lab-stop/status
+and both owned guest/host teardowns passed. The first candidate `8239499` failed
+source readiness on 15.1 after normal publication; missing child diagnostics remain unknown and 14.5 was not started.
+Its observed input mismatch/portable reproduction is separate from an actual
+native child exit reason. Source `dbd3d3d` was stopped before native execution for
+the unconfigured-entry guard correction; its interrupted worker report still
+records no completed host teardown, separately from verified supervisor recovery.
+The preserved first candidate and historical failures/skips retain their original
+scope. These component controls do not close wider acceptance or activate the resource runner/runtime.

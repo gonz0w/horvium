@@ -2318,8 +2318,14 @@ byte exhaustion, the normal-caller raw cap, broader admission/resource/activatio
 browser/manual/hardware/release gates remain open; runtime writes stay denied.
 
 [Single-original broker raw-limit control](../testing/dashboards/witness-raw-budget.md)
-is an inactive two-case native test, with candidate results pending. It separates
-normal product helper publication from a malformed oversized test producer routed
-through the real manager/broker. No native result or broader support claim is
-established by adding the test. Original caps/deadlines remain unchanged; canonical
-resource instrumentation is inactive and runtime writes remain denied.
+passed both pinned releases at the source in its
+[immutable manifest](../testing/dashboards/witness-raw-budget-manifest.json).
+Normal product helper publication stays separate from the malformed oversized
+test producer routed through the real authenticated manager and broker. Independent
+readback verified exactly 67,508,865 acknowledged source bytes versus 67,508,864
+sealed raw-limit bytes, actual connector peer/wait/request bindings, no forwarding
+or publication, permanent denial and guest/host teardown. Archive space remained
+available. This is no ordinary producer-scale, numerical accounting, projection,
+resource/activation, browser/manual/hardware or release support claim. Original
+bounds/deadlines remain unchanged; runtime writes stay denied and the canonical
+resource runner stays inactive. Historical failed/skipped facts remain unchanged.
