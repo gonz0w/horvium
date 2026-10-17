@@ -37,6 +37,9 @@ type witnessRawSourceReceipt struct {
 // product helper cannot normally exceed its derived wire budget. Never count
 // these zero bytes as producer accounting, a valid reply or a workload sample.
 func TestNativeDashboardWitnessRawProducer(t *testing.T) {
+	if len(flag.Args()) == 0 {
+		t.Skip("owned configured source re-exec only")
+	}
 	if os.Getenv("HORVIUM_NATIVE_VM") != "1" || os.Getenv("HORVIUM_PERF_VM") != "1" {
 		t.Skip("disposable VM opt-in")
 	}

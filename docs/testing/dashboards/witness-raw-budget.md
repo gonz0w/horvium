@@ -54,7 +54,7 @@ and ABI preflight, run the fixed selection on both pinned disposable releases:
 
 ```sh
 cd /root/work/cmd/horvium
-env HORVIUM_NATIVE_VM=1 HORVIUM_PERF_VM=1 /root/work/.tools/dashboard-native.test -test.v -test.count=1 -test.timeout=15m -test.failfast -test.run='^TestNativeDashboardWitnessRawBudget$'
+env HORVIUM_NATIVE_VM=1 HORVIUM_PERF_VM=1 /root/work/.tools/dashboard-native.test -test.v -test.count=1 -test.timeout=15m -test.failfast -test.run='^TestNativeDashboardWitnessRaw(Budget|Producer)$'
 ```
 
 The outer diagnostic and archive-transfer allowances do not alter the original
@@ -93,3 +93,17 @@ This is an identified input mismatch, not an observed native child diagnostic.
 The corrected source preserves full provenance separately, checks the dedicated
 ABI frame and retains exclusive source stdout/stderr with early exit/wait
 observation. A later passing source cannot upgrade the first candidate.
+
+The next source `dbd3d3db3642ec8b5f500234f5baa8d1bc63084c` was
+operator-stopped during 15.1 guest preparation, before any native test transcript
+or original capture. Static review found that a broad test selection would try to
+run the configured producer with no arguments. 14.5 was not started. The original
+worker report remains interrupted/unqualified with `host_teardown=false`; owned
+supervisor recovery removed its image/key/variables and stopped the process group.
+Recovery observations are separate from missing normal worker postflight/teardown.
+
+The final selection includes the producer's unconfigured entry explicitly. That
+entry must skip before authorization/setup; the configured owned child still
+executes its real negative source. This guards broad native selections without
+weakening the configured negative. Both fresh release runs and independent host
+readback are required at the corrected source.
