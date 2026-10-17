@@ -2304,3 +2304,15 @@ original bytes, receipt consistency and safe bounded archive input without a VM
 or extraction. It does not establish native behavior at the validator commit or
 replace original build/ABI/preflight/teardown evidence. Failed historical candidates
 remain failed; wider native/resource/browser/hardware/release gates stay open.
+
+[Aggregate archive exhaustion](../testing/dashboards/witness-archive-budget.md)
+passed on both pinned FreeBSD releases at the source in its
+[immutable manifest](../testing/dashboards/witness-archive-budget-manifest.json).
+Actual normal producer files plus separately identified sealed synthetic pressure
+left 80 bytes of the unchanged 256 MiB allowance; a real manager/helper collection
+through the broker retained an 80-byte archive-limit prefix, no forward/publication,
+and permanent followup denial. Independent readback recomputed exactly 256 MiB
+from all actual originals on each release; guest/host teardown passed. Pressure is
+not ordinary producer traffic, native accounting or publication. Projection-specific
+byte exhaustion, the normal-caller raw cap, broader admission/resource/activation,
+browser/manual/hardware/release gates remain open; runtime writes stay denied.

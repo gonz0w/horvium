@@ -343,3 +343,4 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [Collection reply deadlines and native shutdown controls](testing/dashboards/witness-expiry-shutdown.md).
 - [Partial storage write custody controls](testing/dashboards/witness-partial-storage.md).
 - [Reproducible offline storage-custody readback](testing/dashboards/witness-storage-readback.md).
+- [Aggregate witness archive exhaustion](testing/dashboards/witness-archive-budget.md).

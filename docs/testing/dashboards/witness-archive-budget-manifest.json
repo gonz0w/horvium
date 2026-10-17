@@ -1,0 +1,438 @@
+{
+  "schema": 1,
+  "date": "2026-10-16",
+  "scope": "inactive-broker-aggregate-archive-boundary-with-measured-synthetic-pressure",
+  "source_commit": "824ae181e25720469033b36bfb1afe502e19bacc",
+  "base_commit": "61341f6940686a1ac1c898a69f9c8bd4e316b457",
+  "pr_title": "test(dashboards): qualify aggregate witness archive exhaustion",
+  "qualified": false,
+  "component_controls_passed": true,
+  "native_acceptance": false,
+  "resource_acceptance": false,
+  "resource_activation": false,
+  "requirements": [
+    "DASH-WIT-003",
+    "DASH-WIT-007",
+    "DASH-WIT-NATIVE-005"
+  ],
+  "historical_manifests_preserved": 175,
+  "portable_review": {
+    "source_commit": "824ae181e25720469033b36bfb1afe502e19bacc",
+    "qualified": true,
+    "checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "result_sha256": "9ae80daf778cf936dcd901a27b9c18f3e0545ce05dfaff66ba9748dfdfc1301e",
+    "deep_executed": true,
+    "deep_result": {
+      "fuzz_targets": [
+        {
+          "package": "./cmd/horvium",
+          "target": "FuzzDashboardWitnessOriginalGrammar"
+        }
+      ],
+      "race_packages": [
+        "./cmd/horvium"
+      ]
+    },
+    "freebsd_test_cross_build": "passed"
+  },
+  "portable_archive_sum_boundary_cases": 12,
+  "portable_log_sha256": "a6d64e4d0b678c6f01d80ba76c1c4f089eaed3c3438dceabadc8418e52a4fcb4",
+  "independent_readback_sha256": "0eabd17a12539075707cc1c1651804177d6e897a400e0d622b9950f6b64f45af",
+  "runs": [
+    {
+      "source_commit": "824ae181e25720469033b36bfb1afe502e19bacc",
+      "base_commit": "61341f6940686a1ac1c898a69f9c8bd4e316b457",
+      "pr_title": "test(dashboards): qualify aggregate witness archive exhaustion",
+      "release": "14.5",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessArchiveBudget (109.76s)",
+      "raw_sha256": "7b326b4bc8ad5d851a1e42bdae15ab9d77158f7706d0d3657bdb236e40514f79",
+      "archive_sha256": "b00feb2eb3508d95e8c98540a724e51a92d67c2ac2fee5b15b343e04ccea8d1d",
+      "result_sha256": "19c984539b942a06b557630938d27f303d48340b6bc5a48fa4b11042877e1684",
+      "source_archive_sha256": "ab9a69f2a831c38ff5803cd972535b4d196d8b1e8b85cfc522bad2edbf744e00",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "5abf183c69d83d54da22aa5bb8868767bf696f1f2d7a182cbb5bc00bfdaac6bf",
+        "helper": "3b8b8bc4b9f4e8587d2f84204c2c8aa2830ba92ca6c556b264b48ee29a31eb7d",
+        "fixture": "4fb4f7d7ed70b1559cd738692d6669d27cf69d7a60cde2f5ca4afee8363ff26b"
+      },
+      "controller_sha256": "914049666133a8ab7e648a659a99f4bc6fb64536fbd64987849012534a9d6f14",
+      "worker_source_sha256": "e9125581ef5eb925e1cf32757158aa6880f9ba01542a4f5436998282a91226da",
+      "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+      "probe_sha256": "a0e24744dd648299f09eb37fe808a599cc57bbb721323097bbfdbd550abae299",
+      "cleanup_receipt_sha256": "3640f57c247605e0c441705a2a2e73fcbafbcab2e85327853c9497ce7ffaae77",
+      "cases": [
+        {
+          "case": "normal",
+          "receipt_sha256": "f744b0578756f6d3b226df1e5529dc1a5924424c9f1a233e1cd14bc2ff18c818",
+          "prior_bytes": 0,
+          "configured_prior_bytes": 0,
+          "final_aggregate_bytes": 16470,
+          "actual_originals": [
+            {
+              "name": "original-001.wire",
+              "raw_bytes": 16470,
+              "raw_sha256": "5b3b530310d563c2a84c27785f266fce1ba61cdd0e1f370fede5397e23be120c",
+              "object": {
+                "device": 18446744071679573761,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 16470,
+                "modified_ns": 1792164809043210000
+              },
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "publication_confirmed": true
+            }
+          ],
+          "original_indexes": 1,
+          "publication_confirmed": true,
+          "capture_error": {
+            "class": ""
+          },
+          "manager_failure_response": null,
+          "permanent_denial": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "archive-limit",
+          "receipt_sha256": "cf576e1fbff4af32dcf75d70a9fa4e320b6fcc9ca916ca978f685cd03827ec01",
+          "prior_bytes": 16470,
+          "configured_prior_bytes": 268435376,
+          "final_aggregate_bytes": 268435456,
+          "actual_originals": [
+            {
+              "name": "original-001.wire",
+              "raw_bytes": 80,
+              "raw_sha256": "fbd108912fed5232be4c48b6cbe642fb90802853578a2d59c217938e545ab328",
+              "object": {
+                "device": 18446744071679573762,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 80,
+                "modified_ns": 1792164864648732000
+              },
+              "complete": false,
+              "delivered": false,
+              "capture_failure": "archive-limit",
+              "publication_confirmed": false
+            }
+          ],
+          "original_indexes": 0,
+          "publication_confirmed": false,
+          "capture_error": {
+            "class": ""
+          },
+          "manager_failure_response": {
+            "failure_body_sha256": "dab0505496e88d11e0d6f5eb5e6c08570e169bf561df21fcd9c49986a299ed52",
+            "failure_body_bytes": 188,
+            "unavailable_body_sha256": "4e6cdc6614ad230d02db7cae4b747ea10f11e21fe03898491af344f314933500",
+            "unavailable_body_bytes": 57,
+            "http_status": 503
+          },
+          "permanent_denial": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "synthetic_pressure": {
+        "receipt_sha256": "79c0ba331dd963f552656f95a9c96d9b4b13c9b90467eee418f145a484ebf92a",
+        "prior_bytes": 16470,
+        "captured_bytes": 268418906,
+        "aggregate_before_producer": 268435376,
+        "remaining_bytes": 80,
+        "originals": [
+          {
+            "name": "original-001.wire",
+            "raw_bytes": 67508864,
+            "raw_sha256": "49849263c31ba8b68a2305eb5c591d3809c515063374778f50d0f1756d14901a",
+            "object": {
+              "device": 18446744071679573763,
+              "inode": 4,
+              "uid": 0,
+              "gid": 0,
+              "links": 1,
+              "size": 67508864,
+              "modified_ns": 1792164823391806000
+            },
+            "complete": false,
+            "delivered": false,
+            "source_class": "synthetic-zero-stream-pressure"
+          },
+          {
+            "name": "original-002.wire",
+            "raw_bytes": 67508864,
+            "raw_sha256": "49849263c31ba8b68a2305eb5c591d3809c515063374778f50d0f1756d14901a",
+            "object": {
+              "device": 18446744071679573763,
+              "inode": 5,
+              "uid": 0,
+              "gid": 0,
+              "links": 1,
+              "size": 67508864,
+              "modified_ns": 1792164832334578000
+            },
+            "complete": false,
+            "delivered": false,
+            "source_class": "synthetic-zero-stream-pressure"
+          },
+          {
+            "name": "original-003.wire",
+            "raw_bytes": 67508864,
+            "raw_sha256": "49849263c31ba8b68a2305eb5c591d3809c515063374778f50d0f1756d14901a",
+            "object": {
+              "device": 18446744071679573763,
+              "inode": 6,
+              "uid": 0,
+              "gid": 0,
+              "links": 1,
+              "size": 67508864,
+              "modified_ns": 1792164841317976000
+            },
+            "complete": false,
+            "delivered": false,
+            "source_class": "synthetic-zero-stream-pressure"
+          },
+          {
+            "name": "original-004.wire",
+            "raw_bytes": 65892314,
+            "raw_sha256": "f3916f078fdbaf1a146c0212718121722a32892a29cdf7992e9abe391638b4b0",
+            "object": {
+              "device": 18446744071679573763,
+              "inode": 7,
+              "uid": 0,
+              "gid": 0,
+              "links": 1,
+              "size": 65892314,
+              "modified_ns": 1792164850167003000
+            },
+            "complete": false,
+            "delivered": false,
+            "source_class": "synthetic-zero-stream-pressure"
+          }
+        ],
+        "mount_removed": true
+      },
+      "actual_total_original_bytes": 268435456,
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "resource_activation": false
+    },
+    {
+      "source_commit": "824ae181e25720469033b36bfb1afe502e19bacc",
+      "base_commit": "61341f6940686a1ac1c898a69f9c8bd4e316b457",
+      "pr_title": "test(dashboards): qualify aggregate witness archive exhaustion",
+      "release": "15.1",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessArchiveBudget (113.44s)",
+      "raw_sha256": "f055e2b0e572d188f89f00db7ef894f010434b51e32eb36492abb61e608512a9",
+      "archive_sha256": "1bc7e635fe3e201a420b71b0b862de78d654305c6612e9e7aa1b1601192bf0a8",
+      "result_sha256": "32dd3ef094797f73b13387c4ca118e19e23d2b2a72dbbf98f8d94921b6c3f4fe",
+      "source_archive_sha256": "ab9a69f2a831c38ff5803cd972535b4d196d8b1e8b85cfc522bad2edbf744e00",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "5abf183c69d83d54da22aa5bb8868767bf696f1f2d7a182cbb5bc00bfdaac6bf",
+        "helper": "3b8b8bc4b9f4e8587d2f84204c2c8aa2830ba92ca6c556b264b48ee29a31eb7d",
+        "fixture": "4fb4f7d7ed70b1559cd738692d6669d27cf69d7a60cde2f5ca4afee8363ff26b"
+      },
+      "controller_sha256": "914049666133a8ab7e648a659a99f4bc6fb64536fbd64987849012534a9d6f14",
+      "worker_source_sha256": "e9125581ef5eb925e1cf32757158aa6880f9ba01542a4f5436998282a91226da",
+      "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+      "probe_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+      "cleanup_receipt_sha256": "3640f57c247605e0c441705a2a2e73fcbafbcab2e85327853c9497ce7ffaae77",
+      "cases": [
+        {
+          "case": "normal",
+          "receipt_sha256": "8c711c72a69edf1fc550e0d19e3f26a6e05eb383bf8706f65245d7b696135e31",
+          "prior_bytes": 0,
+          "configured_prior_bytes": 0,
+          "final_aggregate_bytes": 18782,
+          "actual_originals": [
+            {
+              "name": "original-001.wire",
+              "raw_bytes": 18782,
+              "raw_sha256": "95d5f43f786877a05f94e2043e41b51449fd56689f2a23107c67680743be1e1f",
+              "object": {
+                "device": 18446744071679573761,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 18782,
+                "modified_ns": 1792164621937571000
+              },
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "publication_confirmed": true
+            }
+          ],
+          "original_indexes": 1,
+          "publication_confirmed": true,
+          "capture_error": {
+            "class": ""
+          },
+          "manager_failure_response": null,
+          "permanent_denial": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "archive-limit",
+          "receipt_sha256": "72a650406ccba4e262445c7bdc0ee2721cdbea72cf188f85bab9055078e29492",
+          "prior_bytes": 18782,
+          "configured_prior_bytes": 268435376,
+          "final_aggregate_bytes": 268435456,
+          "actual_originals": [
+            {
+              "name": "original-001.wire",
+              "raw_bytes": 80,
+              "raw_sha256": "8912a11b74098dc56871d2d893b23c1680e61d04dac5fecc36d31a694ea1fba2",
+              "object": {
+                "device": 18446744071679573762,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 80,
+                "modified_ns": 1792164679114997000
+              },
+              "complete": false,
+              "delivered": false,
+              "capture_failure": "archive-limit",
+              "publication_confirmed": false
+            }
+          ],
+          "original_indexes": 0,
+          "publication_confirmed": false,
+          "capture_error": {
+            "class": ""
+          },
+          "manager_failure_response": {
+            "failure_body_sha256": "dab0505496e88d11e0d6f5eb5e6c08570e169bf561df21fcd9c49986a299ed52",
+            "failure_body_bytes": 188,
+            "unavailable_body_sha256": "4e6cdc6614ad230d02db7cae4b747ea10f11e21fe03898491af344f314933500",
+            "unavailable_body_bytes": 57,
+            "http_status": 503
+          },
+          "permanent_denial": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "synthetic_pressure": {
+        "receipt_sha256": "3543243dbc476ec666ce27649f1fb75526da814b37733606e8579d2bcf4c6da3",
+        "prior_bytes": 18782,
+        "captured_bytes": 268416594,
+        "aggregate_before_producer": 268435376,
+        "remaining_bytes": 80,
+        "originals": [
+          {
+            "name": "original-001.wire",
+            "raw_bytes": 67508864,
+            "raw_sha256": "49849263c31ba8b68a2305eb5c591d3809c515063374778f50d0f1756d14901a",
+            "object": {
+              "device": 18446744071679573763,
+              "inode": 4,
+              "uid": 0,
+              "gid": 0,
+              "links": 1,
+              "size": 67508864,
+              "modified_ns": 1792164636614496000
+            },
+            "complete": false,
+            "delivered": false,
+            "source_class": "synthetic-zero-stream-pressure"
+          },
+          {
+            "name": "original-002.wire",
+            "raw_bytes": 67508864,
+            "raw_sha256": "49849263c31ba8b68a2305eb5c591d3809c515063374778f50d0f1756d14901a",
+            "object": {
+              "device": 18446744071679573763,
+              "inode": 5,
+              "uid": 0,
+              "gid": 0,
+              "links": 1,
+              "size": 67508864,
+              "modified_ns": 1792164645961313000
+            },
+            "complete": false,
+            "delivered": false,
+            "source_class": "synthetic-zero-stream-pressure"
+          },
+          {
+            "name": "original-003.wire",
+            "raw_bytes": 67508864,
+            "raw_sha256": "49849263c31ba8b68a2305eb5c591d3809c515063374778f50d0f1756d14901a",
+            "object": {
+              "device": 18446744071679573763,
+              "inode": 6,
+              "uid": 0,
+              "gid": 0,
+              "links": 1,
+              "size": 67508864,
+              "modified_ns": 1792164655144396000
+            },
+            "complete": false,
+            "delivered": false,
+            "source_class": "synthetic-zero-stream-pressure"
+          },
+          {
+            "name": "original-004.wire",
+            "raw_bytes": 65890002,
+            "raw_sha256": "311b5e95a54bb93bf26a4d7f79731aca90e94b2899c15fb0f873f2c71df770d9",
+            "object": {
+              "device": 18446744071679573763,
+              "inode": 7,
+              "uid": 0,
+              "gid": 0,
+              "links": 1,
+              "size": 65890002,
+              "modified_ns": 1792164664131835000
+            },
+            "complete": false,
+            "delivered": false,
+            "source_class": "synthetic-zero-stream-pressure"
+          }
+        ],
+        "mount_removed": true
+      },
+      "actual_total_original_bytes": 268435456,
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "resource_activation": false
+    }
+  ],
+  "limits": [
+    "Actual byte accounting combines preceding complete native producer originals, independently identified synthetic pressure captures, and the final failed producer prefix.",
+    "Pressure originals are not product replies, native accounting or publication evidence.",
+    "The final 80-byte prefix is incomplete and supplies no reconstructed full frame or numerical oracle.",
+    "The bootstrap amount is the sum of actual rechecked originals, not arbitrary seeded byte state.",
+    "No raised/reduced caps, smaller mounts, retries, altered collection deadlines, schedules or resource budgets.",
+    "This does not establish 256 MiB of ordinary producer traffic, projection-specific byte exhaustion or normal-caller single-original raw-cap behavior.",
+    "Remaining admission/cancellation/recovery, cadence/overhead, full resource/activation, browser/manual, hardware and release gates remain open.",
+    "Historical failed/skipped candidates stay unchanged; canonical resource instrumentation inactive and runtime writes denied."
+  ]
+}
