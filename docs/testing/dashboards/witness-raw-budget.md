@@ -21,7 +21,10 @@ product helper's bounded transport cannot ordinarily exceed the derived raw cap.
 The optional helper starter is private to the disposable test harness. Both
 cases preserve original actor/executable/socket checks, privilege-dropping
 connector/handoff/wait/EOF, the actual management process and its authenticated
-HTTP session. The negative source records the actual kernel peer UID/PID, exact
+HTTP session. The full compiler/probe receipt remains original evidence. A separate root-only
+ABI control frame supplies the exact observed layout without multiline compiler
+prose, which the control grammar deliberately rejects. The negative source records
+the actual kernel peer UID/PID, exact
 request bytes/ID, source actor/socket and acknowledged byte/hash/error/timing.
 The peer PID is the connector, reaped before the observer sends the request;
 compare it with the original observer identity/wait receipt, not the manager PID.
@@ -72,3 +75,21 @@ full cancellation/recovery, cadence/overhead, resource/activation, browser/manua
 hardware or release acceptance. Historical failures remain unchanged. Canonical
 resource instrumentation stays inactive and runtime storage writes stay denied.
 No runtime interface, schema, dependency, service or Action changes.
+
+## Preserved first candidate
+
+Source `82394994a446df5da616906694172fcf65b2e678` failed on 15.1 in
+153.16s: normal publication passed (42.22s), then the negative source did not
+become socket-ready (76.07s). The source had already exited when cleanup tried
+SIGTERM. Its stdout/stderr were not retained, so the actual child exit reason is
+unknown; no negative source request/capture receipt exists. The original normal
+files, failed observations and cleanup remain preserved. Guest/host teardown
+passed; 14.5 was not started at that source. This is not raw-limit evidence.
+
+The retained original compiler version contains newlines. The source attempted
+to read the entire probe with the deliberately stricter control grammar; portable
+coverage reproduces that rejection and verifies a separate ABI-only bootstrap.
+This is an identified input mismatch, not an observed native child diagnostic.
+The corrected source preserves full provenance separately, checks the dedicated
+ABI frame and retains exclusive source stdout/stderr with early exit/wait
+observation. A later passing source cannot upgrade the first candidate.

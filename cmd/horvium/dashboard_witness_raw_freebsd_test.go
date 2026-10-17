@@ -57,6 +57,11 @@ func TestNativeDashboardWitnessRawBudget(t *testing.T) {
 	if witnessWritePrivateIndex("../../.tools", "witness-probe-original.json", probe) != nil {
 		t.Fatal("probe receipt")
 	}
+	// Control frames intentionally exclude multiline compiler prose. Preserve
+	// that full original separately and send only its actual ABI as bootstrap.
+	if witnessWritePrivateIndex("../../.tools", "witness-raw-abi.json", probe.ABI) != nil {
+		t.Fatal("exclusive source ABI bootstrap")
+	}
 	_ = nativeStorageFixtureObserved(t, owner.storage)
 	count := len(strings.Fields(string(readerFixtureCommand(t, "/sbin/zfs", "list", "-H", "-t", "filesystem", "-o", "name"))))
 	export := "../../.tools/witness-raw-cases"

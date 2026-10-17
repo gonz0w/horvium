@@ -52,16 +52,16 @@ func TestNativeDashboardWitnessRawProducer(t *testing.T) {
 	if e != nil || cfg.TimeoutSeconds != 45 {
 		t.Fatal("existing source config / deadline", e)
 	}
-	f, e = os.Open("../../.tools/witness-probe-original.json")
+	f, e = os.Open("../../.tools/witness-raw-abi.json")
 	if e != nil {
 		t.Fatal(e)
 	}
-	var probe witnessProbeReceipt
-	e = witnessControlRead(f, &probe)
+	var abi witnessABI
+	e = witnessControlRead(f, &abi)
 	end := witnessEOF(f)
 	info, se := f.Stat()
 	f.Close()
-	if e != nil || end != nil || se != nil || !info.Mode().IsRegular() || info.Mode().Perm() != 0400 || !probe.ABI.valid() {
+	if e != nil || end != nil || se != nil || !info.Mode().IsRegular() || info.Mode().Perm() != 0400 || !abi.valid() {
 		t.Fatal("original native ABI receipt")
 	}
 	obj, e := witnessObject(info)
@@ -118,11 +118,11 @@ func TestNativeDashboardWitnessRawProducer(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	r.Actor, e = witnessObserveActor(os.Getpid(), probe.ABI)
+	r.Actor, e = witnessObserveActor(os.Getpid(), abi)
 	if e != nil {
 		t.Fatal(e)
 	}
-	r.PeerUID, r.PeerPID, e = witnessNativePeer(conn, probe.ABI)
+	r.PeerUID, r.PeerPID, e = witnessNativePeer(conn, abi)
 	if e != nil || r.PeerUID != cfg.ManagementUID || r.PeerPID <= 0 {
 		t.Fatal("actual connector credentials", e)
 	}
@@ -157,6 +157,16 @@ func startWitnessRawProducer(t *testing.T, cfg admin.Config, configPath, fixture
 	t.Helper()
 	cmd := exec.Command(fixture, "-test.run=^TestNativeDashboardWitnessRawProducer$", "-test.count=1", "--", configPath)
 	cmd.Env = []string{"HORVIUM_NATIVE_VM=1", "HORVIUM_PERF_VM=1", "LC_ALL=C", "PATH=/sbin:/bin:/usr/sbin:/usr/bin"}
+	log, e := os.OpenFile("../../.tools/witness-raw-producer.log", os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+	if e != nil {
+		t.Fatal("exclusive producer diagnostic")
+	}
+	t.Cleanup(func() {
+		if log.Close() != nil {
+			t.Error("source diagnostic close")
+		}
+	})
+	cmd.Stdout, cmd.Stderr = log, log
 	p := &nativeProcess{cmd: cmd, done: make(chan error, 1)}
 	if cmd.Start() != nil {
 		t.Fatal("owned oversized source start")
@@ -164,8 +174,26 @@ func startWitnessRawProducer(t *testing.T, cfg admin.Config, configPath, fixture
 	go func() { p.done <- cmd.Wait() }()
 	t.Cleanup(func() {
 		if !p.waited {
-			p.stop(t, syscall.SIGTERM, true)
+			select {
+			case err := <-p.done:
+				p.waited = true
+				if err != nil {
+					t.Error("source exited before owned shutdown; original log retained")
+				}
+			default:
+				p.stop(t, syscall.SIGTERM, true)
+			}
 		}
+	})
+	performanceWait(t, func() bool {
+		select {
+		case err := <-p.done:
+			p.waited = true
+			t.Fatal("source exited before readiness; original log retained", err)
+		default:
+		}
+		_, e := witnessRootSocket(cfg.HelperSocket, cfg.SocketGID)
+		return e == nil
 	})
 	return p
 }
