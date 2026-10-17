@@ -2316,3 +2316,10 @@ from all actual originals on each release; guest/host teardown passed. Pressure 
 not ordinary producer traffic, native accounting or publication. Projection-specific
 byte exhaustion, the normal-caller raw cap, broader admission/resource/activation,
 browser/manual/hardware/release gates remain open; runtime writes stay denied.
+
+[Single-original broker raw-limit control](../testing/dashboards/witness-raw-budget.md)
+is an inactive two-case native test, with candidate results pending. It separates
+normal product helper publication from a malformed oversized test producer routed
+through the real manager/broker. No native result or broader support claim is
+established by adding the test. Original caps/deadlines remain unchanged; canonical
+resource instrumentation is inactive and runtime writes remain denied.

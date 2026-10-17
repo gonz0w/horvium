@@ -344,3 +344,4 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [Partial storage write custody controls](testing/dashboards/witness-partial-storage.md).
 - [Reproducible offline storage-custody readback](testing/dashboards/witness-storage-readback.md).
 - [Aggregate witness archive exhaustion](testing/dashboards/witness-archive-budget.md).
+- [Single-original broker raw-limit control](testing/dashboards/witness-raw-budget.md).
