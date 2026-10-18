@@ -51,10 +51,15 @@ func (o *witnessNativeObserver) interruptConnector(stage, id string, actor witne
 	return true
 }
 func (o *witnessNativeObserver) recordConnectorBoundary(actor witnessActor, cmd *exec.Cmd, accounted, closed bool, waitError, contextError error) {
-	if o.fault == nil || (o.fault.stage != "connect" && o.fault.stage != "handoff") {
+	raw := o.cfg.RunLabel == "raw-limit"
+	if !raw && (o.fault == nil || (o.fault.stage != "connect" && o.fault.stage != "handoff")) {
 		return
 	}
-	r := &witnessConnectorBoundaryReceipt{Actor: actor, Stage: o.fault.stage, Action: strings.TrimPrefix(o.cfg.RunLabel, o.fault.stage+"-"), Accounted: accounted, ChannelClosed: closed, WaitFailed: waitError != nil, ContextEnded: contextError != nil}
+	stage, action := "connector-wait", "raw-limit"
+	if !raw {
+		stage, action = o.fault.stage, strings.TrimPrefix(o.cfg.RunLabel, o.fault.stage+"-")
+	}
+	r := &witnessConnectorBoundaryReceipt{Actor: actor, Stage: stage, Action: action, Accounted: accounted, ChannelClosed: closed, WaitFailed: waitError != nil, ContextEnded: contextError != nil}
 	if cmd.ProcessState != nil {
 		if status, ok := cmd.ProcessState.Sys().(syscall.WaitStatus); ok {
 			signal := 0

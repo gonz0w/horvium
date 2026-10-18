@@ -1,0 +1,476 @@
+{
+  "schema": 1,
+  "date": "2026-10-16",
+  "scope": "inactive-broker-single-original-raw-limit-with-malformed-fault-producer",
+  "source_commit": "43af5c838c88a67f41e213f535e2f5827ba8d553",
+  "base_commit": "349513adc0bc0a726b4476d3e726545f55328cb3",
+  "pr_title": "test(dashboards): qualify the broker single-original raw limit",
+  "qualified": false,
+  "component_controls_passed": true,
+  "native_acceptance": false,
+  "resource_acceptance": false,
+  "resource_activation": false,
+  "requirements": [
+    "DASH-WIT-003",
+    "DASH-WIT-007",
+    "DASH-WIT-NATIVE-005"
+  ],
+  "historical_manifests_preserved": 176,
+  "portable_review": {
+    "source_commit": "43af5c838c88a67f41e213f535e2f5827ba8d553",
+    "qualified": true,
+    "checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "result_sha256": "0efab2c7389daca7f94b3b721a763336c704f6ada9c457ad2415f5136ae008ac",
+    "deep_executed": true,
+    "deep_result": {
+      "fuzz_targets": [
+        {
+          "package": "./cmd/horvium",
+          "target": "FuzzDashboardWitnessOriginalGrammar"
+        }
+      ],
+      "race_packages": [
+        "./cmd/horvium"
+      ]
+    },
+    "freebsd_test_cross_build": "passed"
+  },
+  "compile_red_log_sha256": "534fdb9113614f164901d8a9dad58fa291ba5a5cc8ddac47cb679dace4759358",
+  "compile_red_scope": "missing fixture declarations only; behavioral coverage is native, not a portable regression claim",
+  "independent_readback_sha256": "4b2d974c7097b5d2348ec37b2170703be0c97da94fb38b0b84f48c84aa10e4a1",
+  "runs": [
+    {
+      "source_commit": "43af5c838c88a67f41e213f535e2f5827ba8d553",
+      "base_commit": "349513adc0bc0a726b4476d3e726545f55328cb3",
+      "pr_title": "test(dashboards): qualify the broker single-original raw limit",
+      "release": "14.5",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessRawBudget (129.79s)",
+      "raw_sha256": "1e97fee5357d3ffcb8e6dfea5c7914f763c80a0d9c6ee53873afeb4259bb7288",
+      "archive_sha256": "6ab23a06fc2549266019b037e74507fb6525503114cb0e5f04e8157128219684",
+      "result_sha256": "fdec70dc67b7b1be35ae88bf62580bef2cac6e75c459cb262437769157d68ad8",
+      "source_archive_sha256": "8d3306da02a38d0db4c2050f40057a2739d8ee44ff190ecb6697e229c34dbe26",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "5abf183c69d83d54da22aa5bb8868767bf696f1f2d7a182cbb5bc00bfdaac6bf",
+        "helper": "3b8b8bc4b9f4e8587d2f84204c2c8aa2830ba92ca6c556b264b48ee29a31eb7d",
+        "fixture": "b574740fbda153b2c3d898ea200caa7f99e4b2081c41b0a960a1c7032ec57eff"
+      },
+      "controller_sha256": "b94dcaebae1f060dbe95621e2c99df5060862addf8297b3c35f08ef0e609f522",
+      "worker_source_sha256": "5f7dc8951bbc931ce666ef5ff0014cbab0e68534684fdc9c1b0de6b7db5e016d",
+      "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+      "probe_sha256": "a0e24744dd648299f09eb37fe808a599cc57bbb721323097bbfdbd550abae299",
+      "cleanup_receipt_sha256": "3640f57c247605e0c441705a2a2e73fcbafbcab2e85327853c9497ce7ffaae77",
+      "cases": [
+        {
+          "case": "normal",
+          "receipt_sha256": "d4ec4590fc9bc440716a0195f2ea50460b7420a0dd38f9a966cc07836bb98e74",
+          "prior_bytes": 0,
+          "configured_prior_bytes": 0,
+          "final_aggregate_bytes": 16470,
+          "actual_originals": [
+            {
+              "source_class": "native-product-helper",
+              "name": "original-001.wire",
+              "raw_bytes": 16470,
+              "raw_sha256": "767408118657454cf9458a6a619a36754bfcf677e846b666976da6f460e482df",
+              "object": {
+                "device": 18446744071679573761,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 16470,
+                "modified_ns": 1792199788146666000
+              },
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "publication_confirmed": true
+            }
+          ],
+          "original_indexes": 1,
+          "publication_confirmed": true,
+          "capture_error": {
+            "class": ""
+          },
+          "manager_failure_response": null,
+          "permanent_denial": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "raw-limit",
+          "receipt_sha256": "4842ab763f6e0897eeb9acf695394a6912b67e24b57f30b400ac4cf57b6a5996",
+          "prior_bytes": 16470,
+          "configured_prior_bytes": 16470,
+          "final_aggregate_bytes": 67525334,
+          "actual_originals": [
+            {
+              "source_class": "synthetic-oversized-producer-control",
+              "name": "original-001.wire",
+              "raw_bytes": 67508864,
+              "raw_sha256": "49849263c31ba8b68a2305eb5c591d3809c515063374778f50d0f1756d14901a",
+              "object": {
+                "device": 18446744071679573762,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 67508864,
+                "modified_ns": 1792199834421690000
+              },
+              "complete": false,
+              "delivered": false,
+              "capture_failure": "raw-limit",
+              "publication_confirmed": false
+            }
+          ],
+          "original_indexes": 0,
+          "publication_confirmed": false,
+          "capture_error": {
+            "class": ""
+          },
+          "manager_failure_response": {
+            "failure_body_sha256": "dab0505496e88d11e0d6f5eb5e6c08570e169bf561df21fcd9c49986a299ed52",
+            "failure_body_bytes": 188,
+            "unavailable_body_sha256": "4e6cdc6614ad230d02db7cae4b747ea10f11e21fe03898491af344f314933500",
+            "unavailable_body_bytes": 57,
+            "http_status": 503
+          },
+          "permanent_denial": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "synthetic_source_control": {
+        "receipt_sha256": "6214522255e9da26414a9381b25855738ee3fa93914cc5c756198ca005633418",
+        "abi_bootstrap_sha256": "fafd1ab0b84fe30c0b29f2c0d974a02693cb7d59fbb0b3f16f8479dcf0937375",
+        "producer_log_sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431",
+        "producer_log_bytes": 5,
+        "data_class": "synthetic-oversized-producer-control",
+        "actor": {
+          "pid": 987,
+          "uid": 0,
+          "sec": 1792199802,
+          "usec": 854316,
+          "executable": "/tmp/horvium-lifecycle-3144055302/dashboard-native.test",
+          "sha256": "b574740fbda153b2c3d898ea200caa7f99e4b2081c41b0a960a1c7032ec57eff"
+        },
+        "socket": {
+          "device": 62,
+          "inode": 481538,
+          "uid": 0,
+          "gid": 65534,
+          "links": 1,
+          "size": 0,
+          "modified_ns": 1792199802993649000
+        },
+        "peer_uid": 65534,
+        "peer_pid": 991,
+        "request_sha256": "eac8243f686b0c3f5e6f2b904b2c347155f0402d81455ba089c9f9df13483ed1",
+        "request_bytes": 91,
+        "request_id": "46ae3cae41910d6f69c5f9b4b388bb51-1",
+        "sent_bytes": 67508865,
+        "sent_sha256": "508003ad8df0587acabbc12873d8afc9bd38c4e7833b5ab757a1f48fcb922e93",
+        "write_error": {
+          "class": ""
+        },
+        "close_write_error": {
+          "class": ""
+        },
+        "started_ns": 1792199819817192770,
+        "deadline_ns": 1792199864817192770,
+        "finished_ns": 1792199834420282770,
+        "connector": {
+          "Present": true,
+          "Exited": true,
+          "ExitCode": 0,
+          "Signal": 0,
+          "Status": 0,
+          "Actor": {
+            "pid": 991,
+            "uid": 65534,
+            "sec": 1792199816,
+            "usec": 284985,
+            "executable": "/tmp/horvium-lifecycle-3144055302/dashboard-native.test",
+            "sha256": "b574740fbda153b2c3d898ea200caa7f99e4b2081c41b0a960a1c7032ec57eff"
+          },
+          "Stage": "connector-wait",
+          "Action": "raw-limit",
+          "Accounted": true,
+          "ChannelClosed": false,
+          "WaitFailed": false,
+          "ContextEnded": false
+        }
+      },
+      "actual_total_original_bytes": 67525334,
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "resource_activation": false
+    },
+    {
+      "source_commit": "43af5c838c88a67f41e213f535e2f5827ba8d553",
+      "base_commit": "349513adc0bc0a726b4476d3e726545f55328cb3",
+      "pr_title": "test(dashboards): qualify the broker single-original raw limit",
+      "release": "15.1",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessRawBudget (129.83s)",
+      "raw_sha256": "02c8168ab1981f9e3085f99403f0f1b8b2d1e9b47ecf00688a19c10d13197fd2",
+      "archive_sha256": "f9f1e72ce3f69caee6c3dc3124f97f8304dbf189984db8a7a538b6ba040f2773",
+      "result_sha256": "bd6ff6a3716a8572a57a1632acdad2c0e2fa07374f899fb0dcf24570a71caa94",
+      "source_archive_sha256": "8d3306da02a38d0db4c2050f40057a2739d8ee44ff190ecb6697e229c34dbe26",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "5abf183c69d83d54da22aa5bb8868767bf696f1f2d7a182cbb5bc00bfdaac6bf",
+        "helper": "3b8b8bc4b9f4e8587d2f84204c2c8aa2830ba92ca6c556b264b48ee29a31eb7d",
+        "fixture": "b574740fbda153b2c3d898ea200caa7f99e4b2081c41b0a960a1c7032ec57eff"
+      },
+      "controller_sha256": "b94dcaebae1f060dbe95621e2c99df5060862addf8297b3c35f08ef0e609f522",
+      "worker_source_sha256": "5f7dc8951bbc931ce666ef5ff0014cbab0e68534684fdc9c1b0de6b7db5e016d",
+      "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+      "probe_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+      "cleanup_receipt_sha256": "3640f57c247605e0c441705a2a2e73fcbafbcab2e85327853c9497ce7ffaae77",
+      "cases": [
+        {
+          "case": "normal",
+          "receipt_sha256": "85fa356d75a99766f6e50aceaffcde5c42a5db673072222574355c418cfe3f24",
+          "prior_bytes": 0,
+          "configured_prior_bytes": 0,
+          "final_aggregate_bytes": 18781,
+          "actual_originals": [
+            {
+              "source_class": "native-product-helper",
+              "name": "original-001.wire",
+              "raw_bytes": 18781,
+              "raw_sha256": "cfecaee42967b4560a13c6d86edd9f38c5066570c65a778fae700ce13b6e9a61",
+              "object": {
+                "device": 18446744071679573761,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 18781,
+                "modified_ns": 1792199525323226000
+              },
+              "complete": true,
+              "delivered": true,
+              "capture_failure": null,
+              "publication_confirmed": true
+            }
+          ],
+          "original_indexes": 1,
+          "publication_confirmed": true,
+          "capture_error": {
+            "class": ""
+          },
+          "manager_failure_response": null,
+          "permanent_denial": false,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "case": "raw-limit",
+          "receipt_sha256": "c616482907717ec903570609bea7aabc7399a822f8bedf524d240324b9734750",
+          "prior_bytes": 18781,
+          "configured_prior_bytes": 18781,
+          "final_aggregate_bytes": 67527645,
+          "actual_originals": [
+            {
+              "source_class": "synthetic-oversized-producer-control",
+              "name": "original-001.wire",
+              "raw_bytes": 67508864,
+              "raw_sha256": "49849263c31ba8b68a2305eb5c591d3809c515063374778f50d0f1756d14901a",
+              "object": {
+                "device": 18446744071679573762,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 67508864,
+                "modified_ns": 1792199571997451000
+              },
+              "complete": false,
+              "delivered": false,
+              "capture_failure": "raw-limit",
+              "publication_confirmed": false
+            }
+          ],
+          "original_indexes": 0,
+          "publication_confirmed": false,
+          "capture_error": {
+            "class": ""
+          },
+          "manager_failure_response": {
+            "failure_body_sha256": "dab0505496e88d11e0d6f5eb5e6c08570e169bf561df21fcd9c49986a299ed52",
+            "failure_body_bytes": 188,
+            "unavailable_body_sha256": "4e6cdc6614ad230d02db7cae4b747ea10f11e21fe03898491af344f314933500",
+            "unavailable_body_bytes": 57,
+            "http_status": 503
+          },
+          "permanent_denial": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "synthetic_source_control": {
+        "receipt_sha256": "43df7720d93c06c361f8868fa9bd4a62c2e92717296f22dd2c807db332f5ea18",
+        "abi_bootstrap_sha256": "fafd1ab0b84fe30c0b29f2c0d974a02693cb7d59fbb0b3f16f8479dcf0937375",
+        "producer_log_sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431",
+        "producer_log_bytes": 5,
+        "data_class": "synthetic-oversized-producer-control",
+        "actor": {
+          "pid": 1445,
+          "uid": 0,
+          "sec": 1792199541,
+          "usec": 868877,
+          "executable": "/tmp/horvium-lifecycle-3375346434/dashboard-native.test",
+          "sha256": "b574740fbda153b2c3d898ea200caa7f99e4b2081c41b0a960a1c7032ec57eff"
+        },
+        "socket": {
+          "device": 2527117379528746587,
+          "inode": 25,
+          "uid": 0,
+          "gid": 65534,
+          "links": 1,
+          "size": 0,
+          "modified_ns": 1792199542181327000
+        },
+        "peer_uid": 65534,
+        "peer_pid": 1449,
+        "request_sha256": "f67e25bce1c6a28c6e76d2a914f37efd9d09caa7d78bc1dbea708ee9eae959cb",
+        "request_bytes": 91,
+        "request_id": "a2dfadf1f40b91c8c73ff554b16ea5ea-1",
+        "sent_bytes": 67508865,
+        "sent_sha256": "508003ad8df0587acabbc12873d8afc9bd38c4e7833b5ab757a1f48fcb922e93",
+        "write_error": {
+          "class": ""
+        },
+        "close_write_error": {
+          "class": ""
+        },
+        "started_ns": 1792199562580480582,
+        "deadline_ns": 1792199607580480582,
+        "finished_ns": 1792199571993782626,
+        "connector": {
+          "Present": true,
+          "Exited": true,
+          "ExitCode": 0,
+          "Signal": 0,
+          "Status": 0,
+          "Actor": {
+            "pid": 1449,
+            "uid": 65534,
+            "sec": 1792199558,
+            "usec": 334677,
+            "executable": "/tmp/horvium-lifecycle-3375346434/dashboard-native.test",
+            "sha256": "b574740fbda153b2c3d898ea200caa7f99e4b2081c41b0a960a1c7032ec57eff"
+          },
+          "Stage": "connector-wait",
+          "Action": "raw-limit",
+          "Accounted": true,
+          "ChannelClosed": false,
+          "WaitFailed": false,
+          "ContextEnded": false
+        }
+      },
+      "actual_total_original_bytes": 67527645,
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "resource_activation": false
+    }
+  ],
+  "failed_predecessors": [
+    {
+      "source_commit": "82394994a446df5da616906694172fcf65b2e678",
+      "base_commit": "349513adc0bc0a726b4476d3e726545f55328cb3",
+      "release": "15.1",
+      "native_test_exit": 1,
+      "duration_seconds": 153.16,
+      "normal_pass_seconds": 42.22,
+      "negative_failed_seconds": 76.07,
+      "failure": "negative source readiness timeout followed by cleanup signal failure",
+      "native_child_exit_reason": "unknown; stdout/stderr and an explicit child wait receipt were not retained",
+      "diagnostic_inference": "Original full compiler provenance has newline text rejected by control grammar; portable reproduction confirms mismatch, not the lost native child diagnostic.",
+      "negative_request_capture_receipt": "missing",
+      "normal_originals": [
+        {
+          "name": "original-001.wire",
+          "raw_bytes": 18783,
+          "raw_sha256": "a5fc5f2a153ca9fbc5f064d81b65cd2c854c0e63a0001ac1909fc7a5194e7e46",
+          "publication_confirmed": true
+        }
+      ],
+      "14.5": "not started at this source",
+      "raw_sha256": "08c1cd177b8326e1a2fc4711331806c1ca8a86b0d431558f68e9c298408e6dc6",
+      "archive_sha256": "7a1f9ef428c4daf457b61ce3ce8111fa3ed4c5cc351f8f34209849d1d8ac68b7",
+      "result_sha256": "e862bd8ab37beeead00dd11677f14205fd863e305881a69badca9723f899af20",
+      "controller_sha256": "516d8c7dbc35037f1dfb21bafa84dc5a6f72edc2c790a4dfdf03b7dc311c50d3",
+      "worker_source_sha256": "23408005e4100ad82922fa8932c69d3be05d8fe1dc94543d1e2845cef72e56b2",
+      "source_archive_sha256": "334cb5135a9885b2b0146fc5f8b0a250946e26b01b7e4274796c082f6b5c17fe",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "5abf183c69d83d54da22aa5bb8868767bf696f1f2d7a182cbb5bc00bfdaac6bf",
+        "helper": "3b8b8bc4b9f4e8587d2f84204c2c8aa2830ba92ca6c556b264b48ee29a31eb7d",
+        "fixture": "6418909080d3f7b9529b92104de59946c0963d601ad822227638e60c05921840"
+      },
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    }
+  ],
+  "interrupted_predecessors": [
+    {
+      "source_commit": "dbd3d3db3642ec8b5f500234f5baa8d1bc63084c",
+      "release": "15.1",
+      "qualification_result": "interrupted during guest preparation before native execution",
+      "reason": "static review found unconfigured producer entry would fail a broad selection; guard correction required",
+      "native_test_exit": null,
+      "native_transcript": "missing; test not started",
+      "14.5": "not started",
+      "original_worker_host_teardown": false,
+      "original_worker_result_sha256": "ecc2ccbdbea87d3d609cdb5bf710a9f43259af053c2c1ef63a87bd06331defa7",
+      "outer_supervisor_sha256": "0ce3d202a33069a1555629565bb3e75b1921d5e22c9eb889395bdae6c23170a0",
+      "supervisor_recovery": {
+        "completed": true,
+        "group_cleaned": true,
+        "reason": "operator-stop",
+        "image_key_variables_absent": true,
+        "listener_absent": true,
+        "runtime_pins_preserved": true
+      },
+      "guest_postflight": "not available; no native assertion/capture or acceptance claim",
+      "qualified": false,
+      "native_acceptance": false,
+      "resource_acceptance": false
+    }
+  ],
+  "bootstrap_portable_log_sha256": "faf425b189e2b70f01e9f2fa32b25f9a5c6af6eaf770224bc16bb3aea65614aa",
+  "limits": [
+    "Normal controls use the actual product helper; oversized negatives use a separately identified malformed test producer and the real product manager/broker.",
+    "Exactly 67,508,865 acknowledged synthetic source bytes versus exactly 67,508,864 independently reopened broker bytes; source acknowledgement alone does not establish receiver retention or publication.",
+    "Zero bytes are not a valid product response, normal-producer capacity, native accounting or a resource workload.",
+    "Actual connector peer and wait identity are distinct from the actual manager PID; source half-close is recorded separately.",
+    "Archive capacity remains available; no pressure files, seeded byte state, reduced/raised caps, altered deadlines/schedules or same-source retries.",
+    "No integrated admission, full cancellation/recovery, cadence/overhead, full resource/activation, browser/manual, hardware or release acceptance.",
+    "Historical failed/skipped candidates stay unchanged; canonical resource instrumentation inactive and runtime writes denied."
+  ]
+}

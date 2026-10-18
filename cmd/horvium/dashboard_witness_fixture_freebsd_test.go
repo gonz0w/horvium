@@ -363,6 +363,14 @@ func startWitnessPairWithFault(t *testing.T, owner *dashboardGuestOwner, probe w
 	return startWitnessPairUsingObserver(t, owner, probe, mode, stage, label, startWitnessObserver)
 }
 func startWitnessPairUsingObserver(t *testing.T, owner *dashboardGuestOwner, probe witnessProbeReceipt, mode, stage, label string, start func(*testing.T, witnessNativeConfig, string) *witnessFixtureObserver) *witnessNativePair {
+	return startWitnessPairUsingHelper(t, owner, probe, mode, stage, label, start, nil)
+}
+
+// Optional helper substitution is confined to explicit generated negative
+// controls. The ordinary native/projection product paths retain their artifacts.
+type witnessFixtureHelperStart func(*testing.T, admin.Config, string, string) *nativeProcess
+
+func startWitnessPairUsingHelper(t *testing.T, owner *dashboardGuestOwner, probe witnessProbeReceipt, mode, stage, label string, start func(*testing.T, witnessNativeConfig, string) *witnessFixtureObserver, helperStart witnessFixtureHelperStart) *witnessNativePair {
 	t.Helper()
 	c, path, token := nativeRuntimeConfig(t)
 	c.IntervalSeconds, c.TimeoutSeconds = 30, 45
@@ -384,7 +392,10 @@ func startWitnessPairUsingObserver(t *testing.T, owner *dashboardGuestOwner, pro
 	owner.copy(t, "fixture", sourceFixture, fixture)
 	helperBinary, helperHash := binary, owner.artifacts.Artifacts["management"]
 	var helper *nativeProcess
-	if mode == "native-small" {
+	if helperStart != nil {
+		helperBinary, helperHash = fixture, owner.artifacts.Artifacts["fixture"]
+		helper = helperStart(t, back, backPath, fixture)
+	} else if mode == "native-small" {
 		helper = startNativeProcess(t, binary, []string{"helper", "-config", backPath}, 0, 0)
 	} else {
 		helperBinary = filepath.Join(dir, "reader-fixture.test")
