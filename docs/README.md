@@ -53,6 +53,7 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [M1 foreground development runbook](operations/M1-development.md)
 - [Security and supply chain](security/supply-chain.md)
 - [Proposed deployment security and recovery responsibilities](security/deployment-security.md)
+- [Whole-system security threat model](security/threat-model.md) and [source review/traceability](security/threat-model-review.md) — proposed V2-SEC-001–007; no runtime adoption.
 - [Design templates](templates/README.md)
 - [M0 foundation acceptance](milestones/M0/acceptance.md)
 - [M1 research manifest](research/M1/manifest.md)
