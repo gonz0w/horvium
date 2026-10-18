@@ -345,3 +345,4 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [Reproducible offline storage-custody readback](testing/dashboards/witness-storage-readback.md).
 - [Aggregate witness archive exhaustion](testing/dashboards/witness-archive-budget.md).
 - [Single-original broker raw-limit control](testing/dashboards/witness-raw-budget.md).
+- [Reproducible offline broker byte-budget evidence](testing/dashboards/witness-budget-readback.md).
