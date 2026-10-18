@@ -2329,3 +2329,12 @@ available. This is no ordinary producer-scale, numerical accounting, projection,
 resource/activation, browser/manual/hardware or release support claim. Original
 bounds/deadlines remain unchanged; runtime writes stay denied and the canonical
 resource runner stays inactive. Historical failed/skipped facts remain unchanged.
+
+[Offline broker byte-budget evidence](../testing/dashboards/witness-budget-readback.md)
+adds a read-only developer validator for retained raw-limit and aggregate
+archive-limit originals with independent profile/release/source/build/product/
+fixture/probe/archive expectations. It preserves synthetic versus producer roles,
+checks byte/custody/denial receipts, and introduces no native behavior or support
+claim at the validator source. Original native evidence, failed/interrupted
+predecessors and broader native/resource/browser/hardware/release gates remain
+separate. Runtime writes stay denied; canonical resource instrumentation inactive.
