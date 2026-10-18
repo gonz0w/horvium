@@ -347,3 +347,4 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [Single-original broker raw-limit control](testing/dashboards/witness-raw-budget.md).
 - [Reproducible offline broker byte-budget evidence](testing/dashboards/witness-budget-readback.md).
 - [Authenticated native manager refresh overlap](testing/dashboards/witness-refresh-overlap.md).
+- [Native publication lifecycle and passive idle](testing/dashboards/witness-metadata-lifecycle.md).
