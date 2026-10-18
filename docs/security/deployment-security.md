@@ -13,7 +13,10 @@ risks; no hardened image or production security baseline is currently qualified.
 Read the [second release proposal](../roadmap/v2-security.md),
 [architecture baseline](../architecture/baseline.md),
 [security and supply chain policy](supply-chain.md) and
-[compatibility matrix](../compatibility/matrix.md). Current M1 loopback/SSH access
+[compatibility matrix](../compatibility/matrix.md). The
+[whole-system threat model](threat-model.md) and [review record](threat-model-review.md)
+map authority, residual loss and proposed abuse/recovery cases to V2-SEC-001–007;
+they do not qualify these deployment controls. Current M1 loopback/SSH access
 and M2 qualification fixtures are development interfaces, not a deployment recipe.
 
 ## Assets and attacker authority

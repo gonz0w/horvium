@@ -2381,3 +2381,10 @@ accounting stays unqualified. 14.5 failed SSH preflight preparation before nativ
 execution; host teardown passed, with no native archive or guest cleanup receipt.
 A further preparation requires human approval after automatic review rejection.
 Both-release and broader acceptance stay open; runner inactive, writes denied.
+
+The [whole-system threat-model review](../security/threat-model-review.md) covers
+all seven proposed V2-SEC outcomes, authority/assets/boundaries and fourteen
+abuse/recovery scenarios. This documentation/source review supplies future design
+handoffs only; it adds no FreeBSD/service/client/native/compromise or appliance
+support evidence. Package-first delivery, existing evidence/failures, pending M1/M2
+and broader release gates retain their scope. Runtime writes remain denied.

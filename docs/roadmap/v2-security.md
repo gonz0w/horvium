@@ -20,6 +20,14 @@ Live security threat-model pickup, priority and dependencies are in [issue #167]
 and the [roadmap index](github-roadmap-index.md). The design obligations below
 remain authoritative planning material, not a second progress checklist.
 
+The [whole-system threat model](../security/threat-model.md) and
+[source review/traceability record](../security/threat-model-review.md) cover all
+seven proposed outcomes, attacker authority, assets, eight trust boundaries,
+fourteen abuse/recovery scenarios and bounded first design handoffs to existing
+#297–#303. They are research review material under #167, not adopted feature
+packets or new runtime/release guarantees. Live pickup and dependencies stay in
+GitHub; first-release safety obligations below remain unchanged.
+
 ## Security outcomes
 
 Protect confidentiality, recoverable history and availability separately. Define

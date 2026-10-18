@@ -241,6 +241,12 @@ separate trackers distinguish HTTP admission, native-resource recovery, Firefox 
 
 ### M7 Appliance image
 
+The [whole-system threat model](../security/threat-model.md) and
+[review record](../security/threat-model-review.md) give the #167 research packet
+and bounded first design handoffs for #297–#303. Merging that research may complete
+#167; the seven feature proposals remain design-gated and M7/first-release
+acceptance stays separate. This index does not mirror live progress.
+
 - [M7: Review package-based appliance image and host policy (#164)](https://github.com/gonz0w/horvium/issues/164)
 - [M7: Qualify appliance boot install update and recovery (#165)](https://github.com/gonz0w/horvium/issues/165)
 - [M7: review the second-release security threat model (#167)](https://github.com/gonz0w/horvium/issues/167)
