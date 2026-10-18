@@ -2346,3 +2346,11 @@ independent expected hashes; no native workload ran at the validator commit.
 The interrupted candidate had no archive and was not replayed; failed/skipped and
 cleanup limitations remain unchanged. Full protocol, native/host and broader
 acceptance gates remain separate; runtime writes denied, resource runner inactive.
+
+An inactive [authenticated refresh overlap control](../testing/dashboards/witness-refresh-overlap.md)
+holds the original real-manager collection, checks three concurrent authenticated
+busy responses without new broker work, then requires initial and later distinct
+publications with independently decoded retained originals. It preserves scheduling,
+deadlines/caps, additional originals, all original evidence and owned teardown.
+Both pinned FreeBSD candidates remain required; this fixture alone makes no broader
+resource, browser, hardware or release support claim. Runtime writes remain denied.
