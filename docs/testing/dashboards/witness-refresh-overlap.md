@@ -44,3 +44,14 @@ It does not qualify metadata coalescing, all admission ordering, arbitrary
 cancellation, numerical invariance, resource/idle/latency/overhead, browser/manual,
 hardware or release acceptance. Canonical resource instrumentation remains inactive;
 runtime writes stay denied. Historical failed/skipped/unknown limits remain intact.
+
+## First native candidate
+
+Source `ce334499a103286b33f139ffc6e74a7180b86159` failed FreeBSD 15.1 observer
+readiness (41.66s overall / 16.74s native-small). The exported child log explicitly
+reports `observer configuration`; the new refresh labels were absent from the
+existing fault-label allowlist. No collection or refresh request was exercised,
+projection did not start, and 14.5 was not started. Guest and host teardown passed.
+The correction registers only the two exact fixture labels and checks rejection
+of near-miss/path-like labels; no product behavior, caps or deadline changed.
+A corrected source requires fresh signed review and both native releases.

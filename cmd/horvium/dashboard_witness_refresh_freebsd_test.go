@@ -33,6 +33,16 @@ func TestNativeDashboardWitnessRefreshOverlap(t *testing.T) {
 	if os.Getuid() != 0 {
 		t.Fatal("root owner required")
 	}
+	for _, label := range []string{"refresh-native-small", "refresh-projection-10000"} {
+		if !witnessFaultLabelValid(label) {
+			t.Fatal("explicit refresh fault label refused")
+		}
+	}
+	for _, label := range []string{"refresh-", "refresh-native-small-extra", "refresh-projection-10001", "refresh-../native-small"} {
+		if witnessFaultLabelValid(label) {
+			t.Fatal("unregistered refresh label accepted")
+		}
+	}
 	owner := newDashboardGuestOwner(t)
 	t.Cleanup(func() {
 		clean := owner.storageCleanups == 1 && dashboardReaperEmpty() == nil && reflect.DeepEqual(owner.artifacts, observeDashboardParentArtifacts(t))
