@@ -67,3 +67,52 @@ release acceptance. Failed/skipped historical limitations remain authoritative.
 Runtime writes stay denied. Preserve failed candidates; corrections require new
 signed source, clean review and relevant both-release execution. Final lab-stop
 and lab-status must show no owned development process left running.
+
+## Candidate evidence and unfinished qualification
+
+Implementation source `538ac966025d14224e2b3733ffdc2603f942bb0a` passed fresh signed
+portable review. The [immutable manifest](witness-metadata-lifecycle-manifest.json)
+binds actual source/base/title, compiler/artifacts/ABI, original controller/command,
+preflight and independently reopened raw/index/metadata/sampler files.
+
+| FreeBSD | Actual result | Publication controls | Native-small idle | Sampler |
+| --- | --- | --- | --- | --- |
+| 15.1 | Native suite PASS, 444.33s | 7 confirmed IDs, 21 concurrent callers, 7 healthy metadata GETs; 2 expired 409s, 2 cancellation-after-200 controls | 300.003s; zero owned HTTP or observer/metadata control requests | 3,001 samples; zero missing, duplicate or late slots; CPU counters non-monotonic |
+| 14.5 | Preparation FAILED before native execution | Not executed | Not executed | No guest sampler/cleanup receipt or original archive |
+
+On 15.1, every new publication shared one metadata operation across three callers;
+repeated and previously confirmed historical originals caused no extra metadata.
+Expiry/cancellation registries stayed denied; idle guards performed no metadata
+operation. Four native-small and three projection IDs are explicitly confirmed.
+All fourteen native-small and three projection raw originals/indexes were reopened;
+ten background originals do not acquire publication confirmation from delivery.
+Actual frames, IDs/end counts, section/dataset counts, exact hashes/forward EOF,
+sealed objects and actor/artifact lineage match. Original deadlines, product
+artifacts and configuration/token bytes were preserved; guest/host cleanup passed.
+
+The full idle window retained ten additional source originals and all actual
+source start/finish times and gaps. Kernel sampling retained nominal 100ms cadence,
+raw file/object/hash, original owner/child records and wait usage. Its sampled CPU
+counters decrease at some slots: PairCPU twice, ObserverCPU once, ControllerCPU
+twice and SamplerCPU once. The controller's first-to-last delta is -15,559,000ns.
+The exact values/drop positions remain in the manifest; cause is unknown. An
+additional offline nonnegative-delta assumption exposed this limitation and was
+replaced with explicit diagnostic reporting, not clamping or resource acceptance.
+CPU accounting, direct-path equivalence and resource budgets remain unqualified.
+The sampler window brackets idle, and tmpfs snapshots do not establish peak use.
+
+14.5 completed artifact transfers, then its original preflight SSH command exited
+255 with `Connection timed out during banner exchange`. The native test never
+started; there is no native archive or guest cleanup receipt. Independent host
+process/listener/key/image/variables teardown and pinned runtime preservation
+passed. That failed preparation stays failed, separate from 15.1's native evidence.
+Automatic approval review rejected a proposed fresh same-source preparation; no
+additional guest was launched. Human approval is required before another attempt.
+Any future setup correction must retain the original preflight verification,
+workload, limits and trusted collection deadline, with all attempts preserved.
+
+Five portable behavioral methods passed, including real-manager partial/latest/
+last-complete retention. Final signed documentation repeats baseline checks and
+may reuse only exact-input deep evidence from the executed source review. All 179
+historical manifests and seven operator files remain unchanged. Both-release,
+CPU/accounting, full metadata/sample/resource and wider gates above remain open.

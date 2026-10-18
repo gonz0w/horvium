@@ -2371,3 +2371,13 @@ Portable partial/latest/last-complete retention remains separately declared.
 Both pinned native releases, source-bound raw/index/HTTP/sampler readback and
 verified teardown are required. This adds no runtime interface or broader support,
 resource-budget, calibration, browser, hardware or release claim; writes stay denied.
+
+The [source-bound publication/idle manifest](../testing/dashboards/witness-metadata-lifecycle-manifest.json)
+records a passing 15.1 functional batch: seven confirmed IDs/21 concurrent callers,
+actual expired/cancelled responses, permanent idle guards and the full 300-second
+request-free window. All seventeen original/index pairs and 3,001 sampler records
+were reopened; CPU counters are non-monotonic (cause unknown), so CPU/resource
+accounting stays unqualified. 14.5 failed SSH preflight preparation before native
+execution; host teardown passed, with no native archive or guest cleanup receipt.
+A further preparation requires human approval after automatic review rejection.
+Both-release and broader acceptance stay open; runner inactive, writes denied.
