@@ -30,8 +30,9 @@ qualified guest. Its source/procedure are linked in
 qualification must account for the added transient process. Removal requires
 equivalent owner-death/subtree containment, not reverting to an orphaned probe.
 
-The approved M1 helper uses `golang.org/x/sys/unix` v0.48.0 solely for FreeBSD
-`GetsockoptXucred`; source `613e2570718ecde85c04e69ebd5585c3881c442c`,
+The current module selects `golang.org/x/sys/unix` v0.49.0 for the existing
+M1 helper's FreeBSD `GetsockoptXucred` wrapper; source
+`b6b8557e8e2974925aec7a136ba0e323eedc5f43`,
 Go minimum 1.26.0, BSD-3-Clause. Go checksum-database verification and go.sum
 protect module downloads; native qualification also runs `go mod verify`. There are no
 transitive modules or cgo requirements. Dependabot proposes gomod updates weekly;
@@ -40,6 +41,11 @@ the syscall adapter. Remove it if an equivalent base Go wrapper replaces the
 FreeBSD credential adapter. See [notice](../../NOTICE.md) and
 [helper evidence](../testing/M1/helper.md); no dependency vulnerability scan is
 claimed by checksum verification alone.
+The v0.49.0 upstream LICENSE matches the retained notice exactly (SHA-256
+`911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad`). Keep historical
+M1/M2 source manifests and native receipts at their recorded v0.48.0 inputs.
+This documentation correction changes no module, source, license bytes or native
+qualification; current-version native evidence remains a separate gate.
 
 ## Fixture-only native file daemons
 

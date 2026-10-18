@@ -28,12 +28,16 @@ This introduces no NAS runtime dependency or redistribution claim.
 
 ## Go syscall adapter
 
-`golang.org/x/sys` v0.48.0, source revision
-`613e2570718ecde85c04e69ebd5585c3881c442c`, supplies the FreeBSD
+`golang.org/x/sys` v0.49.0, source revision
+`b6b8557e8e2974925aec7a136ba0e323eedc5f43`, supplies the FreeBSD
 `unix.GetsockoptXucred` wrapper. Copyright 2009 The Go Authors, BSD-3-Clause;
 the full upstream license is retained in [third_party/xsys-LICENSE.txt](third_party/xsys-LICENSE.txt).
 Module/archive hashes are verified through Go's checksum database and recorded
 in [go.sum](go.sum). It introduces no transitive modules or product cgo requirement.
+The retained license matches the pinned upstream v0.49.0 LICENSE byte-for-byte,
+SHA-256 `911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad`.
+Historical M1/M2 source manifests and native receipts retain their named v0.48.0
+inputs; this current-provenance correction does not qualify v0.49.0 natively.
 
 ## Local HTMX asset
 
