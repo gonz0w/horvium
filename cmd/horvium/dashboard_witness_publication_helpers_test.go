@@ -207,6 +207,15 @@ func witnessHTTPMetadata(client *http.Client, base string) witnessMetadataReader
 	return witnessHTTPMetadataCapture(client, base, nil)
 }
 func witnessHTTPMetadataCapture(client *http.Client, base string, original func(string, []byte) error) witnessMetadataReader {
+	return witnessHTTPMetadataRead(client, base, original, nil)
+}
+
+// Retain bounded original responses, including a refused generation, without
+// changing successful-only coverage capture or retrying a failed lookup.
+func witnessHTTPMetadataObserve(client *http.Client, base string, observe func(string, int, []byte) error) witnessMetadataReader {
+	return witnessHTTPMetadataRead(client, base, nil, observe)
+}
+func witnessHTTPMetadataRead(client *http.Client, base string, original func(string, []byte) error, observe func(string, int, []byte) error) witnessMetadataReader {
 	return func(ctx context.Context, id string) (witnessPublication, error) {
 		req, e := http.NewRequestWithContext(ctx, "GET", base+"/api/overview?generation="+url.QueryEscape(id), nil)
 		if e != nil {
@@ -218,6 +227,12 @@ func witnessHTTPMetadataCapture(client *http.Client, base string, original func(
 		}
 		b, re := io.ReadAll(io.LimitReader(response.Body, witnessFrameCap+1))
 		ce := response.Body.Close()
+		if re != nil || ce != nil || len(b) > witnessFrameCap {
+			return witnessPublication{}, errDashboardWitness
+		}
+		if observe != nil && observe(id, response.StatusCode, b) != nil {
+			return witnessPublication{}, witnessFailure("publication-original")
+		}
 		var o observation.Overview
 		d := json.NewDecoder(bytes.NewReader(b))
 		d.UseNumber()

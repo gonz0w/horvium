@@ -2362,3 +2362,12 @@ The earlier configuration-rejected 15.1 candidate remains failed, with no collec
 or refresh and unstarted projection/14.5; both cleanups passed. This scoped native
 coverage does not accept metadata coalescing, full resource/ordering/recovery or
 browser/manual/hardware/release gates. Runner inactive; runtime writes denied.
+
+An inactive [publication lifecycle and passive idle batch](../testing/dashboards/witness-metadata-lifecycle.md)
+combines concurrent metadata coalescing, actual retained/evicted original handling,
+permanent expiry/cancellation/idle rejection and native-small's complete 300-second
+request-free idle with passive original source and nominal 100ms sampler evidence.
+Portable partial/latest/last-complete retention remains separately declared.
+Both pinned native releases, source-bound raw/index/HTTP/sampler readback and
+verified teardown are required. This adds no runtime interface or broader support,
+resource-budget, calibration, browser, hardware or release claim; writes stay denied.
