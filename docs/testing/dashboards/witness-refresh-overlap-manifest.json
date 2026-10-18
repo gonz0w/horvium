@@ -1,0 +1,533 @@
+{
+  "schema": 1,
+  "date": "2026-10-18",
+  "scope": "inactive-native-authenticated-refresh-overlap-control",
+  "native_source_commit": "e5c62c393c578fb571ad57b334d54f4da713cd44",
+  "base_commit": "90f1ec48708ffb0983a4ac2adc7879446d8edb4c",
+  "pr_title": "test(dashboards): qualify authenticated native refresh overlap",
+  "qualified": false,
+  "native_acceptance": false,
+  "resource_acceptance": false,
+  "resource_activation": false,
+  "requirements": [
+    "DASH-WIT-003",
+    "DASH-WIT-004",
+    "DASH-WIT-007",
+    "DASH-WIT-NATIVE-005"
+  ],
+  "historical_manifests_preserved": 178,
+  "operator_files_preserved": 7,
+  "portable_behavioral_methods": 4,
+  "initial_red_log_sha256": "26b2ac22011ecb012ff848df4c7b737a91de6a752a9e6a589236da653100043f",
+  "focused_green_log_sha256": "e04dbd437f03f103af1787a57d9a2e1f8d7a0a5f5a85d6f4bcbf47b487ae29db",
+  "development_notes": "Initial test-first compilation failed because HTTP fixture helpers were absent. A sandbox-only loopback bind refusal passed with required socket access. Native first candidate failed fixture configuration before collection, preserved separately; exact-label correction required new signed review and both new native runs. Product behavior was not changed.",
+  "portable_review": {
+    "source_commit": "e5c62c393c578fb571ad57b334d54f4da713cd44",
+    "qualified": true,
+    "checks": [
+      "check",
+      "lint",
+      "test",
+      "secrets"
+    ],
+    "deep_executed": true,
+    "race_packages": [
+      "./cmd/horvium"
+    ],
+    "fuzz_targets": [
+      {
+        "package": "./cmd/horvium",
+        "target": "FuzzDashboardWitnessOriginalGrammar"
+      }
+    ],
+    "result_sha256": "85f489c9fc6424d453a4baa0a1f7464306a6377e1f3780e516948b69363c3833"
+  },
+  "independent_readback_script_sha256": "84a9c3f65d4e3a3587d27d31be23b4582b54ea17de201a49c16b8a0b23be2e10",
+  "independent_readback_sha256": "4d01a805ac7c03f55af8e5947fe0d77c846f778011f7cd5402b297cade813cf9",
+  "failed_predecessors": [
+    {
+      "source_commit": "ce334499a103286b33f139ffc6e74a7180b86159",
+      "release": "15.1",
+      "native_test_exit": 1,
+      "duration_line": "--- FAIL: TestNativeDashboardWitnessRefreshOverlap (41.66s)",
+      "scope": "observer-readiness-before-any-collection-or-refresh",
+      "child_diagnostic": "observer configuration",
+      "identified_fixture_defect": "two explicit refresh labels absent from fault-label allowlist",
+      "projection_started": false,
+      "other_release_started": false,
+      "originals": 0,
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "original_result_sha256": "05ab8057adf934cd954a1b078dcd4c14c8e745b76912159db0d6d42a6b5d37da",
+      "raw_sha256": "d731c2184a494f281f92d4562259763db92b2bb5e1b8192215f844e1d08b6afe",
+      "archive_sha256": "78a34a02d4317a42bebb2d063f54cc65d427163687a335d0cf888f2e81dce079",
+      "child_log_sha256": "65950c6d4aade8e18962ad2f07a6d061bd5c604cde6454e14fadc95bc79106bb",
+      "cleanup_receipt_sha256": "3640f57c247605e0c441705a2a2e73fcbafbcab2e85327853c9497ce7ffaae77",
+      "pointer_sha256": "7c119b83b15dd8f98e9380ed5fafecd54d27da26327b67cb0eac7c9e2111cc79",
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "base_commit": "90f1ec48708ffb0983a4ac2adc7879446d8edb4c",
+      "pr_title": "test(dashboards): qualify authenticated native refresh overlap",
+      "source_archive_sha256": "f6323953098f92f34896dcc99f64ccff345f163f5da45b7bb413f129bfc61fd0",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "5abf183c69d83d54da22aa5bb8868767bf696f1f2d7a182cbb5bc00bfdaac6bf",
+        "helper": "3b8b8bc4b9f4e8587d2f84204c2c8aa2830ba92ca6c556b264b48ee29a31eb7d",
+        "fixture": "bd63dcdc4270d7298a656fc67ea701529837f83940e7ee44f0e8d628bebdb45a"
+      },
+      "controller_sha256": "f43685b2d15d0e5565085b9e6ed46234f637af666459cdd72e7da06cd71ff7ab",
+      "worker_source_sha256": "eceeac89c9d2f541eb91d1107a0d579125feb4318b921d67bf53c29b16d663d0",
+      "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+      "native_command_sha256": "29172ac6a45c710e8d6947c34778c96d07ed35e24fb14e230e9f626a3df6c3a8",
+      "native_group_cleaned": true,
+      "original_preflight_sha256": "a937baaae74f5c649c9a442fff03d305e5475e2212bbfd1bf09bbf2e67e27043",
+      "after_preflight_available": true,
+      "source_review_sha256": "d467e6aaf693d8d4529ac1b629a3f81e2594abbdc6f48f34541fd03fa4c71df3"
+    }
+  ],
+  "runs": [
+    {
+      "source_commit": "e5c62c393c578fb571ad57b334d54f4da713cd44",
+      "base_commit": "90f1ec48708ffb0983a4ac2adc7879446d8edb4c",
+      "pr_title": "test(dashboards): qualify authenticated native refresh overlap",
+      "release": "14.5",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessRefreshOverlap (122.71s)",
+      "raw_sha256": "e651e7ae72b59120280ddf461c85c2035b345f5bafd885e0dc1f820970eaab05",
+      "archive_sha256": "28fb1ad0a07f25648637bac81f03bf7c72b8a7dae6677278abf81b91851914c6",
+      "result_sha256": "c9dbd36c65c98d2a32d72f14096526a95d800834ebed3e4eeb2382da0837655b",
+      "source_archive_sha256": "975f79c1a3a521562d638b42b3b7feba3761d8507976bbb0a5bac3aef06e6378",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "5abf183c69d83d54da22aa5bb8868767bf696f1f2d7a182cbb5bc00bfdaac6bf",
+        "helper": "3b8b8bc4b9f4e8587d2f84204c2c8aa2830ba92ca6c556b264b48ee29a31eb7d",
+        "fixture": "3365a8244a219242aca476f9417b51decea487aa513f3519d19e9fd5ada8ed3a"
+      },
+      "controller_sha256": "f43685b2d15d0e5565085b9e6ed46234f637af666459cdd72e7da06cd71ff7ab",
+      "worker_source_sha256": "eceeac89c9d2f541eb91d1107a0d579125feb4318b921d67bf53c29b16d663d0",
+      "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+      "probe_sha256": "a0e24744dd648299f09eb37fe808a599cc57bbb721323097bbfdbd550abae299",
+      "cleanup_receipt_sha256": "3640f57c247605e0c441705a2a2e73fcbafbcab2e85327853c9497ce7ffaae77",
+      "cases": [
+        {
+          "mode": "native-small",
+          "receipt_sha256": "a778aae4d332d6465007bb4895634ecc9440caa92f2c361a821318a926d22221",
+          "event": {
+            "StartedNS": 1792334141246352999,
+            "DeadlineNS": 1792334186246352999,
+            "Stage": "sealed",
+            "ID": "dca01927152b4cc71fe51f9194757ab5-1"
+          },
+          "overlap_replies": [
+            {
+              "index": 1,
+              "status": 409,
+              "body_sha256": "28774a0f2007adf88a429782193d904d538bb4ca6eeb13c2961f9b60a108ff9f",
+              "body_bytes": 58,
+              "started_ns": 1792334151258139999,
+              "finished_ns": 1792334151267665999
+            },
+            {
+              "index": 2,
+              "status": 409,
+              "body_sha256": "28774a0f2007adf88a429782193d904d538bb4ca6eeb13c2961f9b60a108ff9f",
+              "body_bytes": 58,
+              "started_ns": 1792334151259351999,
+              "finished_ns": 1792334151272181999
+            },
+            {
+              "index": 3,
+              "status": 409,
+              "body_sha256": "28774a0f2007adf88a429782193d904d538bb4ca6eeb13c2961f9b60a108ff9f",
+              "body_bytes": 58,
+              "started_ns": 1792334151257018999,
+              "finished_ns": 1792334151268393999
+            }
+          ],
+          "later_reply": {
+            "index": 4,
+            "status": 202,
+            "body_sha256": "55a876b9db2e9e15c20a381edde99ce0a68af43cdd9585b0349552aa5cd28b8b",
+            "body_bytes": 29,
+            "started_ns": 1792334152567999999,
+            "finished_ns": 1792334152574161999
+          },
+          "initial_publication": "dca01927152b4cc71fe51f9194757ab5-1",
+          "later_publication": "dca01927152b4cc71fe51f9194757ab5-2",
+          "additional_originals_after_release": 0,
+          "actual_originals": [
+            {
+              "source_class": "native-product-helper",
+              "name": "original-001.wire",
+              "request_id": "dca01927152b4cc71fe51f9194757ab5-1",
+              "raw_bytes": 16470,
+              "raw_sha256": "ce990013e30a6981e7bec2dbd00e9064a576d8a54946f9c4f020140d39630a63",
+              "dataset_records": 2,
+              "object": {
+                "device": 18446744071679573761,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 16470,
+                "modified_ns": 1792334151203084000
+              },
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true
+            },
+            {
+              "source_class": "native-product-helper",
+              "name": "original-002.wire",
+              "request_id": "dca01927152b4cc71fe51f9194757ab5-2",
+              "raw_bytes": 16470,
+              "raw_sha256": "bbcd4ba38551752d495397a0f992cfb17a272de9480a947ce7ff9fac7bac8dbb",
+              "dataset_records": 2,
+              "object": {
+                "device": 18446744071679573761,
+                "inode": 6,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 16470,
+                "modified_ns": 1792334160467394000
+              },
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true
+            }
+          ],
+          "indexes": 2,
+          "one_held_original_unchanged": true,
+          "no_new_held_connector": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "mode": "projection-10000",
+          "receipt_sha256": "73c7ef8875297b50164ad2bec8afbf805269a2955fdfb2262fac12e0861b6cc6",
+          "event": {
+            "StartedNS": 1792334186663332999,
+            "DeadlineNS": 1792334231663332999,
+            "Stage": "sealed",
+            "ID": "7a3f5a9db6aca1cc0a071532a5bcf308-1"
+          },
+          "overlap_replies": [
+            {
+              "index": 1,
+              "status": 409,
+              "body_sha256": "28774a0f2007adf88a429782193d904d538bb4ca6eeb13c2961f9b60a108ff9f",
+              "body_bytes": 58,
+              "started_ns": 1792334201409841999,
+              "finished_ns": 1792334201428596999
+            },
+            {
+              "index": 2,
+              "status": 409,
+              "body_sha256": "28774a0f2007adf88a429782193d904d538bb4ca6eeb13c2961f9b60a108ff9f",
+              "body_bytes": 58,
+              "started_ns": 1792334201411642999,
+              "finished_ns": 1792334201434550999
+            },
+            {
+              "index": 3,
+              "status": 409,
+              "body_sha256": "28774a0f2007adf88a429782193d904d538bb4ca6eeb13c2961f9b60a108ff9f",
+              "body_bytes": 58,
+              "started_ns": 1792334201409687999,
+              "finished_ns": 1792334201435263999
+            }
+          ],
+          "later_reply": {
+            "index": 4,
+            "status": 202,
+            "body_sha256": "55a876b9db2e9e15c20a381edde99ce0a68af43cdd9585b0349552aa5cd28b8b",
+            "body_bytes": 29,
+            "started_ns": 1792334207205995999,
+            "finished_ns": 1792334207209964999
+          },
+          "initial_publication": "7a3f5a9db6aca1cc0a071532a5bcf308-1",
+          "later_publication": "7a3f5a9db6aca1cc0a071532a5bcf308-2",
+          "additional_originals_after_release": 0,
+          "actual_originals": [
+            {
+              "source_class": "synthetic-projection-10000",
+              "name": "original-001.wire",
+              "request_id": "7a3f5a9db6aca1cc0a071532a5bcf308-1",
+              "raw_bytes": 2142983,
+              "raw_sha256": "cdba03d873ced76e33c51a0fa54bc9e6c1413dd13b80efffd14584826aba8c91",
+              "dataset_records": 10000,
+              "object": {
+                "device": 18446744071679573762,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 2142983,
+                "modified_ns": 1792334198602478000
+              },
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true
+            },
+            {
+              "source_class": "synthetic-projection-10000",
+              "name": "original-002.wire",
+              "request_id": "7a3f5a9db6aca1cc0a071532a5bcf308-2",
+              "raw_bytes": 2142983,
+              "raw_sha256": "d1cd4651760d51f531f54330ca87760065ec2b259762b43e52601e75f2fcb0d9",
+              "dataset_records": 10000,
+              "object": {
+                "device": 18446744071679573762,
+                "inode": 6,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 2142983,
+                "modified_ns": 1792334216157840000
+              },
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true
+            }
+          ],
+          "indexes": 2,
+          "one_held_original_unchanged": true,
+          "no_new_held_connector": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "resource_activation": false
+    },
+    {
+      "source_commit": "e5c62c393c578fb571ad57b334d54f4da713cd44",
+      "base_commit": "90f1ec48708ffb0983a4ac2adc7879446d8edb4c",
+      "pr_title": "test(dashboards): qualify authenticated native refresh overlap",
+      "release": "15.1",
+      "native_test_exit": 0,
+      "duration_line": "--- PASS: TestNativeDashboardWitnessRefreshOverlap (146.32s)",
+      "raw_sha256": "f2d7d0c8bbfd8744fb0e7988d4672b1d4a6d8d0502053d84b22a3a6573ac76c4",
+      "archive_sha256": "3fd925e96c5ad6152097a4c3ea1b0e4bd3b219d3f4c763e2ac037c640dfda666",
+      "result_sha256": "ef23c529240ff8dfd0e410931560ef03437ca4d4243e58327c4f8cd7efd832a4",
+      "source_archive_sha256": "975f79c1a3a521562d638b42b3b7feba3761d8507976bbb0a5bac3aef06e6378",
+      "compiler_sha256": "132b69336a1f809932a8a20b0201dbbb980e86e3a323ae32e893639d83d71598",
+      "artifact_sha256": {
+        "management": "5abf183c69d83d54da22aa5bb8868767bf696f1f2d7a182cbb5bc00bfdaac6bf",
+        "helper": "3b8b8bc4b9f4e8587d2f84204c2c8aa2830ba92ca6c556b264b48ee29a31eb7d",
+        "fixture": "3365a8244a219242aca476f9417b51decea487aa513f3519d19e9fd5ada8ed3a"
+      },
+      "controller_sha256": "f43685b2d15d0e5565085b9e6ed46234f637af666459cdd72e7da06cd71ff7ab",
+      "worker_source_sha256": "eceeac89c9d2f541eb91d1107a0d579125feb4318b921d67bf53c29b16d663d0",
+      "transfer_source_sha256": "3f53a8be3061a80074e7ec448750bbc71fb1a0fcbd49582235066326bcfacbc1",
+      "probe_sha256": "f27b1bbb8e49284227693f6d72a4e5f1cef59d9ed508dbde49b68981507a0901",
+      "cleanup_receipt_sha256": "3640f57c247605e0c441705a2a2e73fcbafbcab2e85327853c9497ce7ffaae77",
+      "cases": [
+        {
+          "mode": "native-small",
+          "receipt_sha256": "0d6488cfc37b309a25d1e56b0a95cb2e6eec17d86edced0423b829a0e62293a6",
+          "event": {
+            "StartedNS": 1792333886973478999,
+            "DeadlineNS": 1792333931973478999,
+            "Stage": "sealed",
+            "ID": "d2fac133508a8cee48da5f0ef0557c03-1"
+          },
+          "overlap_replies": [
+            {
+              "index": 1,
+              "status": 409,
+              "body_sha256": "28774a0f2007adf88a429782193d904d538bb4ca6eeb13c2961f9b60a108ff9f",
+              "body_bytes": 58,
+              "started_ns": 1792333898370612999,
+              "finished_ns": 1792333898386102999
+            },
+            {
+              "index": 2,
+              "status": 409,
+              "body_sha256": "28774a0f2007adf88a429782193d904d538bb4ca6eeb13c2961f9b60a108ff9f",
+              "body_bytes": 58,
+              "started_ns": 1792333898373388999,
+              "finished_ns": 1792333898386042999
+            },
+            {
+              "index": 3,
+              "status": 409,
+              "body_sha256": "28774a0f2007adf88a429782193d904d538bb4ca6eeb13c2961f9b60a108ff9f",
+              "body_bytes": 58,
+              "started_ns": 1792333898370574999,
+              "finished_ns": 1792333898381921999
+            }
+          ],
+          "later_reply": {
+            "index": 4,
+            "status": 202,
+            "body_sha256": "55a876b9db2e9e15c20a381edde99ce0a68af43cdd9585b0349552aa5cd28b8b",
+            "body_bytes": 29,
+            "started_ns": 1792333899764258999,
+            "finished_ns": 1792333899768956999
+          },
+          "initial_publication": "d2fac133508a8cee48da5f0ef0557c03-1",
+          "later_publication": "d2fac133508a8cee48da5f0ef0557c03-2",
+          "additional_originals_after_release": 0,
+          "actual_originals": [
+            {
+              "source_class": "native-product-helper",
+              "name": "original-001.wire",
+              "request_id": "d2fac133508a8cee48da5f0ef0557c03-1",
+              "raw_bytes": 18782,
+              "raw_sha256": "364f2f35e548ea45b9971b85bf4195d62be8dd76bbee2c4590a341bab378d86b",
+              "dataset_records": 17,
+              "object": {
+                "device": 18446744071679573761,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 18782,
+                "modified_ns": 1792333898316039000
+              },
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true
+            },
+            {
+              "source_class": "native-product-helper",
+              "name": "original-002.wire",
+              "request_id": "d2fac133508a8cee48da5f0ef0557c03-2",
+              "raw_bytes": 18782,
+              "raw_sha256": "66619c3e7be675688ff679031cd773987fae32f792a0605118979834cc48afee",
+              "dataset_records": 17,
+              "object": {
+                "device": 18446744071679573761,
+                "inode": 6,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 18782,
+                "modified_ns": 1792333907996773000
+              },
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true
+            }
+          ],
+          "indexes": 2,
+          "one_held_original_unchanged": true,
+          "no_new_held_connector": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        },
+        {
+          "mode": "projection-10000",
+          "receipt_sha256": "e5e7adcf0959ce9b2bb2714b9735d7870462fd69452985f15dee0df64c27d7a2",
+          "event": {
+            "StartedNS": 1792333935380820999,
+            "DeadlineNS": 1792333980380820999,
+            "Stage": "sealed",
+            "ID": "538830a9a708074c1385fe3cf8885975-1"
+          },
+          "overlap_replies": [
+            {
+              "index": 1,
+              "status": 409,
+              "body_sha256": "28774a0f2007adf88a429782193d904d538bb4ca6eeb13c2961f9b60a108ff9f",
+              "body_bytes": 58,
+              "started_ns": 1792333951010685998,
+              "finished_ns": 1792333951024442999
+            },
+            {
+              "index": 2,
+              "status": 409,
+              "body_sha256": "28774a0f2007adf88a429782193d904d538bb4ca6eeb13c2961f9b60a108ff9f",
+              "body_bytes": 58,
+              "started_ns": 1792333951012109999,
+              "finished_ns": 1792333951023811999
+            },
+            {
+              "index": 3,
+              "status": 409,
+              "body_sha256": "28774a0f2007adf88a429782193d904d538bb4ca6eeb13c2961f9b60a108ff9f",
+              "body_bytes": 58,
+              "started_ns": 1792333951010394999,
+              "finished_ns": 1792333951024214999
+            }
+          ],
+          "later_reply": {
+            "index": 4,
+            "status": 202,
+            "body_sha256": "55a876b9db2e9e15c20a381edde99ce0a68af43cdd9585b0349552aa5cd28b8b",
+            "body_bytes": 29,
+            "started_ns": 1792333958524775998,
+            "finished_ns": 1792333958529929999
+          },
+          "initial_publication": "538830a9a708074c1385fe3cf8885975-1",
+          "later_publication": "538830a9a708074c1385fe3cf8885975-2",
+          "additional_originals_after_release": 0,
+          "actual_originals": [
+            {
+              "source_class": "synthetic-projection-10000",
+              "name": "original-001.wire",
+              "request_id": "538830a9a708074c1385fe3cf8885975-1",
+              "raw_bytes": 2141960,
+              "raw_sha256": "a46fc14e9372127b0ee695a35c10c05f431357f6b05bfd113d354d31ddf74f28",
+              "dataset_records": 10000,
+              "object": {
+                "device": 18446744071679573762,
+                "inode": 4,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 2141960,
+                "modified_ns": 1792333948227513000
+              },
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true
+            },
+            {
+              "source_class": "synthetic-projection-10000",
+              "name": "original-002.wire",
+              "request_id": "538830a9a708074c1385fe3cf8885975-2",
+              "raw_bytes": 2141960,
+              "raw_sha256": "6fdc4e2f4bb501e66d00e36abc4f3f4efb83cc43a7ea92581f0392d570c17de9",
+              "dataset_records": 10000,
+              "object": {
+                "device": 18446744071679573762,
+                "inode": 6,
+                "uid": 0,
+                "gid": 0,
+                "links": 1,
+                "size": 2141960,
+                "modified_ns": 1792333970174826000
+              },
+              "complete": true,
+              "delivered": true,
+              "publication_confirmed": true
+            }
+          ],
+          "indexes": 2,
+          "one_held_original_unchanged": true,
+          "no_new_held_connector": true,
+          "all_connectors_reaped": true,
+          "helper_unchanged": true,
+          "configuration_unchanged": true
+        }
+      ],
+      "guest_cleanup": true,
+      "host_teardown": true,
+      "preflight_equal": true,
+      "native_acceptance": false,
+      "resource_acceptance": false,
+      "resource_activation": false
+    }
+  ],
+  "limits": "Actual overview IDs confirm only the two named publications per case. Additional delivered originals are retained without inferred publication/trigger. Three busy replies do not qualify metadata coalescing, whole admission ordering, arbitrary cancellation/recovery, numeric invariance, idle/resource/latency/cadence/overhead, browser/manual, hardware or release gates. Existing historical failed/skipped/unknown limitations remain unchanged. Canonical resource runner inactive, runtime writes denied."
+}

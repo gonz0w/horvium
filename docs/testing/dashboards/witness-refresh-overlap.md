@@ -55,3 +55,31 @@ projection did not start, and 14.5 was not started. Guest and host teardown pass
 The correction registers only the two exact fixture labels and checks rejection
 of near-miss/path-like labels; no product behavior, caps or deadline changed.
 A corrected source requires fresh signed review and both native releases.
+
+## Corrected candidate evidence
+
+Source `e5c62c393c578fb571ad57b334d54f4da713cd44` passed both cases on each pinned
+FreeBSD/amd64 release after fresh signed review. The [immutable manifest](witness-refresh-overlap-manifest.json)
+binds source/base/title, compiler/artifacts/ABI, actual commands/controllers,
+preflight, original bytes/indexes/actors, bounded HTTP observations and teardown.
+
+| FreeBSD | Native suite | Busy replies | Confirmed publications / originals / indexes | Later refresh statuses | Additional originals |
+| --- | --- | --- | --- | --- | --- |
+| 15.1 | 146.32s | 6 | 4 / 4 / 4 | 202 / 202 | 0 |
+| 14.5 | 122.71s | 6 | 4 / 4 / 4 | 202 / 202 | 0 |
+
+Independent readback reopened every original's framing, echoed request ID, end
+count and native/projection dataset counts, exact hashes/forward EOF, sealed
+object/index and actor/artifact lineage. The native fixture independently decoded
+both published originals and rechecked the retained initial one. Before/Held
+receipts retained exactly one undelivered original and one reaped connector, with
+unchanged denial counts and all three busy replies inside the original deadline.
+Both later requests per release returned 202; no request retry occurred.
+
+Guest storage/process/socket/tmpfs and host process/listener/key/image/variables
+teardown passed. Fresh signed corrected-source review executed baseline checks
+and affected-package race/fuzz; final evidence documentation repeats the baseline
+and may reuse only that exact-input deep evidence. All 178 historical manifests
+and seven operator files remain unchanged. The first failed candidate stays failed
+with projection and 14.5 unstarted, rather than acquiring the corrected source's
+coverage. Broader gates and inactive/denied runtime boundaries above remain.

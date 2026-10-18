@@ -2354,3 +2354,11 @@ publications with independently decoded retained originals. It preserves schedul
 deadlines/caps, additional originals, all original evidence and owned teardown.
 Both pinned FreeBSD candidates remain required; this fixture alone makes no broader
 resource, browser, hardware or release support claim. Runtime writes remain denied.
+
+The [source-bound refresh overlap manifest](../testing/dashboards/witness-refresh-overlap-manifest.json)
+records passing native-small and projection-10,000 controls on both pinned releases,
+twelve actual busy responses and eight publication-confirmed original/index pairs.
+The earlier configuration-rejected 15.1 candidate remains failed, with no collection
+or refresh and unstarted projection/14.5; both cleanups passed. This scoped native
+coverage does not accept metadata coalescing, full resource/ordering/recovery or
+browser/manual/hardware/release gates. Runner inactive; runtime writes denied.
