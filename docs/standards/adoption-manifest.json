@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "standards_repository": "gonz0w/suite-standards",
+  "revision": "7a99fb2e6855d9f73752b182118637d9e79dc03c",
+  "profile": "go-service",
+  "mode": "advisory",
+  "files": [
+    {
+      "path": "docs/standards/shared-v0.1.0.md",
+      "sha256": "07703134182b284753be762b1cd041458557aabe13c087fb5dfb20ee972b3777"
+    }
+  ],
+  "exceptions": []
+}

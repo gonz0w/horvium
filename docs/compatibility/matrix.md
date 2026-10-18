@@ -1,5 +1,12 @@
 # Compatibility matrix
 
+## Advisory standards reference — 2026-10-18
+
+[Shared development guidance](../standards/README.md) is pinned to `7a99fb2e6855d9f73752b182118637d9e79dc03c`
+with exact adopted prose hashes. This documentation-only reference changes no
+runtime, dependency, UI asset, CI execution, review/merge policy or support
+claim. Existing native/manual/stability/security gates remain separate.
+
 **No production support is claimed.** Architecture targets and observed
 validation are separate. Refresh exact versions in each active research manifest.
 

@@ -1,5 +1,8 @@
 # Documentation index
 
+[Advisory suite standards](standards/README.md) pin shared development guidance;
+existing project review and acceptance gates retain authority.
+
 [Dashboard qualification runner integration](testing/dashboards/runner-integration.md)
 connects original candidate, guest controls and verified teardown in one outcome;
 actual both-release resource and browser acceptance remain separate.
