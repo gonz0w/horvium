@@ -1,6 +1,6 @@
 # Offline broker byte-budget evidence
 
-Status: implementation for review; source-bound replay results pending.
+Status: implementation for review; source-bound replay results below.
 Owner: [issue 382](https://github.com/gonz0w/horvium/issues/382).
 Authority: [ADR 0011](../../adr/0011-native-dashboard-witnesses.md),
 [accepted EDD](../../design/dashboards/native-witness-binding-EDD.md),
@@ -117,3 +117,39 @@ cancellation/recovery, cadence/calibration/overhead, resource/activation, browse
 manual accessibility, hardware and release gates remain open. Canonical resource
 instrumentation stays inactive and runtime writes stay denied. No runtime
 interface, configuration, dependency, service or Action changes.
+
+## Source-bound replay results
+
+Validator source `4e34760cc2d24136799e8ee4d179156f4b914c74`, base `f3ff21e291fd237a973623221ed16b640b4931fb`,
+replayed retained originals with no guest or native workload. The
+[immutable replay manifest](witness-budget-readback-manifest.json) separates that
+validator source from every original native source and records independent input,
+output, command and supervisor hashes.
+
+| Profile | Original native source | Releases | Offline result |
+| --- | --- | --- | --- |
+| Raw-limit normal/negative | `43af5c8` | 15.1 and 14.5 | Both matrices accepted as scoped consistency only |
+| Aggregate archive normal/pressure/negative | `824ae18` | 15.1 and 14.5 | Both matrices accepted as scoped consistency only |
+| Failed raw-source readiness | `8239499` | 15.1 | Nonzero exit, empty stdout; not a successful matrix |
+
+Both raw negatives reopened exactly 67,508,864 retained bytes, separately from
+67,508,865 acknowledged source bytes. Both archive matrices reopened every counted
+normal, synthetic pressure and failed-prefix byte: exactly 268,435,456 per release.
+Normal recorded publications/indexes stayed separate from synthetic faults and
+pressure. All five replay process groups completed with verified teardown.
+
+The failed predecessor keeps its missing source output/exit diagnostic and no
+14.5 run. Its original probe matches the independently reviewed unchanged 15.1
+probe pin; rejection does not repair missing evidence. The interrupted `dbd3d3d`
+candidate produced no archive/native transcript and was not replayed. Its original
+worker host_teardown=false remains separate from earlier observed supervisor
+recovery. The original [raw-limit manifest](witness-raw-budget-manifest.json)
+and [archive-limit manifest](witness-archive-budget-manifest.json) remain unchanged.
+
+Thirteen behavioral methods passed at the validator source. Fresh check/lint/test/
+secrets and shared-tool fallback executed all eleven portable race packages and
+all 55 compiler-listed portable fuzz targets. A prose/evidence followup may reuse
+that executed exact-input deep evidence with a fresh baseline. All 177 historical
+manifests and seven operator files stayed byte-identical; final lab-stop/status
+verified owned-session teardown. These are offline consistency results, with no
+newer-source native, resource, hardware or release acceptance.

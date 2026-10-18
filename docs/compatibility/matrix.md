@@ -2338,3 +2338,11 @@ checks byte/custody/denial receipts, and introduces no native behavior or suppor
 claim at the validator source. Original native evidence, failed/interrupted
 predecessors and broader native/resource/browser/hardware/release gates remain
 separate. Runtime writes stay denied; canonical resource instrumentation inactive.
+
+The [source-bound offline budget replay](../testing/dashboards/witness-budget-readback-manifest.json)
+accepted both retained profiles on both original releases and rejected the earlier
+failed 15.1 raw-source archive. All actual raw/pressure bytes were reopened under
+independent expected hashes; no native workload ran at the validator commit.
+The interrupted candidate had no archive and was not replayed; failed/skipped and
+cleanup limitations remain unchanged. Full protocol, native/host and broader
+acceptance gates remain separate; runtime writes denied, resource runner inactive.
