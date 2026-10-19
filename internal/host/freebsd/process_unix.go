@@ -8,29 +8,48 @@ import (
 	"os"
 	"os/exec"
 	"syscall"
+	"time"
 )
 
-func configureProcess(cmd *exec.Cmd) func() error {
+func configureProcess(cmd *exec.Cmd) processControl {
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
-	killGroup := func() error {
-		if cmd.Process == nil {
-			return os.ErrProcessDone
-		}
-		err := syscall.Kill(-cmd.Process.Pid, syscall.SIGKILL)
-		if errors.Is(err, syscall.ESRCH) {
-			return os.ErrProcessDone
-		}
-		return err
+	return processControl{
+		stop: func() error {
+			if cmd.Process == nil {
+				return os.ErrProcessDone
+			}
+			if cmd.Process.Pid <= 1 {
+				return ErrCleanupDebt
+			}
+			err := syscall.Kill(-cmd.Process.Pid, syscall.SIGKILL)
+			// Darwin can reject a zombie-only group. Only the independent post-Wait
+			// read-only absence proof may make that retirement clean.
+			if errors.Is(err, syscall.ESRCH) || errors.Is(err, syscall.EPERM) {
+				return nil
+			}
+			return err
+		},
+		proof: func(waitErr error, deadline time.Time) error {
+			if cmd.ProcessState == nil {
+				return ErrCleanupDebt
+			}
+			return observeGroupRetired(cmd.Process.Pid, deadline)
+		},
 	}
-	cmd.Cancel = killGroup
-	return func() error {
-		// Run has joined its context watcher and I/O copiers, but WaitDelay
-		// only closes inherited pipes. A parent can exit leaving children in
-		// our isolated group; fixed inventory probes never own background work.
-		err := killGroup()
-		if errors.Is(err, os.ErrProcessDone) {
+}
+
+func observeGroupRetired(group int, deadline time.Time) error {
+	if group <= 1 {
+		return ErrCleanupDebt
+	}
+	for {
+		err := syscall.Kill(-group, 0) // Observation only; never recover signal authority.
+		if errors.Is(err, syscall.ESRCH) {
 			return nil
 		}
-		return err
+		if err != nil || !time.Now().Before(deadline) {
+			return ErrCleanupDebt
+		}
+		time.Sleep(min(10*time.Millisecond, max(0, time.Until(deadline))))
 	}
 }

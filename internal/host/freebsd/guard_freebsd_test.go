@@ -58,10 +58,8 @@ func TestNativeProbeOwnerDeath(t *testing.T) {
 			if err != nil || (mode == "escaped-child" && childGroup == group) || (mode == "cancel" && childGroup != group) {
 				t.Fatal("descendant fixture group")
 			}
-			t.Cleanup(func() {
-				_ = syscall.Kill(-group, syscall.SIGKILL)
-				_ = syscall.Kill(child, syscall.SIGKILL)
-			})
+			// Only the still-owned helper handle may be signalled. Saved IDs
+			// remain read-only observations after its death; fixtures self-expire.
 			if os.WriteFile(filepath.Join(dir, "probe.release"), nil, 0600) != nil {
 				t.Fatal("release owned probe")
 			}

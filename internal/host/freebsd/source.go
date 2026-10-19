@@ -60,9 +60,13 @@ func New(limits inventory.Limits) (*Source, error) {
 type cycle struct {
 	source         *Source
 	bytes, records int
+	debt           error
 }
 
 func (c *cycle) read(ctx context.Context, p probe) ([]byte, error) {
+	if c.debt != nil {
+		return nil, c.debt
+	}
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
@@ -72,6 +76,9 @@ func (c *cycle) read(ctx context.Context, p probe) ([]byte, error) {
 	commandCtx, cancel := context.WithTimeout(ctx, c.source.commandTimeout)
 	defer cancel()
 	output, err := c.source.read(commandCtx, p, c.bytes)
+	if errors.Is(err, ErrCleanupDebt) {
+		c.debt = err
+	}
 	if output.consumed < len(output.data) || output.consumed > c.bytes {
 		c.bytes = 0
 		return nil, ErrLimit

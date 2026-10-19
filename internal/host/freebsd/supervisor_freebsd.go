@@ -182,7 +182,7 @@ func runPropertySupervisor(request, response *os.File, run func(context.Context,
 	ctx, stop := context.WithDeadline(context.Background(), deadline)
 	defer stop()
 	err = run(ctx, intent)
-	cleanup := drainNativeReaper()
+	cleanup := probeCommands.drainIdle(drainNativeReaper)
 	if err != nil || cleanup != nil || owner.check() != nil {
 		return 1
 	}

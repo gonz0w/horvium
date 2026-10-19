@@ -2399,5 +2399,12 @@ and broader release gates retain their scope. Runtime writes remain denied.
 The issue #414 host lease-supervisor source correction independently attempts
 termination, sole reap and failed terminal recording after bounded observer
 errors. No-process injection and finite host fixtures are source qualification
-only; launcher-group scope excludes detached sessions. The inventory executor's
-post-wait authority risk remains open; no native/platform acceptance is added.
+only; launcher-group scope excludes detached sessions. The related fixed-command
+executor source candidate retains an owner before birth and across uncertain
+drain, fences subsequent probes and the outer property reaper, and performs its
+last positive operation before the sole wait. Lost reservation and ambiguous
+native guard status 1 retain debt; incomplete output never succeeds. Its original
+ten-second work ceiling and single 250 ms cleanup reserve are not renewed.
+Finite fakes/portable checks cannot establish native drain: both-release safety
+fixtures remain required and this behavior change remains unqualified. No native/
+platform acceptance or runtime-write eligibility is added.
