@@ -2408,3 +2408,12 @@ ten-second work ceiling and single 250 ms cleanup reserve are not renewed.
 Finite fakes/portable checks cannot establish native drain: both-release safety
 fixtures remain required and this behavior change remains unqualified. No native/
 platform acceptance or runtime-write eligibility is added.
+
+The [successor native fixture correction](../testing/M2/property-supervisor.md#source-correction-and-blocked-fixture-cuts-2026-10-19)
+removes metadata/PID-based positive operations. Unavailable original guard cuts
+fail before launch and stop subsequent effect/reboot work, preserving all named
+acceptance predicates. Two new real-guard ownership-fence cases are wired into
+the research runner/checker but remain unexecuted. Portable checks and cross-builds
+are source evidence only. Stable-capability fixture replacement and both-release
+qualification remain required; historical receipts are unchanged and runtime
+writes remain denied.

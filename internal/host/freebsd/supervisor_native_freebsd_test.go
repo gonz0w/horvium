@@ -12,7 +12,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
-	"syscall"
 	"testing"
 	"time"
 	"unsafe"
@@ -159,7 +158,10 @@ func TestNativeExecutorSupervision(t *testing.T) {
 		}
 	})
 	for _, mode := range []string{"ready-success", "residual-descendant-denied", "peer-before-launch", "foreign-handshake", "normal-escaped", "guard-first", "supervisor-first", "owner-death"} {
-		t.Run(mode, func(t *testing.T) {
+		if !t.Run(mode, func(t *testing.T) {
+			if mode == "guard-first" || mode == "supervisor-first" {
+				t.Fatal("native supervisor cut blocked: retained original guard capability required", mode)
+			}
 			dir := t.TempDir()
 			i := supervisorLiveIntent(t)
 			data, _ := storage.EncodePropertyIntent(i)
@@ -218,6 +220,14 @@ func TestNativeExecutorSupervision(t *testing.T) {
 			}
 			done := make(chan error, 1)
 			var parent *exec.Cmd
+			joined := false
+			var joinEnd time.Time
+			joinTimer := func() *time.Timer {
+				if joinEnd.IsZero() {
+					joinEnd = time.Now().Add(12 * time.Second)
+				}
+				return time.NewTimer(max(0, time.Until(joinEnd)))
+			}
 			if mode == "owner-death" {
 				parent = exec.Command(os.Args[0], "-test.run=^TestNativeSupervisedOwner$", "--", dir)
 				parent.Env = os.Environ()
@@ -236,6 +246,33 @@ func TestNativeExecutorSupervision(t *testing.T) {
 					})
 				}()
 			}
+			joinOriginal := func() {
+				if mode == "normal-escaped" {
+					for _, name := range []string{"release", "parent-release"} {
+						if os.WriteFile(filepath.Join(dir, name), nil, 0600) != nil {
+							t.Error("owned fixture release failed")
+						}
+					}
+				}
+				if !joined {
+					if parent != nil {
+						// This original Go Process serializes Signal with its sole
+						// Wait; no observed PID can construct this authority.
+						if err := parent.Process.Kill(); err != nil && !errors.Is(err, os.ErrProcessDone) {
+							t.Error("original owner fixture stop", err)
+						}
+					}
+					timer := joinTimer()
+					defer timer.Stop()
+					select {
+					case <-done:
+						joined = true
+					case <-timer.C:
+						t.Error("original fixture join unknown; retain guest cleanup debt")
+					}
+				}
+			}
+			t.Cleanup(joinOriginal)
 			probeFile := "probe"
 			if mode == "normal-escaped" {
 				probeFile = "parent"
@@ -248,8 +285,9 @@ func TestNativeExecutorSupervision(t *testing.T) {
 				t.Fatal("actual isolated supervisor/reaper/escaped lineage")
 			}
 			t.Cleanup(func() {
+				joinOriginal()
 				for _, p := range []recoveryProcess{supervisor, guard, probe, child} {
-					recoverySignal(t, p, syscall.SIGKILL)
+					assertProbeStopped(t, p.PID)
 				}
 			})
 			if mode == "normal-escaped" {
@@ -257,29 +295,21 @@ func TestNativeExecutorSupervision(t *testing.T) {
 					t.Fatal("owned child release")
 				}
 			}
-			if mode == "guard-first" {
-				recoverySignal(t, guard, syscall.SIGKILL)
-			}
-			if mode == "supervisor-first" {
-				recoveryStop(t, supervisor)
-				recoverySignal(t, guard, syscall.SIGKILL)
-				recoverySignal(t, supervisor, syscall.SIGKILL)
-			}
 			if mode == "owner-death" {
-				original := recoveryInspect(t, parent.Process.Pid)
-				recoverySignal(t, original, syscall.SIGKILL)
+				if err := parent.Process.Kill(); err != nil {
+					t.Fatal("original owner fixture stop", err)
+				}
 			}
+			timer := joinTimer()
+			defer timer.Stop()
 			select {
 			case e := <-done:
+				joined = true
 				if (e == nil) != (mode == "normal-escaped") {
 					t.Fatal("actual supervisor completion differs", e)
 				}
-			case <-time.After(12 * time.Second):
+			case <-timer.C:
 				t.Fatal("owned original consumer did not join")
-			}
-			if mode == "supervisor-first" {
-				recoverySignal(t, probe, syscall.SIGKILL)
-				recoverySignal(t, child, syscall.SIGKILL)
 			}
 			// When the owner dies the independent supervisor keeps its bounded duties.
 			until := time.Now().Add(7 * time.Second)
@@ -293,7 +323,9 @@ func TestNativeExecutorSupervision(t *testing.T) {
 			for _, p := range []recoveryProcess{supervisor, guard, probe, child} {
 				assertProbeStopped(t, p.PID)
 			}
-		})
+		}) {
+			return // A denied cut cannot be followed by more native work.
+		}
 	}
 	if !t.Failed() {
 		fmt.Println("SUPERVISOR_RESULT before=pass")

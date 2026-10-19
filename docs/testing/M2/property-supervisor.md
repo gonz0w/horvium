@@ -114,3 +114,48 @@ cut/restore tests. Supervisor-first death remains uncertain and requires explici
 owned-fixture cleanup; a replacement runtime helper cannot infer quiescence.
 Active property-command/kernel interruption is still untested. The read-only root
 listener, retained pool holds and pending M1 manual accessibility gate are unchanged.
+
+## Source correction and blocked fixture cuts (2026-10-19)
+
+The historical research helper compared boot/start/PID metadata, then signalled
+the numeric PID. That check cannot reserve a process across the later signal.
+The successor removes those positive operations entirely. Saved identities remain
+read-only observations. The available owner-death cut uses only its original
+`exec.Cmd.Process`, with exactly one original `Cmd.Wait`. The pinned Go 1.27.1
+FreeBSD runtime uses non-consuming `wait6(WNOWAIT)` plus its original Process
+state/signal lock to serialize that pair; no other waiter or `Release` may consume
+the child. A test-only self/non-child wait6 preflight requires `ECHILD`, failing
+before fixture launch on `ENOSYS`, unsupported ABI or any other result.
+
+The containment `stopped-guard`/`guard-first` and supervisor `guard-first`/
+`supervisor-first` cases now explicitly **fail before launching their subtrees**.
+Their original names and all previous checker predicates remain required. A
+failed containment returns before later queued/applying/property-effect work or
+reboot publication; a failed supervisor case stops later cases. This is a safety
+correction, not a completed replacement fixture. A stopped guard cannot receive
+a channel request after its creator dies. A separately reviewed stable original
+capability, or an explicitly adopted equivalent procedure preserving each cut,
+is needed. Unknown guest cleanup fails; planned whole-VM fallback never produces
+`cleanup_verified=true`. Original-handle cleanup still runs independently, while
+saved descendant IDs grant no fallback signal authority.
+
+Two new isolated native ownership cases are source-only and **not executed**:
+the original guard's actual normal exit status 1, primary `ErrExit` and suppressed
+output must accompany cleanup debt and keep the original slot fenced; actual guard Wait,
+pipe joins and group proof held past the caller's single cleanup reserve must
+deny a subsequent native dispatch and outer reaper admission. Only delayed
+acknowledgement of actual proof can release that slot, and its terminal result
+must retain the expired-call error. Each deliberately sticky case uses a fresh
+original-Cmd child; it never resets the global slot or fabricates proof. The
+private native preparation closure is shared with production through
+`executePrepared`, without changing its semantics. The denied command's actual
+`Cmd.Process` must remain nil; calling
+preparation alone is not a birth witness. A fixed owned touch witness also checks
+that the command did not execute, and original-owner identity is checked separately.
+
+The research runner selects these two cases before the existing supervisor and
+storage gates; the checker requires both in addition to all historical 42 cases.
+Thus historical logs cannot qualify this successor source. Portable checker
+regressions and offline cross-compilation do not establish either native result.
+Both-release fixture repair/qualification, durable runtime gates and write denial
+remain unchanged. No execution, deployment or source-packet reuse is authorized.

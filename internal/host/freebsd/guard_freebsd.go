@@ -14,7 +14,13 @@ import (
 // control. Tests may use their own reexecuted binary; requests never supply an
 // executable or argument. Control errors do not establish executor quiescence.
 func executeNative(ctx context.Context, path string, args []string, limit int) (readOutput, error) {
-	return executePrepared(ctx, path, args, limit, func(cmd *exec.Cmd, control *processControl) func(error) error {
+	return executePrepared(ctx, path, args, limit, prepareNativeCommand(ctx, path, args))
+}
+
+// Private native fault fixtures can hold proof acknowledgement while retaining
+// this exact production guard preparation and original command owner.
+func prepareNativeCommand(ctx context.Context, path string, args []string) func(*exec.Cmd, *processControl) func(error) error {
+	return func(cmd *exec.Cmd, control *processControl) func(error) error {
 		// The base reaper stays outside the probe subtree. On helper death,
 		// SIGALRM asks it to SIGKILL all descendants, including other groups.
 		// Go installs the death signal before exec and checks a parent-exit race.
@@ -52,5 +58,5 @@ func executeNative(ctx context.Context, path string, args []string, limit int) (
 			}
 			return commandError(err)
 		}
-	})
+	}
 }

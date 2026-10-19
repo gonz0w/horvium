@@ -14,7 +14,9 @@ class ExecutorRecoveryEvidenceTests(unittest.TestCase):
         SPEC.loader.exec_module(self.checker)
 
     def proof(self):
-        text = ''
+        parent = 'TestNativeExecutorOwnershipFences'
+        text = f'--- PASS: {parent} (1.0s)\n'
+        text += ''.join(f'    --- PASS: {parent}/{name} (0.1s)\n' for name in sorted(self.checker.FENCES))
         for phase, cases in [('Before', self.checker.BEFORE), ('After', self.checker.AFTER)]:
             parent = 'TestNativeExecutorRecovery' + phase
             text += f'--- PASS: {parent} (1.0s)\n'
@@ -49,3 +51,16 @@ class ExecutorRecoveryEvidenceTests(unittest.TestCase):
             with self.subTest(bad=bad[-90:]):
                 with self.assertRaises(ValueError):
                     self.checker.validate(bad)
+
+    def test_native_ownership_fences_are_required_without_waiving_old_cuts(self):
+        proof = self.proof()
+        for case in ('guard-status-one', 'pending-proof'):
+            line = f'    --- PASS: TestNativeExecutorOwnershipFences/{case} (0.1s)\n'
+            for changed in ('', line.replace('PASS','FAIL'), line.replace('PASS','SKIP'),
+                            line + line, line.replace(case,'unknown')):
+                with self.subTest(case=case,changed=changed), self.assertRaises(ValueError):
+                    self.checker.validate(proof.replace(line,changed))
+        # A new fence result never substitutes for a blocked historical cut.
+        for case in ('stopped-guard','guard-first','supervisor-first'):
+            with self.subTest(cut=case), self.assertRaises(ValueError):
+                self.checker.validate(proof.replace('/'+case+' ', '/blocked-cut '))

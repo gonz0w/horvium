@@ -9,6 +9,7 @@ BEFORE = {'fixture-preflight', 'process-observer', 'owner-death', 'stopped-guard
           'guard-first', 'queued-cut', 'applying-cut', 'effect-cut', 'normal-completion',
           'retained-for-reboot'}
 SUPERVISOR = {'boot-identity', 'clock-independent', 'ready-success', 'residual-descendant-denied', 'peer-before-launch', 'foreign-handshake', 'normal-escaped', 'guard-first', 'supervisor-first', 'owner-death'}
+FENCES = {'guard-status-one', 'pending-proof'}
 
 CONTROLS = {'preflight', 'quota', 'refquota', 'no-limit', 'compression', 'expired', 'ledger-drift', 'native-drift', 'wrong-uid', 'guard-quiescence', 'preserved', 'fixture-teardown'}
 
@@ -19,6 +20,13 @@ AFTER = {'new-boot', 'exact-fixture-import', 'unchanged-ledger', 'holds-and-no-a
 def validate(text):
     if len(text) > 1 << 20 or re.search(r'(?m)^(?:FAIL|\s*--- (?:FAIL|SKIP):)', text):
         raise ValueError('failed, skipped or oversized executor research')
+    parent = 'TestNativeExecutorOwnershipFences'
+    for name in [parent] + [parent + '/' + case for case in FENCES]:
+        if len(re.findall(r'(?m)^\s*--- PASS: ' + re.escape(name) + r' \([0-9.]+s\)$', text)) != 1:
+            raise ValueError('actual once-only native ownership fences required')
+    children = re.findall(r'(?m)^\s*--- PASS: ' + re.escape(parent) + r'/([^ /]+) \([0-9.]+s\)$', text)
+    if len(children) != len(FENCES) or set(children) != FENCES:
+        raise ValueError('unknown or duplicate native ownership fence')
     for phase, cases in [('Before', BEFORE), ('After', AFTER)]:
         parent = 'TestNativeExecutorRecovery' + phase
         names = [parent] + [parent + '/' + name for name in cases]
