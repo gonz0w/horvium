@@ -128,7 +128,7 @@ the child. A test-only self/non-child wait6 preflight requires `ECHILD`, failing
 before fixture launch on `ENOSYS`, unsupported ABI or any other result.
 
 The containment `stopped-guard`/`guard-first` and supervisor `guard-first`/
-`supervisor-first` cases now explicitly **fail before launching their subtrees**.
+`supervisor-first` cases at signed source `8f53b21f` explicitly **fail before launching their subtrees**.
 Their original names and all previous checker predicates remain required. A
 failed containment returns before later queued/applying/property-effect work or
 reboot publication; a failed supervisor case stops later cases. This is a safety
@@ -159,3 +159,60 @@ Thus historical logs cannot qualify this successor source. Portable checker
 regressions and offline cross-compilation do not establish either native result.
 Both-release fixture repair/qualification, durable runtime gates and write denial
 remain unchanged. No execution, deployment or source-packet reuse is authorized.
+
+## Stable original-guard fixture successor (2026-10-19, NOT_RUN)
+
+The successor replaces all four blocked cuts with a dedicated test controller per
+case. Before any fixture fork it acquires/verifies an empty self-reaper. Each
+controller retains the original top Cmd unreaped; the supervisor exchange's
+private test Wait seam gates the sole consuming Wait while its handshake proceeds.
+Normal production exchange uses Cmd.Wait unchanged. The exact production native
+prepare closure and executePrepared remain in use. A default-nil private after-Start
+notification runs only after stop/Wait/observer/readers are bound to the born
+original owner. Its test-only HOLD handshake reports only the original guard
+Cmd.Process.Pid through fresh inherited anonymous pipes and closes that writer
+so duplicate birth frames reject. HOLD does not cancel the work context. A
+test-only stop wrapper blocks before every possible consuming Wait until SEAL. EOF, framing failure or
+deadline exits that creator rather than returning into Wait. The complete unreaped
+ancestry, including dead intermediate reapers, continuously reserves the guard
+until the controller seals signal authority. Observer metadata never grants it.
+The pinned kernel's reaper transfer can occur on reap, not immediately at death:
+[15.1 kern_exit.c](https://github.com/freebsd/freebsd-src/blob/e38a7085f3a8ecd317c947591fe42b5ca9ab317b/sys/kern/kern_exit.c),
+[14.5 kern_exit.c](https://github.com/freebsd/freebsd-src/blob/231eee334c098a8398bc959202415c48058f67f0/sys/kern/kern_exit.c).
+
+A serialized test-only reservation allows only actual SIGSTOP/SIGCONT/SIGKILL,
+under one eight-second signal bound within a twelve-second controller work/cleanup
+wall. The outer original Cmd has a twenty-second failure backstop and bounded
+16KiB combined capture from before Start. No renewal or retry. Every seal waits
+for in-flight signal completion, discards the callback permanently, then releases
+Wait gates. Failure cleanup follows the same order. The existing ten-second native
+command ceiling and single250ms cleanup reserve stay unchanged; deliberately held
+retirement remains debt, and no global command slot is reset.
+
+Arming requires the live original probe and escaped leaf with direct parent,
+root UID/RUID and distinct process-group witnesses. Guard-first retains a live uncancelled work context and independently
+observes actual guard death before killing the original owner. Owner death is
+observed non-consumingly before singleton reacquisition; the live-descendant
+counterexample remains mandatory. The stopped guard receives actual CONT only
+through its retained reservation, and its own drain must stop the guard/probe/
+leaf before fixture disposal. Supervision guard-first requires natural nonzero
+supervisor completion after guard death; forced termination can only accompany
+failed cleanup. Supervisor-first still stops/kills the actual original supervisor.
+
+After all signals are sealed and original Cmd/observer Waits join, cooperative
+fixture release and self-scoped reaper disposal clean only this fresh controller's
+subtree. Raw Wait4(-1) is excluded until every original command Wait joins and
+probeCommands.drainIdle admits it. Zero self children/descendants is independently
+required before cleanup_verified. This fixture disposal cannot establish successful
+production drain; production residual-denial semantics remain unchanged. A failed
+cut still stops subsequent effect/reboot work. All previous case names, checker
+predicates, actual reboot/storage/history and the two new ownership fences remain
+required. Historical manifests, source roots and failed receipts remain unchanged.
+
+Finite portable regressions cover signal verb/expiry/seal races and broken-channel
+EOF, wrong seal, deadline, write failure, short write and invalid birth. A source
+architecture check permits the one reviewed numeric signal only inside the typed
+original-guard reservation callback; no FindProcess or metadata signal helper is
+accepted. Host tests and a FreeBSD cross-build cannot qualify these changed native
+fixtures. Both pinned-release native qualification remains pending, and this PR
+stays draft with no runtime-write or execution authority.

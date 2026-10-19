@@ -2417,3 +2417,11 @@ the research runner/checker but remain unexecuted. Portable checks and cross-bui
 are source evidence only. Stable-capability fixture replacement and both-release
 qualification remain required; historical receipts are unchanged and runtime
 writes remain denied.
+
+The [stable original-guard successor](../testing/M2/property-supervisor.md#stable-original-guard-fixture-successor-2026-10-19-not_run)
+implements the four blocked cuts with original birth/retained unreaped ancestry,
+pre-Wait gates and irreversible signal-phase sealing. Live arm, actual cuts,
+non-consuming owner death, counterexample and own-guard drain remain required;
+isolated self-reaper disposal supplies only fixture cleanup. Both-release native
+qualification is NOT_RUN. Portable faults/cross-builds are source evidence only;
+all historical manifests and runtime write denial remain unchanged.

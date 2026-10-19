@@ -321,11 +321,9 @@ func recoveryJoin(t *testing.T, c *exec.Cmd, done <-chan error, waited *bool, ki
 }
 func recoveryContainment(t *testing.T, mode, anchor string) {
 	t.Helper()
-	// Observed PID/start/boot metadata never grants a signal capability. The
-	// historical cut requires a guard capability surviving its creator's death;
-	// none is held here. Fail before launch, never substitute skip or VM cleanup.
 	if mode != "owner-death" {
-		t.Fatal("native containment cut blocked: retained original guard capability required", mode)
+		runStableCutController(t, "containment-"+mode, anchor)
+		return
 	}
 	dir := filepath.Join(anchor, mode)
 	if os.Mkdir(dir, 0700) != nil {

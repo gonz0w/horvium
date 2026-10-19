@@ -15,6 +15,8 @@ import (
 var probeCommands commandSlot
 
 type processControl struct {
+	started func() // default nil; private tests publish an already-owned born Cmd
+
 	stop  func() error
 	proof func(error, time.Time) error
 }
@@ -109,6 +111,9 @@ func executePrepared(ctx context.Context, path string, args []string, limit int,
 				_, err := io.Copy(sink{capture: output, keep: keep}, stream)
 				done <- err
 			}(stream.read, stream.keep)
+		}
+		if control.started != nil {
+			control.started()
 		}
 		return calls, nil
 	})

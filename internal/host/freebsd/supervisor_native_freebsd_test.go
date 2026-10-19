@@ -27,7 +27,7 @@ func nativeSupervisorFixtureProcess(args []string) (bool, int) {
 		return true, 1
 	}
 	mode, dir := args[1], args[2]
-	if mode != "normal" && mode != "escaped" && mode != "normal-escaped" && mode != "residual" {
+	if mode != "normal" && mode != "escaped" && mode != "normal-escaped" && mode != "residual" && mode != "stable-escaped" {
 		return true, 1
 	}
 	request, response := supervisorPipe(3), supervisorPipe(4)
@@ -56,6 +56,9 @@ func nativeSupervisorFixtureProcess(args []string) (bool, int) {
 				time.Sleep(5 * time.Millisecond)
 			}
 			return ErrUnavailable
+		}
+		if mode == "stable-escaped" {
+			return stableHeldExecutor(ctx, dir, 5, 6)
 		}
 		ctx, stop := context.WithTimeout(ctx, 4*time.Second)
 		defer stop()
@@ -160,7 +163,8 @@ func TestNativeExecutorSupervision(t *testing.T) {
 	for _, mode := range []string{"ready-success", "residual-descendant-denied", "peer-before-launch", "foreign-handshake", "normal-escaped", "guard-first", "supervisor-first", "owner-death"} {
 		if !t.Run(mode, func(t *testing.T) {
 			if mode == "guard-first" || mode == "supervisor-first" {
-				t.Fatal("native supervisor cut blocked: retained original guard capability required", mode)
+				runStableCutController(t, "supervision-"+mode, "")
+				return
 			}
 			dir := t.TempDir()
 			i := supervisorLiveIntent(t)
