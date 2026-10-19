@@ -312,6 +312,9 @@ func TestNativeStableCutController(t *testing.T) {
 				if e != nil {
 					return e
 				}
+				if !time.Now().Before(end) {
+					return ErrCleanupDebt
+				}
 				if s.Children == 0 && s.Descendants == 0 {
 					return nil
 				}
@@ -482,6 +485,9 @@ func TestNativeStableCutController(t *testing.T) {
 	}
 	cap.seal() // irreversible: no direct PID operation after this point
 	cleanup()
+	if !time.Now().Before(end) {
+		t.Error("stable fixture original deadline expired")
+	}
 	if t.Failed() {
 		return
 	}
