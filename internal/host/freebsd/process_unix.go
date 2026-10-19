@@ -42,12 +42,20 @@ func observeGroupRetired(group int, deadline time.Time) error {
 	if group <= 1 {
 		return ErrCleanupDebt
 	}
+	return pollGroupRetired(deadline, func() error {
+		return syscall.Kill(-group, 0) // Read only; never recover signal authority.
+	})
+}
+
+func pollGroupRetired(deadline time.Time, observe func() error) error {
 	for {
-		err := syscall.Kill(-group, 0) // Observation only; never recover signal authority.
+		err := observe()
 		if errors.Is(err, syscall.ESRCH) {
 			return nil
 		}
-		if err != nil || !time.Now().Before(deadline) {
+		// EPERM is unknown, including Darwin's transient zombie-only groups.
+		// Poll only within the same reserve; only actual ESRCH proves absence.
+		if (err != nil && !errors.Is(err, syscall.EPERM)) || !time.Now().Before(deadline) {
 			return ErrCleanupDebt
 		}
 		time.Sleep(min(10*time.Millisecond, max(0, time.Until(deadline))))

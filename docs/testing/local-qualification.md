@@ -720,7 +720,9 @@ run is accepted by these source corrections.
 
 The related inventory executor now registers one private in-process owner before
 starting a fixed command. Non-consuming exit observation precedes its last positive
-operation and sole wait; after wait, group checks use signal zero only. Ordinary
+operation and sole wait; after wait, group checks use signal zero only. Permission
+errors remain unknown and may be polled only to the same original cleanup end;
+only actual ESRCH establishes group absence. Ordinary
 observer errors cannot skip independent pipe closers, stop or wait. A lost child
 reservation forbids further signals and a second wait. No Go context watcher or
 WaitDelay may kill the native timeout reaper while its drain is unknown.

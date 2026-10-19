@@ -20,6 +20,28 @@ import (
 	"github.com/gonz0w/horvium/internal/inventory"
 )
 
+func TestExecutorOwnedFakeTransientPermissionIsNeverAbsence(t *testing.T) {
+	calls := 0
+	err := pollGroupRetired(time.Now().Add(time.Second), func() error {
+		calls++
+		if calls < 3 {
+			return syscall.EPERM
+		}
+		return syscall.ESRCH
+	})
+	if err != nil || calls != 3 {
+		t.Fatal("permission error treated as absence", err, calls)
+	}
+}
+
+func TestExecutorOwnedFakePersistentPermissionKeepsDebt(t *testing.T) {
+	start := time.Now()
+	err := pollGroupRetired(start.Add(20*time.Millisecond), func() error { return syscall.EPERM })
+	if !errors.Is(err, ErrCleanupDebt) || time.Since(start) > time.Second {
+		t.Fatal("unknown permission observation accepted or renewed", err)
+	}
+}
+
 // Only the reexecuted test binary accepts these fixture paths/modes. Product
 // readers continue to use their fixed, parameter-free native projections.
 func TestProbeTreeProcess(t *testing.T) {
