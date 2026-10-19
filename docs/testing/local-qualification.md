@@ -701,3 +701,19 @@ keeping the run unqualified. A missing reason receives the generic interruption/
 worker-failure message. This correction does not rewrite historical receipts or
 qualify a failed suite. See the [dashboard failure record](dashboards/native-resource-qualification.md)
 for the actual candidate, regression and unresolved resource/predicate gates.
+
+## Observer failure correction (source candidate)
+
+The issue #414 source candidate bounds each `ps` observation to at most 250 ms
+and the remaining original group-cleanup end. Observer errors retain cleanup
+debt and cannot suppress owned TERM/KILL, the sole worker wait or an independent
+terminal-record attempt. Lost child reservation forbids signals and a second
+wait. Group cleanup has one grace-plus-ten-second reserve including its sole
+wait; this is a cooperative bound, not an operating-system uninterruptibility
+guarantee. Native fixture cleanup is denied when group cleanup is uncertain.
+
+The receipt covers the fresh launcher group only. Group absence does not prove
+detached-session absence. The related inventory executor still has a separate
+post-Run positive group signal; its conditional empty-group/reuse risk remains
+open. No PID reuse or live leak was reproduced, and no native run is accepted
+by these source corrections.

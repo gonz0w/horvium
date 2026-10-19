@@ -2395,3 +2395,9 @@ abuse/recovery scenarios. This documentation/source review supplies future desig
 handoffs only; it adds no FreeBSD/service/client/native/compromise or appliance
 support evidence. Package-first delivery, existing evidence/failures, pending M1/M2
 and broader release gates retain their scope. Runtime writes remain denied.
+
+The issue #414 host lease-supervisor source correction independently attempts
+termination, sole reap and failed terminal recording after bounded observer
+errors. No-process injection and finite host fixtures are source qualification
+only; launcher-group scope excludes detached sessions. The inventory executor's
+post-wait authority risk remains open; no native/platform acceptance is added.
