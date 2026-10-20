@@ -13,6 +13,11 @@ defines the next OS-root commissioning/configured-startup boundary under #139.
 It is a design deliverable; commands and write enablement remain unavailable
 pending the documented native and assembled-runtime gates.
 
+The existing private commissioning and startup paths now require both real and
+effective UID 0, including retained original-owner checks. The
+[source correction](docs/testing/M2/execution-root-identity.md) has portable model
+coverage; actual UID-transition/native qualification remains open.
+
 Horvium is a dedicated NAS management system for FreeBSD and ZFS, designed to
 remain lightweight on a 16 GB home server and grow to larger commercial storage
 systems. The HP MicroServer Gen8 is a reference configuration, not a hardware

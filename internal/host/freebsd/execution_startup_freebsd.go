@@ -4,7 +4,6 @@ package freebsd
 import (
 	"context"
 	"github.com/gonz0w/horvium/internal/storage"
-	"os"
 )
 
 // Fixed original root startup review, using the same single-use process registry
@@ -13,7 +12,7 @@ func reviewNativeExecutionStartupOwner(ctx context.Context, journal, ledger stri
 	if !nativeSupported {
 		return nil, ErrUnsupported
 	}
-	return commissionExecutionOwner(ctx, nativeExecutionOwners, func() bool { return os.Geteuid() == 0 }, func(c context.Context) (executionOwnerSource, error) {
+	return commissionExecutionOwner(ctx, nativeExecutionOwners, executionRoot, func(c context.Context) (executionOwnerSource, error) {
 		source, e := NewSystemUseSource()
 		if e != nil {
 			return executionOwnerSource{}, e

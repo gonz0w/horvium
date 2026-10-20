@@ -6,6 +6,12 @@ separate selection format. Its commands are unimplemented. M1 configuration v1,
 read-only runtime behavior, #305's native lifecycle gate and #139's assembled
 global/backend requirements remain unchanged; this is no new support claim.
 
+The [original-owner root-identity correction](../testing/M2/execution-root-identity.md)
+requires real and effective UID 0 at existing fixed commissioning/startup owner
+boundaries and the fresh-activation guard. Portable supplied-identity regressions
+cover refusal, retirement and release; they do not qualify actual kernel identity
+changes, retained descriptors or any storage-control command.
+
 ## Advisory standards reference — 2026-10-18
 
 [Shared development guidance](../standards/README.md) is pinned to `7a99fb2e6855d9f73752b182118637d9e79dc03c`

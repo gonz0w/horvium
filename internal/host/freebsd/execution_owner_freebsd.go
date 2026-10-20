@@ -3,7 +3,6 @@ package freebsd
 
 import (
 	"context"
-	"os"
 )
 
 // Original root helper commissioning only. No configured startup, existing-state
@@ -12,7 +11,7 @@ func commissionNativeExecutionOwner(ctx context.Context, journal, ledger string)
 	if !nativeSupported {
 		return nil, ErrUnsupported
 	}
-	return commissionExecutionOwner(ctx, nativeExecutionOwners, func() bool { return os.Geteuid() == 0 }, func(c context.Context) (executionOwnerSource, error) {
+	return commissionExecutionOwner(ctx, nativeExecutionOwners, executionRoot, func(c context.Context) (executionOwnerSource, error) {
 		a, e := activateNativeFreshExecutionJournal(c, journal, ledger)
 		if a == nil {
 			return executionOwnerSource{}, e

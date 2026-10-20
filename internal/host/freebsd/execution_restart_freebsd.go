@@ -5,7 +5,6 @@ import (
 	"context"
 	"errors"
 	"github.com/gonz0w/horvium/internal/storage"
-	"os"
 )
 
 // Fixed original root composition and the same process-wide reservation as
@@ -14,7 +13,7 @@ func activateNativeClosedExecutionOwner(ctx context.Context, journal, ledger str
 	if !nativeSupported {
 		return nil, ErrUnsupported
 	}
-	return commissionExecutionOwner(ctx, nativeExecutionOwners, func() bool { return os.Geteuid() == 0 }, func(c context.Context) (executionOwnerSource, error) {
+	return commissionExecutionOwner(ctx, nativeExecutionOwners, executionRoot, func(c context.Context) (executionOwnerSource, error) {
 		source, e := NewSystemUseSource()
 		if e != nil {
 			return executionOwnerSource{}, e

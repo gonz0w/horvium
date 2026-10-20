@@ -3,7 +3,6 @@ package freebsd
 
 import (
 	"context"
-	"os"
 
 	"github.com/gonz0w/horvium/internal/storage"
 )
@@ -11,7 +10,7 @@ import (
 // Fixed native producers only, through the original one-shot fresh receipt.
 // No registered startup/global owner or runtime write eligibility.
 func activateNativeFreshExecutionJournal(ctx context.Context, journal, ledger string) (*storage.ExecutionJournalActivation, error) {
-	if ctx == nil || os.Geteuid() != 0 {
+	if ctx == nil || !executionRoot() {
 		return nil, storage.ErrDenied
 	}
 	if ctx.Err() != nil {
