@@ -4,6 +4,7 @@ package freebsd
 import (
 	"context"
 	"errors"
+	"os"
 	"sync"
 
 	"github.com/gonz0w/horvium/internal/storage"
@@ -24,6 +25,16 @@ func newExecutionOwnerRegistry() *executionOwnerRegistry {
 }
 
 var nativeExecutionOwners = newExecutionOwnerRegistry()
+
+// Read actual process identities at each original owner boundary. A retained
+// effective-root identity alone does not establish an OS-root operator.
+func executionRoot() bool {
+	return executionRootIDs(os.Getuid(), os.Geteuid())
+}
+
+func executionRootIDs(real, effective int) bool {
+	return real == 0 && effective == 0
+}
 
 type executionOwnerSource struct {
 	observe func(context.Context) (storage.ExecutionDomainsObservation, error)
