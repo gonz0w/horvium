@@ -8,6 +8,11 @@ The evidence summaries below retain their original candidate boundaries.
 
 **Dependable storage on FreeBSD.**
 
+The [explicit storage-control proposal](docs/milestones/M2/storage-control-contract.md)
+defines the next OS-root commissioning/configured-startup boundary under #139.
+It is a design deliverable; commands and write enablement remain unavailable
+pending the documented native and assembled-runtime gates.
+
 Horvium is a dedicated NAS management system for FreeBSD and ZFS, designed to
 remain lightweight on a 16 GB home server and grow to larger commercial storage
 systems. The HP MicroServer Gen8 is a reference configuration, not a hardware
