@@ -1,0 +1,821 @@
+{
+  "schema": "horvium-storage-control-source/v1",
+  "scope": "Complete unregistered retained selection, original read-only inspection and lifecycle/output source consumer",
+  "base": "1efb891011ecb245bcea33960a7fed8cf7e70086",
+  "native_execution": false,
+  "command_registered": false,
+  "writes_enabled": false,
+  "files_sha256": {
+    "internal/host/freebsd/storage_control.go": "f53f84e05000eae51b97bcbffe1db10e16b501a11db23c55dd11b5b602b60893",
+    "internal/host/freebsd/storage_control_freebsd.go": "7c2d9f0f27141a011e2a189cce82c47ae2065c49b9059c91bf66a9f329fa0b18",
+    "internal/host/freebsd/storage_control_other.go": "f0543f34a4dc53fc6b94b48e3ef4099888c9821e96854ffa274a560d0cc807f3",
+    "internal/host/freebsd/storage_control_test.go": "b2bd6e2548f845cadab50be0a66925be008104d14f217e7cb6bd4183d17529c9",
+    "internal/storage/control_config.go": "7d2b8533ef0990b21d4e127829402293e10f4ad90a1d1ba0c946cbffaec67355",
+    "internal/storage/control_config_test.go": "721b5cc258c4bcb65529579e038a12e8b68b060597bad0ab711798d0fec7a087",
+    "internal/storage/control_inspection_test.go": "0987047da15bdae6a8fc63a1fb6cb7f7c325bef217026cca2a2f7a869552e4dd",
+    "internal/storage/control_selection.go": "40ae6bfac4f3af33a57b55e1ab09bf310253ac4e12e0a1e527666b91ec5fae1f",
+    "internal/storage/control_selection_freebsd.go": "9356170b719902d6ee58ebc60c911154f14b5851a5d72a2ea98286efb401eba8",
+    "internal/storage/control_selection_other.go": "126690185ec2e4d8f5de741f8cb717a42abf660882dc87943984840f3644323e",
+    "internal/storage/execution_domains.go": "90279885b12e50b33d26ce322146a5dd3e7b93a326b55388c132b7d438a62c07",
+    "internal/storage/execution_domains_freebsd.go": "d4e691360818151d8944808dcddbe888a2cec7c2c643882024fec21d62ff01b8",
+    "internal/storage/execution_domains_other.go": "ffbb5b5a1f3ac10e349e718b9dade30e7f523b3a02b4f180ddce8eb1a714392b"
+  },
+  "unchanged_m1_consumers_sha256": [
+    {
+      "path": "cmd/horvium/dashboard_adapter_helpers_test.go",
+      "sha256": "15b8b04530668d6ece30237435c30473da1fa0b157fef22571a55c0b3e74361c"
+    },
+    {
+      "path": "cmd/horvium/dashboard_adapter_test.go",
+      "sha256": "3583d35b2b72df9b4216d1362b5862869d0e3d25ee299776f4e03c022378305e"
+    },
+    {
+      "path": "cmd/horvium/dashboard_artifact_helpers_test.go",
+      "sha256": "6985b6a563b6fc5ae8822eaddee25191cc23d254cdea433620c669acc705c4f1"
+    },
+    {
+      "path": "cmd/horvium/dashboard_artifacts_freebsd_test.go",
+      "sha256": "16239389f25c097c2ace2d77de96f97b52f057b1c11c733108af25f3733eedce"
+    },
+    {
+      "path": "cmd/horvium/dashboard_artifacts_test.go",
+      "sha256": "c1fdbb03d59271adae47b4730b98d969d708bc731529d07d3eac0005d7d3f873"
+    },
+    {
+      "path": "cmd/horvium/dashboard_cleanup_freebsd_test.go",
+      "sha256": "87a8023486a12a4273f2711992feb4384e3946003e9ac00275fecb0a6da1b4c5"
+    },
+    {
+      "path": "cmd/horvium/dashboard_controls_helpers_test.go",
+      "sha256": "a4df6b94e0bddf7aba169d7b7a5e2549f408c6f1912a71c1ce5f1aadc08f007e"
+    },
+    {
+      "path": "cmd/horvium/dashboard_controls_test.go",
+      "sha256": "9e39dcea35944005163b12c7c37287d69bbba10cc48eb1277a0b5e86006b71b3"
+    },
+    {
+      "path": "cmd/horvium/dashboard_diagnostics_freebsd_test.go",
+      "sha256": "99135aab7942e55523a932401912946cd44f0ac04ba6ba60ef6290779527bd13"
+    },
+    {
+      "path": "cmd/horvium/dashboard_diagnostics_test.go",
+      "sha256": "fee7dd3c1ac70a08febc8625138e2343e1a1957c170b29d913fc2cca57c263b8"
+    },
+    {
+      "path": "cmd/horvium/dashboard_html_helpers_test.go",
+      "sha256": "91affdeeac3fd10e967738177e5c61757d027c1a18cf39dd5587df030e5d138a"
+    },
+    {
+      "path": "cmd/horvium/dashboard_html_test.go",
+      "sha256": "4fef1732ecf7d79525e9769f3936f67e8d67f255665793c2b6845c0903ef3f54"
+    },
+    {
+      "path": "cmd/horvium/dashboard_invariance_freebsd_test.go",
+      "sha256": "5f10769c237355b34ff8266048de2c328927aedd48efdfa4fed4e5171be59e00"
+    },
+    {
+      "path": "cmd/horvium/dashboard_invariance_helpers_test.go",
+      "sha256": "56823027aae3716f02ce4e1716b9a4f124cb4c829c8ea2a4e9ce62b037b4973d"
+    },
+    {
+      "path": "cmd/horvium/dashboard_invariance_test.go",
+      "sha256": "151843f5bf5086a9abd7a30f245668c8fa76ac44482bc1e9f70f3891e3be56d7"
+    },
+    {
+      "path": "cmd/horvium/dashboard_native_helpers_test.go",
+      "sha256": "6b4754c76bb31b87649b5ca665862894c0599a07a88550083561b31d2f94b910"
+    },
+    {
+      "path": "cmd/horvium/dashboard_native_inputs_test.go",
+      "sha256": "6124d79a6432ffbbea7c33a63db14ab221f329fa4fe4bc8beaddfaaaf5321573"
+    },
+    {
+      "path": "cmd/horvium/dashboard_originals_helpers_test.go",
+      "sha256": "7fb7a99f881a0cb013e49283aa148de4717e9a8c5ff9b82d62dd4723c522ed2f"
+    },
+    {
+      "path": "cmd/horvium/dashboard_originals_test.go",
+      "sha256": "0a637ec2200917e102e4e9562ab152e3afc68fd58deac45d1c86426bd764111f"
+    },
+    {
+      "path": "cmd/horvium/dashboard_resource_helpers_test.go",
+      "sha256": "13b90d7f20445eda9a42f3595482a2c3827ddeb59efbdb8a96d3ad0f35bfbbc0"
+    },
+    {
+      "path": "cmd/horvium/dashboard_resource_test.go",
+      "sha256": "eed26c0f84e6b7a69a44023081d15fd54b50a193920c8524d5904204aa6ba795"
+    },
+    {
+      "path": "cmd/horvium/dashboard_storage_cleanup_helpers_test.go",
+      "sha256": "46cedc8c320304baf435fd10a0defe342ea601af7e24e991468f23c515ef552a"
+    },
+    {
+      "path": "cmd/horvium/dashboard_storage_cleanup_test.go",
+      "sha256": "753d1506db771e83d1d2a501b5bb3f3d8a6f6c9ba3cad60191e92a698dfd5d80"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_accounting_helpers_test.go",
+      "sha256": "2090986dbfd52cee9199731a987a1f5778692a7851d277bef47bcd24a18cf90c"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_accounting_test.go",
+      "sha256": "ce91a76c35875d5e9f748ddfcc54a68211ad8345d787f2133b2591eadcb2c93f"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_admission_freebsd_test.go",
+      "sha256": "7edb546117c9443420e7a923515a42e17af1707bca88f3eb0d61bae73a166691"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_ancillary_freebsd_test.go",
+      "sha256": "22a2424095db6bba585bc47e451c042068bf39d8436fbfe6c7d92e192dd8901e"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_archive_freebsd_test.go",
+      "sha256": "6a72b1ceed98054c7f7cd62e02f8fc823f138dfbdfec6d32a79fa4468381cf1f"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_archive_helpers_test.go",
+      "sha256": "8a9424b9cd16bfd4fcf180a2a1243c5f90ec7700b11572f9c3659815a63ba9d7"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_archive_test.go",
+      "sha256": "8803b07fea251265adcc47828f2d61fc09dec5010e56b863cc07d4a2fe4d4542"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_attempt_evidence_test.go",
+      "sha256": "09e101a281b0db544ab6f97350da6f9923e5e6a9c93462aaafee28464be3df76"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_broker_freebsd_test.go",
+      "sha256": "6a0681091bcc5e502557bdc8112c1527222261ca6a4dff86c1f808107ea965e3"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_calibration_freebsd_test.go",
+      "sha256": "96f91539ceacb90be05f0716d2c02e4c668b7bf2ae267d0d028d2b1591b0a155"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_capacity_freebsd_test.go",
+      "sha256": "44d5cc692ff4e137a7feca83e25a20d1610b350c768194e2b7b21b2eb4f5d6f1"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_capacity_helpers_test.go",
+      "sha256": "4622c2d1e98a29c8fae587c4c4a30a2b7d844a3723244b9b40f3fed2079646b3"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_capture_copy_helpers_test.go",
+      "sha256": "e74359434c7fb23122cf6bcd0cf05af5081bb7c76d9072df0257f8c10a08413d"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_capture_copy_test.go",
+      "sha256": "b1e64bea7939fc8e594538fc37f6f3adc248ef6a978861a554411aecfb11bf0e"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_capture_helpers_test.go",
+      "sha256": "da0bb6d85a52440250c5d040dd09d00d12ad9f064fa88596e3ab6d4ffa5f8d09"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_capture_test.go",
+      "sha256": "4c799ea272db3b7596c41afc1d406bc92a88c9d91aa3923cc0aeabfc26ba767c"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_command_helpers_test.go",
+      "sha256": "bd7a422b2578e0952b39d4954f3787034e21f85fa3d07349498fb13d574af971"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_command_test.go",
+      "sha256": "663ca42f5256abf38f0130f2b91fd11b3b549b76c5f5985e8805f26d94f5c482"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_connector_interruption_freebsd_test.go",
+      "sha256": "0b0eb98e4660b761000f3775569ff12605f7a798bce6bc5bcce054ee3178e764"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_connector_outcome_helpers_test.go",
+      "sha256": "36448caea2faf4a5367f824fa1761ab56efe8d056aaa387234e0ab0b4e218f71"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_connector_outcome_test.go",
+      "sha256": "2c0ac8e6a90ca2f5eea671923a9cf7b9faa5fd39b781757bc3783f9f0e83e37a"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_control_freebsd_test.go",
+      "sha256": "b3d7b80f1e59f4f997cee25a3e54d81b64c614e376fdeeb73ad6a82861e7def4"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_control_helpers_test.go",
+      "sha256": "30fa2e3e0863a95936a24273a1231e00237feab4da859d42bacd7bee79899a89"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_control_test.go",
+      "sha256": "2d1ed1eb59d6eb288cfdad1d6c4a15b6e9772f203790712e49441692b7cf07a7"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_controller_freebsd_test.go",
+      "sha256": "7bcca73d2331fd9602527bfd22a1420a2dec39edbd5dadb773dc043f1c1a91b3"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_controller_helpers_test.go",
+      "sha256": "eb825b13db43ecbf0e219981d2fd4e94820f2fa23fcecbbd5958cf6029d7d5ab"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_controller_test.go",
+      "sha256": "b935a93f3ff3315b15bc5bd66f0cce9276e1bc99596f2d2a68a138ea3f823edb"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_coverage_freebsd_test.go",
+      "sha256": "39c122681df60df97f68fd9361b9914ee2ec99d980a7fe3ed07ebf87b8f6888a"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_coverage_helpers_test.go",
+      "sha256": "1ba1aab7c1abb5c6607b1b8203ea708cc45e3cdce9f0881c1ba5dc342464e37d"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_coverage_test.go",
+      "sha256": "8b3cfb637152b10f255d5cb3b55d2743e1dc9227abd8360b1c47545b4942a998"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_custody_helpers_test.go",
+      "sha256": "348c5359e00cc0ab8da5f5a953968ba8e3632c662b664d649ef56acfeb00ffcf"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_custody_test.go",
+      "sha256": "db4bce5ffbf3318de9b928f50203ae2f16c9acc1e432d03fda6ee20bef1e1741"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_deadline_helpers_test.go",
+      "sha256": "09f04e3f8faf28dedb37100ca17f2caf4a4e6a1e5809f26ba0801e719aacbf1f"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_deadline_test.go",
+      "sha256": "cc591bfa420efff01823f5a27854fafb734edc82548f1f2f5ad378e8208562b3"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_descriptor_helpers_test.go",
+      "sha256": "ce03ddf41d1864f0775bbc0bc697f65beb2da8e695efda064873745fbd29e9ea"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_descriptor_test.go",
+      "sha256": "c6869130346ab7b7f48b3aa9ff37fef933960dfe560107a89e583277e439b491"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_enospc_freebsd_test.go",
+      "sha256": "920c65f2a3767233d20872024a8b45df17c14cdd1e64a2d76c649a392bc2afb7"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_expiry_freebsd_test.go",
+      "sha256": "c2c1bac663be7f423938422bfc30c74992c26989d5546a5f5d8d79b4440945ae"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_failure_helpers_test.go",
+      "sha256": "98dd9dcb44cf9278fcff69769e89b54106bc97d0bdff7ce71016442dd25184e6"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_faults_freebsd_test.go",
+      "sha256": "9763e2e0b0427484a19eda5ff9e50c767b83f7b685e3a225d16e5412cca6db4a"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_fixture_freebsd_test.go",
+      "sha256": "6b7be70aead71ff04aa7b48b8e4a20f0cc1570711761b862ef4a20c73988bcbb"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_forward_freebsd_test.go",
+      "sha256": "beb7317ec83f2bd9030686589829a198bd9f84b99c00ba8dfce3ddf178cd4fd0"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_forward_helpers_test.go",
+      "sha256": "94c56f2db216393eba0944b278c4cdcb864e829ab2f03442981008bceb210574"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_forward_test.go",
+      "sha256": "0c056ced9c1ff6cacae65523f649710d2900fa9cdc3a681676ef4b0e8ee222b9"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_interruption_freebsd_test.go",
+      "sha256": "6ce6c78505b7aebad0afe44c1a44b67b9b691a770d678c3891711f7e0e7aeca6"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_interruption_helpers_test.go",
+      "sha256": "0249b16662325d7aa389b76f9e5dbe001625dd0d30376784cd88774d8008b690"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_interruption_test.go",
+      "sha256": "7c268d394b02a3e61299dbd66ad7ad2ca24e947dde3033bb69ebf70a4b46ac2c"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_kernel_freebsd_test.go",
+      "sha256": "f3596030001a076df9a0d2e48da7324fb428fefd42f2d78a28cffd1d6dd9a070"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_kernel_helpers_test.go",
+      "sha256": "3cf3d137335684c181cddb2d088c92f9adc64e7f3ebde4a8086ff117e0be9f6c"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_kernel_test.go",
+      "sha256": "583f95b7ee50e2bb52934383eb54e97756367a6aea1482c20a08fc0371aeff5d"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_lifecycle_freebsd_test.go",
+      "sha256": "7f77b4700b068de4e3c814cefec55f1cb7ac4b4fa3dbacdd26136aee673152fb"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_lifecycle_helpers_test.go",
+      "sha256": "3cc3c2ac329f8d4e61c1ccbe2b6aea356267bcd0d10bab498facc54f044c6d98"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_lifecycle_test.go",
+      "sha256": "587ff9a966902188ef7cccf50e5e3b22a595b9ebdcf5a376b75a09374ba86bfe"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_manager_test.go",
+      "sha256": "f69923655b8a09112982bb106e1113b6fadf8c3c56c0975e70594e76cf161fc7"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_native_accounting_test.go",
+      "sha256": "ea65d0886273f9bd2d9dfe077903be20ed98d173865c91b9ae4c6a5cd207d8f8"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_overlap_freebsd_test.go",
+      "sha256": "69f9191159697cd2a42b97d3bfe6124e874f50e8ec3679424895295ce76d2de2"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_partial_storage_freebsd_test.go",
+      "sha256": "c2b4ef64e509b4e4f2a1bc33d198991ef727bdd412ecfc835743c54eea09e8b9"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_publication_helpers_test.go",
+      "sha256": "afc0816ef4ad32ce3dadece9dfb8e6a9872df7b53bbd0ca5195a0afafa8a9eeb"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_publication_test.go",
+      "sha256": "d3dbe652e3af3d98d0befa1ab4ef174f9c9d3e65d1be7f836e5bb7691c23746c"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_raw_bootstrap_test.go",
+      "sha256": "225ff0537c13101ce583c76dc8bdaf00db4a365b158703fbd827ec6a58bfbff0"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_raw_freebsd_test.go",
+      "sha256": "8e4534e2561138b225964d1d4c022b09ad30ca584d4706d308955e6f72636af2"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_raw_source_freebsd_test.go",
+      "sha256": "897004edc83084e9ad1705c8f1fd315401b7162232eafb0928ee66d0cdf966da"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_refresh_freebsd_test.go",
+      "sha256": "8e37943ce69457533a19457c894c8f39f7c968e6a8a6fe8b8e6505e9500133f1"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_refresh_helpers_test.go",
+      "sha256": "d69f9a95dca81a68b5757e174fd7def4be96f44cba20d27a10cc2c58d736c204"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_refresh_test.go",
+      "sha256": "0241771dd9d236f773d1167b2c6dc611b6656c27aa16e70de051a31ab222d3ee"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_sampler_freebsd_test.go",
+      "sha256": "8e3ff1d1c5cf28f670a5998e1a177b353cddf109c0c60c7d463f5a5122ab7f31"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_sampler_original_helpers_test.go",
+      "sha256": "d6d22e8c48d9cbe39100faa69803b1f2f3ffda60f715253337a703fcc1826254"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_sampler_original_test.go",
+      "sha256": "1713a77a95d03af2f02b4141b7a66c3485d84cd91f7eee60d02c378136c6d468"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_schedule_helpers_test.go",
+      "sha256": "83961ba82ddcde3b6d9f23f9d5d2e0e89dc1a740937b404fd6e60c2b24d85180"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_schedule_test.go",
+      "sha256": "8fc2b62f6778211c731ba0ef4a5fc8f5c4e831289c31aa46d01d17626b851032"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_wire_helpers_test.go",
+      "sha256": "24c02f0cf7c0e1d8b2975770de21f41d6d29ad35b41b4a0d06c32d47741882e5"
+    },
+    {
+      "path": "cmd/horvium/dashboard_witness_wire_test.go",
+      "sha256": "19e1708c7214d743ef092356e97f6de85b95a7ee984732d534e8f38062b92b89"
+    },
+    {
+      "path": "cmd/horvium/dashboard_workload_helpers_test.go",
+      "sha256": "501bbfaa556d2a18c96c2ac1c6af0e54457b4de86c9acfa47bf1b575e2d1b32e"
+    },
+    {
+      "path": "cmd/horvium/dashboard_workload_test.go",
+      "sha256": "22997c2e925f25b86188a41c3b5a8d807c3e07ee5267ba5ab5fc87326b0ad861"
+    },
+    {
+      "path": "cmd/horvium/filecontinuity_freebsd_test.go",
+      "sha256": "fdee09dc563e75cb116a00de0f2dc562d77a587b848fa4a863b68ba18164feff"
+    },
+    {
+      "path": "cmd/horvium/helper_events_freebsd_test.go",
+      "sha256": "c39c0d7fd265addbd4a1293e862d5646c4dba518a25ed21d4722651253099ec6"
+    },
+    {
+      "path": "cmd/horvium/http_abuse_freebsd_test.go",
+      "sha256": "1960fe72298820377904b9ba84824d4bb8a54ac1e7e722e5d6d0414a93957344"
+    },
+    {
+      "path": "cmd/horvium/input_other.go",
+      "sha256": "99ff4284cad980bc32ae0f1247acfc32af030d7a421f51e25084e08f4ece34eb"
+    },
+    {
+      "path": "cmd/horvium/input_unix.go",
+      "sha256": "6d21b9b72a9935863d312a4f374e7157c2566ab76500c90d8bd16aa44a8815a4"
+    },
+    {
+      "path": "cmd/horvium/input_unix_test.go",
+      "sha256": "ac711e16ed16516eb1636582772237aed58a71c625381ec19e7c1736e8772911"
+    },
+    {
+      "path": "cmd/horvium/lifecycle_freebsd_test.go",
+      "sha256": "9b1048b3fbac9944da9ac898c3840f7a206bd5ba5e99763b878b1fbae220f681"
+    },
+    {
+      "path": "cmd/horvium/main.go",
+      "sha256": "b91d374e17bb76890013b0a1a45745a975c83ee861964e57b6a3c6915ab37475"
+    },
+    {
+      "path": "cmd/horvium/main_test.go",
+      "sha256": "dc1ed7c45079b879bacbe5746e456514c1ca39a30a5bd89b8e8dd8a6025e6eea"
+    },
+    {
+      "path": "cmd/horvium/native_freebsd_test.go",
+      "sha256": "5fd2927001f9783af6a88889ae789fa9376c2c8b484cf43190acc99134b0497c"
+    },
+    {
+      "path": "cmd/horvium/performance_freebsd_test.go",
+      "sha256": "293087e303d8a1ccf908829f028028573d5ccd6ad3b71447f6fdf725060a24d6"
+    },
+    {
+      "path": "cmd/horvium/performance_metrics_test.go",
+      "sha256": "995f928a5b980f48466f983225970c9a52c6a4c62b47842bb017afb3dc072549"
+    },
+    {
+      "path": "cmd/horvium/performance_test.go",
+      "sha256": "476c4700f7ec498b2cefaab943de990b6afc82e2835f9e9da70677b9ffad2195"
+    },
+    {
+      "path": "cmd/horvium/pool_checksum_freebsd_test.go",
+      "sha256": "ed9429f9b3d110734ce2a94e83080755fc4373900477135dc2fa10a3b3d4f285"
+    },
+    {
+      "path": "cmd/horvium/pool_health_freebsd_test.go",
+      "sha256": "2a7fcd86a278a0cad8bac061cb26fae4da6c38100ad6d2a4fbdcddd91aa40e0e"
+    },
+    {
+      "path": "cmd/horvium/pool_scan_freebsd_test.go",
+      "sha256": "4128e02ea842618f7a5e1fb80a5a19f84a866c41990940943a2048cea295cab0"
+    },
+    {
+      "path": "cmd/horvium/protocol_continuity_freebsd_test.go",
+      "sha256": "10b8c6f1e47edda416533eb645ae633783085fb47414f48acae1bb4b5f8f129a"
+    },
+    {
+      "path": "cmd/horvium/reader_resources_freebsd_test.go",
+      "sha256": "b00f44ef4b287c26116a3fbfe2046cf6367e48925e2dc9b8bfca8e67f9f6cd5e"
+    },
+    {
+      "path": "cmd/horvium/storage_assessment.go",
+      "sha256": "bde014448113d777f4ea73ec089f996c6b23e961d3230cbd2af42742e9fa9307"
+    },
+    {
+      "path": "cmd/horvium/storage_assessment_freebsd_test.go",
+      "sha256": "5a6052fa77895fa58c8c3a546c9147a3ca001d1aa482b0b5197c0321ce23ce61"
+    },
+    {
+      "path": "cmd/horvium/storage_assessment_other_test.go",
+      "sha256": "2dfa060739ca552e7f954d51db796f5b78400ce97cbef22ac99c0478c02bf1eb"
+    },
+    {
+      "path": "cmd/horvium/storage_assessment_test.go",
+      "sha256": "16601cb2d1af2221ac17d4cdf99082c5052aa15516c9cdc1b2f087472330d412"
+    },
+    {
+      "path": "cmd/horvium/storage_jobs.go",
+      "sha256": "1d4fe42146428f8ec4ed52627cf93b08ca9d1b7af58efcdca9c86ed55bee0dfd"
+    },
+    {
+      "path": "cmd/horvium/storage_jobs_freebsd_test.go",
+      "sha256": "d404ae07c385dab555b766acc491669b5105f55972afca57009cdeb7829a360b"
+    },
+    {
+      "path": "cmd/horvium/storage_jobs_test.go",
+      "sha256": "d38847700a4440cdfe6a6cd0d452501266ca786c5c6a1fa68626f53bd1727b43"
+    },
+    {
+      "path": "cmd/horvium/testdata/status-property-job.json",
+      "sha256": "2c1ceb61314348c81ce4ae159f571df120e2425eb3b9169b4cb59d501ebd7a8c"
+    },
+    {
+      "path": "internal/admin/auth.go",
+      "sha256": "82cc0fdc8b734d11fedd4b776632a8ad607be911faa503352ab7e98b7ab6469e"
+    },
+    {
+      "path": "internal/admin/auth_test.go",
+      "sha256": "f4f5438f07400421040cd56e8174471550d45907af107bc371f1e1c3eacf31ce"
+    },
+    {
+      "path": "internal/admin/config.go",
+      "sha256": "ac23410b7b4b576d7a63bb691a05ad3af7e7b7a2ed85a0e60346b2060cbac26b"
+    },
+    {
+      "path": "internal/admin/config_test.go",
+      "sha256": "02eccf315309d7f5a9f084d6f095728206db5e7dc29829348b648f54c6141360"
+    },
+    {
+      "path": "internal/admin/files_freebsd.go",
+      "sha256": "efffa6725bb2995deb5fccdfcbd8b7d934f1835d349c52a12e678fe4812533cd"
+    },
+    {
+      "path": "internal/admin/files_other.go",
+      "sha256": "d1ba82f2b61cd0a28b0819140a2d9f85bf3f0028572ab004f81ddccc2eaa3eeb"
+    },
+    {
+      "path": "internal/admin/helper_negotiation.go",
+      "sha256": "3b9c8833be4ca3e31c8443e2835d9f7bf9b5ffc9fa57867ba4307b3536b237b0"
+    },
+    {
+      "path": "internal/admin/helper_negotiation_test.go",
+      "sha256": "5a1e41cf60f1665bac79643c19fa238e187b7ab832a5e365f1bb51b16abf5842"
+    },
+    {
+      "path": "internal/admin/helper_property.go",
+      "sha256": "171cdb57571a0cc98b001b27c07ca535dfd90b5d34068913d9ce1e2526667550"
+    },
+    {
+      "path": "internal/admin/helper_property_test.go",
+      "sha256": "3ffae3f4377f2ce6e952e13c456d77955451154dbc67950cc78d93dd9dc512c1"
+    },
+    {
+      "path": "internal/admin/http.go",
+      "sha256": "ffd2713e52e3e46775d35a75cb15b1ae53395e449e43057e9678ea43a3dcc86e"
+    },
+    {
+      "path": "internal/admin/http_test.go",
+      "sha256": "c94fb6d76f8d4d903163e711beff720886d3dc692d07ed86cc4d73f4a7c1dc66"
+    },
+    {
+      "path": "internal/admin/native_freebsd_test.go",
+      "sha256": "7321137099d96c8933916354b2c38721ca2eaa49d0884a145ab07675b540155c"
+    },
+    {
+      "path": "internal/admin/session_authority.go",
+      "sha256": "37c52605e6ef3ebbe58daa5af1e9cfc6a191219d4e88ba84c0cbcaf03b52cc51"
+    },
+    {
+      "path": "internal/admin/session_authority_test.go",
+      "sha256": "0ba7aea59421860fdc892d814a3a90e7696548cd9848fc2feb5d1816be412254"
+    },
+    {
+      "path": "internal/helper/action_negotiation.go",
+      "sha256": "20c714cbe5384d464956b3a32e142c37a1221cee30932fc960e8c4741dbfe373"
+    },
+    {
+      "path": "internal/helper/action_negotiation_test.go",
+      "sha256": "059c422a1f7be35ff74733e0b1dd5dd9272346837ec5fcbda92a89780904d7d0"
+    },
+    {
+      "path": "internal/helper/action_peer.go",
+      "sha256": "c75144c57f036127267e40a68b9b4b3c270ff99b79ad008337eb81923abcb00c"
+    },
+    {
+      "path": "internal/helper/action_peer_freebsd_test.go",
+      "sha256": "869346b8307544aee9c1a6b91e30e2281195a6bac89163036a014b38a754c679"
+    },
+    {
+      "path": "internal/helper/action_peer_test.go",
+      "sha256": "c6ef6a6646fc5915af3c07a7430a65cc6a1fceb87ee6261e0689fd60f0a57932"
+    },
+    {
+      "path": "internal/helper/collection.go",
+      "sha256": "fa561a9640e6c698745317a94f0000e82f64ca9f9c19566bde1e46d56a2610c7"
+    },
+    {
+      "path": "internal/helper/collection_test.go",
+      "sha256": "2e5269d85f1919427a2ee1ef535f96e776384ff9b65e6eccb70b5edad58fb6b5"
+    },
+    {
+      "path": "internal/helper/events.go",
+      "sha256": "ff87a9bb45d72f183b76e4390e5dde91cc5553a0a76c80f4bcecfe1c6095871a"
+    },
+    {
+      "path": "internal/helper/events_test.go",
+      "sha256": "121db5d7f05fa418d9d406ad5ca46aa3725c7aea5c721e32487aa2531dccea19"
+    },
+    {
+      "path": "internal/helper/native_freebsd.go",
+      "sha256": "3ddac8e913f720ed717622fb80947d41ecbd970f261483218790a9a8acc50e40"
+    },
+    {
+      "path": "internal/helper/native_freebsd_test.go",
+      "sha256": "d689a8f35a9391969d1097436eebf98506cc57bf607ac54f8fdc59f3f33f483d"
+    },
+    {
+      "path": "internal/helper/native_other.go",
+      "sha256": "991e691dd0b7685c443417a1e3fe152dccbbdf08925b85fe22f8fb33860bab8f"
+    },
+    {
+      "path": "internal/helper/peer.go",
+      "sha256": "87fc55611f6f9320141404a90b8f47b8a642673a4d938b84ffd37266a4a4b06c"
+    },
+    {
+      "path": "internal/helper/property_admitted.go",
+      "sha256": "9b2e69e06210ced057ae9cd54857aae8180c6f39d1e296b09356a3a64f7a934f"
+    },
+    {
+      "path": "internal/helper/property_admitted_freebsd_test.go",
+      "sha256": "fe05b163aa7ad95ba4b47789af94978410aab778f666c722d15c737b4dcdb3b4"
+    },
+    {
+      "path": "internal/helper/property_admitted_test.go",
+      "sha256": "fa022b0fcc9f7dba94ff96381565dfd529b21b9aeb5d0b4efdb3498213f6ec5f"
+    },
+    {
+      "path": "internal/helper/property_application_child_freebsd_test.go",
+      "sha256": "c23c9fd14d509275cd88a306ea9e4e82bbdeef9346062a0147d1a4190f28e8ac"
+    },
+    {
+      "path": "internal/helper/property_application_freebsd_test.go",
+      "sha256": "30c223430db2e899c3033f0231f123fe52647eed21674557f1db55952a497576"
+    },
+    {
+      "path": "internal/helper/property_binding.go",
+      "sha256": "e05ca2e317a3dc3516cf61de75d4855c6212be2f62d9285421958e89ddb37355"
+    },
+    {
+      "path": "internal/helper/property_binding_freebsd_test.go",
+      "sha256": "c5b8eba1c00d275ff80ddd609f05b434adc6f5d25c744cf49a407b095960f7e1"
+    },
+    {
+      "path": "internal/helper/property_binding_test.go",
+      "sha256": "fb77c21fd69e431ae237caad164b404d44a090d2747037ff4490533d72e0dc48"
+    },
+    {
+      "path": "internal/helper/property_client.go",
+      "sha256": "30902cf85514209acc50648c57fa483f42485e5fbd4b64e090739ddbc8146e34"
+    },
+    {
+      "path": "internal/helper/property_client_freebsd_test.go",
+      "sha256": "a69d3bafe95c7f355d610e85000464b09fbac70f4299fdeab8f9b32ce9093ba8"
+    },
+    {
+      "path": "internal/helper/property_client_test.go",
+      "sha256": "5811ab86bc03a7976ae9187127224f3f56ad268e3ef86788b4785f34e8c27cc7"
+    },
+    {
+      "path": "internal/helper/property_connections.go",
+      "sha256": "753a25378bad568ccea0943cefa65f9676361f58c498129d0206f1067c3dd758"
+    },
+    {
+      "path": "internal/helper/property_connections_test.go",
+      "sha256": "c0fb08c6704b5cbb6b9a8c88c672ee4040de942f7e3f08851e7abed6549c76dc"
+    },
+    {
+      "path": "internal/helper/property_dial.go",
+      "sha256": "f9588ed6feb48116c5d7ce91ffcd5cf01703effaa82f34c1aabaf713a1d6a24c"
+    },
+    {
+      "path": "internal/helper/property_dial_freebsd_test.go",
+      "sha256": "e4a302e3d2ad6ebe0abc1ca96b965fb528d3d2ed3ed66fcb8a4126e1b5df995c"
+    },
+    {
+      "path": "internal/helper/property_dial_test.go",
+      "sha256": "0b17aba7ead42e9b3c0082df70570814ad9b906f16e76104a98d135a0f9ad8a3"
+    },
+    {
+      "path": "internal/helper/property_exchange.go",
+      "sha256": "a3fcce1990b9a9acbb3a382e75489bf3b5316adfad74ad410fa423ec6dcf0469"
+    },
+    {
+      "path": "internal/helper/property_exchange_freebsd_test.go",
+      "sha256": "8270a27bc416a510b3847ab34619ea187c2141c9b1d96575b353d41cac3df708"
+    },
+    {
+      "path": "internal/helper/property_exchange_test.go",
+      "sha256": "50f7547e79da2bfb6c92588b39572ecf6461c64664bdce854cada56d1ed0a8ac"
+    },
+    {
+      "path": "internal/helper/property_reply.go",
+      "sha256": "8d1d8a2a9559634794699c93b3fb036532cb8fe1709a7727277ef67ce6679410"
+    },
+    {
+      "path": "internal/helper/property_reply_test.go",
+      "sha256": "899418b91afddee6d779b5a354dad3204bac6650da4dec9f3553c2d9e2500d9c"
+    },
+    {
+      "path": "internal/helper/property_request.go",
+      "sha256": "8c5db65230f05fbbe38ed5c5a1ae48ba0a16cf75302c6748af9fc1990c854090"
+    },
+    {
+      "path": "internal/helper/property_request_test.go",
+      "sha256": "d5bff81545fd499e57d51a084aeb2d5b79209e9aca91bc6fd9313e044cfac1c1"
+    },
+    {
+      "path": "internal/helper/property_server.go",
+      "sha256": "d5db48102728da22786908ca4e880f331c870580c23186a4930d1b23e26a4e5a"
+    },
+    {
+      "path": "internal/helper/property_server_freebsd_test.go",
+      "sha256": "a825a20fe5c96ee020ce9b817f9cfe5d5d20e22bcd900d25b6ae3271aedb53d6"
+    },
+    {
+      "path": "internal/helper/property_server_test.go",
+      "sha256": "27858d445270150f93e87c4a7bffddde813b35d0269e72600982ac933e5f7380"
+    },
+    {
+      "path": "internal/helper/server.go",
+      "sha256": "75a9d575f8890a7e3f3e44190604bf1657699fcd300a2aa7625254e0f0332f56"
+    },
+    {
+      "path": "internal/helper/server_test.go",
+      "sha256": "59899cb4f0399e110c3ee7629b0937acbbe69f83ec1998e708eeac158b5b5980"
+    },
+    {
+      "path": "internal/helper/testdata/property-review.json",
+      "sha256": "76d9ff0d3afb93bc86fa5f832127ed93cfd2ad3d30b5fc6e496e8e86b2d1b83e"
+    },
+    {
+      "path": "internal/helper/validate.go",
+      "sha256": "6d9d75bab558c985f8d47ae4cfdda87d25e3856894f0cbef6cbbef20ad869904"
+    },
+    {
+      "path": "internal/helper/wire.go",
+      "sha256": "5f8a5ac1a5d619435a2240a699afe3d4337bdd98ec9507bccb7e53f8ef0cbea6"
+    },
+    {
+      "path": "internal/helper/wire_test.go",
+      "sha256": "0c66417c090da97f31ee48fb2c175d5e345cbfe029d76a61abb613eafb70924c"
+    }
+  ],
+  "portable_runs": {
+    "legacy-red": {
+      "command": [
+        "/Users/cam/Documents/Codex/2026-10-18/task/horvium-storage-control/.tools/go/bin/go",
+        "test",
+        "./internal/storage",
+        "-run",
+        "^TestControlConfigLiteralAndExactShape$",
+        "-count=1",
+        "-timeout=60s"
+      ],
+      "returncode": 1,
+      "elapsed_seconds": 4.740450957790017,
+      "source_unchanged": true,
+      "record_sha256": "09f4fa31805d43e0db71ba57886d40be0745ffe6163ce8e7ac8ef50829ec321b",
+      "log_sha256": "6a0908c9e614e5162179ead3c5fff58653120fbc6053f793a93d6089b9800db2",
+      "group_cleaned": true,
+      "native_execution": false
+    },
+    "focused-v3": {
+      "command": [
+        "/Users/cam/Documents/Codex/2026-10-18/task/horvium-storage-control/.tools/go/bin/go",
+        "test",
+        "-race",
+        "./internal/storage",
+        "./internal/host/freebsd",
+        "-run",
+        "^(TestControl|TestExecutionInspection|TestCommissionExecutionOwner)",
+        "-count=1",
+        "-timeout=90s"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 2.203106665983796,
+      "source_unchanged": true,
+      "record_sha256": "a6e76e6b20e243aa6460a9c6854de908f12015770b66b1ed840862ae05d4f0e4",
+      "log_sha256": "aa63308462c24310acc4fa31be742717dc87f1497d59ab08205616d9bf3d0722",
+      "group_cleaned": true,
+      "native_execution": false
+    },
+    "crosscompile-v3": {
+      "command": [
+        "/Users/cam/Documents/Codex/2026-10-18/task/horvium-storage-control/.tools/go/bin/go",
+        "test",
+        "-c",
+        "./internal/host/freebsd",
+        "-o",
+        "/Users/cam/Documents/Codex/2026-10-18/task/horvium-storage-control-delivery-20261020/horvium-storage-control-freebsd-amd64-v3.test"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.9006487079896033,
+      "source_unchanged": true,
+      "record_sha256": "141bf8ab9beb95730c3a821d1465f764ffbc9672e14006355d07dcd755216f18",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "group_cleaned": true,
+      "native_execution": false
+    }
+  },
+  "design_review_sha256": "5300052c07ee1654bba5a95856275d103456dd017713f45bbbfc7c49e2dd1d96",
+  "native_acceptance": {
+    "SC-N01_to_SC-N08": "NOT_RUN; required before registration",
+    "policy_lifecycle_305": "OPEN; configured consumer is fixed empty-only",
+    "runtime_139": "OPEN; global/backend/recovery not admitted"
+  },
+  "final_gate": "Signed clean candidate must pass PR_TITLE=feat(storage): assemble retained storage-control lifecycle make review; exact source/base/title/log/teardown report is linked in PR evidence."
+}

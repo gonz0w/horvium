@@ -8,10 +8,11 @@ The evidence summaries below retain their original candidate boundaries.
 
 **Dependable storage on FreeBSD.**
 
-The [explicit storage-control proposal](docs/milestones/M2/storage-control-contract.md)
-defines the next OS-root commissioning/configured-startup boundary under #139.
-It is a design deliverable; commands and write enablement remain unavailable
-pending the documented native and assembled-runtime gates.
+The [admitted storage-control contract](docs/milestones/M2/storage-control-contract.md)
+now has a [complete unregistered source consumer](docs/testing/M2/storage-control.md):
+retained configuration, original read-only inspection and finite/foreground
+lifecycle with cleanup before output. Commands and write enablement remain
+unavailable pending native qualification and the assembled-runtime gates.
 
 The existing private commissioning and startup paths now require both real and
 effective UID 0, including retained original-owner checks. The

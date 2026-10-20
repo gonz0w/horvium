@@ -3,8 +3,11 @@
 The [root-identity correction](../../testing/M2/execution-root-identity.md) applies
 the admitted storage-control real/effective-root requirement to existing private
 commissioning and startup consumers. It retains the original registry and
-retirement/release behavior. Config custody, inspection, operator registration,
-#305 and full #139 native/runtime acceptance remain open.
+retirement/release behavior. The subsequent
+[complete storage-control source consumer](../../testing/M2/storage-control.md)
+assembles retained config custody, original read-only inspection and lifecycle/
+output. Operator registration, actual native qualification, #305 and full #139
+native/runtime acceptance remain open.
 
 Live status, priority and dependencies: [roadmap index](../../roadmap/github-roadmap-index.md). Historical status statements below describe their original evidence boundaries; consult GitHub for the current queue.
 

@@ -71,11 +71,29 @@ func (p *ExecutionDomainLeases) ObserveSystem(ctx context.Context, installation 
 }
 
 func (p *ExecutionDomainLeases) observe(ctx context.Context, installation string, read func(context.Context, int) (ExecutionBackingObservation, error), system func(context.Context) (PoolSystemUse, error)) (ExecutionDomainsObservation, error) {
+	return p.observeSelected(ctx, installation, read, system, false)
+}
+
+// InspectSystem derives installation metadata from the protected original
+// journal inside both original leases. It never reviews startup, registers a
+// writer, activates or supplies an old publication acknowledgement.
+func (p *ExecutionDomainLeases) InspectSystem(ctx context.Context, read func(context.Context, int) (ExecutionBackingObservation, error), system func(context.Context) (PoolSystemUse, error)) (string, error) {
+	if system == nil {
+		return "", ErrUnavailable
+	}
+	got, e := p.observeSelected(ctx, "", read, system, true)
+	if e != nil {
+		return "", e
+	}
+	return got.controlInspectionState()
+}
+
+func (p *ExecutionDomainLeases) observeSelected(ctx context.Context, installation string, read func(context.Context, int) (ExecutionBackingObservation, error), system func(context.Context) (PoolSystemUse, error), derive bool) (ExecutionDomainsObservation, error) {
 	zero := ExecutionDomainsObservation{}
 	if p == nil || ctx == nil || read == nil || os.Geteuid() != 0 {
 		return zero, ErrStateDirectory
 	}
-	if !validJournalIdentity(installation) {
+	if !derive && !validJournalIdentity(installation) {
 		return zero, ErrStateRecord
 	}
 	if ctx.Err() != nil {
@@ -116,6 +134,18 @@ func (p *ExecutionDomainLeases) observe(ctx context.Context, installation string
 	var ledgerErr, workErr error
 	_, journalErr := j.lease.inspectExecutionBindingObjectsLocked(func() {
 		_, ledgerErr = l.inspectExecutionBindingObjectsLocked(func() {
+			if derive {
+				before, e := j.inspectLocked("", nil)
+				if e != nil {
+					workErr = e
+					return
+				}
+				if !before.present {
+					workErr = ErrUnavailable
+					return
+				}
+				installation = before.record.Binding.Installation
+			}
 			result, workErr = p.observeLocked(ctx, installation, read, system)
 		})
 	})
@@ -232,7 +262,7 @@ func (p *ExecutionDomainLeases) observeLocked(ctx context.Context, installation 
 		h := sha256.Sum256(after.data)
 		digest = hex.EncodeToString(h[:])
 	}
-	return ExecutionDomainsObservation{origin: p, binding: binding, census: last, journalDigest: digest, journalPresent: after.present, journal: after.record, systemObserved: system != nil}, nil
+	return ExecutionDomainsObservation{origin: p, binding: binding, census: last, journalDigest: digest, journalPresent: after.present, journal: after.record, systemObserved: system != nil, jobsPresent: len(catalog.Jobs) != 0}, nil
 }
 
 // Close excludes observation and closes ledger before journal. It preserves all

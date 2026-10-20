@@ -352,3 +352,7 @@ remaining focused diagnostic work. Both-release acceptance remains open.
 - [Reproducible offline broker byte-budget evidence](testing/dashboards/witness-budget-readback.md).
 - [Authenticated native manager refresh overlap](testing/dashboards/witness-refresh-overlap.md).
 - [Native publication lifecycle and passive idle](testing/dashboards/witness-metadata-lifecycle.md).
+
+- [Complete unregistered storage-control consumer](testing/M2/storage-control.md):
+  retained selection, original inspection and cleanup before output; portable
+  source evidence only. Native qualification and registration remain blocked.

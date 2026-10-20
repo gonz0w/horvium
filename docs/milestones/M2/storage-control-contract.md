@@ -10,8 +10,8 @@ The [named acceptance plan](storage-control-test-design.md) is part of this prop
 
 This completes the operator selection, ownership and failure boundary for the
 existing private commissioning and policy-only startup mechanisms. Merge admits
-this design, not runtime registration or native qualification. No command below
-is currently implemented. The exact-key M1 configuration, `serve` and `helper`
+this design, not runtime registration or native qualification. The [complete source consumer](../../testing/M2/storage-control.md) is now
+implemented privately; no command below is registered. The exact-key M1 configuration, `serve` and `helper`
 remain unchanged and read-only. No service installation or automatic startup is
 introduced. Existing failed, skipped and exhausted attempts remain unchanged;
 in particular this proposal does not authorize another #305 experiment or amend
