@@ -1,10 +1,11 @@
 # Compatibility matrix
 
-The [storage-control design proposal](../milestones/M2/storage-control-contract.md)
-specifies explicit OS-root commissioning and configured clean startup with a
-separate selection format. Its commands are unimplemented. M1 configuration v1,
-read-only runtime behavior, #305's native lifecycle gate and #139's assembled
-global/backend requirements remain unchanged; this is no new support claim.
+The [storage-control contract](../milestones/M2/storage-control-contract.md) has a
+[complete unregistered source consumer](../testing/M2/storage-control.md) for
+retained selection, original inspection and finite/foreground cleanup/output.
+Its commands remain unavailable. Portable source tests and unexecuted FreeBSD
+compilation do not qualify native custody, restore scope, lifecycle or runtime
+activation. M1 v1/read-only behavior, #305 and full #139 remain unchanged.
 
 The [original-owner root-identity correction](../testing/M2/execution-root-identity.md)
 requires real and effective UID 0 at existing fixed commissioning/startup owner

@@ -44,8 +44,9 @@ candidate receipt/PR. FreeBSD compilation, when recorded, is not native executio
 Refs [#139](https://github.com/gonz0w/horvium/issues/139) and
 [#305](https://github.com/gonz0w/horvium/issues/305); closes neither. Historical
 native receipts retain their original source. Actual UID-drop/inherited-descriptor
-and both-release lifecycle/fault proof remain required. The separate retained
-0600 selection-file custody, observation-only inspect path and complete consumer
-are unimplemented. No storage-control command is registered, runtime write denial
+and both-release lifecycle/fault proof remain required. The subsequent
+[storage-control source consumer](storage-control.md) assembles the retained 0600
+selection, original observation-only inspector and lifecycle/output. Its native
+qualification remains open. No storage-control command is registered, runtime write denial
 changes, native campaign, service installation or deployment follows from this
 source correction. Draft #415 and retained failed/unknown artifacts are unchanged.

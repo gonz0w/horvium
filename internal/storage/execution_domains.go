@@ -26,6 +26,17 @@ type ExecutionDomainsObservation struct {
 	journalPresent        bool
 	journal               executionJournal
 	systemObserved        bool // Observation only; no commissioning or global permit.
+	jobsPresent           bool // Complete census, including terminal/other-pool jobs.
+}
+
+func (o ExecutionDomainsObservation) controlInspectionState() (string, error) {
+	if o.origin == nil || !o.systemObserved || !o.journalPresent {
+		return "", ErrUnavailable
+	}
+	if o.jobsPresent || checkClosedExecutionStartup(o.journal, o.binding, o.census) != nil {
+		return "recovery-required", nil
+	}
+	return "closed", nil
 }
 
 func checkExecutionDomainJournal(binding executionJournalBinding, present bool, journal executionJournal) error {

@@ -7,6 +7,10 @@ import "context"
 
 type executionDomainLeaseNative struct{}
 
+func (*ExecutionDomainLeases) InspectSystem(context.Context, func(context.Context, int) (ExecutionBackingObservation, error), func(context.Context) (PoolSystemUse, error)) (string, error) {
+	return "", ErrUnavailable
+}
+
 func OpenExecutionDomainLeases(context.Context, string, string) (*ExecutionDomainLeases, error) {
 	return nil, ErrUnavailable
 }
