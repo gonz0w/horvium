@@ -111,3 +111,9 @@ before the corresponding slice can be accepted. A failing capability blocks that
 operation and requires a reviewed design change; it never causes a force fallback.
 Exact CLI flags, HTTP routes, wire fields and on-disk field names are finalized
 with the approved contracts and their implementation tests, not invented here.
+
+The [explicit storage-control proposal](storage-control-contract.md) and
+[named acceptance plan](storage-control-test-design.md) complete the separate
+OS-root commissioning/configured-clean-startup selection boundary for #139.
+They propose no M1 configuration change, automatic startup, enrolled resource or
+native launch. Design admission leaves #305/native and assembled runtime gates open.

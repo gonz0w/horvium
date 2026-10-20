@@ -1,5 +1,11 @@
 # Compatibility matrix
 
+The [storage-control design proposal](../milestones/M2/storage-control-contract.md)
+specifies explicit OS-root commissioning and configured clean startup with a
+separate selection format. Its commands are unimplemented. M1 configuration v1,
+read-only runtime behavior, #305's native lifecycle gate and #139's assembled
+global/backend requirements remain unchanged; this is no new support claim.
+
 ## Advisory standards reference — 2026-10-18
 
 [Shared development guidance](../standards/README.md) is pinned to `7a99fb2e6855d9f73752b182118637d9e79dc03c`

@@ -8,6 +8,11 @@ Approved by Cam (`@gonz0w`) on 2026-10-04 through maintainer merge of
 `753f601960529cd17596d0ffc628afe38d041c82`. Design approval authorizes the
 reviewed slices; it is not M2 acceptance or native qualification.
 
+The [storage-control plan](storage-control-test-design.md) proposes SC-P01–P08
+and SC-N01–N08 for the [operator contract](storage-control-contract.md), under
+#139. These are unexecuted acceptance families for a later coherent consumer;
+they add no result or substitution for #305's exact both-release native gate.
+
 The first [planning model record](../../testing/M2/planning.md) covers a T1
 subset; [identity binding](../../testing/M2/identities.md) tracks independent type
 coverage and version drift as a further partial subset; [property projection](../../testing/M2/properties.md) adds a narrow native

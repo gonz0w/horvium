@@ -9,6 +9,13 @@ Approved by Cam (`@gonz0w`) on 2026-10-04 through maintainer merge of
 `753f601960529cd17596d0ffc628afe38d041c82`. Design approval authorizes the
 reviewed slices; it is not M2 acceptance or native qualification.
 
+The [storage-control contract proposal](storage-control-contract.md) specifies
+the separate explicit OS-root foreground selection, fresh/existing-state branches,
+retained ownership and fixed outcome classes for #139. It changes no current
+configuration/parser, source registration or native gate. Its
+[acceptance plan](storage-control-test-design.md) keeps #305 and full assembled
+startup/global/backend qualification required before enablement.
+
 The [native census consumer](../../testing/M2/native-execution-census.md) reuses
 complete descriptor-anchored state inspection under the original root lease.
 Stream exact bytes through the accepted framing and finish only after final
