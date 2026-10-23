@@ -7,125 +7,50 @@ Test Designs, ADRs and candidate-specific receipts remain authoritative in Git.
 GitHub owns live task status, priority and native dependency relationships.
 Issue counts and merged components do not establish NAS or release readiness.
 
-## Ownership and work items
+## Central delivery and local mapping
 
-Horvium currently has one repository, `gonz0w/horvium`. It owns unprivileged Go
-management, the narrow privileged FreeBSD boundary, HTML5/CSS/HTMX console,
-CLI, native ZFS integration, packaging and acceptance. Keep file daemons independent
-of management. The MicroServer is a lab profile; hardware and commercial scale
-support require actual evidence. Do not manufacture additional repositories.
-If related repositories are established later, use this same private Project,
-matching capability milestones, and one issue in the repository that owns the
-outcome. Link cross-repository sub-issues to the coordinating Horvium phase gate.
+Follow [Suite-Standards backlog delivery](https://github.com/gonz0w/suite-standards/blob/4aeb70ae4d7423c4ae7d52c025f94af4fb53ff22/docs/backlog-delivery.md)
+and [rollout](https://github.com/gonz0w/suite-standards/blob/4aeb70ae4d7423c4ae7d52c025f94af4fb53ff22/docs/backlog-delivery-rollout.md)
+at immutable `4aeb70ae4d7423c4ae7d52c025f94af4fb53ff22`.
+[Local commands, MVP queue, numeric WIP and inherited exception](agent-tasks.md)
+are owned by [adoption #419](https://github.com/gonz0w/horvium/issues/419).
+Central policy defines Ready/Done, INVEST refinement, flow and coherent batching.
+This file keeps only Horvium's existing tracking and acceptance mapping.
 
-Use one bounded issue per outcome. Search existing open and closed trackers and
-PRs before creating one. Preserve useful labels and accepted evidence. Use the
-work-item form; triage assigns type, priority, milestone, parent and blockers.
-Broad future outcomes remain backlog until their approved design supports
-reviewed implementation slices. Planning issues do not authorize new runtime
-behavior or dependencies. M0–M7 are Horvium's existing capability phases with no
-promised delivery dates; first-release acceptance spans M1–M6 and the package-first
-image is M7. Deferred second-release security proposals do not invent M8 or a tag.
+Horvium currently has one repository and the private Project2. It owns management,
+FreeBSD storage, console/CLI, packaging and acceptance. Independent file daemons
+and hardware qualification remain separate. Preserve M0-M7 milestone identities;
+first deployable release remains M1-M6. Proposals authorize no new runtime behavior.
 
-Every triaged issue uses these six sections:
+| Project Status | Exactly one status label |
+| --- | --- |
+| Backlog | `status:backlog` |
+| Ready | `status:ready` |
+| In progress | `status:in-progress` |
+| Review | `status:review` |
+| Validation | `status:validation` |
+| Done | `status:done` |
 
-1. Outcome: concrete resulting behavior in the owning repository.
-2. Acceptance: observable checklist criteria and evidence needed for closure.
-3. Design and requirements: stable IDs and authoritative Git document links.
-4. Relationships: parent gate and blocker links, also represented natively.
-5. Existing evidence: merged PRs and exact candidate receipts, failures and skips.
-6. Tracking scope: boundaries, limitations and remaining work.
+Blocked acceptance retains its actual board state and a named `Delivery state:
+Blocked` reason/owner/next action in the issue, plus native dependencies; it still
+counts as WIP. Do not revive retired status/blocked or status/needs-design labels.
+Priority labels P0/P1/P2 mirror Project Priority; Phase mirrors M0-M7. Maintain
+native parent/sub-issue and blocked-by links, keeping readable body links and
+historical accepted evidence. Text links do not replace supported native edges.
 
-Native sub-issue relationships represent ownership/acceptance decomposition.
-Native blocked-by relationships represent prerequisites; text links supplement
-rather than replace them. Do not close a coordinating gate because a child merged.
-Avoid duplicate work across repositories and dependency cycles.
+At filing, pickup, PR review, merge and acceptance, manually reconcile issue state,
+one status label, Project Status/Phase/Priority, milestone and native relationships.
+Existing work-item fields may be extended in place; avoid recreating trackers for
+format alone. No tracking/status/merge automation is added.
 
-## Status and priority
-
-| Project Status | Exactly one issue status label | Meaning |
-|---|---|---|
-| Backlog | `status:backlog` | Planned outcome; design or decomposition may remain |
-| Ready | `status:ready` | Bounded next action and its dependencies are clear |
-| In progress | `status:in-progress` | Active implementation, research or qualification |
-| Review | `status:review` | Concrete PR or decision awaiting maintainer review |
-| Validation | `status:validation` | Relevant acceptance evidence remains outstanding |
-| Done | `status:done` | Scoped criteria met, evidence linked and issue closed |
-
-Use `type:feature`, `type:research`, `type:acceptance`, `type:tracking` or
-`type:documentation`. Phase gates use `type:tracking`; qualification tasks use
-`type:acceptance`. Preserve useful area, bug, accessibility and historical kind
-labels. Retired `status/blocked`, `status/needs-design` and `status/needs-research`
-are not workflow state; triage removes them from migrated items while keeping
-label definitions available for history. Blocking is a native relationship.
-
-Priority is `priority:P0` for urgent security/release blockers, `priority:P1` for
-current phase work and `priority:P2` for later planned work. Project Priority
-mirrors that label; Phase mirrors the milestone's M0–M7 prefix. No automatic
-import, label synchronization or merge-to-Done automation is assumed.
-
-## Issue-driven pickup and PR review
-
-For a continue request, inspect open PRs and unblocked Ready work first. Select a
-coherent highest-priority action within existing authorization, state its issue,
-read repository instructions and the applicable design/evidence, and split broad
-features into reviewed slices before implementation. M1 manual accessibility
-remains pending by maintainer choice; M2 private prerequisites do not enable a
-runtime writer. Independent research may proceed while delivery gates are blocked.
-
-Size slices around a complete behavior or integration outcome. Keep its internal
-helpers/adapters, tests, docs, compatibility notes and source-bound evidence in
-one PR, using incremental signed commits. Internal implementation steps belong
-in the owning issue's checklist; they do not each need another issue/merge cycle.
-Separate PRs are appropriate for an unresolved design/authorization decision,
-distinct safety boundary or a diff too large to review coherently. State that
-reason before splitting. Native execution that the adopted Test Design requires
-after integration review still follows that review; batching cannot waive it.
-Use focused tests while developing and complete the required clean candidate
-review before submission. Shared-tool fallback, milestone/release full checks
-and relevant native/client safety gates retain their existing policies.
-
-Branch from current merged `main` using a short-lived `codex/` branch for agents.
-Use Conventional Commit subjects and `git commit -S -s`; verify signatures and
-author DCO trailers. Preserve contributor sign-offs in canonical squash history.
-Every change has a PR. Use `Refs gonz0w/horvium#number` for an owning issue or broader
-gate, including cross-repository qualifiers. Use `Closes` only when merging that
-PR meets every criterion of that specific issue. Acceptance gates normally use
-Refs until all native, integration, browser, resource and recovery criteria pass.
-Agents leave PRs open; maintainer review and existing protections remain required.
-
-Run `make check lint test secrets` and the signed clean-candidate `make review`.
-Use `make review-full` for milestones/releases and the existing conservative
-fallback policy. Tracking-only changes need no new NAS qualification; they do not
-upgrade old receipts. Relevant behavior changes still require disposable native
-fixtures on both declared FreeBSD targets and applicable client/browser/recovery
-gates. Identify exact source/base/title, selected scope, reused original evidence,
-failed/skipped cases and limits. Verify supervised teardown with `make lab-status`
-and `make lab-stop` where needed. Never test on operator disks or backup history.
-
-## Manual triage and acceptance
-
-At filing, pickup, PR creation, merge and acceptance review, manually reconcile:
-
-- One workflow label, Project Status and open/closed issue state.
-- Milestone, Project Phase, priority label and Project Priority.
-- Native parent/sub-issue and blocked-by links, with readable body links.
-- Current PR and source-bound evidence; retained failed/skipped limitations.
-- New issues added to the shared Project and filtered views still appropriate.
-
-Merge closes only fully satisfied bounded issues. Otherwise keep the issue open
-in Validation, Review or the appropriate active state. Reopening changes Done to
-the actual open workflow state in both labels and Project. Close a phase gate and
-repository milestone only after explicit maintainer acceptance of the complete
-advertised scope. M0's original foundation acceptance is historical; later tooling
-items attached there do not replace its original receipts.
-
-The All work view groups by Phase. Current phase is currently M2 with Status
-columns and Repository grouping; update its filter deliberately when the active
-phase changes. Ready next shows open Ready items; Acceptance gates includes
-tracking and acceptance issues; Completed evidence shows closed scoped work.
-No paid automation, new Actions workflows, external synchronization or runtime
-dependencies are introduced. Actions remain disabled; local results require review.
+Use short-lived `codex/` branches from current main and signed author-DCO commits.
+Run the existing required source/review commands in CONTRIBUTING; native gates
+still need their actual disposable both-release/client/browser/recovery evidence.
+Use Refs for partial/qualification work. A component merge does not accept the
+parent or milestone; closing requires every scoped criterion and explicit entire-
+phase acceptance. Independent source review does not substitute for held checks.
+Agents leave PRs open for the maintainer; current Actions-disabled/local-review
+and protection requirements are preserved. No publication may trigger a held lane.
 
 ## Recoverable migration and reconciliation
 

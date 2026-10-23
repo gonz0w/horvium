@@ -2,6 +2,19 @@
 
 Describe the trigger, change, and operator outcome.
 
+## Story acceptance mapping
+
+Follow the pinned central delivery agreement in AGENTS.md. Name this batch's
+prioritized owning issues, MVP/release outcome, WIP/blocked state and next action.
+Related stories may share this PR; no PR-per-issue requirement.
+
+| Story / acceptance | Change | Actual evidence or held/not-run lane |
+| --- | --- | --- |
+| Refs gonz0w/horvium#number / criterion | | |
+
+Mark partial scope explicitly; source implementation and usable/native acceptance
+remain distinct. Preserve parent history and applicable rollout/rollback criteria.
+
 ## Tracking and design
 
 Refs gonz0w/horvium#number. Link requirement IDs, approved PRD/EDD/Test Design,

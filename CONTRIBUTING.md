@@ -1,14 +1,14 @@
 # Contributing
 
-Read [agent instructions](AGENTS.md), the [architecture baseline](docs/architecture/baseline.md),
-and the active milestone before changing behavior. Link nontrivial work to an
-issue in the [shared private Project](https://github.com/users/gonz0w/projects/2).
-Follow the [GitHub workflow](docs/engineering/github-workflow.md) and
-[roadmap index](docs/roadmap/github-roadmap-index.md): inspect open PRs and
-unblocked Ready work before pickup; triage one bounded outcome with requirements,
-acceptance, milestone, priority, parent and native blockers. Keep exactly one
-status label synchronized with Project Status. Product work requires the relevant PRD, EDD, and Test Design Document;
-a research spike must identify its question and time box.
+Follow the authoritative [Suite-Standards delivery agreement](https://github.com/gonz0w/suite-standards/blob/4aeb70ae4d7423c4ae7d52c025f94af4fb53ff22/docs/backlog-delivery.md)
+and [rollout](https://github.com/gonz0w/suite-standards/blob/4aeb70ae4d7423c4ae7d52c025f94af4fb53ff22/docs/backlog-delivery-rollout.md)
+at immutable revision `4aeb70ae4d7423c4ae7d52c025f94af4fb53ff22`.
+[Adoption #419](https://github.com/gonz0w/horvium/issues/419) owns this prospective
+consumer change; the existing advisory profile manifest remains independently pinned.
+Use [AGENTS.md](AGENTS.md), the [local command/WIP index](docs/engineering/agent-tasks.md),
+[GitHub workflow mapping](docs/engineering/github-workflow.md) and relevant approved
+milestone packet for Horvium-specific constraints. Central Ready/Done and coherent
+batching apply; local native/security/merge gates remain mandatory.
 
 ## Development and review
 

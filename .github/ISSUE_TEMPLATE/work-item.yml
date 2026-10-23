@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Search existing issues first. Follow the GitHub workflow; triage adds type, priority, milestone, native parent/blockers and Project fields. Never include keys, host inventories or customer data; use SECURITY.md for exploitable vulnerabilities.
+        Search existing issues first. Follow the pinned central delivery agreement linked in AGENTS.md and the local GitHub workflow; triage adds type, priority, milestone, native parent/blockers and Project fields. Never include keys, host inventories or customer data; use SECURITY.md for exploitable vulnerabilities.
   - type: dropdown
     id: kind
     attributes:
@@ -18,7 +18,7 @@ body:
     id: outcome
     attributes:
       label: 1. Outcome
-      description: Concrete resulting behavior in the owning repository; research includes question and time box.
+      description: Concrete user/dependent outcome and named MVP/release in this repository; research includes question and time box.
     validations:
       required: true
   - type: textarea
@@ -49,6 +49,16 @@ body:
     id: scope
     attributes:
       label: 6. Tracking scope
-      description: Boundaries, limitations and remaining work. Future features need reviewed implementation slices before pickup.
+      description: Scope, non-goals, owner, priority, limitations and remaining work. Keep internal helpers within the coherent outcome.
+    validations:
+      required: true
+  - type: textarea
+    id: readiness
+    attributes:
+      label: Ready, Done and proportional validation
+      description: >-
+        Apply central DoR/DoD to this story: resolved and unresolved dependencies/decisions,
+        observable tests and required native/security gates, evidence and rollout/rollback.
+        State owner, authority/holds and next action. A source merge alone cannot close native acceptance.
     validations:
       required: true
