@@ -2,7 +2,9 @@
 
 The [read-only package/lifecycle proposal](../milestones/M5/PRD.md) specifies a
 private native package path for the existing 15.1/14.5 amd64 design targets.
-There is no port, package build/install/upgrade evidence or installed service
+The [private source overlay](../milestones/M5/source-profile.md) now implements
+inert payload and explicit stock rc.d control, with an offline source distfile.
+There is no native package build/install/upgrade evidence or installed service
 claim from this source-only packet. Stock service-control qualification, exact distribution
 inputs and both-release native lifecycle acceptance remain explicit gates.
 

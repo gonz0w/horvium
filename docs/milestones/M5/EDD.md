@@ -1,6 +1,7 @@
 # EDD: read-only package install and lifecycle
 
-Status: Draft recommendation, not adopted service behavior. Owner: Cam (`@gonz0w`).
+Status: Independently reviewed stock design, source implementation in review;
+installed behavior unqualified. Owner: Cam (`@gonz0w`).
 Date: 2026-10-23. [PRD](PRD.md), [Test Design](TDD.md),
 [story #159](https://github.com/gonz0w/horvium/issues/159).
 
@@ -87,8 +88,9 @@ implemented commands. It is a future disposable-lab procedure, not a run request
 | Use CLI | Existing `horvium inventory -endpoint http://127.0.0.1:8088 -resource overview` with protected stdin | Same authenticated generation/resource contract; operator-owned 0600 token file/pipe, no argv/env token |
 | Stop/restart | Proposed service bridge stops management before helper, then starts helper before management | Original waits/ownership, expected socket retirement, config/digest preservation, session invalidation, no file-daemon disruption |
 
-The existing [foreground runbook](../../operations/M1-development.md) remains the
-only implemented command guide. No `/health`, check-config, setup wizard, storage
+The existing [foreground runbook](../../operations/M1-development.md) supplies
+implemented product commands; the [source profile](source-profile.md) adds the
+unqualified stock rc.d composition. No `/health`, check-config, setup wizard, storage
 command activation, reload mode or HTTP credential route is invented. Readiness
 is not declared from a daemon fork or a log line. An initial collection failure
 must remain distinguishable from successful startup with unavailable inventory.
@@ -172,13 +174,13 @@ it clean. Remove only plist-owned payload. Preserve active config, state/verifie
 service identity, retained logs and all datasets/file services; never use recursive
 state deletion, account deletion or ZFS commands as a deinstall hook.
 
-## Decisions before implementation is Ready
+## Selected baseline and remaining bindings
 
 | Decision/binding | Concrete recommendation | Acceptance owner / remaining evidence |
 | --- | --- | --- |
-| D1 Source distribution | Private operator-supplied immutable distfile/local Ports overlay; no public source/privacy change | @gonz0w accepts distribution/version naming and actual maintainer identity; #160 binds signed source/tag or explicit lab version, archive SHA256 and custody |
-| D2 Identity/setup | Existing explicit OS-admin non-login identity/config, existing root-only token setup; no automatic user creation | @gonz0w accepts package setup policy; native fixtures prove selected UID/GID and preservation |
-| D3 Service control | Stock rc.subr plus daemon supervisor pidfiles, explicit administrator trust, no crash retry; retain the disclosed PID-race limitation | @gonz0w reviews this ordinary service profile; #160 reviews exact release source/rc scripts, #161 qualifies failure behavior and original fixture retirement; #414 remains independently required |
+| D1 Source distribution | Private operator-supplied immutable distfile/local Ports overlay; no public source/privacy change | Selected stock baseline; #160 source profile binds actual signed source/lab version/archive and existing maintainer identity; native package provenance remains open |
+| D2 Identity/setup | Existing explicit OS-admin non-login identity/config, existing root-only token setup; no automatic user creation | Selected unchanged setup contract; native fixtures must prove selected UID/GID and preservation |
+| D3 Service control | Stock rc.subr plus daemon supervisor pidfiles, explicit administrator trust, no crash retry; retain the disclosed PID-race limitation | Selected stock baseline; source profile reviews pinned rc/daemon inputs, #161 qualifies installed failure behavior and original fixture retirement; #414 remains independently required |
 | D4 Exact build closure | Actual go.mod/go.sum, tested Go1.27.1, pinned compatible Ports tree and both FreeBSD targets | #160 records source/archive/module/compiler/Ports-tree/jail/ABI identities and full staged manifest before installation is Ready |
 
 No version/tag, distfile checksum, upstream category, registered account number,
@@ -195,6 +197,6 @@ Inspected 2026-10-23, as design references rather than frozen build inputs:
 [rc conventions](https://docs.freebsd.org/en/articles/rc-scripting/),
 [daemon](https://man.freebsd.org/cgi/man.cgi?query=daemon&sektion=8&format=html),
 [rc.subr](https://man.freebsd.org/cgi/man.cgi?query=rc.subr&sektion=8&format=html).
-The selected release's exact source must be pinned/reviewed before implementation
-claims. This source-only design ran no service, account/credential change, package
+The [source profile](source-profile.md) records selected exact source inputs and
+remaining native bindings. This source-only work ran no service, account/credential change, package
 build/install, VM or native experiment. Existing holds/consumed attempts remain.

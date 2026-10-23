@@ -88,7 +88,10 @@ all named cases on both targets and applicable browsers/clients; M1 manual/brows
 and broader NAS gates are not closed by package testing. Keep the existing runtime
 resource/security budgets unchanged; native envelope approval is separate.
 
-Current result: design prepared only. No package build, source distfile, stage,
-installed service, new credential, native run, VM or original fixture retirement
-was produced. #160/#161 remain open and not pulled. Historical evidence, UNKNOWN
+Current result: the [source profile](source-profile.md) implements stock Ports/rc.d
+source and binds an offline private application distfile. Portable tests substitute
+id/stat/daemon/signal commands and cannot qualify their FreeBSD semantics. No native
+package build/stage/install, installed service, new credential or VM was produced.
+#160/#161 remain open; source preparation is part of the existing #159/#160 batch,
+not a claim that GitHub status or acceptance changed. Historical evidence, UNKNOWN
 states, owner_clean:false and consumed attempts retain their original meanings.

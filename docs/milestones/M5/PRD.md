@@ -1,6 +1,7 @@
 # PRD: read-only package install and lifecycle
 
-Status: Draft for review, not approved or implemented. Owner: Cam (`@gonz0w`).
+Status: Independently reviewed stock design; source implementation in review,
+native package/lifecycle acceptance open. Owner: Cam (`@gonz0w`).
 Date: 2026-10-23. Owning story: [#159](https://github.com/gonz0w/horvium/issues/159).
 [EDD](EDD.md) and [Test Design](TDD.md) form this one design packet.
 
@@ -48,7 +49,8 @@ authorized by the documents.
 ## Inputs, flow and decisions
 
 Assessment source is `a3a3bb405045e3470d27aad786fb1e3767df1e87`, not a qualified
-package candidate. There is no release tag, distfile or package checksum to claim.
+package candidate. There is no release tag or native package checksum to claim.
+The [source profile](source-profile.md) binds the private lab distfile and implementation.
 The [EDD](EDD.md) records concrete recommendations, source gaps and the finite
 bindings required before a build is Ready. [#160](https://github.com/gonz0w/horvium/issues/160)
 owns implementation/build/staging; [#161](https://github.com/gonz0w/horvium/issues/161)

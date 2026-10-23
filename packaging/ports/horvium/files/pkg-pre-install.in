@@ -1,0 +1,10 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+# Refuse installation/upgrade over active or uncertain profile state. No signals.
+for entry in /var/run/horvium/helper.pid /var/run/horvium/management.pid /var/run/horvium/inventory.sock; do
+    if [ -e "$entry" ] || [ -L "$entry" ]; then
+        echo 'horvium: stop and inspect existing profile before package replacement' >&2
+        exit 1
+    fi
+done
+exit 0

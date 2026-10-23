@@ -1,0 +1,15 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+# shellcheck disable=SC2034,SC1091
+# PROVIDE: horvium
+# REQUIRE: LOGIN horvium_helper
+# KEYWORD: shutdown
+. /etc/rc.subr
+name=horvium
+rcvar=horvium_enable
+hv_mode=serve
+load_rc_config "$name"
+: "${horvium_enable:=NO}"
+. %%PREFIX%%/libexec/horvium/rc.subr
+horvium_command_allowed "${1:-}" || exit 1
+run_rc_command "$1"

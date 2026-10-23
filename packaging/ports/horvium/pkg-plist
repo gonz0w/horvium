@@ -1,0 +1,9 @@
+sbin/horvium
+etc/horvium.json.sample
+libexec/horvium/rc.subr
+%%DOCSDIR%%/LICENSE
+%%DOCSDIR%%/NOTICE.md
+%%DOCSDIR%%/PORT-SOURCE.json
+%%DOCSDIR%%/package-lifecycle.md
+%%DOCSDIR%%/xsys-LICENSE.txt
+%%DOCSDIR%%/htmx-LICENSE.txt

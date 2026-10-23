@@ -1,0 +1,142 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# shellcheck disable=SC2034
+# Trusted administrator rc.d integration, not a process-capability protocol.
+: "${hv_mode:?fixed role required}"
+: "${name:?rc service name required}"
+: "${horvium_user:=}"
+: "${horvium_config:=%%PREFIX%%/etc/horvium.json}"
+: "${horvium_stop_wait:=60}"
+hv_runtime=/var/run/horvium
+hv_program=%%PREFIX%%/sbin/horvium
+command=/usr/sbin/daemon
+case "$hv_mode" in
+helper) pidfile="$hv_runtime/helper.pid" ;;
+serve) pidfile="$hv_runtime/management.pid" ;;
+*) return 1 ;;
+esac
+start_cmd=horvium_start
+stop_cmd=horvium_stop
+restart_cmd=horvium_restart
+status_cmd=horvium_status
+
+horvium_error()
+{
+    echo "$name: $*" >&2
+    return 1
+}
+
+horvium_directory()
+{
+    [ ! -L "$hv_runtime" ] && [ -d "$hv_runtime" ] || return 1
+    hv_dir=$(/usr/bin/stat -f '%u:%g:%Lp' "$hv_runtime") || return 1
+    [ "$hv_dir" = "0:$hv_gid:750" ] || return 1
+    horvium_ancestors
+}
+
+horvium_ancestors()
+{
+    hv_parent=${hv_runtime%/*}
+    while :; do
+        [ ! -L "$hv_parent" ] && [ -d "$hv_parent" ] || return 1
+        hv_meta=$(/usr/bin/stat -f '%u:%Lp' "$hv_parent") || return 1
+        case "$hv_meta" in 0:*) ;; *) return 1 ;; esac
+        hv_perm=${hv_meta#*:}
+        case "$hv_perm" in ''|*[!0-7]*) return 1 ;; esac
+        [ "${#hv_perm}" -le 4 ] || return 1
+        [ "$((0$hv_perm & 06022))" -eq 0 ] || return 1
+        [ "$hv_parent" = / ] && return 0
+        hv_parent=${hv_parent%/*}
+        [ -n "$hv_parent" ] || hv_parent=/
+    done
+}
+
+horvium_setup()
+{
+    [ "$(/usr/bin/id -u)" = 0 ] || { horvium_error 'administrator required'; return 1; }
+    case "$horvium_user" in ''|*[!A-Za-z0-9_-]*|[0-9-]*) horvium_error 'set a dedicated service account'; return 1 ;; esac
+    hv_uid=$(/usr/bin/id -u "$horvium_user") || return 1
+    hv_gid=$(/usr/bin/id -g "$horvium_user") || return 1
+    case "$hv_uid" in ''|*[!0-9]*|0) horvium_error 'non-root identity required'; return 1 ;; esac
+    case "$hv_gid" in ''|*[!0-9]*|0) horvium_error 'non-root group required'; return 1 ;; esac
+    horvium_directory || { horvium_error 'unsafe or missing runtime directory'; return 1; }
+    [ ! -L "$horvium_config" ] && [ -f "$horvium_config" ] || return 1
+    hv_config=$(/usr/bin/stat -f '%u:%g:%Lp:%l' "$horvium_config") || return 1
+    case "$hv_config" in "0:$hv_gid:640:1"|0:0:644:1) ;; *) horvium_error 'unsafe configuration'; return 1 ;; esac
+    [ -x "$hv_program" ] || return 1
+    # Full descriptor-relative config/ancestor/UID validation remains in the
+    # existing application. This wrapper does not repair state or parse JSON.
+}
+
+horvium_start()
+{
+    horvium_setup || return 1
+    if [ -e "$pidfile" ] || [ -L "$pidfile" ]; then
+        horvium_error 'existing pidfile; inspect original service state'
+        return 1
+    fi
+    if [ "$hv_mode" = helper ]; then
+        /usr/sbin/daemon -c -f -P "$pidfile" -S -T horvium_helper \
+            "$hv_program" helper -config "$horvium_config" || return 1
+    else
+        /usr/sbin/daemon -c -f -P "$pidfile" -S -T horvium -u "$horvium_user" \
+            "$hv_program" serve -config "$horvium_config" || return 1
+    fi
+    echo "$name: launch requested; verify authenticated inventory for readiness"
+}
+
+horvium_supervisor()
+{
+    [ "$(/usr/bin/id -u)" = 0 ] || return 1
+    # Stop/status need not depend on a still-readable config or existing account.
+    [ ! -L "$hv_runtime" ] && [ -d "$hv_runtime" ] || return 1
+    hv_dir=$(/usr/bin/stat -f '%u:%g:%Lp:%l' "$hv_runtime") || return 1
+    case "$hv_dir" in 0:*:750:*) ;; *) return 1 ;; esac
+    horvium_ancestors || return 1
+    [ ! -L "$pidfile" ] && [ -f "$pidfile" ] || return 1
+    [ "$(/usr/bin/stat -f '%u:%g:%Lp:%l' "$pidfile")" = 0:0:600:1 ] || return 1
+    hv_pid=$(cat "$pidfile") || return 1
+    case "$hv_pid" in ''|*[!0-9]*|0) return 1 ;; esac
+    [ "${#hv_pid}" -le 10 ] || return 1
+    hv_match=$(check_pidfile "$pidfile" "$command") || return 1
+    [ "$hv_match" = "$hv_pid" ] || return 1
+}
+
+horvium_status()
+{
+    horvium_supervisor || { horvium_error 'not running or unverified'; return 1; }
+    echo "$name: supervisor observed; this is not application readiness"
+}
+
+horvium_stop()
+{
+    case "$horvium_stop_wait" in ''|*[!0-9]*) return 1 ;; esac
+    [ "${#horvium_stop_wait}" -le 3 ] || return 1
+    [ "$horvium_stop_wait" -ge 1 ] && [ "$horvium_stop_wait" -le 300 ] || return 1
+    horvium_supervisor || { horvium_error 'refusing unknown supervisor'; return 1; }
+    # Ordinary trusted-admin PID control has the documented check/signal race.
+    # Signal once, then observe. Never escalate or signal a replacement PID.
+    /bin/kill -TERM "$hv_pid" || return 1
+    hv_left=$horvium_stop_wait
+    while [ "$hv_left" -gt 0 ]; do
+        if ! /bin/kill -0 "$hv_pid" 2>/dev/null; then
+            [ ! -e "$pidfile" ] && [ ! -L "$pidfile" ] && return 0
+            break
+        fi
+        /bin/sleep 1
+        hv_left=$((hv_left - 1))
+    done
+    horvium_error 'stop uncertain; no restart/removal or forced cleanup performed'
+    return 1
+}
+
+horvium_restart()
+{
+    horvium_stop && horvium_start
+}
+
+horvium_command_allowed()
+{
+    case "$1" in start|stop|restart|status|onestart|onestop|onerestart|onestatus|rcvar|enabled) return 0 ;; esac
+    horvium_error 'unsupported command; force/fast/reload are not admitted'
+    return 1
+}
