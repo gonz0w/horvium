@@ -12,7 +12,7 @@ TDD means Test Design Document. No execution grant follows from this packet.
 | M5-PKG-002 | M5-STAGE-001 | #160: expected/extra/missing payload, ownership/modes, sample validity after explicit identity substitution, no runtime toolchain/source/token, clean staging; no install-time service/account/credential or unrelated config changes |
 | M5-PKG-003 | M5-SETUP-001 | #161: actual dedicated identity and protected ancestors; root config0640/service group; token setup persists digest only, refuses replacement, invalid UID/GID/symlink/hardlink/mode/unknown entry cases |
 | M5-PKG-004 | M5-LIFE-001 | #161: original helper/root and management/non-root identities, startup order, safe socket, real login/CLI same-generation inventory, root management denied, missing digest/helper/listener failure, initial unavailable inventory distinct |
-| M5-PKG-005 | M5-LIFE-002 | #161: normal and interrupted start/stop/restart, duplicate/concurrent start, changed/stale pidfile and replacement socket, original-child waits/descendant retirement, session invalidation, no unrelated signal/removal or file-service interruption |
+| M5-PKG-005 | M5-LIFE-002 | #161: normal and interrupted start/stop/restart, duplicate/concurrent start, changed/stale pidfile and replacement socket, trusted administrator control plus independent original fixture waits/descendant retirement, session invalidation, no unrelated signal/removal or file-service interruption |
 | M5-PKG-006 | M5-LOG-001 | #161: local sink delivery/redaction, slow/blocked sink, finite shutdown, no raw data or setup token in exported records; no durable-audit claim |
 | M5-PKG-007 | M5-UPGRADE-001 | #161: compatible package pair and explicit quiescence; config/digest/identity/dataset preservation; unknown format/unknown live owner refuses; deinstall removes only declared payload; rollback does not restore an old verifier |
 | M5-PKG-008 | M5-ACCEPT-001 | #161: same reviewed candidate on both targets, complete original evidence and independent fixture retirement, failed/skipped limitations, required source/security review and explicit scoped acceptance; parentM5/M6 remain separate |
@@ -39,12 +39,19 @@ retain before/after metadata and digests for operator-state sentinels, package
 manifest and separately managed file-service sentinels. Generated plaintext tokens
 stay in protected test input; never export tokens, cookies or raw inventory.
 
-Before the first service-control fixture, resolve EDD D3 from exact native source
-and approved control implementation. A child PID/name snapshot is not a stop
-capability. Inject changed pidfiles, dead original owner, unknown existing
-socket/listener and unrelated live sentinels; refusal must not signal or remove
-the sentinel. Observational status is not cleanup proof. Do not run a vulnerable
-stop path merely to reproduce the already recorded #414 finding.
+Before the first service-control fixture, review exact rc/daemon source and the
+selected stock composition. Verify protected root-owned supervisor pidfiles,
+expected command matching, no broad PID/name search, startup refusal for foreign
+or unlocked stale entries, disabled crash restart and finite stop-wait failure.
+Inject changed/missing/unlocked pidfiles, interrupted supervisor/child, unknown
+socket/listener and unrelated sentinels. Record actual refusals and limitations;
+the stock administrator control path does not promise an immutable capability or
+eliminate every PID-reuse race. It must not claim such protection from these cases.
+
+The independent qualification supervisor retains its own born-process/wait
+ownership and original sentinels; rc status or a later PID/name snapshot cannot
+substitute for that fixture custody/terminal evidence. Do not reproduce the known
+#414 vulnerable cleanup path or claim it fixed by package metadata.
 
 Normal sequence: inert install -> explicit protected setup/token -> helper start
 -> non-root management -> HTML and CLI inventory -> management/helper stop ->

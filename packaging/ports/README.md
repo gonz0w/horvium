@@ -6,7 +6,7 @@ The [read-only package/lifecycle design](../../docs/milestones/M5/PRD.md),
 [engineering proposal](../../docs/milestones/M5/EDD.md) and
 [Test Design](../../docs/milestones/M5/TDD.md) are the source-only #159 review
 packet. They identify actual command/setup integration gaps and the remaining
-stock service-control ownership decision. They are not approved packaging or
+stock service-control recommendation and its administrator trust limits. They are not approved packaging or
 native evidence; no artifact, service, account or credential is created here.
 
 The maintainer selected a FreeBSD port first, then a complete appliance image.

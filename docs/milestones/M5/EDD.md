@@ -93,35 +93,55 @@ command activation, reload mode or HTTP credential route is invented. Readiness
 is not declared from a daemon fork or a log line. An initial collection failure
 must remain distinguishable from successful startup with unavailable inventory.
 
-## Stock service assessment and ownership gate
+## Recommended stock service control and trust limits
 
-Prefer rc.subr/rcorder for service convention, startup dependency ordering and
-explicit operator enablement. Assess base `daemon` for detaching the existing
-foreground commands, identity drop and local log routing; omit automatic-restart
-options. Select no new supervisor/runtime dependency. Install leaves both services
-disabled; an administrator later opts in only after setup and qualification.
+Use rc.subr/rcorder for service conventions and ordering, with base `daemon` as
+parent of each existing foreground command. Proposed rc front ends are
+`horvium_helper` and `horvium`; both remain disabled on installation. Each uses a
+separate root-owned supervisor pidfile under the protected runtime directory:
+`helper.pid` and `management.pid`. Normal stop targets that supervisor, which
+forwards SIGTERM to its child and waits. The management child's selected service
+account is passed using daemon's existing `-u` facility; native evidence must
+confirm both actual UID values match the existing application contract.
 
-There is a concrete limitation: rc.subr's documented `check_pidfile` checks a PID
-and process name, not an immutable original-process capability. daemon's locked
-pidfiles and child-wait behavior are useful, but are not by themselves proof that
-a later rc invocation may safely signal an original owner. A pidfile/name match,
-socket existence, ps snapshot or stale receipt is not control authority.
+The proposed fixed launch composition uses `daemon -P` plus `-S` and separate
+local log tags around the fixed absolute `horvium helper -config ...` or
+`horvium serve -config ...` argv; management additionally selects the service user.
+No `-r`/`-R`, shell-evaluated request arguments, HTTP control route or new runtime
+controller is introduced. Exact rc script/daemon source and flags on both selected
+releases are reviewed in #160 before the profile is called implemented.
 
-Therefore the proposed rc front ends **must not ship with the default PID/name
-stop path assumed safe**. Before #160 is Ready, review the selected stock control
-path against original-owner invariants and the #414 outcome. It must either have
-an evidence-supported original-owner stop handoff, or this one decision returns
-to the maintainer with a concrete stock-compatible correction. No new control
-socket/helper, PID-adoption fallback or weaker cleanup guarantee is approved here.
-This is a named integration/design blocker, not a promise that rc scripts exist.
+Trust boundary: ordinary service control is an explicit OS-administrator action.
+The root-owned rc configuration, installed executable, protected pidfile directory
+and pidfiles are trusted administrative state. Use the exact pidfile plus expected
+daemon command for rc status/stop, never broad process-name or process-group
+search. Validate expected root ownership/type/mode and reject symlinks or foreign
+entries. A duplicate start fails. An unexpected/unlocked stale pidfile or existing
+unknown helper socket is reported for explicit administrator recovery; startup
+never adopts it, auto-unlinks it or signals an inferred old PID.
 
-Concurrent/duplicate starts fail rather than adopting a running unknown process.
-On management-start failure, retire only helpers created by that original attempt
-under still-held authority; otherwise report partial/uncertain state and stop.
-Existing unsafe/unknown socket entries are never unlinked automatically. A
-helper-only outage retains the existing unavailable/stale behavior; no crash loop
-or broad process census is added. Reject `force`/`fast` control paths that bypass
-required validation; the chosen explicit one-shot start still validates setup.
+This stock control convention is not an immutable original-process capability:
+PID/name checks have a check-to-signal race if the original supervisor disappears.
+We do not add that stronger guarantee to M1 or claim a root-compromise defense.
+If an immutable control handoff is wanted later, it is a separate proposed design
+choice with a demonstrated need, not a prerequisite invented for this lab package.
+The known #414 probe cleanup defect remains independently required to fix/qualify;
+it does not by itself justify a new service-control protocol.
+
+Normal stop is management first, helper second; start is helper then management.
+Use a finite reviewed stop-wait budget in the concrete rc integration/qualification
+profile; expiration returns nonzero with uncertain state, without a name-based
+kill, automatic restart, upgrade or deinstall. The existing five-second HTTP drain
+is not a whole-process shutdown bound. Do not use force/fast methods that bypass
+prerequisite checks. A helper-only outage retains existing unavailable/stale
+behavior, with no package crash-restart loop. Readiness still requires actual
+validated endpoints/authenticated observation rather than a daemon fork.
+
+Qualification has a separate stronger obligation: its supervising fixture retains
+actual original child/wait ownership, independently checks unrelated sentinels and
+retirement, and never reconstructs custody from a later pidfile or ps snapshot.
+A successful rc status/stop is not that proof. This distinction preserves the
+existing native/test ownership gates without expanding the product architecture.
 
 ## Logging, update and recovery
 
@@ -158,7 +178,7 @@ state deletion, account deletion or ZFS commands as a deinstall hook.
 | --- | --- | --- |
 | D1 Source distribution | Private operator-supplied immutable distfile/local Ports overlay; no public source/privacy change | @gonz0w accepts distribution/version naming and actual maintainer identity; #160 binds signed source/tag or explicit lab version, archive SHA256 and custody |
 | D2 Identity/setup | Existing explicit OS-admin non-login identity/config, existing root-only token setup; no automatic user creation | @gonz0w accepts package setup policy; native fixtures prove selected UID/GID and preservation |
-| D3 Service stop authority | Stock rc conventions first; no automatic retry and no PID-file-only stop authority | Review exact target rc/daemon control implementation and original-owner handoff before #160; #414 qualification remains a real prerequisite |
+| D3 Service control | Stock rc.subr plus daemon supervisor pidfiles, explicit administrator trust, no crash retry; retain the disclosed PID-race limitation | @gonz0w reviews this ordinary service profile; #160 reviews exact release source/rc scripts, #161 qualifies failure behavior and original fixture retirement; #414 remains independently required |
 | D4 Exact build closure | Actual go.mod/go.sum, tested Go1.27.1, pinned compatible Ports tree and both FreeBSD targets | #160 records source/archive/module/compiler/Ports-tree/jail/ABI identities and full staged manifest before installation is Ready |
 
 No version/tag, distfile checksum, upstream category, registered account number,

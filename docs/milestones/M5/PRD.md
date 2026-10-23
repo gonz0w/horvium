@@ -59,4 +59,4 @@ Delivery follows [Suite-Standards](https://github.com/gonz0w/suite-standards/blo
 The dated source-only WIP exception is recorded in #159/#419; all paused batches
 remain counted. Existing stronger local checks, review and operational holds apply.
 Design acceptance requires independent review, actual required source gates and
-maintainer resolution of the EDD decisions. Source preparation alone is not Done.
+maintainer resolution of the EDD recommendations and disclosed trust limits. Source preparation alone is not Done.

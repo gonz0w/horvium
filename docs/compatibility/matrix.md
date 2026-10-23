@@ -3,7 +3,7 @@
 The [read-only package/lifecycle proposal](../milestones/M5/PRD.md) specifies a
 private native package path for the existing 15.1/14.5 amd64 design targets.
 There is no port, package build/install/upgrade evidence or installed service
-claim from this source-only packet. Service-control ownership, exact distribution
+claim from this source-only packet. Stock service-control qualification, exact distribution
 inputs and both-release native lifecycle acceptance remain explicit gates.
 
 The [storage-control contract](../milestones/M2/storage-control-contract.md) has a
