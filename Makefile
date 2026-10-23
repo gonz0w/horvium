@@ -20,6 +20,7 @@ check:
 lint: lint-tools lint-go
 
 lint-tools:
+	.tools/bin/shellcheck -s sh packaging/ports/horvium/files/horvium.in packaging/ports/horvium/files/horvium_helper.in packaging/ports/horvium/files/horvium_rc.subr.in packaging/ports/horvium/files/pkg-pre-install.in packaging/ports/horvium/files/pkg-pre-deinstall.in
 	.tools/bin/shellcheck tools/bsd-policy-startup-provenance-prebuilt.sh
 	.tools/bin/shellcheck tools/research/m2-executor-recovery.sh
 	.tools/bin/shellcheck tools/bsd-closed-startup-publication-prebuilt.sh tools/bsd-closed-startup-owner-prebuilt.sh tools/bsd-policy-startup-publication-prebuilt.sh tools/bsd-policy-startup-owner-prebuilt.sh

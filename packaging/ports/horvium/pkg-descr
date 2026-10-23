@@ -1,0 +1,4 @@
+Private experimental FreeBSD package for Horvium's existing read-only inventory
+helper, authenticated loopback console and CLI. Uses explicit administrator setup
+and disabled-by-default stock rc.d integration. No production, native lifecycle,
+storage writer or official Ports inclusion claim is made.

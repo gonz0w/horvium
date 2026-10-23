@@ -1,5 +1,13 @@
 # Compatibility matrix
 
+The [read-only package/lifecycle proposal](../milestones/M5/PRD.md) specifies a
+private native package path for the existing 15.1/14.5 amd64 design targets.
+The [private source overlay](../milestones/M5/source-profile.md) now implements
+inert payload and explicit stock rc.d control, with an offline source distfile.
+There is no native package build/install/upgrade evidence or installed service
+claim from this source-only packet. Stock service-control qualification, exact distribution
+inputs and both-release native lifecycle acceptance remain explicit gates.
+
 The [storage-control contract](../milestones/M2/storage-control-contract.md) has a
 [complete unregistered source consumer](../testing/M2/storage-control.md) for
 retained selection, original inspection and finite/foreground cleanup/output.

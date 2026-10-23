@@ -1,0 +1,13 @@
+[
+{ type: install
+  message: <<EOM
+Experimental read-only lab package; installed lifecycle is not yet qualified.
+Installation creates no service account, credential, active config or rc.conf entry.
+Both rc.d services default to disabled. Read %%DOCSDIR%%/package-lifecycle.md.
+The sample's UID/GID zero values intentionally fail validation: an administrator
+must select the existing dedicated non-login identity and protected config/state.
+Never run token setup/rotation through the daemon log sink. No storage writer,
+public listener or file-service management is enabled by installing this package.
+EOM
+}
+]
