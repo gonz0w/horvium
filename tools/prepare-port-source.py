@@ -32,6 +32,19 @@ def run(argv, *, cwd=ROOT, env=None):
     return subprocess.check_output(argv, cwd=cwd, env=env, timeout=90)
 
 
+def go_environment(compiler, cache, out):
+    # Do not inherit GOFLAGS/modfile/overlay, GONOPROXY/GOPRIVATE direct-fetch
+    # exceptions, an alternate GOROOT, or credential/proxy/VCS configuration.
+    return dict(PATH='/usr/bin:/bin:/usr/sbin:/sbin', HOME='/nonexistent',
+                LANG='C', LC_ALL='C', TZ='UTC', GOTOOLCHAIN='local',
+                GOROOT=str(compiler.resolve().parents[1]), GOENV='off', GOWORK='off',
+                GOFLAGS='', GOPROXY='off', GOSUMDB='off', GOPRIVATE='',
+                GONOPROXY='', GONOSUMDB='', GOINSECURE='', GOVCS='*:off',
+                GOTELEMETRY='off', GOMAXPROCS='2', CGO_ENABLED='0',
+                GOMODCACHE=str(cache), GOCACHE=str(out / 'go-cache'),
+                TMPDIR=str(out / 'go-tmp'))
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--ref', required=True, help='full signed source commit')
@@ -69,9 +82,8 @@ def main():
     with tarfile.open(fileobj=io.BytesIO(original), mode='r:') as archive:
         archive.extractall(staged, members=safe_members(archive), filter='data')
     pins = json.loads((staged / 'tools/go-pins.json').read_text())
-    env = dict(os.environ, GOTOOLCHAIN='local', GOENV='off', GOWORK='off',
-               GOPROXY='off', GOSUMDB='off', GOTELEMETRY='off',
-               GOMODCACHE=str(cache), GOCACHE=str(out / 'go-cache'), CGO_ENABLED='0')
+    (out / 'go-tmp').mkdir(mode=0o700)
+    env = go_environment(compiler, cache, out)
     version = run([str(compiler), 'version'], env=env).decode().strip()
     if version.split()[2] != pins['version']:
         raise ValueError('compiler version does not match signed source pins')
@@ -91,6 +103,8 @@ def main():
     provenance = {'schema': 1, 'source_commit': args.ref, 'source_tree': tree,
                   'original_git_archive_sha256': digest(original), 'lab_version': args.version,
                   'go_version': version, 'go_binary_sha256': args.go_sha256,
+                  'preparer_sha256': digest(Path(__file__).read_bytes()),
+                  'go_environment_policy': 'fixed_allowlist_no_ambient_go_proxy_or_vcs_overrides',
                   'module_inputs': modules, 'vendor_files': len(vendor),
                   'vendor_manifest_sha256': digest(json.dumps(vendor, sort_keys=True).encode()),
                   'native_package_built': False, 'runtime_qualified': False}

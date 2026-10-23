@@ -36,14 +36,19 @@ future package receipts must bind both. No release tag is invented.
 
 The private lab version is `0.0.0.20261023`. Prepared distfile:
 `horvium-0.0.0.20261023-d392a97a79da9c5374a1a7f1c5e8cee2f479f380.tar.gz`,
-4,284,588 bytes, SHA256
-`da5e116776f5b96939ff68a8131f356a944b7ed18f2e460c184a0fa6d6c1a040`.
+4,284,683 bytes, SHA256
+`a6106e05e5e0c450579fbd74b2e8a89fd042ee33bb9c2eb80d7268176b4518d6`.
 `source.mk` and `distinfo` contain these actual bindings. Preparation verified the
 source SSH signature, unchanged go.mod/go.sum, the cached module contents and
 325 vendored files. `PORT-SOURCE.json` in the bundle records the signed tree,
 original Git-archive hash, SDK binary/version and vendor manifest hash. The Go
 SDK was the already cached Go1.27.1; no new SDK/module was downloaded. Module
-downloads were disabled with GOPROXY=off, not an OS-level network isolation claim.
+downloads were disabled with GOPROXY=off, cleared GONOPROXY/GOPRIVATE and
+GOVCS=*:off under a fixed environment allowlist; ambient GOFLAGS/modfile/overlay,
+SDK, proxy and VCS settings are not inherited. This is not an OS-level network
+isolation claim. The regenerated provenance also binds the preparation script.
+The earlier archive is retained after independent review found ambient environment
+control insufficient; its replacement changes provenance, not product/vendor bytes.
 No native package or installed runtime was produced.
 
 The overlay uses the pinned M1 Ports framework commit
