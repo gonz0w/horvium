@@ -1,5 +1,10 @@
 # Documentation index
 
+[M5 read-only package/lifecycle design](milestones/M5/PRD.md),
+[EDD](milestones/M5/EDD.md) and [Test Design](milestones/M5/TDD.md) describe
+the proposed install/setup/start/use/restart path and concrete existing gaps.
+They remain unapproved source preparation, not a delivered package or release.
+
 [Advisory suite standards](standards/README.md) pin shared development guidance;
 existing project review and acceptance gates retain authority.
 
