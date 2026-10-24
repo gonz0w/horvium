@@ -607,3 +607,10 @@ with local portable review and verified teardown. The denial listener checks the
 binding before its fixed refusal; root/backend/recovery/global admission and
 operator storage workflows remain open. See the
 [source-bound evidence](docs/testing/M2/property-binding-manifest.json).
+
+## Development method
+
+Read the pinned [Agent Temper method](.agent-temper/METHOD.md),
+[local project policy](PROJECT.md) and [contribution guide](CONTRIBUTING.md).
+The existing GitHub workflow owns live work; product/platform requirements,
+verification and operational authority remain local to Horvium.

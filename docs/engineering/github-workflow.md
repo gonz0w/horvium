@@ -149,3 +149,13 @@ Never post credentials, private keys, host inventories, customer data or exploit
 security details in ordinary issues. Follow [SECURITY.md](../../SECURITY.md) for a
 private reporting route. Tracking authorization does not authorize publication,
 installation, services, deployment or changes to live storage.
+
+## Portable method and local mapping
+
+[PROJECT.md](../../PROJECT.md) composes the pinned
+[Agent Temper core](../../.agent-temper/METHOD.md) with this local workflow.
+No optional profile is selected. Keep the existing status/priority/phase mapping,
+manual Project synchronization and native parent/blocker relationships. Imported
+example labels never rename local states or create a second queue. Record missing
+policy questions in the owning issue and persist the owner's answer in project
+policy or its canonical decision record before dependent work.

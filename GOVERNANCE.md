@@ -9,6 +9,11 @@ Governance changes require a focused PR. Maintainers approve designs and release
 agents prepare reviewable work and never merge without explicit authorization.
 
 In the solo phase, required independent approvals are zero. PRs, signed canonical
-history, required CI, and resolved conversations remain mandatory. When a distinct
+history, required local qualification and review, and resolved conversations remain mandatory. When a distinct
 reviewer joins, require independent and CODEOWNERS approval. Emergency exceptions
 must record scope, authorization, follow-up review, and regression coverage.
+
+The [Agent Temper composition](PROJECT.md) records persistent development
+choices and the owner's permission for bounded read-only agent reviews. Existing
+maintainer merge and consequential-action gates remain. Resolve missing or
+conflicting policy through owner Q&A and save the answer before affected work.
