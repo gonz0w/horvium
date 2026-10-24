@@ -35,7 +35,21 @@ recorded revisions, hashes and content. Temper imposes no OS, toolchain or hosti
 
 ### Verification and review
 
-`make check lint test secrets` and the signed clean-candidate `make review` remain required; milestone/release or conservative fallback uses the existing full policy. Its selector does not exempt new method/policy paths. Actions stay disabled. Product/native/client recovery checks retain their own required boundaries.
+The owner's settled local execution rule is **FreeBSD-only** for Horvium and
+its LAB checks, including standards/content checks, hooks, tests and review.
+Do not run these checks on macOS or Linux. This is a Horvium project decision;
+Agent Temper does not choose development or runtime platforms. The earlier
+#422 adoption host permission was finite and has expired. Its saved portable
+receipt is historical evidence and supplies no current host-check exception.
+
+On an admitted FreeBSD executor, `make check lint test secrets` and the signed
+clean-candidate `make review` remain required; milestone/release or conservative
+fallback uses the existing full policy. Its selector does not exempt new
+method/policy paths. Actions stay disabled. Product/native/client recovery checks
+retain their own required boundaries. Missing executor/tool admission blocks
+execution and acceptance, while source preparation and read-only source review
+may continue. Do not bypass hooks to create a signed candidate. Preserve failed,
+interrupted and nonqualifying host observations without counting them as gates.
 
 Follow existing behavior-first/regression and PRD/EDD/Test Design obligations
 where they apply. Prose changes use source, link, policy and reader checks; do not
@@ -142,3 +156,12 @@ when files change. Record client/version and observed role/model/effort metadata
 in the owning issue; parsing proves syntax only. Native discovery/routing remain
 unverified until actually observed in a fresh supporting session. Earlier active
 work retains accepted scope and evidence; future delegation follows this policy.
+
+For this exact routing update in issue #424, the owner authorized bounded
+validation in an isolated disposable FreeBSD guest on 2026-10-24, preserving
+resource, isolation and teardown limits. Coordinate the shared executor before
+startup. This permits the required checks/hooks on the admitted executor; it
+does not permit Mac/Linux project checks, production, new credentials,
+permission/protection changes or unrelated operations. The owner authorized this
+bounded issue's gated merge after required checks and separate review; general
+future maintainer approval and operational boundaries remain unchanged.

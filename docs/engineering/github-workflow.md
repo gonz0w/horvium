@@ -154,7 +154,8 @@ installation, services, deployment or changes to live storage.
 
 [PROJECT.md](../../PROJECT.md) composes the pinned
 [Agent Temper core](../../.agent-temper/METHOD.md) with this local workflow.
-No optional profile is selected. Keep the existing status/priority/phase mapping,
+Only the Codex profile is selected in PROJECT.md. Keep the existing
+status/priority/phase mapping,
 manual Project synchronization and native parent/blocker relationships. Imported
 example labels never rename local states or create a second queue. Record missing
 policy questions in the owning issue and persist the owner's answer in project

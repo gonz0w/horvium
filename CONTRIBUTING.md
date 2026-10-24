@@ -25,8 +25,13 @@ evidence in that PR. Use incremental signed commits for internal prerequisites.
 Split delivery only for unresolved design/authorization, a distinct safety boundary
 or scope too large to review coherently; explain the reason in the owning issue.
 
-Run `make tools` and `make hooks`. After signing/signing off the changes, run
-`PR_TITLE='type: actual proposed PR title' make review` from a clean checkout.
+Use only an admitted FreeBSD executor for project checks, hooks, tests and review;
+macOS/Linux LAB checks are prohibited under [local policy](PROJECT.md). The finite
+#422 host permission has expired. Missing executor/tool admission blocks the
+gate, not source preparation; do not bypass hooks to publish a candidate.
+On the admitted executor, run `make tools` and `make hooks`. After signing/signing
+off the changes, run `PR_TITLE='type: actual proposed PR title' make review`
+from a clean checkout.
 It verifies commit signatures/DCO/title and runs `make check lint test secrets`
 plus race/fuzz checks for affected packages and their consumers. Use
 `make review-full` for fresh complete portable milestone/release validation; see

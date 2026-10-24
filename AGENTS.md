@@ -27,8 +27,13 @@ and required gates. Recorded owner decisions persist across sessions.
 8. Test storage changes only on disposable fixtures. Do not use an operator's
    live disks, datasets, or backup history as development fixtures.
 9. Update behavior documentation and the compatibility matrix in the same PR.
-   Run make check lint test secrets before reporting completion. Use make review
-   for affected-package race/fuzz checks; make review-full at milestones/releases.
+   Run make check lint test secrets only on an admitted FreeBSD executor.
+   The owner's FreeBSD-only LAB rule includes standards/content checks, hooks,
+   tests and make review: do not run them on macOS or Linux. The finite #422
+   adoption host permission has expired; saved receipts grant no exception.
+   Use make review for affected-package race/fuzz checks; make review-full at
+   milestones/releases, on the admitted executor. If it is unavailable, preserve
+   a source candidate and report the execution gate; do not bypass hooks.
    Relevant native safety/recovery gates remain required for behavior changes.
 10. Keep commits coherent, Conventional-Commit-style, signed, and DCO signed off.
     Never silently downgrade signatures if signing is unavailable.
