@@ -2,7 +2,7 @@
 
 Read the pinned [Agent Temper method](.agent-temper/METHOD.md),
 [local project policy](PROJECT.md) and the selected owning work item first.
-No optional profiles are selected. Product/platform rules below are local
+Only the Codex profile is selected in local project policy. Product/platform rules below are local
 extensions; the method does not choose them. Follow the existing work authority
 and required gates. Recorded owner decisions persist across sessions.
 
@@ -40,8 +40,9 @@ and required gates. Recorded owner decisions persist across sessions.
 13. Treat research as evidence, not architecture, until adopted in an ADR/EDD.
     Do not invent future CLI flags, API routes, config schemas, or package names
     beyond the agreed project identity.
-14. The owner permits bounded read-only agent reviews under the local project
-    policy. This does not authorize delegated implementation or native execution.
+14. The owner permits bounded read-only agent reviews and bounded implementation
+    delegation within accepted scope and explicit ownership under PROJECT.
+    Native execution and merging retain their existing authority gates.
 15. Follow docs/engineering/github-workflow.md and the stable roadmap index.
     Inspect open PRs and unblocked Ready issues before pickup; select and name
     one bounded owning issue, then read its requirements, design and evidence.
@@ -56,3 +57,10 @@ and required gates. Recorded owner decisions persist across sessions.
     reviewed outcome-sized slices when picked up. Split only for an unresolved
     design/authorization decision, distinct safety boundary or scope too large
     to review coherently; explain the reason. Add no tracking automation.
+
+Apply the Codex routing profile selected in local project policy. When useful,
+delegate bounded inspection to `temper_workflow`, accepted implementation to
+`temper_implementer`, difficult analysis to `temper_analyst`, and separate final
+review to `temper_reviewer`. Supply the work item/comments, policy, relevant
+files, acceptance, checks and edit boundaries. Follow local escalation, fallback,
+resource and execution limits; the lead owns integration and verifies evidence.
