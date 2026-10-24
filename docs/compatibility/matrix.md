@@ -2416,3 +2416,33 @@ abuse/recovery scenarios. This documentation/source review supplies future desig
 handoffs only; it adds no FreeBSD/service/client/native/compromise or appliance
 support evidence. Package-first delivery, existing evidence/failures, pending M1/M2
 and broader release gates retain their scope. Runtime writes remain denied.
+
+The issue #414 host lease-supervisor source correction independently attempts
+termination, sole reap and failed terminal recording after bounded observer
+errors. No-process injection and finite host fixtures are source qualification
+only; launcher-group scope excludes detached sessions. The related fixed-command
+executor source candidate retains an owner before birth and across uncertain
+drain, fences subsequent probes and the outer property reaper, and performs its
+last positive operation before the sole wait. Lost reservation and ambiguous
+native guard status 1 retain debt; incomplete output never succeeds. Its original
+ten-second work ceiling and single 250 ms cleanup reserve are not renewed.
+Finite fakes/portable checks cannot establish native drain: both-release safety
+fixtures remain required and this behavior change remains unqualified. No native/
+platform acceptance or runtime-write eligibility is added.
+
+The [successor native fixture correction](../testing/M2/property-supervisor.md#source-correction-and-blocked-fixture-cuts-2026-10-19)
+removes metadata/PID-based positive operations. Unavailable original guard cuts
+fail before launch and stop subsequent effect/reboot work, preserving all named
+acceptance predicates. Two new real-guard ownership-fence cases are wired into
+the research runner/checker but remain unexecuted. Portable checks and cross-builds
+are source evidence only. Stable-capability fixture replacement and both-release
+qualification remain required; historical receipts are unchanged and runtime
+writes remain denied.
+
+The [stable original-guard successor](../testing/M2/property-supervisor.md#stable-original-guard-fixture-successor-2026-10-19-not_run)
+implements the four blocked cuts with original birth/retained unreaped ancestry,
+pre-Wait gates and irreversible signal-phase sealing. Live arm, actual cuts,
+non-consuming owner death, counterexample and own-guard drain remain required;
+isolated self-reaper disposal supplies only fixture cleanup. Both-release native
+qualification is NOT_RUN. Portable faults/cross-builds are source evidence only;
+all historical manifests and runtime write denial remain unchanged.

@@ -23,6 +23,7 @@ case "${1:-before}" in
         /usr/bin/cc -std=c11 -Wall -Wextra -Werror -O2 tools/research/m2-executor-observer.c -o .tools/executor-observer
         chmod 700 .tools/executor-observer
         # Fail the narrow pipe/reaper gate before allocating storage fixtures.
+        "$binary" -test.v -test.count=1 -test.timeout=30s -test.run='^TestNativeExecutorOwnershipFences$'
         "$binary" -test.v -test.count=1 -test.timeout=6m -test.run='^TestNativeExecutorSupervision$'
         parent=TestNativeExecutorRecoveryBefore
         ;;

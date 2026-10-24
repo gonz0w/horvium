@@ -182,7 +182,7 @@ func runPropertySupervisor(request, response *os.File, run func(context.Context,
 	ctx, stop := context.WithDeadline(context.Background(), deadline)
 	defer stop()
 	err = run(ctx, intent)
-	cleanup := drainNativeReaper()
+	cleanup := probeCommands.drainIdle(drainNativeReaper)
 	if err != nil || cleanup != nil || owner.check() != nil {
 		return 1
 	}
@@ -220,6 +220,15 @@ func propertySetSupervised(ctx context.Context, intent storage.PropertyIntent) e
 // Native tests may select their own fixed child entrypoint; production always
 // reexecutes the current executable's narrow property-only implementation.
 func exchangePropertySupervisor(ctx context.Context, intent storage.PropertyIntent, encoded []byte, owner *bootOwner, prepare func(*exec.Cmd)) error {
+	return exchangePropertySupervisorWait(ctx, intent, encoded, owner, prepare, (*exec.Cmd).Wait)
+}
+
+// Native research may retain the born original command before its sole Wait.
+// The handshake continues independently; normal callers always use Cmd.Wait.
+func exchangePropertySupervisorWait(ctx context.Context, intent storage.PropertyIntent, encoded []byte, owner *bootOwner, prepare func(*exec.Cmd), wait func(*exec.Cmd) error) error {
+	if wait == nil {
+		return ErrUnavailable
+	}
 	if owner.check() != nil {
 		return ErrUnavailable
 	}
@@ -260,7 +269,7 @@ func exchangePropertySupervisor(ctx context.Context, intent storage.PropertyInte
 	reader.Close()
 	statusWriter.Close()
 	done := make(chan error, 1)
-	go func() { done <- cmd.Wait() }()
+	go func() { done <- wait(cmd) }()
 	waited := false
 	defer func() {
 		writer.Close()

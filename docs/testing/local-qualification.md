@@ -701,3 +701,57 @@ keeping the run unqualified. A missing reason receives the generic interruption/
 worker-failure message. This correction does not rewrite historical receipts or
 qualify a failed suite. See the [dashboard failure record](dashboards/native-resource-qualification.md)
 for the actual candidate, regression and unresolved resource/predicate gates.
+
+## Observer failure correction (source candidate)
+
+The issue #414 source candidate bounds each `ps` observation to at most 250 ms
+and the remaining original group-cleanup end. Observer errors retain cleanup
+debt and cannot suppress owned TERM/KILL, the sole worker wait or an independent
+terminal-record attempt. Lost child reservation forbids signals and a second
+wait. Group cleanup has one grace-plus-ten-second reserve including its sole
+wait; this is a cooperative bound, not an operating-system uninterruptibility
+guarantee. Native fixture cleanup is denied when group cleanup is uncertain.
+
+The receipt covers the fresh launcher group only. Group absence does not prove
+detached-session absence. No PID reuse or live leak was reproduced, and no native
+run is accepted by these source corrections.
+
+### Fixed-command executor ownership (source candidate)
+
+The related inventory executor now registers one private in-process owner before
+starting a fixed command. Non-consuming exit observation precedes its last positive
+operation and sole wait; after wait, group checks use signal zero only. Permission
+errors remain unknown and may be polled only to the same original cleanup end;
+only actual ESRCH establishes group absence. Ordinary
+observer errors cannot skip independent pipe closers, stop or wait. A lost child
+reservation forbids further signals and a second wait. No Go context watcher or
+WaitDelay may kill the native timeout reaper while its drain is unknown.
+
+Work retains its original caller deadline and ten-second command ceiling. One
+250 ms cleanup reserve covers output drain, stop, wait, observer/pipe joins and
+read-only group proof. Natural exit gives output at most half the remaining
+reserve before stop; incomplete/forced-close output is always a failed result.
+Expiry retains the original owner and handles, denies subsequent probes and adds
+cleanup debt to the existing safe error class. A late actual complete join/proof
+can release admission, but cannot make the expired invocation succeed. A collection
+that encountered debt attempts no later reads even if that owner subsequently
+retires. No new public status, native-write authority or durable journal is added.
+
+On FreeBSD the existing base timeout reaper receives SIGALRM while still owned,
+requesting its subtree KILL/drain. Missing/signalled status and normal status 1
+remain pending: the accepted utility has post-fork fatal status-1 paths before its
+zero-child loop, indistinguishable from an ordinary command returning 1. This
+conservative availability cost is deliberate. Other normal statuses rely on the
+accepted pinned base utility/kernel contract; the upstream status call is unchecked
+and source inspection alone cannot qualify native drain. The isolated property
+supervisor's outer reaper runs only after all executor joins are known, with new
+admission excluded during that drain. Unknown outer cleanup retains the fence;
+it cannot send a successful completion frame or clear the existing durable hold.
+
+Finite injected tests cover uncertainty, observer failures/lost reservation,
+blocked independent finalizers, late birth/proof, incomplete output, error
+preservation and outer-reaper exclusion. Native fixture saved IDs grant no fallback
+signal authority. Portable tests and cross-builds supply source evidence only;
+relevant disposable safety/recovery fixtures on both declared FreeBSD targets
+remain required before this behavior change is qualified. No native execution is
+included in this source candidate.
