@@ -1,5 +1,11 @@
 # Agent instructions
 
+Read the pinned [Agent Temper method](.agent-temper/METHOD.md),
+[local project policy](PROJECT.md) and the selected owning work item first.
+No optional profiles are selected. Product/platform rules below are local
+extensions; the method does not choose them. Follow the existing work authority
+and required gates. Recorded owner decisions persist across sessions.
+
 1. Read README.md, CONTRIBUTING.md, and relevant docs before editing.
 2. M0 permits repository tooling and documentation only. Product implementation
    needs an approved milestone PRD, EDD, and Test Design Document, or an explicitly
@@ -34,7 +40,8 @@
 13. Treat research as evidence, not architecture, until adopted in an ADR/EDD.
     Do not invent future CLI flags, API routes, config schemas, or package names
     beyond the agreed project identity.
-14. Do not spawn agents unless the user explicitly requests parallel agent work.
+14. The owner permits bounded read-only agent reviews under the local project
+    policy. This does not authorize delegated implementation or native execution.
 15. Follow docs/engineering/github-workflow.md and the stable roadmap index.
     Inspect open PRs and unblocked Ready issues before pickup; select and name
     one bounded owning issue, then read its requirements, design and evidence.

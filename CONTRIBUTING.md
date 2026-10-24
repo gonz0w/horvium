@@ -1,5 +1,10 @@
 # Contributing
 
+Use the pinned [method](.agent-temper/METHOD.md) with
+[local project policy](PROJECT.md) and the existing workflow below. Its bounded
+work, persistent decisions and reader-oriented documentation requirements apply
+alongside local contracts; no optional profile or new tracker is activated.
+
 Read [agent instructions](AGENTS.md), the [architecture baseline](docs/architecture/baseline.md),
 and the active milestone before changing behavior. Link nontrivial work to an
 issue in the [shared private Project](https://github.com/users/gonz0w/projects/2).

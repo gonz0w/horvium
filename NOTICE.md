@@ -52,3 +52,12 @@ The vendored file adds one terminal newline; its SHA-256 is
 License SHA-256: `d3d2456f76414f2456104660ebd65aff1c04cd7966b942bdabd63f3cdb316a38`.
 See the [source manifest](docs/research/M1/source-manifest.json). No runtime CDN,
 Node dependency, UI framework or transitive JavaScript modules are introduced.
+
+## Agent Temper method bundle
+
+The eight upstream files listed in [.agent-temper/SOURCE.md](.agent-temper/SOURCE.md)
+are unchanged from Agent Temper `588698ff019fbde5bfc01f426c02af66c4987b6d`.
+Their complete BSD-3-Clause copyright, conditions and disclaimer are retained in
+[.agent-temper/LICENSE](.agent-temper/LICENSE). The local source record and
+manifest identify the import. Original project licensing in [LICENSE](LICENSE)
+and all other notices remain unchanged; importing the method is not relicensing.
