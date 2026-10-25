@@ -21,6 +21,17 @@ boundaries and the fresh-activation guard. Portable supplied-identity regression
 cover refusal, retirement and release; they do not qualify actual kernel identity
 changes, retained descriptors or any storage-control command.
 
+## Agent Temper review scope
+
+The [local review contract](../engineering/local-review.md#scope-reconciliation-for-424)
+defines finite metadata and externally reviewed exact-source validation-tooling
+routes. Source preparation does not establish their required transition checks,
+actual client model routing, kernel custody or full product qualification. Actual
+source-bound results and unresolved gates belong to
+[the adoption issue](https://github.com/gonz0w/horvium/issues/424). Portable checks
+use the designated authorized BSD; Horvium runtime and target-specific native
+acceptance remain FreeBSD with existing both-release gates.
+
 ## Advisory standards reference — 2026-10-18
 
 [Shared development guidance](../standards/README.md) is pinned to `7a99fb2e6855d9f73752b182118637d9e79dc03c`

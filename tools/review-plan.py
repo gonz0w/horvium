@@ -9,6 +9,20 @@ import shlex
 import subprocess
 from pathlib import Path
 POLICY = {'AGENTS.md', 'CONTRIBUTING.md', 'docs/engineering/local-review.md', 'docs/testing/strategy.md'}
+TEMPER_PATHS = frozenset({
+    '.agent-temper/LICENSE', '.agent-temper/METHOD.md',
+    '.agent-temper/SOURCE.md', '.agent-temper/SHA256SUMS',
+    '.agent-temper/docs/reference/documentation.md',
+    '.agent-temper/docs/reference/extensions.md',
+    '.agent-temper/docs/reference/verification.md',
+    '.agent-temper/docs/reference/workflow.md',
+    '.agent-temper/profiles/codex.md', '.agent-temper/profiles/github.md',
+    '.agent-temper/profiles/strict-test-first.md',
+    '.codex/agents/temper_workflow.toml',
+    '.codex/agents/temper_implementer.toml',
+    '.codex/agents/temper_analyst.toml',
+    '.codex/agents/temper_reviewer.toml',
+})
 
 
 def digest(path):
@@ -80,6 +94,8 @@ def select_plan(paths, graph, force_full=False):
         return full('empty/unknown change selection')
     if all((documentation_path(p) for p in paths)):
         return {'mode': 'documentation', 'reason': 'documentation/evidence only; baseline still required', 'packages': [], 'native_review_required': False}
+    if all((p in TEMPER_PATHS or documentation_path(p) for p in paths)):
+        return {'mode': 'temper', 'reason': 'pinned Temper sources and selected local roles; metadata checks required', 'packages': [], 'native_review_required': False}
     changed = set()
     for p in paths:
         if documentation_path(p):

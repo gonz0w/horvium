@@ -94,7 +94,10 @@ PR meets every criterion of that specific issue. Acceptance gates normally use
 Refs until all native, integration, browser, resource and recovery criteria pass.
 Agents leave PRs open; maintainer review and existing protections remain required.
 
-Run `make check lint test secrets` and the signed clean-candidate `make review`.
+Until the reviewed scope reconciliation in [local review](local-review.md#scope-reconciliation-for-424)
+is implemented and verified, run `make check lint test secrets` and the signed
+clean-candidate `make review`. Afterward use the actual applicable mapped gate;
+a policy statement alone is not execution evidence.
 Use `make review-full` for milestones/releases and the existing conservative
 fallback policy. Tracking-only changes need no new NAS qualification; they do not
 upgrade old receipts. Relevant behavior changes still require disposable native
@@ -154,7 +157,8 @@ installation, services, deployment or changes to live storage.
 
 [PROJECT.md](../../PROJECT.md) composes the pinned
 [Agent Temper core](../../.agent-temper/METHOD.md) with this local workflow.
-No optional profile is selected. Keep the existing status/priority/phase mapping,
+Only the Codex profile is selected in PROJECT.md. Keep the existing
+status/priority/phase mapping,
 manual Project synchronization and native parent/blocker relationships. Imported
 example labels never rename local states or create a second queue. Record missing
 policy questions in the owning issue and persist the owner's answer in project
