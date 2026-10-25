@@ -27,14 +27,16 @@ and required gates. Recorded owner decisions persist across sessions.
 8. Test storage changes only on disposable fixtures. Do not use an operator's
    live disks, datasets, or backup history as development fixtures.
 9. Update behavior documentation and the compatibility matrix in the same PR.
-   Run make check lint test secrets only on an admitted FreeBSD executor.
-   The owner's FreeBSD-only LAB rule includes standards/content checks, hooks,
-   tests and make review: do not run them on macOS or Linux. The finite #422
-   adoption host permission has expired; saved receipts grant no exception.
-   Use make review for affected-package race/fuzz checks; make review-full at
-   milestones/releases, on the admitted executor. If it is unavailable, preserve
-   a source candidate and report the execution gate; do not bypass hooks.
-   Relevant native safety/recovery gates remain required for behavior changes.
+   Follow PROJECT's 2026-10-25 owner decision and local review scope contract:
+   portable source/metadata/Temper checks run once on a designated authorized
+   BSD; Horvium runtime and target-specific native behavior remain FreeBSD.
+   No macOS/Linux LAB checks; the finite #422 host exception has expired.
+   Current executable hooks/review mappings remain required until their narrower
+   source mapping is reviewed and verified. Validation-tooling edits need their
+   actual regression checks; do not classify the selector as pure Temper.
+   Keep conservative unknown/shared/product execution fallback and milestone
+   full review. If execution is unavailable, preserve source and name the gate;
+   do not bypass hooks. Applicable native safety/recovery gates remain required.
 10. Keep commits coherent, Conventional-Commit-style, signed, and DCO signed off.
     Never silently downgrade signatures if signing is unavailable.
 11. Do not commit secrets, private keys, customer data, host inventory dumps, or

@@ -25,15 +25,22 @@ evidence in that PR. Use incremental signed commits for internal prerequisites.
 Split delivery only for unresolved design/authorization, a distinct safety boundary
 or scope too large to review coherently; explain the reason in the owning issue.
 
-Use only an admitted FreeBSD executor for project checks, hooks, tests and review;
-macOS/Linux LAB checks are prohibited under [local policy](PROJECT.md). The finite
-#422 host permission has expired. Missing executor/tool admission blocks the
-gate, not source preparation; do not bypass hooks to publish a candidate.
+Use the designated authorized BSD for portable source/metadata/Temper checks;
+Horvium runtime and target-specific native checks remain FreeBSD under
+[local policy](PROJECT.md). macOS/Linux LAB checks remain prohibited and the
+finite #422 host exception expired. Existing executable gates remain required
+until their revised mapping is implemented, reviewed and verified; no check is
+waived by the policy clarification. Missing admission blocks the affected gate,
+not source preparation; do not bypass hooks to publish a candidate.
 On the admitted executor, run `make tools` and `make hooks`. After signing/signing
 off the changes, run `PR_TITLE='type: actual proposed PR title' make review`
 from a clean checkout.
-It verifies commit signatures/DCO/title and runs `make check lint test secrets`
-plus race/fuzz checks for affected packages and their consumers. Use
+The gate verifies commit signatures/DCO/title. Ordinary review runs
+`make check lint test secrets` plus race/fuzz checks for affected packages and
+consumers. The finite Temper and externally reviewed exact-source validation-tooling
+routes run the mandatory metadata and affected checks described in local review;
+set `REVIEW_SCOPE` only to the external separately reviewed binding for that exact
+candidate. Missing, stale or additional scope keeps conservative review. Use
 `make review-full` for fresh complete portable milestone/release validation; see
 the [local review gate](docs/engineering/local-review.md).
 Report the tested source/base/title and results in the PR. GitHub Actions are

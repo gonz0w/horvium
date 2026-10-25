@@ -35,21 +35,45 @@ recorded revisions, hashes and content. Temper imposes no OS, toolchain or hosti
 
 ### Verification and review
 
-The owner's settled local execution rule is **FreeBSD-only** for Horvium and
-its LAB checks, including standards/content checks, hooks, tests and review.
-Do not run these checks on macOS or Linux. This is a Horvium project decision;
-Agent Temper does not choose development or runtime platforms. The earlier
-#422 adoption host permission was finite and has expired. Its saved portable
-receipt is historical evidence and supplies no current host-check exception.
+Horvium product runtime and target-specific native acceptance remain **FreeBSD**.
+All LAB checks still require an authorized BSD executor; macOS and Linux remain
+coordination/source-review hosts. The earlier #422 host permission was finite
+and expired. Its saved receipt supplies no current host-check exception.
 
-On an admitted FreeBSD executor, `make check lint test secrets` and the signed
-clean-candidate `make review` remain required; milestone/release or conservative
-fallback uses the existing full policy. Its selector does not exempt new
-method/policy paths. Actions stay disabled. Product/native/client recovery checks
-retain their own required boundaries. Missing executor/tool admission blocks
-execution and acceptance, while source preparation and read-only source review
-may continue. Do not bypass hooks to create a signed candidate. Preserve failed,
-interrupted and nonqualifying host observations without counting them as gates.
+On 2026-10-25, Cam explicitly approved validation by component and change impact
+for [Horvium #424](https://github.com/gonz0w/horvium/issues/424) and directed
+this adoption lead to apply it. The old blanket requirement made every process,
+metadata and routing change take the full product review. The replacement uses
+applicable checks once on a designated authorized BSD for portable source,
+metadata, provenance, prose and agent-routing configuration. Preserve FreeBSD
+coverage for Horvium runtime, OS adapters and target-specific process/kernel
+behavior; broaden for affected shared code, execution or uncertain impact.
+The reason is to verify the changed contract without unrelated product
+qualification. This is a direct owner-approved local policy clarification, recorded
+in the owning issue. Existing immutable upstream pins remain unchanged; no
+external executable selector or unverified execution result is adopted.
+
+Temper-only evidence covers exact source/inventory/hash/license provenance,
+policy and link consistency, configuration syntax and affected role/routing
+contracts, with separate review. Unobserved runtime client/model discovery stays
+unverified. Changing validation selection or execution is validation-tooling
+impact, not pure Temper prose; verify the affected selector/gate behavior and
+its failure paths before relying on a narrower mapping. The
+[local review contract](docs/engineering/local-review.md#scope-reconciliation-for-424)
+records the finite transition and conservative fallback requirements.
+
+Existing executable hooks and review commands remain effective until the
+narrower mapping is implemented, independently reviewed and actually verified.
+The finite mapping in the local review contract requires its actual affected
+regressions and separate review before acceptance. Ordinary/full review retains
+`make check lint test secrets` and conservative deep selection; a source/policy
+edit alone cannot establish a narrower PASS.
+Pre-commit remains `make check secrets`. Signatures, actual-author DCO, clean
+source identity, applicable custody/teardown and protected checks remain required.
+Actions stay disabled. Missing executor/tool admission blocks affected execution
+while source preparation and read-only review may continue. No new worker,
+guest, retry, budget, resource, credential, permission, release or deployment
+authority is granted. Preserve all historical failures and unqualified attempts.
 
 Follow existing behavior-first/regression and PRD/EDD/Test Design obligations
 where they apply. Prose changes use source, link, policy and reader checks; do not
