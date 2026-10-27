@@ -238,3 +238,18 @@ future bypass or runtime-routing claim.
 No VM, runner, publisher, tool installation, extra retry or infrastructure startup
 is included. Existing failed evidence remains failed; earlier exceptions stay
 expired outside this exact Terra patch and policy recording.
+
+## One-time Temper guidance integration — 2026-10-27
+
+On 2026-10-27 the owner approved a one-time integration decision for this owning
+Temper guidance-refresh issue. For this exact reviewed pin/provenance patch only,
+the upstream read-only auditor and trusted passive source/inventory/hash/link/
+role-preservation checks may run on inert coordinator copies. Separate source
+review and those checks replace unavailable required BSD gates and commit hooks,
+which are waived/not run, never passed. Existing SSH signatures, actual-author
+DCO, PRs, separate review and canonical verification remain. No consumer check,
+module, hook or product/native workload may execute on that host. The decision
+ends at this PR's merge or abandonment and grants no future bypass, CI workflow/
+infrastructure change, executor startup, model change, release or deployment.
+
+Owning work: [issue #428](https://github.com/gonz0w/horvium/issues/428).
