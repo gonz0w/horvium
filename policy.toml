@@ -1,0 +1,65 @@
+# No standing exception is selected. Finite PROJECT integration decisions require
+# separate approval and expire at their named event; metadata does not renew them.
+# Sole selected-module record adopted by PROJECT. No active exception is declared.
+# Historical finite decisions remain expired and are retained in their local module.
+schema_version = 1
+
+[[modules]]
+id = "temper-core"
+path = ".agent-temper/METHOD.md"
+owner = "Cam (@gonz0w)"
+requires = []
+
+[[modules]]
+id = "temper-codex"
+path = ".agent-temper/profiles/codex.md"
+owner = "Cam (@gonz0w)"
+requires = ["temper-core"]
+
+[[modules]]
+id = "project"
+path = "PROJECT.md"
+owner = "Cam (@gonz0w)"
+requires = ["temper-core", "temper-codex"]
+
+[[modules]]
+id = "work"
+path = "docs/policy/work.md"
+owner = "Cam (@gonz0w)"
+requires = ["project"]
+
+[[modules]]
+id = "product"
+path = "docs/policy/product.md"
+owner = "Cam (@gonz0w)"
+requires = ["project"]
+
+[[modules]]
+id = "verification"
+path = "docs/policy/verification.md"
+owner = "Cam (@gonz0w)"
+requires = ["project", "work", "product"]
+
+[[modules]]
+id = "authority"
+path = "docs/policy/authority.md"
+owner = "Cam (@gonz0w)"
+requires = ["project", "work", "verification"]
+
+[[modules]]
+id = "documentation"
+path = "docs/policy/documentation.md"
+owner = "Cam (@gonz0w)"
+requires = ["project"]
+
+[[modules]]
+id = "routing"
+path = "docs/policy/routing.md"
+owner = "Cam (@gonz0w)"
+requires = ["project", "temper-codex"]
+
+[[modules]]
+id = "history"
+path = "docs/policy/history.md"
+owner = "Cam (@gonz0w)"
+requires = ["project"]
