@@ -116,9 +116,11 @@ the selected [host and target policy](../policy/verification.md#portable-checks-
 support and actual target-specific kernel/process behavior remain FreeBSD.
 
 The implementation distinguishes pure Temper metadata from affected validation
-tooling. Applying either narrower route requires the separately reviewed, actual
-transition verification recorded in the owning issue. Source preparation and
-mocked dispatch results alone do not establish that gate. Historical failures
+tooling. The original #424 transition was accepted before this repair. The
+[#433 verifier repair](https://github.com/gonz0w/horvium/issues/433) updates its stale
+source admission and selector for the separately reviewed #434 policy adoption.
+Source preparation and mocked dispatch results do not establish execution of a
+new candidate or renew the historical transition authority. Historical failures
 retain their original scope and qualification. Pre-commit remains the unchanged
 `make check secrets`; signature, actual-author DCO, title, clean range, source
 identity and applicable custody/teardown requirements remain mandatory.
@@ -127,22 +129,42 @@ identity and applicable custody/teardown requirements remain mandatory.
 
 | Impact | Applicable checks |
 | --- | --- |
-| Exact eleven-file pinned Temper bundle and four selected local roles, optionally with eligible prose | `make check secrets`, then `tools/check-temper-source.py`; no product Go/compiler query or deep reuse. |
+| Reviewed retained Temper bundle and selected local roles, optionally with eligible prose | `make check secrets`, then `tools/check-temper-source.py`; no product Go/compiler query or deep reuse. |
 | Separately reviewed exact range of the named validation tooling and affected local policy below | The same metadata commands, then `tools/temper-regressions.py`; no product Go/compiler query or deep reuse. |
 | Unbound, stale, ambiguous, additional or unknown policy/tooling input; product/shared execution/hooks/modules/packaging | Existing conservative full/focused behavior and applicable native checks. |
 | Explicit `--full` / `make review-full` | Existing fresh complete portable baseline and deep checks, regardless of a supplied scope. |
 
-Pure Temper selection is the existing finite source/configuration allowlist;
-neither arbitrary TOML nor other bundle descendants qualify. The named source
-verifier checks exact regular-file/directory inventories, the nine retained
-upstream byte digests including the complete license, the ten-entry manifest,
-this adoption's exact source record and revision, and the four role names,
-models, efforts and accepted instruction digests. Extra role options and global
-configuration fail. It also checks the Codex-only selection clauses in PROJECT
-and AGENTS. Separate semantic policy review remains required: those clauses and
-instruction digests bind reviewed contracts, not arbitrary natural-language
-meaning. Parsing and hashes do not prove runtime client role discovery/model
-selection or authenticate an external tool.
+Pure Temper selection derives the complete actual bundle and role inventory from
+the same admitted reader used by the source verifier. Candidate inventories do
+not enlarge that scope before admission; invalid admission keeps conservative
+full review. Unknown `.codex` paths, root `policy.toml` and every `docs/policy/`
+path stay outside prose and pure Temper selection, including mixed role/policy
+changes. Policy bytes remain in behavioral fingerprints.
+
+`REVIEWED_ADMISSION_SHA256` in the trusted source verifier binds the exact reviewed
+#434 input at consumer `02b54adf162658749a09718f05ff8b3fee8e58cd`. Its canonical
+JSON framing has a domain tag and sorted relative path/type/SHA-256 records for
+complete `.agent-temper` and `.codex` inventories and contents, root `policy.toml`,
+all selected module bytes and `AGENTS.md`. The reader rejects empty directories,
+links, executable metadata and special files before content reads in the known
+inventories. It structurally validates root selection and checks normalized,
+contained module paths and their ancestors before opening them. Nothing declared
+in policy executes.
+
+Only after aggregate admission does it validate the retained source revision/URL,
+complete actual manifest and retained license, role TOML fields and requested
+settings/instructions, and module identity/path/prerequisite consistency. The
+single anchor binds the exact reviewed values without duplicating upstream pins,
+model tables, instruction digests or a role count. Candidate manifest checksums
+alone cannot admit new bytes. There is no CLI/environment override, Git-object
+requirement or automatic digest refresh. The verifier itself stays outside its
+own aggregate; review must preserve trust in its code and anchor.
+
+Every covered change, including a tiny prose edit in selected policy, requires
+explicit reviewed readmission. This conservative maintenance cost prevents a
+candidate from expanding its own source or policy boundary. Separate semantic
+policy review remains required. Parsing and hashes do not prove actual client
+role discovery, model execution or native product behavior.
 
 ### Source-bound validation-tooling route
 
@@ -165,7 +187,7 @@ The object admits exactly these fields:
 | `base_commit`, `source_commit`, `source_tree` | Actual complete forty-hex source identities, matching the clean signed range |
 | `changed_entries` | Complete path-sorted raw Git diff entries, with `path`, `old_mode`, `new_mode`, `old_blob`, `new_blob`, `status`; no duplicates or omitted additions/deletions |
 | `commands` | Exactly `["metadata", "temper-source", "review-regressions"]` |
-| `review_reference` | The separate review's `https://github.com/gonz0w/horvium/issues/424#issuecomment-` URL and numeric comment ID |
+| `review_reference` | The separate review's `https://github.com/gonz0w/horvium/issues/424#issuecomment-` or `https://github.com/gonz0w/horvium/issues/433#issuecomment-` URL and numeric comment ID |
 
 `git diff --raw --no-abbrev --no-renames -z BASE HEAD` supplies the entry identity;
 renames remain deletion plus addition. Only ordinary nonexecutable file modes
@@ -173,13 +195,18 @@ or absent entries are eligible. The closed inventory never executes argv from
 JSON. Command identifiers map in repository code to `make check secrets`, the
 named source verifier and the named affected regression runner, in that order.
 
-Eligible paths are the pure Temper/prose paths plus AGENTS, PROJECT, CONTRIBUTING,
+Eligible paths are the admitted pure Temper/prose paths plus AGENTS, PROJECT, CONTRIBUTING,
+root `policy.toml`, and the exact adopted `docs/policy/` modules `work.md`,
+`product.md`, `verification.md`, `authority.md`, `documentation.md`, `routing.md`
+and `history.md`,
 `docs/engineering/github-workflow.md`, this review contract,
 `docs/compatibility/matrix.md`, `tools/review-plan.py`, `tools/review-gate.py`,
 `tools/check-temper-source.py`, `tools/temper-regressions.py` and these seven exact
 regression modules: `test_review_plan`, `test_review_gate`,
 `test_temper_review_scope`, `test_temper_gate_dispatch`,
 `test_temper_scope_binding`, `test_temper_bound_dispatch`, `test_temper_source`.
+Other policy descendants are ineligible. A #424 review URL does not authenticate
+new bytes, revive expired budgets or waive stale/incomplete binding checks.
 The runner loads each named module explicitly and rejects missing, empty, failed
 or skipped tests. The gate requires one complete successful result with exactly
 that module inventory before qualification. Tools outside that list, especially
@@ -219,8 +246,11 @@ an execution claim.
 
 Pure selector/data tests need Python. Real Git identity fixtures additionally
 need admitted Git. Content/configuration and unchanged hooks/secrets need pinned
-PyYAML/Gitleaks. The source verifier requires the admitted unprivileged BSD and
-pinned Python 3.14.7. Actual unchanged OwnedProcess lease/kernel tests require
+PyYAML/Gitleaks. The source verifier and seven affected regressions require a permitted
+unprivileged POSIX development host and pinned Python 3.14.7 after exact effects
+inspection under the lasting October 31 policy. The real gate still requires its
+exact candidate venv; using another admitted interpreter for direct source/data
+tests does not pass that gate identity check. Actual unchanged OwnedProcess lease/kernel tests require
 their own finite admission on the relevant target; mocked dispatch cannot
 qualify real control sockets, sessions, process groups, cleanup or escalation.
 OpenBSD observations do not establish FreeBSD target-specific behavior. Preserve

@@ -32,8 +32,8 @@ def run_modules(loader=None, names=MODULES):
 
 
 def main():
-    if platform.system() not in {'FreeBSD', 'OpenBSD'} or os.getuid() == 0:
-        raise RuntimeError('Affected LAB regressions require an authorized unprivileged BSD')
+    if os.name != 'posix' or os.getuid() == 0 or sys.version_info[:3] != (3, 14, 7):
+        raise RuntimeError('Affected portable regressions require permitted unprivileged POSIX and Python 3.14.7')
     sys.path.insert(0, str(ROOT / 'tools/tests'))
     print('REGRESSION_RESULT ' + json.dumps(run_modules(), sort_keys=True), flush=True)
 

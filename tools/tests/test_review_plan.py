@@ -1,9 +1,14 @@
 # SPDX-License-Identifier: BSD-3-Clause
+import os
+import sys
 import importlib.util
 from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+if os.name != 'posix' or os.getuid() == 0 or sys.version_info[:3] != (3, 14, 7):
+    raise RuntimeError('Portable source regressions require permitted unprivileged POSIX and Python 3.14.7')
+
 ROOT = Path(__file__).resolve().parents[2]
 
 class ReviewPlanTests(unittest.TestCase):
@@ -86,3 +91,25 @@ class ReviewPlanTests(unittest.TestCase):
                     return m.environment_fingerprint(ROOT)
         self.assertEqual(fingerprint('/tmp/build-1'), fingerprint('/tmp/build-2'))
         self.assertNotEqual(fingerprint('/tmp/build-1'), fingerprint('/tmp/build-1', 'experiment'))
+
+    def test_policy_is_full_alone_or_mixed_and_always_in_fingerprint(self):
+        m = self.module()
+        for name in ('policy.toml', 'docs/policy/routing.md', 'docs/policy/unknown.md'):
+            self.assertFalse(m.documentation_path(name))
+            self.assertEqual(m.select_plan([name], {})['mode'], 'full')
+            self.assertEqual(m.select_plan([name, '.codex/agents/temper_product.toml'], {})['mode'], 'full')
+            raw = b'100644 blob ' + b'a' * 40 + b'\t' + name.encode() + b'\0'
+            with patch.object(m.subprocess, 'check_output', return_value=raw):
+                self.assertIn(name, m.input_fingerprint(ROOT, 'fixture')[1])
+
+    def test_unadmitted_candidate_inventory_cannot_expand_temper_scope(self):
+        from test_temper_source import writable_copy
+        m = self.module()
+        with tempfile.TemporaryDirectory() as tmp:
+            candidate = Path(tmp)
+            writable_copy(ROOT, candidate)
+            role = candidate / '.codex/agents/fictional.toml'
+            role.write_bytes((candidate / '.codex/agents/temper_product.toml').read_bytes())
+            self.assertEqual(m.select_plan(['.codex/agents/fictional.toml'], {}, root=candidate)['mode'], 'full')
+            self.assertEqual(m.select_plan(['.codex/agents/temper_product.toml'], {}, root=candidate)['mode'], 'full')
+            self.assertEqual(m.accepted_temper_paths(candidate), frozenset())

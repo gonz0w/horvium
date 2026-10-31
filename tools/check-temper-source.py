@@ -1,36 +1,21 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: BSD-3-Clause
-"""Verify retained Temper bytes and selected role configuration, without Go."""
+"""Admit reviewed Temper/policy bytes, then validate their inert contracts."""
 import hashlib
+import json
 import os
-import platform
 import re
 import stat
 import sys
 import tomllib
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
-REVISION = "c07af93dc99e770bf4f3ec6f30a0536cb2ae14c5"
-# Exact imported Git blobs, independently compared during adoption source review.
-IMPORTED = {
-    "LICENSE": "1bc9ce76b659a58c7b8edb88304880f36fd2a005f7b7f3349d1efc860d8deb87",
-    "METHOD.md": "9ef31c00af31dcd6460d75153c2476b4ccfe4c899b584604deffff4d0baa794a",
-    "docs/reference/documentation.md": "a3757a32af57cfb78b452b1c62dff685acc0ccdb5a23bff2ec2d17009e5ee39c",
-    "docs/reference/extensions.md": "bdc1ef0504aa2c34e94616dc20b9f252de0c84284635a41e58a57744b9448195",
-    "docs/reference/verification.md": "9cbc60b862f15e493d97f6f60985931112e1bac028ef18a4a27f2e470520ac9c",
-    "docs/reference/workflow.md": "d17cc3f973ae42e9652b6eb02ccc201568d8434ea0400d0dd70785aae2734f4a",
-    "profiles/codex.md": "9fa51cf35b66a4d08761bdb7b00312dc0bad0590f92bfc70910465d9ddcdd511",
-    "profiles/github.md": "596cdfe85c232cb8d313fa467326d264ce625ed03a4c2fcc3d328b64d0f7fb7e",
-    "profiles/strict-test-first.md": "cad47afe8be377119a3d5557d72cfb8f0a04fb878f9aa943b2d107c09b9d66fb",
-}
-ROLES = {"temper_workflow": ("gpt-6-luna", "medium"),
-         "temper_implementer": ("gpt-6.1-sol", "high"),
-         "temper_analyst": ("gpt-6-astra", "high"),
-         "temper_reviewer": ("gpt-6.1-sol", "high")}
+# Reviewed PR #434 input, consumer 02b54adf162658749a09718f05ff8b3fee8e58cd.
+# This trusted verifier anchor is deliberately separate from candidate checksums.
+# Any covered byte change needs explicit source review and readmission here.
+REVIEWED_ADMISSION_SHA256 = 'b285eadcbcb7d918cbf06a4285dc1129472517d26fa55b40d02693d8bdb3880e'
 
-INSTRUCTIONS = {'temper_reviewer': '4e47ec22745174dc646080287899e0329b137164fc2d672b3fc12bd49fde9e69', 'temper_implementer': '32f79ee8e510281608f93854e65a0a5e76192e9a0d2d477faad8b4adb6c7d582', 'temper_analyst': '2cf9b5b6c2d61691bf35932aa1eb6b43b43aedb7c91f643d9616d08da7d5adb0', 'temper_workflow': 'b8872c3e6e6e4c6477b8c9714229d30f8cbe19cd45fb9c7f4b9e52b89311bb80'}
-SOURCE_SHA256 = "bfd320a0d3fed521b3cfd9cd68c7e6fb25854bf1c49c99c7e1c493fb9b5ba80e"
 
 def directory(path):
     mode = path.lstat().st_mode
@@ -40,88 +25,171 @@ def directory(path):
         raise ValueError("Unsupported inventory directory type: " + str(path))
 
 
-def exact_inventory(base, files):
-    """Admit exact parent directories and regular files, using lstat.
-
-    Do not follow links or open a file until BOTH bundle and role inventories
-    pass. Unexpected empty directories, FIFOs, sockets and devices all fail.
-    """
+def inventory(base):
+    """Inspect complete inventories before reading any bundle or role content."""
     directory(base)
-    directories = {parent.as_posix() for name in files for parent in Path(name).parents
-                   if parent != Path(".")}
-    seen_files, seen_directories = set(), set()
+    files, directories = set(), {base}
 
     def visit(folder):
-        for path in folder.iterdir():
-            name = path.relative_to(base).as_posix()
+        entries = list(folder.iterdir())
+        if not entries:
+            raise ValueError("Unexpected empty inventory directory: " + str(folder))
+        for path in entries:
             mode = path.lstat().st_mode
             if stat.S_ISLNK(mode):
-                raise ValueError("Inventory contains a symlink: " + name)
-            if stat.S_ISDIR(mode) and name in directories:
-                seen_directories.add(name)
+                raise ValueError("Inventory contains a symlink: " + str(path))
+            if stat.S_ISDIR(mode):
+                directories.add(path)
                 visit(path)
-            elif stat.S_ISREG(mode) and not mode & 0o111 and name in files:
-                seen_files.add(name)
+            elif stat.S_ISREG(mode) and not mode & 0o111:
+                files.add(path)
             else:
-                raise ValueError("Unexpected inventory entry or type: " + name)
-
+                raise ValueError("Unexpected inventory entry or type: " + str(path))
     visit(base)
-    if seen_files != set(files) or seen_directories != directories:
-        raise ValueError("Incomplete inventory: " + str(base))
+    return files, directories
+
+
+def contained_file(root, name):
+    """Reject traversal, links and special files before opening selected paths."""
+    if (type(name) is not str or not name or '\\' in name or
+            PurePosixPath(name).is_absolute() or
+            any(part in {'', '.', '..'} for part in name.split('/'))):
+        raise ValueError("Invalid selected module path")
+    path = root
+    for part in name.split('/')[:-1]:
+        path = path / part
+        directory(path)
+    path = root / name
+    mode = path.lstat().st_mode
+    if stat.S_ISLNK(mode):
+        raise ValueError("Selected path contains a symlink: " + name)
+    if not stat.S_ISREG(mode) or mode & 0o111:
+        raise ValueError("Unsupported selected file type: " + name)
+    return path
+
+
+def selection(raw):
+    """Only structural policy parsing precedes admission; no declared code runs."""
+    policy = tomllib.loads(raw.decode('utf-8'))
+    if (set(policy) != {'schema_version', 'modules'} or
+            type(policy['schema_version']) is not int or policy['schema_version'] != 1 or
+            type(policy['modules']) is not list or not policy['modules']):
+        raise ValueError('Invalid root policy declaration')
+    modules = policy['modules']
+    ids, paths = set(), set()
+    for module in modules:
+        if type(module) is not dict or set(module) != {'id', 'path', 'owner', 'requires'}:
+            raise ValueError('Invalid selected module declaration')
+        if (type(module['id']) is not str or not re.fullmatch('[a-z][a-z0-9-]*', module['id']) or
+                module['id'] in ids or type(module['path']) is not str or module['path'] in paths or
+                type(module['owner']) is not str or not module['owner'].strip() or
+                type(module['requires']) is not list or
+                any(type(item) is not str for item in module['requires']) or
+                len(set(module['requires'])) != len(module['requires'])):
+            raise ValueError('Invalid selected module identity or prerequisites')
+        ids.add(module['id'])
+        paths.add(module['path'])
+    visited, active = set(), set()
+    by_id = {module['id']: module for module in modules}
+    def visit(name):
+        if name not in ids or name in active:
+            raise ValueError('Missing or cyclic selected module prerequisite')
+        if name in visited:
+            return
+        active.add(name)
+        for prerequisite in by_id[name]['requires']:
+            visit(prerequisite)
+        active.remove(name)
+        visited.add(name)
+    for name in ids:
+        visit(name)
+    return modules
+
+
+def admission_input(root):
+    """Read complete, safely typed data and frame sorted path/type/hash records.
+
+    The result is still untrusted until checked against the reviewed anchor.
+    No candidate-supplied checksum, environment setting or Git object admits it.
+    """
+    directory(root)
+    bundle_files, bundle_dirs = inventory(root / '.agent-temper')
+    role_files, role_dirs = inventory(root / '.codex')
+    policy_path = contained_file(root, 'policy.toml')
+    agents_path = contained_file(root, 'AGENTS.md')
+    policy_raw = policy_path.read_bytes()
+    modules = selection(policy_raw)
+    selected = {contained_file(root, module['path']) for module in modules}
+    files = bundle_files | role_files | selected | {policy_path, agents_path}
+    contents = {path.relative_to(root).as_posix(): path.read_bytes() for path in sorted(files)}
+    contents['policy.toml'] = policy_raw
+    records = [{'path': path.relative_to(root).as_posix(), 'type': 'directory'}
+               for path in bundle_dirs | role_dirs]
+    records += [{'path': name, 'type': 'file', 'sha256': hashlib.sha256(raw).hexdigest()}
+                for name, raw in contents.items()]
+    framed = json.dumps({'domain': 'horvium-temper-reviewed-admission-v1',
+                         'entries': sorted(records, key=lambda item: item['path'])},
+                        sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode('utf-8')
+    return hashlib.sha256(framed).hexdigest(), contents, modules
+
+
+def admitted_inputs(root):
+    digest, contents, modules = admission_input(root)
+    if digest != REVIEWED_ADMISSION_SHA256:
+        raise ValueError('Reviewed admission mismatch: inventory, immutable upstream, provenance, role/routing or profile selection bytes changed')
+    return contents, modules
 
 
 def validate(root):
-    bundle = root / ".agent-temper"
-    expected = set(IMPORTED) | {"SOURCE.md", "SHA256SUMS"}
-    exact_inventory(bundle, expected)
-    exact_inventory(root / ".codex", {"agents/" + name + ".toml" for name in ROLES})
-    role_dir = root / ".codex/agents"
-    exact_inventory(role_dir, {name + ".toml" for name in ROLES})
+    contents, modules = admitted_inputs(root)
+    bundle = {name.removeprefix('.agent-temper/'): raw for name, raw in contents.items()
+              if name.startswith('.agent-temper/')}
+    if 'LICENSE' not in bundle or not bundle['LICENSE'].strip():
+        raise ValueError('Missing complete retained license')
     manifest = {}
-    for line in (bundle / "SHA256SUMS").read_text().splitlines():
-        match = re.fullmatch(r"([0-9a-f]{64})  (.+)", line)
-        if not match or match[2] not in expected - {"SHA256SUMS"} or match[2] in manifest:
-            raise ValueError("Malformed or duplicate manifest entry")
+    for line in bundle['SHA256SUMS'].decode().splitlines():
+        match = re.fullmatch(r'([0-9a-f]{64})  (.+)', line)
+        if not match or match[2] not in bundle or match[2] == 'SHA256SUMS' or match[2] in manifest:
+            raise ValueError('Malformed or duplicate manifest entry')
         manifest[match[2]] = match[1]
-    if set(manifest) != expected - {"SHA256SUMS"}:
-        raise ValueError("Incomplete manifest")
+    if set(manifest) != set(bundle) - {'SHA256SUMS'}:
+        raise ValueError('Incomplete manifest')
     for name, digest in manifest.items():
-        if hashlib.sha256((bundle / name).read_bytes()).hexdigest() != digest:
-            raise ValueError("Manifest hash mismatch: " + name)
-        if name in IMPORTED and digest != IMPORTED[name]:
-            raise ValueError("Immutable upstream byte mismatch: " + name)
-    source = (bundle / "SOURCE.md").read_text()
-    if (hashlib.sha256(source.encode()).hexdigest() != SOURCE_SHA256 or
-            f"Revision: `{REVISION}`" not in source or
-            f"Source: https://github.com/gonz0w/agent-temper/tree/{REVISION}" not in source):
-        raise ValueError("Upstream provenance mismatch")
-    for name, settings in ROLES.items():
-        role = tomllib.loads((role_dir / (name + ".toml")).read_text())
-        if (role.get("name"), role.get("model"), role.get("model_reasoning_effort")) != (name, *settings):
-            raise ValueError("Selected routing configuration mismatch: " + name)
-        if set(role) != {"name", "description", "model", "model_reasoning_effort", "developer_instructions"}:
-            raise ValueError("Unexpected role routing options: " + name)
-        instructions = role.get("developer_instructions")
-        if (type(instructions) is not str or
-                hashlib.sha256(instructions.encode()).hexdigest() != INSTRUCTIONS[name]):
-            raise ValueError("Accepted role instructions mismatch: " + name)
-    project = (root / "PROJECT.md").read_text()
-    agents = (root / "AGENTS.md").read_text()
-    if ('Only the [Codex profile](.agent-temper/profiles/codex.md) is selected.' not in project or
-            'and strict-test-first profiles are inactive.' not in project or
-            'Only the Codex profile is selected in local project policy.' not in agents):
-        raise ValueError("Codex-only profile selection contract mismatch")
-    # Human policy review remains required; syntax and requested settings do not
-    # establish runtime discovery/model metadata or native product acceptance.
+        if hashlib.sha256(bundle[name]).hexdigest() != digest:
+            raise ValueError('Manifest hash mismatch: ' + name)
+    source = bundle['SOURCE.md'].decode()
+    revisions = re.findall(r'(?m)^Revision: `([0-9a-f]{40})`$', source)
+    urls = re.findall(r'(?m)^Source: (\S+)$', source)
+    if (len(revisions) != 1 or urls != ['https://github.com/gonz0w/agent-temper/tree/' + revisions[0]] or
+            'Repository: https://github.com/gonz0w/agent-temper' not in source):
+        raise ValueError('Upstream provenance mismatch')
+    roles = {}
+    for name, raw in contents.items():
+        if not name.startswith('.codex/'):
+            continue
+        if not re.fullmatch(r'.codex/agents/[a-z][a-z0-9_]*\.toml', name):
+            raise ValueError('Unexpected role inventory')
+        role = tomllib.loads(raw.decode())
+        if (set(role) != {'name', 'description', 'model', 'model_reasoning_effort', 'developer_instructions'} or
+                any(type(value) is not str or not value.strip() for value in role.values()) or
+                role['name'] != Path(name).stem or role['name'] in roles or
+                role['model_reasoning_effort'] not in {'minimal', 'low', 'medium', 'high', 'xhigh', 'max', 'ultra'}):
+            raise ValueError('Invalid selected role routing configuration: ' + name)
+        roles[role['name']] = role
+    if not roles:
+        raise ValueError('Missing selected roles')
+    # Selection was structurally checked before opening paths; admission binds
+    # its exact IDs, prerequisites and prose to the reviewed source.
+    return frozenset(name for name in contents if name.startswith(('.agent-temper/', '.codex/')))
 
 
 def main():
-    if platform.system() not in ("OpenBSD", "FreeBSD") or os.getuid() == 0 or sys.version_info[:3] != (3, 14, 7):
-        raise RuntimeError("Pinned Python 3.14.7 on admitted unprivileged BSD is required")
+    if os.name != 'posix' or os.getuid() == 0 or sys.version_info[:3] != (3, 14, 7):
+        raise RuntimeError('Pinned Python 3.14.7 on a permitted unprivileged POSIX host is required')
     validate(ROOT)
-    print("Temper inventory, immutable bytes, license, manifest, provenance and requested role configuration passed")
-    print("Actual client role discovery and model routing remain unverified")
+    print('Reviewed Temper inventory, immutable bytes, license, manifest, provenance, selected policy and requested roles passed')
+    print('Actual client role discovery and model routing remain unverified')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

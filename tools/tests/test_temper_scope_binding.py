@@ -4,6 +4,8 @@
 LAB execution requires an authorized BSD. These are synthetic data fixtures,
 not independent review attestations or actual kernel custody evidence.
 """
+import os
+import sys
 import copy
 import importlib.util
 import json
@@ -14,8 +16,9 @@ from types import SimpleNamespace
 from pathlib import Path
 from unittest.mock import patch
 
-if platform.system() not in {'FreeBSD', 'OpenBSD'}:
-    raise RuntimeError('This LAB contract requires an authorized BSD')
+
+if os.name != 'posix' or os.getuid() == 0 or sys.version_info[:3] != (3, 14, 7):
+    raise RuntimeError('Portable source regressions require permitted unprivileged POSIX and Python 3.14.7')
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -51,6 +54,21 @@ class TemperScopeBindingTests(unittest.TestCase):
         self.assertEqual(result['route'], 'temper-validation-tooling-v1')
         self.assertEqual(result['sha256'], self.gate.PLAN.digest(self.path))
         self.assertEqual(result['review_reference'], self.binding['review_reference'])
+
+    def test_current_review_reference_and_only_exact_adopted_policy_paths(self):
+        reference = 'https://github.com/gonz0w/horvium/issues/433#issuecomment-6548115592'
+        self.assertIsNotNone(self.admission(dict(self.binding, review_reference=reference)))
+        for reference in ('https://github.com/gonz0w/horvium/issues/432#issuecomment-123',
+                          'https://github.com/gonz0w/horvium/issues/433',
+                          'https://example.invalid/433#issuecomment-123'):
+            self.assertIsNone(self.admission(dict(self.binding, review_reference=reference)))
+        for path in ('policy.toml', 'docs/policy/routing.md', 'docs/policy/verification.md'):
+            bad = copy.deepcopy(self.binding)
+            bad['changed_entries'][0]['path'] = path
+            self.assertIsNotNone(self.admission(bad, bad['changed_entries']))
+        bad = copy.deepcopy(self.binding)
+        bad['changed_entries'][0]['path'] = 'docs/policy/unreviewed.md'
+        self.assertIsNone(self.admission(bad, bad['changed_entries']))
 
     def test_absent_stale_wrong_identity_or_incomplete_entries_fall_back(self):
         self.assertIsNone(self.gate.scope_binding(self.root, None, self.record))

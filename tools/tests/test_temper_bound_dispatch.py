@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Fixed affected checks for source-bound validation tooling, never product Go."""
+import os
+import sys
 import contextlib
 import importlib.util
 import json
@@ -10,8 +12,9 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-if platform.system() not in {'FreeBSD', 'OpenBSD'}:
-    raise RuntimeError('This LAB contract requires an authorized BSD')
+if os.name != 'posix' or os.getuid() == 0 or sys.version_info[:3] != (3, 14, 7):
+    raise RuntimeError('Portable source regressions require permitted unprivileged POSIX and Python 3.14.7')
+
 ROOT = Path(__file__).resolve().parents[2]
 MODULES = ('test_review_plan', 'test_review_gate', 'test_temper_review_scope',
            'test_temper_gate_dispatch', 'test_temper_scope_binding',

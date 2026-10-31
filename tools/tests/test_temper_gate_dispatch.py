@@ -6,6 +6,8 @@ mocked execution. They do not admit tools, run hooks or qualify the real process
 supervisor. The metadata baseline is a minimum: separate exact bundle/role
 verification remains required before a reduced route can be accepted.
 """
+import os
+import sys
 import contextlib
 import importlib.util
 import json
@@ -16,8 +18,9 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-if platform.system() not in {'FreeBSD', 'OpenBSD'}:
-    raise RuntimeError('This pending LAB contract requires an authorized BSD')
+
+if os.name != 'posix' or os.getuid() == 0 or sys.version_info[:3] != (3, 14, 7):
+    raise RuntimeError('Portable source regressions require permitted unprivileged POSIX and Python 3.14.7')
 
 ROOT = Path(__file__).resolve().parents[2]
 ROLE = '.codex/agents/temper_workflow.toml'
@@ -31,6 +34,8 @@ class TemperGateDispatchTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
+        from test_temper_source import writable_copy
+        writable_copy(ROOT, self.root)
         self.record = {'source_commit': 'head', 'base_commit': 'base',
                        'source_tree': 'tree', 'title': 'test: review fixture',
                        'signed_commits': ['head']}
@@ -119,7 +124,7 @@ class TemperGateDispatchTests(unittest.TestCase):
     def test_mixed_unknown_policy_and_tooling_keep_full_dispatch(self):
         for path in ('unknown.file', 'PROJECT.md', 'tools/review-plan.py',
                      'tools/review-gate.py', 'tools/tests/test_temper_gate_dispatch.py',
-                     '.githooks/pre-commit', 'Makefile', 'go.mod'):
+                     '.githooks/pre-commit', 'Makefile', 'go.mod', 'policy.toml', 'docs/policy/routing.md'):
             with self.subTest(path=path):
                 self.commands = []
                 self.run_gate(paths=[ROLE, path])

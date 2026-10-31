@@ -29,8 +29,14 @@ routes. Source preparation does not establish their required transition checks,
 actual client model routing, kernel custody or full product qualification. Actual
 source-bound results and unresolved gates belong to
 [the adoption issue](https://github.com/gonz0w/horvium/issues/424). Portable checks
-use the designated authorized BSD; Horvium runtime and target-specific native
-acceptance remain FreeBSD with existing both-release gates.
+may use a permitted unprivileged POSIX development host after exact effects
+inspection under the lasting October 31 policy; Horvium runtime and target-specific
+native acceptance remain FreeBSD with existing both-release gates. The
+[#433 repair](https://github.com/gonz0w/horvium/issues/433) binds the reviewed
+#434 policy/bundle/role bytes with one explicit aggregate admission. Policy edits
+remain conservative without an exact external tooling binding; every covered
+byte change requires reviewed readmission. Direct source regressions do not
+establish the exact candidate-venv gate or actual OwnedProcess behavior.
 
 ## Advisory standards reference — 2026-10-18
 
