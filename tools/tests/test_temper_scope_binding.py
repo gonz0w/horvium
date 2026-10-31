@@ -70,6 +70,26 @@ class TemperScopeBindingTests(unittest.TestCase):
         bad['changed_entries'][0]['path'] = 'docs/policy/unreviewed.md'
         self.assertIsNone(self.admission(bad, bad['changed_entries']))
 
+    def test_exact_manual_checker_source_record_needs_binding_and_regular_mode(self):
+        source = 'tools/temper/SOURCE.md'
+        self.assertEqual(self.gate.PLAN.select_plan([source], {})['mode'], 'full')
+        for path in ('tools/temper/check_policy.py', 'tools/temper/LICENSE',
+                     'tools/temper/other.md', 'tools/SOURCE.md'):
+            with self.subTest(path=path):
+                bad = copy.deepcopy(self.binding)
+                bad['changed_entries'] = [dict(self.entries[0], path=path)]
+                self.assertIsNone(self.admission(bad, bad['changed_entries']))
+        for field in ('old_mode', 'new_mode'):
+            for mode in ('100755', '120000', '160000'):
+                with self.subTest(field=field, mode=mode):
+                    bad = copy.deepcopy(self.binding)
+                    bad['changed_entries'] = [dict(self.entries[0], path=source)]
+                    bad['changed_entries'][0][field] = mode
+                    self.assertIsNone(self.admission(bad, bad['changed_entries']))
+        valid = copy.deepcopy(self.binding)
+        valid['changed_entries'] = [dict(self.entries[0], path=source)]
+        self.assertIsNotNone(self.admission(valid, valid['changed_entries']))
+
     def test_absent_stale_wrong_identity_or_incomplete_entries_fall_back(self):
         self.assertIsNone(self.gate.scope_binding(self.root, None, self.record))
         self.assertIsNone(self.gate.scope_binding(self.root, self.directory / 'missing', self.record))
@@ -167,7 +187,7 @@ class MetadataFingerprintTests(unittest.TestCase):
         self.assertIn('gitleaks', inputs)
         self.assertNotEqual(before, self.fingerprint({'sha256': 'after'})[0])
         for name in ('.tools/venv/bin/python3', '.tools/venv/pyvenv.cfg', 'fixture/git', '.tools/bin/gitleaks',
-                     'fixture/yaml/__init__.py', 'tools/check-temper-source.py',
+                     'fixture/yaml/__init__.py', 'tools/check-temper-source.py', 'tools/temper/SOURCE.md',
                      'tools/tests/test_temper_gate_dispatch.py', 'tools/owned-process.py'):
             path = self.root / name
             original = path.read_text()

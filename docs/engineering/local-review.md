@@ -201,7 +201,8 @@ root `policy.toml`, and the exact adopted `docs/policy/` modules `work.md`,
 and `history.md`,
 `docs/engineering/github-workflow.md`, this review contract,
 `docs/compatibility/matrix.md`, `tools/review-plan.py`, `tools/review-gate.py`,
-`tools/check-temper-source.py`, `tools/temper-regressions.py` and these seven exact
+`tools/check-temper-source.py`, `tools/temper-regressions.py`, the exact manual
+checker source record `tools/temper/SOURCE.md`, and these seven exact
 regression modules: `test_review_plan`, `test_review_gate`,
 `test_temper_review_scope`, `test_temper_gate_dispatch`,
 `test_temper_scope_binding`, `test_temper_bound_dispatch`, `test_temper_source`.

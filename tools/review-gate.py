@@ -104,6 +104,7 @@ TOOLING_PATHS = frozenset({
     'docs/compatibility/matrix.md',
     'tools/review-plan.py', 'tools/review-gate.py',
     'tools/check-temper-source.py', 'tools/temper-regressions.py',
+    'tools/temper/SOURCE.md',
     'tools/tests/test_review_plan.py', 'tools/tests/test_review_gate.py',
     'tools/tests/test_temper_review_scope.py', 'tools/tests/test_temper_gate_dispatch.py',
     'tools/tests/test_temper_scope_binding.py', 'tools/tests/test_temper_bound_dispatch.py',
