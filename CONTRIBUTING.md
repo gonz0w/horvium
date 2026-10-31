@@ -25,9 +25,9 @@ evidence in that PR. Use incremental signed commits for internal prerequisites.
 Split delivery only for unresolved design/authorization, a distinct safety boundary
 or scope too large to review coherently; explain the reason in the owning issue.
 
-Use the designated authorized BSD for portable source/metadata/Temper checks;
+Use a permitted development host for classified portable source/metadata/Temper checks;
 Horvium runtime and target-specific native checks remain FreeBSD under
-[local policy](PROJECT.md). macOS/Linux LAB checks remain prohibited and the
+[local policy](PROJECT.md). The lasting host policy supersedes the blanket restriction; the
 finite #422 host exception expired. Existing executable gates remain required
 until their revised mapping is implemented, reviewed and verified; no check is
 waived by the policy clarification. Missing admission blocks the affected gate,

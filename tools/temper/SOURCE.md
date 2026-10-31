@@ -9,9 +9,11 @@ Revision: `781a4b9f71d002b93bc4ad26669d01a3b37c482e`. The helper is copied uncha
 - [Complete BSD-3-Clause license](LICENSE), copied from the same revision.
 - License SHA-256: `1bc9ce76b659a58c7b8edb88304880f36fd2a005f7b7f3349d1efc860d8deb87`
 
-All repository checks, including this helper, require an admitted appropriate BSD
-executor under local policy. Do not execute it on macOS/Linux. Prior finite host
-exceptions are expired; this source preparation grants no new execution permission.
+This helper performs portable source/metadata inspection. Follow the selected
+[host and target policy](../../docs/policy/verification.md#portable-checks-and-target-verification)
+and the owning issue before execution. Historical finite grants remain expired;
+structural success does not establish semantic compatibility, authority or native
+acceptance.
 
 From the repository root, with Python 3.11+ standard library and the actual
 assessment date (the date below is a synthetic command example):
