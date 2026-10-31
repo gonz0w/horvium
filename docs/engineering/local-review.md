@@ -111,7 +111,8 @@ Cam's direct 2026-10-25 decision for [#424](https://github.com/gonz0w/horvium/is
 replaces blanket product qualification for process/configuration-only changes.
 [PROJECT](../../PROJECT.md#verification-and-review) records the local old decision,
 replacement, authority and limits. Existing immutable upstream pins are unchanged.
-Portable checks may run once on the selected authorized BSD. Horvium runtime
+Classified portable checks may run once on a permitted development host under
+the selected [host and target policy](../policy/verification.md#portable-checks-and-target-verification). Horvium runtime
 support and actual target-specific kernel/process behavior remain FreeBSD.
 
 The implementation distinguishes pure Temper metadata from affected validation
