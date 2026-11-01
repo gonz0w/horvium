@@ -12,6 +12,10 @@ authority; it does not replace those product contracts.
 
 Read the canonical [work and delivery contracts](docs/policy/work.md#work-authority-and-finite-delivery).
 
+### Shared delivery extension
+
+Read the canonical [Suite delivery extension](docs/policy/work.md#shared-delivery-extension).
+
 ### Local contracts and simplicity
 
 Read the canonical [product and compatibility contracts](docs/policy/product.md#local-contracts-and-simplicity).

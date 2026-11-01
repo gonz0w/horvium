@@ -70,6 +70,43 @@ class TemperScopeBindingTests(unittest.TestCase):
         bad['changed_entries'][0]['path'] = 'docs/policy/unreviewed.md'
         self.assertIsNone(self.admission(bad, bad['changed_entries']))
 
+    def test_delivery_review_reference_is_finite(self):
+        reference = 'https://github.com/gonz0w/horvium/issues/419#issuecomment-123'
+        self.assertIsNotNone(self.admission(dict(self.binding, review_reference=reference)))
+        for reference in ('https://github.com/gonz0w/horvium/issues/418#issuecomment-123',
+                          'https://github.com/gonz0w/horvium/issues/420#issuecomment-123',
+                          'https://github.com/gonz0w/horvium/issues/999#issuecomment-123',
+                          'https://github.com/gonz0w/horvium/issues/419',
+                          'https://github.com/gonz0w/horvium/issues/419#issuecomment-text',
+                          'https://example.invalid/419#issuecomment-123'):
+            with self.subTest(reference=reference):
+                self.assertIsNone(self.admission(dict(self.binding, review_reference=reference)))
+
+    def test_exact_delivery_templates_require_binding_and_regular_modes(self):
+        templates = ('.github/ISSUE_TEMPLATE/work-item.yml', '.github/PULL_REQUEST_TEMPLATE.md')
+        for path in templates:
+            with self.subTest(path=path):
+                self.assertEqual(self.gate.PLAN.select_plan([path], {})['mode'], 'full')
+                valid = copy.deepcopy(self.binding)
+                valid['changed_entries'] = [dict(self.entries[0], path=path)]
+                self.assertIsNotNone(self.admission(valid, valid['changed_entries']))
+                for field in ('old_mode', 'new_mode'):
+                    for mode in ('100755', '120000', '160000'):
+                        bad = copy.deepcopy(valid)
+                        bad['changed_entries'][0][field] = mode
+                        self.assertIsNone(self.admission(bad, bad['changed_entries']))
+        valid = copy.deepcopy(self.binding)
+        valid['changed_entries'] = [dict(self.entries[0], path=path) for path in templates]
+        self.assertIsNotNone(self.admission(valid, valid['changed_entries']))
+        for path in ('.github/ISSUE_TEMPLATE/other.yml', '.github/PULL_REQUEST_TEMPLATE/other.md',
+                     '.github/workflows/review.yml', '.github/actions/review/action.yml',
+                     '.github/unknown.md'):
+            with self.subTest(path=path):
+                bad = copy.deepcopy(valid)
+                bad['changed_entries'].append(dict(self.entries[1], path=path))
+                self.assertEqual(self.gate.PLAN.select_plan([*templates, path], {})['mode'], 'full')
+                self.assertIsNone(self.admission(bad, bad['changed_entries']))
+
     def test_exact_manual_checker_source_record_needs_binding_and_regular_mode(self):
         source = 'tools/temper/SOURCE.md'
         self.assertEqual(self.gate.PLAN.select_plan([source], {})['mode'], 'full')

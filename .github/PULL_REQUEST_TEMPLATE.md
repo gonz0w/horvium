@@ -11,6 +11,12 @@ issues for cross-repository work. Identify parent gates and native blockers.
 Describe the complete outcome covered; related helper steps, tests, docs and
 evidence belong together. Explain any scope split requiring another review.
 
+Apply the immutable Suite delivery extension linked from PROJECT.md. Map each
+owning issue's acceptance to the source change and actual passed, failed or held
+evidence. Related stories may share one coherent PR; partial source coverage does
+not close native/product acceptance. Keep WIP reconciliation and continuation in
+the existing issue rather than a separate queue or progress file.
+
 ## Validation
 
 Record the exact tested source/base IDs, actual PR title and `make review` result.

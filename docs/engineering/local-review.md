@@ -142,7 +142,8 @@ path stay outside prose and pure Temper selection, including mixed role/policy
 changes. Policy bytes remain in behavioral fingerprints.
 
 `REVIEWED_ADMISSION_SHA256` in the trusted source verifier binds the exact reviewed
-#434 input at consumer `02b54adf162658749a09718f05ff8b3fee8e58cd`. Its canonical
+#419 delivery composition on canonical consumer `d04edff2a849fccca2c8cfe87be00abe7661fd3f`.
+The prior #434 admission remains in Git history. Its canonical
 JSON framing has a domain tag and sorted relative path/type/SHA-256 records for
 complete `.agent-temper` and `.codex` inventories and contents, root `policy.toml`,
 all selected module bytes and `AGENTS.md`. The reader rejects empty directories,
@@ -187,7 +188,7 @@ The object admits exactly these fields:
 | `base_commit`, `source_commit`, `source_tree` | Actual complete forty-hex source identities, matching the clean signed range |
 | `changed_entries` | Complete path-sorted raw Git diff entries, with `path`, `old_mode`, `new_mode`, `old_blob`, `new_blob`, `status`; no duplicates or omitted additions/deletions |
 | `commands` | Exactly `["metadata", "temper-source", "review-regressions"]` |
-| `review_reference` | The separate review's `https://github.com/gonz0w/horvium/issues/424#issuecomment-` or `https://github.com/gonz0w/horvium/issues/433#issuecomment-` URL and numeric comment ID |
+| `review_reference` | The separate review's `https://github.com/gonz0w/horvium/issues/419#issuecomment-`, `https://github.com/gonz0w/horvium/issues/424#issuecomment-` or `https://github.com/gonz0w/horvium/issues/433#issuecomment-` URL and numeric comment ID |
 
 `git diff --raw --no-abbrev --no-renames -z BASE HEAD` supplies the entry identity;
 renames remain deletion plus addition. Only ordinary nonexecutable file modes
@@ -196,7 +197,9 @@ JSON. Command identifiers map in repository code to `make check secrets`, the
 named source verifier and the named affected regression runner, in that order.
 
 Eligible paths are the admitted pure Temper/prose paths plus AGENTS, PROJECT, CONTRIBUTING,
-root `policy.toml`, and the exact adopted `docs/policy/` modules `work.md`,
+the two exact inert templates `.github/ISSUE_TEMPLATE/work-item.yml` and
+`.github/PULL_REQUEST_TEMPLATE.md`, root `policy.toml`, and the exact adopted
+`docs/policy/` modules `work.md`,
 `product.md`, `verification.md`, `authority.md`, `documentation.md`, `routing.md`
 and `history.md`,
 `docs/engineering/github-workflow.md`, this review contract,
@@ -206,8 +209,10 @@ checker source record `tools/temper/SOURCE.md`, and these seven exact
 regression modules: `test_review_plan`, `test_review_gate`,
 `test_temper_review_scope`, `test_temper_gate_dispatch`,
 `test_temper_scope_binding`, `test_temper_bound_dispatch`, `test_temper_source`.
-Other policy descendants are ineligible. A #424 review URL does not authenticate
-new bytes, revive expired budgets or waive stale/incomplete binding checks.
+Other policy descendants and neighboring GitHub templates/workflows/actions are
+ineligible. Executable templates remain ineligible. An eligible review URL does
+not authenticate new bytes, revive expired budgets or waive stale/incomplete
+binding checks.
 The runner loads each named module explicitly and rejects missing, empty, failed
 or skipped tests. The gate requires one complete successful result with exactly
 that module inventory before qualification. Tools outside that list, especially

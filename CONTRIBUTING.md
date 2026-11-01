@@ -5,6 +5,12 @@ Use the pinned [method](.agent-temper/METHOD.md) with
 work, persistent decisions and reader-oriented documentation requirements apply
 alongside local contracts; only the Codex profile is selected, with no new tracker.
 
+Apply the immutable [Suite delivery agreement](https://github.com/gonz0w/suite-standards/blob/4aeb70ae4d7423c4ae7d52c025f94af4fb53ff22/docs/backlog-delivery.md)
+and [consumer rollout](https://github.com/gonz0w/suite-standards/blob/4aeb70ae4d7423c4ae7d52c025f94af4fb53ff22/docs/backlog-delivery-rollout.md)
+through the local [delivery extension](docs/policy/work.md#shared-delivery-extension).
+Keep existing native/security and source-review requirements; a delivery pointer
+supplies no execution authority.
+
 Read [agent instructions](AGENTS.md), the [architecture baseline](docs/architecture/baseline.md),
 and the active milestone before changing behavior. Link nontrivial work to an
 issue in the [shared private Project](https://github.com/users/gonz0w/projects/2).

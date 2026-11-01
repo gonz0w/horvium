@@ -97,6 +97,7 @@ def run_step(command, log, record, directory):
 # This allowlist does not attest that a supplied scope received separate review.
 TOOLING_PATHS = frozenset({
     'AGENTS.md', 'PROJECT.md', 'CONTRIBUTING.md', 'policy.toml',
+    '.github/ISSUE_TEMPLATE/work-item.yml', '.github/PULL_REQUEST_TEMPLATE.md',
     'docs/policy/work.md', 'docs/policy/product.md', 'docs/policy/verification.md',
     'docs/policy/authority.md', 'docs/policy/documentation.md',
     'docs/policy/routing.md', 'docs/policy/history.md',
@@ -170,7 +171,7 @@ def scope_binding(root, path, record):
                 binding['route'] != 'temper-validation-tooling-v1' or
                 binding['commands'] != SCOPE_COMMANDS or
                 type(binding['review_reference']) is not str or
-                not re.fullmatch(r'https://github\.com/gonz0w/horvium/issues/(?:424|433)#issuecomment-[0-9]+', binding['review_reference'])):
+                not re.fullmatch(r'https://github\.com/gonz0w/horvium/issues/(?:419|424|433)#issuecomment-[0-9]+', binding['review_reference'])):
             return None
         for key in ('base_commit', 'source_commit', 'source_tree'):
             if binding[key] != record[key] or not re.fullmatch('[0-9a-f]{40}', binding[key]):
