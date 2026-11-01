@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Search existing issues first. Follow the GitHub workflow; triage adds type, priority, milestone, native parent/blockers and Project fields. Never include keys, host inventories or customer data; use SECURITY.md for exploitable vulnerabilities.
+        Search existing issues first. Read PROJECT.md and its immutable Suite delivery extension, then follow the local GitHub workflow. Triage adds type, priority, milestone, native parent/blockers and Project fields. Never include keys, host inventories or customer data; use SECURITY.md for exploitable vulnerabilities.
   - type: dropdown
     id: kind
     attributes:
@@ -18,14 +18,14 @@ body:
     id: outcome
     attributes:
       label: 1. Outcome
-      description: Concrete resulting behavior in the owning repository; research includes question and time box.
+      description: Concrete user or dependent outcome and named MVP/release in this repository; research includes question and time box.
     validations:
       required: true
   - type: textarea
     id: acceptance
     attributes:
       label: 2. Acceptance
-      description: Observable checklist criteria and evidence required to close this bounded issue.
+      description: Observable criteria, proportional checks, required native/security evidence and Ready/Done conditions for this bounded issue. Source completion is not product acceptance.
     validations:
       required: true
   - type: textarea
@@ -49,6 +49,6 @@ body:
     id: scope
     attributes:
       label: 6. Tracking scope
-      description: Boundaries, limitations and remaining work. Future features need reviewed implementation slices before pickup.
+      description: Scope, non-goals, owner, priority, authority/holds, rollout/rollback and next action. Keep internal helpers in the coherent outcome; future work needs reviewed slices before pickup.
     validations:
       required: true

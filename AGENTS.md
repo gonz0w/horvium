@@ -9,6 +9,12 @@ Only the Codex profile is selected in local project policy. Product/platform rul
 extensions; the method does not choose them. Follow the existing work authority
 and required gates. Recorded owner decisions persist across sessions.
 
+Apply the immutable [Suite delivery agreement](https://github.com/gonz0w/suite-standards/blob/4aeb70ae4d7423c4ae7d52c025f94af4fb53ff22/docs/backlog-delivery.md)
+and [consumer rollout](https://github.com/gonz0w/suite-standards/blob/4aeb70ae4d7423c4ae7d52c025f94af4fb53ff22/docs/backlog-delivery-rollout.md)
+as the local [delivery extension](docs/policy/work.md#shared-delivery-extension).
+The owning adoption item is [#419](https://github.com/gonz0w/horvium/issues/419);
+existing local authority and stronger acceptance gates still apply.
+
 1. Read README.md, CONTRIBUTING.md, and relevant docs before editing.
 2. M0 permits repository tooling and documentation only. Product implementation
    needs an approved milestone PRD, EDD, and Test Design Document, or an explicitly

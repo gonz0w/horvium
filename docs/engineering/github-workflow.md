@@ -163,3 +163,12 @@ manual Project synchronization and native parent/blocker relationships. Imported
 example labels never rename local states or create a second queue. Record missing
 policy questions in the owning issue and persist the owner's answer in project
 policy or its canonical decision record before dependent work.
+
+The immutable [Suite delivery agreement](https://github.com/gonz0w/suite-standards/blob/4aeb70ae4d7423c4ae7d52c025f94af4fb53ff22/docs/backlog-delivery.md)
+and [consumer rollout](https://github.com/gonz0w/suite-standards/blob/4aeb70ae4d7423c4ae7d52c025f94af4fb53ff22/docs/backlog-delivery-rollout.md)
+are composed in the local [delivery extension](../policy/work.md#shared-delivery-extension).
+Keep their Ready/Done, coherent batching and WIP requirements with this
+repository's stronger gates and existing status/priority/phase mapping.
+Consult the current [#419 reconciliation](https://github.com/gonz0w/horvium/issues/419)
+before pulling work; neither this pointer nor parked work supplies a new WIP
+allowance. Keep dated batch counts and next actions in the tracker.
