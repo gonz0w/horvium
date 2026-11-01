@@ -96,11 +96,15 @@ def run_step(command, log, record, directory):
 # Only these exact validation-tooling/policy files can join the finite route.
 # This allowlist does not attest that a supplied scope received separate review.
 TOOLING_PATHS = frozenset({
-    'AGENTS.md', 'PROJECT.md', 'CONTRIBUTING.md',
+    'AGENTS.md', 'PROJECT.md', 'CONTRIBUTING.md', 'policy.toml',
+    'docs/policy/work.md', 'docs/policy/product.md', 'docs/policy/verification.md',
+    'docs/policy/authority.md', 'docs/policy/documentation.md',
+    'docs/policy/routing.md', 'docs/policy/history.md',
     'docs/engineering/github-workflow.md', 'docs/engineering/local-review.md',
     'docs/compatibility/matrix.md',
     'tools/review-plan.py', 'tools/review-gate.py',
     'tools/check-temper-source.py', 'tools/temper-regressions.py',
+    'tools/temper/SOURCE.md',
     'tools/tests/test_review_plan.py', 'tools/tests/test_review_gate.py',
     'tools/tests/test_temper_review_scope.py', 'tools/tests/test_temper_gate_dispatch.py',
     'tools/tests/test_temper_scope_binding.py', 'tools/tests/test_temper_bound_dispatch.py',
@@ -166,7 +170,7 @@ def scope_binding(root, path, record):
                 binding['route'] != 'temper-validation-tooling-v1' or
                 binding['commands'] != SCOPE_COMMANDS or
                 type(binding['review_reference']) is not str or
-                not re.fullmatch(r'https://github\.com/gonz0w/horvium/issues/424#issuecomment-[0-9]+', binding['review_reference'])):
+                not re.fullmatch(r'https://github\.com/gonz0w/horvium/issues/(?:424|433)#issuecomment-[0-9]+', binding['review_reference'])):
             return None
         for key in ('base_commit', 'source_commit', 'source_tree'):
             if binding[key] != record[key] or not re.fullmatch('[0-9a-f]{40}', binding[key]):
@@ -180,7 +184,7 @@ def scope_binding(root, path, record):
                 return None
             name = entry['path']
             if (type(name) is not str or name in seen or
-                    name not in TOOLING_PATHS | PLAN.TEMPER_PATHS and not PLAN.documentation_path(name)):
+                    name not in TOOLING_PATHS and name not in PLAN.accepted_temper_paths(root) and not PLAN.documentation_path(name)):
                 return None
             seen.add(name)
             # Neither executables, links nor submodules can enter as metadata.
@@ -269,7 +273,7 @@ def main():
     paths = PLAN.changed_paths(ROOT, record['base_commit'], record['source_commit'])
     binding = None if args.full else scope_binding(ROOT, args.scope, record)
     graph = PLAN.package_graph(ROOT) if any((p.startswith(('internal/', 'cmd/')) for p in paths)) and (not args.full) else {}
-    plan = PLAN.select_plan(paths, graph, args.full)
+    plan = PLAN.select_plan(paths, graph, args.full, root=ROOT)
     if binding:
         plan = {'mode': 'temper-tooling', 'packages': [], 'native_review_required': False,
                 'reason': 'externally reviewed exact-source validation-tooling scope'}

@@ -1,10 +1,15 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Local review must bind a clean, signed contributor range and valid title."""
+import os
+import sys
 import importlib.util
 import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+
+if os.name != 'posix' or os.getuid() == 0 or sys.version_info[:3] != (3, 14, 7):
+    raise RuntimeError('Portable source regressions require permitted unprivileged POSIX and Python 3.14.7')
 
 ROOT = Path(__file__).resolve().parents[2]
 

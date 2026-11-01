@@ -9,15 +9,38 @@ their existing scope. The owner changes required policy through the existing pro
 ## Verification and review
 
 Horvium product runtime and target-specific native acceptance remain **FreeBSD**.
-All LAB checks still require an authorized BSD executor; macOS and Linux remain
-coordination/source-review hosts. The earlier #422 host permission was finite
-and expired. Its saved receipt supplies no current host-check exception.
+The earlier #422 host permission remains expired; the lasting replacement below
+is a new owner decision, not reuse of that exception.
+
+## Portable checks and target verification
+
+On 2026-10-31, Cam approved the lasting host-policy replacement in
+[issue 432](https://github.com/gonz0w/horvium/issues/432), coordinated by
+[Temper 38](https://github.com/gonz0w/agent-temper/issues/38). This replaces the
+previous blanket BSD-only restriction for portable documentation, metadata and
+source checks. It does not renew any expired adoption exception.
+
+These portable checks may run on a permitted development host after inspection
+of their exact commands, dependencies and effects. Existing trust, isolation,
+resource and action limits still apply. OS-dependent behavior and integration
+checks run on the affected component's declared target OS. Release qualification
+follows the declared support matrix. Documentation-only changes do not by
+themselves require native product qualification.
+
+Mixed entry points retain every restriction of the checks they invoke. A command
+name, file type or implementation language does not make a check portable.
+Preserve required current CI, hooks and executable selectors; this decision does
+not implement a narrower selector or turn an unavailable gate into a pass.
+Record applicability, exact source, host/tool versions, results, skips and limits.
+Portable evidence cannot substitute for target-native evidence. Product support,
+worker admission, VM/service operations, credentials, signing, security settings,
+release and deployment retain their existing boundaries.
 
 On 2026-10-25, Cam explicitly approved validation by component and change impact
 for [Horvium #424](https://github.com/gonz0w/horvium/issues/424) and directed
 this adoption lead to apply it. The old blanket requirement made every process,
 metadata and routing change take the full product review. The replacement uses
-applicable checks once on a designated authorized BSD for portable source,
+applicable checks once on a permitted development host for classified portable source,
 metadata, provenance, prose and agent-routing configuration. Preserve FreeBSD
 coverage for Horvium runtime, OS adapters and target-specific process/kernel
 behavior; broaden for affected shared code, execution or uncertain impact.

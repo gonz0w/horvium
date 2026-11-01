@@ -31,9 +31,10 @@ and required gates. Recorded owner decisions persist across sessions.
    live disks, datasets, or backup history as development fixtures.
 9. Update behavior documentation and the compatibility matrix in the same PR.
    Follow PROJECT's 2026-10-25 owner decision and local review scope contract:
-   portable source/metadata/Temper checks run once on a designated authorized
-   BSD; Horvium runtime and target-specific native behavior remain FreeBSD.
-   No macOS/Linux LAB checks; the finite #422 host exception has expired.
+   classified portable source/metadata/Temper checks run once on a permitted
+   development host under the selected host and target policy; Horvium runtime and target-specific native behavior remain FreeBSD.
+   The finite #422 host exception remains expired; the lasting 2026-10-31
+   policy replaces its portable-check host restriction.
    Current executable hooks/review mappings remain required until their narrower
    source mapping is reviewed and verified. Validation-tooling edits need their
    actual regression checks; do not classify the selector as pure Temper.
@@ -82,3 +83,21 @@ documentation, visual inspection, explicitly authorized browser tasks and small
 specified UI fixes to `temper_product`. Keep existing role assignments and all
 local execution/risk/review limits. The lead may select the recorded Sol
 implementer fallback explicitly; missing tools or authority remain blockers.
+
+## Bounded delivery and discoveries
+
+Follow the pinned [workflow](.agent-temper/docs/reference/workflow.md) and
+[verification stopping rules](.agent-temper/docs/reference/verification.md#bound-attempts-and-stop)
+with this project's selected local policies. Name the selected issues, bounded
+outcome, exclusions, lead and integration acceptance in the owning work record.
+Related issues may share one coherent delivery; new findings do not join it
+automatically. Repair current acceptance, link genuine blockers and return
+unrelated bugs or optimizations for milestone prioritization.
+
+Respect the recorded local priority authority, WIP and execution limits; otherwise
+use the workflow defaults. Recheck ownership and remaining acceptance on resumption.
+Finish an accepted batch before pulling optional work. At an attempt limit or
+repeated unexplained failure, preserve evidence and checkpoint/replan rather than
+renewing the attempt or broadening scope. Required checks and action authority
+remain binding. Preserve current branches/work and record any WIP transition;
+no historical exception, new executor, role or permission is activated here.

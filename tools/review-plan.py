@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Conservative impact selection and exact-input portable evidence reuse."""
 import hashlib
+import importlib.util
 import json
 import os
 import platform
@@ -9,20 +10,21 @@ import shlex
 import subprocess
 from pathlib import Path
 POLICY = {'AGENTS.md', 'CONTRIBUTING.md', 'docs/engineering/local-review.md', 'docs/testing/strategy.md'}
-TEMPER_PATHS = frozenset({
-    '.agent-temper/LICENSE', '.agent-temper/METHOD.md',
-    '.agent-temper/SOURCE.md', '.agent-temper/SHA256SUMS',
-    '.agent-temper/docs/reference/documentation.md',
-    '.agent-temper/docs/reference/extensions.md',
-    '.agent-temper/docs/reference/verification.md',
-    '.agent-temper/docs/reference/workflow.md',
-    '.agent-temper/profiles/codex.md', '.agent-temper/profiles/github.md',
-    '.agent-temper/profiles/strict-test-first.md',
-    '.codex/agents/temper_workflow.toml',
-    '.codex/agents/temper_implementer.toml',
-    '.codex/agents/temper_analyst.toml',
-    '.codex/agents/temper_reviewer.toml',
-})
+ROOT = Path(__file__).resolve().parents[1]
+SOURCE_SPEC = importlib.util.spec_from_file_location('temper_admission', ROOT / 'tools/check-temper-source.py')
+SOURCE = importlib.util.module_from_spec(SOURCE_SPEC)
+SOURCE_SPEC.loader.exec_module(SOURCE)
+
+
+def accepted_temper_paths(root=ROOT):
+    try:
+        return SOURCE.validate(root)
+    except (OSError, ValueError, KeyError, TypeError, UnicodeError):
+        return frozenset()
+
+
+# Compatibility for gate fingerprints; inventory is derived only after admission.
+TEMPER_PATHS = accepted_temper_paths()
 
 
 def digest(path):
@@ -30,7 +32,7 @@ def digest(path):
 
 
 def documentation_path(path):
-    if path in POLICY:
+    if path in POLICY or path == 'policy.toml' or path.startswith('docs/policy/'):
         return False
     return path in {'README.md', 'NOTICE.md', 'CHANGELOG.md'} or (path.startswith('docs/') and (path.endswith('.md') or path.endswith('-manifest.json')))
 
@@ -84,7 +86,7 @@ def package_graph(root):
     return merge_graphs(root, datasets)
 
 
-def select_plan(paths, graph, force_full=False):
+def select_plan(paths, graph, force_full=False, root=ROOT):
 
     def full(reason):
         return {'mode': 'full', 'reason': reason, 'packages': [], 'native_review_required': True}
@@ -94,7 +96,8 @@ def select_plan(paths, graph, force_full=False):
         return full('empty/unknown change selection')
     if all((documentation_path(p) for p in paths)):
         return {'mode': 'documentation', 'reason': 'documentation/evidence only; baseline still required', 'packages': [], 'native_review_required': False}
-    if all((p in TEMPER_PATHS or documentation_path(p) for p in paths)):
+    temper_paths = accepted_temper_paths(root)
+    if all((p in temper_paths or documentation_path(p) for p in paths)):
         return {'mode': 'temper', 'reason': 'pinned Temper sources and selected local roles; metadata checks required', 'packages': [], 'native_review_required': False}
     changed = set()
     for p in paths:
