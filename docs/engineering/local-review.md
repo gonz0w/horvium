@@ -142,8 +142,8 @@ path stay outside prose and pure Temper selection, including mixed role/policy
 changes. Policy bytes remain in behavioral fingerprints.
 
 `REVIEWED_ADMISSION_SHA256` in the trusted source verifier binds the exact reviewed
-#419 delivery composition on canonical consumer `d04edff2a849fccca2c8cfe87be00abe7661fd3f`.
-The prior #434 admission remains in Git history. Its canonical
+#436/#437 Temper refresh over canonical consumer `3a2c4dafc372414be71e3a8987a7cb5e0162ea5a`.
+The prior #419 and #434 admissions remain in Git history. Its canonical
 JSON framing has a domain tag and sorted relative path/type/SHA-256 records for
 complete `.agent-temper` and `.codex` inventories and contents, root `policy.toml`,
 all selected module bytes and `AGENTS.md`. The reader rejects empty directories,
