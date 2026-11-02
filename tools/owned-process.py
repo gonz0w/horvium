@@ -38,17 +38,35 @@ def write_record(path, record):
     temporary.replace(path)
 
 
-def live_members(group):
+def live_members(group, deadline):
     # Read only group/state columns, never persist a host inventory. The leader
     # remains unreaped until cleanup, reserving its PID against reuse.
-    output = subprocess.check_output(['ps', '-ax', '-o', 'pgid=', '-o', 'stat='], text=True)
-    return any(int(fields[0]) == group and not fields[1].startswith('Z')
-               for line in output.splitlines() if len(fields := line.split()) == 2)
+    remaining = deadline - time.monotonic()
+    if remaining <= 0:
+        raise TimeoutError('owned group observation deadline')
+    output = subprocess.check_output(['ps', '-ax', '-o', 'pgid=', '-o', 'stat='],
+                                     text=True, timeout=min(0.25, remaining))
+    rows = [line.split() for line in output.splitlines() if line.strip()]
+    if not rows or any(len(fields) != 2 for fields in rows):
+        raise ValueError('incomplete group observation')
+    members = [(int(fields[0]), fields[1]) for fields in rows]
+    return any(pgid == group and not state.startswith('Z') for pgid, state in members)
 
 
-def stop_group(process, grace):
+def stop_group(process, grace, deadline, failures):
+    """Signal only the fresh, unreaped launcher group; never adopt a receipt PID.
+
+    Observation failure retains debt but cannot suppress termination. Detached
+    sessions are outside this group proof and need independent containment.
+    """
     escalated = False
-    if not live_members(process.pid):
+    def observed():
+        try:
+            return live_members(process.pid, deadline)
+        except Exception as error:
+            failures.append('group observation: ' + type(error).__name__)
+            return None
+    if observed() is False:
         return True, escalated
     for sig, seconds in ((signal.SIGTERM, grace), (signal.SIGKILL, 5)):
         try:
@@ -57,14 +75,19 @@ def stop_group(process, grace):
             pass
         except PermissionError:
             # macOS can reject a signal to a group containing only zombies.
-            if not live_members(process.pid):
-                return True, escalated
-            raise
-        deadline = time.monotonic() + seconds
-        while live_members(process.pid) and time.monotonic() < deadline:
+            if observed() is False:
+                return not failures, escalated
+            failures.append('group signal: PermissionError')
+        except OSError as error:
+            failures.append('group signal: ' + type(error).__name__)
+        phase_end = min(deadline, time.monotonic() + seconds)
+        while time.monotonic() < phase_end:
+            active = observed()
+            if active is False:
+                return not failures, escalated
+            if active is None:
+                break # Failed observer cannot delay the independent KILL.
             time.sleep(0.05)
-        if not live_members(process.pid):
-            return True, escalated
         escalated = True
     return False, escalated
 
@@ -141,6 +164,7 @@ def supervise(directory):
     signal.signal(signal.SIGTERM, interrupted)
     signal.signal(signal.SIGINT, interrupted)
     process = None
+    reserved = False
     try:
         with socket.socket(socket.AF_UNIX) as control, selectors.DefaultSelector() as selector:
             control.bind(str(control_path))
@@ -150,11 +174,17 @@ def supervise(directory):
             selector.register(sys.stdin.buffer, selectors.EVENT_READ, 'lease')
             process = subprocess.Popen(config['argv'], cwd=config['cwd'], stdin=subprocess.DEVNULL,
                                        start_new_session=True)
+            reserved = True
             record.update(group=process.pid, started_at=time.time())
             write_record(directory / 'state.json', record)
             deadline = time.monotonic() + config['timeout']
             while reason is None:
-                if os.waitid(os.P_PID, process.pid, os.WEXITED | os.WNOHANG | os.WNOWAIT):
+                try:
+                    exited = os.waitid(os.P_PID, process.pid, os.WEXITED | os.WNOHANG | os.WNOWAIT)
+                except ChildProcessError:
+                    reserved = False # A consumed/lost wait cannot authorize signals.
+                    raise
+                if exited:
                     reason = 'exit'
                     break
                 if time.monotonic() >= deadline:
@@ -171,24 +201,51 @@ def supervise(directory):
                                 reason = 'operator-stop'
                                 connection.sendall(b'accepted\n')
     finally:
+        failures = []
+        # One original cleanup end, including observations and the sole reap.
+        cleanup_end = time.monotonic() + config['grace'] + 10
         if process is not None:
-            record['group_cleaned'], record['escalated'] = stop_group(process, config['grace'])
-            # Reap only AFTER the owned group is empty: never signal a reused PID.
-            record['worker_returncode'] = process.wait(timeout=5)
+            if reserved:
+                try:
+                    record['group_cleaned'], record['escalated'] = stop_group(
+                        process, config['grace'], cleanup_end - 5, failures)
+                except BaseException as error:
+                    failures.append('group cleanup: ' + type(error).__name__)
+                    # A callback/observer failure must not suppress the final
+                    # owned signal. The fresh leader has not been reaped here.
+                    try:
+                        os.killpg(process.pid, signal.SIGKILL)
+                    except ProcessLookupError:
+                        pass
+                    except BaseException as kill_error:
+                        failures.append('fallback kill: ' + type(kill_error).__name__)
+                try:
+                    record['worker_returncode'] = process.wait(timeout=max(.001, cleanup_end - time.monotonic()))
+                except BaseException as error:
+                    failures.append('sole wait: ' + type(error).__name__)
+            else:
+                failures.append('leader reservation lost; no signal or second wait')
         else:
             # Startup failed before a worker/group existed. Preserve failure,
             # but do not invent a group to kill or strand prepared native files.
             record['group_cleaned'] = True
         record.update(reason=reason or 'supervisor-failure', completed=True, completed_at=time.time())
+        if failures:
+            record.update(group_cleaned=False, cleanup_failures=failures)
+        record['scope'] = 'launcher-group-only; detached sessions require independent containment'
         if config.get('native_fixture') and record['group_cleaned']:
             try:
                 native_cleanup(Path(config['native_fixture']), reason != 'exit' or record.get('worker_returncode') != 0)
-            except Exception as error:
+            except BaseException as error:
                 record['cleanup_failure'] = str(error)
                 record['group_cleaned'] = False
-        control_path.unlink(missing_ok=True)
+        try:
+            control_path.unlink(missing_ok=True)
+        except BaseException as error:
+            record['group_cleaned'] = False
+            record.setdefault('cleanup_failures', []).append('control unlink: ' + type(error).__name__)
         write_record(directory / 'state.json', record)
-    return record['worker_returncode'] if reason == 'exit' and record['group_cleaned'] else 1
+    return record.get('worker_returncode', 1) if reason == 'exit' and record['group_cleaned'] else 1
 
 
 def request_stop(directory):

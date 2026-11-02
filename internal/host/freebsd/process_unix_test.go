@@ -20,6 +20,28 @@ import (
 	"github.com/gonz0w/horvium/internal/inventory"
 )
 
+func TestExecutorOwnedFakeTransientPermissionIsNeverAbsence(t *testing.T) {
+	calls := 0
+	err := pollGroupRetired(time.Now().Add(time.Second), func() error {
+		calls++
+		if calls < 3 {
+			return syscall.EPERM
+		}
+		return syscall.ESRCH
+	})
+	if err != nil || calls != 3 {
+		t.Fatal("permission error treated as absence", err, calls)
+	}
+}
+
+func TestExecutorOwnedFakePersistentPermissionKeepsDebt(t *testing.T) {
+	start := time.Now()
+	err := pollGroupRetired(start.Add(20*time.Millisecond), func() error { return syscall.EPERM })
+	if !errors.Is(err, ErrCleanupDebt) || time.Since(start) > time.Second {
+		t.Fatal("unknown permission observation accepted or renewed", err)
+	}
+}
+
 // Only the reexecuted test binary accepts these fixture paths/modes. Product
 // readers continue to use their fixed, parameter-free native projections.
 func TestProbeTreeProcess(t *testing.T) {
@@ -137,9 +159,18 @@ func TestProbeProcessGroupCleanup(t *testing.T) {
 		t.Fatal(err)
 	}
 	sentinelDone := make(chan error, 1)
-	go func() { sentinelDone <- sentinel.Wait() }()
+	sentinelWatch, stopSentinelWatch := context.WithCancel(context.Background())
+	sentinelObserved := make(chan error, 1)
+	go func() { sentinelObserved <- observeChildExit(sentinelWatch, sentinel.Process.Pid) }()
 	t.Cleanup(func() {
-		_ = sentinel.Process.Kill()
+		stopSentinelWatch()
+		_ = sentinel.Process.Kill() // This test's sentinel has not been waited.
+		go func() { sentinelDone <- sentinel.Wait() }()
+		select {
+		case <-sentinelObserved:
+		case <-time.After(time.Second):
+			t.Error("sentinel observer did not join")
+		}
 		select {
 		case <-sentinelDone:
 		case <-time.After(3 * time.Second):
@@ -192,9 +223,10 @@ func TestProbeProcessGroupCleanup(t *testing.T) {
 				out, err := execute(ctx, os.Args[0], []string{"-test.run=^TestProbeTreeProcess$", "--", tc.mode, ready, parent}, 128)
 				done <- response{output: out, err: err}
 			}()
-			// Always clean the fixture's own group, including a failing regression.
+			// Bind read-only observations to this fixture before releasing it.
 			root := fixturePID(t, parent)
-			t.Cleanup(func() { _ = syscall.Kill(-root, syscall.SIGKILL) })
+			// The executor owns this fresh group through its sole Wait. Every fixture
+			// self-expires; saved numeric IDs grant no fallback signal authority.
 			child := fixturePID(t, ready)
 			group, err := syscall.Getpgid(child)
 			if err != nil || group != root {
@@ -243,7 +275,7 @@ func TestProbeProcessGroupCleanup(t *testing.T) {
 			assertProbeStopped(t, root)
 			assertProbeStopped(t, child)
 			select {
-			case <-sentinelDone:
+			case <-sentinelObserved:
 				t.Fatal("probe cleanup stopped unrelated work")
 			default:
 			}

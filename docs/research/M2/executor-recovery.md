@@ -160,3 +160,18 @@ raw boot identity, without qualifying general clock/restore recovery. PID reuse,
 restored-state provenance, full attribution, power loss, root adversaries and
 production recovery remain separate gates. The accepted clearance design
 still needs its independent journal/startup/global implementation. M2 runtime writes remain disabled.
+
+The [October 19 source correction](../../testing/M2/property-supervisor.md#source-correction-and-blocked-fixture-cuts-2026-10-19)
+removes the historical metadata-to-PID signal helper. Original receipts above
+retain their exact source and scope. The successor deliberately fails the cuts
+whose original guard capability is unavailable, before launching those subtrees
+or proceeding to later effects/reboot publication. Stable-capability fixture
+redesign and both-release native qualification remain open; new source/checker
+coverage does not relabel historical execution or create runtime authority.
+
+The [stable original-guard successor](../../testing/M2/property-supervisor.md#stable-original-guard-fixture-successor-2026-10-19-not_run)
+now implements those four cuts through retained original birth/ancestry and
+pre-Wait gates in isolated self-reaper controllers. It preserves actual kernel
+STOP/KILL/CONT, survivor and drain predicates, with separate fixture disposal.
+This is source-only and NOT_RUN on both releases; historical observations above
+are unchanged and cannot qualify the successor.

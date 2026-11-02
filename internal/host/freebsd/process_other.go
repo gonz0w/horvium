@@ -3,6 +3,15 @@
 // SPDX-License-Identifier: BSD-3-Clause
 package freebsd
 
-import "os/exec"
+import (
+	"context"
+	"os/exec"
+	"time"
+)
 
-func configureProcess(cmd *exec.Cmd) func() error { return func() error { return nil } }
+const processOwnershipSupported = false
+
+func configureProcess(cmd *exec.Cmd) processControl {
+	return processControl{stop: func() error { return ErrUnsupported }, proof: func(error, time.Time) error { return ErrUnsupported }}
+}
+func observeChildExit(context.Context, int) error { return ErrUnsupported }

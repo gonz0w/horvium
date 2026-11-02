@@ -15,11 +15,13 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"syscall"
 	"testing"
 	"time"
+	"unsafe"
 
 	"github.com/gonz0w/horvium/internal/inventory"
 	"github.com/gonz0w/horvium/internal/storage"
@@ -72,6 +74,18 @@ func recoveryOptIn(t testing.TB) {
 	}
 	if os.Getuid() != 0 || os.Geteuid() != 0 {
 		t.Fatal("owned research root only")
+	}
+	if runtime.GOARCH != "amd64" {
+		t.Fatal("native fixture wait6 ABI is admitted only on amd64")
+	}
+	// The pinned Go runtime serializes original Process.Signal/Wait only when
+	// its wait6/WNOWAIT path is available. Self is never our own child: require
+	// ECHILD without observing/consuming any actual fixture child. ENOSYS and
+	// every other result fail before a fixture can launch or signal a process.
+	var status int32
+	_, _, errno := syscall.Syscall6(syscall.SYS_WAIT6, 0, uintptr(os.Getpid()), uintptr(unsafe.Pointer(&status)), syscall.WEXITED|syscall.WNOHANG|syscall.WNOWAIT, 0, 0)
+	if errno != syscall.ECHILD {
+		t.Fatal("original Process wait6 reservation unavailable", errno)
 	}
 }
 func recoveryCommand(t testing.TB, path string, args ...string) string {
@@ -142,37 +156,6 @@ func recoverySame(a, b recoveryProcess) bool {
 	return a.Found && b.Found && a.PID == b.PID && a.BootSec == b.BootSec && a.BootUsec == b.BootUsec && a.StartSec == b.StartSec && a.StartUsec == b.StartUsec && a.UID == b.UID && a.RUID == b.RUID
 }
 
-func recoverySignal(t testing.TB, original recoveryProcess, signal syscall.Signal) {
-	t.Helper()
-	current := recoveryInspect(t, original.PID)
-	if !current.Found || current.Zombie {
-		return
-	}
-	if !recoverySame(original, current) {
-		t.Error("owned process identity changed; signal withheld")
-		return
-	}
-	if err := syscall.Kill(original.PID, signal); err != nil && !errors.Is(err, syscall.ESRCH) {
-		t.Error("owned process signal", err)
-	}
-}
-
-func recoveryStop(t testing.TB, original recoveryProcess) {
-	t.Helper()
-	recoverySignal(t, original, syscall.SIGSTOP)
-	until := time.Now().Add(2 * time.Second)
-	for time.Now().Before(until) {
-		current := recoveryInspect(t, original.PID)
-		if !recoverySame(original, current) {
-			t.Fatal("original process vanished before stop witness")
-		}
-		if current.Stopped {
-			return
-		}
-		time.Sleep(10 * time.Millisecond)
-	}
-	t.Fatal("original process did not reach stopped state")
-}
 func recoveryWait(t testing.TB, path string, duration time.Duration) {
 	t.Helper()
 	until := time.Now().Add(duration)
@@ -338,6 +321,10 @@ func recoveryJoin(t *testing.T, c *exec.Cmd, done <-chan error, waited *bool, ki
 }
 func recoveryContainment(t *testing.T, mode, anchor string) {
 	t.Helper()
+	if mode != "owner-death" {
+		runStableCutController(t, "containment-"+mode, anchor)
+		return
+	}
 	dir := filepath.Join(anchor, mode)
 	if os.Mkdir(dir, 0700) != nil {
 		t.Fatal("owned guard lease directory")
@@ -359,22 +346,16 @@ func recoveryContainment(t *testing.T, mode, anchor string) {
 		t.Fatal("actual owned guard/escaped-child lineage")
 	}
 	t.Cleanup(func() {
-		recoverySignal(t, guard, syscall.SIGCONT)
+		if !*waited {
+			recoveryJoin(t, c, done, waited, true)
+		}
 		for _, original := range []recoveryProcess{p, leaf, guard} {
-			recoverySignal(t, original, syscall.SIGKILL)
 			assertProbeStopped(t, original.PID)
 		}
 	})
 	if other, err := storage.OpenStateDirectory(dir); err == nil {
 		_ = other.Close()
 		t.Fatal("live owner did not retain singleton")
-	}
-	if mode == "stopped-guard" {
-		recoveryStop(t, guard)
-	}
-	if mode == "guard-first" {
-		recoveryStop(t, owner)
-		recoverySignal(t, guard, syscall.SIGKILL)
 	}
 	recoveryJoin(t, c, done, waited, true)
 	s, err := storage.OpenStateDirectory(dir)
@@ -391,18 +372,8 @@ func recoveryContainment(t *testing.T, mode, anchor string) {
 		}
 	}
 	probeLive, childLive := recoverySame(a, p) && !a.Zombie, recoverySame(b, leaf) && !b.Zombie
-	if mode == "guard-first" && !probeLive && !childLive {
-		t.Fatal("guard-first counterexample did not reach original live descendant")
-	}
 	if probeLive || childLive {
 		t.Log("singleton reacquired while an original descendant remained alive; no clearance")
-	}
-	if mode == "stopped-guard" {
-		recoverySignal(t, guard, syscall.SIGCONT)
-	}
-	if mode == "guard-first" {
-		recoverySignal(t, p, syscall.SIGKILL)
-		recoverySignal(t, leaf, syscall.SIGKILL)
 	}
 	for _, pid := range []int{probe, child, guard.PID} {
 		assertProbeStopped(t, pid)
@@ -630,7 +601,9 @@ func TestNativeExecutorRecoveryBefore(t *testing.T) {
 		t.Logf("native kinfo ABI bytes=%d; boot/start usec observed; no clearance", a.StructBytes)
 	})
 	for _, mode := range []string{"owner-death", "stopped-guard", "guard-first"} {
-		t.Run(mode, func(t *testing.T) { recoveryContainment(t, mode, filepath.Join(recoveryRoot, "metadata")) })
+		if !t.Run(mode, func(t *testing.T) { recoveryContainment(t, mode, filepath.Join(recoveryRoot, "metadata")) }) {
+			return // A blocked cut cannot proceed to real quota/effect work or reboot publication.
+		}
 	}
 	for _, mode := range []string{"queued-cut", "applying-cut", "normal-completion", "effect-cut"} {
 		if !t.Run(mode, func(t *testing.T) { f.Records = append(f.Records, recoveryCut(t, f, mode)) }) {
