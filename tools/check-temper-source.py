@@ -11,10 +11,10 @@ import tomllib
 from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
-# Reviewed #419 delivery composition on canonical consumer d04edff2a849fccca2c8cfe87be00abe7661fd3f.
+# Reviewed #436/#437 Temper refresh over canonical consumer 3a2c4dafc372414be71e3a8987a7cb5e0162ea5a.
 # This trusted verifier anchor is deliberately separate from candidate checksums.
 # Any covered byte change needs explicit source review and readmission here.
-REVIEWED_ADMISSION_SHA256 = 'dc987ffa82bb8d237b41bedcf29a821d87bdd5f75591fd4a78ccd1a90768f446'
+REVIEWED_ADMISSION_SHA256 = '6d1e9e2c1d70fd1e03924d11bf8b07bd4fff6d20d11dd4437dc006bab5e96daa'
 
 
 def directory(path):

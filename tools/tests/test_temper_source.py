@@ -135,7 +135,13 @@ class TemperSourceTests(unittest.TestCase):
 
     def test_source_revision_cannot_be_changed_by_rehash(self):
         path = self.root / ".agent-temper/SOURCE.md"
-        path.write_text(path.read_text().replace('cf928f4120b687f34f1b1f974603a4979b5b874c', "1" * 40))
+        original = path.read_text()
+        revision_line = next(line for line in original.splitlines()
+                             if line.startswith('Revision: `'))
+        replacement = 'Revision: `' + ('2' if revision_line == 'Revision: `' + '1' * 40 + '`' else '1') * 40 + '`'
+        mutated = original.replace(revision_line, replacement, 1)
+        self.assertNotEqual(original, mutated, 'provenance mutation must change source bytes')
+        path.write_text(mutated)
         self.rehash()
         with self.assertRaisesRegex(ValueError, "provenance"):
             TEMPER.validate(self.root)
