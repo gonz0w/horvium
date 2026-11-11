@@ -97,3 +97,9 @@ The decision ends at that same event; retain it as expired history thereafter. I
 policy, and grants no future bypass, other WIP, retries, guest/runner startup,
 tool installation, CI workflow/infrastructure change, model change, release,
 deployment, key/trust change or control of unrelated work.
+
+## Artifact retention
+
+Follow the adopted [artifact lifecycle](.agent-temper/docs/reference/artifact-lifecycle.md) and the project's
+existing output, evidence, recovery and approval rules. Record a bounded
+retention decision in the owning issue before substantial generated output.
