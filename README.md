@@ -614,3 +614,6 @@ Read the pinned [Agent Temper method](.agent-temper/METHOD.md),
 [local project policy](PROJECT.md) and [contribution guide](CONTRIBUTING.md).
 The existing GitHub workflow owns live work; product/platform requirements,
 verification and operational authority remain local to Horvium.
+
+Developer output follows the [bounded storage policy](docs/engineering/storage-retention.md).
+Preserve source and useful evidence; budget external outputs before creating them.

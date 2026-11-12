@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: BSD-3-Clause
 """Install checksum-pinned development tools inside the ignored .tools directory."""
+import sys
 import hashlib
 import io
 import json
@@ -11,6 +12,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+subprocess.run([sys.executable, str(ROOT / "tools/storage-preflight.py")], check=True)
 pins = json.loads((ROOT / "tools/pins.json").read_text())
 system = platform.system().lower()
 machine = {"x86_64": "amd64", "aarch64": "arm64", "arm64": "arm64"}.get(platform.machine())

@@ -15,6 +15,8 @@ except ImportError:
     sys.exit("Run make tools first (PyYAML is a pinned development dependency).")
 
 ROOT = Path(__file__).resolve().parent.parent
+# The normal source/commit gate checks actual index objects, not working-file sizes.
+subprocess.run([sys.executable, str(ROOT / "tools/storage_guard.py"), "staged", "--repo", str(ROOT)], check=True)
 REQUIRED = (
     "README.md", "CONTRIBUTING.md", "SECURITY.md", "GOVERNANCE.md", "AGENTS.md",
     "LICENSE", "CODE_OF_CONDUCT.md", ".github/CODEOWNERS",

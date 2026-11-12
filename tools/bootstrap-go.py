@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: BSD-3-Clause
 """Install the reviewed Go toolchain under ignored .tools; no system changes."""
+import sys
+import subprocess
 import hashlib
 import io
 import json
@@ -11,6 +13,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+subprocess.run([sys.executable, str(ROOT / "tools/storage-preflight.py")], check=True)
 pin = json.loads((ROOT / "tools/go-pins.json").read_text())
 machine = {"x86_64": "amd64", "amd64": "amd64", "aarch64": "arm64", "arm64": "arm64"}.get(platform.machine())
 target = f"{platform.system().lower()}_{machine}"
