@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: BSD-3-Clause
 """Install checksum-pinned Linux browser test tools under ignored .tools only."""
+import sys
+import subprocess
 import hashlib
 import json
 import platform
@@ -39,6 +41,7 @@ def install(pin, target):
 
 
 def main():
+    subprocess.run([sys.executable, str(ROOT / "tools/storage-preflight.py")], check=True)
     if platform.system() != 'Linux' or platform.machine() not in ('x86_64', 'amd64'):
         raise SystemExit('Pinned Firefox fixture requires Linux amd64; Safari uses installed macOS driver')
     pins = json.loads((ROOT / 'tools/browser-pins.json').read_text())

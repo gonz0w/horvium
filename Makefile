@@ -7,11 +7,11 @@ export GOCACHE := $(CURDIR)/.tools/go-cache
 export GOMODCACHE := $(CURDIR)/.tools/go-modules
 export CGO_ENABLED := 0
 
-tools:
+tools: storage-preflight
 	python3 tools/bootstrap-tools.py
 	python3 tools/bootstrap-go.py
 
-go-tools:
+go-tools: storage-preflight
 	python3 tools/bootstrap-go.py
 
 check:
@@ -26,7 +26,7 @@ lint-tools:
 	.tools/bin/shellcheck tools/bsd-closed-startup-publication-prebuilt.sh tools/bsd-closed-startup-owner-prebuilt.sh tools/bsd-policy-startup-publication-prebuilt.sh tools/bsd-policy-startup-owner-prebuilt.sh
 	.tools/bin/shellcheck tools/check-repo.sh tools/bsd-foundation-smoke.sh tools/bsd-native-discovery.sh tools/bsd-performance.sh tools/bsd-continuity.sh tools/bsd-properties.sh tools/bsd-devices.sh tools/bsd-state-prebuilt.sh tools/bsd-execution-system-prebuilt.sh tools/bsd-joint-leases-prebuilt.sh tools/bsd-original-backing-prebuilt.sh tools/bsd-persistent-backing-prebuilt.sh tools/bsd-pool-properties-prebuilt.sh tools/bsd-storage-job-status-prebuilt.sh tools/bsd-action-peer-prebuilt.sh tools/research/m1-native.sh .githooks/commit-msg .githooks/pre-commit
 
-lint-go:
+lint-go: storage-preflight
 	@test -z "$$($(CURDIR)/.tools/go/bin/gofmt -l cmd internal tools/research/m1-geom.go)" || { echo 'Run gofmt on Go sources'; exit 1; }
 	$(GO) vet ./...
 
@@ -35,16 +35,16 @@ test: test-tools test-go
 test-tools:
 	.tools/venv/bin/python3 -m unittest discover -s tools/tests -v
 
-test-go:
+test-go: storage-preflight
 	$(GO) test ./...
 
 go-check: lint-go test-go go-deep-check
 
-go-deep-check:
+go-deep-check: storage-preflight
 	.tools/venv/bin/python3 tools/deep-check.py --all
 
 # Development-only narrow behavioral loop; PKG and TEST are validated by Python.
-test-focus:
+test-focus: storage-preflight
 	.tools/venv/bin/python3 tools/owned-process.py run -- .tools/venv/bin/python3 tools/focused-tests.py
 
 secrets:
@@ -54,20 +54,20 @@ hooks:
 	git config core.hooksPath .githooks
 	@echo "Git hooks enabled for this clone"
 
-build:
+build: storage-preflight
 	mkdir -p .tools/bin
 	$(GO) build -trimpath -o .tools/bin/horvium ./cmd/horvium
 
 # Public synthetic loopback fixture; expires after twenty minutes.
-browser-preview:
+browser-preview: storage-preflight
 	HORVIUM_UI_PREVIEW=1 .tools/venv/bin/python3 tools/owned-process.py run -- $(GO) test -v ./internal/console -run '^TestBrowserPreview$$' -count=1 -timeout=25m
 
 # Proportional local review gate: committed source, title, DCO/signatures and evidence.
-review:
+review: storage-preflight
 	.tools/venv/bin/python3 tools/review-gate.py
 
 # Fresh complete portable milestone/release gate; never reuses deep evidence.
-review-full:
+review-full: storage-preflight
 	.tools/venv/bin/python3 tools/review-gate.py --full
 
 lab-status:
@@ -75,3 +75,8 @@ lab-status:
 
 lab-stop:
 	.tools/venv/bin/python3 tools/owned-process.py stop
+
+.PHONY: storage-preflight
+
+storage-preflight:
+	python3 tools/storage-preflight.py
