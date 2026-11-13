@@ -2,9 +2,9 @@
 
 Repository: https://github.com/gonz0w/agent-temper
 
-Revision: `bc4ae7f68ee346b9970f07c7c4bff020120f0278`
+Revision: `1c9e9fb7e5e1152691dbc669d5f7222a7c0c377d`
 
-Source: https://github.com/gonz0w/agent-temper/tree/bc4ae7f68ee346b9970f07c7c4bff020120f0278
+Source: https://github.com/gonz0w/agent-temper/tree/1c9e9fb7e5e1152691dbc669d5f7222a7c0c377d
 
 Local selection: [project policy](../PROJECT.md); only Codex is selected.
 Historical routing update: https://github.com/gonz0w/horvium/issues/426
@@ -29,8 +29,14 @@ Current modular-policy adoption: https://github.com/gonz0w/horvium/issues/430. T
 checker are outside this immutable bundle. This adoption preserves existing local
 requirements, historical decisions and all five role files. CI is unchanged.
 
-Tree: `ef53a3a141aca778ba08c432d4e1c0fcf57dad68`
+Tree: `80bff32f08baa772cf9b9b570bf44f057c103bec`
 
 Earlier guidance refresh: https://github.com/gonz0w/horvium/issues/436
 
 Current artifact-retention refresh: https://github.com/gonz0w/horvium/issues/439
+
+Current refresh: documentation/template metadata only. Selected profiles, local
+checks, execution authority and existing holds are unchanged. Optional upstream
+storage tooling is not installed by this bundle refresh.
+
+Current template refresh: https://github.com/gonz0w/horvium/issues/444

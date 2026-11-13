@@ -137,3 +137,13 @@ plan under the project's authority. Disposable cache entries can then use the
 supported size limit, not an ad hoc cross-project merge. The work item records
 the holds, permitted recoverable removals and measured result; it does not claim
 that moving files to Trash freed space or that a fresh VM test ran.
+
+## Enforce the local boundary
+
+A policy alone does not prevent output growth. Where the project selects an
+artifact-producing runner, wire capacity checks before allocation, owned-output
+cleanup on every exit path, and compact accounting at handoff. Include outputs
+outside the checkout and concurrent peak demand. Use a staged or changed-object
+Git guard for large generated binaries, with reviewed exceptions for real assets.
+The optional [storage guard](https://github.com/gonz0w/agent-temper/blob/main/docs/how-to/check-storage.md) supplies read-only
+preflight and index checks; it performs no cleanup or automatic consumer rollout.
